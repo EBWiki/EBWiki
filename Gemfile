@@ -58,4 +58,6 @@ gem "mini_magick"
 # file upload solution
 gem 'carrierwave'
 
+#CMS panel for admin
+gem 'rails_admin' 
 ruby "2.1.3"
