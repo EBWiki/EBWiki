@@ -4,10 +4,10 @@ class ArticlesController < ApplicationController
 
 	def index
 		if params[:category].blank?
-			@articles = Article.all.order('created_at DESC')
+			@articles = Article.all.order('date DESC')
 		else
 			@category_id = Category.find_by(name: params[:category]).id
-			@articles = Article.where(category_id: @category_id).order('created_at DESC')
+			@articles = Article.where(category_id: @category_id).order('date DESC')
 		end
 	end
 

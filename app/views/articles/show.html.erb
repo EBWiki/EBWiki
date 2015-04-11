@@ -1,11 +1,12 @@
 <%= image_tag(@article.avatar.large_avatar) %>
-<h1><%= @article.title %><h1>
-<p><%= @article.content %><p>
-
-<div class = "btn-group">
-	<%= link_to "Back", root_path, class: "btn btn-default" %>
-	<% if user_signed_in? %>
-		<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default" %>
-		<%= link_to "Delete", article_path(@article), method: :delete, data: {confirm: "Are you sure you want to remove this?"}, class: "btn btn-default" %>
-	<% end %>
+<div class="row">
+	<div class = "btn-group">
+		<%= link_to "Back", root_path, class: "btn btn-default" %>
+		<% if user_signed_in? %>
+			<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default" %>
+			<%= link_to "Delete", article_path(@article), method: :delete, data: {confirm: "Are you sure you want to remove this?"}, class: "btn btn-default" %>
+		<% end %>
+	</div>
 </div>
+<h1><%= @article.title %><h1>
+<p style="font-size: 50%;"><%= @article.content %><p>
