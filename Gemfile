@@ -45,5 +45,9 @@ group :development, :test do
 end
 
 gem 'rails_12factor', group: :production
+gem 'bootstrap-sass'
+gem 'devise'
+gem 'simple_form'
+
 
 ruby "2.1.3"
