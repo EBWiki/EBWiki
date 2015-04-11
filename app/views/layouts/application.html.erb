@@ -10,6 +10,11 @@
 <p class="notice"><%= notice %></p>
        <p class="alert"><%= alert %></p>
 <%= yield %>
-
+<ul>
+	<%= link_to "Show All Articles", root_path %>
+	<% Category.all.each do |category| %>
+		<li><%= link_to category.name, articles_path(category: category.name) %></li>
+	<% end %>
+</ul>
 </body>
 </html>
