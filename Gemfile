@@ -48,6 +48,7 @@ gem 'rails_12factor', group: :production
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'simple_form'
-
+gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
+gem 'momentjs-rails'
 
 ruby "2.1.3"

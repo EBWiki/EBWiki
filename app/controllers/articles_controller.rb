@@ -51,6 +51,6 @@ private
 	end
 
 	def article_params
-		params.require(:article).permit(:title, :content, :category_id)
+		params.require(:article).permit(:title, :content, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar)
 	end
 end

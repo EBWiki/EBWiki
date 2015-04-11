@@ -1,6 +1,14 @@
 <%= simple_form_for @article do |f| %>
+	<%= f.input :date, as: :date_picker, :label => 'Date field', class: "datetimepicker" %>
 	<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
 	<%= f.input :title %>
 	<%= f.input :content %>
+	<%= f.input :city %>
+	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"} %>
+	<%= f.input :zipcode %>
 	<%= f.submit %>
 <% end %>
+
+<script type="text/javascript">
+    $('.datetimepicker').datetimepicker();
+</script>

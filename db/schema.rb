@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411060938) do
+ActiveRecord::Schema.define(version: 20150411130113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,14 @@ ActiveRecord::Schema.define(version: 20150411060938) do
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
     t.integer  "category_id"
+    t.date     "date"
+    t.integer  "state_id"
+    t.string   "city"
+    t.string   "address"
+    t.string   "zipcode"
+    t.float    "longitude"
+    t.float    "latitude"
+    t.string   "avatar"
   end
 
   add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
@@ -31,6 +39,14 @@ ActiveRecord::Schema.define(version: 20150411060938) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "states", force: :cascade do |t|
+    t.string   "name"
+    t.string   "iso"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "ansi_code"
   end
 
   create_table "users", force: :cascade do |t|
