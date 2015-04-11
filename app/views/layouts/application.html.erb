@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Blackops</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
-<%= yield %>
-<ul>
-	<%= link_to "Show All Articles", root_path %>
-	<% Category.all.each do |category| %>
-		<li><%= link_to category.name, articles_path(category: category.name) %></li>
-	<% end %>
-</ul>
-</body>
+	<head>
+	  <title>Blackops</title>
+	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	  <%= csrf_meta_tags %>
+	</head>
+	<body>
+		<div class = "nav navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<%= link_to "BlackOpsWiki", root_path, class: "navbar-brand" %>
+				<ul class="nav navbar-nav navbar-right">
+					<li> <%= link_to "New Article", new_article_path if user_signed_in? %></li>
+				</ul>
+			</div>
+		</div>
+		<p class="notice"><%= notice %></p>
+		<p class="alert"><%= alert %></p>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8">
+					<%= yield %>
+				</div>
+				<div class="col-md-4">
+					<ul class="list-group">
+						<%= link_to "Show All Articles", root_path %>
+						<% Category.all.each do |category| %>
+							<li><%= link_to category.name, articles_path(category: category.name), class: "list-group-item" %></li>
+						<% end %>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
