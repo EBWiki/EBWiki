@@ -60,4 +60,6 @@ gem 'carrierwave'
 
 #CMS panel for admin
 gem 'rails_admin' 
+
+gem 'puma'
 ruby "2.1.3"
