@@ -76,4 +76,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  ENV['S3_REGION'] = 'us-east-1'
+  ENV['S3_BUCKET'] = 'blackopswiki'
+  ENV['S3_SECRET'] = 'a/RIhRmN5dgDvTK0awN8tuHsIfmHucjQIQwiVRtO'
+  ENV['S3_KEY'] = 'AKIAI6GSH3BU4XQ44CFA'
 end

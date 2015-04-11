@@ -51,4 +51,11 @@ gem 'simple_form'
 gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 gem 'momentjs-rails'
 
+# for aws cloud storage
+gem 'fog'
+# photo resizing
+gem "mini_magick"
+# file upload solution
+gem 'carrierwave'
+
 ruby "2.1.3"
