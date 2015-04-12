@@ -32,11 +32,13 @@ class ArticlesController < ApplicationController
 	end
 
 	def update
-		if @article.update(article_params)
-			redirect_to @article
-		else
-			render 'edit'
-		end
+	  @article = Article.find_by_id(params[:id])
+	  if @article.update_attributes(article_params)
+	    flash[:success] = "Article was updated! #{make_undo_link}"
+		redirect_to @article
+	  else
+	    render 'edit'
+	  end
 	end
 	
 	def destroy
@@ -48,10 +50,32 @@ class ArticlesController < ApplicationController
 	  @versions = PaperTrail::Version.order('created_at DESC')
 	end
 
+	def undo
+	  @article_version = PaperTrail::Version.find_by_id(params[:id])
+	 
+	  begin
+	    if @article_version.reify
+	      @article_version.reify.save
+	    else
+	      # For undoing the create action
+	      @article_version.item.destroy
+	    end
+	    flash[:success] = "Undid that!"
+	  rescue
+	    flash[:alert] = "Failed undoing the action..."
+	  ensure
+	    redirect_to root_path
+	  end
+	end
+
 private
 
 	def find_article
 		@article = Article.find(params[:id])
+	end
+
+	def make_undo_link
+	  view_context.link_to 'Undo that please!', undo_path(@article.versions.last), method: :post
 	end
 
 	def article_params

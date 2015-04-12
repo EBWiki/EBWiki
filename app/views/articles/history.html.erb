@@ -8,6 +8,17 @@
         Event ID: <%= version.id %><br/>
         <b>Target:</b> <%= version.item_type %>
         <small>(<%= Article.find(version.item_id).title %>)</small>; <b>action</b> <%= version.event %>;<br/>
+        <b>Remote address:</b> <%= version.ip %><br/>
+        <b>User:</b>
+          <% if version.whodunnit && version.whodunnit != 'Guest' %>
+            <% user = User.find_by_id(version.whodunnit) %>
+            <% if user %>
+              <%= user.email %>
+              (last seen at <%= l(user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>)
+            <% end %>
+          <% else %>
+            Guest
+          <% end %>
         <div>
           Changeset:
           <pre><%= version.changeset %></pre>

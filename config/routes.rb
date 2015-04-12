@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users
+
   get '/articles/history', to: 'articles#history', as: :articles_history
+  post '/posts/:id/undo', to: 'posts#undo', as: :undo
   resources :articles
+  
   root 'articles#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
