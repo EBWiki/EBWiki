@@ -22,6 +22,7 @@ class ArticlesController < ApplicationController
 	def create
 		@article = current_user.articles.build(article_params)
 		if @article.save
+		    flash[:success] = "Article was created! #{make_undo_link}"
 			redirect_to @article
 		else
 			render 'new'
@@ -43,6 +44,7 @@ class ArticlesController < ApplicationController
 	
 	def destroy
 		@article.destroy
+	    flash[:success] = "Article was removed! #{make_undo_link}"
 		redirect_to root_path
 	end
 
@@ -60,7 +62,7 @@ class ArticlesController < ApplicationController
 	      # For undoing the create action
 	      @article_version.item.destroy
 	    end
-	    flash[:success] = "Undid that!"
+	    flash[:success] = "Undid that! #{make_redo_link}"
 	  rescue
 	    flash[:alert] = "Failed undoing the action..."
 	  ensure
@@ -76,6 +78,11 @@ private
 
 	def make_undo_link
 	  view_context.link_to 'Undo that please!', undo_path(@article.versions.last), method: :post
+	end
+
+	def make_redo_link
+	  params[:redo] == "true" ? link = "Undo that please!" : link = "Redo that please!"
+	  view_context.link_to link, undo_path(@article_version.next, redo: !params[:redo]), method: :post
 	end
 
 	def article_params

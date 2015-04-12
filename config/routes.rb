@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   get '/articles/history', to: 'articles#history', as: :articles_history
-  post '/posts/:id/undo', to: 'posts#undo', as: :undo
+  post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles
   
   root 'articles#index'
