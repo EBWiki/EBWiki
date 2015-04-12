@@ -1,0 +1,18 @@
+<div class="container">
+  <h1>History</h1>
+ 
+  <ul>
+    <% @versions.each do |version| %>
+      <li>
+        <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
+        Event ID: <%= version.id %><br/>
+        <b>Target:</b> <%= version.item_type %>
+        <small>(<%= Article.find(version.item_id).title %>)</small>; <b>action</b> <%= version.event %>;<br/>
+        <div>
+          Changeset:
+          <pre><%= version.changeset %></pre>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

@@ -10,3 +10,4 @@
 </div>
 <h1><%= @article.title %><h1>
 <p style="font-size: 50%;"><%= @article.content %><p>
+<p style="font-size: 50%;"><%= link_to 'See history of this article', articles_history_path(@article) %><p>

@@ -1,8 +1,8 @@
-<h1>this is the articles index</h1>
+<h1> Past Incidents of Police Violence </h1>
 
 <% @articles.each do |article| %>
 	<h2><%= link_to article.title, article %></h2>
-	<p>Published at <%=article.created_at.strftime('%b, %d, %Y') %></p>
+	<p>Incident Date: <%=article.date %></p>
 	<p><%= truncate(article.content, length:200) %></p>
 <% end %>
 

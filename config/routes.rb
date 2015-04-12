@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users
+  get '/articles/history', to: 'articles#history', as: :articles_history
   resources :articles
   root 'articles#index'
 

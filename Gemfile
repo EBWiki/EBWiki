@@ -62,4 +62,7 @@ gem 'carrierwave'
 gem 'rails_admin' 
 
 gem 'puma'
+
+#track changes in model objects
+gem 'paper_trail', '~> 4.0.0.beta'
 ruby "2.1.3"
