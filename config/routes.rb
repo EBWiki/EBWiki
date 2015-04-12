@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users
 
-  get '/articles/history', to: 'articles#history', as: :articles_history
+  get '/articles/:id/history', to: 'articles#history', as: :articles_history
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles
   

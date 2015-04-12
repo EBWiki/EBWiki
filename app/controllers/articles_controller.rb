@@ -49,7 +49,8 @@ class ArticlesController < ApplicationController
 	end
 
 	def history
-	  @versions = PaperTrail::Version.order('created_at DESC')
+		@article = Article.find(params[:id])
+		@versions = @article.versions.order('created_at DESC')
 	end
 
 	def undo
