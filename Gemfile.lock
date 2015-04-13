@@ -80,6 +80,10 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    diff-lcs (1.2.5)
+    dotenv (2.0.1)
+    dotenv-rails (2.0.1)
+      dotenv (= 2.0.1)
     erubis (2.7.0)
     excon (0.45.1)
     execjs (2.5.2)
@@ -277,6 +281,23 @@ GEM
     remotipart (1.2.1)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rspec-core (3.2.3)
+      rspec-support (~> 3.2.0)
+    rspec-expectations (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-mocks (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-rails (3.2.1)
+      actionpack (>= 3.0, < 4.3)
+      activesupport (>= 3.0, < 4.3)
+      railties (>= 3.0, < 4.3)
+      rspec-core (~> 3.2.0)
+      rspec-expectations (~> 3.2.0)
+      rspec-mocks (~> 3.2.0)
+      rspec-support (~> 3.2.0)
+    rspec-support (3.2.2)
     safe_yaml (1.0.4)
     sass (3.4.13)
     sass-rails (5.0.3)
@@ -329,6 +350,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   datetimepicker-rails!
   devise
+  dotenv-rails
   fog
   jbuilder (~> 2.0)
   jquery-rails
@@ -340,6 +362,7 @@ DEPENDENCIES
   rails (= 4.2.1)
   rails_12factor
   rails_admin
+  rspec-rails (~> 3.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   simple_form
