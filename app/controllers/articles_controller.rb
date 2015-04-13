@@ -49,7 +49,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def history
-		@article = Article.find(params[:id])
+		@article = Article.friendly.find(params[:id])
 		@versions = @article.versions.order('created_at DESC')
 	end
 
@@ -74,7 +74,7 @@ class ArticlesController < ApplicationController
 private
 
 	def find_article
-		@article = Article.find(params[:id])
+		@article = Article.friendly.find(params[:id])
 	end
 
 	def make_undo_link
