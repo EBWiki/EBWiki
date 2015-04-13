@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-gem 'dotenv-rails', :groups => [:development, :test]
+#gem 'dotenv-rails', :groups => [:development, :test]
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -66,4 +66,7 @@ gem 'puma'
 
 #track changes in model objects
 gem 'paper_trail', '~> 4.0.0.beta'
+
+#pretty urls
+gem 'friendly_id', '~> 5.1.0'
 ruby "2.2.1"
