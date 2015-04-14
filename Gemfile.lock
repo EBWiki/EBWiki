@@ -81,6 +81,9 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    dotenv (2.0.1)
+    dotenv-rails (2.0.1)
+      dotenv (= 2.0.1)
     erubis (2.7.0)
     excon (0.45.1)
     execjs (2.5.2)
@@ -349,6 +352,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   datetimepicker-rails!
   devise
+  dotenv-rails
   fog
   friendly_id (~> 5.1.0)
   jbuilder (~> 2.0)

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-# gem 'dotenv-rails', :groups => [:development, :test]
+gem 'dotenv-rails', :groups => [:development, :test], :require => 'dotenv/rails-now'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -60,7 +60,7 @@ gem "mini_magick"
 gem 'carrierwave'
 
 #CMS panel for admin
-gem 'rails_admin' 
+gem 'rails_admin'
 
 gem 'puma'
 
