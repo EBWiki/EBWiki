@@ -33,7 +33,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def update
-	  @article = Article.friendly_find_by_id(params[:id])
+	  @article = Article.find_by_id(params[:id])
 	  if @article.update_attributes(article_params)
 	    flash[:success] = "Article was updated! #{make_undo_link}"
 		redirect_to @article
@@ -49,7 +49,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def history
-		@article = Article.friendly_find(params[:id])
+		@article = Article.friendly.find(params[:id])
 		@versions = @article.versions.order('created_at DESC')
 	end
 
@@ -74,7 +74,7 @@ class ArticlesController < ApplicationController
 private
 
 	def find_article
-		@article = Article.friendly_find(params[:id])
+		@article = Article.friendly.find(params[:id])
 	end
 
 	def make_undo_link

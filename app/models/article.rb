@@ -1,9 +1,9 @@
 class Article < ActiveRecord::Base
-  extend FriendlyId
-  friendly_id :title, use: :slugged
-  belongs_to :user
-  belongs_to :category
-  has_paper_trail
+	belongs_to :user
+	belongs_to :category
+	has_paper_trail
+	extend FriendlyId
+	friendly_id :slug
 	
 # Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
