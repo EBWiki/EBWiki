@@ -33,7 +33,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def update
-	  @article = Article.find_by_id(params[:id])
+	  @article = Article.friendly.find(params[:id])
 	  if @article.update_attributes(article_params)
 	    flash[:success] = "Article was updated! #{make_undo_link}"
 		redirect_to @article
