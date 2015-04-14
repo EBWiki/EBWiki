@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   get '/articles/:id/history', to: 'articles#history', as: :articles_history
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles
-  
+
   root 'articles#index'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
