@@ -67,6 +67,9 @@ gem 'puma'
 # implement elasticsearch
 gem 'searchkick'
 
+# manage nested forms
+gem 'cocoon'
+
 #track changes in model objects
 gem 'paper_trail', '~> 4.0.0.beta'
 gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
