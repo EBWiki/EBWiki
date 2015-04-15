@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413164945) do
+ActiveRecord::Schema.define(version: 20150415032541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20150413164945) do
     t.float    "latitude"
     t.string   "avatar"
     t.string   "slug"
+    t.string   "video_url"
   end
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
@@ -94,5 +95,12 @@ ActiveRecord::Schema.define(version: 20150413164945) do
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+
+  create_table "video_urls", force: :cascade do |t|
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "article_id"
+  end
 
 end
