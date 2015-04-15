@@ -15,7 +15,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def show
-		
+		@officers = @article.officers.all
 	end
 
 	def create

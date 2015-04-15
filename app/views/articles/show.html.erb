@@ -10,6 +10,10 @@
 </div>
 <h1><%= @article.title %><h1>
 <p style="font-size: 50%;"><%= raw @article.content %></p>
+<h4>Officers involved:</h4>
+<% @officers.each do |officer| %>
+	<%= image_tag(officer.avatar.large_avatar) %>
+<% end %>
 <% if @article.video_url.length > 0 %>
 	<div class="embed-container">
 		<%= embed(@article.video_url) %>
@@ -24,3 +28,9 @@
 		</br>
 	<% end %>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $('[data-toggle="popover"]').popover();   
+	});
+</script>
