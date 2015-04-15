@@ -21,6 +21,14 @@
 		<div class = "nav navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<%= link_to "BlackOpsWiki", root_path, class: "navbar-brand" %>
+				<%= form_tag articles_path, method: :get do %>
+	              <div class="navbar-form navbar-left">
+	                <%= text_field_tag :query, params[:query], class: 'input-group', data: { list: State.all.map(&:name) } , placeholder: 'Enter state to search...' %>
+	              </div>
+	              <div class="navbar-form navbar-left">
+	                <%= submit_tag "Search", class: "btn btn-primary" %>
+	              </div>
+	            <% end %>
 				<ul class="nav navbar-nav navbar-right">
 					<% if user_signed_in? %>
 						<li> <%= link_to "Add an Article", new_article_path %></li>
@@ -44,14 +52,14 @@
 				<div class="col-md-8">
 					<%= yield %>
 				</div>
-				<div class="col-md-4">
+				<!-- <div class="col-md-4">
 					<ul class="list-group">
 						<%= link_to "Show All Articles", root_path %>
 						<% Category.all.each do |category| %>
 							<li><%= link_to category.name, articles_path(category: category.name), class: "list-group-item" %></li>
 						<% end %>
 					</ul>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</body>
