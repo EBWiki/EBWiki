@@ -4,9 +4,9 @@ class ArticlesController < ApplicationController
 
 	def index
 	    if params[:query].present?
-	      @articles = Article.search("#{params[:query]}")
+	      @articles = Article.search("#{params[:query]}").order('updated_at DESC')
 	    else
-	      @articles = Article.all.page params[:page]
+	      @articles = Article.all.order('updated_at DESC')
 	    end
     end
 
