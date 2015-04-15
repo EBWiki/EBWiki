@@ -23,7 +23,7 @@
 				<%= link_to "BlackOpsWiki", root_path, class: "navbar-brand" %>
 				<%= form_tag articles_path, method: :get do %>
 	              <div class="navbar-form navbar-left">
-	                <%= text_field_tag :query, params[:query], class: 'input-group', data: { list: State.all.map(&:name) } , placeholder: 'Enter state to search...' %>
+	                <%= text_field_tag :query, params[:query], class: 'input-group', data: { list: State.all.map(&:name) } , placeholder: 'Enter keywords to search...' %>
 	              </div>
 	              <div class="navbar-form navbar-left">
 	                <%= submit_tag "Search", class: "btn btn-primary" %>
