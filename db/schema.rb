@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415144255) do
+ActiveRecord::Schema.define(version: 20150415183753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "article_officers", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "officer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "articles", force: :cascade do |t|
     t.string   "title"
@@ -37,6 +44,14 @@ ActiveRecord::Schema.define(version: 20150415144255) do
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
   add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
+
+  create_table "articles_officers", id: false, force: :cascade do |t|
+    t.integer "articles_id"
+    t.integer "officers_id"
+  end
+
+  add_index "articles_officers", ["articles_id"], name: "index_articles_officers_on_articles_id", using: :btree
+  add_index "articles_officers", ["officers_id"], name: "index_articles_officers_on_officers_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -65,6 +80,17 @@ ActiveRecord::Schema.define(version: 20150415144255) do
   end
 
   add_index "links", ["article_id"], name: "index_links_on_article_id", using: :btree
+
+  create_table "officers", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "department_id"
+    t.string   "avatar"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "title"
+    t.text     "background"
+  end
 
   create_table "states", force: :cascade do |t|
     t.string   "name"

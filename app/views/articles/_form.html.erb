@@ -17,6 +17,13 @@
     <div class="links">
       <%= link_to_add_association 'add a link', f, :links %>
     </div>
+	<div id="officers">
+	    <%= f.simple_fields_for :officers do |officer| %>
+	      <%= render 'officer_fields', :f => officer %>
+	    <% end %>
+    <div class="officers">
+      <%= link_to_add_association 'add a responsible officer', f, :officers %>
+    </div>
 	<%= f.submit %>
 <% end %>
 
