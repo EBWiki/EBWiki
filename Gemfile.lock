@@ -81,9 +81,19 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    elasticsearch (1.0.8)
+      elasticsearch-api (= 1.0.7)
+      elasticsearch-transport (= 1.0.7)
+    elasticsearch-api (1.0.7)
+      multi_json
+    elasticsearch-transport (1.0.7)
+      faraday
+      multi_json
     erubis (2.7.0)
     excon (0.45.1)
     execjs (2.5.2)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
     fog (1.29.0)
@@ -184,6 +194,7 @@ GEM
       activesupport (>= 4.1.0)
     haml (4.0.6)
       tilt
+    hashie (3.4.1)
     hike (1.2.3)
     i18n (0.7.0)
     inflecto (0.0.2)
@@ -212,6 +223,7 @@ GEM
     momentjs-rails (2.9.0)
       railties (>= 3.1)
     multi_json (1.11.0)
+    multipart-post (2.0.0)
     nested_form (0.3.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -308,6 +320,10 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    searchkick (0.8.7)
+      activemodel
+      elasticsearch (>= 1)
+      hashie
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
@@ -364,6 +380,7 @@ DEPENDENCIES
   rspec-rails (~> 3.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  searchkick
   simple_form
   spring
   turbolinks

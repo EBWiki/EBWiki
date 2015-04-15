@@ -3,13 +3,12 @@ class ArticlesController < ApplicationController
 	before_action :authenticate_user!, except: [:index, :show]
 
 	def index
-		if params[:category].blank?
-			@articles = Article.all.order('date DESC')
-		else
-			@category_id = Category.find_by(name: params[:category]).id
-			@articles = Article.where(category_id: @category_id).order('date DESC')
-		end
-	end
+	    if params[:query].present?
+	      @articles = Article.search("#{params[:query]}")
+	    else
+	      @articles = Article.all.page params[:page]
+	    end
+    end
 
 	def new
 		@article = current_user.articles.build

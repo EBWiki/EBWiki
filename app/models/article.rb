@@ -4,6 +4,7 @@ class Article < ActiveRecord::Base
 	has_paper_trail
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
+	searchkick
 	
 # Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
