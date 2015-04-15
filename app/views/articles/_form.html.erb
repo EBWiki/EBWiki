@@ -9,6 +9,14 @@
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"} %>
 	<%= f.input :zipcode %>
+	<h4>Add links to related content:</h4>
+	<div id="links">
+	    <%= f.simple_fields_for :links do |link| %>
+	      <%= render 'link_fields', :f => link %>
+	    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'add a link', f, :links %>
+    </div>
 	<%= f.submit %>
 <% end %>
 
