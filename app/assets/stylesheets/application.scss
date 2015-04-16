@@ -25,3 +25,12 @@ body{
 ul{
 	list-style: none;
 }
+
+.panel-footer {
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  background-color: #f5f5f5;
+  margin-top: 20px;
+}
