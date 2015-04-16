@@ -13,10 +13,27 @@ describe Users::RegistrationsController, "#create", :type => :controller do
 
     it "should create a user if the gotcha is answered correctly" do
     	Gotcha.skip_validation = true
-    	lambda do
+    	expect{
         post :create, :user => @attr
-        response.should redirect_to(root_path)
-      end.should change(User, :count).by(1)
+        expect(response).to redirect_to(root_path)
+      }.to change{User.count}.by(1)
     end
   end
+
+  describe "on failure" do
+    before :each do
+      @attr = { :email => "user@example.com",
+                  :password => "foobar01", :password_confirmation => "foobar01" }
+      request.env['devise.mapping'] = Devise.mappings[:user]
+    end
+
+    it "should create a user if the gotcha is answered correctly" do
+      Gotcha.skip_validation = false
+      expect{
+        post :create, :user => @attr
+        expect(response).to redirect_to("/users/sign_up")
+      }.not_to change{User.count}
+    end
+  end
+
 end
