@@ -1,7 +1,12 @@
-<h1> Past Incidents of Police Violence </h1>
+<h2> Victims of Police Violence </h2>
 
 <% @articles.each do |article| %>
-	<h2><%= link_to article.title, article %></h2>
+	<h2>
+		<%= link_to article.title, article %>
+		<% unless article.video_url.nil? %>
+			<%= link_to image_tag('video_icon.jpg', width: "50"), article %> 
+		<% end %>
+	</h2>
 	<p>Incident Date: <%=article.date %></p>
 	<p><%= truncate(article.content, length:200) %></p>
 <% end %>
