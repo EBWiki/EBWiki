@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  devise_for :users
-
+  devise_for :users, controllers: {
+    registrations: "users/registrations"
+  }
   get '/articles/:id/history', to: 'articles#history', as: :articles_history
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles
-  
+
   root 'articles#index'
+  resources :users do
+    resources :registrations
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -143,12 +143,5 @@ ActiveRecord::Schema.define(version: 20150416173320) do
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["transaction_id"], name: "index_versions_on_transaction_id", using: :btree
 
-  create_table "video_urls", force: :cascade do |t|
-    t.string   "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "article_id"
-  end
-
   add_foreign_key "links", "articles"
 end
