@@ -1,10 +1,13 @@
 <%= simple_form_for @article do |f| %>
 	<%= f.input :date, as: :date_picker, :label => 'Date field', class: "datetimepicker" %>
+	<h4>Enter a category of abuse:</h4>
 	<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
+	<h4>Upload a photo of the victim:</h4>
 	<%= f.file_field :avatar %>
 	<h4>Add a YouTube Video url relating to the article:</h4>
 	<%= f.input :video_url %>
-	<%= f.input :title %>
+	<h4>Name of the victim:</h4>
+	<%= f.input :title, :label => "" %>
 	<%= f.input :content %>
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"} %>
@@ -15,8 +18,9 @@
 	      <%= render 'link_fields', :f => link %>
 	    <% end %>
     <div class="links">
-      <%= link_to_add_association 'add a link', f, :links %>
+      <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
     </div>
+    <br>
 	<%= f.submit %>
 <% end %>
 
