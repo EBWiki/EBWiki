@@ -4,7 +4,7 @@
 	<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
 	<h4>Upload a photo of the victim:</h4>
 	<%= f.file_field :avatar %>
-	<h4>Add a YouTube Video url relating to the article:</h4>
+	<h4>Add a YouTube Video url relating to the case:</h4>
 	<%= f.input :video_url %>
 	<h4>Name of the victim:</h4>
 	<%= f.input :title, :label => "" %>
@@ -21,7 +21,9 @@
       <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
     </div>
     <br>
-	<%= f.submit %>
+	    <%= f.button :submit, :class => 'btn btn-primary' %>
+    
+	
 <% end %>
 
 <script type="text/javascript">
