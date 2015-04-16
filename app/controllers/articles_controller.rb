@@ -3,13 +3,12 @@ class ArticlesController < ApplicationController
 	before_action :authenticate_user!, except: [:index, :show]
 
 	def index
-		if params[:category].blank?
-			@articles = Article.all.order('date DESC')
-		else
-			@category_id = Category.find_by(name: params[:category]).id
-			@articles = Article.where(category_id: @category_id).order('date DESC')
-		end
-	end
+	    if params[:query].present?
+	      @articles = Article.search("#{params[:query]}").order('updated_at DESC')
+	    else
+	      @articles = Article.all.order('updated_at DESC')
+	    end
+    end
 
 	def new
 		@article = current_user.articles.build
@@ -33,7 +32,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def update
-	  @article = Article.find_by_id(params[:id])
+	  @article = Article.friendly.find(params[:id])
 	  if @article.update_attributes(article_params)
 	    flash[:success] = "Article was updated! #{make_undo_link}"
 		redirect_to @article
@@ -87,6 +86,6 @@ private
 	end
 
 	def article_params
-		params.require(:article).permit(:title, :content, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar)
+		params.require(:article).permit(:title, :content, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url])
 	end
 end

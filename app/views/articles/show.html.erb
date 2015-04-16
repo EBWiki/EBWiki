@@ -9,5 +9,18 @@
 	</div>
 </div>
 <h1><%= @article.title %><h1>
-<p style="font-size: 50%;"><%= @article.content %><p>
+<p style="font-size: 50%;"><%= raw @article.content %></p>
+	<div class="embed-container">
+		<% if @article.video_url.to_s.length != "" %>
+			<%= embed(@article.video_url) %>
+		<% end %>
+	</div>
 <p style="font-size: 50%;"><%= link_to 'See history of this article', articles_history_path(@article) %><p>
+
+<h4>Additional Resources:</h4>
+<div class = "background-links">
+	<% @article.links.each do |link| %>
+		<%= link_to link.url, "#{link.url}" %>
+		</br>
+	<% end %>
+</div>

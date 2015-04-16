@@ -2,11 +2,21 @@
 	<%= f.input :date, as: :date_picker, :label => 'Date field', class: "datetimepicker" %>
 	<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
 	<%= f.file_field :avatar %>
+	<h4>Add a YouTube Video url relating to the article:</h4>
+	<%= f.input :video_url %>
 	<%= f.input :title %>
 	<%= f.input :content %>
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"} %>
 	<%= f.input :zipcode %>
+	<h4>Add links to related content:</h4>
+	<div id="links">
+	    <%= f.simple_fields_for :links do |link| %>
+	      <%= render 'link_fields', :f => link %>
+	    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'add a link', f, :links %>
+    </div>
 	<%= f.submit %>
 <% end %>
 

@@ -81,4 +81,5 @@ Rails.application.configure do
   ENV['S3_BUCKET'] = 'blackopswiki'
   ENV['S3_SECRET'] = 'a/RIhRmN5dgDvTK0awN8tuHsIfmHucjQIQwiVRtO'
   ENV['S3_KEY'] = 'AKIAI6GSH3BU4XQ44CFA'
+  ENV['BONSAI_URL'] = 'https://6y99t6g2:gjzig0joiri6z0n4@jasmine-5528316.us-east-1.bonsai.io/'
 end
