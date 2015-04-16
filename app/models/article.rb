@@ -8,6 +8,12 @@ class Article < ActiveRecord::Base
 	friendly_id :title, use: [:slugged, :finders]
 	searchkick
 	
+	before_save :save_state_name
+	
 # Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
+
+	def save_state_name
+		self.state = State.find(self.state_id).name
+	end
 end
