@@ -10,8 +10,8 @@
 	<%= f.input :title, :label => "" %>
 	<%= f.input :content %>
 	<%= f.input :city %>
-	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"} %>
-	<%= f.input :zipcode %>
+	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
+	<%#= f.input :zipcode %>
 	<h4>Add links to related content:</h4>
 	<div id="links">
 	    <%= f.simple_fields_for :links do |link| %>
