@@ -12,7 +12,7 @@
 <p style="font-size: 50%;"><%= raw @article.content %></p>
 <h4>Officers involved:</h4>
 <% @officers.each do |officer| %>
-	<%= image_tag(officer.avatar.large_avatar) %>
+	<%= "#{officer.title} #{officer.first_name} #{officer.last_name}" %>
 <% end %>
 <% if @article.video_url.length > 0 %>
 	<div class="embed-container">
