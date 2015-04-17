@@ -14,13 +14,11 @@
 <% @officers.each do |officer| %>
 	<%= link_to "#{officer.title} #{officer.first_name} #{officer.last_name}", officer %>
 <% end %>
-<% if @article.video_url.length > 0 %>
-	<div class="embed-container">
-		<% if @article.video_url.to_s.length != "" %>
-			<%= embed(@article.video_url) %>
-		<% end %>
-	</div>
-<% end %>
+<div class="embed-container">
+	<% if @article.video_url.to_s.length != "" %>
+		<%= embed(@article.video_url) %>
+	<% end %>
+</div>
 <p style="font-size: 50%;"><%= link_to 'See history of this article', articles_history_path(@article) %><p>
 
 <h4>Additional Resources:</h4>
