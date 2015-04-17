@@ -26,6 +26,7 @@
 	    <%= f.simple_fields_for :officers do |officer| %>
 	      <%= render 'officer_fields', :f => officer %>
 	    <% end %>
+    <br>
     <div class="officers">
       <%= link_to_add_association 'add a responsible officer', f, :officers, :class => "btn btn-warning" %>
     </div>
