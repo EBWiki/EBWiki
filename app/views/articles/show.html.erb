@@ -10,6 +10,11 @@
 </div>
 <h1><%= @article.title %><h1>
 <p style="font-size: 50%;"><%= raw @article.content %></p>
+<h4>Officers involved:</h4>
+<% @officers.each do |officer| %>
+	<%= link_to "#{officer.title} #{officer.first_name} #{officer.last_name}", officer %>
+<% end %>
+<% if @article.video_url.length > 0 %>
 	<div class="embed-container">
 		<% if @article.video_url.to_s.length != "" %>
 			<%= embed(@article.video_url) %>
@@ -24,3 +29,9 @@
 		</br>
 	<% end %>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $('[data-toggle="popover"]').popover();   
+	});
+</script>

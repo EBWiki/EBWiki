@@ -20,10 +20,18 @@
     <div class="links">
       <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
     </div>
+
+	<div id="officers">
+	    <%= f.simple_fields_for :officers do |officer| %>
+	      <%= render 'officer_fields', :f => officer %>
+	    <% end %>
+    <div class="officers">
+      <%= link_to_add_association 'add a responsible officer', f, :officers %>
+    </div>
+
     <br>
-	    <%= f.button :submit, :class => 'btn btn-primary' %>
+	<%= f.button :submit, :class => 'btn btn-primary' %>
     
-	
 <% end %>
 
 <script type="text/javascript">

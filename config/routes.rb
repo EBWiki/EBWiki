@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
+
   get '/about', to: 'static#about'
+
+  resources :officers
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users
