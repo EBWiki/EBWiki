@@ -3,7 +3,7 @@
 <% @articles.each do |article| %>
 	<h2>
 		<%= link_to article.title, article %>
-		<% unless article.video_url.nil? %>
+		<% unless article.video_url == '' %>
 			<%= link_to image_tag('video_icon.jpg', width: "50"), article %> 
 		<% end %>
 	</h2>
