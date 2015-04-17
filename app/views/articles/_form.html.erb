@@ -7,26 +7,27 @@
 	<h4>Add a YouTube Video url relating to the case:</h4>
 	<%= f.input :video_url %>
 	<h4>Name of the victim:</h4>
-	<%= f.input :title, :label => "" %>
+	<%= f.input :title, :label => false %>
 	<%= f.input :content %>
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
 	<%#= f.input :zipcode %>
+	<div class = "form-group">
 	<h4>Add links to related content:</h4>
-	<div id="links">
-	    <%= f.simple_fields_for :links do |link| %>
-	      <%= render 'link_fields', :f => link %>
-	    <% end %>
-    <div class="links">
-      <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
-    </div>
-
+		<div id="links">
+		    <%= f.simple_fields_for :links do |link| %>
+		      <%= render 'link_fields', :f => link %>
+		    <% end %>
+	    <div class="links">
+	      <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
+	    </div>
+	</div>
 	<div id="officers">
 	    <%= f.simple_fields_for :officers do |officer| %>
 	      <%= render 'officer_fields', :f => officer %>
 	    <% end %>
     <div class="officers">
-      <%= link_to_add_association 'add a responsible officer', f, :officers %>
+      <%= link_to_add_association 'add a responsible officer', f, :officers, :class => "btn btn-warning" %>
     </div>
 
     <br>
