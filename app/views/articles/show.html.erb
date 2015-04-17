@@ -10,11 +10,17 @@
 </div>
 <h1><%= @article.title %><h1>
 <p style="font-size: 50%;"><%= raw @article.content %></p>
+<h4>Officers involved:</h4>
+<% @officers.each do |officer| %>
+	<%= link_to "#{officer.title} #{officer.first_name} #{officer.last_name}", officer %>
+<% end %>
+<% if @article.video_url.length > 0 %>
 	<div class="embed-container">
 		<% if @article.video_url.to_s.length != "" %>
 			<%= embed(@article.video_url) %>
 		<% end %>
 	</div>
+<% end %>
 <p style="font-size: 50%;"><%= link_to 'See history of this article', articles_history_path(@article) %><p>
 
 <h4>Additional Resources:</h4>
@@ -24,3 +30,9 @@
 		</br>
 	<% end %>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $('[data-toggle="popover"]').popover();   
+	});
+</script>
