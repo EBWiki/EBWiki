@@ -5,4 +5,8 @@ class Officer < ActiveRecord::Base
 # Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
 
+	def full_name
+		"#{title} #{first_name} #{last_name}"
+	end
+
 end
