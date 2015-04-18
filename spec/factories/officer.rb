@@ -4,5 +4,6 @@ FactoryGirl.define do
     first_name "Jane"
     last_name "Doe"
     title "Officer"
+    id 1
   end
 end
