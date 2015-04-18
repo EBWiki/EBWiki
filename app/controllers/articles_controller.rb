@@ -86,6 +86,6 @@ private
 	end
 
 	def article_params
-		params.require(:article).permit(:title, :content, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :_destroy])
+		params.require(:article).permit(:title, :content, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy])
 	end
 end
