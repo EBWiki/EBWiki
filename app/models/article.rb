@@ -25,5 +25,11 @@ private
 	    if( state_id.nil? ) 
 	      errors.add(:base, "Please specify the state where this incident occurred before saving.")
 	    end
+	    if( title.nil? ) 
+	      errors.add(:base, "Title (name of the victim) can't be blank.")
+	    end
+	    if( date.nil? ) 
+	      errors.add(:base, "Please add a date.")
+	    end
     end
 end

@@ -1,6 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe Article, type: :model do
+  describe Article do
+    it "is invalid without a title" do
+      article = build(:article, title: nil)
+      expect(article).to be_invalid
+    end
+    it "is invalid without a date" do
+      article = build(:article, date: nil)
+      expect(article).to be_invalid
+    end
+    it "is invalid without a state_id" do
+      article = build(:article, state_id: nil)
+      expect(article).to be_invalid
+    end
+  end
+
   describe "#new" do
     it "takes three parameters and returns an Article object" do
 		article = build(:article)
@@ -21,4 +35,3 @@ RSpec.describe Article, type: :model do
         expect(article.content).to eq "A new article"
     end
   end
-end
