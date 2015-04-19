@@ -14,5 +14,10 @@ RSpec.describe Officer, type: :model do
       officer = build(:officer, title: nil)
       expect(officer).to be_invalid
     end
+    it "returns a contact's full name as a string" do
+	  officer = Officer.new(first_name: 'John', last_name: 'Doe',
+	    title: 'Officer')
+	  expect(officer.full_name).to eq 'Officer John Doe'
+	end
   end
 end

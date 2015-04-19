@@ -19,6 +19,10 @@ class Article < ActiveRecord::Base
 	def save_state_name
 		self.state = State.find(self.state_id).name
 	end
+
+	def self.find_by_search(query)
+	    search(query)		
+	end
 private
 
 	def required_info
