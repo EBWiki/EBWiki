@@ -67,6 +67,7 @@ gem 'carrierwave'
 gem 'rails_admin'
 
 gem 'puma'
+gem 'geocoder'
 
 # implement elasticsearch
 gem 'searchkick'

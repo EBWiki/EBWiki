@@ -16,6 +16,13 @@ class Article < ActiveRecord::Base
 # Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
 
+	geocoded_by :full_address   # can also be an IP address
+	after_validation :geocode          # auto-fetch coordinates
+
+	def full_address
+		"#{address} #{city} #{state}"
+	end
+
 	def save_state_name
 		self.state = State.find(self.state_id).name
 	end
