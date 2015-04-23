@@ -1,17 +1,36 @@
 require 'rails_helper'
 
   describe User do
-    it "by default isn't admin" do
-      expect(User.new).to_not be_admin
+    feature 'Anonymous User' do 
+      scenario 'without sign in' do
+        visit rails_admin.dashboard_path
+        expect(page).to have_content "You are not an admin"
+      end
     end
 
-    it "does not have access to rails_admin if not admin" do
-      user = build(:user, admin: false)
-      expect(article).to be_invalid
+    feature 'User signs in' do
+      let!(:user) { FactoryGirl.create(:user) }
+     
+      scenario 'without admin credentials' do
+        visit new_user_session_path
+        fill_in 'Email', with: user.email
+        fill_in 'Password', with: user.password
+        click_button 'Log in'
+        visit rails_admin.dashboard_path
+        expect(page).to have_content "You are not an admin"
+      end
     end
- 
-    it "has access to rails_admin if admin" do
-      user = build(:user, admin: true)
-      expect(article).to be_invalid
+
+    feature 'Admin signs in' do
+      let!(:admin) { FactoryGirl.create(:admin) }
+     
+      scenario 'with admin credentials' do
+        visit new_user_session_path
+        fill_in 'Email', with: admin.email
+        fill_in 'Password', with: admin.password
+        click_button 'Log in'
+        visit rails_admin.dashboard_path
+        expect(page).to have_content "Site Administration"
+      end
     end
   end
