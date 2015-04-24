@@ -22,14 +22,8 @@
 	      <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
 	    </div>
 	</div>
-	<div id="officers">
-	    <%= f.simple_fields_for :officers do |officer| %>
-	      <%= render 'officer_fields', :f => officer %>
-	    <% end %>
-    <br>
-    <div class="officers">
-      <%= link_to_add_association 'add a responsible officer', f, :officers, :class => "btn btn-warning" %>
-    </div>
+
+
 
     <br>
 	<%= f.button :submit, :class => 'btn btn-primary' %>
