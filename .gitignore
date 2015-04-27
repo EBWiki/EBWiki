@@ -14,3 +14,6 @@
 
 # Ignore config variables in .env
 /.env
+
+# Ignore public folder
+/public/uploads
