@@ -8,7 +8,7 @@
 		<% end %>
 	</div>
 </div>
-<h1><%= @article.title %><h1>
+<h1><%= @article.title %><%= @article.age ? ", #{@article.age}" : "" %><h1>
 <p style="font-size: 50%;">Incident date: <%= @article.date.to_s %></p>
 <p style="font-size: 50%;">Article last updated: <%= @article.updated_at %></p>
 <p style="font-size: 50%;"><%= raw @article.content %></p>
