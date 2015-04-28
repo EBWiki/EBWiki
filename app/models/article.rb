@@ -12,6 +12,7 @@ class Article < ActiveRecord::Base
 	searchkick
 	
 	validate :required_info
+	validates :title, uniqueness: { message: "We already have an article with this victim" }
 	before_save :save_state_name
 # Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
