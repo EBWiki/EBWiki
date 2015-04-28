@@ -1,4 +1,14 @@
 <%= simple_form_for @article do |f| %>
+  <% if @article.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+      <ul>
+      <% @article.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 	<%= f.input :date, as: :date_picker, :label => 'Date field', class: "datetimepicker" %>
 	<h4>Enter a category of abuse:</h4>
 	<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
