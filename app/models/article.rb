@@ -11,7 +11,9 @@ class Article < ActiveRecord::Base
 	friendly_id :title, use: [:slugged, :finders]
 	searchkick
 	
-	validate :required_info
+	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
+	validates :date, presence: { message: "Please add a date." }
+	validates :title, presence:  { message: "Title (name of the victim) can't be blank." }
 	validates :title, uniqueness: { message: "We already have an article with this victim" }
 	before_save :save_state_name
 # Avatar uploader using carrierwave
@@ -33,9 +35,4 @@ class Article < ActiveRecord::Base
 	end
 private
 
-	def required_info
-	    errors.add(:base, "Please specify the state where this incident occurred before saving.") if state_id.nil?
-	    errors.add(:base, "Title (name of the victim) can't be blank.") if title.nil?
-	    errors.add(:base, "Please add a date.") if date.nil?
-    end
 end
