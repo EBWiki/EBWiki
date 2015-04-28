@@ -24,7 +24,7 @@ class ArticlesController < ApplicationController
 		if @article.save
 		    flash[:success] = "Article was created! #{make_undo_link}"
 		    # Deliver the update email if the article is new
-		    if @article.date == Date.today 
+		    if @article.date > Date.today - 7.days
 			    @users.each do |user|
 				    UserNotifier.send_update_email(user,@article).deliver
 				end
