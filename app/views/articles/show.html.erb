@@ -9,6 +9,7 @@
 	</div>
 </div>
 <h1><%= @article.title %><%= @article.age ? ", #{@article.age}" : "" %><h1>
+<%= social_share_button_tag("Take a look at what I just found on BlackOpsWiki:") %>
 <p style="font-size: 50%;">Incident date: <%= @article.date.to_s %></p>
 <p style="font-size: 50%;">Article last updated: <%= @article.updated_at %></p>
 <p style="font-size: 50%;"><%= raw @article.content %></p>
