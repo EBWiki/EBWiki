@@ -23,9 +23,11 @@ class ArticlesController < ApplicationController
 		@users = User.all
 		if @article.save
 		    flash[:success] = "Article was created! #{make_undo_link}"
-		    # Deliver the signup email
-		    @users.each do |user|
-			    UserNotifier.send_update_email(user,@article).deliver
+		    # Deliver the update email if the article is new
+		    if @article.date == Date.today 
+			    @users.each do |user|
+				    UserNotifier.send_update_email(user,@article).deliver
+				end
 			end
 			redirect_to @article
 		else
