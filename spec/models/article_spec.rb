@@ -13,6 +13,12 @@ require 'rails_helper'
       article = build(:article, state_id: nil)
       expect(article).to be_invalid
     end
+    it "must have a unique name" do
+      article = build(:article, title: 'john smith')
+      article.save
+      article2 = build(:article, title: 'john smith')
+      expect(article2).to be_invalid
+    end
    #  it "returns a sorted array of results that match" do
    #   smith = Article.create(
    #     title: 'John Smith',
