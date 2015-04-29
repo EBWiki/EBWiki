@@ -38,7 +38,11 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   describe '#create' do
-    before(:each) { post :create, ** article_attrs }
+    before(:each) do
+      user=FactoryGirl.create(:user)
+      login_user
+      post :create, ** article_attrs
+    end
 
     context 'when valid' do
       let(:article_attrs) { FactoryGirl.attributes_for(:article) }
