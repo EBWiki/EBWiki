@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427111411) do
+ActiveRecord::Schema.define(version: 20150430115608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "agencies", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "state_id"
+    t.string   "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "address"
+    t.string   "city"
+    t.string   "zipcode"
+    t.string   "phone"
+  end
 
   create_table "article_officers", force: :cascade do |t|
     t.integer  "article_id"
@@ -42,6 +54,7 @@ ActiveRecord::Schema.define(version: 20150427111411) do
     t.string   "video_url"
     t.string   "state"
     t.integer  "age"
+    t.integer  "agency_id"
   end
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
