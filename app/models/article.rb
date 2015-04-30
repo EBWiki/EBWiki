@@ -1,6 +1,7 @@
 class Article < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :category
+	belongs_to :state
 	has_many :links
 	accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
 	has_many :article_officers
@@ -10,12 +11,11 @@ class Article < ActiveRecord::Base
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
 	searchkick
-	
+
 	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
 	validates :date, presence: { message: "Please add a date." }
 	validates :title, presence:  { message: "Title (name of the victim) can't be blank." }
 	validates :title, uniqueness: { message: "We already have an article with this victim" }
-	before_save :save_state_name
 # Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
 
@@ -26,12 +26,8 @@ class Article < ActiveRecord::Base
 		"#{address} #{city} #{state}"
 	end
 
-	def save_state_name
-		self.state = State.find(self.state_id).name
-	end
-
 	def self.find_by_search(query)
-	    search(query)		
+	    search(query)
 	end
 private
 

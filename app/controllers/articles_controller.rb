@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
 	before_action :find_article, only: [:show, :edit, :update, :destroy]
-	before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show]
 
 	def index
 	    if params[:query].present?
@@ -20,13 +20,15 @@ class ArticlesController < ApplicationController
 
 	def create
 		@article = current_user.articles.build(article_params)
+		# This could be a very expensive query as the userbase gets larger.
+		# TODO: Create a scope to send only to users who have chosen to receive email updates
 		@users = User.all
 		if @article.save
 		    flash[:success] = "Article was created! #{make_undo_link}"
 		    # Deliver the update email if the article is new
 		    if @article.date > Date.today - 7.days
 			    @users.each do |user|
-				    UserNotifier.send_update_email(user,@article).deliver
+				    UserNotifier.send_update_email(user,@article).deliver_now
 				end
 			end
 			redirect_to @article
@@ -47,7 +49,7 @@ class ArticlesController < ApplicationController
 	    render 'edit'
 	  end
 	end
-	
+
 	def destroy
 		@article.destroy
 	    flash[:success] = "Article was removed! #{make_undo_link}"
@@ -61,7 +63,7 @@ class ArticlesController < ApplicationController
 
 	def undo
 	  @article_version = PaperTrail::Version.find_by_id(params[:id])
-	 
+
 	  begin
 	    if @article_version.reify
 	      @article_version.reify.save
