@@ -21,9 +21,9 @@
 	<%= f.input :age %>
 	<%= f.input :content %>
 	<%= f.input :city %>
-	<%= @state = f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
+	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
 	<br>
-	<%= f.collection_select :agency_id, State.find(@state).agencies, :id, :name, {prompt: "Name of Law Enforcement Agency"}, label:"Agency" %>
+	<%= f.grouped_collection_select :agency_id, State.order(:name), :agencies, :name, :id, :name, {prompt: "Name of Law Enforcement Agency"}, label:"Agency" %>
 	<%#= f.input :zipcode %>
 	<div class = "form-group">
 	<h4>Add links to related content:</h4>
