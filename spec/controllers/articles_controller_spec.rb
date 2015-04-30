@@ -37,26 +37,22 @@ RSpec.describe ArticlesController, type: :controller do
     end
   end
 
-  describe '#create' do 
-    login_user  
-    before(:each) do
-      FactoryGirl.create(:article)
-    end
+  describe '#create' do
+    login_user
 
     context 'when valid' do
       let(:article_attrs) { FactoryGirl.attributes_for(:article) }
 
 
       it 'success' do
-        expect(response).to be_success
+        post :create, {'article': article_attrs}
+        expect(response).to redirect_to(article_path(Article.last))
       end
 
       it 'saves and assigns new article to @article' do
-        article = assigns(:article)
-
-        expect(article).to be_kind_of ActiveRecord::Base
-        expect(article).to be_persisted
-        expect(articles).not_to include article
+        post :create, {'article': article_attrs}
+        expect(assigns(:article)).to be_a_kind_of(Article)
+        expect(assigns(:article)).to be_persisted
       end
     end
 
@@ -64,59 +60,53 @@ RSpec.describe ArticlesController, type: :controller do
       let(:article_attrs) { attributes_for(:invalid_article) }
 
       it 'fails' do
-        expect(response).not_to be_success
-      end
-
-      it 'assigns article to @article' do
-        expect(assigns(:article)).to be_kind_of ActiveRecord::Base
+        post :create, {'article': article_attrs}
+        expect(response).to render_template(:new)
       end
     end
   end
 
   describe '#update' do
+    login_user
     let(:article) { create(:article) }
-    before(:each) { patch :update, ** new_values, id: article.id }
 
     context 'when valid' do
       let(:new_values) { attributes_for(:article) }
 
       it 'success' do
-        expect(response).to be_success
+        patch :update, ** new_values, id: article.id, article: new_values
+        expect(response).to redirect_to(article_path(Article.last))
       end
 
       it 'saves and assigns article to @article' do
-        expect(assigns(:article)).to eq article
-      end
-
-      it 'saves updates' do
-        expect { article.reload }.to change { article.nick }.to(new_values[:nick])
+        patch :update, ** new_values, id: article.id, article: new_values
+        expect(assigns(:article)).to be_a_kind_of(Article)
+        expect(assigns(:article)).to be_persisted
       end
     end
 
     context 'when invalid' do
       let(:new_values) { attributes_for(:invalid_article) }
 
-      it 'fails' do
-        expect(response).not_to be_success
-      end
-
-      it 'assigns article to @article' do
-        expect(assigns(:article)).to eq article
+      it 'redirects to the edit page' do
+        patch :update, id: article.id, article: new_values
+        expect(response).to render_template(:edit)
       end
     end
   end
 
   describe '#destroy' do
+    login_user
     context 'when requested article exists' do
       let(:article) { articles[rand 4] }
       before(:each) { delete :destroy, id: article.id }
 
       it 'success' do
-        expect(response).to be_success
+        expect(response).to redirect_to(root_path)
       end
 
       it 'removes article form DB' do
-        expect(article.all).not_to include article
+        expect(Article.all).not_to include article
         expect { article.reload }.to raise_exception ActiveRecord::RecordNotFound
       end
     end

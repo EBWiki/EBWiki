@@ -11,7 +11,7 @@ class Article < ActiveRecord::Base
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
 	searchkick
-	
+
 	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
 	validates :date, presence: { message: "Please add a date." }
 	validates :title, presence:  { message: "Title (name of the victim) can't be blank." }
@@ -27,7 +27,7 @@ class Article < ActiveRecord::Base
 	end
 
 	def self.find_by_search(query)
-	    search(query)		
+	    search(query)
 	end
 private
 
