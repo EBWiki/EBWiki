@@ -5,6 +5,7 @@ jQuery ->
   agencies = $('#article_agency_id').html()
   $('#article_state_id').change ->
     state = $('#article_state_id :selected').text()
+    console.log('here!')
     options = $(agencies).filter("optgroup[label='#{state}']").html()
     if options
       $('#article_agency_id').html(options)

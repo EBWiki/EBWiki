@@ -1,5 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Agency, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe Agency do
+	it { should have_many(:articles) }
+  end
 end
