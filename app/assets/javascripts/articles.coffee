@@ -3,4 +3,10 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 jQuery ->
   agencies = $('#article_agency_id').html()
-  console.log(agencies)
+  $('#article_state_id').change ->
+    state = $('#article_state_id :selected').text()
+    options = $(agencies).filter("optgroup[label='#{state}']").html()
+    if options
+      $('#article_agency_id').html(options)
+    else
+      $('#article_agency_id').empty()
