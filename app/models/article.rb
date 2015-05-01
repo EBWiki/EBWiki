@@ -9,6 +9,7 @@ class Article < ActiveRecord::Base
 	has_many :officers, through: :article_officers
 	accepts_nested_attributes_for :officers, :reject_if => :all_blank, :allow_destroy => true
 	has_paper_trail
+	acts_as_followable
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
 	searchkick

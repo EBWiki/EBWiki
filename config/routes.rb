@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   }
   get '/articles/:id/history', to: 'articles#history', as: :articles_history
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
-  resources :articles
+  resources :articles do
+    resources :follows, :only => [:create, :destroy]
+  end
 
   root 'articles#index'
   resources :users do

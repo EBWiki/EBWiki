@@ -5,6 +5,11 @@
 		<% if user_signed_in? %>
 			<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default" %>
 			<%#= link_to "Delete", article_path(@article), method: :delete, data: {confirm: "Are you sure you want to remove this?"}, class: "btn btn-default" %>
+			<% if (follow = current_user.follows.find_by_followable_id(@article.id)) %>
+			    <%= link_to 'Unfollow', article_follow_path(@article, follow), :confirm => "Are you sure you want to unfollow this article?", :method => :delete %>
+		    <% else %>
+		      <%= link_to 'Follow', article_follows_path(@article), :method => :post %>
+		    <% end %>
 		<% end %>
 	</div>
 </div>
