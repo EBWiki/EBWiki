@@ -50,7 +50,7 @@ require 'rails_helper'
   describe "#title" do
     it "returns the correct title" do
 	  	article = build(:article)
-        expect(article.title).to eq "Title"
+        expect(article.title).to include "Title"
     end
   end
 
