@@ -25,12 +25,6 @@ class ArticlesController < ApplicationController
 		@users = User.all
 		if @article.save
 		    flash[:success] = "Article was created! #{make_undo_link}"
-		    # Deliver the update email if the article is new
-		    if @article.date > Date.today - 7.days
-			    @users.each do |user|
-				    UserNotifier.send_update_email(user,@article).deliver_now
-				end
-			end
 			redirect_to @article
 		else
 			render 'new'
@@ -44,8 +38,6 @@ class ArticlesController < ApplicationController
 	  @article = Article.friendly.find(params[:id])
 	  if @article.update_attributes(article_params)
 	    flash[:success] = "Article was updated! #{make_undo_link}"
-        UserNotifier.send_followers_email(@article.followers,@article).deliver_now
-		redirect_to @article
 	  else
 	    render 'edit'
 	  end

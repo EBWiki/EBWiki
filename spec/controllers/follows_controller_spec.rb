@@ -9,7 +9,7 @@ RSpec.describe FollowsController, type: :controller do
       let(:follow_attrs) { FactoryGirl.attributes_for(:follow) }
 
       it 'success' do
-        post :create, {'follow': follow_attrs}
+        post :create, {'follows': follow_attrs}
         expect(response).to redirect_to(article_path(Article.last))
       end
     end
