@@ -1,14 +1,14 @@
 <%= image_tag(@article.avatar.large_avatar) %>
 <div class="row">
 	<div class = "btn-group">
-		<%= link_to "Back", root_path, class: "btn btn-default" %>
+		<%= link_to "Back", root_path, class: "btn btn-default.outline" %>
 		<% if user_signed_in? %>
-			<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default" %>
+			<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default.outline" %>
 			<%#= link_to "Delete", article_path(@article), method: :delete, data: {confirm: "Are you sure you want to remove this?"}, class: "btn btn-default" %>
 			<% if (follow = current_user.follows.find_by_followable_id(@article.id)) %>
-			    <%= link_to 'Unfollow', article_follow_path(@article, follow), :confirm => "Are you sure you want to unfollow this article?", :method => :delete %>
+			    <%= link_to 'Unfollow', article_follow_path(@article, follow), :confirm => "Are you sure you want to unfollow this article?", :method => :delete, class: "btn btn-primary.outline" %>
 		    <% else %>
-		      <%= link_to 'Follow', article_follows_path(@article), :method => :post %>
+		      <%= link_to 'Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary" %>
 		    <% end %>
 		<% end %>
 	</div>
