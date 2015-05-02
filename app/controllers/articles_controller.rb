@@ -44,6 +44,7 @@ class ArticlesController < ApplicationController
 	  @article = Article.friendly.find(params[:id])
 	  if @article.update_attributes(article_params)
 	    flash[:success] = "Article was updated! #{make_undo_link}"
+        UserNotifier.send_followers_email(@article.followers,@article).deliver_now
 		redirect_to @article
 	  else
 	    render 'edit'
@@ -95,6 +96,6 @@ private
 	end
 
 	def article_params
-		params.require(:article).permit(:title, :age, :content, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy])
+		params.require(:article).permit(:title, :age, :content, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy])
 	end
 end
