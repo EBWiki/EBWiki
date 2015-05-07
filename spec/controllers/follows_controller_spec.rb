@@ -1,24 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe FollowsController, type: :controller do
-
-  describe "GET #create" do
-    login_user
-
-    context 'when valid' do
-      let(:follow_attrs) { FactoryGirl.attributes_for(:follow) }
-
-      it 'success' do
-        post :create, {'follows': follow_attrs}
-        expect(response).to redirect_to(article_path(Article.last))
+#this test is failing!
+  describe "POST #create" do
+    context 'with valid attributes' do
+      before(:all) do
+        FactoryGirl.create :follow
       end
-    end
-  end
-
-  describe "GET #destroy" do
-    it "returns http success" do
-      get :destroy
-      expect(response).to have_http_status(:success)
+      it 'creates the follow' do
+        post :create, follows: attributes_for(:follow)
+        expect(Follow.count).to eq(1)
+      end
     end
   end
 
