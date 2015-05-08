@@ -4,12 +4,13 @@ RSpec.describe FollowsController, type: :controller do
 #this test is failing!
   describe "POST #create" do
     context 'with valid attributes' do
-      before(:all) do
-        FactoryGirl.create :follow
-      end
+      # before(:all) do
+      #   article = FactoryGirl.create(:article)
+      # end
       it 'creates the follow' do
-        post :create, follows: attributes_for(:follow)
-        expect(Follow.count).to eq(1)
+        @article = FactoryGirl.create(:article)
+        @follow = FactoryGirl.create(:follow, followable_id: @article.id)
+        expect(assigns(:followers)).to eq(@article.reload.followers.first)            
       end
     end
   end
