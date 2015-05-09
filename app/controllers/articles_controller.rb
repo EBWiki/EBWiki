@@ -8,6 +8,11 @@ class ArticlesController < ApplicationController
 	    else
 	      @articles = Article.all.order('updated_at DESC')
 	    end
+	    @hash = Gmaps4rails.build_markers(@articles) do |article, marker|
+		  marker.lat article.latitude
+		  marker.lng article.longitude
+		  marker.infowindow article.content
+		end
     end
 
 	def new
