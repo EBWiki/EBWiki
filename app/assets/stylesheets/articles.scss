@@ -10,3 +10,8 @@
 .page-header{
 	text-align: center;
 }
+
+#front-gallery {
+    max-height:500px;
+    overflow-y:scroll;
+}

@@ -81,6 +81,7 @@ gem 'rails_admin'
 
 gem 'puma'
 gem 'geocoder'
+gem 'gmaps4rails'
 
 # implement elasticsearch
 gem 'searchkick'
