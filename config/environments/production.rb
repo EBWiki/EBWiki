@@ -22,7 +22,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -85,5 +85,6 @@ Rails.application.configure do
   ENV['BONSAI_URL'] = 'https://6y99t6g2:gjzig0joiri6z0n4@jasmine-5528316.us-east-1.bonsai.io/'
   ENV['SENDGRID_USERNAME'] = 'app35917788@heroku.com'
   ENV['SENDGRID_PASSWORD'] = 'blackops321'
+  ENV["SECRET_KEY_BASE"] = '4dd9c1c5aa9e06b5af7b74e8b40d4a0fe10c4a146958087b797bb6cf1746386993c38c5092612da01c79078338dbcc671a51690a50214154e38c4b0f15a25a25'
 
 end
