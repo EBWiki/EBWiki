@@ -5,6 +5,5 @@ FactoryGirl.define do
     f.followable_id 1
     f.followable_type "Article"
     f.follower_type "User"
-    article
   end
 end

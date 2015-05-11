@@ -19,7 +19,7 @@ RSpec.describe FollowsController, type: :controller do
       @article = FactoryGirl.create(:article)
       follow = FactoryGirl.create(:follow, followable_id: @article.id)
       # Also, test if the action really deletes a comment.
-      expect{delete :destroy, id: follow.id, followable_id: @article.id}.
+      expect{delete :destroy, id: follow.id, article_id: @article.id}.
       to change{@article.followers.count}.by(-1)
     end
   end  
