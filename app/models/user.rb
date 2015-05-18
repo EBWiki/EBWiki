@@ -11,4 +11,6 @@ class User < ActiveRecord::Base
 
 
 
+
+  storytime_user
 end
