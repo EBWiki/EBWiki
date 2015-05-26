@@ -90,17 +90,17 @@ Storytime.configure do |config|
   config.enable_file_upload = true
 
   # AWS Region to use for file uploads.
-  # config.aws_region = ENV['STORYTIME_AWS_REGION']
+  config.aws_region = ENV['S3_REGION']
 
   # AWS Access Key ID to use for file uploads.
-  # config.aws_access_key_id = ENV['STORYTIME_AWS_ACCESS_KEY_ID']
+  config.aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
 
   # AWS Secret Key to use for file uploads.
-  # config.aws_secret_key = ENV['STORYTIME_AWS_SECRET_KEY']
+  config.aws_secret_key = ENV['AWS_SECRET_KEY_ID']
 
   if Rails.env.production?
     config.media_storage = :s3
-    config.s3_bucket = 'blackopswiki-dev'
+    config.s3_bucket = ENV['S3_BUCKET']
   else
     config.media_storage = :file
   end
