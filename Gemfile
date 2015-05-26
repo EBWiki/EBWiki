@@ -95,6 +95,8 @@ gem 'social-share-button'
 # follower functionality
 gem "acts_as_follower"
 
+gem "storytime", :git => "git://github.com/FlyoverWorks/storytime.git", :branch => "dev"
+
 #track changes in model objects
 gem 'paper_trail', '~> 4.0.0.beta'
 
