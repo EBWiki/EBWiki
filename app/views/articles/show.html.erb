@@ -1,7 +1,7 @@
 <%= image_tag(@article.avatar.large_avatar) %>
 <div class="row">
 	<div class = "btn-group">
-		<%= link_to "Back", root_path, class: "btn btn-default.outline" %>
+		<%= link_to "History", articles_history_path(@article), class: "btn btn-default.outline" %>
 		<% if user_signed_in? %>
 			<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default.outline" %>
 			<%#= link_to "Delete", article_path(@article), method: :delete, data: {confirm: "Are you sure you want to remove this?"}, class: "btn btn-default" %>
@@ -29,7 +29,6 @@
 			<%= embed(@article.video_url) %>
 	</div>
 <% end %>
-<p style="font-size: 50%;"><%= link_to 'See history of this article', articles_history_path(@article) %><p>
 
 <h4>Additional Resources:</h4>
 <div class = "background-links">
