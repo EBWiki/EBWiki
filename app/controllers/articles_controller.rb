@@ -11,7 +11,7 @@ class ArticlesController < ApplicationController
 	    @hash = Gmaps4rails.build_markers(@articles) do |article, marker|
 		  marker.lat article.latitude
 		  marker.lng article.longitude
-		  marker.infowindow article.content
+		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
 		end
     end
 
