@@ -8,7 +8,8 @@ class ArticlesController < ApplicationController
 	    else
 	      @articles = Article.all.order('updated_at DESC')
 	    end
-	    @hash = Gmaps4rails.build_markers(@articles) do |article, marker|
+	    articles_copy = @articles.dup
+	    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
 		  marker.lat article.latitude
 		  marker.lng article.longitude
 		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})

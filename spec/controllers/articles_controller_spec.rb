@@ -5,6 +5,7 @@ RSpec.describe ArticlesController, type: :controller do
   let(:state) {FactoryGirl.create(:state)}
 
   describe '#index' do
+
     before(:each) { get :index }
 
     it 'assigns all articles to @articles' do

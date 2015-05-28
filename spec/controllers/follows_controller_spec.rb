@@ -14,7 +14,7 @@ RSpec.describe FollowsController, type: :controller do
       end
     end
   end
-  describe '#DELETE destroy' do
+  describe '#DELETE destroy' do 
     login_user
     it 'deletes a follow' do
       @article = FactoryGirl.create(:article)
