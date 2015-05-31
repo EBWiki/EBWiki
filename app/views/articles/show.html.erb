@@ -10,6 +10,8 @@
 		    <% else %>
 		      <%= link_to 'Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary" %>
 		    <% end %>
+		<% else %>
+		    <%= link_to 'Login to Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary" %>
 		<% end %>
 	</div>
 </div>
