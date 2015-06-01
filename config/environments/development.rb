@@ -41,10 +41,4 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  # ENV['S3_REGION'] = 'us-east-1'
-  # ENV['S3_BUCKET'] = 'blackopswiki-dev'
-  # ENV['S3_SECRET'] = 'a/RIhRmN5dgDvTK0awN8tuHsIfmHucjQIQwiVRtO'
-  # ENV['S3_KEY'] = 'AKIAI6GSH3BU4XQ44CFA'
-
-
 end
