@@ -76,15 +76,6 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   # Do not dump schema after migrations.
-  config.active_record.dump_schema_after_migration = false
-
-  ENV['S3_REGION'] = 'us-east-1'
-  ENV['S3_BUCKET'] = 'blackopswiki'
-  ENV['AWS_SECRET_KEY_ID'] = 'a/RIhRmN5dgDvTK0awN8tuHsIfmHucjQIQwiVRtO'
-  ENV['AWS_ACCESS_KEY_ID'] = 'AKIAI6GSH3BU4XQ44CFA'
-  ENV['BONSAI_URL'] = 'https://6y99t6g2:gjzig0joiri6z0n4@jasmine-5528316.us-east-1.bonsai.io/'
-  ENV['SENDGRID_USERNAME'] = 'app35917788@heroku.com'
-  ENV['SENDGRID_PASSWORD'] = 'blackops321'
-  ENV["SECRET_KEY_BASE"] = '4dd9c1c5aa9e06b5af7b74e8b40d4a0fe10c4a146958087b797bb6cf1746386993c38c5092612da01c79078338dbcc671a51690a50214154e38c4b0f15a25a25'
+  config.active_record.dump_schema_after_migration = false  
 
 end
