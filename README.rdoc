@@ -21,6 +21,13 @@ Things you may want to cover:
 
 * Deployment instructions
 
+* Creating a new S3 bucket to use, including:
+  naming the bucket
+  how to create an s3 bucket policy (http://awspolicygen.s3.amazonaws.com/policygen.html)
+  setting a CORS policy
+  transfering assets from another bucket
+  importance of setting a region
+
 * ...
 
 
