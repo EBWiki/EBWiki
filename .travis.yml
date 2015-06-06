@@ -1,0 +1,8 @@
+language: ruby
+
+notifications:
+ email:
+   - nyonmark@gmail.com
+   - dariusgoore@gmail.com
+# uncomment this line if your project needs to run something other than `rake`:
+# script: bundle exec rspec spec
