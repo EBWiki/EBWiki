@@ -1,4 +1,7 @@
-language: ruby
+language: ruby 2.2.1
+
+rvm:
+  - 2.2.1
 
 notifications:
  email:
