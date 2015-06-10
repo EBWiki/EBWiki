@@ -3,6 +3,8 @@ class Article < ActiveRecord::Base
 	belongs_to :category
 	belongs_to :state
 	belongs_to :agency
+    has_many :events
+    accepts_nested_attributes_for :events, :reject_if => :all_blank, :allow_destroy => true
 	has_many :links
 	accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
 	has_many :article_officers

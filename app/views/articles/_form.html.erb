@@ -19,15 +19,16 @@
 	<h4>Name of the victim:</h4>
 	<%= f.input :title, :label => false %>
 	<%= f.input :age %>
-	<%= f.input :content %>
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
 	<%= f.input :zipcode %>
+	<%= f.input :overview %>
+	<%= f.input :litigation %>
+	<%= f.input :community_action %>
 	<br>
 	<!--
 	<%= f.grouped_collection_select :agency_id, State.order(:name), :agencies, :name, :id, :name, {prompt: "Name of Law Enforcement Agency"}, label:"Agency" %>
 	-->
-	<%#= f.input :zipcode %>
 	<div class = "form-group">
 	<h4>Add links to related content:</h4>
 		<div id="links">
@@ -38,7 +39,16 @@
 	      <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
 	    </div>
 	</div>
-
+	<div class = "form-group">
+	<h4>Add links to related content:</h4>
+		<div id="events">
+		    <%= f.simple_fields_for :events do |event| %>
+		      <%= render 'event_fields', :f => event %>
+		    <% end %>
+	    <div class="events">
+	      <%= link_to_add_association 'add an event', f, :events, :class => "btn btn-warning" %>
+	    </div>
+	</div>
 
 
     <br>
