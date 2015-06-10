@@ -22,6 +22,7 @@
 	<%= f.input :content %>
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
+	<%= f.input :zipcode %>
 	<br>
 	<!--
 	<%= f.grouped_collection_select :agency_id, State.order(:name), :agencies, :name, :id, :name, {prompt: "Name of Law Enforcement Agency"}, label:"Agency" %>

@@ -281,6 +281,7 @@ GEM
     hashie (3.4.1)
     high_voltage (2.3.0)
     hitimes (1.2.2)
+    hodel_3000_compliant_logger (0.1.1)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
       haml (~> 4.0.0)
@@ -338,6 +339,9 @@ GEM
     notiffany (0.0.6)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oink (0.10.1)
+      activerecord
+      hodel_3000_compliant_logger
     orm_adapter (0.5.0)
     paper_trail (4.0.0.beta2)
       activerecord (>= 3.0, < 6.0)
@@ -538,6 +542,7 @@ DEPENDENCIES
   launchy (~> 2.4.2)
   mini_magick
   momentjs-rails
+  oink
   paper_trail (~> 4.0.0.beta)
   pg
   pry-byebug
