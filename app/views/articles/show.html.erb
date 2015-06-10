@@ -16,10 +16,27 @@
 	</div>
 </div>
 <h1><%= @article.title %><%= @article.age ? ", #{@article.age}" : "" %><h1>
+<h3><%= @article.city %>, <%= @article.state.name %></h3>
+<h4>Incident date: <%= @article.date.to_s %></h4>
+<h4>Last updated: <%= @article.updated_at %></h4>
 <%= social_share_button_tag("Take a look at what I just found on BlackOpsWiki:") %>
-<p style="font-size: 50%;">Incident date: <%= @article.date.to_s %></p>
-<p style="font-size: 50%;">Article last updated: <%= @article.updated_at %></p>
-<p style="font-size: 50%;"><%= raw @article.content %></p>
+<% if @article.content.present? %>
+    <h4 class="article_subheader">Article Stub</h4>
+	<p><%= raw @article.content %></p>
+<% else %>
+	<% if @article.overview.present? %>
+	    <h4 class="article_subheader">Summary</h4>
+		<p><%= raw @article.overview %></p>
+	<% end %>
+	<% if @article.litigation.present? %>
+	    <h4 class="article_subheader">Legal Action</h4>
+		<p><%= raw @article.litigation %></p>
+	<% end %>
+	<% if @article.community_action.present? %>
+	    <h4 class="article_subheader">Community and Family Efforts</h4>
+		<p><%= raw @article.community_action %></p>
+	<% end %>
+<% end %>
 <% if @officers.length > 0 %>
 	<h4>Officers involved:</h4>
 	<% @officers.each do |officer| %>
@@ -31,15 +48,15 @@
 			<%= embed(@article.video_url) %>
 	</div>
 <% end %>
-
-<h4>Additional Resources:</h4>
-<div class = "background-links">
-	<% @article.links.each do |link| %>
-		<%= link_to link.url, "#{link.url}" %>
-		</br>
-	<% end %>
-</div>
-
+<% if @article.links.count > 0 %>
+	<h4 class="article_subheader">Additional Resources:</h4>
+	<div class = "background-links">
+		<% @article.links.each do |link| %>
+			<%= link_to link.url, "#{link.url}" %>
+			</br>
+		<% end %>
+	</div>
+<% end %>
 <script type="text/javascript">
 	$(document).ready(function(){
 	    $('[data-toggle="popover"]').popover();   
