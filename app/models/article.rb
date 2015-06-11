@@ -27,7 +27,7 @@ class Article < ActiveRecord::Base
 	after_validation :geocode          # auto-fetch coordinates
 
 	def full_address
-		"#{address} #{city} #{state} #{zipcode} #{country}"
+		"#{address} #{city} #{state.name} #{zipcode} #{country}"
 	end
 
 	def self.find_by_search(query)
