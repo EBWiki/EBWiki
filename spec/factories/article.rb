@@ -6,6 +6,7 @@ FactoryGirl.define do
     f.content "A new article"
     f.state_id 33
     f.date Date.today
+    association :state, name: "New York"
   end
 
   factory :invalid_article, class: Article do |f|
@@ -13,6 +14,7 @@ FactoryGirl.define do
     f.content ""
     f.state_id 0
     f.date ""
+    association :state, name: nil
   end
 
 end
