@@ -76,6 +76,16 @@ GEM
       tzinfo (~> 1.1)
     acts_as_follower (0.2.1)
     addressable (2.3.8)
+    ahoy_matey (1.1.1)
+      addressable
+      browser (>= 0.4.0)
+      errbase
+      geocoder
+      rails
+      referer-parser (>= 0.3.0)
+      request_store
+      user_agent_parser
+      uuidtools
     arel (6.0.0)
     autoprefixer-rails (5.1.11)
       execjs
@@ -89,6 +99,7 @@ GEM
     bootstrap-sass (3.3.4.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
+    browser (0.8.0)
     builder (3.2.2)
     byebug (4.0.5)
       columnize (= 0.9.0)
@@ -140,6 +151,7 @@ GEM
     elasticsearch-transport (1.0.7)
       faraday
       multi_json
+    errbase (0.0.3)
     erubis (2.7.0)
     excon (0.45.3)
     execjs (2.5.2)
@@ -412,7 +424,9 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.0)
+    referer-parser (0.3.0)
     remotipart (1.2.1)
+    request_store (1.1.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rspec (3.2.0)
@@ -504,6 +518,8 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    user_agent_parser (2.2.0)
+    uuidtools (2.1.5)
     warden (1.2.3)
       rack (>= 1.0)
     web-console (2.1.2)
@@ -520,6 +536,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_follower
+  ahoy_matey
   bootstrap-sass
   capybara (~> 2.4.3)
   carrierwave
