@@ -38,6 +38,9 @@ gem 'gotcha'
 # memory usage tracking
 gem "oink"
 
+# internal analytics
+gem 'ahoy_matey'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'

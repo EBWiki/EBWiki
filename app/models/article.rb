@@ -3,12 +3,14 @@ class Article < ActiveRecord::Base
 	belongs_to :category
 	belongs_to :state
 	belongs_to :agency
+    has_many :events
+    accepts_nested_attributes_for :events, :reject_if => :all_blank, :allow_destroy => true
 	has_many :links
 	accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
 	has_many :article_officers
 	has_many :officers, through: :article_officers
 	accepts_nested_attributes_for :officers, :reject_if => :all_blank, :allow_destroy => true
-	has_paper_trail
+	has_paper_trail :only => [:title, :content, :overview, :litigation, :community_atcion]
 	acts_as_followable
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
@@ -25,7 +27,7 @@ class Article < ActiveRecord::Base
 	after_validation :geocode          # auto-fetch coordinates
 
 	def full_address
-		"#{address} #{city} #{state} #{zipcode} #{country}"
+		"#{address} #{city} #{state.name} #{zipcode} #{country}"
 	end
 
 	def self.find_by_search(query)

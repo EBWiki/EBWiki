@@ -13,6 +13,7 @@
 //= require gmaps/google
 //= require jquery
 //= require jquery_ujs
+//= require ahoy
 //= require bootstrap-sprockets
 //= require moment
 //= require bootstrap-datetimepicker

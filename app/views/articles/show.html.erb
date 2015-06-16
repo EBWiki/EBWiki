@@ -1,25 +1,42 @@
 <%= image_tag(@article.avatar.large_avatar) %>
 <div class="row">
 	<div class = "btn-group">
-		<%= link_to "History", articles_history_path(@article), class: "btn btn-default.outline" %>
+		<%= link_to "History", articles_history_path(@article), class: "btn btn-default.outline", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track Changes",:content => "Click here to see all the past edits to this article."} %>
 		<% if user_signed_in? %>
-			<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default.outline" %>
+			<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default.outline", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Something not right?",:content => "Click here to make changes to this case.  We're relying on folks like you to help us stay accurate!"} %>
 			<%#= link_to "Delete", article_path(@article), method: :delete, data: {confirm: "Are you sure you want to remove this?"}, class: "btn btn-default" %>
 			<% if (follow = current_user.follows.find_by_followable_id(@article.id)) %>
 			    <%= link_to 'Unfollow', article_follow_path(@article, follow), :confirm => "Are you sure you want to unfollow this article?", :method => :delete, class: "btn btn-primary.outline" %>
 		    <% else %>
-		      <%= link_to 'Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary" %>
+		      <%= link_to 'Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Stay on top of this!",:content => "Click here to receive an email whenever this case is updated."} %>
 		    <% end %>
 		<% else %>
-		    <%= link_to 'Login to Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary" %>
+		    <%= link_to 'Login to Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Stay on top of this!",:content => "Click here to receive an email whenever this case is updated."} %>
 		<% end %>
 	</div>
 </div>
 <h1><%= @article.title %><%= @article.age ? ", #{@article.age}" : "" %><h1>
+<h3><%= @article.city %>, <%= @article.state.name %></h3>
+<h4>Incident date: <%= @article.date.to_s %></h4>
+<h4>Last updated: <%= @article.updated_at %></h4>
 <%= social_share_button_tag("Take a look at what I just found on BlackOpsWiki:") %>
-<p style="font-size: 50%;">Incident date: <%= @article.date.to_s %></p>
-<p style="font-size: 50%;">Article last updated: <%= @article.updated_at %></p>
-<p style="font-size: 50%;"><%= raw @article.content %></p>
+<% if @article.content.present? %>
+    <h4 class="article_subheader">This article is only a stub... <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Help us fix it!", :content => "We rely on people who care about getting it right to fill in and correct the contents of these articles. Login and make improvements!"})%></h4>
+	<p><%= raw @article.content %></p>
+<% else %>
+	<% if @article.overview.present? %>
+	    <h4 class="article_subheader">Summary  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "The basics", :content => "This section attempts to encapsulate the basic facts of the case."})%></h4>
+		<p><%= raw @article.overview %></p>
+	<% end %>
+	<% if @article.litigation.present? %>
+	    <h4 class="article_subheader">Legal Action  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Case Proceedings", :content => "This section outlines the legal steps that have occurred in the case, answering questions about administrative actions and more formal charges."})%></h4>
+		<p><%= raw @article.litigation %></p>
+	<% end %>
+	<% if @article.community_action.present? %>
+	    <h4 class="article_subheader">Community and Family Efforts  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Community Action", :content => "This section outlines the response of the local community and the victim's family."})%></h4>
+		<p><%= raw @article.community_action %></p>
+	<% end %>
+<% end %>
 <% if @officers.length > 0 %>
 	<h4>Officers involved:</h4>
 	<% @officers.each do |officer| %>
@@ -31,15 +48,15 @@
 			<%= embed(@article.video_url) %>
 	</div>
 <% end %>
-
-<h4>Additional Resources:</h4>
-<div class = "background-links">
-	<% @article.links.each do |link| %>
-		<%= link_to link.url, "#{link.url}" %>
-		</br>
-	<% end %>
-</div>
-
+<% if @article.links.count > 0 %>
+	<h4 class="article_subheader">Additional Resources:</h4>
+	<div class = "background-links">
+		<% @article.links.each do |link| %>
+			<%= link_to link.url, "#{link.url}" %>
+			</br>
+		<% end %>
+	</div>
+<% end %>
 <script type="text/javascript">
 	$(document).ready(function(){
 	    $('[data-toggle="popover"]').popover();   

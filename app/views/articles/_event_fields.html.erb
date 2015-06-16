@@ -1,0 +1,12 @@
+<div class="nested-fields">
+  <%= f.input :title %>
+  <%= f.input :description %>
+  <%= f.input :date, as: :datetime_picker, :label => 'Date', class: "datetimepicker" %>
+  <%= f.input :media_url %>
+  <%= f.input :media_credit %>
+  <%= link_to_remove_association "remove event", f %>
+</div>
+
+<script type="text/javascript">
+    $('.datetimepicker').datetimepicker();
+</script>

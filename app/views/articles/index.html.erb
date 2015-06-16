@@ -8,11 +8,17 @@
     <div class="row">	
 	    <div id='front-gallery'>
 	        <% @articles.each do |article| %>
-		        <div class="col-lg-2 col-md-4 col-xs-12">
-		            <div class="thumbnail" >	            		
-			            <%= link_to image_tag(article.avatar.medium_avatar, :class => "img-responsive", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{article.date.strftime("%m/%d/%Y")} - #{article.title} ", :content => "#{truncate(article.content, length:200)}"}), article %>
-		            </div>
-		        </div>
+		        <div class="col-lg-2 col-md-4 col-xs-12">					
+		            <div class="thumbnail" >
+			            <div class="imageWrapper" style="position: relative; width: 150px; height: 150px;">
+				            <% if article.video_url != '' %>
+							   <%= link_to image_tag('video-icon-small.png', :style => "position: absolute;left:100px; top: 100px;z-index: 10;"), article %>
+							<% end %>	            		
+				            <%= link_to image_tag(article.avatar.medium_avatar, :class => "img-responsive", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{article.date.strftime("%m/%d/%Y")} - #{article.title} ", :content => "#{truncate(article.content, length:200)}"}), article %>
+			            </div>
+
+			        </div>
+			    </div>
 	        <% end %>
 	    </div>
     </div>
