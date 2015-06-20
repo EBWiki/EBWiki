@@ -22,11 +22,11 @@
 				    <% else %>
 				      <%= link_to 'Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Stay on top of this!",:content => "Click here to receive an email whenever this case is updated."} %>
 				    <% end %>	    
-						<%= link_to "Edit", edit_article_path(@article), class: "btn btn-default.outline", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Something not right?",:content => "Click here to make changes to this case.  We're relying on folks like you to help us stay accurate!"} %>
+						<%= link_to "Edit", edit_article_path(@article), class: "btn btn-success", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Something not right?",:content => "Click here to make changes to this case.  We're relying on folks like you to help us stay accurate!"} %>
 					<% else %>
 				    <%= link_to 'Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
 					<% end %>
-					<%= link_to "History", articles_history_path(@article), class: "btn btn-default.outline", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track Changes",:content => "Click here to see all the past edits to this article."} %>
+					<%= link_to "History", articles_history_path(@article), class: "btn btn-info", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track Changes",:content => "Click here to see all the past edits to this article."} %>
 		</div>
 				<h4><%= render "comments/form" %></h4>
 				<%= render "comments/comments" %>
@@ -83,39 +83,25 @@
 		</div>
 	</div>
 
-
+  <% if @article.nearby_cases.present? %>
 	<!-- Related Projects Row -->
-	<div class="row">
+		<div class="row">
 
 	    <div class="col-lg-12">
-	        <h3 class="page-header">Related Projects</h3>
+	        <h3 class="page-header">Other Cases Near <%= @article.city %>, <%= @article.state.name %></h3>
 	    </div>
 
-	    <div class="col-sm-3 col-xs-6">
-	        <a href="#">
-	            <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-	        </a>
-	    </div>
-
-	    <div class="col-sm-3 col-xs-6">
-	        <a href="#">
-	            <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-	        </a>
-	    </div>
-
-	    <div class="col-sm-3 col-xs-6">
-	        <a href="#">
-	            <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-	        </a>
-	    </div>
-
-	    <div class="col-sm-3 col-xs-6">
-	        <a href="#">
-	            <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-	        </a>
-	    </div>
-
-	</div>
+	    <% @article.nearby_cases.each do |nearby| %>
+		    <div class="col-lg-2 col-md-4 col-xs-12">					
+	        <div class="thumbnail" >
+	          <div class="imageWrapper" style="position: relative; width: 150px; height: 150px;">
+		        <%= link_to image_tag(nearby.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{nearby.date.strftime("%m/%d/%Y")} - #{nearby.title} ", :content => "#{truncate(nearby.content, length:200)}"}), nearby %>
+		        </div>
+		       </div>
+		    </div>    	
+	    <% end %>
+		</div>
+	<% end %>
 </div>
 <!-- /.row -->
 

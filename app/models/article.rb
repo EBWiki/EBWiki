@@ -35,6 +35,10 @@ class Article < ActiveRecord::Base
 	def self.find_by_search(query)
 	    search(query)
 	end
+
+	def nearby_cases
+		self.nearbys(50).order("distance")
+	end
 private
 
 end
