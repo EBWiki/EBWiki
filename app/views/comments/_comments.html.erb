@@ -1,20 +1,15 @@
-<div class="detailBox">
-  <div class="titleBox">
-    <label>What People are saying:</label>
-      <button type="button" class="close" aria-hidden="true">&times;</button>
-  </div>
-  <div class="actionBox">
-    <ul class="commentList">
-      <% @comments.each do |comment| %>
-        <li>
-            <div class="commenterImage">
-              <img src="http://lorempixel.com/50/50/people/7" />
-            </div>
-            <div class="commentText">
-                <p class=""><%= simple_format comment.content %></p>
-            </div>
-        </li>
-      <% end %>
-    </ul>
-  </div>
+
+
+<div class="">
+  <ul class="col-md-12">
+    <% @comments.each do |comment| %>
+     <!--  <a class="pull-left" href="#">
+          <img class="media-object" src="http://placehold.it/64x64" alt="">
+      </a> -->
+      <li class="col-md-12">
+        <small style="color: green;"><%= time_ago_in_words(comment.created_at) %> ago</small>
+        <p><%= simple_format comment.content %></p>
+      </li>
+    <% end %>
+  </ul>
 </div>

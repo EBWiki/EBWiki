@@ -1,23 +1,27 @@
-<%= form_for [@commentable, @comment], :html => {:class => "form-inline", :role => "form"} do |f| %>
-	<% if @comment.errors.any? %>
-		<div class = "error.messages">
-		  <h2>Please correct the following errors:</h2>
-		  <ul>
-		  <% @comment.errors.each do |msg| %>
-		    <li><%= msg %></li>
-		  <% end %>
-		  </ul>
-		</div>
-	<% end %>
+<div class="well">
+	<%= form_for [@commentable, @comment], :html => {:class => "form-inline", :role => "form"} do |f| %>
+		<% if @comment.errors.any? %>
+			<div class = "error.messages">
+			  <h2>Please correct the following errors:</h2>
+			  <ul>
+			  <% @comment.errors.each do |msg| %>
+			    <li><%= msg %></li>
+			  <% end %>
+			  </ul>
+			</div>
+		<% end %>
 
-	<div class="form-group">
-		<div class="field">
-		  <%= f.text_area :content, rows: 8, class: "row-fluid" %>
-		</div>
-  </div>
-	<div class="form-group">
-		<div class="actions">
-		  <%= f.button :submit, :class => 'btn btn-default' %>
-		</div>
-  </div>
-<% end %>
+	
+		<div class="form-group">
+			<h4>Leave a Comment:</h4>
+			<div class="field">
+			  <%= f.text_area :content, rows: 4, class: "form-control" %>
+			</div>
+	  </div>
+		<div class="form-group">
+			<div class="actions">
+			  <%= f.button :submit, :class => 'btn btn-default' %>
+			</div>
+	  </div>
+	<% end %>
+</div>
