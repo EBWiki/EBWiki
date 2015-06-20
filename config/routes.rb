@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles do
     resources :follows, :only => [:create, :destroy]
+    resources :comments
   end
 
   root 'articles#index'

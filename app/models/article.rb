@@ -10,6 +10,8 @@ class Article < ActiveRecord::Base
 	has_many :article_officers
 	has_many :officers, through: :article_officers
 	accepts_nested_attributes_for :officers, :reject_if => :all_blank, :allow_destroy => true
+	has_many :comments, as: :commentable
+
 	has_paper_trail :only => [:title, :content, :overview, :litigation, :community_atcion]
 	acts_as_followable
 	extend FriendlyId
@@ -27,7 +29,7 @@ class Article < ActiveRecord::Base
 	after_validation :geocode          # auto-fetch coordinates
 
 	def full_address
-		"#{address} #{city} #{state.name} #{zipcode} #{country}"
+		"#{address} #{city} #{state.name}"
 	end
 
 	def self.find_by_search(query)

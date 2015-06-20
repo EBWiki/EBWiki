@@ -22,6 +22,9 @@ class ArticlesController < ApplicationController
 
 	def show
 		@officers = @article.officers.all
+		@commentable = @article
+		@comments = @commentable.comments
+		@comment = Comment.new
 	end
 
 	def create

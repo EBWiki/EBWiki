@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150613024617) do
+ActiveRecord::Schema.define(version: 20150620052647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,10 +67,10 @@ ActiveRecord::Schema.define(version: 20150613024617) do
     t.string   "state"
     t.integer  "age"
     t.integer  "agency_id"
-    t.string   "country"
     t.text     "overview"
-    t.text     "litigation"
     t.text     "community_action"
+    t.text     "litigation"
+    t.string   "country"
   end
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
@@ -89,6 +89,16 @@ ActiveRecord::Schema.define(version: 20150613024617) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "comments", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
 
   create_table "events", force: :cascade do |t|
     t.string   "title"
