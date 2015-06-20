@@ -1,4 +1,4 @@
-<%= form_for [@commentable, @comment] do |f| %>
+<%= form_for [@commentable, @comment], :html => {:class => "form-inline", :role => "form"} do |f| %>
 	<% if @comment.errors.any? %>
 		<div class = "error.messages">
 		  <h2>Please correct the following errors:</h2>
@@ -10,10 +10,14 @@
 		</div>
 	<% end %>
 
-	<div class="field">
-	  <%= f.text_area :content, rows: 8 %>
-	</div>
-	<div class="actions">
-	  <%= f.submit %>
-	</div>
+	<div class="form-group">
+		<div class="field">
+		  <%= f.text_area :content, rows: 8, class: "row-fluid" %>
+		</div>
+  </div>
+	<div class="form-group">
+		<div class="actions">
+		  <%= f.button :submit, :class => 'btn btn-default' %>
+		</div>
+  </div>
 <% end %>
