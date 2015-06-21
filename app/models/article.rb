@@ -37,7 +37,7 @@ class Article < ActiveRecord::Base
 	end
 
 	def nearby_cases
-		self.nearbys(50).order("distance")
+		self.nearbys(100).order("distance")
 	end
 private
 

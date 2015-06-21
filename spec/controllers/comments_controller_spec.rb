@@ -18,6 +18,7 @@ RSpec.describe CommentsController, type: :controller do
   describe "Article comments" do
     let(:article) { FactoryGirl.create(:article) }
     let(:comment) { article.comments.create(content: "a pithy comment") }
+    login_user
 
     subject { comment }
 

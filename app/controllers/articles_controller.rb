@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
 	before_action :find_article, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
+  #before_action :set_commentable
 
 	def index
 	    if params[:query].present?
@@ -100,5 +101,11 @@ private
 
 	def article_params
 		params.require(:article).permit(:title, :age, :content, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], events_attributes: [:id, :title, :description, :date, :media_url, :media_credit, :done, :_destroy], comments_attributes: [:comment, :content, :commentable_id, :commentable_type])
+	end
+
+	# from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)
+	# why did they set commentable here?
+	def set_commentable
+		@commentable = Article.friendly.find(params[:id])
 	end
 end

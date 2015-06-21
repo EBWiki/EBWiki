@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
 	before_filter :load_commentable
+  before_action :authenticate_user!, only: [:create]
 
   def index
   	@comments = @commentable.comments
@@ -10,12 +11,10 @@ class CommentsController < ApplicationController
   end
 
   def create
-  	@comment = @commentable.comments.new(params[:comment].permit(:content))
-  	if @comment.save
-  		redirect_to @commentable, notice: "Comment created."
-  	else
-  		render :new
-  	end
+  	@comment = @commentable.comments.new comment_params
+    @comment.user = current_user
+  	@comment.save
+  	redirect_to @commentable, notice: "Comment created!"
   end
 
 private
