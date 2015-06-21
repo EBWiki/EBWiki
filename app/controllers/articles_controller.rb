@@ -21,6 +21,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def show
+		@article = Article.friendly.find(params[:id])
 		@officers = @article.officers.all
 		@commentable = @article
 		@comments = @commentable.comments
@@ -98,6 +99,6 @@ private
 	end
 
 	def article_params
-		params.require(:article).permit(:title, :age, :content, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], events_attributes: [:id, :title, :description, :date, :media_url, :media_credit, :done, :_destroy])
+		params.require(:article).permit(:title, :age, :content, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], events_attributes: [:id, :title, :description, :date, :media_url, :media_credit, :done, :_destroy], comments_attributes: [:comment, :content, :commentable_id, :commentable_type])
 	end
 end
