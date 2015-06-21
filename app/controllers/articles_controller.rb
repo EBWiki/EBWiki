@@ -11,10 +11,10 @@ class ArticlesController < ApplicationController
 	    end
 	    articles_copy = @articles.dup
 	    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
-		  marker.lat article.latitude
-		  marker.lng article.longitude
-		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
-		end
+			  marker.lat article.latitude
+			  marker.lng article.longitude
+			  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
+			end
     end
 
 	def new
@@ -27,6 +27,13 @@ class ArticlesController < ApplicationController
 		@commentable = @article
 		@comments = @commentable.comments
 		@comment = Comment.new
+		@articles = @article.nearby_cases
+
+    @hash = Gmaps4rails.build_markers(@articles) do |article, marker|
+		  marker.lat article.latitude
+		  marker.lng article.longitude
+		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
+		end
 	end
 
 	def create
