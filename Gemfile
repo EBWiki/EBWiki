@@ -98,6 +98,9 @@ gem 'cocoon'
 # add social share buttons
 gem 'social-share-button'
 
+# select tag jquery plugin
+gem "select2-rails"
+
 # follower functionality
 gem "acts_as_follower"
 
