@@ -27,7 +27,7 @@
 	      </div>
         <div class="navbar-form navbar-left">
           <%#= collection_select(:state, :state, State.all, :id, :name, {:prompt => 'Choose a State'}) %>
-          <%= select_tag(:state, options_from_collection_for_select(State.all, :id, :name), include_blank: true, placeholder: 'Filter by State') %>
+          <%= select_tag(:state_id, options_from_collection_for_select(State.all, :id, :name), include_blank: true, placeholder: 'Filter by State') %>
         </div>
 	    <% end %>
       <ul class="nav navbar-nav navbar-right">
