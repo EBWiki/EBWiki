@@ -10,4 +10,13 @@ class User < ActiveRecord::Base
   before_save :geocode  # auto-fetch coordinates when user logs in
   acts_as_follower
   storytime_user
+  acts_as_messageable
+ 
+  def mailboxer_name
+    self.name
+  end
+ 
+  def mailboxer_email(object)
+    self.email
+  end
 end

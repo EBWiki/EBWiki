@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="spacer"></div>
+  <div class="col-md-12">
+    <!-- we'll configure this to compose new conversations later -->
+    <%= link_to "Compose", "#", class: "btn btn-success" %>
+    <div class="spacer"></div>
+  </div>
+ 
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= render 'mailbox/folders' %>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <!-- individual conversations will show here -->
+      </div>
+    </div>
+  </div>
+ 
+</div>

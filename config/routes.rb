@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'users/show'
-
-  get 'users/edit'
-
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
 
@@ -27,6 +23,11 @@ Rails.application.routes.draw do
     resources :registrations
   end
 
+  # mailbox folder routes
+  get "mailbox/inbox" => "mailbox#inbox", as: :mailbox_inbox
+  get "mailbox/sent" => "mailbox#sent", as: :mailbox_sent
+  get "mailbox/trash" => "mailbox#trash", as: :mailbox_trash
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
