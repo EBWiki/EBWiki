@@ -2,7 +2,7 @@
   <section style="padding-bottom: 50px; padding-top: 50px;">
     <div class="row">
       <div class="col-md-2">
-        <%= image_tag "default-user-icon.png", class: "img-rounded img-responsive" %>
+        <%= image_tag avatar_url(@user),  class: "img-rounded img-responsive" %>
         <%= truncate(@user.email, length:16) %> 
         <br />
         <% if @user == current_user %>

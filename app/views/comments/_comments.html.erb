@@ -7,7 +7,7 @@
           <img class="media-object" src="http://placehold.it/64x64" alt="">
       </a> -->
       <li class="col-md-12">
-        <small style="color: green;"><%= time_ago_in_words(comment.created_at) %> ago<%= " #{comment.user.email if comment.user.present?}" %></small>
+        <small style="color: green;"><%= time_ago_in_words(comment.created_at) %> ago <%= link_to comment.user.email, user_path(comment.user) %></small>
         <p><%= simple_format comment.content %></p>
       </li>
     <% end %>
