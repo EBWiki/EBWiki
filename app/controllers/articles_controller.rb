@@ -4,18 +4,28 @@ class ArticlesController < ApplicationController
   #before_action :set_commentable
 
 	def index
+	  if params[:state].present?
+	  	@articles_by_state = Article.where(state: "#{params[:state]}")
+	    if params[:query].present?
+	      @articles = @articles_by_state.search("#{params[:query]}")
+	    else
+	      @articles = @articles_by_state.all.order('updated_at DESC')
+	    end
+	  else
 	    if params[:query].present?
 	      @articles = Article.search("#{params[:query]}")
 	    else
 	      @articles = Article.all.order('updated_at DESC')
 	    end
-	    articles_copy = @articles.dup
-	    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
-			  marker.lat article.latitude
-			  marker.lng article.longitude
-			  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
-			end
-    end
+	  end
+
+    articles_copy = @articles.dup
+    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
+		  marker.lat article.latitude
+		  marker.lng article.longitude
+		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
+		end
+  end
 
 	def new
 		@article = current_user.articles.build
