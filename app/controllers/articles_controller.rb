@@ -65,7 +65,8 @@ class ArticlesController < ApplicationController
 	  @article = Article.friendly.find(params[:id])
 	  if @article.update_attributes(article_params)
 	    flash[:success] = "Article was updated! #{make_undo_link}"
-		redirect_to @article
+	    UserNotifier.send_followers_email(@article.followers,@article).deliver_now
+			redirect_to @article
 	  else
 	    render 'edit'
 	  end
