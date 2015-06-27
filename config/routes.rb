@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'users/show'
+
+  get 'users/edit'
+
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
 
@@ -9,6 +13,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: "users/registrations"
   }
+  resources :users, only: [:show, :edit]
+
   get '/articles/:id/history', to: 'articles#history', as: :articles_history
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles do

@@ -1,0 +1,20 @@
+<%= simple_form_for @user do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this article from being saved:</h2>
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <h4>Upload a photo</h4>
+  <%= f.file_field :avatar %>
+  <h4>Username:</h4>
+  <%= f.input :name, :label => false %>
+  <h4>Write a few words to tell us who you are and why you are here.</h4>
+  <%= f.input :description, :label => false %>
+  <%= f.button :submit, :class => 'btn btn-primary' %>
+<% end %>
