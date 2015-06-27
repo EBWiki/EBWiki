@@ -18,11 +18,12 @@ class Article < ActiveRecord::Base
 	friendly_id :title, use: [:slugged, :finders]
 	searchkick
 
-	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
 	validates :date, presence: { message: "Please add a date." }
 	validates :title, presence:  { message: "Title (name of the victim) can't be blank." }
 	validates :title, uniqueness: { message: "We already have an article with this victim" }
-# Avatar uploader using carrierwave
+	validates :city, presence: { message: "Please add a city." }
+	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
+	# Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
 
 	geocoded_by :full_address   # can also be an IP address
