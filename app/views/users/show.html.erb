@@ -26,7 +26,7 @@
           <a href="#" class="btn btn-social btn-linkedin">
               <i class="fa fa-linkedin"></i>&nbsp; Linkedin </a>
         </div> -->
-        <h3 class="page-header">Cases Following:</h3>
+        <h3 class="page-header">Cases <%= @user.name %> followed:</h3>
         <% @user.all_following.each do |followed| %>
           <% if followed.avatar.present? %>
             <div class="col-lg-2 col-md-4 col-xs-12">         
