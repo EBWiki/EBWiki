@@ -4,10 +4,10 @@ class ArticlesController < ApplicationController
   #before_action :set_commentable
 
 	def index
-	  if params[:state].present?
-	  	@articles_by_state = Article.where(state: "#{params[:state]}")
+	  if params[:state_id].present?
+	  	@articles_by_state = Article.where(state_id: "#{params[:state_id]}")
 	    if params[:query].present?
-	      @articles = @articles_by_state.search("#{params[:query]}")
+	      @articles = Article.search("#{params[:query]}", where: {state_id: params[:state_id]})
 	    else
 	      @articles = @articles_by_state.all.order('updated_at DESC')
 	    end
