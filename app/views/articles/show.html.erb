@@ -9,12 +9,16 @@
 	<!-- Portfolio Item Row -->
 	<div class="row">
     <div class="col-md-3">
-      <%= image_tag(@article.avatar.large_avatar, :class => "img-responsive", :style => "margin-bottom: 10px; margin-top: 50px;") %>
+      <% if @article.avatar? %>
+	      <%= image_tag(@article.avatar.large_avatar, :class => "img-responsive", :style => "margin-bottom: 10px; margin-top: 50px;") %>
+	    <% else %>
+		    <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive", :style => "margin-bottom: 10px; margin-top: 50px;") %>
+		  <% end %>
       
 		<div class="">
       <%= social_share_button_tag("Take a look at what I just found on BlackOpsWiki:") %>
     </div>
-    <div class="row col-md-12">
+    <div class="row">
 				<div class = "btn-group btn-group-justified">
 					<% if user_signed_in? %>
 						<% if (follow = current_user.follows.find_by_followable_id(@article.id)) %>
