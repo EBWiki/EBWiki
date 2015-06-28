@@ -1,1 +1,2 @@
 <%= render partial: 'mailbox/folder_view', locals: { is_conversation: false, messages: @inbox } %>
+<%= link_to "Compose a message", new_conversation_path, class: "btn btn-success" %>
