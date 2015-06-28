@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe MailboxController, type: :controller do
+  login_user
 
   describe "GET #inbox" do
     it "returns http success" do
