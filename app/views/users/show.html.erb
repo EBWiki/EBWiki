@@ -1,0 +1,76 @@
+<div class="container">
+  <section style="padding-bottom: 50px; padding-top: 50px;">
+    <div class="row">
+      <div class="col-md-2">
+        <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
+        <%= truncate(@user.email, length:16) %> 
+        <br />
+        <% if @user == current_user %>
+          <%= link_to 'Update Details', edit_user_path(current_user), :class => "btn btn-success" %></a>
+          <div class="panel panel-default" style="margin-top: 20px;">
+            <div class="panel-body">
+              Your Mailboxes:
+              <%= render 'mailbox/folders' %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to "Send a Message", new_conversation_path, class: "btn btn-success" %>
+        <% end %>
+        <br /><br/>
+      </div>
+      <div class="col-md-10">
+        <div class="alert alert-info">
+          <h2></h2>
+          <h4><%= @user.email %>'s bio:</h4>
+          <p><%= @user.description %></p>
+        </div>
+       <!--  <div >
+          <a href="#" class="btn btn-social btn-facebook">
+              <i class="fa fa-facebook"></i>&nbsp; Facebook</a>
+          <a href="#" class="btn btn-social btn-google">
+              <i class="fa fa-google-plus"></i>&nbsp; Google</a>
+          <a href="#" class="btn btn-social btn-twitter">
+              <i class="fa fa-twitter"></i>&nbsp; Twitter </a>
+          <a href="#" class="btn btn-social btn-linkedin">
+              <i class="fa fa-linkedin"></i>&nbsp; Linkedin </a>
+        </div> -->
+        <h3 class="page-header">Cases <%= @user.name %> followed:</h3>
+        <% @user.all_following.each do |followed| %>
+          <% if followed.avatar.present? %>
+            <div class="col-lg-2 col-md-4 col-xs-12">         
+              <div class="thumbnail" >
+                <div class="imageWrapper" style="position: relative; width: 118px; height: 120px;">
+                <%= link_to image_tag(followed.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.content, length:200)}"}), followed %>
+                </div>
+               </div>
+            </div>  
+          <% else %>
+            <div class="col-lg-2 col-md-4 col-xs-12">         
+              <div class="thumbnail" >
+                <div class="imageWrapper" style="position: relative; width: 118px; height: 120px;">
+                <%= link_to image_tag('default-user-icon.png', :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.content, length:200)}"}), followed %>
+                </div>
+               </div>
+            </div> 
+          <% end %> 
+        <% end %>
+
+        <!-- <div class="form-group col-md-8">
+          <h3>Change YOur Password</h3>
+          <br />
+          <label>Enter Old Password</label>
+          <input type="password" class="form-control">
+          <label>Enter New Password</label>
+          <input type="password" class="form-control">
+          <label>Confirm New Password</label>
+          <input type="password" class="form-control" />
+          <br>
+          <a href="#" class="btn btn-warning">Change Password</a>
+        </div> -->
+      </div>
+    </div>
+<!-- ROW END -->
+  </section>
+  <!-- SECTION END -->
+</div>
+<!-- CONATINER END -->

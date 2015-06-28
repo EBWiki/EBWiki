@@ -5,12 +5,27 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :articles
-  geocoded_by :current_sign_in_ip   # can also be an IP address
+  has_many :comments
+  geocoded_by :current_sign_in_ip   # can also be a street address
   before_save :geocode  # auto-fetch coordinates when user logs in
   acts_as_follower
-
-
-
-
   storytime_user
+  acts_as_messageable
+  extend FriendlyId
+  friendly_id :slug_candidates, use: [:slugged, :finders]
+ 
+  def mailboxer_name
+    self.name
+  end
+ 
+  def mailboxer_email(object)
+    self.email
+  end
+
+  def slug_candidates
+    [
+      :name,
+      [:name, :id]
+    ]
+  end
 end

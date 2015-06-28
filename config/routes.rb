@@ -9,10 +9,13 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: "users/registrations"
   }
+  resources :users, only: [:show, :edit]
+
   get '/articles/:id/history', to: 'articles#history', as: :articles_history
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles do
     resources :follows, :only => [:create, :destroy]
+    resources :comments
   end
 
   root 'articles#index'
@@ -20,6 +23,20 @@ Rails.application.routes.draw do
     resources :registrations
   end
 
+  # mailbox folder routes
+  get "mailbox/inbox" => "mailbox#inbox", as: :mailbox_inbox
+  get "mailbox/sent" => "mailbox#sent", as: :mailbox_sent
+  get "mailbox/trash" => "mailbox#trash", as: :mailbox_trash
+
+  # conversations
+  resources :conversations do
+    member do
+      post :reply
+      post :trash
+      post :untrash
+    end
+  end
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
