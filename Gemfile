@@ -98,20 +98,13 @@ gem 'cocoon'
 # add social share buttons
 gem 'social-share-button'
 
-# select tag jquery plugin
-gem "select2-rails"
-
 # follower functionality
 gem "acts_as_follower"
 
-# messaging
-gem 'mailboxer', github: 'lacco/mailboxer'
-
 gem "storytime", :git => "git://github.com/FlyoverWorks/storytime.git", :branch => "dev"
 
-# track changes in model objects
+#track changes in model objects
 gem 'paper_trail', '~> 4.0.0.beta'
 
-# pretty urls
 gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 ruby "2.2.1"

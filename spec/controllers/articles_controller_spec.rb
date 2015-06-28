@@ -19,14 +19,14 @@ RSpec.describe ArticlesController, type: :controller do
 
   describe '#show' do
     context 'when requested article exists' do
-      let(:article) { articles.first }
+      let(:article) { articles[rand 4] }
       before(:each) { get :show, id: article.id }
 
       it 'success' do
         expect(response).to be_success
       end
 
-      it 'assigns it to @article' do 
+      it 'assigns it to @article' do
         expect(assigns(:article)).to eq article
       end
     end

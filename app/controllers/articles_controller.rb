@@ -1,48 +1,27 @@
 class ArticlesController < ApplicationController
 	before_action :find_article, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
-  #before_action :set_commentable
 
 	def index
-	  if params[:state_id].present?
-	  	@articles_by_state = Article.where(state_id: "#{params[:state_id]}")
-	    if params[:query].present?
-	      @articles = Article.search("#{params[:query]}", where: {state_id: params[:state_id]})
-	    else
-	      @articles = @articles_by_state.all.order('updated_at DESC')
-	    end
-	  else
 	    if params[:query].present?
 	      @articles = Article.search("#{params[:query]}")
 	    else
 	      @articles = Article.all.order('updated_at DESC')
 	    end
-	  end
-
-    articles_copy = @articles.dup
-    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
+	    articles_copy = @articles.dup
+	    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
 		  marker.lat article.latitude
 		  marker.lng article.longitude
 		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
 		end
-  end
+    end
 
 	def new
 		@article = current_user.articles.build
 	end
 
 	def show
-		@article = Article.friendly.find(params[:id])
 		@officers = @article.officers.all
-		@commentable = @article
-		@comments = @commentable.comments
-		@comment = Comment.new
-
-    @hash = Gmaps4rails.build_markers(@article.nearby_cases) do |article, marker|
-		  marker.lat article.latitude
-		  marker.lng article.longitude
-		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
-		end
 	end
 
 	def create
@@ -65,8 +44,7 @@ class ArticlesController < ApplicationController
 	  @article = Article.friendly.find(params[:id])
 	  if @article.update_attributes(article_params)
 	    flash[:success] = "Article was updated! #{make_undo_link}"
-	    UserNotifier.send_followers_email(@article.followers,@article).deliver_now
-			redirect_to @article
+		redirect_to @article
 	  else
 	    render 'edit'
 	  end
@@ -117,12 +95,6 @@ private
 	end
 
 	def article_params
-		params.require(:article).permit(:title, :age, :content, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], events_attributes: [:id, :title, :description, :date, :media_url, :media_credit, :done, :_destroy], comments_attributes: [:comment, :content, :commentable_id, :commentable_type])
-	end
-
-	# from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)
-	# why did they set commentable here?
-	def set_commentable
-		@commentable = Article.friendly.find(params[:id])
+		params.require(:article).permit(:title, :age, :content, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], events_attributes: [:id, :title, :description, :date, :media_url, :media_credit, :done, :_destroy])
 	end
 end
