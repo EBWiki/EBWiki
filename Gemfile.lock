@@ -28,7 +28,7 @@ GIT
 
 GIT
   remote: git://github.com/lacco/mailboxer.git
-  revision: d436329f771d1607a6835f0aeb8b1120a3562a47
+  revision: d4f0e9c70e29fcc5c2b4b7c87379e1830d45a367
   specs:
     mailboxer (0.12.5)
       carrierwave (>= 0.5.8)
