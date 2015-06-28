@@ -7,6 +7,14 @@
         <br />
         <% if @user == current_user %>
           <%= link_to 'Update Details', edit_user_path(current_user), :class => "btn btn-success" %></a>
+          <div class="panel panel-default" style="margin-top: 20px;">
+            <div class="panel-body">
+              Your Mailboxes:
+              <%= render 'mailbox/folders' %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to "Send a Message", new_conversation_path, class: "btn btn-success" %>
         <% end %>
         <br /><br/>
       </div>
