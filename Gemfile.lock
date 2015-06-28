@@ -27,6 +27,14 @@ GIT
       thor (~> 0.19.1)
 
 GIT
+  remote: git://github.com/lacco/mailboxer.git
+  revision: d436329f771d1607a6835f0aeb8b1120a3562a47
+  specs:
+    mailboxer (0.12.5)
+      carrierwave (>= 0.5.8)
+      rails (>= 3.2.0)
+
+GIT
   remote: git://github.com/zpaulovics/datetimepicker-rails.git
   revision: c5405f3486b57a52416caf93b79fc09d56930a82
   branch: master
@@ -559,6 +567,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   launchy (~> 2.4.2)
+  mailboxer!
   mini_magick
   momentjs-rails
   oink

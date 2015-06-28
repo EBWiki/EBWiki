@@ -2,11 +2,19 @@
   <section style="padding-bottom: 50px; padding-top: 50px;">
     <div class="row">
       <div class="col-md-2">
-        <%= image_tag avatar_url(@user),  class: "img-rounded img-responsive" %>
+        <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
         <%= truncate(@user.email, length:16) %> 
         <br />
         <% if @user == current_user %>
           <%= link_to 'Update Details', edit_user_path(current_user), :class => "btn btn-success" %></a>
+          <div class="panel panel-default" style="margin-top: 20px;">
+            <div class="panel-body">
+              Your Mailboxes:
+              <%= render 'mailbox/folders' %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to "Send a Message", new_conversation_path, class: "btn btn-success" %>
         <% end %>
         <br /><br/>
       </div>
