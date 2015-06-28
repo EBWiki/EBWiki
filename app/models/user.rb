@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   acts_as_follower
   storytime_user
   acts_as_messageable
+  extend FriendlyId
+  friendly_id :slug_candidates, use: [:slugged, :finders]
  
   def mailboxer_name
     self.name
@@ -18,5 +20,12 @@ class User < ActiveRecord::Base
  
   def mailboxer_email(object)
     self.email
+  end
+
+  def slug_candidates
+    [
+      :name,
+      [:name, :id]
+    ]
   end
 end

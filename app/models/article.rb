@@ -23,6 +23,7 @@ class Article < ActiveRecord::Base
 	validates :title, uniqueness: { message: "We already have an article with this victim" }
 	validates :city, presence: { message: "Please add a city." }
 	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
+	
 	# Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
 
