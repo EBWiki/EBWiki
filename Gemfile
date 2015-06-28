@@ -105,7 +105,7 @@ gem "select2-rails"
 gem "acts_as_follower"
 
 # messaging
-gem 'mailboxer', :git => 'git://github.com/div/mailboxer.git', :branch => 'rails42-foreigner'
+gem 'mailboxer', github: 'lacco/mailboxer'
 
 gem "storytime", :git => "git://github.com/FlyoverWorks/storytime.git", :branch => "dev"
 

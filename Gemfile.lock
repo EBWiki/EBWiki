@@ -27,11 +27,10 @@ GIT
       thor (~> 0.19.1)
 
 GIT
-  remote: git://github.com/div/mailboxer.git
-  revision: 41c9d8de2e0ad4dc511718074228d40a1ba96ebe
-  branch: rails42-foreigner
+  remote: git://github.com/lacco/mailboxer.git
+  revision: d436329f771d1607a6835f0aeb8b1120a3562a47
   specs:
-    mailboxer (0.12.4)
+    mailboxer (0.12.5)
       carrierwave (>= 0.5.8)
       rails (>= 3.2.0)
 

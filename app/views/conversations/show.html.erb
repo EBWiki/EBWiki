@@ -1,7 +1,6 @@
 <div class="row">
   <div class="spacer"></div>
   <div class="col-md-12">
-    <!-- we'll configure this to compose new conversations later -->
     <%= link_to "Compose", new_conversation_path, class: "btn btn-success" %>
     <div class="spacer"></div>
   </div>
@@ -17,11 +16,7 @@
   <div class="col-md-8">
     <div class="panel panel-default">
       <div class="panel-body">
-        <% if is_conversation %>
-          <%= render 'conversations/form' %>
-        <% else %>
-          <%= render partial: 'conversations/conversation', collection: messages %>
-        <% end %>
+        <%= render partial: 'messages' %>
       </div>
     </div>
   </div>
