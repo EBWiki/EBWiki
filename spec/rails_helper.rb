@@ -64,6 +64,7 @@ RSpec.configure do |config|
 
   config.before :each do
     Article.reindex
+    State.reindex
   end
 
   config.before(:suite) do
