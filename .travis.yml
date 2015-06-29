@@ -9,3 +9,10 @@ notifications:
    - dariusgoore@gmail.com
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec
+
+# Select modern postgres
+addons:
+  postgresql: "9.4"
+
+before_script:
+  - psql -c 'create database blackops_test;' -U blackops
