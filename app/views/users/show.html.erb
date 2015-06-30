@@ -40,7 +40,7 @@
             <div class="col-lg-2 col-md-4 col-xs-12">         
               <div class="thumbnail" >
                 <div class="imageWrapper" style="position: relative; width: 118px; height: 120px;">
-                <%= link_to image_tag(followed.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.content, length:200)}"}), followed %>
+                <%= link_to image_tag(followed.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.popover_content, length:200)}"}), followed %>
                 </div>
                </div>
             </div>  
@@ -48,7 +48,7 @@
             <div class="col-lg-2 col-md-4 col-xs-12">         
               <div class="thumbnail" >
                 <div class="imageWrapper" style="position: relative; width: 118px; height: 120px;">
-                <%= link_to image_tag('default-user-icon.png', :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.content, length:200)}"}), followed %>
+                <%= link_to image_tag('default-user-icon.png', :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.popover_content, length:200)}"}), followed %>
                 </div>
                </div>
             </div> 
