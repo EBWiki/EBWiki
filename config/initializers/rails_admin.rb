@@ -34,4 +34,8 @@ RailsAdmin.config do |config|
     # history_index
     # history_show
   end
+
+  class RailsAdmin::Config::Fields::Types::Uuid < RailsAdmin::Config::Fields::Base
+    RailsAdmin::Config::Fields::Types::register(self)
+  end
 end
