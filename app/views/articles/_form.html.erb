@@ -19,6 +19,7 @@
 	<h4>Name of the victim:</h4>
 	<%= f.input :title, :label => false %>
 	<%= f.input :age %>
+	<%= f.input :address %>
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
 	<%= f.input :zipcode %>
