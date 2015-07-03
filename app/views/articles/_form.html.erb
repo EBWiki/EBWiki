@@ -41,16 +41,7 @@
 	      <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
 	    </div>
 	</div>
-	<div class = "form-group">
-	<h4>Add events to the timeline:</h4>
-		<div id="events">
-		    <%= f.simple_fields_for :events do |event| %>
-		      <%= render 'event_fields', :f => event %>
-		    <% end %>
-	    <div class="events">
-	      <%= link_to_add_association 'add an event', f, :events, :class => "btn btn-warning" %>
-	    </div>
-	</div>
+	
 
 
     <br>
