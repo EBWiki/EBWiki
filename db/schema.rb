@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150703173803) do
+ActiveRecord::Schema.define(version: 20150704214350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,18 +100,6 @@ ActiveRecord::Schema.define(version: 20150703173803) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
-
-  create_table "events", force: :cascade do |t|
-    t.string   "title"
-    t.datetime "date"
-    t.text     "description"
-    t.string   "media_url"
-    t.string   "media_credit"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.integer  "article_id"
-    t.time     "time"
-  end
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id",                   null: false
@@ -246,9 +234,9 @@ ActiveRecord::Schema.define(version: 20150703173803) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "admin",                  default: false
     t.float    "latitude"
     t.float    "longitude"
-    t.boolean  "admin",                  default: false
     t.string   "storytime_name"
     t.string   "name"
     t.text     "description"
