@@ -11,7 +11,7 @@
 		        <div class="col-lg-2 col-md-4 col-xs-12">					
 		            <div class="thumbnail" >
 			            <div class="imageWrapper" style="position: relative; width: 150px; height: 150px;">
-				            <% if article.video_url != '' %>
+				            <% if article.video_url? &&  article.video_url != '' %>
 										  <%= link_to image_tag('video-icon-small.png', :style => "position: absolute;left:100px; top: 100px;z-index: 10;"), article %>
 										<% end %>	            		
 				            <% if article.avatar? %>

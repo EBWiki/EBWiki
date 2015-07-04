@@ -60,3 +60,14 @@ require 'rails_helper'
         expect(article.content).to eq "A new article"
     end
   end
+
+  describe "geocoded" do
+    it "has a latitude" do
+      article = FactoryGirl.create(:article)
+        expect(article.latitude).not_to be_nil
+    end
+    it "has a longitude" do
+      article = FactoryGirl.create(:article)
+        expect(article.longitude).not_to be_nil
+    end
+  end
