@@ -35,13 +35,16 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Simple Captcha for signing up
 gem 'gotcha'
 
-# memory usage tracking
-gem "oink"
+
+# Reduce N+1 queries
+gem "bullet"
 
 # internal analytics
 gem 'ahoy_matey'
 
 group :development, :test do
+
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
 
