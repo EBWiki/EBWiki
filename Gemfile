@@ -1,3 +1,5 @@
+ruby "2.2.1"
+
 source 'https://rubygems.org'
 gem 'dotenv-rails', :groups => [:development, :test], :require => 'dotenv/rails-now'
 
@@ -59,6 +61,8 @@ group :development, :test do
   gem 'factory_girl_rails'
   # tests and runs specs for you automatically when it detects changes
   gem 'guard-rspec'
+
+  gem 'oink'
 end
 
 group :test do
@@ -115,4 +119,3 @@ gem 'paper_trail', '~> 4.0.0.beta'
 
 # pretty urls
 gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
-ruby "2.2.1"
