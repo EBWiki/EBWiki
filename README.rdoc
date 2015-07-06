@@ -1,6 +1,6 @@
 == README
 
-[![Build Status](https://travis-ci.org/BOWiki/BOW.svg?branch=master)](https://travis-ci.org/BOWiki/BOW)
+<p><a href="https://travis-ci.org/BOWiki/BOW"><img src="https://travis-ci.org/BOWiki/BOW.svg?branch=master" alt="Build Status" style="max-width:100%;"></a></p>
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
