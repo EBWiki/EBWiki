@@ -6,7 +6,7 @@ SitemapGenerator::Sitemap.public_path = 'tmp/'
 
 SitemapGenerator::Sitemap.sitemaps_path = 'sitemaps/'
 
-if Rails.env.production?
+# if Rails.env.production?
 # Instance of `SitemapGenerator::s3Adapter -- could have used wave adapter instead
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new(
   fog_provider: 'AWS', 
@@ -17,7 +17,7 @@ SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new(
 
  # The remote host where your sitemaps will be hosted
  SitemapGenerator::Sitemap.sitemaps_host = "http://#{ENV['FOG_DIRECTORY']}.s3.amazonaws.com/"
-end
+# end
 
 SitemapGenerator::Sitemap.create do
   # Add all articles:
