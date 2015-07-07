@@ -2,7 +2,9 @@
 
 # refresh sitemap
 every 1.day, :at => '5:00 am' do
-  rake "-s sitemap:refresh"
+	if Rails.env.production?
+	  rake "-s sitemap:refresh"
+	end
 end
 
 #
