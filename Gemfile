@@ -37,6 +37,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Simple Captcha for signing up
 gem 'gotcha'
 
+# xml sitemap
+gem 'sitemap_generator'
 
 # Reduce N+1 queries
 gem "bullet"

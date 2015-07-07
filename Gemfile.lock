@@ -439,6 +439,8 @@ GEM
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    sitemap_generator (5.0.5)
+      builder
     slop (3.6.0)
     social-share-button (0.1.8)
       coffee-rails
@@ -523,6 +525,7 @@ DEPENDENCIES
   selenium-webdriver (~> 2.43.0)
   shoulda-matchers (~> 2.6.2)
   simple_form
+  sitemap_generator
   social-share-button
   spring
   turbolinks
