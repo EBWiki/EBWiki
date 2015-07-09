@@ -1,13 +1,10 @@
 <div class="row">
   <div class="col-lg-3" style="text-align:center;">
     <%= image_tag(article.avatar.medium_avatar) %>
+    <br>
+    <%= link_to article.title, article_path(article) %>
   </div>
   <div class="col-lg-9">
-    <%= article.content %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-lg-3" style="text-align:center;">
-    <%= link_to article.title, article_path(article) %>
+    <%= truncate(article.popover_content, length:500) %>
   </div>
 </div>
