@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150711171226) do
+ActiveRecord::Schema.define(version: 20150711223508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,13 @@ ActiveRecord::Schema.define(version: 20150711171226) do
   add_index "ahoy_events", ["user_id"], name: "index_ahoy_events_on_user_id", using: :btree
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id", using: :btree
 
+  create_table "article_agencies", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "agency_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "article_officers", force: :cascade do |t|
     t.integer  "article_id"
     t.integer  "officer_id"
@@ -69,7 +76,6 @@ ActiveRecord::Schema.define(version: 20150711171226) do
     t.string   "video_url"
     t.string   "state"
     t.integer  "age"
-    t.integer  "agency_id"
     t.text     "overview"
     t.text     "community_action"
     t.text     "litigation"

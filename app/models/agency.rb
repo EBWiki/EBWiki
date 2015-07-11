@@ -1,5 +1,6 @@
 class Agency < ActiveRecord::Base
-  has_many :articles
+  has_many :article_agencies
+  has_many :articles, through: :article_agencies
   belongs_to :state
   validates :name, uniqueness: { message: "We already have an article with this victim" }
 

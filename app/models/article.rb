@@ -2,7 +2,8 @@ class Article < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :category
 	belongs_to :state
-	belongs_to :agency
+  has_many :article_agencies
+	has_many :agencies, through: :article_agencies
 	has_many :links
 	accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
 	has_many :article_officers
