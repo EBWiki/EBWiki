@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'agencies/show'
+
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
   get '/sitemap', to: redirect("http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz", status: 301)

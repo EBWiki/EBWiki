@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150711165418) do
+ActiveRecord::Schema.define(version: 20150711171226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20150711165418) do
     t.string   "zipcode"
     t.string   "phone"
     t.string   "website"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
