@@ -100,6 +100,8 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
     cocoon (1.2.6)
+    codeclimate-test-reporter (0.4.7)
+      simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -119,6 +121,7 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     dotenv (2.0.1)
     dotenv-rails (2.0.1)
       dotenv (= 2.0.1)
@@ -440,6 +443,11 @@ GEM
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    simplecov (0.10.0)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     sitemap_generator (5.0.5)
       builder
     slop (3.6.0)
@@ -492,6 +500,7 @@ DEPENDENCIES
   capybara (~> 2.4.3)
   carrierwave
   cocoon
+  codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
   database_cleaner (~> 1.3.0)
   datetimepicker-rails!
