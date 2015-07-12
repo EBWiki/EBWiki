@@ -49,6 +49,7 @@ gem "bullet"
 # internal analytics
 gem 'ahoy_matey'
 
+gem 'rollbar', '~> 1.5.3'
 group :development, :test do
 
 
