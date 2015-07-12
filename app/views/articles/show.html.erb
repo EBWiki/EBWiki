@@ -10,9 +10,9 @@
 	<div class="row">
     <div class="col-md-3">
       <% if @article.avatar? %>
-	      <%= image_tag(@article.avatar.large_avatar, :class => "img-responsive", :style => "margin-bottom: 10px; margin-top: 50px;") %>
+	      <%= image_tag(@article.avatar.large_avatar, :class => "img-responsive articleImage") %>
 	    <% else %>
-		    <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive", :style => "margin-bottom: 10px; margin-top: 50px;") %>
+		    <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
 		  <% end %>
 
 		<div class="">
@@ -38,11 +38,11 @@
     </div>
 
 	  <div class="col-md-9">
-      <h1 class="page-header", style="text-align: left;"><%= @article.title %>, <%= @article.age ? "#{@article.age}" : "" %>
+      <h1 class="page-header articleTitle"><%= @article.title %>, <%= @article.age ? "#{@article.age}" : "" %>
       <br>
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
       </h1>
-			<p style="color: green;">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
+			<p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
 	    <% if @article.content.present? %>
 		    <h4 class="article_subheader">This article is only a stub... <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Help us fix it!", :content => "We rely on people who care about getting it right to fill in and correct the contents of these articles. Login and make improvements!"})%></h4>
 			  <p><%= raw @article.content %></p>
@@ -98,7 +98,7 @@
 	    <% @article.nearby_cases.each do |nearby| %>
 		    <div class="col-lg-2 col-md-4 col-xs-12">
 	        <div class="thumbnail" >
-	          <div class="imageWrapper" style="position: relative; width: 150px; height: 150px;">
+	          <div class="imageWrapper galleryImage">
 		        <%= link_to image_tag(nearby.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{nearby.date.strftime("%m/%d/%Y")} - #{nearby.title} ", :content => "#{truncate(nearby.popover_content, length:200)}"}), nearby %>
 		        </div>
 		       </div>
@@ -107,8 +107,8 @@
 
     <!-- Map -->
     <div class="row">
-	    <div class="col-lg-12", style='width: 100%; padding-bottom: 10px;'>
-		  <div id='map' style='width: 100%; height: 400px;'></div>
+	    <div class="col-lg-12 articleMap">
+		  <div id='map'></div>
 	  </div>
 		</div>
 	<% end %>

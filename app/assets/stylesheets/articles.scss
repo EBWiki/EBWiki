@@ -21,3 +21,34 @@
     overflow-y:scroll;
     margin-bottom: 30px;
 }
+
+.galleryImage {
+	position: relative;
+	width: 150px;
+	height: 150px;
+}
+
+.video_icon {
+	position: absolute;
+	left:100px;
+	top:100px;
+	z-index: 10;
+}
+
+.articleImage {
+	margin-bottom: 10px;
+	margin-top: 50px;
+}
+
+.articleTitle {
+	text-align: left;
+}
+
+.timeAgo {
+	color:green;
+}
+
+.articleMap {
+  width: 100%;
+  padding-bottom: 10px;
+}
