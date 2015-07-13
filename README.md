@@ -1,6 +1,6 @@
 == README
 
-<p><a href="https://travis-ci.org/BOWiki/BOW"><img src="https://travis-ci.org/BOWiki/BOW.svg?branch=master" alt="Build Status" style="max-width:100%;"></a><a href="https://codeclimate.com/github/BOWiki/BOW"><img src="https://codeclimate.com/github/BOWiki/BOW/badges/gpa.svg" /></a></p>
+<p><a href="https://travis-ci.org/BOWiki/BOW"><img src="https://travis-ci.org/BOWiki/BOW.svg?branch=master" alt="Build Status" style="max-width:100%;"></a>  <a href="https://codeclimate.com/github/BOWiki/BOW"><img src="https://codeclimate.com/github/BOWiki/BOW/badges/gpa.svg" /></a></p>
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
