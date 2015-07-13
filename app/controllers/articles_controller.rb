@@ -9,13 +9,13 @@ class ArticlesController < ApplicationController
 	    if params[:query].present?
 	      @articles = Article.search("#{params[:query]}", where: {state_id: params[:state_id]})
 	    else
-	      @articles = @articles_by_state.all.order('updated_at DESC')
+	      @articles = @articles_by_state.all.order('date DESC')
 	    end
 	  else
 	    if params[:query].present?
 	      @articles = Article.search("#{params[:query]}")
 	    else
-	      @articles = Article.all.order('updated_at DESC')
+	      @articles = Article.all.order('date DESC')
 	    end
 	  end
 
