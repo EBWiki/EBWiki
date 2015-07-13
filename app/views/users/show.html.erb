@@ -1,5 +1,5 @@
 <div class="container">
-  <section style="padding-bottom: 50px; padding-top: 50px;">
+  <section class="userAvatar">
     <div class="row">
       <div class="col-md-2">
         <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
@@ -7,7 +7,7 @@
         <br />
         <% if @user == current_user %>
           <%= link_to 'Update Details', edit_user_path(current_user), :class => "btn btn-success" %></a>
-          <div class="panel panel-default" style="margin-top: 20px;">
+          <div class="panel panel-default mailFoldershort">
             <div class="panel-body">
               Your Mailboxes:
               <%= render 'mailbox/folders' %>
@@ -39,7 +39,7 @@
           <% if followed.avatar.present? %>
             <div class="col-lg-2 col-md-4 col-xs-12">         
               <div class="thumbnail" >
-                <div class="imageWrapper" style="position: relative; width: 118px; height: 120px;">
+                <div class="imageWrapper userFollowing">
                 <%= link_to image_tag(followed.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.popover_content, length:200)}"}), followed %>
                 </div>
                </div>
@@ -47,7 +47,7 @@
           <% else %>
             <div class="col-lg-2 col-md-4 col-xs-12">         
               <div class="thumbnail" >
-                <div class="imageWrapper" style="position: relative; width: 118px; height: 120px;">
+                <div class="imageWrapper userFollowing" >
                 <%= link_to image_tag('default-user-icon.png', :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.popover_content, length:200)}"}), followed %>
                 </div>
                </div>
