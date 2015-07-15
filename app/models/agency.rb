@@ -7,6 +7,9 @@ class Agency < ActiveRecord::Base
   geocoded_by :full_address   # can also be an IP address
 	after_validation :geocode          # auto-fetch coordinates
 
+	extend FriendlyId
+	friendly_id :name, use: [:slugged, :finders]
+
 	def full_address
 		"#{address} #{city} #{state} #{zipcode}"
 	end
