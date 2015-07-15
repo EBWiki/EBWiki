@@ -31,7 +31,17 @@
 				    <%= link_to 'Follow', article_follows_path(@article), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
 					<% end %>
 					<%= link_to "History", articles_history_path(@article), class: "btn btn-info", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track Changes",:content => "Click here to see all the past edits to this article."} %>
-		</div>
+				</div>
+				<% if @article.agencies.count > 0 %>
+					<div>
+						<p>Agencies involved:</p>
+						<ul>
+							<% @article.agencies.each do |agency| %>
+								<li><%= link_to agency.name, agency_path(agency) %></li>
+							<% end %>
+						</ul>
+					</div>
+				<% end %>
 				<h4><%= render "comments/form" %></h4>
 				<%= render "comments/comments" %>
 			</div>

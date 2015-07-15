@@ -1,0 +1,14 @@
+<h1><%= @agency.name %></h1>
+<h3>Contact Information:</h3>
+<ul class="agency-list">
+  <li><%= @agency.address %></li>
+	<li><%= @agency.city %>, <%= @agency.state.ansi_code %> <%= @agency.zipcode %></li>
+	<li><%= @agency.phone %></li>
+	<li><%= link_to @agency.website, @agency.website %></li>
+</ul>
+<h3>Cases: <%= @articles.count %></h3>
+<ul class="agency-list">
+	<% @articles.each do |article| %>
+		<li><%= article.date.strftime("%B %d, %Y") %>: <%= link_to article.title, article %></li>
+	<% end %>
+</ul>

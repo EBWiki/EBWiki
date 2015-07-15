@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'agencies/show'
+  get '/agencies/:id', to: 'agencies#show', as: 'agency'
 
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
