@@ -518,6 +518,7 @@ DEPENDENCIES
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
+  kaminari
   launchy (~> 2.4.2)
   mailboxer!
   mini_magick
