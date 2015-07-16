@@ -96,6 +96,9 @@ gem "mini_magick"
 # file upload solution
 gem 'carrierwave'
 
+# image optimizer that works with carrierwave
+gem 'carrierwave-imageoptimizer'
+
 #CMS panel for admin
 gem 'rails_admin'
 
