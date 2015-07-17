@@ -7,20 +7,24 @@ class ArticlesController < ApplicationController
 	  if params[:state_id].present?
 	  	@articles_by_state = Article.where(state_id: "#{params[:state_id]}")
 	    if params[:query].present?
+	    	articles_full = Article.search("#{params[:query]}", where: {state_id: params[:state_id]})
 	      @articles = Article.search("#{params[:query]}", where: {state_id: params[:state_id]}, page: params[:page], per_page: 18)
 	    else
 	      @articles = @articles_by_state.all.order('date DESC').page(params[:page]).per(18)
+	      articles_full = @articles_by_state.all.order('date DESC')
 	    end
 	  else
 	    if params[:query].present?
 	      @articles = Article.search("#{params[:query]}", page: params[:page], per_page: 18)
+	      articles_full = @articles_by_state.all.order('date DESC')
 	    else
 	      @articles = Article.all.order('date DESC').page(params[:page]).per(18)
+	      articles_full = Article.all.order('date DESC')
 	    end
 	  end
 
     articles_copy = @articles.dup
-    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
+    @hash = Gmaps4rails.build_markers(articles_full) do |article, marker|
 		  marker.lat article.latitude
 		  marker.lng article.longitude
 		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
