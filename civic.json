@@ -1,0 +1,23 @@
+{
+        "status": "Beta",
+        "thumbnailUrl": "",
+        "contributors" : [
+          "@campgurus",
+          "@trystant",
+          "@parcheesy"
+        ],
+        "bornAt": "",
+        "geography": "US",
+        "politicalEntity":"",
+        "type":"Web App",
+        "needs": [
+          {"need": "Web Designer"},
+          {"need": "Front-End Developer"},
+          {"need": "Ruby on Rails Dev"}
+        ],
+        "categories": [
+          {"category": "Community"},
+          {"category": "Civil Rights"},
+          {"category": "Open Data"}
+        ]
+}
