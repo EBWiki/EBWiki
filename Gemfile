@@ -82,7 +82,7 @@ group :test do
   gem "codeclimate-test-reporter", require: nil
 end
 
-gem 'rails_12factor', group: :production
+gem 'rails_12factor', :groups => [:production, :staging]
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'simple_form'
@@ -97,6 +97,9 @@ gem "mini_magick"
 gem 'carrierwave'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
+
+# allow deflated assets with heroku
+gem 'heroku_rails_deflate', :groups => [:production, :staging]
 
 #CMS panel for admin
 gem 'rails_admin'

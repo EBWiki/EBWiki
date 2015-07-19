@@ -268,6 +268,8 @@ GEM
     haml (4.0.6)
       tilt
     hashie (3.4.1)
+    heroku-deflater (0.5.3)
+      rack (>= 1.4.5)
     hitimes (1.2.2)
     hodel_3000_compliant_logger (0.1.1)
     i18n (0.7.0)
@@ -521,6 +523,7 @@ DEPENDENCIES
   gmaps4rails
   gotcha
   guard-rspec
+  heroku-deflater
   jbuilder (~> 2.0)
   jquery-rails
   kaminari
