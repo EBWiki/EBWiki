@@ -11,7 +11,7 @@ class Article < ActiveRecord::Base
 	accepts_nested_attributes_for :officers, :reject_if => :all_blank, :allow_destroy => true
 	has_many :comments, as: :commentable
 
-	has_paper_trail :only => [:title, :content, :overview, :litigation, :community_action]
+	has_paper_trail :only => [:title, :overview, :litigation, :community_action]
 	acts_as_followable
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
