@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "articles/show.html.erb", type: :view do
 
-  it 'displays stub article if content field is present' do
+  it 'should not display a content field' do
     article = FactoryGirl.create(:article)
     article.state = FactoryGirl.create(:state)
     assign(:article, article)
@@ -11,11 +11,11 @@ RSpec.describe "articles/show.html.erb", type: :view do
     assign(:comments, article.comments)
     assign(:comment, Comment.new)
     render
-    expect(rendered).to match /only a stub/m
+    expect(rendered).not_to match /only a stub/m
   end
 
   it 'displays litigation subheader if litigation text field is present' do
-    article = FactoryGirl.create(:article, content: nil, litigation: 'Legal Action')
+    article = FactoryGirl.create(:article, litigation: 'Legal Action')
     article.state = FactoryGirl.create(:state)
     assign(:article, article)
     assign(:officers, article.officers.all)
@@ -27,7 +27,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
   end
 
   it 'displays summary subheader if overview text field is present' do
-    article = FactoryGirl.create(:article, content: nil, overview: 'overview text')
+    article = FactoryGirl.create(:article, overview: 'overview text')
     article.state = FactoryGirl.create(:state)
     assign(:article, article)
     assign(:officers, article.officers.all)
@@ -39,7 +39,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
   end
 
   it 'displays community action subheader if overview text field is present' do
-    article = FactoryGirl.create(:article, content: nil, community_action: 'community text')
+    article = FactoryGirl.create(:article, community_action: 'community text')
     article.state = FactoryGirl.create(:state)
     assign(:article, article)
     assign(:officers, article.officers.all)

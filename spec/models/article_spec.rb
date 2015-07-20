@@ -19,25 +19,6 @@ require 'rails_helper'
       article2 = build(:article, title: 'john smith')
       expect(article2).to be_invalid
     end
-   #  it "returns a sorted array of results that match" do
-   #   smith = Article.create(
-   #     title: 'John Smith',
-   #     content: 'A new victim'
-   #   )
-   #   jones = Article.create(
-   #     title: 'John Jones',
-   #     content: 'A new victim'
-   #   )
-   #   james = Article.create(
-   #     title: 'Jane James',
-   #     content: 'A new victim'
-   #   )
-   #   smith.reindex
-   #   jones.reindex
-   #   james.reindex
-   #   Article.searchkick_index.refresh
-   #   expect(Article.find_by_search("John")).to eq [smith, jones]
-   # end
   end
 
   describe "#new" do
@@ -57,7 +38,7 @@ require 'rails_helper'
   describe "#content" do
     it "returns the correct content" do
 	  	article = build(:article)
-        expect(article.content).to eq "A new article"
+        expect(article.overview).to eq "A new article"
     end
   end
 

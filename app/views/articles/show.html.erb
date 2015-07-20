@@ -43,10 +43,6 @@
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
       </h1>
 			<p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
-	    <% if @article.content.present? %>
-		    <h4 class="article_subheader">This article is only a stub... <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Help us fix it!", :content => "We rely on people who care about getting it right to fill in and correct the contents of these articles. Login and make improvements!"})%></h4>
-			  <p><%= raw @article.content %></p>
-			<% else %>
 				<% if @article.overview.present? %>
 				    <h4 class="article_subheader">Summary  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "The basics", :content => "This section attempts to encapsulate the basic facts of the case."})%></h4>
 					<p><%= raw @article.overview %></p>
@@ -58,7 +54,6 @@
 				<% if @article.community_action.present? %>
 				    <h4 class="article_subheader">Community and Family Efforts  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Community Action", :content => "This section outlines the response of the local community and the victim's family."})%></h4>
 					<p><%= raw @article.community_action %></p>
-				<% end %>
 			<% end %>
 			<div class="row">
 				<div class="col-md-12">
