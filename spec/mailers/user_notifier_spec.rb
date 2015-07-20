@@ -7,7 +7,7 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:mail) { UserNotifier.send_update_email(user,article) }
  
     it 'renders the subject' do
-      expect(mail.subject).to eql('A new post has been added to BlackOpsWiki')
+      expect(mail.subject).to eql('A new post has been added to EBWiki')
     end
  
     it 'renders the receiver email' do

@@ -1,5 +1,5 @@
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "http://blackopswiki.herokuapp.com"
+SitemapGenerator::Sitemap.default_host = "http://ebwiki.org"
 
 # The directory to write sitemaps to locally
 SitemapGenerator::Sitemap.public_path = 'tmp/'
