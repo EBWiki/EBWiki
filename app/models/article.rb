@@ -40,14 +40,4 @@ class Article < ActiveRecord::Base
 	def nearby_cases
 		self.nearbys(50).order("distance")
 	end
-
-	def popover_content
-		if self.overview.present?
-			self.overview
-		else
-			self.content
-		end
-	end
-private
-
 end

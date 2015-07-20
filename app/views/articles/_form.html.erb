@@ -23,7 +23,6 @@
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
 	<%= f.input :zipcode %>
-	<%= f.input :content %>
 	<%= f.input :overview %>
 	<%= f.input :litigation %>
 	<%= f.input :community_action %>
