@@ -1,7 +1,15 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">All of these people were killed by the police...</h2>
+            <h2 class="page-header underline">EBWiki has recorded <%= Article.count %> cases of law enforcement killing people of color so far and there are countless more cases that we have not yet captured.</h2>
+            <h4 class="page-subheader">EBWiki is aimed at bringing to light and ending instances of biased violence against people of color by those in law enforcement and elsewhere. Read more <%= link_to 'about us',about_path %>. Below are the photos of victims linked to descriptions of their cases. 
+              <% if user_signed_in? %>
+		            Click the follow button below the image on any case page and we will keep you updated as these cases proceed. It is only by paying attention that we will eradicate this behavior.</p>
+							<% else %>
+	            <%= link_to 'Login', new_user_registration_path %> and click the follow buttons on the case pages so that we can update you as these cases proceed. It is only by paying attention that we will eradicate this behavior.
+							<% end %>
+						</h4>
+
         </div>
     </div>
     <!-- Gallery of cases -->
