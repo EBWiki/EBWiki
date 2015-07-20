@@ -5,13 +5,13 @@ class UserNotifier < ApplicationMailer
   def send_update_email(user,article)
     @user = user
     @article = article # controller getting fat with instance variables
-	  mail( :to => user.email, :subject => 'A new post has been added to BlackOpsWiki' )
+	  mail( :to => user.email, :subject => 'A new post has been added to EBWiki' )
   end
 
   def send_followers_email(users, article)
     @article = article
   	users.each do|user|
-	  mail( :to => user.email, :subject => 'A BlackOpsWiki case has just been updated.' )
+	  mail( :to => user.email, :subject => 'An EBWiki case has just been updated.' )
     end
   end
 end
