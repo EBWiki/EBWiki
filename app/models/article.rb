@@ -29,6 +29,11 @@ class Article < ActiveRecord::Base
 	geocoded_by :full_address   # can also be an IP address
 	after_validation :geocode          # auto-fetch coordinates
 
+	# It's SCOPE Time!
+
+	scope :by_state, -> (state) { where state: state}
+
+
 	def full_address
 		"#{address} #{city} #{state} #{zipcode}"
 	end
