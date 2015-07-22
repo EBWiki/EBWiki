@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   acts_as_messageable
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :finders]
+  after_validation :add_to_mailchimp
  
   def mailboxer_name
     self.name
@@ -26,5 +27,12 @@ class User < ActiveRecord::Base
       :name,
       [:name, :id]
     ]
+  end
+
+  def add_to_mailchimp
+    if self.subscribed?
+      gb = Gibbon::API.new
+      gb.lists.subscribe({:id => ENV['MAILCHIMP_LIST_ID'], :email => {:email => "#{self.email}"}, :merge_vars => {:FNAME => "#{self.name}"}, :double_optin => false})
+    end
   end
 end
