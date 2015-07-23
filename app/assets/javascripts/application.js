@@ -12,6 +12,7 @@
 //
 //= require gmaps/google
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require ahoy
 //= require bootstrap-sprockets
