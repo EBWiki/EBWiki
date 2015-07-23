@@ -1,30 +1,23 @@
 class ArticlesController < ApplicationController
 	before_action :find_article, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :search]
   #before_action :set_commentable
 
 	def index
 	  if params[:state_id].present?
-	  	@articles_by_state = Article.where(state_id: "#{params[:state_id]}")
-	    if params[:query].present?
-	      @articles = Article.search("#{params[:query]}", where: {state_id: params[:state_id]}, page: params[:page], per_page: 18)
-	    else
-	      @articles = @articles_by_state.all.order('date DESC').page(params[:page]).per(18)
-	    end
+ 	  	@articles = Article.by_state(params[:state_id]).order('date DESC').page(params[:page]).per(18)
 	  else
-	    if params[:query].present?
-	      @articles = Article.search("#{params[:query]}", page: params[:page], per_page: 18)
-	    else
-	      @articles = Article.all.order('date DESC').page(params[:page]).per(18)
-	    end
+      @articles = Article.all.order('date DESC').page(params[:page]).per(18)
 	  end
+  end
 
-    articles_copy = @articles.dup
-    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
-		  marker.lat article.latitude
-		  marker.lng article.longitude
-		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
-		end
+  def search
+  	if params[:state_id].present?
+	    @articles = Article.by_state(params[:state_id]).search(params[:query], where: {state_id: params[:state_id]}, page: params[:page], per_page: 18)
+		else
+      @articles = Article.search(params[:query], page: params[:page], per_page: 18)
+    end
+    render "index"
   end
 
 	def new
@@ -37,12 +30,6 @@ class ArticlesController < ApplicationController
 		@commentable = @article
 		@comments = @commentable.comments
 		@comment = Comment.new
-
-    @hash = Gmaps4rails.build_markers(@article.nearby_cases) do |article, marker|
-		  marker.lat article.latitude
-		  marker.lng article.longitude
-		  marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
-		end
 	end
 
 	def create

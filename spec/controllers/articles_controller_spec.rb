@@ -17,6 +17,17 @@ RSpec.describe ArticlesController, type: :controller do
     end
   end
 
+  # These are specs to handle the multiple scenarios where people can search
+  describe '#search' do
+    before(:each) { get :search, query: "Freddie" }
+
+    describe "on success" do
+      it 'returns successfully' do
+        expect(response).to be_success
+      end
+    end
+  end
+
   describe '#show' do
     context 'when requested article exists' do
       let(:article) { articles.first }
