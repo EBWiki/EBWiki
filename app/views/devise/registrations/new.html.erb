@@ -8,6 +8,8 @@
     <%= f.input :email, required: true, autofocus: true %>
     <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @validatable) %>
     <%= f.input :password_confirmation, required: true %>
+    <h5>Check this box to receive our weekly newsletter with updates on these cases and other news:</h5>
+    <%= f.input :subscribed, :label => false %>
     <%= gotcha %>
   </div>
 
