@@ -37,21 +37,27 @@ If you have a Mac and Homebrew, you can use:
 Create your own user account(these are backticks, not single quotes):    
 ```$ createdb `whoami` ```    
 Create blackops-development and blackops-test database:   
-```$ createdb blackops_development
-$ createdb blackops_test```
+```
+$ createdb blackops_development
+$ createdb blackops_test
+```
 
 From local blackops-staging directory run the following commands to import the staging data into your local databases:     
-```$ heroku pg:backups capture
+```
+$ heroku pg:backups capture
 $ curl -o latest.dump `heroku pg:backups public-url`
 $ pg_restore --verbose --clean --no-acl --no-owner -h localhost -U [local username] -d blackops_development latest.dump
-$ pg_restore --verbose --clean --no-acl --no-owner -h localhost -U [local username] -d blackops_test latest.dump```     
+$ pg_restore --verbose --clean --no-acl --no-owner -h localhost -U [local username] -d blackops_test latest.dump
+```     
 
 Back in your BOW root folder run:    
 ```$ bundle exec rake db:migrate```
 
 Build elasticsearch indexes for the Article and State classes with:    
-```$ bundle exec rake searchkick:reindex CLASS=Article
-$ bundle exec rake searchkick:reindex CLASS=State```
+```
+$ bundle exec rake searchkick:reindex CLASS=Article
+$ bundle exec rake searchkick:reindex CLASS=State
+```
 
 You should be good to go now for local development and tests. Just make sure to keep your local repo up to date with the upstream repo.
 
