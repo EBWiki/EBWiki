@@ -15,12 +15,14 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active">
-	      <%if signed_in? && @current_user.admin? %>      
-			  <%= link_to "Admin", rails_admin.dashboard_path %>
-		  <% end %>
-		</li>
+  	      <%if signed_in? && @current_user.admin? %>      
+    			  <%= link_to "Admin", rails_admin.dashboard_path %>
+    		  <% end %>
+    		</li>
+        <li>
+        </li>
       </ul>
-		<%= form_tag articles_search_path, method: :get do %>
+  		<%= form_tag articles_search_path, method: :get do %>
         <div class="navbar-form navbar-left">
           <%= select_tag(:state_id, options_from_collection_for_select(State.all, :id, :name), include_blank: true, data: {placeholder: "Filter By State"}, id: "", class: 'form-control select2') %>
         </div>

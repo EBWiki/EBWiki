@@ -73,6 +73,11 @@ group :development, :test do
   gem 'oink'
 end
 
+# check for security vulnerabilities
+group :development do
+  gem 'brakeman', :require => false
+end
+
 group :test do
   gem "faker", "~> 1.4.3"
   # makes it easy to programatically simulate users’ interactions
@@ -136,3 +141,9 @@ gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.
 
 # pagination
 gem 'kaminari'
+<<<<<<< HEAD
+=======
+
+# mailchimp api
+gem 'gibbon'
+>>>>>>> upstream/master
