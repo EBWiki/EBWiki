@@ -71,6 +71,10 @@ group :development, :test do
   gem 'oink'
 end
 
+group :development do
+  gem 'brakeman', :require => false
+end
+
 group :test do
   gem "faker", "~> 1.4.3"
   # makes it easy to programatically simulate users’ interactions
