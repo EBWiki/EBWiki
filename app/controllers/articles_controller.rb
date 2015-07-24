@@ -5,7 +5,7 @@ class ArticlesController < ApplicationController
 
 	def index
 	  if params[:state_id].present?
-	  	@articles_by_state = Article.where(state_id: "#{params[:state_id]}")
+	  	@articles_by_state = Article.where(state_id: params[:state_id])
 	    if params[:query].present?
 	      @articles = Article.search("#{params[:query]}", where: {state_id: params[:state_id]}, page: params[:page], per_page: 18)
 	    else
