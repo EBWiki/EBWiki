@@ -141,3 +141,6 @@ gem 'kaminari'
 
 # access mailchimp api
 gem 'gibbon'
+
+# metatag helper
+gem 'metamagic'
