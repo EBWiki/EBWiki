@@ -320,6 +320,8 @@ GEM
     lumberjack (1.0.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    metamagic (3.1.7)
+      rails (>= 3.0.0)
     method_source (0.8.2)
     mime-types (2.5)
     mini_magick (4.2.3)
@@ -559,6 +561,7 @@ DEPENDENCIES
   kaminari
   launchy (~> 2.4.2)
   mailboxer!
+  metamagic
   mini_magick
   momentjs-rails
   oink
