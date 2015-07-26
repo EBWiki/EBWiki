@@ -50,3 +50,25 @@
   width: 100%;
   padding-bottom: 10px;
 }
+
+.view {
+    
+    margin-bottom: 20px;
+    float: left;
+    padding: 10px;
+    border: 1px solid #eee;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+    background: #fff url(../images/bgimg.jpg) no-repeat center center
+}
+
+.view .mask, .view .content {
+    width: 90%;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 20
+}
+

@@ -26,8 +26,8 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 	    <div id='front-gallery'>
 	        <% @articles.each do |article| %>
 		        <div class="col-lg-3 col-md-4 col-xs-2">					
-		            <div class="thumbnail" >
-			            <div class="imageWrapper">
+		            <div class="" >
+			            <div class="view">
 				            <% if article.video_url? &&  article.video_url != '' %>
 										  <%= link_to image_tag('video-icon-small.png', :class => "video_icon"), article %>
 										<% end %>	            		
@@ -36,6 +36,11 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 				            <% else %>
 				              <%= link_to image_tag('default-user-icon.png', :class => "img-responsive", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{article.date.strftime("%m/%d/%Y")} - #{article.title} ", :content => "#{truncate(article.overview, length:200)}"}), article %>
 									  <% end %>
+									  <div class="mask">
+										  <h2><%= article.title %></h2>
+										  <p><%= article.overview.truncate(140) %></p>
+										  <%= link_to 'Read More', article, :class => "info" %> 
+									  </div>
 			            </div>
 
 			        </div>
