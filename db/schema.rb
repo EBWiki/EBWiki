@@ -29,10 +29,7 @@ ActiveRecord::Schema.define(version: 20150724221034) do
     t.string   "website"
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "slug"
   end
-
-  add_index "agencies", ["slug"], name: "index_agencies_on_slug", unique: true, using: :btree
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
     t.uuid     "visit_id"
