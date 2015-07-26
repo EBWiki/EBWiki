@@ -69,11 +69,12 @@
 
 // superimposes "mask" class on image
 .view .mask, .view .content {
-    width: 90%;
+    width: 100%;
     position: absolute;
     overflow: hidden;
     top: 0;
-    left: 20
+    left: 0;
+    bottom: 0
 }
 
 // evenly spaces images
@@ -119,4 +120,49 @@
 // adds shadow when hovering over "more info" link
 .view a.info:hover {
     box-shadow: 0 0 5px #000
+}
+
+//transition-hover effects
+
+//Example 1
+.view-first img { 
+    transition: all 0.2s linear;
+}
+.view-first .mask {
+    opacity: 0;
+    background-color: rgba(219,127,8, 0.7); 
+    transition: all 0.4s ease-in-out;
+}
+.view-first h2 {
+    transform: translateY(-100px);
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+.view-first p { 
+    transform: translateY(100px);
+    opacity: 0;
+	transition: all 0.2s linear;
+}
+.view-first a.info{
+    opacity: 0;
+	transition: all 0.2s ease-in-out;
+}
+
+.view-first:hover img { 
+	transform: scale(1.1);
+} 
+.view-first:hover .mask { 
+	opacity: 1;
+}
+.view-first:hover h2,
+.view-first:hover p,
+.view-first:hover a.info {
+    opacity: 1;
+    transform: translateY(0px);
+}
+.view-first:hover p {
+    transition-delay: 0.1s;
+}
+.view-first:hover a.info {
+    transition-delay: 0.2s;
 }

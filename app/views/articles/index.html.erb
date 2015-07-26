@@ -27,11 +27,11 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 	        <% @articles.each do |article| %>
 		        <div class="col-lg-3 col-md-4 col-xs-2">					
 		            <div class="" >
-			            <div class="view">	            		
+			            <div class="view view-first">	            		
 				            <% if article.avatar? %>
-				              <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{article.date.strftime("%m/%d/%Y")} - #{article.title} ", :content => "#{truncate(article.overview, length:200)}"}), article %>
+				              <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
 				            <% else %>
-				              <%= link_to image_tag('default-user-icon.png', :class => "img-responsive", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{article.date.strftime("%m/%d/%Y")} - #{article.title} ", :content => "#{truncate(article.overview, length:200)}"}), article %>
+				              <%= link_to image_tag('default-user-icon.png', :class => "img-responsive"), article %>
 									  <% end %>
 									  <div class="mask">
 										  <h2><%= article.title %></h2>
