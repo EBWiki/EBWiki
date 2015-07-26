@@ -51,8 +51,11 @@
   padding-bottom: 10px;
 }
 
-.view {
-    
+// modifying gallery inmages for hover effects
+// http://tympanus.net/codrops/2011/11/02/original-hover-effects-with-css3/
+
+//sets size and borders of gallery image
+.view {    
     margin-bottom: 20px;
     float: left;
     padding: 10px;
@@ -64,6 +67,7 @@
     background: #fff url(../images/bgimg.jpg) no-repeat center center
 }
 
+// superimposes "mask" class on image
 .view .mask, .view .content {
     width: 90%;
     position: absolute;
@@ -72,3 +76,47 @@
     left: 20
 }
 
+// evenly spaces images
+.view img {
+    display: block;
+    position: relative
+}
+
+// adds styling to header superimposed on image 
+.view h2 {
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    font-size: 17px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    margin: 20px 0 0 0
+}
+
+// styling paragraph text superimposed on image 
+.view p {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    position: relative;
+    color: #fff;
+    padding: 10px 20px 20px;
+    text-align: center
+}
+
+// adds button style to "more info" link
+.view a.info {
+    display: inline-block;
+    text-decoration: none;
+    padding: 7px 14px;
+    background: #000;
+    color: #fff;
+    text-transform: uppercase;
+    box-shadow: 0 0 1px #000
+}
+
+// adds shadow when hovering over "more info" link
+.view a.info:hover {
+    box-shadow: 0 0 5px #000
+}
