@@ -35,7 +35,7 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 									  <% end %>
 									  <div class="mask">
 										  <h2><%= article.title %></h2>
-										  <p><%= article.overview.truncate(140) %></p>
+										  <p><%= raw article.overview.truncate(140) %></p>
 										  <%= link_to 'Read More', article, :class => "info" %> 
 									  </div>
 			            </div>

@@ -99,7 +99,7 @@ meta title: "The case of #{@article.title}",
 		    <div class="col-lg-2 col-md-4 col-xs-12">
 	        <div class="thumbnail" >
 	          <div class="imageWrapper galleryImage">
-		        <%= link_to image_tag(nearby.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{nearby.date.strftime("%m/%d/%Y")} - #{nearby.title} ", :content => "#{truncate(nearby.overview, length:200)}"}), nearby %>
+		        <%= link_to image_tag(nearby.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{nearby.date.strftime("%m/%d/%Y")} - #{nearby.title} ", :content => "#{raw truncate(nearby.overview, length:200)}"}), nearby %>
 		        </div>
 		       </div>
 		    </div>
