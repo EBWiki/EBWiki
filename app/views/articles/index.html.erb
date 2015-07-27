@@ -17,7 +17,7 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 						<div class="text-center">
 							<h3><%= link_to 'Get our newsletter', "http://eepurl.com/bt5QCz", class: "btn btn-default" %></h3>
 						</div>
-						<h2 class="page-subheader">Below are photos of the victims. Click any image to read their story.</h2>
+						<h2 class="page-subheader">Below are photos of the victims. Hover over the images for more information.</h2>
 
         </div>
     </div>
@@ -25,17 +25,19 @@ meta title: "EBWiki - Ending Violence Against People of Color",
     <div class="row">	
 	    <div id='front-gallery'>
 	        <% @articles.each do |article| %>
-		        <div class="col-lg-2 col-md-4 col-xs-2">					
-		            <div class="thumbnail" >
-			            <div class="imageWrapper galleryImage">
-				            <% if article.video_url? &&  article.video_url != '' %>
-										  <%= link_to image_tag('video-icon-small.png', :class => "video_icon"), article %>
-										<% end %>	            		
+		        <div class="col-lg-3 col-md-4 col-xs-2">					
+		            <div class="" >
+			            <div class="view view-first">	            		
 				            <% if article.avatar? %>
-				              <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{article.date.strftime("%m/%d/%Y")} - #{article.title} ", :content => "#{truncate(article.overview, length:200)}"}), article %>
+				              <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
 				            <% else %>
-				              <%= link_to image_tag('default-user-icon.png', :class => "img-responsive", size: 250, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{article.date.strftime("%m/%d/%Y")} - #{article.title} ", :content => "#{truncate(article.overview, length:200)}"}), article %>
+				              <%= link_to image_tag('default-user-icon.png', :class => "img-responsive"), article %>
 									  <% end %>
+									  <div class="mask">
+										  <h2><%= article.title %></h2>
+										  <p><%= article.overview.truncate(140) %></p>
+										  <%= link_to 'Read More', article, :class => "info" %> 
+									  </div>
 			            </div>
 
 			        </div>

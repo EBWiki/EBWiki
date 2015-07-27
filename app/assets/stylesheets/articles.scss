@@ -24,8 +24,6 @@
 
 .galleryImage {
 	position: relative;
-	width: 150px;
-	height: 150px;
 }
 
 .video_icon {
@@ -51,4 +49,166 @@
 .articleMap {
   width: 100%;
   padding-bottom: 10px;
+}
+
+// modifying gallery inmages for hover effects
+// http://tympanus.net/codrops/2011/11/02/original-hover-effects-with-css3/
+
+//sets size and borders of gallery image
+.view {    
+    margin-bottom: 20px;
+    float: left;
+    padding: 10px;
+    border: 1px solid #eee;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+    background: #fff url(../images/bgimg.jpg) no-repeat center center
+}
+
+// superimposes "mask" class on image
+.view .mask, .view .content {
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    bottom: 0
+}
+
+// evenly spaces images
+.view img {
+    display: block;
+    position: relative
+}
+
+// adds styling to header superimposed on image 
+.view h2 {
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    font-size: 17px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    margin: 20px 0 0 0
+}
+
+// styling paragraph text superimposed on image 
+.view p {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    position: relative;
+    color: #fff;
+    padding: 10px 20px 20px;
+    text-align: center
+}
+
+// adds button style to "more info" link
+.view a.info {
+    display: inline-block;
+    text-decoration: none;
+    padding: 7px 14px;
+    background: #000;
+    color: #fff;
+    text-transform: uppercase;
+    box-shadow: 0 0 1px #000
+}
+
+// adds shadow when hovering over "more info" link
+.view a.info:hover {
+    box-shadow: 0 0 5px #000
+}
+
+//transition-hover effects
+
+//Example 1
+.view-first img { 
+    transition: all 0.2s linear;
+}
+.view-first .mask {
+    opacity: 0;
+    background-color: rgba(226,103,0, 0.7); 
+    transition: all 0.4s ease-in-out;
+}
+.view-first h2 {
+    transform: translateY(-100px);
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+.view-first p { 
+    transform: translateY(100px);
+    opacity: 0;
+	transition: all 0.2s linear;
+}
+.view-first a.info{
+    opacity: 0;
+	transition: all 0.2s ease-in-out;
+}
+
+.view-first:hover img { 
+	transform: scale(1.1);
+} 
+.view-first:hover .mask { 
+	opacity: 1;
+}
+.view-first:hover h2,
+.view-first:hover p,
+.view-first:hover a.info {
+    opacity: 1;
+    transform: translateY(0px);
+}
+.view-first:hover p {
+    transition-delay: 0.1s;
+}
+.view-first:hover a.info {
+    transition-delay: 0.2s;
+}
+
+// Example 10
+
+.view-tenth img { 
+	transform: scaleY(1);
+	transition: all 0.7s ease-in-out;
+}
+.view-tenth .mask { 
+    background-color: rgba(255, 231, 179, 0.3); 
+    transition: all 0.5s linear;
+    opacity: 0;
+}	
+.view-tenth h2{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    background: transparent;
+    margin: 20px 40px 0px 40px;
+    transform: scale(0);
+    color: #333;
+    transition: all 0.5s linear;
+    opacity: 0;
+}
+.view-tenth p {
+    color: #333;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.5s linear;
+}
+.view-tenth a.info { 
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.5s linear;
+}
+
+.view-tenth:hover img { 
+	transform: scale(10);
+    opacity: 0;
+}
+.view-tenth:hover .mask { 
+	opacity: 1;
+}																			 
+.view-tenth:hover h2,
+.view-tenth:hover p,
+.view-tenth:hover a.info{ 
+    transform: scale(1);
+    opacity: 1;
 }

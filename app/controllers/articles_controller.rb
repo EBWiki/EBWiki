@@ -7,15 +7,15 @@ class ArticlesController < ApplicationController
 	  if params[:state_id].present?
 	  	@articles_by_state = Article.where(state_id: params[:state_id])
 	    if params[:query].present?
-	      @articles = Article.search("#{params[:query]}", where: {state_id: params[:state_id]}, page: params[:page], per_page: 18)
+	      @articles = Article.search("#{params[:query]}", where: {state_id: params[:state_id]}, page: params[:page], per_page: 12)
 	    else
-	      @articles = @articles_by_state.all.order('date DESC').page(params[:page]).per(18)
+	      @articles = @articles_by_state.all.order('date DESC').page(params[:page]).per(12)
 	    end
 	  else
 	    if params[:query].present?
-	      @articles = Article.search("#{params[:query]}", page: params[:page], per_page: 18)
+	      @articles = Article.search("#{params[:query]}", page: params[:page], per_page: 12)
 	    else
-	      @articles = Article.all.order('date DESC').page(params[:page]).per(18)
+	      @articles = Article.all.order('date DESC').page(params[:page]).per(12)
 	    end
 	  end
 
