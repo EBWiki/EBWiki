@@ -1,8 +1,8 @@
 <div class="nested-fields">
   <%= f.input :name %>
   <%= f.input :age %>
-  <%= f.input :gender %>
-  <%= f.input :ethnicity %>
+  <%= f.input :gender_id,:collection => Gender.all,:label_method => :sex,:value_method => :id,:label => "Gender" ,:include_blank => false %>
+  <%= f.input :ethnicity_id,:collection => Ethnicity.all,:label_method => :title,:value_method => :id,:label => "Race" ,:include_blank => false %>
   <%= f.input :armed %>
   <%= f.input :mentally_ill %>
   <%= f.input :veteran %>

@@ -1,10 +1,6 @@
 require 'rails_helper'
 
   describe Article do
-    it "is invalid without a title" do
-      article = build(:article, title: nil)
-      expect(article).to be_invalid
-    end
     it "is invalid without a date" do
       article = build(:article, date: nil)
       expect(article).to be_invalid
@@ -12,12 +8,6 @@ require 'rails_helper'
     it "is invalid without a state_id" do
       article = build(:article, state_id: nil)
       expect(article).to be_invalid
-    end
-    it "must have a unique name" do
-      article = build(:article, title: 'john smith')
-      article.save
-      article2 = build(:article, title: 'john smith')
-      expect(article2).to be_invalid
     end
   end
 
