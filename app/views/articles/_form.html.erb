@@ -9,36 +9,61 @@
       </ul>
     </div>
   <% end %>
-	<%= f.input :date, as: :date_picker, :label => 'Date field', class: "datetimepicker" %>
-	<h4>Enter a category of abuse:</h4>
-	<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
-	<h4>Upload a photo of the victim:</h4>
-	<%= f.file_field :avatar %>
-	<h4>Add a YouTube Video url relating to the case:</h4>
-	<%= f.input :video_url %>
-	<div class = "form-group">
-		<h4>Add at least one victim</h4>
-			<div id="subjects">
+	<div class="cold-md-12">
+		<fieldset class="fsStyle">				
+			<legend class="legendStyle">Basic Case Information, Media</legend>
+			<div>
+				<%= f.input :date, as: :date_picker, :label => 'Date of Incident', class: "datetimepicker" %>
+				<h4>Upload a photo of the victim:</h4>
+				<%= f.file_field :avatar %>
+				<h4>Add a YouTube Video url relating to the case:</h4>
+				<%= f.input :video_url %>
+				<h4>Enter a category of abuse:</h4>
+				<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
+	    </div>
+		</fieldset>
+	</div>
+
+	<div class="cold-md-12">
+		<fieldset class="fsStyle">				
+			<legend class="legendStyle">Victims Information</legend>
+			<div>
 		    <%= f.simple_fields_for :subjects do |subject| %>
 		      <%= render 'subject_fields', :f => subject %>
 		    <% end %>
-	    <div class="links">
-	      <%= link_to_add_association 'Enter victim information', f, :subjects, :class => "btn btn-warning" %>
 	    </div>
-	</div>
-	<%= f.input :address %>
-	<%= f.input :city %>
-	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
-	<%= f.input :zipcode %>
-	<%= f.input :overview %>
-	<%= f.input :litigation %>
-	<%= f.input :community_action %>
-	<br>
+	    <div class="links">
+	      <%= link_to_add_association 'Add a Victim', f, :subjects, :class => "btn btn-warning" %>
+	    </div>
+	</fieldset>
+
+	<!-- fieldset collapse start -->
+<div class="cold-md-12">
+	<fieldset class="fsStyle">				
+		<legend class="legendStyle">
+      <div data-toggle="collapse">Incident Location Info</div>
+		</legend>
+		<%= f.input :address %>
+		<%= f.input :city %>
+		<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
+		<%= f.input :zipcode %>
+  </fieldset>
+</div>
+
+<div class="cold-md-12">
+	<fieldset class="fsStyle">				
+		<legend class="legendStyle">Main Content Fields</legend>
+		<%= f.input :overview %>
+		<%= f.input :litigation %>
+		<%= f.input :community_action %>
+  </fieldset>
+</div>
 	<!--
 	<%#= f.grouped_collection_select :agency_id, State.order(:name), :agencies, :name, :id, :name, {prompt: "Name of Law Enforcement Agency"}, label:"Agency" %>
 	-->
-	<div class = "form-group">
-	<h4>Add links to related content:</h4>
+<div class="cold-md-12">
+	<fieldset class="fsStyle">				
+		<legend class="legendStyle">Links to Related Content</legend>
 		<div id="links">
 		    <%= f.simple_fields_for :links do |link| %>
 		      <%= render 'link_fields', :f => link %>
@@ -46,13 +71,10 @@
 	    <div class="links">
 	      <%= link_to_add_association 'add a link', f, :links, :class => "btn btn-warning" %>
 	    </div>
-	</div>
-	
-
-
-    <br>
+		</div>
+	</fieldset>
+  <br>
 	<%= f.button :submit, :class => 'btn btn-primary' %>
-
 <% end %>
 
 <script type="text/javascript">

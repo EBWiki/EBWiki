@@ -1,0 +1,50 @@
+
+legend a {
+  color: inherit;
+}
+legend.legendStyle {
+padding-left: 5px;
+padding-right: 5px;
+}
+fieldset.fsStyle {
+font-family: Verdana, Arial, sans-serif;
+font-size: small;
+font-weight: normal;
+border: 1px solid #999999;
+padding: 10px;
+margin: 5px;
+}
+legend.legendStyle {
+font-size: 90%;
+color: #888888;
+background-color: transparent;
+font-weight: bold;
+}
+
+legend {
+width: inherit;
+border-bottom: none;
+}
+
+.dropdown-menu {width: 100%;
+position: fixed;
+top: 50px;
+left: 0;
+z-index: 1000;
+display: none;
+float: left;
+min-width: 160px;
+padding: 5px 0;
+margin: 0 auto;
+
+text-align:left;
+}
+
+.dropdown-menu li {display:inline-block;}
+
+.dropdown-menu li.dropdown .dropdown-menu {top:210px;}
+
+
+.dropdown-menu li.dropdown {background:url(http://decombh.org/img/nav_down.png) no-repeat bottom right !important;
+background-position: 5px 9px !important;
+}
