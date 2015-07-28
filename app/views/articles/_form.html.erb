@@ -16,9 +16,16 @@
 	<%= f.file_field :avatar %>
 	<h4>Add a YouTube Video url relating to the case:</h4>
 	<%= f.input :video_url %>
-	<h4>Name of the victim:</h4>
-	<%= f.input :title, :label => false %>
-	<%= f.input :age %>
+	<div class = "form-group">
+		<h4>Add at least one victim</h4>
+			<div id="subjects">
+		    <%= f.simple_fields_for :subjects do |subject| %>
+		      <%= render 'subject_fields', :f => subject %>
+		    <% end %>
+	    <div class="links">
+	      <%= link_to_add_association 'Enter victim information', f, :subjects, :class => "btn btn-warning" %>
+	    </div>
+	</div>
 	<%= f.input :address %>
 	<%= f.input :city %>
 	<%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
