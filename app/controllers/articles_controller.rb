@@ -37,6 +37,7 @@ class ArticlesController < ApplicationController
 		@commentable = @article
 		@comments = @commentable.comments
 		@comment = Comment.new
+		@subjects = @article.subjects 
 
     @hash = Gmaps4rails.build_markers(@article.nearby_cases) do |article, marker|
 		  marker.lat article.latitude

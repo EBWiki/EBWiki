@@ -1,7 +1,7 @@
 <%
-meta title: "The case of #{@article.title}",
+meta title: "EBWiki tracking the case of #{@article.title}",
      description: "#{@article.overview.truncate(155)}",
-     keywords: %w("@article.title police")
+     keywords: %w("@article.subjects.first.name police violence people color")
 %>
 <!-- Page Content -->
 <div class="container">
@@ -43,7 +43,7 @@ meta title: "The case of #{@article.title}",
     </div>
 
 	  <div class="col-md-9">
-      <h1 class="page-header articleTitle"><%= @article.title %>, <%= @article.age ? "#{@article.age}" : "" %>
+      <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
       </h1>
