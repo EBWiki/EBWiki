@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :gender do
-    sex "MyString"
+    sex "Male"
   end
 
 end

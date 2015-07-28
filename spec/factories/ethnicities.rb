@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :ethnicity do
-    title "MyString"
+    title "Black"
   end
 
 end
