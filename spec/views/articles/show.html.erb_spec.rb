@@ -23,6 +23,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
     assign(:commentable, article)
     assign(:comments, article.comments)
     assign(:comment, Comment.new)
+    assign(:subjects, article.subjects)
     render
     expect(response.body).to match /Legal Action/m
   end
@@ -35,6 +36,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
     assign(:commentable, article)
     assign(:comments, article.comments)
     assign(:comment, Comment.new)
+    assign(:subjects, article.subjects)
     render
     expect(response.body).to match /Summary/m
   end
@@ -47,6 +49,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
     assign(:commentable, article)
     assign(:comments, article.comments)
     assign(:comment, Comment.new)
+    assign(:subjects, article.subjects)
     render
     expect(response.body).to match /Community and Family/m
   end
