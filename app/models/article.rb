@@ -10,6 +10,8 @@ class Article < ActiveRecord::Base
 	has_many :officers, through: :article_officers
 	accepts_nested_attributes_for :officers, :reject_if => :all_blank, :allow_destroy => true
 	has_many :comments, as: :commentable
+	has_many :subjects
+	accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
 	has_paper_trail :only => [:title, :overview, :litigation, :community_action]
 	acts_as_followable
@@ -18,8 +20,6 @@ class Article < ActiveRecord::Base
 	searchkick
 
 	validates :date, presence: { message: "Please add a date." }
-	validates :title, presence:  { message: "Title (name of the victim) can't be blank." }
-	validates :title, uniqueness: { message: "We already have an article with this victim" }
 	validates :city, presence: { message: "Please add a city." }
 	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
 	

@@ -37,6 +37,7 @@ class ArticlesController < ApplicationController
 		@commentable = @article
 		@comments = @commentable.comments
 		@comment = Comment.new
+		@subjects = @article.subjects 
 
     @hash = Gmaps4rails.build_markers(@article.nearby_cases) do |article, marker|
 		  marker.lat article.latitude
@@ -117,7 +118,7 @@ private
 	end
 
 	def article_params
-		params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], comments_attributes: [:comment, :content, :commentable_id, :commentable_type])
+		params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], comments_attributes: [:comment, :content, :commentable_id, :commentable_type], subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :veteran, :mentally_ill, :_destroy])
 	end
 
 	# from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)
