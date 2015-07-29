@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :subject do
-    name "MyString"
+    name Faker::Name.name
 		age 1
 		gender_id 1
 		ethnicity_id 1

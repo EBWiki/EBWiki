@@ -267,9 +267,9 @@ ActiveRecord::Schema.define(version: 20150728161406) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",                  default: false
     t.float    "latitude"
     t.float    "longitude"
+    t.boolean  "admin",                  default: false
     t.string   "storytime_name"
     t.string   "name"
     t.text     "description"

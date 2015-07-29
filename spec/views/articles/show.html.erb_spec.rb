@@ -10,6 +10,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
     assign(:commentable, article)
     assign(:comments, article.comments)
     assign(:comment, Comment.new)
+    assign(:subjects, article.subjects)
     render
     expect(rendered).not_to match /only a stub/m
   end
