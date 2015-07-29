@@ -4,6 +4,7 @@ task :victims_migrate => :environment do
 
   Article.find_each do |article|
     subject = Subject.new(
+        article_id: article.id,
         name: article.title,
         age: article.age
       )
