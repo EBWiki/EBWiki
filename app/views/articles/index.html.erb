@@ -31,7 +31,7 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 				            <% if article.avatar? %>
 				              <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
 				            <% else %>
-				              <%= link_to image_tag('default-user-icon.png', :class => "img-responsive"), article %>
+				              <%= link_to image_tag("https://s3.amazonaws.com/blackopswiki/uploads/article/avatar/319/large_avatar_default-user-icon.png", :class => "img-responsive"), article %>
 									  <% end %>
 									  <div class="mask">
 										  <h2><%= article.title %></h2>
