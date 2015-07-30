@@ -16,7 +16,7 @@ class Article < ActiveRecord::Base
 	has_paper_trail :only => [:title, :overview, :litigation, :community_action]
 	acts_as_followable
 	extend FriendlyId
-	friendly_id :name_from_subject, use: [:slugged, :finders]
+	friendly_id :title, use: [:slugged, :finders]
 	searchkick
 
 	validates :date, presence: { message: "Please add a date." }
@@ -41,7 +41,4 @@ class Article < ActiveRecord::Base
 		self.nearbys(50).order("distance")
 	end
 
-	def name_from_subject
-    "#{self.subjects.first.name}"
-  end
 end
