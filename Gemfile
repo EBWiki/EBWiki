@@ -144,3 +144,6 @@ gem 'gibbon'
 
 # metatag helper
 gem 'metamagic'
+
+# Google News API help
+gem 'galerts'

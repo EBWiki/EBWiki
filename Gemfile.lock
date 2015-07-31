@@ -135,6 +135,8 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
     dotenv (2.0.1)
     dotenv-rails (2.0.1)
       dotenv (= 2.0.1)
@@ -257,6 +259,8 @@ GEM
     formatador (0.2.5)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
+    galerts (1.0.8)
+      mechanize (~> 2.7)
     geocoder (1.2.8)
     gibbon (1.2.0)
       httparty
@@ -289,6 +293,8 @@ GEM
     highline (1.6.21)
     hitimes (1.2.2)
     hodel_3000_compliant_logger (0.1.1)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     httparty (0.13.5)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -320,6 +326,15 @@ GEM
     lumberjack (1.0.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    mechanize (2.7.3)
+      domain_name (~> 0.5, >= 0.5.1)
+      http-cookie (~> 1.0)
+      mime-types (~> 2.0)
+      net-http-digest_auth (~> 1.1, >= 1.1.1)
+      net-http-persistent (~> 2.5, >= 2.5.2)
+      nokogiri (~> 1.4)
+      ntlm-http (~> 0.1, >= 0.1.1)
+      webrobots (>= 0.0.9, < 0.2)
     metamagic (3.1.7)
       rails (>= 3.0.0)
     method_source (0.8.2)
@@ -334,6 +349,8 @@ GEM
     multipart-post (2.0.0)
     nenv (0.2.0)
     nested_form (0.3.2)
+    net-http-digest_auth (1.4)
+    net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -342,6 +359,7 @@ GEM
     notiffany (0.0.6)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    ntlm-http (0.1.1)
     oink (0.10.1)
       activerecord
       hodel_3000_compliant_logger
@@ -511,6 +529,9 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
     uniform_notifier (1.9.0)
     user_agent_parser (2.2.0)
     uuidtools (2.1.5)
@@ -521,6 +542,7 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    webrobots (0.1.1)
     websocket (1.2.2)
     whenever (0.9.4)
       chronic (>= 0.6.3)
@@ -550,6 +572,7 @@ DEPENDENCIES
   faker (~> 1.4.3)
   fog
   friendly_id (~> 5.1.0)
+  galerts
   geocoder
   gibbon
   gmaps4rails
