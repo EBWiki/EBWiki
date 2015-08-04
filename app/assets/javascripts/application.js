@@ -14,7 +14,6 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require ahoy
 //= require bootstrap-sprockets
 //= require moment
 //= require bootstrap-datetimepicker
@@ -24,4 +23,5 @@
 //= require social-share-button
 //= require underscore
 //= require select2
+//= require ahoy
 //= require_tree .
