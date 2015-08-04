@@ -1,0 +1,2 @@
+ahoy.trackAll();
+
