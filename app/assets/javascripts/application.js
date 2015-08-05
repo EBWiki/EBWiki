@@ -26,4 +26,4 @@
 //= require select2
 //= require select
 //= require articles 
-//= require ahoy
+//= require ahoy_set
