@@ -24,4 +24,6 @@
 //= require social-share-button
 //= require underscore
 //= require select2
-//= require_tree .
+//= require select
+//= require ahoy
+//= require articles 
