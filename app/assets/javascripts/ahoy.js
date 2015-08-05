@@ -1,5 +1,5 @@
-$(document).ready(function(){ 
-
-  ahoy.trackAll();
-
-});
+//$(document).ready(function(){ 
+//
+//  ahoy.trackAll();
+//
+//});
