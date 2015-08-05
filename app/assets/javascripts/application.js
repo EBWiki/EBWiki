@@ -25,5 +25,5 @@
 //= require underscore
 //= require select2
 //= require select
-//= require ahoy
 //= require articles 
+//= require ahoy
