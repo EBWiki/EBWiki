@@ -8,8 +8,7 @@ notifications:
    - nyonmark@gmail.com
    - dariusgoore@gmail.com
 # uncomment this line if your project needs to run something other than `rake`:
-script:
- - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && bundle exec rake tests:integration || false'
+# script: bundle exec rspec spec
 
 # Select modern postgres
 addons:
