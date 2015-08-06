@@ -1,7 +1,7 @@
 ruby "2.2.1"
 
 source 'https://rubygems.org'
-gem 'dotenv-rails', :groups => [:development, :test], :require => 'dotenv/rails-now'
+gem 'dotenv-rails', :groups => [:development, :test, :production], :require => 'dotenv/rails-now'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -92,8 +92,8 @@ gem 'rails_12factor', :groups => [:production, :staging]
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'simple_form'
-gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 gem 'momentjs-rails'
+gem 'bootstrap3-datetimepicker-rails'
 
 # for aws cloud storage
 gem 'fog'

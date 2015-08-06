@@ -1,5 +1,5 @@
-var ready = function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
-};
-$(document).ready(ready);
+$(document).ready(function(){
 
+  $('[data-toggle="tooltip"]').tooltip();
+
+});

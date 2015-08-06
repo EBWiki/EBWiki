@@ -12,6 +12,7 @@
 //
 //= require gmaps/google
 //= require jquery
+//= require ahoy
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
@@ -23,5 +24,4 @@
 //= require social-share-button
 //= require underscore
 //= require select2
-//= require ahoy
 //= require_tree .

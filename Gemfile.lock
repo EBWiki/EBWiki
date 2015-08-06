@@ -6,15 +6,6 @@ GIT
       carrierwave (>= 0.5.8)
       rails (>= 3.2.0)
 
-GIT
-  remote: git://github.com/zpaulovics/datetimepicker-rails.git
-  revision: c5405f3486b57a52416caf93b79fc09d56930a82
-  branch: master
-  submodules: true
-  specs:
-    datetimepicker-rails (4.7.15)
-      momentjs-rails (>= 2.9.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -76,6 +67,8 @@ GEM
     bootstrap-sass (3.3.4.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
+    bootstrap3-datetimepicker-rails (4.15.35)
+      momentjs-rails (>= 2.8.1)
     brakeman (3.0.5)
       erubis (~> 2.6)
       fastercsv (~> 1.5)
@@ -559,6 +552,7 @@ DEPENDENCIES
   acts_as_follower
   ahoy_matey
   bootstrap-sass
+  bootstrap3-datetimepicker-rails
   brakeman
   bullet
   capybara (~> 2.4.3)
@@ -568,7 +562,6 @@ DEPENDENCIES
   codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
   database_cleaner (~> 1.3.0)
-  datetimepicker-rails!
   devise
   dotenv-rails
   factory_girl_rails
