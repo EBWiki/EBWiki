@@ -1,0 +1,6 @@
+<div class="nested-fields">
+  <%= select_tag(:milestone_id, options_from_collection_for_select(Milestone.all, :id, :title), include_blank: false, data: {placeholder: "Pick a milestone"}, id: "", class: 'form-control select2') %>
+  <%= f.input :date, as: :date_picker, :label => 'Date of Milestone', class: "datetimepicker" %>
+  <%= f.input :description %>
+  <%= link_to_remove_association "remove link", f %>
+</div>
