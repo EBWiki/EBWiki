@@ -58,6 +58,19 @@
 		<%= f.input :community_action %>
   </fieldset>
 </div>
+
+<div class="cold-md-12">
+	<fieldset class="fsStyle">				
+		<div id="">
+	    <%= f.simple_fields_for :article_milestones do |milestone| %>
+	      <%= render 'article_milestone_fields', :f => milestone %>
+	    <% end %>
+	    <div class="">
+	      <%= link_to_add_association 'add a milestone', f, :article_milestones, :class => "btn btn-warning" %>
+	    </div>
+		</div>
+  </fieldset>
+</div>
 	<!--
 	<%#= f.grouped_collection_select :agency_id, State.order(:name), :agencies, :name, :id, :name, {prompt: "Name of Law Enforcement Agency"}, label:"Agency" %>
 	-->
