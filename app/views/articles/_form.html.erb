@@ -63,6 +63,19 @@
 	-->
 <div class="cold-md-12">
 	<fieldset class="fsStyle">				
+		<div id="">
+	    <%= f.simple_fields_for :article_milestones do |milestone| %>
+	      <%= render 'article_milestone_fields', :f => milestone %>
+	    <% end %>
+	    <div class="">
+	      <%= link_to_add_association 'add a milestone', f, :article_milestones, :class => "btn btn-warning" %>
+	    </div>
+		</div>
+  </fieldset>
+</div>
+
+<div class="cold-md-12">
+	<fieldset class="fsStyle">				
 		<legend class="legendStyle">Links to Related Content</legend>
 		<div id="links">
 		    <%= f.simple_fields_for :links do |link| %>

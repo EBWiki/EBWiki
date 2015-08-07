@@ -1,0 +1,10 @@
+<div class="nested-fields">
+	<%= f.collection_select :milestone_id, Milestone.all, :id, :title, {prompt: "Choose a Milestone"}, class: 'form-control select2' %>
+  <%= f.input :date, as: :date_picker, :label => 'Date of Milestone', class: "datetimepicker" %>
+  <%= f.input :description, :maxlength => 140, :size => 150  %>
+  <%= link_to_remove_association "remove link", f %>
+</div>
+
+<script type="text/javascript">
+    $('.datetimepicker').datetimepicker();
+</script>
