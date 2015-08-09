@@ -1,8 +1,9 @@
-<!-- the meta tag is for use with metamagic gem which generates 
-     title and meta tags in conjunction with the metamagic
-     method in app/views/layouts/application.html.erb 
-     TODO: Create a view helper that works for all pages -->
-<% meta %>
+<%
+meta title: "EBWiki - Ending Violence Against People of Color",
+     description: "EBWiki is a new web application woring to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.",
+     keywords: %w("police killing abuse")
+%>
+<%= render 'layouts/header' %>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">

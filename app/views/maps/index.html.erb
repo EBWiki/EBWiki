@@ -1,0 +1,38 @@
+<%
+meta title: "EBWiki - Mapping Violence Against People of Color",
+     description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases",
+     keywords: %w("police killing abuse")
+%>
+<%= render 'layouts/header2' %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header underline">EBWiki below maps <%= @articles.count %> cases of violence against people of color. Read more <%= link_to 'about us',about_path %></h2> 
+            <% if user_signed_in? %>
+	            Click the follow button below the image on any case page and we will keep you updated as these cases proceed. It is only by paying attention that we will eradicate this behavior.</p>
+						<% else %>
+	            <%= link_to 'Login', new_user_registration_path %> and follow specific cases and we will update you as they proceed. It is only by paying attention that we will eradicate this behavior.
+						<% end %>
+						<div class="text-center">
+							<h3><%= link_to 'Get our newsletter', "http://eepurl.com/bt5QCz", class: "btn btn-default" %></h3>
+						</div>
+        </div>
+    </div>
+<%= params.inspect %>
+
+    <!-- Map -->
+    <div class="row">
+	    <div class="col-lg-12 articleMap">
+		  <div id='map'></div>	
+	    </div>
+	</div>
+    <!-- End Map -->
+</div>
+<script type="">
+	handler = Gmaps.build('Google');
+	handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+	  markers = handler.addMarkers(<%=raw @hash.to_json %>);
+	  handler.bounds.extendWith(markers);
+	  handler.fitMapToBounds();
+	});
+</script>
