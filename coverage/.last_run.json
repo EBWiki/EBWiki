@@ -1,5 +1,9 @@
 {
   "result": {
+<<<<<<< HEAD
     "covered_percent": 52.98
+=======
+    "covered_percent": 54.51
+>>>>>>> adding navigation buttons to maps page and back, removing map from root page
   }
 }
