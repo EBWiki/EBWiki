@@ -20,7 +20,7 @@
 		  <% end %>
 		</li>
       </ul>
-		<%= form_tag articles_path, method: :get do %>
+		<%= form_tag "#{filter}", method: :get do %>
         <div class="navbar-form navbar-left">
           <%= select_tag(:state_id, options_from_collection_for_select(State.all, :id, :name), include_blank: true, data: {placeholder: "Filter By State"}, id: "", class: 'form-control select2') %>
         </div>
