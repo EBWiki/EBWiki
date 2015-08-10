@@ -31,6 +31,13 @@
 		    </div>
 		  <% end %>
 		</div>
+		<div class="container fixed">
+			<% if params[:controller] == "maps" %>
+				<%= render 'layouts/header2' %>
+			<% else %>
+				<%= render 'layouts/header' %>
+			<% end %>
+		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
