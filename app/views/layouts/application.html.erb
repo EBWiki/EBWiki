@@ -23,7 +23,6 @@
  
 	</head>
 	<body>
-		<%= render 'layouts/header' %>
 		<div class="container">
 		  <% flash.each do |key, value| %>
 		    <div class="alert alert-<%= key %>">
@@ -31,6 +30,9 @@
 		      <%= value.html_safe %>
 		    </div>
 		  <% end %>
+		</div>
+		<div class="container fixed">
+			<%= render 'layouts/header' %>
 		</div>
 		<div class="container">
 			<div class="row">

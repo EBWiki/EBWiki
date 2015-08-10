@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get '/maps/index', to: 'maps#index'
+
   get 'agencies/show'
 
   get '/about', to: 'static#about'
