@@ -15,7 +15,7 @@ RSpec.describe UserNotifier, type: :mailer do
     end
  
     it 'renders the sender email' do
-      expect(mail.from).to eql(['blackopswiki0@gmail.com'])
+      expect(mail.from).to eql(['EndBiasWiki@gmail.com'])
     end
  
     it 'includes @title' do
