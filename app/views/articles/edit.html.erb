@@ -1,3 +1,9 @@
+<!-- the meta tag is for use with metamagic gem which generates 
+     title and meta tags in conjunction with the metamagic
+     method in app/views/layouts/application.html.erb 
+     TODO: Create a view helper that works for all pages -->
+
+<% meta %>
 <h1>Edit Case for "<%= @article.subjects.first.name %>"</h1>
 
 <%= render 'form' %>
