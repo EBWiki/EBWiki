@@ -7,12 +7,12 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header underline">EBWiki has recorded <%= Article.count %> cases of law enforcement killing people of color so far and there are countless more cases that we have not yet captured.</h2>
-            <h4 class="page-subheader">EBWiki is aimed at bringing to light and ending instances of biased violence against people of color by those in law enforcement and elsewhere. Read more <%= link_to 'about us',about_path %>.  
+            <h2 class="page-header underline">EBWiki is currently tracking <%= Article.count %> law enforcement killings of people of color and there will be many more if we do not act.</h2>
+            <h4 class="page-subheader">EBWiki is built on crowd-sourced information and aims to make it easy for all of us to stay informed. Read more <%= link_to 'about us',about_path %>.  
               <% if user_signed_in? %>
-		            Click the follow button below the image on any case page and we will keep you updated as these cases proceed. It is only by paying attention that we will eradicate this behavior.</p>
+		            Click the follow button below the image on any case page and we will send you updates as these cases proceed. It is only by paying strict attention that we will eradicate this behavior.</p>
 							<% else %>
-	            <%= link_to 'Login', new_user_registration_path %> and follow specific cases and we will update you as they proceed. It is only by paying attention that we will eradicate this behavior.
+	            <%= link_to 'Login', new_user_registration_path %> and follow specific cases and we will update you as they proceed. It is only by paying strict attention that we will eradicate this behavior.
 							<% end %>
 						</h4>
 						<div class="text-center">

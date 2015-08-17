@@ -34,7 +34,17 @@
           <a href="#" class="btn btn-social btn-linkedin">
               <i class="fa fa-linkedin"></i>&nbsp; Linkedin </a>
         </div> -->
-        <h3 class="page-header">Cases <%= @user.name %> followed:</h3>
+        <% if @user != current_user %>
+          <h3 class="page-header">Cases <%= @user.name %> follows:</h3>
+        <% else %>
+          <h3 class="page-header">
+            <% if @user.all_following.count == 0 %>
+              Please take 30 seconds and <%= link_to 'pick a case', root_path %> that you want to track and click the follow button. We'll take it from there to keep you informed. 
+            <% else %>
+              <h3 class="page-header">Cases we are tracking for you:</h3>
+            <% end %>
+          </h3>
+        <% end %>
         <% @user.all_following.each do |followed| %>
           <% if followed.avatar.present? %>
             <div class="col-lg-2 col-md-4 col-xs-12">         
@@ -42,7 +52,7 @@
                 <div class="imageWrapper userFollowing">
                 <%= link_to image_tag(followed.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.overview, length:200)}"}), followed %>
                 </div>
-               </div>
+              </div>
             </div>  
           <% else %>
             <div class="col-lg-2 col-md-4 col-xs-12">         
@@ -50,9 +60,9 @@
                 <div class="imageWrapper userFollowing" >
                 <%= link_to image_tag('default-user-icon.png', :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.overview, length:200)}"}), followed %>
                 </div>
-               </div>
+              </div>
             </div> 
-          <% end %> 
+          <% end %>
         <% end %>
 
         <!-- <div class="form-group col-md-8">
