@@ -1,8 +1,9 @@
-<!-- the meta tag is for use with metamagic gem which generates 
-     title and meta tags in conjunction with the metamagic
-     method in app/views/layouts/application.html.erb 
-     TODO: Create a view helper that works for all pages -->
-<% meta %>
+<%
+meta title: "EBWiki - Ending Violence Against People of Color",
+     description: "EBWiki is a new web application woring to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.",
+     keywords: %w("police killing abuse")
+%>
+<%= render 'layouts/header' %>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
@@ -15,7 +16,7 @@
 							<% end %>
 						</h4>
 						<div class="text-center">
-							<h3><%= link_to 'Get our newsletter', "http://eepurl.com/bt5QCz", class: "btn btn-default" %></h3>
+							<h3><%= link_to 'View the Case Map', maps_index_path, class: "btn btn-warning" %>  <%= link_to 'Get our newsletter', "http://eepurl.com/bt5QCz", class: "btn btn-default" %></h3>
 						</div>
 						<h2 class="page-subheader">Below are photos of the victims. Hover over the images for more information.</h2>
 
@@ -49,19 +50,4 @@
     <%= paginate @articles %>
     <p><%= page_entries_info @articles %></p>
     <!-- End Gallery -->
-    <!-- Map -->
-    <div class="row">
-	    <div class="col-lg-12 articleMap">
-		  <div id='map'></div>	
-	    </div>
-	</div>
-    <!-- End Map -->
 </div>
-<script type="">
-	handler = Gmaps.build('Google');
-	handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-	  markers = handler.addMarkers(<%=raw @hash.to_json %>);
-	  handler.bounds.extendWith(markers);
-	  handler.fitMapToBounds();
-	});
-</script>
