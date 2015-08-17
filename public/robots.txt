@@ -4,4 +4,4 @@
 # User-agent: *
 # Disallow: /
 
-Sitemap: http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap_index.xml.gz
+Sitemap: http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz
