@@ -17,3 +17,6 @@
 
 # Ignore public folder
 /public/uploads
+
+/coverage/.last_run.json
+/coverage/.resultset.json*
