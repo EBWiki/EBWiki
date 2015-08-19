@@ -24,6 +24,8 @@ module Blackops
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
+
+    config.cache_store = :redis_store, ENV["REDISTOGO_URL"], { expires_in: 90.minutes }
     
     config.active_record.raise_in_transactional_callbacks = true
 
@@ -37,5 +39,8 @@ module Blackops
         :request_specs => true
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
     end
+
+    config.middleware.use Rack::Attack
+
   end
 end
