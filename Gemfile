@@ -36,6 +36,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Redis for caching 
+gem 'redis-rails'
+
 # Simple Captcha for signing up
 gem 'gotcha'
 
@@ -116,6 +119,12 @@ gem 'gmaps4rails'
 
 # implement elasticsearch
 gem 'searchkick'
+
+# Rack Attack for basic security through throttling and blocking
+gem 'rack-attack'
+
+# Rack Test for testing 
+gem 'rack-test', require: 'rack/test'
 
 # manage nested forms
 gem 'cocoon'

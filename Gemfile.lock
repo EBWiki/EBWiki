@@ -374,6 +374,8 @@ GEM
     puma (2.11.2)
       rack (>= 1.1, < 2.0)
     rack (1.6.0)
+    rack-attack (4.3.0)
+      rack
     rack-pjax (0.8.0)
       nokogiri (~> 1.5)
       rack (~> 1.1)
@@ -427,6 +429,23 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.0)
+    redis (3.2.1)
+    redis-actionpack (4.0.0)
+      actionpack (~> 4)
+      redis-rack (~> 1.5.0)
+      redis-store (~> 1.1.0)
+    redis-activesupport (4.1.1)
+      activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-rack (1.5.0)
+      rack (~> 1.5)
+      redis-store (~> 1.1.0)
+    redis-rails (4.0.0)
+      redis-actionpack (~> 4)
+      redis-activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.6)
+      redis (>= 2.2)
     referer-parser (0.3.0)
     remotipart (1.2.1)
     request_store (1.1.0)
@@ -589,9 +608,12 @@ DEPENDENCIES
   pg
   pry-byebug
   puma
+  rack-attack
+  rack-test
   rails (= 4.2.1)
   rails_12factor
   rails_admin
+  redis-rails
   rollbar (~> 1.5.3)
   rspec-activemodel-mocks
   rspec-rails (~> 3.0)
@@ -609,3 +631,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
   whenever
+
+BUNDLED WITH
+   1.10.5
