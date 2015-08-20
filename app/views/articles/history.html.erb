@@ -4,24 +4,22 @@
   <ul>
     <% @versions.each do |version| %>
       <li>
-        <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
-        Event ID: <%= version.id %><br/>
-        <b>Target:</b> <%= version.item_type %>
-        <small>(<%= Article.find(version.item_id).title %>)</small>; <b>action</b> <%= version.event %>;<br/>
-        <b>Remote address:</b> <%= version.ip %><br/>
-        <b>User:</b>
+        <%= l(version.created_at, format: "%-m.%d.%Y %H:%M:%S %Z") %><br/>
+        Version ID: <%= version.id %><br/>
+        <b>Editor:</b>
           <% if version.whodunnit && version.whodunnit != 'Guest' %>
             <% user = User.find_by_id(version.whodunnit) %>
             <% if user %>
-              <%= user.email %>
-              (last seen at <%= l(user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>)
+              <%= user.name %>
             <% end %>
           <% else %>
             Guest
           <% end %>
+        </br>
+        <b>Editor's IP Address:</b> <%= version.ip %><br/>
         <div>
-          Changeset:
-          <pre><%= version.changeset %></pre>
+          Summary of Changes in this version:
+          <pre><%= version.blurb %></pre>
         </div>
       </li>
     <% end %>
