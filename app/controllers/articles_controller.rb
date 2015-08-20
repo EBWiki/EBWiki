@@ -60,7 +60,6 @@ class ArticlesController < ApplicationController
 	end
 
 	def edit
-		@article.update_attribute(:latest_update, nil)
 	end
 
 	def update

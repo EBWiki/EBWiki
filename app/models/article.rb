@@ -16,7 +16,7 @@ class Article < ActiveRecord::Base
 	has_many :milestones, through: :article_milestones
 	accepts_nested_attributes_for :article_milestones, :reject_if => :all_blank, :allow_destroy => true
 
-	has_paper_trail :meta => {:blurb => :latest_update}
+	has_paper_trail :meta => {:blurb => :current_update}
 	acts_as_followable
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
@@ -31,6 +31,10 @@ class Article < ActiveRecord::Base
 
 	geocoded_by :full_address   # can also be an IP address
 	after_validation :geocode          # auto-fetch coordinates
+
+	def current_update
+		self.latest_update
+	end
 
 	def full_address
 		"#{address} #{city} #{state} #{zipcode}"
