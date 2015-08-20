@@ -16,7 +16,7 @@ class Article < ActiveRecord::Base
 	has_many :milestones, through: :article_milestones
 	accepts_nested_attributes_for :article_milestones, :reject_if => :all_blank, :allow_destroy => true
 
-	has_paper_trail :only => [:title, :overview, :litigation, :community_action]
+	has_paper_trail :meta => {:blurb => :latest_update}
 	acts_as_followable
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
