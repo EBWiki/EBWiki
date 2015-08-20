@@ -4,7 +4,7 @@
   <ul>
     <% @versions.each do |version| %>
       <li>
-        <%= version.created_at.strftime("%A, %d %b %Y %l:%M %p") %><br/>
+        <%= version.created_at.localtime.strftime("%A, %d %b %Y %l:%M %p") %><br/>
         Version ID: <%= version.id %><br/>
         <b>Editor:</b>
           <% if version.whodunnit && version.whodunnit != 'Guest' %>
