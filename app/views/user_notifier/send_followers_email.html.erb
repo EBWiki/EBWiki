@@ -1,10 +1,4 @@
 <h1> **ALERT** <%= @article.title %> update:</h1> 
-<p>Someone has updated the <%= link_to @article.title, @article %> case on EBWiki today.</p>
-<% if @article.versions.last.blurb != nil %>
-	<p>Here is a summary of the most recent update to this EBWiki case: </p>
-	<%= @article.versions.last.blurb %>  
-	<p> Please feel free to add any data you have on this or <%= link_to 'other cases', 'http://ebwiki.org' %>.</p>
-<% else %>
-  <p> Please feel free to add any data you have on this or <%= link_to 'other cases', 'http://ebwiki.org' %>.</p>
-<% end %>
-
+<p>Someone has updated the <%= link_to @article.title, @article %> case on EBWiki today. Here is a summary of the most recent update to this EBWiki case: </p>
+<%= @article.versions.last.blurb %>  
+<p> Please feel free to add any data you have on this or <%= link_to 'other cases', 'http://ebwiki.org' %>.</p>
