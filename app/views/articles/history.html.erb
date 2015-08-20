@@ -19,7 +19,13 @@
         <b>Editor's IP Address:</b> <%= version.ip %><br/>
         <div>
           Summary of Changes in this version:
-          <pre><%= version.blurb %></pre>
+          <pre>
+            <% if version.blurb.present? %>
+              <%= version.blurb %>
+            <% else %>
+              There were no significant changes in this version
+            <% end %>
+          </pre>
         </div>
       </li>
     <% end %>
