@@ -25,7 +25,14 @@ class Article < ActiveRecord::Base
 	validates :date, presence: { message: "Please add a date." }
 	validates :city, presence: { message: "Please add a city." }
 	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
-	
+	validate :check_subjects
+
+  def check_subjects
+    if self.subjects.blank?
+      errors.add(:base, 'An article must have at least one subject')
+    end
+  end
+
 	# Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
 

@@ -1,5 +1,19 @@
 require 'rails_helper'
 
+
+
+  describe '#subject_validation' do   
+    it 'should add an error if article has no subjects' do
+      article = build(:no_subject_article)
+      expect(article).to be_invalid
+    end
+
+    it 'should not add an error if article has at least one subject' do
+      article = build(:article)
+      article.errors.should be_blank
+    end
+  end
+
   describe Article do
     it "is invalid without a date" do
       article = build(:article, date: nil)
