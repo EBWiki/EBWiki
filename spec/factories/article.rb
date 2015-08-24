@@ -11,8 +11,8 @@ FactoryGirl.define do
       subjects_count 5
     end
 
-    after(:create) do |article, evaluator|
-      create_list(:subject, evaluator.subjects_count, article: article)
+    after(:build) do |article, evaluator|
+      article.subjects << FactoryGirl.build_list(:subject, evaluator.subjects_count, article: nil)
     end
   end
 

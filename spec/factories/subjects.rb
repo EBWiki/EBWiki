@@ -9,6 +9,7 @@ FactoryGirl.define do
 		unarmed false
 		mentally_ill false
 		veteran false
+    association :article, :factory => :article
   end
 
 end
