@@ -11,7 +11,7 @@ class UserNotifier < ApplicationMailer
   def send_followers_email(users, article)
     @article = article
   	users.each do|user|
-	  mail( :to => user.email, :subject => 'An EBWiki case has just been updated.' )
+  	  mail( :to => user.email, :subject => "[#{Rails.env unless Rails.env.production?}] The #{@article.subjects.first.name} case has just been updated on EBWiki." )
     end
   end
 end

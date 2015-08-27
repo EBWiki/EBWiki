@@ -16,7 +16,7 @@ class Article < ActiveRecord::Base
 	has_many :milestones, through: :article_milestones
 	accepts_nested_attributes_for :article_milestones, :reject_if => :all_blank, :allow_destroy => true
 
-	has_paper_trail :only => [:title, :overview, :litigation, :community_action]
+	has_paper_trail :meta => {:blurb => :current_update}
 	acts_as_followable
 	extend FriendlyId
 	friendly_id :title, use: [:slugged, :finders]
@@ -25,12 +25,23 @@ class Article < ActiveRecord::Base
 	validates :date, presence: { message: "Please add a date." }
 	validates :city, presence: { message: "Please add a city." }
 	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
-	
+	validate :check_subjects
+
+  def check_subjects
+    if self.subjects.blank?
+      errors.add(:base, 'An article must have at least one subject')
+    end
+  end
+
 	# Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
 
 	geocoded_by :full_address   # can also be an IP address
 	after_validation :geocode          # auto-fetch coordinates
+
+	def current_update
+		self.latest_update
+	end
 
 	def full_address
 		"#{address} #{city} #{state} #{zipcode}"
