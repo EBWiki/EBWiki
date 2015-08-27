@@ -11,8 +11,8 @@ FactoryGirl.define do
       subjects_count 5
     end
 
-    after(:create) do |article, evaluator|
-      create_list(:subject, evaluator.subjects_count, article: article)
+    after(:build) do |article, evaluator|
+      article.subjects << FactoryGirl.build_list(:subject, evaluator.subjects_count, article: nil)
     end
   end
 
@@ -22,6 +22,15 @@ FactoryGirl.define do
     f.city ""
     f.state_id 0
     f.date ""
+    # association :state, name: nil
+  end
+
+  factory :no_subject_article, class: Article do |f|
+    f.sequence(:title) {|n| "#{n}Title"}
+    f.overview "A new article"
+    f.city "Albany"
+    f.state_id 33
+    f.date Date.today
     # association :state, name: nil
   end
 

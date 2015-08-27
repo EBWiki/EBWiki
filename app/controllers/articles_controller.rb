@@ -65,8 +65,12 @@ class ArticlesController < ApplicationController
 	def update
 	  @article = Article.friendly.find(params[:id])
 	  if @article.update_attributes(article_params)
-	    flash[:success] = "Article was updated! #{make_undo_link}"
-	    UserNotifier.send_followers_email(@article.followers,@article).deliver_now
+	    if @article.latest_update.present? && @article.send_update == true
+		    UserNotifier.send_followers_email(@article.followers,@article).deliver_now
+		    flash[:success] = "Article was updated, email was sent to followers! #{make_undo_link}"
+		  else
+		    flash[:success] = "Article was updated, no email sent! #{make_undo_link}"
+		  end
 			redirect_to @article
 	  else
 	    render 'edit'
@@ -118,7 +122,7 @@ private
 	end
 
 	def article_params
-		params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], comments_attributes: [:comment, :content, :commentable_id, :commentable_type], subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy], article_milestones_attributes:[:date, :description, :milestone_id, :article_id, :id, :_destroy])
+		params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, :latest_update, :send_update, links_attributes: [:id, :url, :_destroy], officers_attributes: [:first_name, :last_name, :title, :avatar, :id, :_destroy], comments_attributes: [:comment, :content, :commentable_id, :commentable_type], subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy], article_milestones_attributes:[:date, :description, :milestone_id, :article_id, :id, :_destroy])
 	end
 
 	# from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)
