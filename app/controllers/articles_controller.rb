@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
 	before_action :find_article, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :history]
   #before_action :set_commentable
 
 	def index
