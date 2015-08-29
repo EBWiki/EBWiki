@@ -74,6 +74,7 @@
     overflow: hidden;
     top: 0;
     left: 0;
+    color: #FFF;
     bottom: 0
 }
 
@@ -120,6 +121,12 @@
     text-transform: uppercase;
     box-shadow: 0 0 1px #000
 }
+
+.view a.info2 {
+    color: #fff;
+}
+
+
 
 // adds shadow when hovering over "more info" link
 .view a.info:hover {
