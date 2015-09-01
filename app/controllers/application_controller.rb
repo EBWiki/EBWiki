@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
+  if Rails.env.staging?
+    http_basic_authenticate_with :name => ENV['STAGING_USERNAME'], :password => ENV['STAGING_PASSWORD']
+  end
+  
   protect_from_forgery with: :exception
 
   before_action :configure_permitted_parameters, if: :devise_controller?
