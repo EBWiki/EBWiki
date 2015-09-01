@@ -11,10 +11,10 @@
   <% end %>
 	<div class="cold-md-12">
 		<fieldset class="fsStyle">				
-			<legend class="legendStyle">Basic Case Information, Media <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Basic Information and Media", :content => "This fieldset includes the incident date, a photo of the victim or the event as well as a link to a youtube video of the event. Editors should seek out images beyond mug shots where possible. Likewise, our preference is for videos of the actual events as recorded as they occurred vs news reports or other secondary sources, though we have included secondary sources in a few cases."})%></legend>
+			<legend class="legendStyle">Basic Case Information, Media <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Basic Information and Media", :content => "This fieldset includes the incident date, a photo of the subject or the event as well as a link to a youtube video of the event. Editors should seek out images beyond mug shots where possible. Likewise, our preference is for videos of the actual events as recorded as they occurred vs news reports or other secondary sources, though we have included secondary sources in a few cases."})%></legend>
 			<div>
 				<%= f.input :date, as: :date_picker, :label => 'Date of Incident', class: "datetimepicker" %>
-				<h4>Upload a photo of the victim:</h4>
+				<h4>Upload a photo of the subject:</h4>
 				<%= f.file_field :avatar %>
 				<h4>Add a YouTube Video url relating to the case:</h4>
 				<%= f.input :video_url %>
@@ -26,14 +26,14 @@
 
 	<div class="cold-md-12">
 		<fieldset class="fsStyle">				
-			<legend class="legendStyle">Victims Information <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Victim's Information", :content => "This is where you will add information about age, gendar and other characteristics of the victim. Each case requires at least one victim.  "})%></legend>
+			<legend class="legendStyle">Subjects Information <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Subject's Information", :content => "This is where you will add information about age, gendar and other characteristics of the subject. Each case requires at least one subject.  "})%></legend>
 			<div>
 		    <%= f.simple_fields_for :subjects do |subject| %>
 		      <%= render 'subject_fields', :f => subject %>
 		    <% end %>
 	    </div>
 	    <div class="links">
-	      <%= link_to_add_association 'Add a Victim', f, :subjects, :class => "btn btn-warning" %>
+	      <%= link_to_add_association 'Add a Subject', f, :subjects, :class => "btn btn-warning" %>
 	    </div>
 	</fieldset>
 
