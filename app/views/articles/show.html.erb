@@ -96,7 +96,7 @@
 		<div class="row">
 
 	    <div class="col-lg-12">
-	        <h3 class="page-header">Other Cases Near <%= @article.city %>, <%= @article.state.name %></h3>
+	        <h3 class="page-header">EBWiki is tracking <%= @article.nearby_cases.size %> other case<%= "s" if @article.nearby_cases.size > 1 %> near <%= @article.city %>, <%= @article.state.name %>:</h3>
 	    </div>
 
 	    <% @article.nearby_cases.each do |nearby| %>
