@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150806203403) do
+ActiveRecord::Schema.define(version: 20150905173353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "agencies", force: :cascade do |t|
     t.string   "name"
@@ -35,7 +36,7 @@ ActiveRecord::Schema.define(version: 20150806203403) do
     t.uuid     "visit_id"
     t.integer  "user_id"
     t.string   "name"
-    t.text     "properties"
+    t.jsonb    "properties"
     t.datetime "time"
   end
 
@@ -89,6 +90,8 @@ ActiveRecord::Schema.define(version: 20150806203403) do
     t.text     "community_action"
     t.text     "litigation"
     t.string   "country"
+    t.text     "latest_update"
+    t.boolean  "send_update"
   end
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
@@ -118,6 +121,13 @@ ActiveRecord::Schema.define(version: 20150806203403) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+
+  create_table "edit_blurbs", force: :cascade do |t|
+    t.text     "blurb"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "article_id"
+  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -244,19 +254,6 @@ ActiveRecord::Schema.define(version: 20150806203403) do
     t.string   "ansi_code"
   end
 
-  create_table "storytime_comments", force: :cascade do |t|
-    t.text     "content"
-    t.integer  "user_id"
-    t.integer  "post_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "site_id"
-  end
-
-  add_index "storytime_comments", ["post_id"], name: "index_storytime_comments_on_post_id", using: :btree
-  add_index "storytime_comments", ["site_id"], name: "index_storytime_comments_on_site_id", using: :btree
-  add_index "storytime_comments", ["user_id"], name: "index_storytime_comments_on_user_id", using: :btree
-
   create_table "subjects", force: :cascade do |t|
     t.string   "name"
     t.integer  "age"
@@ -298,6 +295,7 @@ ActiveRecord::Schema.define(version: 20150806203403) do
     t.string   "linkedin"
     t.string   "slug"
     t.boolean  "subscribed"
+    t.string   "avatar"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -323,6 +321,7 @@ ActiveRecord::Schema.define(version: 20150806203403) do
     t.text     "object_changes"
     t.string   "ip"
     t.integer  "transaction_id"
+    t.text     "blurb"
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
