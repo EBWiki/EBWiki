@@ -15,13 +15,14 @@
 			<legend class="legendStyle">Basic Case Information, Media <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Basic Information and Media", :content => "This fieldset includes the incident date, a photo of the subject or the event as well as a link to a youtube video of the event. Editors should seek out images beyond mug shots where possible. Likewise, our preference is for videos of the actual events as recorded as they occurred vs news reports or other secondary sources, though we have included secondary sources in a few cases."})%></legend>
 			<div>
 				<%= f.input :date, as: :date_picker, :label => 'Date of Incident', class: "datetimepicker" %>
-				<h4>Current image showing on the case page:</h4>
+				<h4>Current image showing on the case page: </h4>
 	      <% if @article.avatar? %>
 		      <%= image_tag(@article.avatar.medium_avatar, :class => "img-responsive") %>
+		      <%= f.input :remove_avatar, :label => 'Remove current image' %>
 		    <% else %>
 			    <%= image_tag('default-user-icon.png', :size => "150x150", :class => "img-responsive") %>
 			  <% end %>
-				<h4>Upload a new photo of the subject:</h4>
+				<h4>Upload a new image to replace current photo:</h4>
 		    <%= f.file_field :avatar, :id => "lefile_article" %>
 			  <div class="input-append">
 			    <input id="photoCover_article" class="input-large" type="text">
@@ -108,6 +109,6 @@
 
 <script type="text/javascript">
   $('input[id=lefile_article]').change(function() {
-  $('#photoCover_article').val($(this).val());
+  $('#photoCover_article').val(_.last($(this).val().split("\\")));
   });
 </script>
