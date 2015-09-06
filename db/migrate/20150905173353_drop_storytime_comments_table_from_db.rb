@@ -1,6 +1,8 @@
 class DropStorytimeCommentsTableFromDb < ActiveRecord::Migration
   def up
-    drop_table :storytime_comments
+    if ActiveRecord::Base.connection.table_exists? :storytime_comments
+      drop_table :storytime_comments
+    end
   end
 
   def down
