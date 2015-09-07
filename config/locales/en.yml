@@ -20,4 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  mailboxer:
+    message_mailer:
+      subject_new: 'Hey, you receive a new message about %{subject}'
+      subject_reply: 'Hey, you receive a new reply about %{subject}'
