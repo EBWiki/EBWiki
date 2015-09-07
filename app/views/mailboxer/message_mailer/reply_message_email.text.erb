@@ -1,7 +1,7 @@
 You have a new reply: <%= @subject %>
 ===============================================
 
-You have received a new reply:
+You have received a new reply at EBWiki.org:
 
 -----------------------------------------------
 <%= @message.body.html_safe? ? @message.body : strip_tags(@message.body) %>
