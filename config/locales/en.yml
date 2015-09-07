@@ -22,5 +22,5 @@
 en:
   mailboxer:
     message_mailer:
-      subject_new: 'Hey, you receive a new message about %{subject}'
-      subject_reply: 'Hey, you receive a new reply about %{subject}'
+      subject_new: 'You received a new EBWiki message about %{subject}'
+      subject_reply: 'You received a new reply on EBWiki about %{subject}'
