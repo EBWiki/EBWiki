@@ -25,7 +25,7 @@ class Article < ActiveRecord::Base
 	validates :date, presence: { message: "Please add a date." }
 	validates :city, presence: { message: "Please add a city." }
 	validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
-	
+
 	# Avatar uploader using carrierwave
 	mount_uploader :avatar, AvatarUploader
 
@@ -41,7 +41,8 @@ class Article < ActiveRecord::Base
 	end
 
 	def nearby_cases
-		self.nearbys(50).order("distance")
+		self.try(:nearbys, 50).try(:order, "distance")
+		#self.nearbys(50).order("distance")
 	end
 
 end
