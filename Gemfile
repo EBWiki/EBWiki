@@ -86,6 +86,7 @@ group :test do
   gem "selenium-webdriver", "~> 2.43.0"
   gem 'shoulda-matchers', '~> 2.6.2'
   gem "codeclimate-test-reporter", require: nil
+  gem 'cucumber-rails', :require => false
 end
 
 gem 'rails_12factor', :groups => [:production, :staging]
