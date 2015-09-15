@@ -1,9 +1,0 @@
-{
-  "result": {
-<<<<<<< HEAD
-    "covered_percent": 53.14
-=======
-    "covered_percent": 50.49
->>>>>>> a4d41d9... Adding cucumber gem for feature tests
-  }
-}
