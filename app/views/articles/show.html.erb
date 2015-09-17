@@ -56,9 +56,9 @@
 			<p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
 		    <% if @article.followers.present? %>
           <p>
-            People tracking this case: <span class="timeAgo"><%= @article.followers.count %></span>. 
+            People tracking this case: <span class="timeAgo"><%= @article.followers.count %></span> 
 	            <% unless @article.followers.include?(current_user) %>
-		            Click here to <%= link_to 'Track this case', article_follows_path(@article) %>.
+		            -- Click here to <%= link_to 'Track this', article_follows_path(@article) %>.
 		          <% end %>
           </p>
         <% end %>
