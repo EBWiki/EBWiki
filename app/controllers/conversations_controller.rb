@@ -2,7 +2,7 @@ class ConversationsController < ApplicationController
 	before_action :authenticate_user!
 
 	def new
-		
+		@other_users = User.all.reject {|u| u == current_user}
 	end
 
 	def create
