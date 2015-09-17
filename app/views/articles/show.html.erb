@@ -54,6 +54,11 @@
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
       </h1>
 			<p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
+		    <% if @article.followers.present? %>
+          <p>
+            People tracking this case: <span class="timeAgo"><%= @article.followers.count %></span>. Click here to <%= link_to 'Track this case', article_follows_path(@article) %>.
+          </p>
+        <% end %>
 				<% if @article.overview.present? %>
 				    <h4 class="article_subheader">Summary  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "The basics", :content => "This section attempts to encapsulate the basic facts of the case."})%></h4>
 					<p><%= raw @article.overview %></p>
