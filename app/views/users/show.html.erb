@@ -45,25 +45,21 @@
             <% end %>
           </h3>
         <% end %>
-        <% @user.all_following.each do |followed| %>
-          <% if followed.avatar.present? %>
-            <div class="col-lg-2 col-md-4 col-xs-12">         
-              <div class="thumbnail" >
-                <div class="imageWrapper userFollowing">
-                <%= link_to image_tag(followed.avatar.medium_avatar, :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.overview, length:200)}"}), followed %>
+        <% @user.all_following.each do |article| %>  
+          <div class="col-lg-2 col-md-4 col-xs-12">
+              <div class="view view-first">                 
+                <% if article.avatar? %>
+                  <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
+                <% else %>
+                  <%= link_to image_tag("https://s3.amazonaws.com/blackopswiki/uploads/article/avatar/319/large_avatar_default-user-icon.png", :class => "img-responsive"), article %>
+                <% end %>
+                <div class="mask">
+                  <h2><%= link_to article.title, article, :class => "info2" %></h2>
                 </div>
               </div>
-            </div>  
-          <% else %>
-            <div class="col-lg-2 col-md-4 col-xs-12">         
-              <div class="thumbnail" >
-                <div class="imageWrapper userFollowing" >
-                <%= link_to image_tag('default-user-icon.png', :class => "img-responsive portfolio-item", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "#{followed.date.strftime("%m/%d/%Y")} - #{followed.title} ", :content => "#{truncate(followed.overview, length:200)}"}), followed %>
-                </div>
-              </div>
-            </div> 
-          <% end %>
+          </div>
         <% end %>
+
 
         <!-- <div class="form-group col-md-8">
           <h3>Change YOur Password</h3>
