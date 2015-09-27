@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
 	before_action :find_article, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index, :show, :history]
+  before_action :authenticate_user!, except: [:index, :show, :history, :followers]
   #before_action :set_commentable
 
 	def index
@@ -60,6 +60,10 @@ class ArticlesController < ApplicationController
 	end
 
 	def edit
+	end
+
+	def followers
+		@article = Article.friendly.find(params[:id])
 	end
 
 	def update

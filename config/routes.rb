@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit]
 
   get '/articles/:id/history', to: 'articles#history', as: :articles_history
+  get '/articles/:id/followers', to: 'articles#followers', as: :articles_followers
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles do
     resources :follows, :only => [:create, :destroy]
