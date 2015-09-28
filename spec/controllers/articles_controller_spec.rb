@@ -26,7 +26,7 @@ RSpec.describe ArticlesController, type: :controller do
         expect(response).to be_success
       end
 
-      it 'assigns it to @article' do 
+      it 'assigns it to @article' do
         expect(assigns(:article)).to eq article
       end
     end
@@ -34,6 +34,17 @@ RSpec.describe ArticlesController, type: :controller do
     context 'when requested article does not exists' do
       it 'throws ActiveRecord::RecordNotFound' do
         expect { get :show, id: -1 }.to raise_exception ActiveRecord::RecordNotFound
+      end
+    end
+
+    context "when information is missing" do
+      let(:article) { articles.first }
+
+      it 'redirects to the home page' do
+        article.subjects =[]
+        article.save!
+        get :show, id: article.id
+        expect(response).to redirect_to(root_path)
       end
     end
   end
