@@ -4,7 +4,7 @@
      TODO: Create a view helper that works for all pages -->
 <% meta title: "People tracking the case of #{@article.title}",
      description: "There are #{@article.followers.count} people tracking the case of #{@article.title} on EBWiki",
-     keywords: %w("@article.subjects.first.name police violence people color")
+     keywords: %w(@article.subjects.first.name " police violence people color")
 %>
 <%= render 'layouts/header' %>
 <!-- Page Content -->
