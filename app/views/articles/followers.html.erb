@@ -21,10 +21,10 @@
       <div class="col-lg-12">
 		    <% @article.followers.each do |follower| %>
 			    <div class="col-lg-2 col-md-4 col-xs-12">
-          <div class="">             
-            <%= link_to image_tag(avatar_url(follower,200), :class => "img-responsive"), follower %>
-          </div>
-      </div>
+	          <div class="">             
+	            <%= link_to image_tag(avatar_url(follower,200), :class => "img-responsive"), follower %>
+	          </div>
+		      </div>
 		    <% end %>
 		  </div>
 	  </div>
@@ -33,7 +33,7 @@
     <!-- We may decide to include a map that shows where people following this case are located -->
   <% else %>
     <h3 class="page-header"> There is no one currently following this case.</h3>
-    <h3 class="text-center"><%= link_to 'Track this case', article_follows_path(@article), class: "btn btn-primary" %></h3>
+    <h3 class="text-center"><%#= link_to 'Track this case', article_follows_path(@article), class: "btn btn-primary" %></h3>
 	<% end %>
 </div>
 
