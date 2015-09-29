@@ -14,4 +14,11 @@ class UserNotifier < ApplicationMailer
 	  mail( :to => user.email, :subject => 'An EBWiki case has just been updated.' )
     end
   end
+
+  def notify_of_removal(users, article)
+    @article = article
+    users.each do|user|
+    mail( :to => user.email, :subject => 'The @article.title case has been removed from EBWiki' )
+    end
+  end
 end
