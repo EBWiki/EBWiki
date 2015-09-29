@@ -91,6 +91,7 @@ class ArticlesController < ApplicationController
 	def destroy
 		@article.destroy
 	    flash[:success] = "Article was removed! #{make_undo_link}"
+	    UserNotifier.notify_of_removal(@article.followers,@article).deliver_now
 		redirect_to root_path
 	end
 
