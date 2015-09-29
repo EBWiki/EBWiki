@@ -31,7 +31,7 @@ describe Users::RegistrationsController, "#create", :type => :controller do
       Gotcha.skip_validation = false
       expect{
         post :create, :user => @attr
-        expect(response).to redirect_to("/users/sign_up")
+        expect(current_path).to eq '/users/sign_in'
       }.not_to change{User.count}
     end
   end

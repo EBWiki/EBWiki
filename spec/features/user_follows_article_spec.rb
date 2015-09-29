@@ -28,7 +28,7 @@ feature "Non-logged in user attempts to follow an article from show" do
 	  article.state = FactoryGirl.create(:state)
 		visit article_path(article)
 		click_link 'Follow'
-		expect(page).to have_content 'You need to sign in or sign up'
+		expect(current_path).to eq("/users/sign_in")
 	end
 end
 
