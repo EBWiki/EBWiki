@@ -55,7 +55,7 @@
 // http://tympanus.net/codrops/2011/11/02/original-hover-effects-with-css3/
 
 //sets size and borders of gallery image
-.view {    
+.view {
     margin-bottom: 20px;
     float: left;
     padding: 10px;
@@ -64,7 +64,6 @@
     position: relative;
     text-align: center;
     cursor: default;
-    background: #fff url(../images/bgimg.jpg) no-repeat center center
 }
 
 // superimposes "mask" class on image
@@ -84,7 +83,7 @@
     position: relative
 }
 
-// adds styling to header superimposed on image 
+// adds styling to header superimposed on image
 .view h2 {
     text-transform: uppercase;
     color: #fff;
@@ -96,7 +95,7 @@
     margin: 20px 0 0 0
 }
 
-// styling paragraph text superimposed on image 
+// styling paragraph text superimposed on image
 .view p {
     font-family: Georgia, serif;
     font-style: italic;
@@ -136,12 +135,12 @@
 //transition-hover effects
 
 //Example 1
-.view-first img { 
+.view-first img {
     transition: all 0.2s linear;
 }
 .view-first .mask {
     opacity: 0;
-    background-color: rgba(226,103,0, 0.7); 
+    background-color: rgba(226,103,0, 0.7);
     transition: all 0.4s ease-in-out;
 }
 .view-first h2 {
@@ -149,7 +148,7 @@
     opacity: 0;
     transition: all 0.2s ease-in-out;
 }
-.view-first p { 
+.view-first p {
     transform: translateY(100px);
     opacity: 0;
 	transition: all 0.2s linear;
@@ -159,10 +158,10 @@
 	transition: all 0.2s ease-in-out;
 }
 
-.view-first:hover img { 
+.view-first:hover img {
 	transform: scale(1.1);
-} 
-.view-first:hover .mask { 
+}
+.view-first:hover .mask {
 	opacity: 1;
 }
 .view-first:hover h2,
@@ -180,15 +179,15 @@
 
 // Example 10
 
-.view-tenth img { 
+.view-tenth img {
 	transform: scaleY(1);
 	transition: all 0.7s ease-in-out;
 }
-.view-tenth .mask { 
-    background-color: rgba(255, 231, 179, 0.3); 
+.view-tenth .mask {
+    background-color: rgba(255, 231, 179, 0.3);
     transition: all 0.5s linear;
     opacity: 0;
-}	
+}
 .view-tenth h2{
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     background: transparent;
@@ -204,22 +203,22 @@
     transform: scale(0);
     transition: all 0.5s linear;
 }
-.view-tenth a.info { 
+.view-tenth a.info {
     opacity: 0;
     transform: scale(0);
     transition: all 0.5s linear;
 }
 
-.view-tenth:hover img { 
+.view-tenth:hover img {
 	transform: scale(10);
     opacity: 0;
 }
-.view-tenth:hover .mask { 
+.view-tenth:hover .mask {
 	opacity: 1;
-}																			 
+}
 .view-tenth:hover h2,
 .view-tenth:hover p,
-.view-tenth:hover a.info{ 
+.view-tenth:hover a.info{
     transform: scale(1);
     opacity: 1;
 }
