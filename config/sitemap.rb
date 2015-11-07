@@ -23,7 +23,8 @@ SitemapGenerator::Sitemap.create do
   # Add all articles:
 
   Article.find_each do |article|
-    add article_path(article), :lastmod => article.updated_at
+    add article_path(article), :lastmod => article.updated_at 
+    add articles_followers_path(article), :lastmod => article.updated_at
   end
   # Put links creation logic here.
   #
