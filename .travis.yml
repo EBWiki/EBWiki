@@ -22,3 +22,7 @@ before_script:
 
 # Cache dependencies
 cache: bundler
+
+# Elasticsearch
+services:
+  - elasticsearch
