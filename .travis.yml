@@ -19,7 +19,6 @@ addons:
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres; cp config/database.ci.yml config/database.yml
   - bundle exec rake db:create db:migrate db:schema:load
-  - bundle exec rake searchkick:reindex:all
 
 # Cache dependencies
 cache: bundler
