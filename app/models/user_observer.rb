@@ -2,6 +2,6 @@ class UserObserver < ActiveRecord::Observer
   observe :user
 
   def after_create(user)
-    DeviseMailer.welcome_email(user).deliver
+    UserNotifier.welcome_email(user).deliver_now
   end
 end
