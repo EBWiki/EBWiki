@@ -22,4 +22,21 @@ RSpec.describe UserNotifier, type: :mailer do
       expect(mail.body.encoded).to match(article.title)
     end
   end
+  
+  describe 'welcome_email' do
+    let(:user) { mock_model User, name: 'John', email: 'john@email.com' }
+    let(:mail) { UserNotifier.welcome_email(user) }
+ 
+    it 'renders the subject' do
+      expect(mail.subject).to eql('Welcome to the EndBiasWiki Team!')
+    end
+ 
+    it 'renders the receiver email' do
+      expect(mail.to).to eql([user.email])
+    end
+ 
+    it 'renders the sender email' do
+      expect(mail.from).to eql(['EndBiasWiki@gmail.com'])
+    end
+  end
 end
