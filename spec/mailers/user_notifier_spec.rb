@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe UserNotifier, type: :mailer do
   describe 'send_update_email' do
-    let(:user) { mock_model User, name: 'John', email: 'john@email.com' }
+    let(:user) { mock_model User, name: 'John', email: 'john@email.com', all_following: [User.new] }
     let(:article) {mock_model Article, title: 'John Smith', content: 'some content', state_id: 33}
     let(:mail) { UserNotifier.send_update_email(user,article) }
  
@@ -24,7 +24,7 @@ RSpec.describe UserNotifier, type: :mailer do
   end
   
   describe 'welcome_email' do
-    let(:user) { mock_model User, name: 'John', email: 'john@email.com' }
+    let(:user) { mock_model User, name: 'John', email: 'john@email.com', all_following: [User.new]}
     let(:mail) { UserNotifier.welcome_email(user) }
  
     it 'renders the subject' do
