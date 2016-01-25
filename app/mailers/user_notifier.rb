@@ -21,4 +21,9 @@ class UserNotifier < ApplicationMailer
     mail( :to => user.email, :subject => 'The @article.title case has been removed from EBWiki' )
     end
   end
+
+  def welcome_email(user)
+    @user = user
+    mail(to: @user.email, subject: 'Welcome to the EndBiasWiki Team!')
+  end
 end

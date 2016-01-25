@@ -1,0 +1,14 @@
+<h1>Welcome<%= @user.name %>!</h1>
+<p>Thanks for adding your voice to the EBWiki project. Our goal for EBWiki is to help people to stay on top of any developments in these cases as they proceed in the months and years beyond the initial incidents.</p>
+
+<% if @user.all_following.count <= 0 %>
+  <p>With that in mind, it is very important that you click to follow specific cases and allow us to keep you up to date. The more people paying attention, the easier it will be to hold people and systems accountable for these acts.</p>
+<% else %>
+  <p>You have already taken the first essential step by following <%= pluralize @user.all_following.count, "case" %> on EBWiki and allowing us to keep you up to date.</p>
+<% end %>
+
+<p>Please email us at endbiaswiki@gmail.com with any suggestions you have for ways EBWiki can be more helpful.</p>
+
+<p>Thanks Again!</p>
+
+<p>The EBWiki Team</p>
