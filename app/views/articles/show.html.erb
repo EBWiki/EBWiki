@@ -52,6 +52,16 @@
       <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
+          <div>
+            <% if current_user %>
+              <% if current_user.following?(@article) %>
+              <% else %>
+	              <%= link_to 'Follow This Case', article_follows_path(@article), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:content => "Click here to receive an email whenever this case is updated."} %>
+	            <% end %>
+            <% else %>
+              <%= link_to 'Follow This Case', article_follows_path(@article), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
+            <% end %>
+          </div>
       </h1>
 			<p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
 		    <% if @article.followers.present? %>
@@ -74,6 +84,7 @@
 				    <h4 class="article_subheader">Community and Family Efforts  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Community Action", :content => "This section outlines the response of the local community and the victim's family."})%></h4>
 					<p><%= raw @article.community_action %></p>
 			<% end %>
+
 			<div class="row">
 				<div class="col-md-12">
 					<% if @article.video_url.to_s != "" %>

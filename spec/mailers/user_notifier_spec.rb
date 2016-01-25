@@ -28,7 +28,7 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:mail) { UserNotifier.welcome_email(user) }
  
     it 'renders the subject' do
-      expect(mail.subject).to eql('Welcome to the EndBiasWiki Team!')
+      expect(mail.subject).to eql('Welcome to EndBiasWiki')
     end
  
     it 'renders the receiver email' do
