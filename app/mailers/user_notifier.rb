@@ -24,6 +24,6 @@ class UserNotifier < ApplicationMailer
 
   def welcome_email(user)
     @user = user
-    mail(to: @user.email, subject: 'Welcome to the EndBiasWiki Team!')
+    mail(to: @user.email, subject: 'Welcome to the EndBiasWiki')
   end
 end
