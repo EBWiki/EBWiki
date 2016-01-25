@@ -24,7 +24,7 @@ RSpec.describe UserNotifier, type: :mailer do
   end
   
   describe 'welcome_email' do
-    let(:user) { mock_model User, name: 'John', email: 'john@email.com', all_following: [User.new]}
+    let(:user) { mock_model User, name: 'John', email: 'john@email.com', all_following: [Article.new]}
     let(:mail) { UserNotifier.welcome_email(user) }
  
     it 'renders the subject' do
@@ -37,6 +37,10 @@ RSpec.describe UserNotifier, type: :mailer do
  
     it 'renders the sender email' do
       expect(mail.from).to eql(['EndBiasWiki@gmail.com'])
+    end
+ 
+    it 'includes @user.name' do
+      expect(mail.body.encoded).to match(user.name)
     end
   end
 end

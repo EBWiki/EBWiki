@@ -1,13 +1,14 @@
-<h1>Thanks for joining us!</h1> 
-<p><%= @user.name %>,</p>
-<p>Thanks again for joining the EBWiki project. Our goal for EBWiki is to help people to stay abreast of any developments as these cases proceed beyond the initial incidents. We believe staying informed is the first step toward finally ending the callous disgregard for the lives of people of color by law enforcement.</p>
+<h1>Welcome<%= @user.name %>!</h1>
+<p>Thanks for adding your voice to the EBWiki project. Our goal for EBWiki is to help people to stay on top of any developments in these cases as they proceed in the months and years beyond the initial incidents.</p>
 
 <% if @user.all_following.count <= 0 %>
-  <p>With that in mind, it is very important that you take the allow us to keep you up to date on some cases. The more people paying attention, the easier it will be to hold people and systems accountable for these acts.</p>
+  <p>With that in mind, it is very important that you click to follow specific cases and allow us to keep you up to date. The more people paying attention, the easier it will be to hold people and systems accountable for these acts.</p>
 <% else %>
-  <p>You have already taken the first essential step by following <%= pluralize @user.all_following.count, "case" %> on EBWiki and allowing us to keep you up to date on new developments.</p>
+  <p>You have already taken the first essential step by following <%= pluralize @user.all_following.count, "case" %> on EBWiki and allowing us to keep you up to date.</p>
 <% end %>
 
-<p>One more thing to remember: tell a friend or two about EBWiki and the work we are doing on behalf of victims of police violence and their families. The more we connect our community to this issue the more powerful we can be.</p>
+<p>Please email us at endbiaswiki@gmail.com with any suggestions you have for ways EBWiki can be more helpful.</p>
 
 <p>Thanks Again!</p>
+
+<p>The EBWiki Team</p>
