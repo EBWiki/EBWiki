@@ -26,5 +26,6 @@ module ApplicationHelper
       marker.lng article.longitude
       marker.infowindow controller.render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
     end
+    @hash
   end
 end
