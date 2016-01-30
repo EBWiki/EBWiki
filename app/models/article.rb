@@ -10,9 +10,6 @@ class Article < ActiveRecord::Base
   has_many :agencies, through: :article_agencies
   has_many :links
   accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
-  has_many :article_officers
-  has_many :officers, through: :article_officers
-  accepts_nested_attributes_for :officers, :reject_if => :all_blank, :allow_destroy => true
   has_many :comments, as: :commentable
   has_many :subjects
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true

@@ -10,8 +10,6 @@ Rails.application.routes.draw do
 
   get '/sitemap', to: redirect("http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz", status: 301)
 
-  resources :officers
-
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users, controllers: {
     registrations: "users/registrations"
