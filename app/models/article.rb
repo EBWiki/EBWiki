@@ -11,9 +11,6 @@ class Article < ActiveRecord::Base
   has_many :comments, as: :commentable
   has_many :subjects
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
-  has_many :article_milestones
-  has_many :milestones, through: :article_milestones
-  accepts_nested_attributes_for :article_milestones, :reject_if => :all_blank, :allow_destroy => true
 
   # Paper Trail
   has_paper_trail :only => [:title, :overview, :litigation, :community_action]

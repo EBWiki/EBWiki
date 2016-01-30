@@ -75,22 +75,6 @@
 		<%= f.input :community_action %>
   </fieldset>
 </div>
-	<!--
-	<%#= f.grouped_collection_select :agency_id, State.order(:name), :agencies, :name, :id, :name, {prompt: "Name of Law Enforcement Agency"}, label:"Agency" %>
-	-->
-<div class="cold-md-12">
-	<fieldset class="fsStyle">				
-		<legend class="legendStyle">Milestones <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Milestones", :content => "Milestones do not currently appear anywhere on the site, but these events will be the building blocks for timelines and statistics pages we are in the process of putting together"})%></legend>				
-		<div id="">
-	    <%= f.simple_fields_for :article_milestones do |milestone| %>
-	      <%= render 'article_milestone_fields', :f => milestone %>
-	    <% end %>
-	    <div class="">
-	      <%= link_to_add_association 'add a milestone', f, :article_milestones, :class => "btn btn-warning" %>
-	    </div>
-		</div>
-  </fieldset>
-</div>
 
 <div class="cold-md-12">
 	<fieldset class="fsStyle">				

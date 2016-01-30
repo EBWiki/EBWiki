@@ -5,19 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
-# if Article.count == 0
-#   Article.create({title: "Eric Garner",content: 'a 43-year-old asthmatic father of six, was confronted by New York City police officers for allegedly selling untaxed cigarettes. When he resisted being cuffed, an officer appeared to put him in a chokehold—a tactic banned by the department since 1993. A video of the arrest, first obtained by the New York Daily News, shows Garner gasping, I cant breathe! while officers relentlessly smother him. Outcome: no one indicted. no one convicted.', city: "New York", date: Date.strptime("8/22/2014", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-#   Article.create({title: "AL",content: "US-AL", city: "Alabama", date: Date.strptime("12/22/2011", "%m/%d/%Y")})
-# end
 if State.count == 0
   puts "Creating States..."
   states =
@@ -145,28 +132,5 @@ if Ethnicity.count == 0
 
   ethnicities.each do |ethnicity|
     Ethnicity.create( :sex => ethnicity[0])
-  end
-end
-
-if Milestone.count == 0
-  puts "Creating Milestones..."
-  milestones = [
-    [ "Initial Investigation Pending" ],
-    [ "Initial Investigation Completed" ],
-    [ "Initial Investigative Report Released" ],
-    [ "External/Independent Investigation Pending" ],
-    [ "External/Independent Investigation Completed" ],
-    [ "External/Independent Investigation Report released" ],
-    [ "Officer placed on leave" ],
-    [ "Officer reinstated" ],
-    [ "Officer indicted" ],
-    [ "Officer convicted/acquitted" ],
-    [ "Officer sentenced" ],
-    [ "Family files civil lawsuit" ],
-    [ "Family receives monetary award" ]
-  ]
-
-  milestones.each do |milestone|
-    Milestone.create( :title => milestone[0])
   end
 end

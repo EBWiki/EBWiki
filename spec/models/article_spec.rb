@@ -14,7 +14,7 @@ end
 describe "#new" do
   it "takes three parameters and returns an Article object" do
 	article = build(:article)
-      article.should be_an_instance_of Article
+      expect(article).to be_an_instance_of Article
   end
 end
 
