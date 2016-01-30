@@ -131,7 +131,7 @@
 <script type="">
 	handler = Gmaps.build('Google');
 	handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
- 	  markers = handler.addMarkers(<%= raw marker_locations_for(@article.nearby_cases) %>);
+ 	  markers = handler.addMarkers(<%= raw marker_locations_for(@article.nearby_cases).to_json %>);
 	  handler.bounds.extendWith(markers);
 	  handler.fitMapToBounds();
 	});
