@@ -2,6 +2,7 @@ class ArticlesController < ApplicationController
   before_action :find_article, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show, :history, :followers]
 
+  
   # TODO: This method is currently very complex and needs to be simplified
   # The first step is identifying all the scenarios that it currently covers
   # 1. If the action is called with a state_id, then the index should return
@@ -12,12 +13,7 @@ class ArticlesController < ApplicationController
   # All of theses individual queries in here should be turned into scopes 
   # and then called safely
  
-  def index
-  	@articles = Article.by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: 12) if params[:query].present? && params[:state_id].present?
-  	@articles = Article.by_state(params[:state_id]).order('date DESC').page(params[:page]).per(12) if !params[:query].present? && params[:state_id].present?
-  	@articles = Article.search(params[:query], page: params[:page], per_page: 12) if params[:query].present? && !params[:state_id].present?
-  	@articles = Article.all.order('date DESC').page(params[:page]).per(12) if (!params[:query].present? && !params[:state_id].present?)
-  end
+  include CaseFiltering
 
   def new
     @article = current_user.articles.build
