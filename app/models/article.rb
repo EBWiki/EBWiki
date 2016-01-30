@@ -48,7 +48,7 @@ class Article < ActiveRecord::Base
 
 
   # Scopes
-  scope :by_state, -> {where(state_id: params[:state_id])}
+  scope :by_state, -> (state_id) {where(state_id: state_id)}
   
   def full_address
     "#{address} #{city} #{state} #{zipcode}"
