@@ -2,17 +2,6 @@ class ArticlesController < ApplicationController
   before_action :find_article, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show, :history, :followers]
 
-  
-  # TODO: This method is currently very complex and needs to be simplified
-  # The first step is identifying all the scenarios that it currently covers
-  # 1. If the action is called with a state_id, then the index should return
-  #    articles selected within the state.
-  # 2. If there is a "query" parameter present, then the index should return
-  #    a paginated result of the full text search, filtered by state
-  # 3. There are "by_state" filters that impact what's returned.
-  # All of theses individual queries in here should be turned into scopes 
-  # and then called safely
- 
   include CaseFiltering
 
   def new

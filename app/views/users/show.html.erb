@@ -24,16 +24,6 @@
           <h4><%= @user.name %>'s bio:</h4>
           <p><%= @user.description %></p>
         </div>
-       <!--  <div >
-          <a href="#" class="btn btn-social btn-facebook">
-              <i class="fa fa-facebook"></i>&nbsp; Facebook</a>
-          <a href="#" class="btn btn-social btn-google">
-              <i class="fa fa-google-plus"></i>&nbsp; Google</a>
-          <a href="#" class="btn btn-social btn-twitter">
-              <i class="fa fa-twitter"></i>&nbsp; Twitter </a>
-          <a href="#" class="btn btn-social btn-linkedin">
-              <i class="fa fa-linkedin"></i>&nbsp; Linkedin </a>
-        </div> -->
         <% if @user != current_user %>
           <h3 class="page-header">Cases <%= @user.name %> follows:</h3>
         <% else %>
@@ -59,20 +49,6 @@
               </div>
           </div>
         <% end %>
-
-
-        <!-- <div class="form-group col-md-8">
-          <h3>Change YOur Password</h3>
-          <br />
-          <label>Enter Old Password</label>
-          <input type="password" class="form-control">
-          <label>Enter New Password</label>
-          <input type="password" class="form-control">
-          <label>Confirm New Password</label>
-          <input type="password" class="form-control" />
-          <br>
-          <a href="#" class="btn btn-warning">Change Password</a>
-        </div> -->
       </div>
     </div>
 <!-- ROW END -->
