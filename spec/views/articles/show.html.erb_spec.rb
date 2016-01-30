@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "articles/show.html.erb", type: :view do
-
   before do
     controller.singleton_class.class_eval do
       protected
         def marker_locations_for(articles)
-          ''
+          [Article.all]
         end
         helper_method :marker_locations_for
     end
