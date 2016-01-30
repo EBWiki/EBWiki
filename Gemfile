@@ -53,6 +53,9 @@ gem "bullet"
 # internal analytics
 gem 'ahoy_matey'
 
+# use split gem for a/b testing
+gem 'split', require: 'split/dashboard'
+
 gem 'rollbar', '~> 2.2.1'
 group :development, :test do
 

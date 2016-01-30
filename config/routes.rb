@@ -2,6 +2,11 @@ Rails.application.routes.draw do
 
   get '/maps/index', to: 'maps#index'
 
+
+  get 'agencies/show'
+  
+  mount Split::Dashboard, at: 'split'
+
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
   get '/javascript_lab', to: 'static#javascript_lab'

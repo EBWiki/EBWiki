@@ -41,14 +41,7 @@
       <br>
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
           <div>
-            <% if current_user %>
-              <% if current_user.following?(@article) %>
-              <% else %>
-	              <%= link_to 'Follow This Case', article_follows_path(@article), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:content => "Click here to receive an email whenever this case is updated."} %>
-	            <% end %>
-            <% else %>
-              <%= link_to 'Follow This Case', article_follows_path(@article), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
-            <% end %>
+            <%= render 'layouts/ab_test' %>
           </div>
       </h1>
 			<p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
