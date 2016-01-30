@@ -13,20 +13,10 @@ class ArticlesController < ApplicationController
   # and then called safely
  
   def index
-    if params[:state_id].present?
-      @articles_by_state = Article.by_state(params[:state_id])
-      if params[:query].present?
-        @articles = @articles_by_state.search("#{params[:query]}", page: params[:page], per_page: 12)
-      else
-        @articles = @articles_by_state.all.order('date DESC').page(params[:page]).per(12)
-      end
-    else
-      if params[:query].present?
-        @articles = Article.search("#{params[:query]}", page: params[:page], per_page: 12)
-      else
-        @articles = Article.all.order('date DESC').page(params[:page]).per(12)
-      end
-    end
+  	@articles = Article.by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: 12) if params[:query].present? && params[:state_id].present?
+  	@articles = Article.by_state(params[:state_id]) if !params[:query].present? && params[:state_id].present?
+  	@articles = Article.search(params[:query], page: params[:page], per_page: 12) if params[:query].present? && !params[:state_id].present?
+  	@articles = Article.all.order('date DESC').page(params[:page]).per(12)
 
     articles_copy = @articles.dup
     @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
