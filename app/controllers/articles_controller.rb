@@ -17,14 +17,6 @@ class ArticlesController < ApplicationController
   	@articles = Article.by_state(params[:state_id]) if !params[:query].present? && params[:state_id].present?
   	@articles = Article.search(params[:query], page: params[:page], per_page: 12) if params[:query].present? && !params[:state_id].present?
   	@articles = Article.all.order('date DESC').page(params[:page]).per(12)
-
-    articles_copy = @articles.dup
-    @hash = Gmaps4rails.build_markers(articles_copy) do |article, marker|
-      marker.lat article.latitude
-      marker.lng article.longitude
-      marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
-    end
-
   end
 
   def new
@@ -38,12 +30,6 @@ class ArticlesController < ApplicationController
     @comments = @commentable.comments
     @comment = Comment.new
     @subjects = @article.subjects
-
-    @hash = Gmaps4rails.build_markers(@article.nearby_cases) do |article, marker|
-      marker.lat article.latitude
-      marker.lng article.longitude
-      marker.infowindow render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
-    end
 
     # Check to make sure all required elements are here
     unless @article.present? && @article.present?	&& @commentable.present? && @comment.present? &&
