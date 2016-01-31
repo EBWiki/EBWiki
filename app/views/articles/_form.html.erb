@@ -70,9 +70,9 @@
 <div class="cold-md-12">
 	<fieldset class="fsStyle">				
 		<legend class="legendStyle">Main Content Fields <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Main Content Fields", :content => "These three fields constitute the body of the case and house most of the facts. The overview contains basic factual information, litigation includes facts relating to legal proceedings and investigation and community action encompasses information about family activity, protests and the like"})%></legend>
-		<%= f.input :overview %>
-		<%= f.input :litigation %>
-		<%= f.input :community_action %>
+		<%= f.input :overview, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
+		<%= f.input :litigation, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
+		<%= f.input :community_action, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
   </fieldset>
 </div>
 

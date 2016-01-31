@@ -25,3 +25,4 @@
 //= require underscore
 //= require select2
 //= require_tree .
+//= require ckeditor/init

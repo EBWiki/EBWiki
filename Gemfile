@@ -75,6 +75,8 @@ group :development, :test do
   gem 'oink'
 end
 
+
+
 group :development do
   gem 'brakeman', :require => false
 end
@@ -152,3 +154,5 @@ gem 'metamagic'
 
 # Google News API help
 gem 'galerts'
+
+gem 'ckeditor'

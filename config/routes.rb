@@ -41,4 +41,8 @@ Rails.application.routes.draw do
       post :untrash
     end
   end
+
+  # CKEditor
+  mount Ckeditor::Engine => '/ckeditor'
 end
+
