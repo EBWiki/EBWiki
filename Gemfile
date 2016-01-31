@@ -155,4 +155,4 @@ gem 'metamagic'
 # Google News API help
 gem 'galerts'
 
-gem 'ckeditor'
+gem 'ckeditor', :git => 'https://github.com/galetahub/ckeditor.git'

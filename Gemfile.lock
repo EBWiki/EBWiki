@@ -6,6 +6,14 @@ GIT
       carrierwave (>= 0.5.8)
       rails (>= 3.2.0)
 
+GIT
+  remote: https://github.com/galetahub/ckeditor.git
+  revision: 8c95708276dd9e8a9b5760abff18a298b86851f8
+  specs:
+    ckeditor (4.1.6)
+      cocaine
+      orm_adapter (~> 0.5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -107,9 +115,6 @@ GEM
     childprocess (0.5.6)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
-    ckeditor (4.1.6)
-      cocaine
-      orm_adapter (~> 0.5.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -589,7 +594,7 @@ DEPENDENCIES
   capybara (~> 2.4.3)
   carrierwave
   carrierwave-imageoptimizer
-  ckeditor
+  ckeditor!
   cocoon
   codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
