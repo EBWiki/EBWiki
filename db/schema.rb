@@ -11,55 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150906203304) do
+ActiveRecord::Schema.define(version: 20160130200139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
-
-  create_table "agencies", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "state_id"
-    t.string   "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "address"
-    t.string   "city"
-    t.string   "zipcode"
-    t.string   "phone"
-    t.string   "website"
-    t.float    "latitude"
-    t.float    "longitude"
-  end
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
     t.uuid     "visit_id"
     t.integer  "user_id"
     t.string   "name"
-    t.jsonb    "properties"
+    t.text     "properties"
     t.datetime "time"
   end
 
   add_index "ahoy_events", ["time"], name: "index_ahoy_events_on_time", using: :btree
   add_index "ahoy_events", ["user_id"], name: "index_ahoy_events_on_user_id", using: :btree
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id", using: :btree
-
-  create_table "article_agencies", force: :cascade do |t|
-    t.integer  "article_id"
-    t.integer  "agency_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "article_milestones", force: :cascade do |t|
-    t.integer  "article_id"
-    t.integer  "milestone_id"
-    t.date     "date"
-    t.text     "description"
-    t.boolean  "include"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
 
   create_table "article_officers", force: :cascade do |t|
     t.integer  "article_id"
@@ -90,21 +57,11 @@ ActiveRecord::Schema.define(version: 20150906203304) do
     t.text     "community_action"
     t.text     "litigation"
     t.string   "country"
-    t.text     "latest_update"
-    t.boolean  "send_update"
     t.boolean  "remove_avatar"
   end
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
   add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
-
-  create_table "articles_officers", id: false, force: :cascade do |t|
-    t.integer "articles_id"
-    t.integer "officers_id"
-  end
-
-  add_index "articles_officers", ["articles_id"], name: "index_articles_officers_on_articles_id", using: :btree
-  add_index "articles_officers", ["officers_id"], name: "index_articles_officers_on_officers_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -122,13 +79,6 @@ ActiveRecord::Schema.define(version: 20150906203304) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
-
-  create_table "edit_blurbs", force: :cascade do |t|
-    t.text     "blurb"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "article_id"
-  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -230,23 +180,6 @@ ActiveRecord::Schema.define(version: 20150906203304) do
   add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id", using: :btree
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
 
-  create_table "milestones", force: :cascade do |t|
-    t.string   "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "officers", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.integer  "department_id"
-    t.string   "avatar"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.string   "title"
-    t.text     "background"
-  end
-
   create_table "states", force: :cascade do |t|
     t.string   "name"
     t.string   "iso"
@@ -322,7 +255,6 @@ ActiveRecord::Schema.define(version: 20150906203304) do
     t.text     "object_changes"
     t.string   "ip"
     t.integer  "transaction_id"
-    t.text     "blurb"
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree

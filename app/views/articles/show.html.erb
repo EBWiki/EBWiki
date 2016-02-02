@@ -41,7 +41,18 @@
       <br>
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
           <div>
-            <%= render 'layouts/ab_test' %>
+            <% ab_test :case_followed, "default_button", "primary_button", "success_button", "warning_button" do |style| %>
+							<% case style %>
+								<% when "warning_button" %>
+									<%= link_to 'Follow this Case', article_follows_path(@article), class: "btn btn-warning" %>
+								<% when "primary_button" %>
+									<%= link_to 'Follow this Case', article_follows_path(@article), class: "btn btn-primary" %>
+								<% when "default_button" %>
+									<%= link_to 'Follow this Case', article_follows_path(@article), class: "btn btn-default" %>
+								<% when "success_button" %>
+									<%= link_to 'Follow this Case', article_follows_path(@article), class: "btn btn-success" %>
+							<% end %>
+						<% end %>
           </div>
       </h1>
 			<p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
