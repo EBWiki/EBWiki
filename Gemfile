@@ -73,6 +73,9 @@ group :development, :test do
   gem 'guard-rspec'
 
   gem 'oink'
+
+  # Install a pre-commit hook to enforce code checks before commits
+  gem "pre-commit"
 end
 
 
