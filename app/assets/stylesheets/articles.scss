@@ -3,17 +3,17 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .background-links{
-	font-size: 1em;
-	color: #fff;
+  font-size: 1em;
+  color: #fff;
 }
 
 .article_subheader{
-	color: #999;
-	font-weight: bold;
+  color: #999;
+  font-weight: bold;
 }
 
 .page-header{
-	text-align: center;
+  text-align: center;
 }
 
 #ffront-gallery {
@@ -23,27 +23,27 @@
 }
 
 .galleryImage {
-	position: relative;
+  position: relative;
 }
 
 .video_icon {
-	position: absolute;
-	left:100px;
-	top:100px;
-	z-index: 10;
+  position: absolute;
+  left:100px;
+  top:100px;
+  z-index: 10;
 }
 
 .articleImage {
-	margin-bottom: 10px;
-	margin-top: 50px;
+  margin-bottom: 10px;
+  margin-top: 50px;
 }
 
 .articleTitle {
-	text-align: left;
+  text-align: left;
 }
 
 .timeAgo {
-	color:green;
+  color:green;
 }
 
 .articleMap {
@@ -151,18 +151,18 @@
 .view-first p {
     transform: translateY(100px);
     opacity: 0;
-	transition: all 0.2s linear;
+  transition: all 0.2s linear;
 }
 .view-first a.info{
     opacity: 0;
-	transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .view-first:hover img {
-	transform: scale(1.1);
+  transform: scale(1.1);
 }
 .view-first:hover .mask {
-	opacity: 1;
+  opacity: 1;
 }
 .view-first:hover h2,
 .view-first:hover p,
@@ -180,8 +180,8 @@
 // Example 10
 
 .view-tenth img {
-	transform: scaleY(1);
-	transition: all 0.7s ease-in-out;
+  transform: scaleY(1);
+  transition: all 0.7s ease-in-out;
 }
 .view-tenth .mask {
     background-color: rgba(255, 231, 179, 0.3);
@@ -210,15 +210,19 @@
 }
 
 .view-tenth:hover img {
-	transform: scale(10);
+  transform: scale(10);
     opacity: 0;
 }
 .view-tenth:hover .mask {
-	opacity: 1;
+  opacity: 1;
 }
 .view-tenth:hover h2,
 .view-tenth:hover p,
 .view-tenth:hover a.info{
     transform: scale(1);
     opacity: 1;
+}
+
+.img-responsive {
+  width: 100%;
 }
