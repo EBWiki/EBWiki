@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe ArticlesController, type: :controller do
-  let(:articles) { FactoryGirl.create_list(:article, 4) }
+  let(:articles) { FactoryGirl.create_list(:article, 20) }
   let(:state) {FactoryGirl.create(:state)}
 
   describe '#index' do
 
     before(:each) { get :index }
 
-    it 'assigns all articles to @articles' do
-      expect(assigns(:articles)).to match_array articles
+    it 'assigns the first 12 articles to @articles' do
+      expect(assigns(:articles)).to match_array articles[0..11]
     end
 
     it 'success' do
