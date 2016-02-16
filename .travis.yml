@@ -1,28 +1,18 @@
 language: ruby 2.2.1
-
 rvm:
-  - 2.2.1
-
+- 2.2.1
 notifications:
- email:
-   - nyonmark@gmail.com
-   - dariusgoore@gmail.com
-
-# # uncomment this line if your project needs to run something other than `rake`:
-# script:
-#   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && bundle exec rake tests:integration || false'
-
-# Select modern postgres
+  email:
+  - nyonmark@gmail.com
+  - dariusgoore@gmail.com
+  slack:
+    secure: nGWlUFUuQjsn6zxJQqY6+ljlSHnz9We+OHi6UV4690Aw9RSDVmcNIGiCJB8DoySwYuppcTq/G2YEw5+vxHKRTWv0zHLNLQ8hfAlBxM5rPEFCrdvL+P9fQfZcuPGI2RUq4c0nCZ63a1Tgt3119kBw91qLGG4CWTMtcNO2mKMfNixdwwwbPKr/bqQHbgfi0zl66RKERBJdtljZneKD68AelFLm9YUtfOCNreY+sZ5LTaYEpG8REEqW1MJt3iI3lGs/YUscpwuyBa9fPoD5B6FUD9K9dS5rsjznYStB3dNqkoeVFZP0LQd1+Rk2GVwqmDfhAuCB5tUOH5zdET4U7sw8//ZzceAztABSEuKQVg4TUnSBBN4+vB1KDO8kFGItaY7xqFywIHvGXUu54e7XUgvMT5tfgblfNJTKbBx3loIydJmQTiRLGOChlKICi46kdzoOKCTiYxfCFsJvjTe7e5eE48Ardi6vnxFxOtPnbHIcrM1ImRfaYKJ1+5tZZEXtAnni4D9xcg3KMdsyTJsi4Obl51tH4BGy13gzG7HrsuRgLkAGYGjvDCf6W5tmktVz23R+JR3aGrBV1/AfPPYoJxXXsylt4kh5BY7gSGe2S8nw/hTI5VQ5GRrUhB8K9jmEE7nt4bBkQv1M/vXTs85HQvwyGK/UdS3nS86QnEmi0FIQmxA=
 addons:
-  postgresql: "9.4"
-
+  postgresql: '9.4'
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres; cp config/database.ci.yml config/database.yml
-  - bundle exec rake db:create db:migrate db:schema:load
-
-# Cache dependencies
+- psql -c 'create database travis_ci_test;' -U postgres; cp config/database.ci.yml
+  config/database.yml
+- bundle exec rake db:create db:migrate db:schema:load
 cache: bundler
-
-# Elasticsearch
 services:
-  - elasticsearch
+- elasticsearch
