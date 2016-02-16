@@ -3,7 +3,6 @@ class FollowsController < ApplicationController
   respond_to :html, :js
   
   def create
-    finished(:case_followed)
   	@article = Article.find(params[:article_id])
     current_user.follow(@article)
     redirect_to @article

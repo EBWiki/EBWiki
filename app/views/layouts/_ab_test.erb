@@ -1,12 +1,12 @@
-<% ab_test :case_followed, "default_button", "primary_button", "success_button", "warning_button" do |style| %>
+<% ab_test :viewed_maps, "default_button", "primary_button", "success_button", "warning_button" do |style| %>
 	<% case style %>
 		<% when "warning_button" %>
-			<%= link_to 'Follow this Case', article_follows_path(@article), class: "btn btn-warning" %>
+			<%= link_to 'View the Case Map', maps_index_path, class: "btn btn-warning" %>
 		<% when "primary_button" %>
-			<%= link_to 'Follow this Case', article_follows_path(@article), class: "btn btn-primary" %>
+			<%= link_to 'View the Case Map', maps_index_path, class: "btn btn-primary" %>
 		<% when "default_button" %>
-			<%= link_to 'Follow this Case', article_follows_path(@article), class: "btn btn-default" %>
+			<%= link_to 'View the Case Map', maps_index_path, class: "btn btn-default" %>
 		<% when "success_button" %>
-			<%= link_to 'Follow this Case', article_follows_path(@article), class: "btn btn-success" %>
+			<%= link_to 'View the Case Map', maps_index_path, class: "btn btn-success" %>
 	<% end %>
 <% end %>
