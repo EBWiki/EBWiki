@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     resources :registrations
   end
 
+  mount Split::Dashboard, at: 'split'
+
   # mailbox folder routes
   get "mailbox", to: redirect("mailbox/inbox")
   get "mailbox/inbox" => "mailbox#inbox", as: :mailbox_inbox
