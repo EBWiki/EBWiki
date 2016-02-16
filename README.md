@@ -1,37 +1,33 @@
-== README
-
 <p><a href="https://travis-ci.org/BOWiki/BOW"><img src="https://travis-ci.org/BOWiki/BOW.svg?branch=master" alt="Build Status" style="max-width:100%;"></a>  <a href="https://codeclimate.com/github/BOWiki/BOW"><img src="https://codeclimate.com/github/BOWiki/BOW/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/BOWiki/BOW/coverage"><img src="https://codeclimate.com/github/BOWiki/BOW/badges/coverage.svg" /></a></p>
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Synopsis
 
-Things you may want to cover:
+At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
 
-* Ruby version
+## Example
 
-* System dependencies
+Show what the site does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure any API you are showing off is obvious, and that the examples are short and concise.
 
-* Configuration
+## Motivation
 
-* Database creation
+A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
 
-* Database initialization
+## Installation
 
-* How to run the test suite
+Provide code examples and explanations of how to get the project.
 
-* Services (job queues, cache servers, search engines, etc.)
+## Tests
 
-* Deployment instructions
+Describe and show how to run the tests with code examples.
 
-* Creating a new S3 bucket to use, including:
-  naming the bucket
-  how to create an s3 bucket policy (http://awspolicygen.s3.amazonaws.com/policygen.html)
-  setting a CORS policy
-  transfering assets from another bucket
-  importance of setting a region
+## Contributors
 
-* ...
+Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
 
+## License
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+A short snippet describing the license (MIT, Apache, etc.)
+
+## Code of Conduct
+
+Link to Code to [Code Of Conduct](docs/CODE_OF_CONDUCT.md) document.
