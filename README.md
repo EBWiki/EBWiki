@@ -2,31 +2,30 @@
 
 ## Synopsis
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+This is the codebase behind [EBWiki.org](http://ebwiki.org), a site dedicated to documenting instances where people of color are killed by Law Enforcement Officers during routine interactions.
 
 ## Example
 
-Show what the site does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure any API you are showing off is obvious, and that the examples are short and concise.
 
 ## Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+After the Walter Scott video was released showing the vast discrepancy between the official report of the encounter and the video, a group of Black technologists had the idea of a site where information on each encounter could be stored and recorded. This would help show both the frequency with which this occurs as well as the way bias affects the proceedings.
 
 ## Installation
 
-Provide code examples and explanations of how to get the project.
+TODO: Provide greater detail on installing EBWiki from scratch
 
-## Tests
+## Testing
 
-Describe and show how to run the tests with code examples.
+We use [RSpec](https://relishapp.com/rspec) to test the business logic. In addition, we use [Travis](https://travis-ci.org/BOWiki/BOW/) as a Continuous Integration (CI) Server and [Code Climate](https://codeclimate.com/github/BOWiki/BOW) to monitor the quality of the code.
 
 ## Contributors
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+Contributors to this project can be found [here](https://github.com/BOWiki/BOW/graphs/contributors)
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+TODO: Confirm license and link to it here.
 
 ## Code of Conduct
 
