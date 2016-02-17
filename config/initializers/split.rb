@@ -9,9 +9,9 @@ Split.configure do |config|
   config.enabled = !Rails.env.test?
 end
 
-# Split::Dashboard.use Rack::Auth::Basic do |username, password|
-#   username == 'fire_in' && password == 'the_hole' # This one is fake :P
-# end
+Split::Dashboard.use Rack::Auth::Basic do |username, password|
+  username == ENV["SPLIT_USERNAME"] && password == ENV["SPLIT_PASSWORD"]
+end
 
 if ENV["REDISTOGO_URL"]
    uri = URI.parse(ENV["REDISTOGO_URL"])
