@@ -13,6 +13,8 @@ require 'rails_helper'
         expect(page).to have_content "Invalid email or password"
         visit rails_admin.dashboard_path
         expect(page).to have_content "You are not an admin"
+        visit split_dashboard_path
+        expect(page).to have_content "You need to sign in or sign up before continuing"
       end
     end
 
@@ -45,6 +47,8 @@ require 'rails_helper'
         expect(page).to have_content "Invalid email or password"
         visit rails_admin.dashboard_path
         expect(page).to have_content "You are not an admin"
+        visit split_dashboard_path
+        expect(page).to have_content "You need to sign in or sign up before continuing"
       end
 
     end
@@ -65,6 +69,8 @@ require 'rails_helper'
         click_button 'Log in'
         visit rails_admin.dashboard_path
         expect(page).to have_content "Site Administration"
+        visit split_dashboard_path
+        expect(page).to have_content "Split Dashboard"
       end
 
       # This is a failure feature spec; this covers the scenario
