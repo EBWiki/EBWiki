@@ -16,3 +16,4 @@ before_script:
 cache: bundler
 services:
 - elasticsearch
+- redis-server
