@@ -51,7 +51,7 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 	    	<div id='front-sidebar'>
 	    	  <h4 class='side-leader'>Most Recently Updated</h4>
 	    	   <ol class='leader-list'>
-	    	   	 <% @articles.order('updated_at DESC').first(10).each do |article| %>
+	    	   	 <% @articles.sort_by { |h| h[:updated_at] }.reverse!.first(10).each do |article| %>
 	    	   	   <li><%= link_to article.title, article %></li>
 	    	   	 <% end %>
 	    	   </ol>
