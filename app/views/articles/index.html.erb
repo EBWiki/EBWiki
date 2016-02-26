@@ -57,9 +57,9 @@ meta title: "EBWiki - Ending Violence Against People of Color",
               <th>Updated</th>
              </tr>
 
-             <% Article.where(["created_at < ?", 24.hours.ago]).sort_by { |h| h[:updated_at] }.reverse!.first(10).each do |article| %>
+             <% Article.order(updated_at: :desc).first(10).each do |article| %>
                <tr>
-                 <td><%= Article.where(["created_at < ?", 24.hours.ago]).sort_by { |h| h[:updated_at] }.reverse!.first(10).index(article) + 1 %></td>
+                 <td><%= Article.order(updated_at: :desc).first(10).index(article) + 1 %></td>
                  <td><%= link_to truncate(article.title, length: 14), article %></td>
                  <td><small><%= article.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
                </tr>
