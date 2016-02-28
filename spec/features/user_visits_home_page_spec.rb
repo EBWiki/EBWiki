@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'pp'
 feature "User visits home page" do
 	let!(:state) { FactoryGirl.create(:state)}
 	let!(:articles) { FactoryGirl.create_list(:article, 20, state: state) }
