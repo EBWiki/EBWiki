@@ -2,6 +2,8 @@ class ArticlesController < ApplicationController
   before_action :find_article, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show, :history, :followers]
 
+  # This contains the index method, since it's used in here and
+  # maps controller
   include CaseFiltering
 
   def new
