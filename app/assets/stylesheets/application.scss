@@ -22,7 +22,7 @@
 @import "bootstrap-datetimepicker";
 
 body{
-    padding-top: 50px; 
+    padding-top: 50px;
 }
 
 ul{
@@ -44,7 +44,7 @@ ul{
 }
 
 .page-subheader{
-  text-align: center; 
+  text-align: center;
 }
 
 .btn-primary.outline {
@@ -55,4 +55,11 @@ ul{
 #map {
   width: 100%;
   height: 400px;
+}
+
+
+/* Removing the default padding for cells */
+.col-lg-3, .col-md-4,  .col-xs-2 {
+  padding-left: 0px;
+  padding-right: 0px;
 }
