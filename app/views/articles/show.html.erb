@@ -71,15 +71,14 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12" >
 					<% if @article.links.count > 0 %>
 						<h4 class="article_subheader">Additional Resources:</h4>
-						<div class = "background-links">
+						<ul class="background-links" id="link-list">
 							<% @article.links.each do |link| %>
-								<%= link_to link.url, "#{link.url}" %>
-								</br>
+								<li><%= link_to link.url, "#{link.url}" %></li>
 							<% end %>
-						</div>
+						</ul>
 					<% end %>
 				</div>
 			</div>
@@ -134,5 +133,25 @@
 	  handler.bounds.extendWith(markers);
 	  handler.fitMapToBounds();
 	});
+</script>
+
+<script type="text/javascript">
+  $('#link-list').children('li').each(function (i)
+  {
+      if (i > 10)
+      {
+          $(this).hide();
+      }
+  });
+
+  var more = $('<li class="cat-item"><a href="">Show More</a></li>');
+  $('ul#link-list').append(more);
+
+  more.find('a').on('click', function (){
+     $(this).parent().siblings('li').show();
+
+     return false;
+  });
+
 </script>
 
