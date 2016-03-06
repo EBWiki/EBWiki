@@ -136,21 +136,28 @@
 </script>
 
 <script type="text/javascript">
-  $('#link-list').children('li').each(function (i)
-  {
-      if (i > 10)
-      {
-          $(this).hide();
-      }
-  });
+  $(document).ready(function(){
+    var more = $('<li class="more"><a href="">Show more</a></li>');
+    var less = $('<li class="less" ><a href="">Show less</a></li>');
 
-  var more = $('<li class="cat-item"><a href="">Show More</a></li>');
-  $('ul#link-list').append(more);
+    $('ul#link-list').children('li:gt(10)').hide();
+    $('ul#link-list').append(more);
 
-  more.find('a').on('click', function (){
-     $(this).parent().siblings('li').show();
+    $('body').on('click','.more',function(e){
+        e.preventDefault();
+        $(this).remove();
+        $('ul#link-list').children().show();
+        $('ul#link-list').append(less);
+        return false;
+    });
 
-     return false;
+    $('body').on('click','.less',function(e){
+        e.preventDefault();
+        $(this).remove();
+        $('ul#link-list').children('li:gt(10)').hide();
+        $('ul#link-list').append(more);
+        return false;
+   });
   });
 
 </script>
