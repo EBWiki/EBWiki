@@ -138,8 +138,8 @@
 <script type="text/javascript">
   if($('ul#link-list').children().length > 10) {
     $(document).ready(function(){
-      var more = $('<li class="more"><a href="">Show more</a></li>');
-      var less = $('<li class="less" ><a href="">Show less</a></li>');
+      var more = $('<li class="more btn btn-xs btn-default"><a href="">Show more</a></li>');
+      var less = $('<li class="less btn btn-xs btn-default" ><a href="">Show less</a></li>');
 
       $('ul#link-list').children('li:gt(10)').hide();
       $('ul#link-list').append(more);
