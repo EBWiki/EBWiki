@@ -7,18 +7,12 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
-            <h2 class="page-header">EBWiki is currently tracking <%= Article.count %> cases where <br>People of Color are killed by law enforcement.</h2>
-            <h4 class="page-subheader">EBWiki is built on crowd-sourced information and aims to make it easy for all of us to stay informed. Read more <%= link_to 'about us',about_path %>.
-              <% if user_signed_in? %>
-                Visit any case page and click the follow button and we will send you updates as these cases proceed.</p>
-              <% else %>
-              <%= link_to 'Login', new_user_registration_path %> and follow specific cases and we will update you as they proceed.
-              <% end %>
-            </h4>
+            <h2 class="page-header">These <%= Article.count %> people have been killed by police.<br>Here we track their cases.</h2>
             <div class="text-center">
               <h3><%= render 'layouts/ab_test' %>  <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %></h3>
             </div>
-            <h2 class="page-subheader">Below are photos of the subjects. Hover over the images for more information.</h2>
+            <h4 class="page-subheader"><%= link_to 'More about us...',about_path %>
+            </h4>
 
 
     <!-- Gallery of cases -->
