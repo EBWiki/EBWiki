@@ -36,5 +36,12 @@ RSpec.describe CommentsController, type: :controller do
         post :create, comment: comment_attr, article_id: article.id
       }.to change(Comment,:count).by(1)
     end
+
+    it "deletes comments when associated Article object is destroyed" do
+      article.save
+      comment.save
+      article.destroy
+      expect(Comment.all).not_to include comment
+    end
   end
 end

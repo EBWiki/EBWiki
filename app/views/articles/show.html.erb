@@ -76,7 +76,7 @@
 						<h4 class="article_subheader">Additional Resources:</h4>
 						<ul class="background-links" id="link-list">
 							<% @article.links.each do |link| %>
-								<li><%= link_to link.url, "#{link.url}" %></li>
+								<li><%= link_to link.url, "#{link.url}", target: '_blank' %></li>
 							<% end %>
 						</ul>
 					<% end %>
