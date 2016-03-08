@@ -1,6 +1,6 @@
 # This is still called "Article", although its true name is "Case"
 # TODO: Rename this to Case
-# 
+#
 class Article < ActiveRecord::Base
   # TODO: Clean up relationship section
   belongs_to :user
@@ -8,7 +8,7 @@ class Article < ActiveRecord::Base
   belongs_to :state
   has_many :links
   accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
-  has_many :comments, as: :commentable
+  has_many :comments, as: :commentable, :dependent => :destroy
   has_many :subjects
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
@@ -20,7 +20,7 @@ class Article < ActiveRecord::Base
   # Friendly ID
   extend FriendlyId
   friendly_id :title, use: [:slugged, :finders]
-  
+
   # Elasticsearch Gem
   searchkick
 
@@ -41,7 +41,7 @@ class Article < ActiveRecord::Base
 
   # Scopes
   scope :by_state, -> (state_id) {where(state_id: state_id)}
-  
+
   def full_address
     "#{address} #{city} #{state} #{zipcode}"
   end
