@@ -7,7 +7,5 @@
 	  <%= f.input :mentally_ill %>
 	  <%= f.input :homeless%>
 	  <%= f.input :veteran %>
-	  <% if @article.subjects.count >= 2 %>
-		  <%= link_to_remove_association "remove subject (you need at least one)", f %>
-		<% end %>
+		<%= link_to_remove_association "remove subject (you need at least one)", f %>
 </div>
