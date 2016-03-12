@@ -19,7 +19,7 @@ class Article < ActiveRecord::Base
 
   # Friendly ID
   extend FriendlyId
-  friendly_id :title, use: [:slugged, :finders]
+  friendly_id :subject_name, use: [:slugged, :finders]
 
   # Elasticsearch Gem
   searchkick
@@ -53,6 +53,10 @@ class Article < ActiveRecord::Base
   def nearby_cases
     self.try(:nearbys, 50).try(:order, "distance")
     #self.nearbys(50).order("distance")
+  end
+
+  def subject_name
+    self.subjects.first.name
   end
 
 end
