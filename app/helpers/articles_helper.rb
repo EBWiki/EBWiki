@@ -15,4 +15,9 @@ module ArticlesHelper
   		@comment.present? &&
   		@subjects.present?)
   end
+
+  # method to help with genders
+  def gender_dropdown_collection
+    Gender.all.to_a.insert(3, "  ")
+  end
 end

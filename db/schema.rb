@@ -11,17 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316010947) do
+ActiveRecord::Schema.define(version: 20160323064052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
     t.uuid     "visit_id"
     t.integer  "user_id"
     t.string   "name"
-    t.jsonb    "properties"
+    t.text     "properties"
     t.datetime "time"
   end
 
@@ -58,8 +57,6 @@ ActiveRecord::Schema.define(version: 20160316010947) do
     t.text     "community_action"
     t.text     "litigation"
     t.string   "country"
-    t.text     "latest_update"
-    t.boolean  "send_update"
     t.boolean  "remove_avatar"
   end
 
@@ -82,13 +79,6 @@ ActiveRecord::Schema.define(version: 20160316010947) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
-
-  create_table "edit_blurbs", force: :cascade do |t|
-    t.text     "blurb"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "article_id"
-  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -255,7 +245,6 @@ ActiveRecord::Schema.define(version: 20160316010947) do
     t.string   "linkedin"
     t.string   "slug"
     t.boolean  "subscribed"
-    t.string   "avatar"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -281,7 +270,6 @@ ActiveRecord::Schema.define(version: 20160316010947) do
     t.text     "object_changes"
     t.string   "ip"
     t.integer  "transaction_id"
-    t.text     "blurb"
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
