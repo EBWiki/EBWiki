@@ -10,14 +10,14 @@ module ArticlesHelper
   # where an article doesn't have a subject, for example...
   # TODO: Add the location hash to the list of required data
   def article_sanity_check
-  	return (@article.present?	&&
-  		@commentable.present? &&
-  		@comment.present? &&
-  		@subjects.present?)
+    return (@article.present? &&
+      @commentable.present? &&
+      @comment.present? &&
+      @subjects.present?)
   end
 
   # method to help with genders
   def gender_dropdown_collection
-    Gender.all.to_a.insert(3, "  ")
+    Gender.all.map {|gender| [gender.sex, gender.id]}.insert(3, "--------")
   end
 end

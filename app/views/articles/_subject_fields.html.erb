@@ -1,11 +1,11 @@
 <div class="nested-fields">
-	  <%= f.input :name %>
-	  <%= f.input :age %>
-	  <%= f.select :gender_id, options_from_collection_for_select(Gender.all, :id, :sex) %>
-	  <%= f.input :ethnicity_id,:collection => Ethnicity.all,:label_method => :title,:value_method => :id,:label => "Race" ,:include_blank => false %>
-	  <%= f.input :unarmed %>
-	  <%= f.input :mentally_ill %>
-	  <%= f.input :homeless%>
-	  <%= f.input :veteran %>
-		<%= link_to_remove_association "remove subject (you need at least one)", f %>
+    <%= f.input :name %>
+    <%= f.input :age %>
+    <%= f.select :gender_id, options_for_select(gender_dropdown_collection, disabled: "--------") %>
+    <%= f.input :ethnicity_id,:collection => Ethnicity.all,:label_method => :title,:value_method => :id,:label => "Race" ,:include_blank => false %>
+    <%= f.input :unarmed %>
+    <%= f.input :mentally_ill %>
+    <%= f.input :homeless%>
+    <%= f.input :veteran %>
+    <%= link_to_remove_association "remove subject (you need at least one)", f %>
 </div>
