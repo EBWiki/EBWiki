@@ -56,7 +56,7 @@ gem 'ahoy_matey'
 # use split gem for a/b testing
 gem 'split', require: 'split/dashboard'
 
-gem 'rollbar', '~> 2.2.1'
+gem 'rollbar', '~> 2.8.2'
 group :development, :test do
 
 
@@ -120,7 +120,7 @@ gem 'carrierwave-imageoptimizer'
 gem 'heroku_rails_deflate', :groups => [:production, :staging]
 
 #CMS panel for admin
-gem 'rails_admin'
+gem 'rails_admin','0.6.7'
 
 gem 'puma'
 gem 'geocoder'
