@@ -19,7 +19,7 @@ class Article < ActiveRecord::Base
 
   # Friendly ID
   extend FriendlyId
-  friendly_id :title, use: [:slugged, :finders]
+  friendly_id :subject_name, use: [:slugged, :finders]
 
   # Elasticsearch Gem
   searchkick
