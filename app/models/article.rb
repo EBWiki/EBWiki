@@ -19,7 +19,7 @@ class Article < ActiveRecord::Base
 
   # Friendly ID
   extend FriendlyId
-  friendly_id :subject_name, use: [:slugged, :finders]
+  friendly_id :title, use: [:slugged, :finders]
 
   # Elasticsearch Gem
   searchkick
@@ -29,8 +29,7 @@ class Article < ActiveRecord::Base
   validates :date, presence: { message: "Please add a date." }
   validates :city, presence: { message: "Please add a city." }
   validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
-
-
+  validates :title, presence: { message: "Please specify a title"}, uniqueness: { message: "This title has been entered. Please specify another title"}
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
@@ -54,9 +53,4 @@ class Article < ActiveRecord::Base
     self.try(:nearbys, 50).try(:order, "distance")
     #self.nearbys(50).order("distance")
   end
-
-  def subject_name
-    self.subjects.first.name
-  end
-
 end

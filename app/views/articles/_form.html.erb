@@ -11,9 +11,10 @@
   <% end %>
 
 	<div class="cold-md-12">
-		<fieldset class="fsStyle">				
+		<fieldset class="fsStyle">
 			<legend class="legendStyle">Basic Case Information, Media <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Basic Information and Media", :content => "This fieldset includes the incident date, a photo of the subject or the event as well as a link to a youtube video of the event. Editors should seek out images beyond mug shots where possible. Likewise, our preference is for videos of the actual events as recorded as they occurred vs news reports or other secondary sources, though we have included secondary sources in a few cases."})%></legend>
 			<div>
+				<%= f.input :title %>
 				<%= f.input :date, as: :date_picker, :label => 'Date of Incident', class: "datetimepicker" %>
 				<% if params[:action] == "new" %>
 				    <%= image_tag('default-user-icon.png', :size => "150x150", :class => "img-responsive") %>
@@ -42,7 +43,7 @@
 	</div>
 
 	<div class="cold-md-12">
-		<fieldset class="fsStyle">				
+		<fieldset class="fsStyle">
 			<legend class="legendStyle">Subjects Information <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Subject's Information", :content => "This is where you will add information about age, gendar and other characteristics of the subject. Each case requires at least one subject.  "})%></legend>
 			<div>
 		    <%= f.simple_fields_for :subjects do |subject| %>
@@ -56,7 +57,7 @@
 
 	<!-- fieldset collapse start -->
 <div class="cold-md-12">
-	<fieldset class="fsStyle">				
+	<fieldset class="fsStyle">
 		<legend class="legendStyle">
       <div data-toggle="collapse">Incident Location Info <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Incident Location Info", :content => "These fields relate to where the incident took place. Editors should be as specific as possible, approximating a street address and a zip code. City and State are required fields."})%></div>
 		</legend>
@@ -68,7 +69,7 @@
 </div>
 
 <div class="cold-md-12">
-	<fieldset class="fsStyle">				
+	<fieldset class="fsStyle">
 		<legend class="legendStyle">Main Content Fields <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Main Content Fields", :content => "These three fields constitute the body of the case and house most of the facts. The overview contains basic factual information, litigation includes facts relating to legal proceedings and investigation and community action encompasses information about family activity, protests and the like"})%></legend>
 		<%= f.input :overview, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
 		<%= f.input :litigation, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
@@ -77,7 +78,7 @@
 </div>
 
 <div class="cold-md-12">
-	<fieldset class="fsStyle">				
+	<fieldset class="fsStyle">
 		<legend class="legendStyle">Links to Related Content <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Links", :content => "Links to external content and supporting material are critical. Whenever an editor creates or adds content to a case, he or she should provide at least one supporting link. Any html links included withink the content section should also be added here."})%></legend>
 		<div id="links">
 		    <%= f.simple_fields_for :links do |link| %>

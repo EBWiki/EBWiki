@@ -10,11 +10,11 @@ RSpec.describe FollowsController, type: :controller do
       it 'creates the follow' do
         @article = FactoryGirl.create(:article)
         @follow = FactoryGirl.create(:follow, followable_id: @article.id)
-        expect(assigns(:followers)).to eq(@article.reload.followers.first)            
+        expect(assigns(:followers)).to eq(@article.reload.followers.first)
       end
     end
   end
-  describe '#DELETE destroy' do 
+  describe '#DELETE destroy' do
     login_user
     it 'deletes a follow' do
       @article = FactoryGirl.create(:article)
@@ -27,7 +27,7 @@ RSpec.describe FollowsController, type: :controller do
       follow_id = 9999
       @article_id = 9999
       expect{delete :destroy, id: follow_id, article_id: @article.id}.
-      to raise_error
+      to raise_error(NoMethodError)
     end
-  end  
+  end
 end
