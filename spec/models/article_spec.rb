@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Article do
+describe Article, :versioning => true do
   it "is invalid without a date" do
     article = build(:article, date: nil)
     expect(article).to be_invalid
@@ -9,6 +9,52 @@ describe Article do
     article = build(:article, state_id: nil)
     expect(article).to be_invalid
   end
+  it 'starts versioning when a new article is created' do
+    article = FactoryGirl.create(:article)
+    expect(article.versions.size).to eq 1
+    expect(article.versions[0].event).to eq 'create'
+  end
+  it 'adds a version when the title is changed' do
+    article = FactoryGirl.create(:article)
+    article.update_attribute(:title, "A New Title")
+    expect(article.versions.size).to eq 2
+  end
+  it 'adds a version when the overview is changed' do
+    article = FactoryGirl.create(:article)
+    article.update_attribute(:overview, "An Old Article")
+    expect(article.versions.size).to eq 2
+  end
+  it 'adds a version when the date is changed' do
+    article = FactoryGirl.create(:article)
+    article.update_attribute(:date, Date.yesterday)
+    expect(article.versions.size).to eq 2
+  end
+  it 'adds a version when the city is changed' do
+    article = FactoryGirl.create(:article)
+    article.update_attribute(:city, "New Jack City")
+    expect(article.versions.size).to eq 2
+  end
+  it 'adds a version when the avatar is changed' do
+    article = FactoryGirl.create(:article)
+    article.update_attribute(:avatar, "new_avatar")
+    expect(article.versions.size).to eq 2
+  end
+  it 'adds a version when the video url is changed' do
+    article = FactoryGirl.create(:article)
+    article.update_attribute(:video_url, "new_video.com")
+    expect(article.versions.size).to eq 2
+  end
+  it 'adds a version when the slug is changed' do
+    article = FactoryGirl.create(:article)
+    article.update_attribute(:slug, "joel-osteen")
+    expect(article.versions.size).to eq 2
+  end
+  it 'does not add a version when the attribute is the same' do
+    article = FactoryGirl.create(:article, title: "The Title")
+    article.update_attribute(:title, "The Title")
+    expect(article.versions.size).to eq 1
+  end
+
 end
 
 describe "#new" do
