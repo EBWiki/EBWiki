@@ -13,7 +13,7 @@ class Article < ActiveRecord::Base
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
   # Paper Trail
-  has_paper_trail :only => [:title, :overview, :litigation, :community_action]
+  has_paper_trail
   # Acts as Follows, for follower functionality
   acts_as_followable
 
