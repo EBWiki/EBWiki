@@ -154,7 +154,7 @@ gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.
 gem 'kaminari'
 
 # access mailchimp api
-gem 'gibbon','1.2.0'
+gem 'gibbon'
 
 # metatag helper
 gem 'metamagic'

@@ -9,7 +9,16 @@ meta title: "EBWiki - Ending Violence Against People of Color",
         <div class="col-lg-9">
             <h2 class="page-header">These <%= Article.count %> people have been killed by police.<br>Here we track their cases.</h2>
             <div class="text-center">
-              <h3><%= render 'layouts/ab_test' %>  <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %></h3>
+              <h3>
+                <%= render 'layouts/ab_test' %>
+                <% if current_user.present? %>
+                  <% unless current_user.mailchimp_status == "subscribed" %>
+                    <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
+                  <% end %>
+                <% else %>
+                  <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
+                <% end %>
+              </h3>
             </div>
             <h4 class="page-subheader"><%= link_to 'More about us...',about_path %>
             </h4>
