@@ -5,6 +5,10 @@ describe Article, :versioning => true do
     article = build(:article, date: nil)
     expect(article).to be_invalid
   end
+  it "is invalid with a date specified in the future" do
+    article = build(:article, date: Date.tomorrow)
+    expect(article).to be_invalid
+  end
   it "is invalid without a state_id" do
     article = build(:article, state_id: nil)
     expect(article).to be_invalid
