@@ -19,7 +19,7 @@ class Article < ActiveRecord::Base
 
   # Friendly ID
   extend FriendlyId
-  friendly_id :title, use: [:slugged, :finders]
+  friendly_id :slug_candidates, use: [:slugged, :finders]
 
   # Elasticsearch Gem
   searchkick
@@ -30,7 +30,7 @@ class Article < ActiveRecord::Base
   validate :article_date_cannot_be_in_the_future
   validates :city, presence: { message: "Please add a city." }
   validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
-  validates :title, presence: { message: "Please specify a title"}, uniqueness: { message: "This title has been entered. Please specify another title"}
+  validates :title, presence: { message: "Please specify a title"}
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
@@ -59,5 +59,15 @@ class Article < ActiveRecord::Base
     if date.present? && date > Date.today
       errors.add(:date, "must be in the past")
     end
+  end
+
+  # Try building a slug based on the following fields in
+  # increasing order of specificity.
+  def slug_candidates
+    [
+      :title,
+      [:title, :city],
+      [:title, :city, :zipcode]
+    ]
   end
 end
