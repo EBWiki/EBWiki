@@ -59,6 +59,21 @@ describe Article, :versioning => true do
     expect(article.versions.size).to eq 1
   end
 
+  it 'adds city to slug to maintain uniqueness' do
+    article = FactoryGirl.create(:article, title: "The Title")
+    article2 = FactoryGirl.create(:article, title: "The Title")
+    expect(article2.slug).to eq "the-title-albany"
+  end
+
+  it 'updates slug if article title is updated' do
+    article = FactoryGirl.create(:article, title: "The Title")
+    article.slug = nil
+    article.title = "Another Title"
+    article.save!
+    article.reload
+    expect(article.slug).to eq "another-title"
+  end
+
 end
 
 describe "#new" do
