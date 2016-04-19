@@ -4,4 +4,6 @@
 # User-agent: *
 # Disallow: /
 
+Disallow: /*/follows
+
 Sitemap: http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz
