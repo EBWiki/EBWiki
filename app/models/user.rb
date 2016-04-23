@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
 
   def add_to_mailchimp
     if self.subscribed?
-      gb = Gibbon::API.new
+      gb = Gibbon::Request.new
       gb.lists.subscribe({:id => ENV['MAILCHIMP_LIST_ID'], :email => {:email => "#{self.email}"}, :merge_vars => {:FNAME => "#{self.name}"}})
     end
   end
