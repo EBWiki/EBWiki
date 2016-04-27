@@ -34,7 +34,7 @@
 			    <input id="photoCover_article" class="input-large" type="text">
 			    <a class="btn btn-warning" onclick="$('input[id=lefile_article]').click();">Browse</a>
 			  </div>
-				<h4>Add a YouTube Video url relating to the case:</h4>
+				<h4>Add a YouTube or Vimeo video url relating to the case:</h4>
 				<%= f.input :video_url %>
 				<h4>Enter a category of abuse:</h4>
 				<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
