@@ -1,8 +1,13 @@
 module ArticlesHelper
   def embed(video_url)
     return '' if video_url.blank?
-    youtube_id = video_url.to_s.split("=").last
-    content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{youtube_id}")
+    if video_url.include? "youtube.com"
+      youtube_id = video_url.to_s.split("=").last
+      content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{youtube_id}")
+    elsif video_url.include? "vimeo.com"
+      vimeo_id = video_url.to_s.split(".com/").last
+      content_tag(:iframe, nil, src: "https://player.vimeo.com/video/#{vimeo_id}")
+    end
   end
 
   # This method checks to make sure that the article has the instance variables
