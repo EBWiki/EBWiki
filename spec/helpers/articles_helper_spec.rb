@@ -6,8 +6,12 @@ RSpec.describe ArticlesHelper, :type => :helper do
       expect(helper.embed('')).to eql("")
     end
 
-    it "returns a content tag if the video URL is not blank" do
-      expect(helper.embed('videoUrl')).to eql("<iframe src=\"//www.youtube.com/embed/videoUrl\"></iframe>")
+    it "returns a content tag if youtube video URL is provided" do
+      expect(helper.embed('https://www.youtube.com/watch?v=Mgn1r3_eM-s')).to eql("<iframe src=\"//www.youtube.com/embed/Mgn1r3_eM-s\"></iframe>")
+    end
+
+    it "returns a content tag if vimeo video URL is provided" do
+      expect(helper.embed('https://vimeo.com/136536466')).to eql("<iframe src=\"https://player.vimeo.com/video/136536466\"></iframe>")
     end
 
   end
