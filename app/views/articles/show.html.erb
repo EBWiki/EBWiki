@@ -56,7 +56,7 @@
           <p>
             <%= link_to 'People tracking this case', articles_followers_path(@article) %>: <span class="timeAgo"><%= @article.followers.count %></span>
 	            <% unless @article.followers.include?(current_user) %>
-		            -- Click here to <%= link_to 'Track this', article_follows_path(@article) %>.
+		            -- Click here to <%= link_to 'Track this', article_follows_path(@article), :method => :post %>.
 		          <% end %>
           </p>
         <% end %>
