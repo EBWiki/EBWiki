@@ -7,7 +7,7 @@ describe Users::RegistrationsController, "#create", :type => :controller do
   describe "on success" do
   	before :each do
 		   @attr = { :email => "user@example.com",
-                  :password => "foobar01", :password_confirmation => "foobar01" }
+                  :password => "foobar01", :password_confirmation => "foobar01", :name => "johnny" }
 
 		end
 
