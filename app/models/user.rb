@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  validates :name, presence: { message: "Please add a name." }
+
   has_many :articles
   has_many :comments
   acts_as_follower
