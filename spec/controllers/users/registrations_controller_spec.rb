@@ -15,7 +15,8 @@ describe Users::RegistrationsController, "#create", :type => :controller do
     	Gotcha.skip_validation = true
     	expect{
         post :create, :user => @attr
-        expect(response).to redirect_to(root_path)
+
+        expect(response).to redirect_to(user_path(User.last))
       }.to change{User.count}.by(1)
     end
   end
@@ -27,7 +28,7 @@ describe Users::RegistrationsController, "#create", :type => :controller do
       request.env['devise.mapping'] = Devise.mappings[:user]
     end
 
-    it "should create a user if the gotcha is answered correctly" do
+    it "should not create a user if the gotcha is answered correctly" do
       Gotcha.skip_validation = false
       expect{
         post :create, :user => @attr
