@@ -1,4 +1,4 @@
-ruby "2.3.0"
+ruby "2.2.1"
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', :groups => [:development, :test, :production], :require => 'dotenv/rails-now'
