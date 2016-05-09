@@ -5,14 +5,18 @@ describe Article, :versioning => true do
     article = build(:article, date: nil)
     expect(article).to be_invalid
   end
-  # it "is invalid with a date specified in the future" do
-  #   article = build(:article, date: Date.tomorrow)
-  #   expect(article).to be_invalid
-  # end
+
   it "is invalid without a state_id" do
     article = build(:article, state_id: nil)
     expect(article).to be_invalid
   end
+
+  it 'is invalid without a subject' do 
+    article = create(:article)
+    article.subjects = []
+    expect(article).to be_invalid
+  end
+
   it 'starts versioning when a new article is created' do
     article = FactoryGirl.create(:article)
     expect(article.versions.size).to eq 1

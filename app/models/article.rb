@@ -31,6 +31,9 @@ class Article < ActiveRecord::Base
   validates :city, presence: { message: "Please add a city." }
   validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
   validates :title, presence: { message: "Please specify a title"}
+  validates_associated :subjects
+  validates :subjects, presence: { message: 'at least one subject is required'}
+
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 

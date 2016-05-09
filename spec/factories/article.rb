@@ -7,14 +7,7 @@ FactoryGirl.define do
     f.city "Albany"
     f.date Date.today
     f.state_id 33
-    transient do
-      subjects_count 5
-    end
-
-
-    after(:create) do |article, evaluator|
-      create_list(:subject, evaluator.subjects_count, article: article)
-    end
+    f.subjects { [ create(:subject)] }
   end
 
   factory :invalid_article, class: Article do |f|

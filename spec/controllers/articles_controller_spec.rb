@@ -4,6 +4,7 @@ RSpec.describe ArticlesController, type: :controller do
   let(:articles) { FactoryGirl.create_list(:article, 20) }
   let(:state) {FactoryGirl.create(:state)}
 
+
   describe '#index' do
 
     before(:each) { get :index }
@@ -36,17 +37,6 @@ RSpec.describe ArticlesController, type: :controller do
         expect { get :show, id: -1 }.to raise_exception ActiveRecord::RecordNotFound
       end
     end
-
-    context "when information is missing" do
-      let(:article) { articles.first }
-
-      it 'redirects to the home page' do
-        article.subjects =[]
-        article.save!
-        get :show, id: article.id
-        expect(response).to redirect_to(root_path)
-      end
-    end
   end
 
   describe '#create' do
@@ -54,15 +44,17 @@ RSpec.describe ArticlesController, type: :controller do
 
     context 'when valid' do
       let(:article_attrs) { FactoryGirl.attributes_for(:article) }
-
-
+      let(:subject_attrs) { FactoryGirl.attributes_for(:subject) }
+     
       it 'success' do
-        post :create, {'article': article_attrs}
+        article_attrs['subjects_attributes'] = {"0" => subject_attrs}
+        post :create, {'article': article_attrs }
         expect(response).to redirect_to(article_path(Article.last))
       end
 
       it 'saves and assigns new article to @article' do
-        post :create, {'article': article_attrs}
+        article_attrs['subjects_attributes'] = {"0" => subject_attrs}
+        post :create, {'article': article_attrs }
         expect(assigns(:article)).to be_a_kind_of(Article)
         expect(assigns(:article)).to be_persisted
       end

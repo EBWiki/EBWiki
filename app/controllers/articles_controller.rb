@@ -29,7 +29,6 @@ class ArticlesController < ApplicationController
     @article = current_user.articles.build(article_params)
     # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
-    @users = User.all
     if @article.save
       flash[:success] = "Article was created! #{make_undo_link}"
       redirect_to @article
