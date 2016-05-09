@@ -6,10 +6,10 @@ class Article < ActiveRecord::Base
   belongs_to :user
   belongs_to :category
   belongs_to :state
-  has_many :links
+  has_many :links, dependent: :destroy
   accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
-  has_many :comments, as: :commentable, :dependent => :destroy
-  has_many :subjects
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :subjects, dependent: :destroy
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
   # Paper Trail
@@ -55,7 +55,6 @@ class Article < ActiveRecord::Base
 
   def nearby_cases
     self.try(:nearbys, 50).try(:order, "distance")
-    #self.nearbys(50).order("distance")
   end
 
   def article_date_cannot_be_in_the_future
