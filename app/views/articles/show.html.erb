@@ -99,7 +99,13 @@
                 <% if article.avatar? %>
                   <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
                 <% else %>
-                  <%= link_to image_tag("https://s3.amazonaws.com/blackopswiki/uploads/article/avatar/319/large_avatar_default-user-icon.png", :class => "img-responsive"), article %>
+
+                  <div class="thumbnail text-center">
+                    <%= link_to image_tag("https://s3.amazonaws.com/blackopswiki/uploads/article/avatar/319/large_avatar_default-user-icon.png", :class => "img-responsive"), article %>
+                    <div class="caption">
+                      <h4><%= article.title %></h4>
+                    </div>
+                  </div>
                 <% end %>
                 <div class="mask">
                   <h2><%= link_to article.title, article, :class => "info2" %></h2>
