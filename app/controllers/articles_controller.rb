@@ -2,12 +2,16 @@ class ArticlesController < ApplicationController
   before_action :find_article, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show, :history, :followers]
 
-  # This contains the index method, since it's used in here and
-  # maps controller
-  include CaseFiltering
-
   def new
     @article = current_user.articles.build
+  end
+
+  def index
+    page_size = 12
+    @articles = Article.by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && params[:state_id].present?
+    @articles = Article.by_state(params[:state_id]).order('date DESC').page(params[:page]).per(page_size) if !params[:query].present? && params[:state_id].present?
+    @articles = Article.search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
+    @articles = Article.all.order('date DESC').page(params[:page]).per(page_size) if (!params[:query].present? && !params[:state_id].present?)
   end
 
   def show

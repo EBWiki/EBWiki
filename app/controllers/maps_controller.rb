@@ -1,3 +1,5 @@
 class MapsController < ApplicationController
-	include CaseFiltering
+	def index
+		@articles = Article.all
+	end
 end
