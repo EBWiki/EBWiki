@@ -29,6 +29,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # add back rails observer class removed from rails 4
 gem 'rails-observers'
 
+# For configurable CORS domain settings
+gem 'rack-cors', :require => 'rack/cors'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
