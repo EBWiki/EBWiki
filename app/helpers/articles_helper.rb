@@ -7,6 +7,8 @@ module ArticlesHelper
     elsif video_url.include? "vimeo.com"
       vimeo_id = video_url.to_s.split(".com/").last
       content_tag(:iframe, nil, src: "https://player.vimeo.com/video/#{vimeo_id}")
+    else
+      content_tag(:iframe, nil, src: "#{video_url}")
     end
   end
 
