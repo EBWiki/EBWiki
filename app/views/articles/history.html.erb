@@ -21,7 +21,11 @@
           <% end %>
         <div>
           Changeset:
-          <pre><%= version.changeset %></pre>
+          <% if version.comment.present? %>
+            <pre><%= version.comment %></pre>
+          <% else %>
+            <pre>No edit summary is available for this version.</pre>
+          <% end %>
         </div>
       </li>
     <% end %>

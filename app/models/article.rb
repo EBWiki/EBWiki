@@ -13,7 +13,7 @@ class Article < ActiveRecord::Base
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
   # Paper Trail
-  has_paper_trail :meta => { :comment  => :edit_summary }
+  has_paper_trail :ignore => [:summary], :meta => { :comment  => :edit_summary }
 
   # Acts as Follows, for follower functionality
   acts_as_followable
@@ -34,6 +34,7 @@ class Article < ActiveRecord::Base
   validates :title, presence: { message: "Please specify a title"}
   validates_associated :subjects
   validates :subjects, presence: { message: 'at least one subject is required'}
+  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the article in 140 chars or less.'}
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
