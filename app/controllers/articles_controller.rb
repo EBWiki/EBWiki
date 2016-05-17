@@ -42,6 +42,8 @@ class ArticlesController < ApplicationController
   end
 
   def edit
+    @article = Article.friendly.find(params[:id])
+    @article.update_attribute(:summary, nil)
   end
 
   def followers
