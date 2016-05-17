@@ -93,7 +93,7 @@
 <div class="cold-md-12">
   <fieldset class="fsStyle">
     <legend class="legendStyle">Summary of Changes to the Article <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Main Content Fields", :content => "Please summarize the edits you have made to this case.  These summaries populate the history tabs to make the history of the article more readable to users."})%></legend>
-    <%= f.input :summary, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
+    <%= f.input :summary %>
   </fieldset>
 </div>
   <br>

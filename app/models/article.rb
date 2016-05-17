@@ -13,7 +13,8 @@ class Article < ActiveRecord::Base
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
   # Paper Trail
-  has_paper_trail
+  has_paper_trail :meta => { :comment  => :edit_summary }
+
   # Acts as Follows, for follower functionality
   acts_as_followable
 
@@ -61,6 +62,10 @@ class Article < ActiveRecord::Base
     if date.present? && date > Date.today
       errors.add(:date, "must be in the past")
     end
+  end
+
+  def edit_summary
+    return summary
   end
 
   # Try building a slug based on the following fields in
