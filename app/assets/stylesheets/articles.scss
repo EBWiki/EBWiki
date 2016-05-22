@@ -183,6 +183,9 @@
 .view-first:hover a.info {
     transition-delay: 0.2s;
 }
+.view-first:hover .caption {
+  display: none;
+}
 
 // Example 10
 
