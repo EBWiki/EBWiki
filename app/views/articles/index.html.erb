@@ -7,7 +7,8 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
-            <h2 class="page-header">These <%= Article.count %> people have been killed by police.<br>Here we track their cases.</h2>
+            <h2 class="page-header">These <%= Article.count %> people were killed by police.<br>We track their cases here.</h2>
+
             <div class="text-center">
               <h3>
                 <%= render 'layouts/ab_test' %>
@@ -20,8 +21,9 @@ meta title: "EBWiki - Ending Violence Against People of Color",
                 <% end %>
               </h3>
             </div>
-            <h4 class="page-subheader"><%= link_to 'More about us...',about_path %>
-            </h4>
+            <h4 class="page-subheader">
+          <%= link_to "What next?", "https://www.surveymonkey.com/r/5RSWFNY", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "What's next for EBWiki?",:content => "Click here to help us decide on a few features we are thinking of adding to EBWiki!"} %>
+         -- <%= link_to 'More about us...',about_path %></h4>
 
 
     <!-- Gallery of cases -->
