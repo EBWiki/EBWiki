@@ -37,6 +37,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_median (0.1.3)
+      activerecord
     activejob (4.2.6)
       activesupport (= 4.2.6)
       globalid (>= 0.3.0)
@@ -107,6 +109,7 @@ GEM
     carrierwave-imageoptimizer (1.2.1)
       carrierwave (~> 0.8)
       image_optimizer (~> 1.2)
+    chartkick (1.4.2)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
@@ -309,6 +312,8 @@ GEM
       activesupport (>= 4.1.0)
     gmaps4rails (2.1.2)
     gotcha (0.0.6)
+    groupdate (2.5.2)
+      activesupport (>= 3)
     guard (2.13.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, <= 4.0)
@@ -331,6 +336,8 @@ GEM
       activesupport (>= 3.2.13)
       rack (>= 1.4.5)
     highline (1.7.8)
+    hightop (0.1.4)
+      activerecord
     hodel_3000_compliant_logger (0.1.1)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -622,6 +629,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_median
   acts_as_follower
   ahoy_matey
   bootstrap-sass
@@ -631,6 +639,7 @@ DEPENDENCIES
   capybara (~> 2.4.3)
   carrierwave
   carrierwave-imageoptimizer
+  chartkick
   ckeditor!
   cocoon
   codeclimate-test-reporter
@@ -648,8 +657,10 @@ DEPENDENCIES
   gibbon
   gmaps4rails
   gotcha
+  groupdate
   guard-rspec
   heroku_rails_deflate
+  hightop
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
