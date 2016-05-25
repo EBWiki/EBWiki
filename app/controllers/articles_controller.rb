@@ -74,7 +74,7 @@ class ArticlesController < ApplicationController
 
   def history
     @article = Article.friendly.find(params[:id])
-    @versions = @article.versions.order('created_at DESC')
+    @versions = @article.versions.sort_by(&:created_at).reverse
   end
 
   def undo
