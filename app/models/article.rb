@@ -83,7 +83,7 @@ class Article < ActiveRecord::Base
 private
 
   def check_for_empty_fields
-    attrs = ["date", "address", "city", "state", "zipcode", "state_id", "avatar", "video_url", "overview", "community_action", "litigation", "country", "remove_avatar"]
+    attrs = ["title", "date", "address", "city", "state", "zipcode", "state_id", "avatar", "video_url", "overview", "community_action", "litigation", "country", "remove_avatar"]
 
     unless (self.changed & attrs).any?
       self.errors[:base] << "You must change field other than summary to generate a new version"
