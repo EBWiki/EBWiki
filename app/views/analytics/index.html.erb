@@ -1,2 +1,103 @@
-<h1>Analytics#index</h1>
-<p>Find me in app/views/analytics/index.html.erb</p>
+<div class="container" >
+    <div class="row">
+
+      <div class="col-sm-7">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Visits by Day
+          </div>
+          <div class="chart-stage">
+            <%= column_chart @visits.group_by_day(:started_at).count %>
+          </div>
+          <div class="chart-notes">
+            This is a sample text region to describe this chart.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Visits by browser
+          </div>
+          <div class="chart-stage">
+            <div id="chart-02"><%= pie_chart @visits.group(:browser).count %></div>
+          </div>
+          <div class="chart-notes">
+            Notes go down here
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row">
+
+      <div class="col-sm-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Visits by region
+          </div>
+          <div class="chart-stage">
+            <div id="chart-03"><%= pie_chart @visits.group(:region).count %></div>
+          </div>
+          <div class="chart-notes">
+            Notes go down here
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Impressions by device
+          </div>
+          <div class="chart-stage">
+            <div id="chart-04"></div>
+          </div>
+          <div class="chart-notes">
+            Notes go down here
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Impressions by country
+          </div>
+          <div class="chart-stage">
+            <div id="chart-05"></div>
+          </div>
+          <div class="chart-notes">
+            Notes go down here
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="chart-wrapper">
+          <img data-src="holder.js/100%x150/white">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="chart-wrapper">
+          <img data-src="holder.js/100%x150/white">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="chart-wrapper">
+          <img data-src="holder.js/100%x150/white">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="chart-wrapper">
+          <img data-src="holder.js/100%x150/white">
+        </div>
+      </div>
+    </div>
+  </div>
