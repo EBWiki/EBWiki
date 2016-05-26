@@ -64,23 +64,6 @@ ActiveRecord::Schema.define(version: 20160517095316) do
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
   add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
 
-  create_table "calendar_events", force: :cascade do |t|
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.text     "description"
-    t.string   "title"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.string   "website_url"
-    t.string   "street_address"
-    t.string   "city"
-    t.integer  "state_id"
-    t.string   "zipcode"
-    t.float    "longitude"
-    t.float    "latitude"
-    t.string   "slug"
-  end
-
   create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -140,13 +123,6 @@ ActiveRecord::Schema.define(version: 20160517095316) do
     t.string   "sex"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "hashtags", force: :cascade do |t|
-    t.string   "letters"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "article_id"
   end
 
   create_table "links", force: :cascade do |t|
