@@ -45,7 +45,7 @@ RSpec.describe ArticlesController, type: :controller do
     context 'when valid' do
       let(:article_attrs) { FactoryGirl.attributes_for(:article) }
       let(:subject_attrs) { FactoryGirl.attributes_for(:subject) }
-     
+
       it 'success' do
         article_attrs['subjects_attributes'] = {"0" => subject_attrs}
         post :create, {'article': article_attrs }
@@ -75,7 +75,7 @@ RSpec.describe ArticlesController, type: :controller do
     let(:article) { create(:article) }
 
     context 'when valid' do
-      let(:new_values) { attributes_for(:article) }
+      let(:new_values) { { :overview => "new overview", :city => "Buffalo", :summary => "A summary of changes"} }
 
       it 'success' do
         patch :update, ** new_values, id: article.id, article: new_values

@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160323064052) do
+ActiveRecord::Schema.define(version: 20160517095316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
     t.uuid     "visit_id"
@@ -59,6 +58,7 @@ ActiveRecord::Schema.define(version: 20160323064052) do
     t.text     "litigation"
     t.string   "country"
     t.boolean  "remove_avatar"
+    t.text     "summary"
   end
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
@@ -80,13 +80,6 @@ ActiveRecord::Schema.define(version: 20160323064052) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
-
-  create_table "edit_blurbs", force: :cascade do |t|
-    t.text     "blurb"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "article_id"
-  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -278,6 +271,8 @@ ActiveRecord::Schema.define(version: 20160323064052) do
     t.text     "object_changes"
     t.string   "ip"
     t.integer  "transaction_id"
+    t.text     "comment"
+    t.integer  "author_id"
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree

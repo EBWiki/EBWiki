@@ -8,6 +8,7 @@ FactoryGirl.define do
     f.date Date.today
     f.state_id 33
     f.subjects { [ create(:subject)] }
+    f.summary "A summary of changes"
   end
 
   factory :invalid_article, class: Article do |f|

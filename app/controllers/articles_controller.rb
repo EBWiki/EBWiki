@@ -42,6 +42,8 @@ class ArticlesController < ApplicationController
   end
 
   def edit
+    @article = Article.friendly.find(params[:id])
+    @article.update_attribute(:summary, nil)
   end
 
   def followers
@@ -72,7 +74,7 @@ class ArticlesController < ApplicationController
 
   def history
     @article = Article.friendly.find(params[:id])
-    @versions = @article.versions.order('created_at DESC')
+    @versions = @article.versions.sort_by(&:created_at).reverse
   end
 
   def undo
@@ -109,7 +111,7 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, :remove_avatar, links_attributes: [:id, :url, :_destroy],  comments_attributes: [:comment, :content, :commentable_id, :commentable_type], subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy])
+    params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, :remove_avatar, :summary, links_attributes: [:id, :url, :_destroy],  comments_attributes: [:comment, :content, :commentable_id, :commentable_type], subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy])
   end
 
   # from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)

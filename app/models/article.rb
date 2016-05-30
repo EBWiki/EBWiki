@@ -13,7 +13,8 @@ class Article < ActiveRecord::Base
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
   # Paper Trail
-  has_paper_trail
+  has_paper_trail :ignore => [:summary], :meta => { :comment  => :edit_summary }
+
   # Acts as Follows, for follower functionality
   acts_as_followable
 
@@ -33,12 +34,14 @@ class Article < ActiveRecord::Base
   validates :title, presence: { message: "Please specify a title"}
   validates_associated :subjects
   validates :subjects, presence: { message: 'at least one subject is required'}
+  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the article in 140 chars or less.'}
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
   # Geocoding articles
   geocoded_by :full_address   # can also be an IP address
+  before_validation :check_for_empty_fields
   after_validation :geocode          # auto-fetch coordinates
 
 
@@ -63,6 +66,10 @@ class Article < ActiveRecord::Base
     end
   end
 
+  def edit_summary
+    return summary
+  end
+
   # Try building a slug based on the following fields in
   # increasing order of specificity.
   def slug_candidates
@@ -71,5 +78,15 @@ class Article < ActiveRecord::Base
       [:title, :city],
       [:title, :city, :zipcode]
     ]
+  end
+
+private
+
+  def check_for_empty_fields
+    attrs = ["title", "date", "address", "city", "state", "zipcode", "state_id", "avatar", "video_url", "overview", "community_action", "litigation", "country", "remove_avatar"]
+
+    unless (self.changed & attrs).any?
+      self.errors[:base] << "You must change field other than summary to generate a new version"
+    end
   end
 end

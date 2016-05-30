@@ -11,9 +11,14 @@ describe Article, :versioning => true do
     expect(article).to be_invalid
   end
 
-  it 'is invalid without a subject' do 
+  it 'is invalid without a subject' do
     article = create(:article)
     article.subjects = []
+    expect(article).to be_invalid
+  end
+
+  it "is invalid without a summary" do
+    article = build(:article, summary: nil)
     expect(article).to be_invalid
   end
 
@@ -61,6 +66,11 @@ describe Article, :versioning => true do
     article = FactoryGirl.create(:article, title: "The Title")
     article.update_attribute(:title, "The Title")
     expect(article.versions.size).to eq 1
+  end
+  it 'copies the article.summary attribute to version.comment' do
+    article = FactoryGirl.create(:article, title: "The Title")
+    article.update_attributes(:title => "The Title has changed", :summary => "fixed the title")
+    expect(article.versions.last.comment).to eq "fixed the title"
   end
 
   it 'adds city to slug to maintain uniqueness' do
