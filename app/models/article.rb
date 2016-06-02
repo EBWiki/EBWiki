@@ -34,14 +34,14 @@ class Article < ActiveRecord::Base
   validates :title, presence: { message: "Please specify a title"}
   validates_associated :subjects
   validates :subjects, presence: { message: 'at least one subject is required'}
-  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the article in 140 chars or less.'}
+  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the article.'}
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
   # Geocoding articles
   geocoded_by :full_address   # can also be an IP address
-  before_validation :check_for_empty_fields
+  # before_validation :check_for_empty_fields
   after_validation :geocode          # auto-fetch coordinates
 
 
