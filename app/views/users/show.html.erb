@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-2">
         <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
-        <%= truncate(@user.name, length:16) %> 
+        <%= truncate(@user.name, length:16) %>
         <br />
         <% if @user == current_user %>
           <%= link_to 'Update Details', edit_user_path(current_user), :class => "btn btn-success" %></a>
@@ -29,19 +29,24 @@
         <% else %>
           <h3 class="page-header">
             <% if @user.all_following.count == 0 %>
-              Please take 30 seconds and <%= link_to 'pick a case', root_path %> that you want to track and click the follow button. We'll take it from there to keep you informed. 
+              Please take 30 seconds and <%= link_to 'pick a case', root_path %> that you want to track and click the follow button. We'll take it from there to keep you informed.
             <% else %>
               <h3 class="page-header">Cases we are tracking for you:</h3>
             <% end %>
           </h3>
         <% end %>
-        <% @user.all_following.each do |article| %>  
+        <% @user.all_following.each do |article| %>
           <div class="col-lg-2 col-md-4 col-xs-12">
-              <div class="view view-first">                 
+              <div class="view view-first">
                 <% if article.avatar? %>
                   <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
                 <% else %>
-                  <%= link_to image_tag("https://s3.amazonaws.com/blackopswiki/uploads/article/avatar/319/large_avatar_default-user-icon.png", :class => "img-responsive"), article %>
+                  <div class="thumbnail text-center">
+                    <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), article %>
+                    <div class="caption">
+                      <h4><%= article.subjects.first.name %></h4>
+                    </div>
+                  </div>
                 <% end %>
                 <div class="mask">
                   <h2><%= link_to article.title, article, :class => "info2" %></h2>
