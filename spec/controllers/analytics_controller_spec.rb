@@ -3,16 +3,16 @@ require 'rails_helper'
 RSpec.describe AnalyticsController, type: :controller do
 
   describe "GET #show" do
-    it "returns http success" do
+    it "redirects to the sign in path" do
       get :show
-      expect(response).to have_http_status(:success)
+      subject.should redirect_to new_user_session_path
     end
   end
 
   describe "GET #index" do
-    it "returns http success" do
+    it "redirects to the sign in path" do
       get :index
-      expect(response).to have_http_status(:success)
+      subject.should redirect_to new_user_session_path
     end
   end
 
