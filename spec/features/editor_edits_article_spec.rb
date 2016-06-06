@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 feature "Editor edits an article" do
 	let(:article) { FactoryGirl.create(:article) }
 	scenario "Editor arrives at the article edit page and sees the subject's name" do

@@ -137,3 +137,28 @@ describe "#nearby_cases" do
     end
   end
 end
+
+describe "recently updated cases" do
+  it "returns only cases updated in past 30 days" do
+    article = FactoryGirl.create(:article, updated_at: 31.days.ago)
+    article2 = FactoryGirl.create(:article)
+    article2.update_attribute(:video_url, "new_video.com")
+    expect(Article.first.cases_updated_last_30_days).to eq(1)
+  end
+end
+
+describe "recent case growth rate" do
+  it "returns the correct percentage increase" do
+    article = FactoryGirl.create(:article, date: 31.days.ago)
+    article2 = FactoryGirl.create(:article)
+    expect(Article.first.mom_new_cases_growth).to eq(0)
+  end
+end
+
+describe "total case growth rate" do
+  it "returns the correct percentage increase" do
+    article = FactoryGirl.create(:article, created_at: 31.days.ago)
+    article2 = FactoryGirl.create(:article)
+    expect(Article.first.mom_cases_growth).to eq(100)
+  end
+end
