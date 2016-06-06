@@ -11,4 +11,10 @@ class Follow < ActiveRecord::Base
     self.update_attribute(:blocked, true)
   end
 
+  def mom_follows_growth
+    last_month_follows = Follow.where(created_at: 30.days.ago..Time.now).count
+
+    return (last_month_follows.to_f / (Follow.count-last_month_follows) * 100).round(2)
+  end
+
 end

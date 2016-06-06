@@ -1,103 +1,25 @@
+
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- jVectorMap -->
+    <link href="css/maps/jquery-jvectormap-2.0.3.css" rel="stylesheet"/>
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+
 <div class="container" >
-    <div class="row">
-
-      <div class="col-sm-7">
-        <div class="chart-wrapper">
-          <div class="chart-title">
-            Visits by Day 
-          </div>
-          <div class="chart-stage">
-            <%= column_chart @visits.group_by_day(:started_at).count %>
-          </div>
-          <div class="chart-notes">
-            This is a sample text region to describe this chart.
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-5">
-        <div class="chart-wrapper">
-          <div class="chart-title">
-            Visits by browser
-          </div>
-          <div class="chart-stage">
-            <div id="chart-02"><%= pie_chart @visits.group(:browser).count %></div>
-          </div>
-          <div class="chart-notes">
-            Notes go down here
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-
-    <div class="row">
-
-      <div class="col-sm-4">
-        <div class="chart-wrapper">
-          <div class="chart-title">
-            Visits by region
-          </div>
-          <div class="chart-stage">
-            <div id="chart-03"><%= pie_chart @visits.group(:region).count %></div>
-          </div>
-          <div class="chart-notes">
-            Notes go down here
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-4">
-        <div class="chart-wrapper">
-          <div class="chart-title">
-            Impressions by device
-          </div>
-          <div class="chart-stage">
-            <div id="chart-04"></div>
-          </div>
-          <div class="chart-notes">
-            Notes go down here
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-4">
-        <div class="chart-wrapper">
-          <div class="chart-title">
-            Impressions by country
-          </div>
-          <div class="chart-stage">
-            <div id="chart-05"></div>
-          </div>
-          <div class="chart-notes">
-            Notes go down here
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <img data-src="holder.js/100%x150/white">
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <img data-src="holder.js/100%x150/white">
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <img data-src="holder.js/100%x150/white">
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <img data-src="holder.js/100%x150/white">
-        </div>
-      </div>
+  <div class="row tile_count">
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
+      <div class="count">2500</div>
+      <span class="count_bottom"><i class="green">4% </i> From last Week</span>
     </div>
   </div>
+</div>
