@@ -9,7 +9,7 @@
         <%= Visit.where(started_at: 30.days.ago..Time.now).count %>
       </div>
       <small>
-        <%= Visit.first.mom_visits_growth %>% mom
+        <%= Visit.first.mom_visits_growth %>% mom*
       </small>
     </div>
     <div class="col-sm-2">
@@ -21,7 +21,7 @@
         <%= Article.count %>
       </div>
       <small>
-        <%= Article.first.mom_cases_growth %>% mom
+        <%= Article.first.mom_cases_growth %>% mom*
       </small>
     </div>
     <!-- Cases Updated Last month and growth -->
@@ -33,7 +33,7 @@
         <%= Article.first.cases_updated_last_30_days %>
       </div>
       <small>
-        <%= Article.first.mom_growth_in_case_updates %>% mom
+        <%= Article.first.mom_growth_in_case_updates %>% mom*
       </small>
     </div>
     <!-- Total New Cases Last month and growth -->
@@ -45,7 +45,7 @@
         <%= Article.where(date: 30.days.ago..Time.now).count %>
       </div>
       <small>
-        <%= Article.first.mom_new_cases_growth %>% mom
+        <%= Article.first.mom_new_cases_growth %>% mom*
       </small>
     </div>
     <!-- Total Followed Cases and growth -->
@@ -57,11 +57,11 @@
         <%= Follow.where(created_at: 30.days.ago..Time.now).count %>
       </div>
       <small>
-        <%= Follow.first.mom_follows_growth %>% mom
+        <%= Follow.first.mom_follows_growth %>% mom*
       </small>
     </div>
     <!-- Case Updates Sent -->
-    <div class="col-sm-2">
+ <!--    <div class="col-sm-2">
       <small>
         Case Updates Sent
       </small>
@@ -71,7 +71,7 @@
       <small>
         % mom Coming Soon
       </small>
-    </div>
+    </div> -->
   </div>
   <div class="row">
     <div class="col-sm-7">
@@ -126,4 +126,5 @@
         </div>
       </div>
     </div> -->
+    <p>* mom refers to a comparison of the most recent adjacent 30 day periods, not specific months</p>
   </div>
