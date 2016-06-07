@@ -1,5 +1,5 @@
 class AnalyticsController < ApplicationController
-  before_action :custom_method, :only => [:show, :index]
+  before_action :check_for_admin, :only => [:show, :index]
 
   def show
   end
@@ -12,7 +12,7 @@ class AnalyticsController < ApplicationController
   end
 
 private
-  def custom_method
+  def check_for_admin
     authenticate_user!
 
     if current_user.admin
