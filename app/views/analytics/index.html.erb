@@ -61,17 +61,17 @@
       </small>
     </div>
     <!-- Case Updates Sent -->
- <!--    <div class="col-sm-2">
+    <div class="col-sm-2">
       <small>
-        Case Updates Sent
+        # of Followers
       </small>
       <div class="metric">
-        TBD
+        <%= Follow.distinct.count('follower_id') %>
       </div>
       <small>
-        % mom Coming Soon
+        <%= Follow.first.mom_uniq_followers_growth %>% mom*
       </small>
-    </div> -->
+    </div>
   </div>
   <div class="row">
     <div class="col-sm-7">
