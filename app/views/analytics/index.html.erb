@@ -51,27 +51,27 @@
     <!-- Total Followed Cases and growth -->
     <div class="col-sm-2">
       <small>
-        New Case Follows
+        Total Case Follows
       </small>
       <div class="metric">
-        <%= Follow.where(created_at: 30.days.ago..Time.now).count %>
+        <%= Follow.count %>
       </div>
       <small>
         <%= Follow.first.mom_follows_growth %>% mom*
       </small>
     </div>
     <!-- Case Updates Sent -->
- <!--    <div class="col-sm-2">
+    <div class="col-sm-2">
       <small>
-        Case Updates Sent
+        Total Case Followers
       </small>
       <div class="metric">
-        TBD
+        <%= Follow.distinct.count('follower_id') %>
       </div>
       <small>
-        % mom Coming Soon
+        <%= Follow.first.mom_uniq_followers_growth %>% mom*
       </small>
-    </div> -->
+    </div>
   </div>
   <div class="row">
     <div class="col-sm-7">
