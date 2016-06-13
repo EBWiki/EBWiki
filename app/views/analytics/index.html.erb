@@ -103,6 +103,35 @@
     </div>
 
   </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          Recently Updated
+        </div>
+        <div class="chart-stage">
+         <table class='table leader-list'>
+           <tr>
+            <th></th>
+            <th>Case</th>
+            <th>Updated</th>
+           </tr>
+
+           <% Article.order(updated_at: :desc).first(10).each do |article| %>
+             <tr>
+               <td><%= Article.order(updated_at: :desc).first(10).index(article) + 1 %></td>
+               <td><%= link_to truncate(article.title, length: 14), article %></td>
+               <td><small><%= article.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
+             </tr>
+           <% end %>
+         </table>
+        </div>
+        <div class="chart-notes">
+          These are the last ten updated articles
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!--     <div class="row">
       <div class="col-sm-3">
