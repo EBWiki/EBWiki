@@ -165,6 +165,16 @@ describe "recently updated cases" do
   end
 end
 
+describe "growth_in_case_updates" do
+  it "returns correct percentage increase" do
+    article = FactoryGirl.create(:article, updated_at: 31.days.ago)
+    article2 = FactoryGirl.create(:article)
+    article3 = FactoryGirl.create(:article, updated_at: 10.days.ago)
+    article2.update_attribute(:video_url, "new_video.com")
+    expect(Article.first.mom_growth_in_case_updates).to eq(100)
+  end
+end
+
 describe "recent case growth rate" do
   it "returns the correct percentage increase" do
     article = FactoryGirl.create(:article, date: 31.days.ago)
