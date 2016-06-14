@@ -104,6 +104,24 @@ describe "#title" do
   end
 end
 
+describe "follower_count" do
+  it "gives the correct followers count" do
+    article = FactoryGirl.create(:article, id: 10)
+    FactoryGirl.create(:follow, followable_id: 10)
+    expect(article.followers.count).to eq(1)
+  end
+  it "has a zero counter cache to start" do
+    article = FactoryGirl.create(:article)
+    expect(Article.last.follows_count).to eq(0)
+  end
+  # it "has a counter cache" do
+  #   article = FactoryGirl.create(:article)
+  #   expect {
+  #     article.follows.create(follower_id: 1, followable_id: article.id, followable_type: "Article", follower_type: "User")
+  #   }.to change { article.reload.follows_count }.by(1)
+  # end
+end
+
 describe "#content" do
   it "returns the correct content" do
     article = build(:article)
@@ -144,6 +162,16 @@ describe "recently updated cases" do
     article2 = FactoryGirl.create(:article)
     article2.update_attribute(:video_url, "new_video.com")
     expect(Article.first.cases_updated_last_30_days).to eq(1)
+  end
+end
+
+describe "growth_in_case_updates" do
+  it "returns correct percentage increase" do
+    article = FactoryGirl.create(:article, updated_at: 31.days.ago)
+    article2 = FactoryGirl.create(:article)
+    article3 = FactoryGirl.create(:article, updated_at: 10.days.ago)
+    article2.update_attribute(:video_url, "new_video.com")
+    expect(Article.first.mom_growth_in_case_updates).to eq(100)
   end
 end
 

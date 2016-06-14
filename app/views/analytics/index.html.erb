@@ -103,6 +103,81 @@
     </div>
 
   </div>
+  <div class="row">
+  <!-- Recently Updated cases -->
+    <div class="col-sm-4">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          Recently Updated Cases
+        </div>
+        <div class="chart-stage">
+         <table class='table leader-list'>
+           <tr>
+            <th></th>
+            <th>Case</th>
+            <th>Updated</th>
+           </tr>
+
+           <% Article.order(updated_at: :desc).first(10).each do |article| %>
+             <tr>
+               <td><%= Article.order(updated_at: :desc).first(10).index(article) + 1 %></td>
+               <td><%= link_to truncate(article.title, length: 14), article %></td>
+               <td><small><%= article.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
+             </tr>
+           <% end %>
+         </table>
+        </div>
+        <div class="chart-notes">
+          These are the last ten updated articles
+        </div>
+      </div>
+    </div>
+
+  <!-- Most Followed cases -->
+    <div class="col-sm-4">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          Most Followed Cases
+        </div>
+        <div class="chart-stage">
+         <table class='table leader-list'>
+           <tr>
+            <th></th>
+            <th>Case</th>
+           </tr>
+
+           <% Article.order(follows_count: :desc).first(10).each do |article| %>
+             <tr>
+               <td><%= Article.order(follows_count: :desc).first(10).index(article) + 1 %></td>
+               <td><%= link_to truncate(article.title, length: 30), article %></td>
+             </tr>
+           <% end %>
+         </table>
+        </div>
+        <div class="chart-notes">
+          These are the articles with the most followers
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          Recent Comments
+        </div>
+        <ul class="scroller">
+          <% Comment.order(created_at: :desc).each do |comment| %>
+            <li>
+              <blockquote class="blockquote">
+                <p><%= link_to truncate(Article.find(comment.commentable_id).title, length: 30), article_path(Article.find(comment.commentable_id)) %></p>
+                <p><%= link_to truncate(comment.content, length: 100), article_path(Article.find(comment.commentable_id)) %></p>
+                <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
+              </blockquote>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div><!-- row   -->
 
 <!--     <div class="row">
       <div class="col-sm-3">
@@ -126,5 +201,5 @@
         </div>
       </div>
     </div> -->
-    <p>* mom refers to a comparison of the most recent adjacent 30 day periods, not specific months</p>
-  </div>
+  <p>* mom refers to a comparison of the most recent adjacent 30 day periods, not specific months</p>
+</div>
