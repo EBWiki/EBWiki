@@ -9,6 +9,7 @@ class Article < ActiveRecord::Base
   has_many :links, dependent: :destroy
   accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
   has_many :comments, as: :commentable, dependent: :destroy
+  has_many :follows, as: :followable, dependent: :destroy
   has_many :subjects, dependent: :destroy
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 

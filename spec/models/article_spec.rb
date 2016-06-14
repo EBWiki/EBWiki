@@ -104,6 +104,24 @@ describe "#title" do
   end
 end
 
+describe "follower_count" do
+  it "gives the correct followers count" do
+    article = FactoryGirl.create(:article, id: 10)
+    FactoryGirl.create(:follow, followable_id: 10)
+    expect(article.followers.count).to eq(1)
+  end
+  it "has a zero counter cache to start" do
+    article = FactoryGirl.create(:article)
+    expect(Article.last.follows_count).to eq(0)
+  end
+  # it "has a counter cache" do
+  #   article = FactoryGirl.create(:article)
+  #   expect {
+  #     article.follows.create(follower_id: 1, followable_id: article.id, followable_type: "Article", follower_type: "User")
+  #   }.to change { article.reload.follows_count }.by(1)
+  # end
+end
+
 describe "#content" do
   it "returns the correct content" do
     article = build(:article)
