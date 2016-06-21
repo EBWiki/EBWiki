@@ -8,6 +8,7 @@ class AnalyticsController < ApplicationController
     @last_days = 30
     @full_width_content = true
     @visits = Visit.where(started_at: @last_days.days.ago..Time.now)
+    @users = User.where(created_at: @last_days.days.ago..Time.now)
     @views = Ahoy::Event.where(name: '$view' )
   end
 

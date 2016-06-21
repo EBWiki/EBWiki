@@ -23,7 +23,7 @@
           Visits by browser
         </div>
         <div class="chart-stage">
-          <div id="chart-02"><%= pie_chart @visits.group(:browser).count %></div>
+          <div id=""><%= pie_chart @visits.group(:browser).count %></div>
         </div>
         <div class="chart-notes">
           Notes go down here
@@ -32,6 +32,38 @@
     </div>
 
   </div>
+
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          New Users by Day - Last <%= @last_days %> days
+        </div>
+        <div class="chart-stage">
+          <%= column_chart @users.group_by_day(:created_at).count %>
+        </div>
+        <div class="chart-notes">
+          Column heights represent the number of users added each day.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-5">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          Referring Domains
+        </div>
+        <div class="chart-stage">
+          <div id=""><%= pie_chart @visits.group(:referring_domain).count %></div>
+        </div>
+        <div class="chart-notes">
+          These domains are where traffic has originated
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <div class="row">
   <!-- Recently Updated cases -->
     <div class="col-sm-4">
