@@ -1,77 +1,6 @@
 <div class="container" >
   <div class="row space-below">
-    <!-- Total visits Last month and growth -->
-    <div class="col-sm-2">
-      <small>
-        Recent Visits
-      </small>
-      <div class="metric">
-        <%= Visit.where(started_at: 30.days.ago..Time.now).count %>
-      </div>
-      <small>
-        <%= Visit.first.mom_visits_growth %>% mom*
-      </small>
-    </div>
-    <div class="col-sm-2">
-      <!-- Total Cases and growth -->
-      <small>
-        Total Cases
-      </small>
-      <div class="metric">
-        <%= Article.count %>
-      </div>
-      <small>
-        <%= Article.first.mom_cases_growth %>% mom*
-      </small>
-    </div>
-    <!-- Cases Updated Last month and growth -->
-    <div class="col-sm-2">
-      <small>
-        New Case Updates
-      </small>
-      <div class="metric">
-        <%= Article.first.cases_updated_last_30_days %>
-      </div>
-      <small>
-        <%= Article.first.mom_growth_in_case_updates %>% mom*
-      </small>
-    </div>
-    <!-- Total New Cases Last month and growth -->
-    <div class="col-sm-2">
-      <small>
-        New Cases
-      </small>
-      <div class="metric">
-        <%= Article.where(date: 30.days.ago..Time.now).count %>
-      </div>
-      <small>
-        <%= Article.first.mom_new_cases_growth %>% mom*
-      </small>
-    </div>
-    <!-- Total Followed Cases and growth -->
-    <div class="col-sm-2">
-      <small>
-        Total Case Follows
-      </small>
-      <div class="metric">
-        <%= Follow.count %>
-      </div>
-      <small>
-        <%= Follow.first.mom_follows_growth %>% mom*
-      </small>
-    </div>
-    <!-- Case Updates Sent -->
-    <div class="col-sm-2">
-      <small>
-        Total Case Followers
-      </small>
-      <div class="metric">
-        <%= Follow.distinct.count('follower_id') %>
-      </div>
-      <small>
-        <%= Follow.first.mom_uniq_followers_growth %>% mom*
-      </small>
-    </div>
+    <%= render 'top_metrics' %>
   </div>
   <div class="row">
     <div class="col-sm-7">
@@ -94,7 +23,7 @@
           Visits by browser
         </div>
         <div class="chart-stage">
-          <div id="chart-02"><%= pie_chart @visits.group(:browser).count %></div>
+          <div id=""><%= pie_chart @visits.group(:browser).count %></div>
         </div>
         <div class="chart-notes">
           Notes go down here
@@ -103,6 +32,38 @@
     </div>
 
   </div>
+
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          New Users by Day - Last <%= @last_days %> days
+        </div>
+        <div class="chart-stage">
+          <%= column_chart @users.group_by_day(:created_at).count %>
+        </div>
+        <div class="chart-notes">
+          Column heights represent the number of users added each day.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-5">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          Referring Domains
+        </div>
+        <div class="chart-stage">
+          <div id=""><%= pie_chart @visits.group(:referring_domain).count %></div>
+        </div>
+        <div class="chart-notes">
+          These domains are where traffic has originated
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <div class="row">
   <!-- Recently Updated cases -->
     <div class="col-sm-4">
