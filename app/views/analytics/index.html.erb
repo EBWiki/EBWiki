@@ -37,7 +37,7 @@
     <div class="col-sm-7">
       <div class="chart-wrapper">
         <div class="chart-title">
-          New Users by Day - Last <%= @last_days %> days
+          New Users by Day - Last <%= @last_days %> days (<%= @users.count %>)
         </div>
         <div class="chart-stage">
           <%= column_chart @users.group_by_day(:created_at).count %>
