@@ -105,12 +105,14 @@
            <tr>
             <th></th>
             <th>Case</th>
+            <th>Followers</th>
            </tr>
 
            <% Article.order(follows_count: :desc).first(10).each do |article| %>
              <tr>
                <td><%= Article.order(follows_count: :desc).first(10).index(article) + 1 %></td>
                <td><%= link_to truncate(article.title, length: 30), article %></td>
+               <td><%= link_to article.follows_count, articles_followers_path(article) %></td>
              </tr>
            <% end %>
          </table>
