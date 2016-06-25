@@ -156,7 +156,7 @@
               <% if i>0 %>
                 <% if Article.find_by_slug(visit[0].split('/').last).present? %>
                   <td><%= i %></td>
-                  <td><%= link_to truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), visit[0] %></td>
+                  <td><%= link_to truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), article_path(Article.find_by_slug(visit[0].split('/').last)) %></td>
                   <td><%= visit[1] %></td>
                 <% end %>
               <% end %>
@@ -165,7 +165,7 @@
          </table>
         </div>
         <div class="chart-notes">
-          These are the top 10 pages viewed on EBWiki all time.
+          The top 10 cases viewed on EBWiki all time.
         </div>
       </div>
 
