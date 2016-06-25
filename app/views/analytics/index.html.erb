@@ -64,6 +64,28 @@
 
   </div>
 
+  <!-- Comments List-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          Recent Comments
+        </div>
+        <ul class="scroller">
+          <% Comment.order(created_at: :desc).each do |comment| %>
+            <li>
+              <blockquote class="blockquote">
+                <p><%= link_to truncate(Article.find(comment.commentable_id).title, length: 30), article_path(Article.find(comment.commentable_id)) %></p>
+                <p><%= link_to truncate(comment.content, length: 100), article_path(Article.find(comment.commentable_id)) %></p>
+                <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
+              </blockquote>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
   <!-- Recently Updated cases -->
     <div class="col-sm-4">
@@ -123,25 +145,9 @@
       </div>
     </div>
     <div class="col-sm-4">
-<!--       <div class="chart-wrapper">
-        <div class="chart-title">
-          Recent Comments
-        </div>
-        <ul class="scroller">
-          <% Comment.order(created_at: :desc).each do |comment| %>
-            <li>
-              <blockquote class="blockquote">
-                <p><%= link_to truncate(Article.find(comment.commentable_id).title, length: 30), article_path(Article.find(comment.commentable_id)) %></p>
-                <p><%= link_to truncate(comment.content, length: 100), article_path(Article.find(comment.commentable_id)) %></p>
-                <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
-              </blockquote>
-            </li>
-          <% end %>
-        </ul>
-      </div> -->
       <div class="chart-wrapper">
         <div class="chart-title">
-          Most Viewed Pages of All Time
+          Most Viewed Cases of All Time
         </div>
         <div class="chart-stage">
          <table class='table leader-list'>
