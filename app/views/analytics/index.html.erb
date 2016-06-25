@@ -79,9 +79,9 @@
             <th>Updated</th>
            </tr>
 
-           <% Article.order(updated_at: :desc).first(10).each do |article| %>
+           <% Article.order(updated_at: :desc).first(10).each_with_index do |article, i| %>
              <tr>
-               <td><%= Article.order(updated_at: :desc).first(10).index(article) + 1 %></td>
+               <td><%= i + 1 %></td>
                <td><%= link_to truncate(article.title, length: 14), article %></td>
                <td><small><%= article.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
              </tr>
@@ -108,10 +108,10 @@
             <th>Followers</th>
            </tr>
 
-           <% Article.order(follows_count: :desc).first(10).each do |article| %>
+           <% Article.order(follows_count: :desc).first(10).each_with_index do |article, i| %>
              <tr>
-               <td><%= Article.order(follows_count: :desc).first(10).index(article) + 1 %></td>
-               <td><%= link_to truncate(article.title, length: 25), article %></td>
+               <td><%= i + 1 %></td>
+               <td><%= link_to truncate(article.title, length: 253), article %></td>
                <td><%= link_to article.follows_count, articles_followers_path(article) %></td>
              </tr>
            <% end %>
@@ -123,7 +123,7 @@
       </div>
     </div>
     <div class="col-sm-4">
-      <div class="chart-wrapper">
+<!--       <div class="chart-wrapper">
         <div class="chart-title">
           Recent Comments
         </div>
@@ -138,7 +138,35 @@
             </li>
           <% end %>
         </ul>
+      </div> -->
+      <div class="chart-wrapper">
+        <div class="chart-title">
+          Most Viewed Pages of All Time
+        </div>
+        <div class="chart-stage">
+         <table class='table leader-list'>
+           <tr>
+            <th></th>
+            <th>Page</th>
+            <th>Views</th>
+           </tr>
+
+           <% Visit.group(:landing_page).order('count_id DESC').limit(11).count(:id).each_with_index do |visit, i| %>
+             <tr>
+             <% if i>0 %>
+               <td><%= i %></td>
+               <td><%= link_to truncate(visit[0], length: 253), visit[0] %></td>
+               <td><%= visit[1] %></td>
+             <% end %>
+             </tr>
+           <% end %>
+         </table>
+        </div>
+        <div class="chart-notes">
+          These are the top 10 pages viewed on EBWiki all time.
+        </div>
       </div>
+
     </div>
   </div><!-- row   -->
 
