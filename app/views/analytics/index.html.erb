@@ -111,7 +111,7 @@
            <% Article.order(follows_count: :desc).first(10).each_with_index do |article, i| %>
              <tr>
                <td><%= i + 1 %></td>
-               <td><%= link_to truncate(article.title, length: 253), article %></td>
+               <td><%= link_to truncate(article.title, length: 25), article %></td>
                <td><%= link_to article.follows_count, articles_followers_path(article) %></td>
              </tr>
            <% end %>
@@ -151,14 +151,16 @@
             <th>Views</th>
            </tr>
 
-           <% Visit.group(:landing_page).order('count_id DESC').limit(11).count(:id).each_with_index do |visit, i| %>
-             <tr>
-             <% if i>0 %>
-               <td><%= i %></td>
-               <td><%= link_to truncate(visit[0], length: 253), visit[0] %></td>
-               <td><%= visit[1] %></td>
-             <% end %>
-             </tr>
+           <% Visit.group(:landing_page).order('count_id DESC').limit(15).count(:id).each_with_index do |visit, i| %>
+            <tr>
+              <% if i>0 %>
+                <% if Article.find_by_slug(visit[0].split('/').last).present? %>
+                  <td><%= i %></td>
+                  <td><%= link_to truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), visit[0] %></td>
+                  <td><%= visit[1] %></td>
+                <% end %>
+              <% end %>
+            </tr>
            <% end %>
          </table>
         </div>
