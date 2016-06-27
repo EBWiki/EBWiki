@@ -83,6 +83,7 @@
     <div id="links">
       <%= f.association :agencies, collection: Agency.all, input_html: { multiple: true, class: 'select2'}%>
     </div>
+    <small><%= link_to 'Add a new agency', new_agency_path %></small>
   </fieldset>
 </div>
 

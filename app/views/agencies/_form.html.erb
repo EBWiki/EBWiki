@@ -5,7 +5,7 @@
     <%= f.input :name %>
     <%= f.input :street_address %>
     <%= f.input :city %>
-    <%= f.input :state_id %>
+    <%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
     <%= f.input :zipcode %>
     <%= f.input :description %>
     <%= f.input :telephone %>
