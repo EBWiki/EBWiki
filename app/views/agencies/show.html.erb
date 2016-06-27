@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @agency.name %>
+</p>
+
+<p>
+  <strong>Street address:</strong>
+  <%= @agency.street_address %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @agency.city %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @agency.state_id %>
+</p>
+
+<p>
+  <strong>Zipcode:</strong>
+  <%= @agency.zipcode %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @agency.description %>
+</p>
+
+<p>
+  <strong>Telephone:</strong>
+  <%= @agency.telephone %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @agency.email %>
+</p>
+
+<p>
+  <strong>Website:</strong>
+  <%= @agency.website %>
+</p>
+
+<p>
+  <strong>Lead officer:</strong>
+  <%= @agency.lead_officer %>
+</p>
+
+<%= link_to 'Edit', edit_agency_path(@agency) %> |
+<%= link_to 'Back', agencies_path %>
