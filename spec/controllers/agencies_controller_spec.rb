@@ -23,60 +23,76 @@ RSpec.describe AgenciesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Agency. As you add validations to Agency, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  # let(:valid_attributes) {
+  #   skip("Add a hash of attributes valid for your model")
+  # }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  # let(:invalid_attributes) {
+  #   skip("Add a hash of attributes invalid for your model")
+  # }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # AgenciesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  # # This should return the minimal set of values that should be in the session
+  # # in order to pass any filters (e.g. authentication) defined in
+  # # AgenciesController. Be sure to keep this updated too.
+  # let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all agencies as @agencies" do
-      agency = Agency.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:agencies)).to eq([agency])
-    end
-  end
+  # describe "GET #index" do
+  #   it "assigns all agencies as @agencies" do
+  #     agency = Agency.create! valid_attributes
+  #     get :index, {}, valid_session
+  #     expect(assigns(:agencies)).to eq([agency])
+  #   end
+  # end
 
   describe "GET #show" do
-    it "assigns the requested agency as @agency" do
-      agency = Agency.create! valid_attributes
-      get :show, {:id => agency.to_param}, valid_session
-      expect(assigns(:agency)).to eq(agency)
+    context 'when requested agency exists' do
+      let(:agency) { FactoryGirl.create(:agency) }
+      before(:each) { get :show, id: agency.id }
+
+      it 'success' do
+        expect(response).to be_success
+      end
+
+      it 'assigns it to @agency' do
+        expect(assigns(:agency)).to eq agency
+      end
     end
   end
 
   describe "GET #new" do
     it "assigns a new agency as @agency" do
-      get :new, {}, valid_session
+      get :new
       expect(assigns(:agency)).to be_a_new(Agency)
     end
   end
 
   describe "GET #edit" do
-    it "assigns the requested agency as @agency" do
-      agency = Agency.create! valid_attributes
-      get :edit, {:id => agency.to_param}, valid_session
-      expect(assigns(:agency)).to eq(agency)
+    context 'when requested agency exists' do
+      let(:agency) { FactoryGirl.create(:agency) }
+      before(:each) { get :edit, id: agency.id }
+
+      it "assigns the requested agency as @agency" do
+        get :edit, {:id => agency.to_param}
+        expect(assigns(:agency)).to eq(agency)
+      end
     end
   end
 
+  let(:valid_agency_attributes) {
+    { name: "Some Item Title", complete: false }
+  }
+
+  let!(:agency) { agency.create(valid_agency_attributes) }
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Agency" do
         expect {
-          post :create, {:agency => valid_attributes}, valid_session
+          post :create, {agency => valid_agency_attributes}
         }.to change(Agency, :count).by(1)
       end
 
       it "assigns a newly created agency as @agency" do
-        post :create, {:agency => valid_attributes}, valid_session
+        post :create, {:agency => valid_agency_attributes}
         expect(assigns(:agency)).to be_a(Agency)
         expect(assigns(:agency)).to be_persisted
       end
