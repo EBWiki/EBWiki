@@ -114,12 +114,12 @@ describe "follower_count" do
     article = FactoryGirl.create(:article)
     expect(Article.last.follows_count).to eq(0)
   end
-  # it "has a counter cache" do
-  #   article = FactoryGirl.create(:article)
-  #   expect {
-  #     article.follows.create(follower_id: 1, followable_id: article.id, followable_type: "Article", follower_type: "User")
-  #   }.to change { article.reload.follows_count }.by(1)
-  # end
+  it "has a counter cache" do
+    article = FactoryGirl.create(:article)
+    expect {
+      article.follows.create(follower_id: 1, followable_id: article.id, followable_type: "Article", follower_type: "User")
+    }.to change { article.reload.follows_count }.by(1)
+  end
 end
 
 describe "#content" do
