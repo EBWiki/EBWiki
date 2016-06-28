@@ -4,7 +4,6 @@ class AddSlugToAgencies < ActiveRecord::Migration
     add_column :agencies, :description, :text
     add_column :agencies, :telephone, :string
     add_column :agencies, :email, :string
-    add_column :agencies, :website, :string
     add_column :agencies, :lead_officer, :string
     add_column :agencies, :slug, :string
     add_index :agencies, :slug
