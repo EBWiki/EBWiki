@@ -12,6 +12,7 @@ class AgenciesController < ApplicationController
   # GET /agencies/1.json
   def show
     @back_url = session[:previous_url]
+    @articles = @agency.articles
   end
 
   # GET /agencies/new
@@ -67,7 +68,7 @@ class AgenciesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_agency
-      @agency = Agency.find(params[:id])
+      @agency = Agency.friendly.find(params[:id])
     end
 
     def save_my_previous_url
