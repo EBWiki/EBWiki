@@ -42,7 +42,7 @@
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
           <p>Agencies:
             <% @article.agencies.each do |agency| %>
-              <%= link_to agency.name, agency_path(agency) %>
+              <%= link_to agency.name, agency_path(agency) %> |
             <% end %>
           </p>
           <div>

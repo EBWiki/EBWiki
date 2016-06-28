@@ -1,5 +1,6 @@
 class AgenciesController < ApplicationController
   before_action :set_agency, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
   after_filter "save_my_previous_url", only: [:new, :show]
 
   # GET /agencies
