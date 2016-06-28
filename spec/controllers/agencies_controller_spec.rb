@@ -60,6 +60,7 @@ RSpec.describe AgenciesController, type: :controller do
   end
 
   describe "GET #new" do
+    login_user
     it "assigns a new agency as @agency" do
       get :new#, {}, valid_session
       expect(assigns(:agency)).to be_a_new(Agency)
@@ -67,6 +68,7 @@ RSpec.describe AgenciesController, type: :controller do
   end
 
   describe "GET #edit" do
+    login_user
     context 'when requested agency exists' do
       let(:agency) { FactoryGirl.create(:agency) }
       before(:each) { get :edit, id: agency.id }
@@ -185,6 +187,7 @@ RSpec.describe AgenciesController, type: :controller do
   # end
 
   describe "DELETE #destroy" do
+    login_user
     it "destroys the requested agency" do
       agency = FactoryGirl.create(:agency)
       expect {
