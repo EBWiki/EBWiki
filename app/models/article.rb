@@ -13,9 +13,6 @@ class Article < ActiveRecord::Base
   has_many :subjects, dependent: :destroy
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
-  has_many :article_agencies, dependent: :destroy
-  has_many :agencies, through: :article_agencies
-  accepts_nested_attributes_for :article_agencies, :reject_if => :all_blank, :allow_destroy => true
   # Paper Trail
   has_paper_trail :ignore => [:summary], :meta => { :comment  => :edit_summary }
 

@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :agencies
   get 'analytics/show'
 
   get 'analytics/index'
