@@ -11,22 +11,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160613161246) do
+ActiveRecord::Schema.define(version: 20160630162855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "agencies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "street_address"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "zipcode"
+    t.text     "description"
+    t.string   "telephone"
+    t.string   "email"
+    t.string   "website"
+    t.string   "lead_officer"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "slug"
+  end
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
     t.uuid     "visit_id"
     t.integer  "user_id"
     t.string   "name"
-    t.jsonb    "properties"
+    t.text     "properties"
     t.datetime "time"
   end
 
   add_index "ahoy_events", ["time"], name: "index_ahoy_events_on_time", using: :btree
   add_index "ahoy_events", ["user_id"], name: "index_ahoy_events_on_user_id", using: :btree
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id", using: :btree
+
+  create_table "article_agencies", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "agency_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "article_officers", force: :cascade do |t|
     t.integer  "article_id"
