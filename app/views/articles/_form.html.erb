@@ -78,16 +78,6 @@
 </div>
 
 <div class="cold-md-12">
-  <fieldset class="fsStyle">
-    <legend class="legendStyle">Enforcement Agencies Involved <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Agencies", :content => "Add law enforcement agencies involved here so we can grade their performance."})%></legend>
-    <div id="links">
-      <%= f.association :agencies, collection: Agency.all, input_html: { multiple: true, class: 'select2'}%>
-    </div>
-    <small><%= link_to 'Add a new agency', new_agency_path %></small>
-  </fieldset>
-</div>
-
-<div class="cold-md-12">
 	<fieldset class="fsStyle">
 		<legend class="legendStyle">Links to Related Content <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Links", :content => "Links to external content and supporting material are critical. Whenever an editor creates or adds content to a case, he or she should provide at least one supporting link. Any html links included withink the content section should also be added here."})%></legend>
 		<div id="links">
@@ -99,7 +89,6 @@
 	    </div>
 		</div>
 	</fieldset>
-</div>
 
 <div class="cold-md-12">
   <fieldset class="fsStyle">
