@@ -1,4 +1,39 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_agency_path(@agency) %> |
-<%= link_to 'Back', agencies_path %>
+<h1 class="page-header articleTitle"><%= @agency.name %></h1>
+<h4><%= @agency.street_address %></h4>
+<h4><%= @agency.city %>, <%= State.find(@agency.state_id).name %> <%= @agency.zipcode %></h4>
+
+<p>
+  <strong>Department Head:</strong>
+  <%= @agency.lead_officer %>
+</p>
+
+<p>
+  <strong>Telephone:</strong>
+  <%= @agency.telephone %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @agency.email %>
+</p>
+
+<p>
+  <strong>Website:</strong>
+  <%= @agency.website %>
+</p>
+
+<p>
+  <strong>Notes:</strong>
+  <%= @agency.description %>
+</p>
+
+<h4> Past cases involving the <%= @agency.name %>: </h4>
+<ol>
+  <% @agency.articles.each do |article| %>
+    <li><%= link_to article.title, article_path(article) %></li>
+  <% end %>
+</ol>
+
+<%= link_to 'Back', session[:previous_url] %>

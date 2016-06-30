@@ -1,6 +1,6 @@
 class AgenciesController < ApplicationController
   before_action :set_agency, only: [:show, :edit, :update, :destroy]
-  after_filter "save_my_previous_url", only: [:new]
+  after_filter "save_my_previous_url", only: [:new, :show, :edit]
 
   # GET /agencies
   # GET /agencies.json
@@ -11,6 +11,7 @@ class AgenciesController < ApplicationController
   # GET /agencies/1
   # GET /agencies/1.json
   def show
+    @back_url = session[:previous_url]
   end
 
   # GET /agencies/new
