@@ -23,135 +23,181 @@ RSpec.describe AgenciesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Agency. As you add validations to Agency, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  # let(:valid_attributes) {
+  #   skip("Add a hash of attributes valid for your model")
+  # }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  # let(:invalid_attributes) {
+  #   skip("Add a hash of attributes invalid for your model")
+  # }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # AgenciesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  # # This should return the minimal set of values that should be in the session
+  # # in order to pass any filters (e.g. authentication) defined in
+  # # AgenciesController. Be sure to keep this updated too.
+  # let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all agencies as @agencies" do
-      agency = Agency.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:agencies)).to eq([agency])
-    end
-  end
+  # describe "GET #index" do
+  #   it "assigns all agencies as @agencies" do
+  #     agency = Agency.create! valid_attributes
+  #     get :index, {}, valid_session
+  #     expect(assigns(:agencies)).to eq([agency])
+  #   end
+  # end
 
   describe "GET #show" do
-    it "assigns the requested agency as @agency" do
-      agency = Agency.create! valid_attributes
-      get :show, {:id => agency.to_param}, valid_session
-      expect(assigns(:agency)).to eq(agency)
+    context 'when requested agency exists' do
+      let(:agency) { FactoryGirl.create(:agency) }
+      before(:each) { get :show, id: agency.id }
+
+      it 'success' do
+        expect(response).to be_success
+      end
+
+      it 'assigns it to @agency' do
+        expect(assigns(:agency)).to eq agency
+      end
     end
   end
 
   describe "GET #new" do
+    login_user
     it "assigns a new agency as @agency" do
-      get :new, {}, valid_session
+      get :new#, {}, valid_session
       expect(assigns(:agency)).to be_a_new(Agency)
     end
   end
 
   describe "GET #edit" do
-    it "assigns the requested agency as @agency" do
-      agency = Agency.create! valid_attributes
-      get :edit, {:id => agency.to_param}, valid_session
-      expect(assigns(:agency)).to eq(agency)
-    end
-  end
-
-  describe "POST #create" do
-    context "with valid params" do
-      it "creates a new Agency" do
-        expect {
-          post :create, {:agency => valid_attributes}, valid_session
-        }.to change(Agency, :count).by(1)
-      end
-
-      it "assigns a newly created agency as @agency" do
-        post :create, {:agency => valid_attributes}, valid_session
-        expect(assigns(:agency)).to be_a(Agency)
-        expect(assigns(:agency)).to be_persisted
-      end
-
-      it "redirects to the created agency" do
-        post :create, {:agency => valid_attributes}, valid_session
-        expect(response).to redirect_to(Agency.last)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns a newly created but unsaved agency as @agency" do
-        post :create, {:agency => invalid_attributes}, valid_session
-        expect(assigns(:agency)).to be_a_new(Agency)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {:agency => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
-      end
-    end
-  end
-
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested agency" do
-        agency = Agency.create! valid_attributes
-        put :update, {:id => agency.to_param, :agency => new_attributes}, valid_session
-        agency.reload
-        skip("Add assertions for updated state")
-      end
+    login_user
+    context 'when requested agency exists' do
+      let(:agency) { FactoryGirl.create(:agency) }
+      before(:each) { get :edit, id: agency.id }
 
       it "assigns the requested agency as @agency" do
-        agency = Agency.create! valid_attributes
-        put :update, {:id => agency.to_param, :agency => valid_attributes}, valid_session
+        get :edit, {:id => agency.to_param}
         expect(assigns(:agency)).to eq(agency)
-      end
-
-      it "redirects to the agency" do
-        agency = Agency.create! valid_attributes
-        put :update, {:id => agency.to_param, :agency => valid_attributes}, valid_session
-        expect(response).to redirect_to(agency)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the agency as @agency" do
-        agency = Agency.create! valid_attributes
-        put :update, {:id => agency.to_param, :agency => invalid_attributes}, valid_session
-        expect(assigns(:agency)).to eq(agency)
-      end
-
-      it "re-renders the 'edit' template" do
-        agency = Agency.create! valid_attributes
-        put :update, {:id => agency.to_param, :agency => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
       end
     end
   end
 
+  # describe '#create' do
+  #   login_user
+
+  #   context 'when valid' do
+  #     let(:agency_attrs) { FactoryGirl.attributes_for(:agency) }
+
+  #     it 'success' do
+  #       post :create, {'agency': agency_attrs }
+  #       expect(response).to redirect_to(session[:previous_url])
+  #     end
+
+  #     it 'saves and assigns new article to @article' do
+  #       expect {
+  #          post :create, {'agency': agency_attrs }
+  #        }.to change(Agency, :count).by(1)
+  #     end
+  #   end
+
+  #   context 'when invalid' do
+  #     let(:agency_attrs) { FactoryGirl.attributes_for(:invalid_agency) }
+
+  #     it 'fails' do
+  #       post :create, {'agency': agency_attrs}
+  #       expect(response).to render_template(:new)
+  #     end
+  #   end
+  # end
+  # let(:valid_agency_attributes) {
+  #   { name: "Some Item Title", complete: false }
+  # }
+
+  # describe "POST #create" do
+  #   context "with valid params" do
+  #     let!(:agency) { FactoryGirl.create(:agency) }
+  #     it "creates a new Agency" do
+  #       expect {
+  #         post :create, {agency => valid_agency_attributes}
+  #       }.to change(Agency, :count).by(1)
+  #     end
+
+  #     it "assigns a newly created agency as @agency" do
+  #       post :create, {:agency => valid_attributes}, valid_session
+  #       expect(assigns(:agency)).to be_a(Agency)
+  #       expect(assigns(:agency)).to be_persisted
+  #     end
+
+  #     it "redirects to the created agency" do
+  #       post :create, {:agency => valid_attributes}, valid_session
+  #       expect(response).to redirect_to(Agency.last)
+  #     end
+  #   end
+
+  #   context "with invalid params" do
+  #     it "assigns a newly created but unsaved agency as @agency" do
+  #       post :create, {:agency => invalid_attributes}, valid_session
+  #       expect(assigns(:agency)).to be_a_new(Agency)
+  #     end
+
+  #     it "re-renders the 'new' template" do
+  #       post :create, {:agency => invalid_attributes}, valid_session
+  #       expect(response).to render_template("new")
+  #     end
+  #   end
+  # end
+
+  # describe "PUT #update" do
+  #   context "with valid params" do
+  #     let(:new_attributes) {
+  #       skip("Add a hash of attributes valid for your model")
+  #     }
+
+  #     it "updates the requested agency" do
+  #       agency = Agency.create! valid_attributes
+  #       put :update, {:id => agency.to_param, :agency => new_attributes}, valid_session
+  #       agency.reload
+  #       skip("Add assertions for updated state")
+  #     end
+
+  #     it "assigns the requested agency as @agency" do
+  #       agency = Agency.create! valid_attributes
+  #       put :update, {:id => agency.to_param, :agency => valid_attributes}, valid_session
+  #       expect(assigns(:agency)).to eq(agency)
+  #     end
+
+  #     it "redirects to the agency" do
+  #       agency = Agency.create! valid_attributes
+  #       put :update, {:id => agency.to_param, :agency => valid_attributes}, valid_session
+  #       expect(response).to redirect_to(agency)
+  #     end
+  #   end
+
+  #   context "with invalid params" do
+  #     it "assigns the agency as @agency" do
+  #       agency = Agency.create! valid_attributes
+  #       put :update, {:id => agency.to_param, :agency => invalid_attributes}, valid_session
+  #       expect(assigns(:agency)).to eq(agency)
+  #     end
+
+  #     it "re-renders the 'edit' template" do
+  #       agency = Agency.create! valid_attributes
+  #       put :update, {:id => agency.to_param, :agency => invalid_attributes}, valid_session
+  #       expect(response).to render_template("edit")
+  #     end
+  #   end
+  # end
+
   describe "DELETE #destroy" do
+    login_user
     it "destroys the requested agency" do
-      agency = Agency.create! valid_attributes
+      agency = FactoryGirl.create(:agency)
       expect {
-        delete :destroy, {:id => agency.to_param}, valid_session
+        delete :destroy, {:id => agency.to_param}
       }.to change(Agency, :count).by(-1)
     end
 
     it "redirects to the agencies list" do
-      agency = Agency.create! valid_attributes
-      delete :destroy, {:id => agency.to_param}, valid_session
+      agency = FactoryGirl.create(:agency)
+      delete :destroy, {:id => agency.to_param}
       expect(response).to redirect_to(agencies_url)
     end
   end

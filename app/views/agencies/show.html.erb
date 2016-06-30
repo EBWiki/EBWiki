@@ -30,11 +30,13 @@
   <strong>Notes:</strong>
   <%= @agency.description %>
 </p>
+<%= link_to 'Back', session[:previous_url], :class => "btn-default" %>
+<%= link_to 'Edit', edit_agency_path(@agency), :class => "btn-warning" %>
 
 <!-- Related Projects Row -->
 <div class="row">
   <div class="col-lg-12">
-    <h3 class="page-header">EBWiki is tracking <%= @agency.articles.size %> other case<%= "s" if @agency.articles.size > 1 %> involving the <%= @agency.name %>:</h3>
+    <h3 class="page-header">EBWiki is tracking <%= @agency.articles.size %> case<%= "s" if @agency.articles.size > 1 %> involving the <%= @agency.name %>:</h3>
   </div>
 </div>
 <div class="row">
