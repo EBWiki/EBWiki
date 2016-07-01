@@ -1,6 +1,6 @@
 class CreateAgencies < ActiveRecord::Migration
   def change
-    unless table_exists?(:article_agencies)
+    unless table_exists?(:agencies)
       create_table :agencies do |t|
         t.string   "name"
         t.string   "street_address"
