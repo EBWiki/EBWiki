@@ -40,11 +40,13 @@
       <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
-          <p>Agencies:
-            <% @article.agencies.each do |agency| %>
-              <%= link_to agency.name, agency_path(agency) %> |
-            <% end %>
-          </p>
+          <% if @article.agencies.present? %>
+            <p>Agencies:
+              <% @article.agencies.each do |agency| %>
+                <%= link_to agency.name, agency_path(agency) %> |
+              <% end %>
+            </p>
+          <% end %>
           <div>
             <% if current_user %>
               <% if current_user.following?(@article) %>
