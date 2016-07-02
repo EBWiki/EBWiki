@@ -5,6 +5,7 @@ class Agency < ActiveRecord::Base
 
   validates :name, presence: true
   validates :name, uniqueness: true
+  validates :state_id, presence: true
 
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged

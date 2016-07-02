@@ -6,6 +6,11 @@ RSpec.describe Agency, type: :model do
     expect(agency).to be_invalid
   end
 
+  it "is invalid without a state" do
+    agency = build(:agency, state_id: nil)
+    expect(agency).to be_invalid
+  end
+
   it "must have a unique name" do
     agency = FactoryGirl.create(:agency, name: "Dallas Police Department")
     agency2 = build(:agency, name: "Dallas Police Department")
