@@ -7,28 +7,23 @@
 </span>
 
 <p>
-  <strong>Department Head:</strong>
-  <%= @agency.lead_officer %>
+  <%= show_non_blank_fields "Department Head", @agency.lead_officer %>
 </p>
 
 <p>
-  <strong>Telephone:</strong>
-  <%= @agency.telephone %>
+  <%= show_non_blank_fields "Telephone", @agency.telephone %>
 </p>
 
 <p>
-  <strong>Email:</strong>
-  <%= @agency.email %>
+  <%= show_non_blank_fields "Email", @agency.email %>
 </p>
 
 <p>
-  <strong>Website:</strong>
-  <%= @agency.website %>
+  <%= show_non_blank_fields "Website", @agency.website %>
 </p>
 
 <p>
-  <strong>Notes:</strong>
-  <%= @agency.description %>
+  <%= show_non_blank_fields "Notes", @agency.description %>
 </p>
 <%= link_to 'Back', session[:previous_url], :class => "btn-default" %>
 <%= link_to 'Edit', edit_agency_path(@agency), :class => "btn-warning" %>
