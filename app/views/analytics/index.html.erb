@@ -20,7 +20,7 @@
     <div class="col-sm-5">
       <div class="chart-wrapper">
         <div class="chart-title background-gray">
-          Visits by browser
+          Visits by browser - last 24 hours
         </div>
         <div class="chart-stage">
           <div id=""><%= pie_chart @visits.where(started_at: 1.days.ago..Time.now).group(:browser).count %></div>
@@ -51,7 +51,7 @@
     <div class="col-sm-5">
       <div class="chart-wrapper">
         <div class="chart-title background-orange">
-          Referring Domains
+          Referring Domains - last 24 hours
         </div>
         <div class="chart-stage">
           <div id=""><%= pie_chart @visits.where(started_at: 1.day.ago..Time.now).group(:referring_domain).count %></div>
