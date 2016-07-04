@@ -23,7 +23,7 @@
           Visits by browser
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart @visits.group(:browser).count %></div>
+          <div id=""><%= pie_chart @visits.where(started_at: 1.days.ago..Time.now).group(:browser).count %></div>
         </div>
         <div class="chart-notes">
           Notes go down here
@@ -54,7 +54,7 @@
           Referring Domains
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart @visits.group(:referring_domain).count %></div>
+          <div id=""><%= pie_chart @visits.where(started_at: 1.day.ago..Time.now).group(:referring_domain).count %></div>
         </div>
         <div class="chart-notes">
           These domains are where traffic has originated
