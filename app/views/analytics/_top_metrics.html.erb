@@ -1,7 +1,7 @@
 <!-- Total visits Last month and growth -->
     <div class="col-sm-2">
       <small>
-        Recent Visits
+        Recent Visits <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Recent Visits", :content => "This metric shows the number of EBWiki visitors over the past 30 days."})%>
       </small>
       <div class="metric">
         <%= Visit.where(started_at: 30.days.ago..Time.now).count %>
@@ -13,7 +13,7 @@
     <div class="col-sm-2">
       <!-- Total Cases and growth -->
       <small>
-        Total Cases
+        Total Cases <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Total Cases", :content => "This metric shows the total number of cases in the EBWiki database."})%>
       </small>
       <div class="metric">
         <%= Article.count %>
@@ -25,7 +25,7 @@
     <!-- Cases Updated Last month and growth -->
     <div class="col-sm-2">
       <small>
-        New Case Updates
+        New Case Updates <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "New Case Updates", :content => "This metric shows the number of EBWiki cases that have been updated in the past 30 days."})%>
       </small>
       <div class="metric">
         <%= Article.first.cases_updated_last_30_days %>
@@ -37,7 +37,7 @@
     <!-- Total New Cases Last month and growth -->
     <div class="col-sm-2">
       <small>
-        New Cases
+        New Cases <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "New Cases", :content => "This metric shows the number of cases in the EBWiki database dated within the past 30 days."})%>
       </small>
       <div class="metric">
         <%= Article.where(date: 30.days.ago..Time.now).count %>
@@ -49,7 +49,7 @@
     <!-- Total Followed Cases and growth -->
     <div class="col-sm-2">
       <small>
-        Total Case Follows
+        Total Case Follows <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Total Case Follows", :content => "This metric shows the total number of follows for EBWiki cases."})%>
       </small>
       <div class="metric">
         <%= Follow.count %>
@@ -61,7 +61,7 @@
     <!-- Case Updates Sent -->
     <div class="col-sm-2">
       <small>
-        Total Case Followers
+        Total Case Followers <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Total Case Followers", :content => "This metric shows the number of EBWiki users who are following one or more EBWiki cases."})%>
       </small>
       <div class="metric">
         <%= Follow.distinct.count('follower_id') %>
