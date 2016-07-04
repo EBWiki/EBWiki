@@ -147,7 +147,7 @@
     <div class="col-sm-4">
       <div class="chart-wrapper">
         <div class="chart-title background-gray">
-          Most Viewed Cases of All Time
+          Most Viewed Cases - Last 7 days
         </div>
         <div class="chart-stage">
          <table class='table leader-list'>
@@ -157,7 +157,7 @@
             <th>Views</th>
            </tr>
 
-           <% Visit.group(:landing_page).order('count_id DESC').limit(15).count(:id).each_with_index do |visit, i| %>
+           <% Visit.where(started_at: 7.days.ago..Time.now).group(:landing_page).order('count_id DESC').limit(15).count(:id).each_with_index do |visit, i| %>
             <tr>
               <% if i>0 %>
                 <% if Article.find_by_slug(visit[0].split('/').last).present? %>
