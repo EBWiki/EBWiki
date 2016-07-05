@@ -42,8 +42,11 @@
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
           <% if @article.agencies.present? %>
             <p>Agencies:
-              <% @article.agencies.each do |agency| %>
-                <%= link_to agency.name, agency_path(agency) %> |
+              <% @article.agencies.each_with_index do |agency, index| %>
+                <%= link_to agency.name, agency_path(agency) %>
+                <% unless index == @article.agencies.size - 1 %>
+                  <%= "|" %>
+                <% end %>
               <% end %>
             </p>
           <% end %>
