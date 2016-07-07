@@ -159,12 +159,10 @@
 
            <% Visit.where(started_at: 7.days.ago..Time.now).group(:landing_page).order('count_id DESC').limit(13).count(:id).each_with_index do |visit, i| %>
             <tr>
-              <% if i>0 %>
-                <% if Article.find_by_slug(visit[0].split('/').last).present? %>
-                  <td><%= i %></td>
-                  <td><%= link_to truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), article_path(Article.find_by_slug(visit[0].split('/').last)) %></td>
-                  <td><%= visit[1] %></td>
-                <% end %>
+              <% if Article.find_by_slug(visit[0].split('/').last).present? %>
+                <td><%= i %></td>
+                <td><%= link_to truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), article_path(Article.find_by_slug(visit[0].split('/').last)) %></td>
+                <td><%= visit[1] %></td>
               <% end %>
             </tr>
            <% end %>
