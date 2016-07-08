@@ -1,5 +1,5 @@
 class AnalyticsController < ApplicationController
-  before_action :check_for_admin, :only => [:show, :index]
+  before_action :check_for_admin_or_analyst, :only => [:show, :index]
 
   def show
   end
@@ -13,13 +13,15 @@ class AnalyticsController < ApplicationController
   end
 
 private
-  def check_for_admin
+  def check_for_admin_or_analyst
     authenticate_user!
 
     if current_user.admin
-       return
+      return
+    elsif current_user.analyst
+      return
     else
-       redirect_to root_url # or whatever
+      redirect_to root_url # or whatever
     end
   end
 end
