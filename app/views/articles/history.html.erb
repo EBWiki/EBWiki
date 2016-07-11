@@ -5,12 +5,8 @@
   <ul>
     <% @versions.each do |version| %>
       <li>
-        <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
-        Event ID: <%= version.id %><br/>
-        <b>Target:</b> <%= version.item_type %>
-        <small>(<%= Article.find(version.item_id).title %>)</small>; <b>action</b> <%= version.event %>;<br/>
-        <b>Remote address:</b> <%= version.ip %><br/>
-        <b>User:</b>
+        <b>Date:</b> <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
+        <b>Edited by:</b>
           <% if version.whodunnit && version.whodunnit != 'Guest' %>
             <% user = User.find_by_id(version.whodunnit) %>
             <% if user %>
@@ -21,7 +17,7 @@
             Guest
           <% end %>
         <div>
-          Changeset:
+          <b>Description of changes:</b>
           <% if version.comment.present? %>
             <pre><%= version.comment %></pre>
           <% else %>
