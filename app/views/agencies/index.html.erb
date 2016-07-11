@@ -1,25 +1,24 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Agencies</h1>
+<h1>Agencies</h1>
 
-<table>
-  <thead>
+<table class='table leader-list'>
+  <tr>
+    <th></th>
+    <th>Agency</th>
+    <th>Updated</th>
+  </tr>
+
+  <% Agency.all.order(:name).each_with_index do |agency, i| %>
     <tr>
-      <th colspan="3"></th>
+      <td><%= i + 1 %></td>
+      <td><%= link_to truncate(agency.name, length: 30), agency %></td>
+      <td><small><%= agency.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
+      <td><%= link_to 'Edit', edit_agency_path(agency) %></td>
     </tr>
-  </thead>
-
-  <tbody>
-    <% @agencies.each do |agency| %>
-      <tr>
-        <td><%= link_to 'Show', agency %></td>
-        <td><%= link_to 'Edit', edit_agency_path(agency) %></td>
-        <td><%= link_to 'Destroy', agency, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <% end %>
+ </table>
 
 <br>
 
-<%= link_to 'New Agency', new_agency_path %>
+<%= link_to 'Add a New Agency', new_agency_path %>
