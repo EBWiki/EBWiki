@@ -2,7 +2,6 @@
      description: "EBWiki is following the involvement of the #{@agency.name} in killings of people of color.",
      keywords: %w("@agency.name police violence people color African-American Latino")
 %>
-<p id="notice"><%= notice %></p>
 
 <span  class="page-header articleTitle">
   <h1 class="page-header articleTitle"><%= @agency.name %></h1>
@@ -23,7 +22,9 @@
 </p>
 
 <p>
-  <%= show_non_blank_fields "Website", @agency.website %>
+  <% if @agency.website.present? %>
+     Website: <%= link_to @agency.website, @agency.website %>
+  <% end %>
 </p>
 
 <p>
