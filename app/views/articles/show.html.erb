@@ -37,6 +37,8 @@
     </div>
 
 	  <div class="col-md-9">
+      <div class = "row" >
+        <div class="col-md-8">
       <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
           <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
@@ -70,6 +72,44 @@
 		          <% end %>
           </p>
         <% end %>
+
+          <div class="col-md-12">
+            <% if @article.article_milestones.present? %>
+              <div class="chart-wrapper">
+                <div class="chart-title background-gray">
+                  Key Milestones
+                </div>
+                <div class="chart-stage">
+                 <table class='table leader-list'>
+                   <tr>
+                    <th>Date</th>
+                    <th>Milestone</th>
+                   </tr>
+
+                   <% @article.article_milestones.order(:date_occurred).each_with_index do |milestone, i| %>
+                     <tr>
+                       <td><small><%= milestone.date_occurred.strftime("%A, %b %d") %></small></td>
+                       <td><%= Milestone.find(milestone.milestone_id).title %></td>
+                     </tr>
+                   <% end %>
+                 </table>
+                </div>
+              </div>
+            <% if @article.agencies.present? %>
+              <p>Agencies:
+                <% @article.agencies.each_with_index do |agency, index| %>
+                  <%= link_to agency.name, agency_path(agency) %>
+                  <% unless index == @article.agencies.size - 1 %>
+                    <%= "|" %>
+                  <% end %>
+                <% end %>
+              </p>
+            <% end %>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
 				<%= render 'main_content' %>
 			<div class="row">
 				<div class="col-md-12">
