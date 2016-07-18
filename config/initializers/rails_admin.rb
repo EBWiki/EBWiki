@@ -1,4 +1,4 @@
-RailsAdmin.config do |config|  
+RailsAdmin.config do |config|
 
   ### Popular gems integration
 
@@ -9,7 +9,8 @@ RailsAdmin.config do |config|
       redirect_to main_app.root_path
     end
   end
-  # config.current_user_method(&:current_user)
+
+  config.current_user_method(&:current_user)
 
   ## == Cancan ==
   # config.authorize_with :cancan

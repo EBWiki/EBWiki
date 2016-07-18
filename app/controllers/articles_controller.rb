@@ -112,7 +112,13 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, :remove_avatar, :summary, links_attributes: [:id, :url, :_destroy],  comments_attributes: [:comment, :content, :commentable_id, :commentable_type], subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy], agency_ids: [])
+    params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, :remove_avatar, :summary,
+      links_attributes: [:id, :url, :_destroy],
+      comments_attributes: [:comment, :content, :commentable_id, :commentable_type],
+      subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy],
+      agency_ids: [],
+      article_milestones_attributes: [:id, :article_id, :milestone_id, :date_occurred]
+      )
   end
 
   # from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)

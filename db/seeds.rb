@@ -181,3 +181,24 @@ if Ethnicity.count == 0
     Ethnicity.create( :sex => ethnicity[0])
   end
 end
+
+if Milestone.count == 0
+  puts "Creating Milestones..."
+  milestones = [
+    [ "Placed on Leave or Reassigned" ],
+    [ "Fired" ],
+    [ "Indicted" ],
+    [ "Tried" ],
+    [ "Acquitted or Mistrial" ],
+    [ "Convicted" ],
+    [ "Imprisoned"],
+    [ "Civil Settlement"],
+    [ "Federal Investigation"]
+  ]
+
+  milestones.each do |milestone|
+    Milestone.create( :title => milestone[0])
+  end
+
+  puts "Created #{milestones.count} Milestones"
+end
