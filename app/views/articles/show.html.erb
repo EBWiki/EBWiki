@@ -18,18 +18,18 @@
 	<!-- Portfolio Item Row -->
 	<div class="row">
     <div class="col-md-3">
-      <% if @article.avatar? %>
-	      <%= image_tag(@article.avatar.large_avatar, :class => "img-responsive articleImage") %>
-	    <% else %>
-		    <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
-		  <% end %>
+      <%= render 'avatar' %>
 
 			<div class="">
-	      <%= social_share_button_tag("Take a look at what I just found on EBWiki:") %>
+        <%= render 'social_share' %>
 	    </div>
 	    <div class="row">
 				<%= render 'button_group' %>
 			</div>
+      <br>
+      <div class="row">
+        <%= render 'milestones_table' %>
+      </div>
 			<%= render "comments/form" %>
 			<div class="commentList" >
 				<%= render "comments/comments" %>
@@ -39,73 +39,16 @@
 	  <div class="col-md-9">
       <div class = "row" >
         <div class="col-md-8">
-      <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
-      <br>
-          <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
-          <% if @article.agencies.present? %>
-            <p>Agencies:
-              <% @article.agencies.each_with_index do |agency, index| %>
-                <%= link_to agency.name, agency_path(agency) %>
-                <% unless index == @article.agencies.size - 1 %>
-                  <%= "|" %>
-                <% end %>
-              <% end %>
-            </p>
-          <% end %>
+          <%= render 'top_content' %>
           <div>
-            <% if current_user %>
-              <% if current_user.following?(@article) %>
-              <% else %>
-	              <%= link_to 'Follow This Case', article_follows_path(@article), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:content => "Click here to receive an email whenever this case is updated."} %>
-	            <% end %>
-            <% else %>
-              <%= link_to 'Follow This Case', article_follows_path(@article), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
-            <% end %>
+            <%= render 'follow_button' %>
           </div>
-      </h1>
-			<p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
-		    <% if @article.followers.present? %>
-          <p>
-            <%= link_to 'People tracking this case', articles_followers_path(@article) %>: <span class="timeAgo"><%= @article.followers.count %></span>
-	            <% unless @article.followers.include?(current_user) %>
-		            -- Click here to <%= link_to 'Track this', article_follows_path(@article), :method => :post %>.
-		          <% end %>
-          </p>
-        <% end %>
+        <br>
+        <%= render 'last_updated' %>
+        <%= render 'followers_link' %>
 
           <div class="col-md-12">
-            <% if @article.article_milestones.present? %>
-              <div class="chart-wrapper">
-                <div class="chart-title background-gray">
-                  Key Milestones
-                </div>
-                <div class="chart-stage">
-                 <table class='table leader-list'>
-                   <tr>
-                    <th>Date</th>
-                    <th>Milestone</th>
-                   </tr>
-
-                   <% @article.article_milestones.order(:date_occurred).each_with_index do |milestone, i| %>
-                     <tr>
-                       <td><small><%= milestone.date_occurred.strftime("%A, %b %d") %></small></td>
-                       <td><%= Milestone.find(milestone.milestone_id).title %></td>
-                     </tr>
-                   <% end %>
-                 </table>
-                </div>
-              </div>
-            <% if @article.agencies.present? %>
-              <p>Agencies:
-                <% @article.agencies.each_with_index do |agency, index| %>
-                  <%= link_to agency.name, agency_path(agency) %>
-                  <% unless index == @article.agencies.size - 1 %>
-                    <%= "|" %>
-                  <% end %>
-                <% end %>
-              </p>
-            <% end %>
-            <% end %>
+          <%= render 'agencies_list' %>
 
           </div>
         </div>
@@ -113,65 +56,15 @@
 				<%= render 'main_content' %>
 			<div class="row">
 				<div class="col-md-12">
-					<% if @article.video_url.to_s != "" %>
-						<div class="embed-container">
-								<%= embed(@article.video_url) %>
-						</div>
-					<% end %>
+          <%= render 'video_embed' %>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12" >
-					<% if @article.links.count > 0 %>
-						<h4 class="article_subheader">Additional Resources:</h4>
-						<ul class="background-links" id="link-list">
-							<% @article.links.each do |link| %>
-								<li>
-                  <%= link_to link.url, "#{link.url}", target: '_blank' %> <span class="timeAgo">added <%= link.created_at.strftime("%b %d, %Y") %></span>
-                </li>
-							<% end %>
-						</ul>
-					<% end %>
+          <%= render 'links_list' %>
 				</div>
 			</div>
-	    <% if @article.nearby_cases.present? %>
-			<!-- Related Projects Row -->
-				<div class="row">
-			    <div class="col-lg-12">
-		        <h3 class="page-header">EBWiki is tracking <%= @article.nearby_cases.size %> other case<%= "s" if @article.nearby_cases.size > 1 %> near <%= @article.city %>, <%= @article.state.name %>:</h3>
-		      </div>
-		    </div>
-				<div class="row">
-          <div class="col-lg-12">
-				    <% @article.nearby_cases.each do |article| %>
-				    <div class="col-lg-2 col-md-4 col-xs-12">
-              <div class="view view-first">
-                <% if article.avatar? %>
-                  <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
-                <% else %>
-
-                  <div class="thumbnail text-center">
-                    <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), article %>
-                    <div class="caption">
-                      <h4><%= article.title %></h4>
-                    </div>
-                  </div>
-                <% end %>
-                <div class="mask">
-                  <h2><%= link_to article.title, article, :class => "info2" %></h2>
-                </div>
-              </div>
-            </div>
-				    <% end %>
-				  </div>
-			  </div>
-
-		    <!-- Map -->
-		    <div class="row">
-			    <div class="col-lg-12 articleMap">
-				  <div id='map'></div>
-			  </div>
-			<% end %>
+	    <%= render 'nearby_cases' %>
 		</div>
 	</div>
 </div>

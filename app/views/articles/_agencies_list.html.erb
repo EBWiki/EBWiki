@@ -1,0 +1,10 @@
+<% if @article.agencies.present? %>
+  <p>Agencies:
+    <% @article.agencies.each_with_index do |agency, index| %>
+      <%= link_to agency.name, agency_path(agency) %>
+      <% unless index == @article.agencies.size - 1 %>
+        <%= "|" %>
+      <% end %>
+    <% end %>
+  </p>
+<% end %>
