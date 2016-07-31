@@ -6,3 +6,5 @@ languages:
 exclude_paths:
 - "app/assets/javascripts/markerclusterer.js"
 - "vendor/assets/javascripts/*.js"
+- "db/schema.rb"
+- "spec/*.*"
