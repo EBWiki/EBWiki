@@ -51,6 +51,7 @@ class Article < ActiveRecord::Base
 
   # Scopes
   scope :by_state, -> (state_id) {where(state_id: state_id)}
+  scope :property_count_over_time, -> (property, days) { where( "#{property}": "#{days}".to_i.days.ago..Time.now).count }
 
   def full_address
     "#{address} #{city} #{state} #{zipcode}"
@@ -85,15 +86,15 @@ class Article < ActiveRecord::Base
   end
 
   def mom_new_cases_growth
-    last_month_cases = Article.where(date: 30.days.ago..Time.now).count
-    last_60_days_cases = Article.where(date: 60.days.ago..Time.now).count
+    last_month_cases = property_count_over_time("date", 30)
+    last_60_days_cases = property_count_over_time("date", 60)
     prior_30_days_cases = last_60_days_cases - last_month_cases
 
     return (((last_month_cases.to_f / prior_30_days_cases) - 1) * 100).round(2)
   end
 
   def mom_cases_growth
-    last_month_cases = Article.where(created_at: 30.days.ago..Time.now).count
+    last_month_cases = property_count_over_time("created_at", 30)
 
     return (last_month_cases.to_f / (Article.count-last_month_cases) * 100).round(2)
   end
@@ -103,8 +104,8 @@ class Article < ActiveRecord::Base
   end
 
   def mom_growth_in_case_updates
-    last_month_case_updates = Article.where(updated_at: 30.days.ago..Time.now).count
-    last_60_days_case_updates = Article.where(updated_at: 60.days.ago..Time.now).count
+    last_month_case_updates = property_count_over_time("updated_at", 30)
+    last_60_days_case_updates = property_count_over_time("created_at", 60)
     prior_30_days_case_updates = last_60_days_case_updates - last_month_case_updates
 
     return (((last_month_case_updates.to_f / prior_30_days_case_updates) - 1) * 100).round(2)
