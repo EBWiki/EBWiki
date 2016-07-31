@@ -43,3 +43,5 @@ exclude_paths:
 - vendor/assets/javascripts/*.js
 - db/schema.rb
 - spec/**/*.rb
+- "Gemfile.lock"
+
