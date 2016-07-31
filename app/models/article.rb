@@ -86,26 +86,26 @@ class Article < ActiveRecord::Base
   end
 
   def mom_new_cases_growth
-    last_month_cases = property_count_over_time("date", 30)
-    last_60_days_cases = property_count_over_time("date", 60)
+    last_month_cases = Article.property_count_over_time("date", 30)
+    last_60_days_cases = Article.property_count_over_time("date", 60)
     prior_30_days_cases = last_60_days_cases - last_month_cases
 
     return (((last_month_cases.to_f / prior_30_days_cases) - 1) * 100).round(2)
   end
 
   def mom_cases_growth
-    last_month_cases = property_count_over_time("created_at", 30)
+    last_month_cases = Article.property_count_over_time("created_at", 30)
 
     return (last_month_cases.to_f / (Article.count-last_month_cases) * 100).round(2)
   end
 
   def cases_updated_last_30_days
-    Article.where(updated_at: 30.days.ago..Time.now).count
+    Article.property_count_over_time("updated_at", 30)
   end
 
   def mom_growth_in_case_updates
-    last_month_case_updates = property_count_over_time("updated_at", 30)
-    last_60_days_case_updates = property_count_over_time("created_at", 60)
+    last_month_case_updates = Article.property_count_over_time("updated_at", 30)
+    last_60_days_case_updates = Article.property_count_over_time("updated_at", 60)
     prior_30_days_case_updates = last_60_days_case_updates - last_month_case_updates
 
     return (((last_month_case_updates.to_f / prior_30_days_case_updates) - 1) * 100).round(2)
