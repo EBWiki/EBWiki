@@ -50,6 +50,16 @@
               <% end %>
             </p>
           <% end %>
+          <% if @article.documents.present? %>
+            <p>Uploaded documents:
+              <% @article.documents.each_with_index do |document, index| %>
+                <%= link_to document.title, document.attachment.url %>
+                <% unless index == @article.agencies.size - 1 %>
+                  <%= "|" %>
+                <% end %>
+              <% end %>
+            </p>
+          <% end %>
           <div>
             <% if current_user %>
               <% if current_user.following?(@article) %>
