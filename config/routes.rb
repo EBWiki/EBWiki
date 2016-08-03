@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :documents, only: [:index, :new, :create, :destroy]
+  resources :documents, only: [:index, :new, :create, :destroy, :show, :edit]
   resources :agencies
   get 'analytics/show'
 
