@@ -54,7 +54,7 @@
             <p>Uploaded documents:
               <% @article.documents.each_with_index do |document, index| %>
                 <%= link_to document.title, document.attachment.url %>
-                <% unless index == @article.agencies.size - 1 %>
+                <% unless index == @article.documents.size - 1 %>
                   <%= "|" %>
                 <% end %>
               <% end %>
