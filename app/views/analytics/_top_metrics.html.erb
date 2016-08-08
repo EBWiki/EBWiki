@@ -25,7 +25,7 @@
     <!-- Cases Updated Last month and growth -->
     <div class="col-sm-2">
       <small>
-        New Case Updates <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "New Case Updates", :content => "This metric shows the number of EBWiki cases that have been updated in the past 30 days."})%>
+        New Case Updates <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "New Case Updates", :content => "This metric shows the number of times EBWiki cases have been updated in the past 30 days."})%>
       </small>
       <div class="metric">
         <%= Article.first.cases_updated_last_30_days %>
