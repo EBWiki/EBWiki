@@ -170,3 +170,4 @@ gem 'metamagic'
 gem 'galerts'
 
 gem 'ckeditor', :git => 'https://github.com/galetahub/ckeditor.git'
+gem 'httparty'
