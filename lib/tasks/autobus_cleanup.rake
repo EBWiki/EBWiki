@@ -13,12 +13,15 @@ task :autobus_cleanup => :environment do
   end
 
   # if total memory used is over 99% of capacity, delete the last snapshot
-  max_storage = 10000000000
-  if total_storage > (max_storage * 99 / 100)
+  max_storage = 100000000000
+  while total_storage > (max_storage * 99 / 100)
+    memory_2_b_freed = backups.last["size"]
+
     snap_to_drop_id = backups.last["id"]
+    backups.delete_if { |h| h["id"] == snap_to_drop_id }
     HTTParty.delete("https://www.autobus.io/api/snapshots/#{snap_to_drop_id}?token=#{ENV['AUTOBUS_ACCESS_TOKEN']}")
     p "The oldest snapshot has been deleted!"
-  else
-    p "We've got plenty of room. No need to destroy anything!"
+    total_storage -= memory_2_b_freed
   end
+  p "We've got plenty of room now. No need to destroy anything!"
 end
