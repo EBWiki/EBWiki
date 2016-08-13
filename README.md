@@ -6,6 +6,8 @@ This is the codebase behind [EBWiki.org](http://ebwiki.org), a site dedicated to
 
 ## Example
 
+* Current Site: [Production](http://ebwiki.org)
+* Staging Site: (requires developer access)
 
 ## Motivation
 
@@ -13,11 +15,18 @@ After the Walter Scott video was released showing the vast discrepancy between t
 
 ## Installation
 
-TODO: Provide greater detail on installing EBWiki from scratch
+### System Requirements
+
+* Ruby 2.0.0 or higher
+* Rails 4.2.7
+* Elasticsearch for searching cases
+* Postgres 9.4 or higher
+* Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing )
+* Sendgrid (for outbound email)
 
 ## Testing
 
-We use [RSpec](https://relishapp.com/rspec) to test the business logic. In addition, we use [Travis](https://travis-ci.org/BOWiki/BOW/) as a Continuous Integration (CI) Server and [Code Climate](https://codeclimate.com/github/BOWiki/BOW) to monitor the quality of the code.
+We use [RSpec](https://relishapp.com/rspec) to test the business logic. In addition, we use [Travis](https://travis-ci.org/BOWiki/BOW/) as a Continuous Integration (CI) Server and [Code Climate](https://codeclimate.com/github/BOWiki/BOW) to monitor code quality.
 
 ## Contributors
 
