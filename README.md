@@ -25,7 +25,7 @@ Contributors to this project can be found [here](https://github.com/BOWiki/BOW/g
 
 ## License
 
-TODO: Confirm license and link to it here.
+EBWiki is using the [Apache 2.0 License](LICENSE.txt).
 
 ## Code of Conduct
 
