@@ -3,8 +3,7 @@ ruby "2.3.0"
 source 'https://rubygems.org'
 gem 'dotenv-rails', :groups => [:development, :test, :production], :require => 'dotenv/rails-now'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.7.rc1'
+gem 'rails', '4.2.7'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -63,7 +62,7 @@ gem 'ahoy_matey'
 # use split gem for a/b testing
 gem 'split', require: 'split/dashboard'
 
-gem 'rollbar', '~> 2.8.2'
+gem 'rollbar', '~> 2.11'
 group :development, :test do
 
 
