@@ -23,6 +23,7 @@ After the Walter Scott video was released showing the vast discrepancy between t
 * Postgres 9.4 or higher
 * Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing )
 * Sendgrid (for outbound email)
+* SSL using [Let's Encrypt](letsencrypt.org) and [Substrakt](https://github.com/substrakt/letsencrypt-heroku) at [End Bias Certificate Manager](https://endbias-certificate-manager.herokuapp.com/)
 
 ## Testing
 
