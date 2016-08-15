@@ -406,6 +406,7 @@ GEM
     nested_form (0.3.2)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
+    newrelic_rpm (3.16.0.318)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -673,6 +674,7 @@ DEPENDENCIES
   metamagic
   mini_magick
   momentjs-rails
+  newrelic_rpm
   oink
   paper_trail (~> 4.0.0.beta)
   pg
@@ -703,5 +705,8 @@ DEPENDENCIES
   web-console (~> 2.0)
   whenever
 
+RUBY VERSION
+   ruby 2.3.0p0
+
 BUNDLED WITH
-   1.12.2
+   1.12.5
