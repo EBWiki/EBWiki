@@ -7,6 +7,12 @@ every 1.day, :at => '5:00 am' do
 	end
 end
 
+# preserve storage capacity by deleting oldest snapshot
+every 1.day, :at => '5:15 am' do
+  if Rails.env.production?
+    rake "autobus_cleanup"
+  end
+end
 #
 # It's helpful, but not entirely necessary to understand cron before proceeding.
 # http://en.wikipedia.org/wiki/Cron

@@ -174,10 +174,11 @@ if Ethnicity.count == 0
     [ "White" ],
     [ "Hispanic" ],
     [ "Native American" ],
-    [ "Asian" ]
+    [ "Asian" ],
+    [ "Arabic" ]
   ]
 
   ethnicities.each do |ethnicity|
-    Ethnicity.create( :sex => ethnicity[0])
+    Ethnicity.create( :title => ethnicity[0])
   end
 end
