@@ -51,9 +51,9 @@
             </p>
           <% end %>
           <% if @article.documents.present? %>
-            <p>Uploaded documents:
+            <p>Documents (click links to download):
               <% @article.documents.each_with_index do |document, index| %>
-                <%= link_to document.title, document.attachment.url %>
+                <%= link_to document.title, document.attachment.url.to_s %>
                 <% unless index == @article.documents.size - 1 %>
                   <%= "|" %>
                 <% end %>
