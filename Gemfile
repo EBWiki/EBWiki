@@ -118,7 +118,7 @@ gem 'fog'
 # photo resizing
 gem "mini_magick"
 # file upload solution
-gem 'carrierwave'
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
