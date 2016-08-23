@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/carrierwaveuploader/carrierwave.git
-  revision: b31f7ce006bade550be0ad946d0b993b799358e3
-  specs:
-    carrierwave (0.11.0)
-      activemodel (>= 4.0.0)
-      activesupport (>= 4.0.0)
-      mime-types (>= 1.16)
-
-GIT
   remote: git://github.com/lacco/mailboxer.git
   revision: d4f0e9c70e29fcc5c2b4b7c87379e1830d45a367
   specs:
@@ -101,6 +92,12 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    carrierwave (0.11.2)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
+      mimemagic (>= 0.3.0)
     carrierwave-imageoptimizer (1.2.1)
       carrierwave (~> 0.8)
       image_optimizer (~> 1.2)
@@ -399,6 +396,7 @@ GEM
       rails (>= 3.0.0)
     method_source (0.8.2)
     mime-types (2.99.2)
+    mimemagic (0.3.2)
     mini_magick (4.5.1)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
@@ -647,7 +645,7 @@ DEPENDENCIES
   brakeman
   bullet
   capybara (~> 2.4.3)
-  carrierwave!
+  carrierwave
   carrierwave-imageoptimizer
   chartkick
   ckeditor!
