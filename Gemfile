@@ -175,3 +175,6 @@ gem 'newrelic_rpm'
 
 # for HTTParty
 gem 'httparty'
+
+# for setting middleware redirects
+gem 'rack-host-redirect'

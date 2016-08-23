@@ -85,4 +85,8 @@ Rails.application.configure do
   Bullet.alert = true
   Bullet.rails_logger = true
   Bullet.console = true
+
+  config.middleware.use Rack::HostRedirect, {
+    'blackops-staging.herokuapp.com' => 'staging.ebwiki.org'
+  }
 end
