@@ -3,7 +3,7 @@ ruby "2.3.0"
 source 'https://rubygems.org'
 gem 'dotenv-rails', :groups => [:development, :test, :production], :require => 'dotenv/rails-now'
 
-gem 'rails', '4.2.7'
+gem 'rails', '4.2.7.1'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
