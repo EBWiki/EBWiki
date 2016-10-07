@@ -36,7 +36,7 @@ RSpec.describe UserNotifier, type: :mailer do
       allow(Rails.logger).to receive(:info)
     end
     it 'renders the subject' do
-      expect(mail.subject).to eql("The #{author.id}Title case has been updated on EBWiki.")
+      expect(mail.subject).to eql("The #{article.subjects.first.id}Title case has been updated on EBWiki.")
     end
  
     it 'renders the receiver email' do
