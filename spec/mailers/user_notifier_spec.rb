@@ -23,6 +23,36 @@ RSpec.describe UserNotifier, type: :mailer do
     end
   end
   
+
+  describe 'send_followers_email' do
+    let(:follower) { FactoryGirl.create(:user, email: 'follower@gmail.com')}
+    let(:article) { FactoryGirl.create(:article) }
+    let(:author) { FactoryGirl.create(:user, articles: [article])}
+    let(:mail) { UserNotifier.send_followers_email([follower],article) }
+ 
+    before do
+      allow(article).to receive_message_chain("versions.last.whodunnit").and_return(author.id)
+      allow(article).to receive_message_chain("versions.last.comment").and_return("Comment")
+      allow(Rails.logger).to receive(:info)
+    end
+    it 'renders the subject' do
+      expect(mail.subject).to eql('The 1Title case has been updated on EBWiki.')
+    end
+ 
+    it 'renders the receiver email' do
+      expect(mail.to).to eql([follower.email])
+    end
+ 
+    it 'renders the sender email' do
+      expect(mail.from).to eql(['EndBiasWiki@gmail.com'])
+    end
+ 
+    it 'includes @user.name' do
+     expect(mail.body.encoded).to match(follower.name)
+    end
+  end
+
+
   describe 'welcome_email' do
     let(:user) { mock_model User, name: 'John', email: 'john@email.com', all_following: [Article.new]}
     let(:mail) { UserNotifier.welcome_email(user) }

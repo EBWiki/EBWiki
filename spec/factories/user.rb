@@ -9,4 +9,14 @@ FactoryGirl.define do
     	admin true
     end
   end
+
+  factory :user_with_article do
+    name "johnny"
+    email "user@example.com"
+    password "password"
+    password_confirmation "password"
+    after :create do |article|
+      user.articles << FactoryGirl.create(:article)
+    end
+  end
 end
