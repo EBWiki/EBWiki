@@ -31,7 +31,7 @@ RSpec.describe ArticlesController, type: :controller do
         end
 
         it 'redirects to the home page' do
-          expect{get :index}.to redirect_to("/")
+          expect(get :index).to redirect_to("/")
         end
       end
     end
