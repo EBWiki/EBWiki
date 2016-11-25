@@ -7,14 +7,33 @@ RSpec.describe ArticlesController, type: :controller do
 
   describe '#index' do
 
-    before(:each) { get :index }
+    describe 'on success' do
+      before(:each) { get :index }
 
-    it 'assigns the first 12 articles to @articles' do
-      expect(assigns(:articles)).to match_array articles[0..11]
+      it 'assigns the first 12 articles to @articles' do
+        expect(assigns(:articles)).to match_array articles[0..11]
+      end
+
+      it 'successfully returns the articles#index page' do
+        expect(response).to be_success
+      end
     end
+    describe 'on failure' do
+      before do
+        def controller.index
+          raise ActionController::InvalidAuthenticityToken
+        end
+      end
 
-    it 'success' do
-      expect(response).to be_success
+      describe 'index' do
+        it 'does not raise an error' do
+          expect(get :index).not_to raise_error
+        end
+
+        it 'redirects to the home page' do
+          expect(get :index).to redirect_to("/")
+        end
+      end
     end
   end
 
