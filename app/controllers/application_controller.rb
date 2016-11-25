@@ -36,7 +36,7 @@ private
   def log_invalid_token_attempt
     warning_message = "Invalid Auth Token error"
     Rails.logger.warning warning_message
-    Rollbar.warning warning_message
+    Rollbar.warn warning_message
     redirect_to "/"
   end
 
