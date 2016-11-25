@@ -1,10 +1,12 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
+  rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt  
+
   if Rails.env.staging?
     http_basic_authenticate_with :name => ENV['STAGING_USERNAME'], :password => ENV['STAGING_PASSWORD']
   end
   
+  # Prevent CSRF attacks by raising an exception.
+  # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -29,6 +31,13 @@ private
 
   def conversation
     @conversation ||= mailbox.conversations.find(params[:id])
+  end
+
+  def log_invalid_token_attempt
+    warning_message = "Invalid Auth Token error"
+    Rails.logger.warn warning_message
+    Rollbar.warning warning_message
+    redirect_to "/"
   end
 
 protected
