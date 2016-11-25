@@ -27,11 +27,11 @@ RSpec.describe ArticlesController, type: :controller do
 
       describe 'index' do
         it 'does not raise an error' do
-          expect(get :index).not_to raise_error
+          expect{get :index}.not_to raise_error
         end
 
         it 'redirects to the home page' do
-          expect(get :index).to redirect_to("/")
+          expect{get :index}.to redirect_to("/")
         end
       end
     end
