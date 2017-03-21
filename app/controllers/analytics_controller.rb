@@ -16,9 +16,9 @@ private
   def check_for_admin_or_analyst
     authenticate_user!
 
-    if current_user.admin
+    if current_user.admin?
       return
-    elsif current_user.analyst
+    elsif current_user.analyst?
       return
     else
       redirect_to root_url # or whatever
