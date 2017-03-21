@@ -1,0 +1,5 @@
+<% if @article.avatar? %>
+  <%= image_tag(@article.avatar.large_avatar, :class => "img-responsive articleImage") %>
+<% else %>
+  <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
+<% end %>

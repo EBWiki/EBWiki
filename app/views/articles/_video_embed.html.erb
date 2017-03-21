@@ -1,0 +1,5 @@
+<% if @article.video_url.to_s != "" %>
+  <div class="embed-container">
+      <%= embed(@article.video_url) %>
+  </div>
+<% end %>

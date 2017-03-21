@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160708194753) do
+ActiveRecord::Schema.define(version: 20160718145554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,11 +52,33 @@ ActiveRecord::Schema.define(version: 20160708194753) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "article_events", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "calendar_event_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "article_milestones", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "milestone_id"
+    t.date     "date_occurred"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "article_officers", force: :cascade do |t|
     t.integer  "article_id"
     t.integer  "officer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "article_public_events", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "public_event_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "articles", force: :cascade do |t|
@@ -89,6 +111,21 @@ ActiveRecord::Schema.define(version: 20160708194753) do
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
   add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
+
+  create_table "calendar_events", force: :cascade do |t|
+    t.datetime "start"
+    t.datetime "end"
+    t.integer  "event_status_id"
+    t.integer  "organizer_id"
+    t.text     "description"
+    t.string   "street"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "zipcode"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "title"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -220,6 +257,13 @@ ActiveRecord::Schema.define(version: 20160708194753) do
   add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id", using: :btree
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
 
+  create_table "milestones", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "organizations", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
@@ -228,6 +272,20 @@ ActiveRecord::Schema.define(version: 20160708194753) do
     t.string   "avatar"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "public_events", force: :cascade do |t|
+    t.string   "title"
+    t.string   "street"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "zipcode"
+    t.text     "description"
+    t.datetime "start_datetime"
+    t.datetime "end_datetime"
+    t.integer  "organization_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "states", force: :cascade do |t|

@@ -6,16 +6,23 @@ class Article < ActiveRecord::Base
   belongs_to :user
   belongs_to :category
   belongs_to :state
-  has_many :links, dependent: :destroy
-  accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :follows, as: :followable, dependent: :destroy
+
+  has_many :links, dependent: :destroy
+  accepts_nested_attributes_for :links, :reject_if => :all_blank, :allow_destroy => true
+
   has_many :subjects, dependent: :destroy
   accepts_nested_attributes_for :subjects, :reject_if => :all_blank, :allow_destroy => true
 
   has_many :article_agencies, dependent: :destroy
   has_many :agencies, through: :article_agencies
   accepts_nested_attributes_for :article_agencies, :reject_if => :all_blank, :allow_destroy => true
+
+  has_many :article_milestones, dependent: :destroy
+  has_many :milestones, through: :article_milestones
+  accepts_nested_attributes_for :article_milestones, :reject_if => :all_blank, :allow_destroy => true
+
   # Paper Trail
   has_paper_trail :ignore => [:summary], :meta => { :comment  => :edit_summary }
 

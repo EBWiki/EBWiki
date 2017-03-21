@@ -1,0 +1,37 @@
+<% if @article.nearby_cases.present? %>
+<!-- Related Projects Row -->
+  <div class="row">
+    <div class="col-lg-12">
+      <h3 class="page-header">EBWiki is tracking <%= @article.nearby_cases.size %> other case<%= "s" if @article.nearby_cases.size > 1 %> near <%= @article.city %>, <%= @article.state.name %>:</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <% @article.nearby_cases.each do |article| %>
+      <div class="col-lg-2 col-md-4 col-xs-12">
+        <div class="view view-first">
+          <% if article.avatar? %>
+            <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
+          <% else %>
+
+            <div class="thumbnail text-center">
+              <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), article %>
+              <div class="caption">
+                <h4><%= article.title %></h4>
+              </div>
+            </div>
+          <% end %>
+          <div class="mask">
+            <h2><%= link_to article.title, article, :class => "info2" %></h2>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- Map -->
+  <div class="row">
+    <div class="col-lg-12 articleMap">
+    <div id='map'></div>
+  </div>
+<% end %>
