@@ -39,7 +39,7 @@
 	  <div class="col-md-9">
       <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
-          <small><%= @article.city %>, <%= @article.state.name %>.</small> 
+          <small><%= @article.city %>, <%= @article.state.name %></small> 
       <br/><small><%= @article.date.strftime("%B %d, %Y") %></small>
           <% if @article.agencies.present? %>
             <p>Agencies:
