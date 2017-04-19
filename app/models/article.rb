@@ -54,7 +54,7 @@ class Article < ActiveRecord::Base
   scope :property_count_over_time, -> (property, days) { where( "#{property}": "#{days}".to_i.days.ago..Time.now).count }
 
   def full_address
-    "#{address} #{city} #{state} #{zipcode}"
+    "#{address} #{city} #{state.ansi_code} #{zipcode}"
   end
 
   def self.find_by_search(query)
