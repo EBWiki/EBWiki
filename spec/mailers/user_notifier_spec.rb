@@ -31,6 +31,7 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:mail) { UserNotifier.send_followers_email([follower],article) }
  
     before do
+      PaperTrail.enabled = false
       allow(article).to receive_message_chain("versions.last.whodunnit").and_return(author.id)
       allow(article).to receive_message_chain("versions.last.comment").and_return("Comment")
       allow(Rails.logger).to receive(:info)
@@ -50,6 +51,10 @@ RSpec.describe UserNotifier, type: :mailer do
     it 'includes @user.name' do
      expect(mail.body.encoded).to match(follower.name)
     end
+    after do
+      PaperTrail.enabled = true
+    end    
+  
   end
 
 

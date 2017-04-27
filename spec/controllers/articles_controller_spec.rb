@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ArticlesController, type: :controller do
-  let(:articles) { FactoryGirl.create_list(:article, 20) }
-
-
+  let(:articles) {FactoryGirl.create_list(:article, 20) }
   describe '#index' do
 
     describe 'on success' do
@@ -61,16 +59,19 @@ RSpec.describe ArticlesController, type: :controller do
     login_user
 
     context 'when valid' do
-      let(:article_attrs) { FactoryGirl.attributes_for(:article) }
+     
+      let(:article_attrs) { FactoryGirl.attributes_for(:article, state_id: 33) }
       let(:subject_attrs) { FactoryGirl.attributes_for(:subject) }
 
       it 'success' do
+        allow_any_instance_of(Article).to receive(:full_address).and_return(" Albany NY ")
         article_attrs['subjects_attributes'] = {"0" => subject_attrs}
         post :create, {'article': article_attrs }
         expect(response).to redirect_to(article_path(Article.last))
       end
 
       it 'saves and assigns new article to @article' do
+        allow_any_instance_of(Article).to receive(:full_address).and_return(" Albany NY ")
         article_attrs['subjects_attributes'] = {"0" => subject_attrs}
         post :create, {'article': article_attrs }
         expect(assigns(:article)).to be_a_kind_of(Article)
@@ -82,6 +83,7 @@ RSpec.describe ArticlesController, type: :controller do
       let(:article_attrs) { attributes_for(:invalid_article) }
 
       it 'fails' do
+        allow_any_instance_of(Article).to receive(:full_address).and_return(" Albany NY ") 
         post :create, {'article': article_attrs}
         expect(response).to render_template(:new)
       end
