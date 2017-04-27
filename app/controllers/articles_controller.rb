@@ -101,11 +101,15 @@ class ArticlesController < ApplicationController
   def find_article
     @article = Article.friendly.find(params[:id])
   end
-
+  
+  # TODO: Move this function out of this controller. The view context alone indicates that
+  # this should be a helper, instead
   def make_undo_link
     view_context.link_to 'Undo that please!', undo_path(@article.versions.last), method: :post
   end
 
+  # TODO: Move this function out of this controller. The view context alone indicates that
+  # this should be a helper, instead
   def make_redo_link
     params[:redo] == "true" ? link = "Undo that please!" : link = "Redo that please!"
     view_context.link_to link, undo_path(@article_version.next, redo: !params[:redo]), method: :post

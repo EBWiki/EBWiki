@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe ArticlesController, type: :controller do
+  # Stubbing out make_undo_link for all specs
+  before do
+    allow_any_instance_of(ArticlesController).to receive(:make_undo_link).and_return("/articles/1")
+  end
+  
   let(:articles) {FactoryGirl.create_list(:article, 20) }
   describe '#index' do
 
@@ -66,6 +71,7 @@ RSpec.describe ArticlesController, type: :controller do
       it 'success' do
         allow_any_instance_of(Article).to receive(:full_address).and_return(" Albany NY ")
         article_attrs['subjects_attributes'] = {"0" => subject_attrs}
+
         post :create, {'article': article_attrs }
         expect(response).to redirect_to(article_path(Article.last))
       end
