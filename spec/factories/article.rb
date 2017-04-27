@@ -1,12 +1,11 @@
 # This will guess the Article class
 FactoryGirl.define do
-
   factory :article do |f|
     f.sequence(:title) {|n| "#{n}Title"}
     f.overview "A new article"
     f.city "Albany"
     f.date Date.today
-    f.state_id 33
+    f.state # { FactoryGirl.create(:state) }
     f.subjects { [ create(:subject)] }
     f.summary "A summary of changes"
   end

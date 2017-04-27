@@ -8,6 +8,7 @@ describe Article, :versioning => true do
 
   it "is invalid without a state_id" do
     article = build(:article, state_id: nil)
+    article.stub(:full_address).and_return(" Albany NY ")
     expect(article).to be_invalid
   end
 
@@ -77,6 +78,8 @@ describe Article, :versioning => true do
     article = FactoryGirl.create(:article, title: "The Title")
     article2 = FactoryGirl.create(:article, title: "The Title")
     expect(article2.slug).to eq "the-title-albany"
+    expect(article.slug).not_to eq article2.slug
+    
   end
 
   it 'updates slug if article title is updated' do

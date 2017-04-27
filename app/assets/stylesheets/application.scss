@@ -99,3 +99,8 @@ ul{
   padding-left: 0px;
   padding-right: 0px;
 }
+
+/* Removing an unused filter on select2() */
+.select2-container--classic .select2-selection--single {
+  filter: unset;
+}

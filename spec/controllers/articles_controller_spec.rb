@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe ArticlesController, type: :controller do
   let(:articles) { FactoryGirl.create_list(:article, 20) }
-  let(:state) {FactoryGirl.create(:state)}
 
 
   describe '#index' do
