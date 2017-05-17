@@ -1,5 +1,5 @@
 # To run:
-# rake geocode:all CLASS=YourModel SLEEP=0.25 BATCH=100
+# rake geocode_data:all CLASS=YourModel SLEEP=0.25 BATCH=100
 
 namespace :geocode_data do
   desc "Geocode all objects without coordinates."
