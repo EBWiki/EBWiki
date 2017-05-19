@@ -69,7 +69,7 @@ RSpec.describe ArticlesController, type: :controller do
       let(:subject_attrs) { FactoryGirl.attributes_for(:subject) }
 
       it 'success' do
-        allow_any_instance_of(Article).to receive(:full_address).and_return(" Albany NY ")
+        allow_any_instance_of(Article).to receive(:full_address).and_return("Albany NY")
         article_attrs['subjects_attributes'] = {"0" => subject_attrs}
 
         post :create, {'article': article_attrs }
@@ -77,7 +77,7 @@ RSpec.describe ArticlesController, type: :controller do
       end
 
       it 'saves and assigns new article to @article' do
-        allow_any_instance_of(Article).to receive(:full_address).and_return(" Albany NY ")
+        allow_any_instance_of(Article).to receive(:full_address).and_return("Albany NY")
         article_attrs['subjects_attributes'] = {"0" => subject_attrs}
         post :create, {'article': article_attrs }
         expect(assigns(:article)).to be_a_kind_of(Article)
