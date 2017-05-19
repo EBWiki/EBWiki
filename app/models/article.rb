@@ -48,7 +48,7 @@ class Article < ActiveRecord::Base
   # Geocoding
   geocoded_by :full_address
   before_save :geocode, if: Proc.new {|art| 
-    art.address_changed? || art.city_changed? || art.state_changed? || art.zipcode_changed?
+    art.address_changed? || art.city_changed? || art.state_id_changed? || art.zipcode_changed?
   } # auto-fetch coordinates
   
 
