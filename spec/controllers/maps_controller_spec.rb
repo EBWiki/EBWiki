@@ -5,7 +5,7 @@ RSpec.describe MapsController, type: :controller do
   describe "GET #index" do
     
   	let!(:articles) {
-  	  allow_any_instance_of(Article).to receive(:full_address).and_return("230 West 43rd St., New York City, NY 10036")
+  	  allow_any_instance_of(Article).to receive(:full_address).and_return("230 West 43rd St. New York City NY 10036")
   	  FactoryGirl.create_list(:article, 20) 
   	  
   	} 

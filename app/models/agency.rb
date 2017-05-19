@@ -9,6 +9,22 @@ class Agency < ActiveRecord::Base
 
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
+  
+  scope :by_state, -> (state_id) {where(state_id: state_id)}
+  
+  # Geocoding
+  geocoded_by :full_address
+  before_save :geocode, if: Proc.new {|agcy| 
+    agcy.street_address_changed? || agcy.city_changed? || agcy.state_id_changed? || agcy.zipcode_changed?
+  } # auto-fetch coordinates
+  
+  def full_address
+    "#{street_address} #{city} #{state.ansi_code} #{zipcode}".strip
+  end
+  
+  def nearby_cases
+    self.try(:nearbys, 50).try(:order, "distance")
+  end
 
   # Try building a slug based on the following fields in
   # increasing order of specificity.

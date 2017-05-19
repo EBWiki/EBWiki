@@ -43,10 +43,14 @@ class Article < ActiveRecord::Base
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
-  # Geocoding articles
-  geocoded_by :full_address   # can also be an IP address
   # before_validation :check_for_empty_fields
-  after_validation :geocode          # auto-fetch coordinates
+  
+  # Geocoding
+  geocoded_by :full_address
+  before_save :geocode, if: Proc.new {|art| 
+    art.address_changed? || art.city_changed? || art.state_id_changed? || art.zipcode_changed?
+  } # auto-fetch coordinates
+  
 
 
   # Scopes
@@ -54,7 +58,7 @@ class Article < ActiveRecord::Base
   scope :property_count_over_time, -> (property, days) { where( "#{property}": "#{days}".to_i.days.ago..Time.now).count }
 
   def full_address
-    "#{address} #{city} #{state.ansi_code} #{zipcode}"
+    "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
   end
 
   def self.find_by_search(query)

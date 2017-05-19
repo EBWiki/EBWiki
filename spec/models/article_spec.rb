@@ -45,7 +45,7 @@ describe Article, :versioning => true do
   end
   it 'adds a version when the city is changed' do
     article = FactoryGirl.create(:article)
-    article.update_attribute(:city, "New Jack City")
+    article.update_attribute(:city, "Buffalo")
     expect(article.versions.size).to eq 2
   end
   it 'adds a version when the avatar is changed' do
@@ -133,13 +133,22 @@ describe "#content" do
 end
 
 describe "geocoded" do
-  it "has a latitude" do
+  it "generates longitude and latitude from city and state on save" do
     article = FactoryGirl.create(:article)
-      expect(article.latitude).not_to be_nil
+    expect(article.latitude).to be_a(Float)
+    expect(article.longitude).to be_a(Float)
   end
-  it "has a longitude" do
+  
+  it "updates geocoded coordinates when relevant fields are updated" do
     article = FactoryGirl.create(:article)
-      expect(article.longitude).not_to be_nil
+    ohio = FactoryGirl.create(:state_ohio)
+    
+    expect{ article.update_attributes({
+      city: "Worthington", 
+      state_id: ohio.id, 
+      address: "1867 Irving Road", 
+      zipcode: '43085'
+    })}.to change{ article.latitude }
   end
 end
 
