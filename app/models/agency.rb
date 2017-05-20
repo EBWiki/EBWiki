@@ -1,11 +1,22 @@
 class Agency < ActiveRecord::Base
+  class Jurisdiction
+    include EnumeratedType
+    
+    declare :none
+    declare :state
+    declare :local
+    declare :federal
+    declare :university
+    declare :private
+  end
+  
   has_many :article_agencies
   has_many :articles, through: :article_agencies
   belongs_to :state
 
-  validates :name, presence: true
-  validates :name, uniqueness: true
-  validates :state_id, presence: true
+  validates :name, presence: { message: "Please enter a name." }
+  validates :name, uniqueness: { message: "Agency names must be unique. This agency already exists." }
+  validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
 
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
