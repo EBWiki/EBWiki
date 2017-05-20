@@ -15,13 +15,14 @@ class Agency < ActiveRecord::Base
   belongs_to :state
 
   validates :name, presence: { message: "Please enter a name." }
-  validates :name, uniqueness: { message: "Agency names must be unique. This agency already exists." }
-  validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
+  validates :name, uniqueness: { message: "An agency with this name already exists and can be found. If you want to create a new agency, it must have a unique name." }
+  validates :state_id, presence: { message: "You must specify the state in which the incident occurred." }
 
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   
   scope :by_state, -> (state_id) {where(state_id: state_id)}
+  scope :by_jurisdiction, -> (jrdsn) {where(jurisdiction: jrdsn)}
   
   # Geocoding
   geocoded_by :full_address
