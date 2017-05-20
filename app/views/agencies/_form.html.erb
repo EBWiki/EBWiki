@@ -6,7 +6,7 @@
       <h2><%= pluralize(@agency.errors.count, "error") %> prohibited this article from being saved:</h2>
       <ul>
       <% @agency.errors.each do |field,msg| %>
-        <li style='list-style:none;'><%= msg %></li>
+        <li style='list-style:none;'><%= raw("<strong>#{field.capitalize}:</strong> #{msg}") %></li>
       <% end %>
       </ul>
     </div>
