@@ -1,5 +1,5 @@
 <%= simple_form_for(@agency) do |f| %>
-  <%#= f.error_notification %>
+  <%= f.error_notification %>
   
   <% if @agency.errors.any? %>
     <div id="error_explanation">
