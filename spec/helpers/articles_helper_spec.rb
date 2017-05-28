@@ -42,5 +42,14 @@ RSpec.describe ArticlesHelper, :type => :helper do
       expect(helper.article_sanity_check).to be_falsey
     end
   end
+  
+  describe "#recently_updated_case_list" do
+    it "displays title and date of articles" do
+      articles = FactoryGirl.create_list(:article, 10)
+      
+      expect(helper.recently_updated_case_list).to include(articles.first.title)
+      expect(helper.recently_updated_case_list).to include(articles.last.updated_at.strftime("%m.%e, %l:%M %p"))
+    end
+  end
 
 end

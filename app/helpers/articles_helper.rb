@@ -27,4 +27,27 @@ module ArticlesHelper
   def gender_dropdown_collection
     Gender.all.map {|gender| [gender.sex, gender.id]}.insert(3, "--------")
   end
+  
+  def recently_updated_case_list
+    list = ""
+    
+    Article.most_recent(10).each_with_index do |article, i|
+      list += recently_updated_row(article,i)
+    end
+    
+    return raw(list)
+  end
+  
+  def recently_updated_row(article,i)
+    link = link_to(truncate(article.title, length: 14), article)
+    time = article.updated_at.strftime("%m.%e, %l:%M %p")
+    
+    row = "<tr>" +
+          "<td>#{i + 1}</td>" +
+          "<td>#{link}</td>"  +
+          "<td>#{time}</td>"  +
+          "</tr>"
+    
+    return row
+  end
 end

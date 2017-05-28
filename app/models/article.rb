@@ -29,7 +29,6 @@ class Article < ActiveRecord::Base
   # Elasticsearch Gem
   searchkick
 
-
   # Model Validations
   validates :date, presence: { message: "Please add a date." }
   validate :article_date_cannot_be_in_the_future
@@ -52,8 +51,8 @@ class Article < ActiveRecord::Base
   } # auto-fetch coordinates
   
 
-
   # Scopes
+  scope :most_recent, -> (limit) { order("updated_at desc").limit(limit) }
   scope :by_state, -> (state_id) {where(state_id: state_id)}
   scope :property_count_over_time, -> (property, days) { where( "#{property}": "#{days}".to_i.days.ago..Time.now).count }
 
