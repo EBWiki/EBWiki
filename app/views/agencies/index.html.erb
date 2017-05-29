@@ -9,14 +9,7 @@
     <th>Updated</th>
   </tr>
 
-  <% Agency.all.order(:name).each_with_index do |agency, i| %>
-    <tr>
-      <td><%= i + 1 %></td>
-      <td><%= link_to truncate(agency.name, length: 30), agency %></td>
-      <td><small><%= agency.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
-      <td><%= link_to 'Edit', edit_agency_path(agency) %></td>
-    </tr>
-  <% end %>
+  <%= agencies_list %>
  </table>
 
 <br>
