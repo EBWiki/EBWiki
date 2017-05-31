@@ -28,4 +28,18 @@ module ApplicationHelper
     end
     @hash
   end
+  
+  def state_dropdown
+    select_tag(:state_id, 
+      options_from_collection_for_select(State.all, :id, :name), 
+      include_blank: "Filter By State...",
+      class: 'form-control select2')
+  end
+  
+  def state_search_input
+    text_field_tag :query, params[:query], 
+      class: 'form-control', 
+      data: { list: State.all.map(&:name) } , 
+      placeholder: 'Name, City or Keywords...'
+    end
 end
