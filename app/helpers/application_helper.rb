@@ -41,5 +41,5 @@ module ApplicationHelper
       class: 'form-control', 
       data: { list: State.all.map(&:name) } , 
       placeholder: 'Name, City or Keywords...'
-    end
+  end
 end
