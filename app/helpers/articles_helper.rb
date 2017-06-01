@@ -50,4 +50,10 @@ module ArticlesHelper
     
     return row
   end
+  
+  def agencies_list
+    f.association :agencies, 
+  		collection: Agency.all.sort_by{ |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }, 
+  		input_html: { multiple: true, class: 'select2'}
+  end
 end
