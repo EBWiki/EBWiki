@@ -51,5 +51,16 @@ RSpec.describe ArticlesHelper, :type => :helper do
       expect(helper.recently_updated_case_list).to include(articles.last.updated_at.strftime("%m.%e, %l:%M %p"))
     end
   end
+  
+  describe "#agency_dropdown_collection" do
+    it "alphabetically sorts agency names" do
+      article = FactoryGirl.create(:article)
+      agencies = FactoryGirl.create_list(:agency, 10)
+      Agency.first.update_attribute(:name, 'zzzzzzz')
+      
+      expect(helper.agency_dropdown_collection).to include(agencies.last)
+      expect(helper.agency_dropdown_collection.last).to eq(agencies.first)
+    end
+  end
 
 end

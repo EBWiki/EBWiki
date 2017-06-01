@@ -28,6 +28,10 @@ module ArticlesHelper
     Gender.all.map {|gender| [gender.sex, gender.id]}.insert(3, "--------")
   end
   
+  def agency_dropdown_collection
+    Agency.all.sort_by{ |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
+  end
+  
   def recently_updated_case_list
     list = ""
     
@@ -49,11 +53,5 @@ module ArticlesHelper
           "</tr>"
     
     return row
-  end
-  
-  def agencies_list
-    f.association :agencies, 
-  		collection: Agency.all.sort_by{ |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }, 
-  		input_html: { multiple: true, class: 'select2'}
   end
 end
