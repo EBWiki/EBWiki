@@ -53,6 +53,7 @@ class Article < ActiveRecord::Base
 
   # Scopes
   scope :most_recent, -> (limit) { order("updated_at desc").limit(limit) }
+  scope :most_recent_by_follower, -> (limit) { order(follows_count: :desc).first(limit) }
   scope :by_state, -> (state_id) {where(state_id: state_id)}
   scope :property_count_over_time, -> (property, days) { where( "#{property}": "#{days}".to_i.days.ago..Time.now).count }
 
