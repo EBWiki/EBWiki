@@ -9,8 +9,15 @@
     <th>Updated</th>
   </tr>
 
-  <%= agencies_list %>
- </table>
+  <% Agency.all.each_with_index do |agency, i| -%>
+    <tr>
+      <td><%= i + 1 %></td>
+      <td><%= link_to_name(agency) %></td>
+      <td><small><%= updated_at(agency) %></small></td>
+      <td><%= link_to_edit(agency) %></td>
+    </tr>
+  <% end -%>
+</table>
 
 <br>
 

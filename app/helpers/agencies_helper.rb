@@ -3,21 +3,16 @@ module AgenciesHelper
     "#{label}: #{value}" if !value.blank?
   end
   
-  def agencies_list
-    html = ""
-    Agency.all.each_with_index do |agency, i|
-      link_to_name = link_to(truncate(agency.name, length: 30), agency)
-      updated_at = agency.updated_at.strftime("%m.%e, %l:%M %p")
-      link_to_edit = link_to('Edit', edit_agency_path(agency))
-      
-      html += "<tr>
-        <td>#{i + 1}</td>
-        <td>#{link_to_name}</td>
-        <td><small>#{updated_at}</small></td>
-        <td>#{link_to_edit}</td>
-      </tr>"
-    end
-    
-    return raw(html)
+  def link_to_name(agency)
+    link_to(truncate(agency.name, length: 30), agency)
   end
+  
+  def agency_updated_at(agency)
+    agency.updated_at.strftime("%m.%e, %l:%M %p")
+  end
+  
+  def link_to_edit(agency)
+    link_to('Edit', edit_agency_path(agency))
+  end
+    
 end
