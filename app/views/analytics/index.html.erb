@@ -54,7 +54,7 @@
           Referring Domains - last 24 hours
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart( @visits_today_by_referring_domain(@visits) ) %></div>
+          <div id=""><%= pie_chart(visits_today_by_referring_domain(@visits)) %></div>
         </div>
         <div class="chart-notes">
           These domains are where traffic has originated
@@ -72,13 +72,19 @@
         </div>
         <div class="chart-stage">
          <table class='table leader-list'>
-           <tr>
-            <th></th>
-            <th>Case</th>
-            <th>Updated</th>
-           </tr>
+            <tr>
+             <th></th>
+             <th>Case</th>
+             <th>Updated</th>
+            </tr>
 
-           <%= recently_updated_cases %>
+            <% Article.order(updated_at: :desc).first(10).each_with_index do |article, i| -%>
+              <tr>
+                <td><%= i + 1 %></td>
+                <td><%= link_to_article_title(article, 14) %></td>
+                <td><small><%= article_updated_at(article) %></small></td>
+              </tr>
+            <% end -%>
          </table>
         </div>
         <div class="chart-notes">
@@ -94,15 +100,21 @@
           Most Followed Cases
         </div>
         <div class="chart-stage">
-         <table class='table leader-list'>
-           <tr>
-            <th></th>
-            <th>Case</th>
-            <th>Followers</th>
-           </tr>
+          <table class='table leader-list'>
+            <tr>
+             <th></th>
+             <th>Case</th>
+             <th>Followers</th>
+            </tr>
 
-           <%= most_followed_cases %>
-         </table>
+            <% Article.most_recent_by_follower(10).each_with_index do |article, i| -%>
+              <tr>
+                <td><%= i + 1 %></td>
+                <td><%= link_to_article_title(article, 25) %></td>
+                <td><%= link_to_article_follower_count(article) %></td>
+              </tr>
+            <% end -%>
+          </table>
         </div>
         <div class="chart-notes">
           These are the articles with the most followers
@@ -115,15 +127,26 @@
           Most Viewed by New Visitors - Last 7 days <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Cases Viewed By New Visitors", :content => "This metric shows the number of new visitors landing on specific EBWiki cases."})%>
         </div>
         <div class="chart-stage">
-         <table class='table leader-list'>
-           <tr>
-            <th></th>
-            <th>Page</th>
-            <th>Views</th>
-           </tr>
+          <table class='table leader-list'>
+            <tr>
+              <th></th>
+              <th>Page</th>
+              <th>Views</th>
+            </tr>
 
-           <%= weekly_visitors_by_landing_page %>
-         </table>
+            <% new_visits.each_with_index do |visit, i| -%>	
+              <tr>		
+                <% if Article.find_by_slug(visit[0].split('/').last).present? %>		
+                  <td><%= i %></td>		
+                  <td>
+                    <%= link_to(truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), 
+                                article_path(Article.find_by_slug(visit[0].split('/').last))) %>
+                  </td>		
+                  <td><%= visit[1] %></td>		
+                <% end %>		
+              </tr>		
+            <% end -%>
+          </table>
         </div>
         <div class="chart-notes">
           The top cases viewed in the past 7 days.
