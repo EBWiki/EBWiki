@@ -1,7 +1,7 @@
 <%= form_for :conversation, url: :conversations, html: { class: "" } do |f| %>
     <div class="form-group">
       <%= f.label :recipients %>
-      <%= f.select(:recipients, @other_users.collect {|p| [ p.name, p.id ] }, {}, { multiple: true , class: "form-control select2", multiple:"multiple", placeholder: "Select other EBWiki users to message" })%>
+      <%= other_users_to_message %>
     </div>
     <div class="form-group">
       <%= f.label :subject %>
