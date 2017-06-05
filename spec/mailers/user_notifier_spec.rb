@@ -1,6 +1,31 @@
 require "rails_helper"
 PaperTrail.enabled = false
 RSpec.describe UserNotifier, type: :mailer do
+  describe 'welcome_email' do
+    let(:user) { mock_model User, name: 'John', email: 'john@email.com', all_following: [User.new] }
+    let(:user_with_no_follows) { mock_model User, name: 'Jane', email: 'jane@email.com', all_following: [] }
+    let(:mail) { UserNotifier.welcome_email(user) }
+    let(:mail_with_no_follows) { UserNotifier.welcome_email(user_with_no_follows) }
+ 
+    it 'renders the subject' do
+      expect(mail.subject).to eql('Welcome to EndBiasWiki')
+    end
+    
+    it 'renders the receiver email' do
+      expect(mail.to).to eql([user.email])
+    end
+    
+    it 'renders proper message when user has followed 1 or more cases' do
+      expect(mail.body.encoded).to include('You have already taken the first step by following 1 case on EBWiki')
+      expect(mail_with_no_follows.body.encoded).not_to include('You have already taken the first step by following 1 case on EBWiki')
+    end
+    
+    it 'renders a cta when user has not followed any cases' do
+      expect(mail_with_no_follows.body.encoded).to include('It is very important that you click to follow one or more cases')
+      expect(mail.body.encoded).not_to include('It is very important that you click to follow one or more cases')
+    end
+  end
+  
   describe 'send_update_email' do
     let(:user) { mock_model User, name: 'John', email: 'john@email.com', all_following: [User.new] }
     let(:article) {mock_model Article, title: 'John Smith', content: 'some content', state_id: 33}
