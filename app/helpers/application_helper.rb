@@ -1,8 +1,14 @@
 module ApplicationHelper
-  
-
   def active_page(active_page)
     @active == active_page ? "active" : ""
+  end
+  
+  def active_page_link(page, remote)
+    content_tag(:a, page, remote: remote, rel: (page.next? ? 'next' : (page.prev? ? 'prev' : nil)))
+  end
+  
+  def page_link(page, url, remote)
+    link_to(page, url, remote: remote, rel: (page.next? ? 'next' : (page.prev? ? 'prev' : nil)))
   end
   
 	def avatar_url(user,size)
