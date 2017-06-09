@@ -14,5 +14,4 @@ module AgenciesHelper
   def link_to_edit(agency)
     link_to('Edit', edit_agency_path(agency))
   end
-    
 end

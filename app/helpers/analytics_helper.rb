@@ -34,14 +34,18 @@ module AnalyticsHelper
   def recent_comments_by_creation_time
     html = ""
     
+    if Comment.all.empty?
+      return raw '<p>No comments yet.</p>'
+    end
+    
     Comment.order(created_at: :desc).each do |comment| 
-      return "<li> " +
+      return raw ("<li> " +
         "<blockquote class='blockquote'> " +
           "<p>#{ link_to( truncate(Article.find(comment.commentable_id).title, length: 30), article_path(Article.find(comment.commentable_id)) ) } -- #{ comment.created_at.strftime("%B %d, %Y") }</p>" +
           "<p>#{ link_to( truncate(comment.content, length: 100), article_path(Article.find(comment.commentable_id))) }</p>" +
           "<small>#{ link_to(User.find(comment.user_id).name, user_path(User.find(comment.user_id))) }</small>" +
         "</blockquote>" +
-      "</li>"
+      "</li>")
     end
     
     return raw(html)

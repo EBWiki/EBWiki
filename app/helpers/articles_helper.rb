@@ -33,13 +33,23 @@ module ArticlesHelper
   end
   
   def recently_updated_case_list
-    list = ""
+    list = "<tr>
+              <th></th>
+              <th>Case</th>
+              <th>Updated</th>
+            </tr>"
     
-    Article.most_recent(10).each_with_index do |article, i|
-      list += recently_updated_row(article,i)
+    articles = Article.most_recent(10)
+    
+    if articles.empty?
+      return raw '<p>No cases added yet.</p>'
+    else
+      articles.each_with_index do |article, i|
+        list += recently_updated_row(article,i)
+      end
+      
+      return raw list
     end
-    
-    return raw(list)
   end
   
   def recently_updated_row(article,i)
