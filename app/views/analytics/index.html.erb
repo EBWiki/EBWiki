@@ -78,7 +78,7 @@
              <th>Updated</th>
             </tr>
 
-            <% Article.order(updated_at: :desc).first(10).each_with_index do |article, i| -%>
+            <% Article.most_recent(10).each_with_index do |article, i| -%>
               <tr>
                 <td><%= i + 1 %></td>
                 <td><%= link_to_article_title(article, 14) %></td>
