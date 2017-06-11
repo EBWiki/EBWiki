@@ -32,8 +32,6 @@ module AnalyticsHelper
   end
   
   def recent_comments_by_creation_time
-    html = ""
-    
     if Comment.all.empty?
       return raw '<p>No comments yet.</p>'
     end
@@ -47,7 +45,5 @@ module AnalyticsHelper
         "</blockquote>" +
       "</li>")
     end
-    
-    return raw(html)
   end
 end
