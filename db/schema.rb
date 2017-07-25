@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160708194753) do
+ActiveRecord::Schema.define(version: 20170520020651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,10 +27,12 @@ ActiveRecord::Schema.define(version: 20160708194753) do
     t.string   "email"
     t.string   "website"
     t.string   "lead_officer"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "slug"
-    t.integer  "follows_count",  default: 0, null: false
+    t.float    "longitude"
+    t.float    "latitude"
+    t.string   "jurisdiction"
   end
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
@@ -84,7 +86,6 @@ ActiveRecord::Schema.define(version: 20160708194753) do
     t.boolean  "remove_avatar"
     t.text     "summary"
     t.integer  "follows_count",    default: 0, null: false
-    t.json     "documents"
   end
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
@@ -106,13 +107,6 @@ ActiveRecord::Schema.define(version: 20160708194753) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
-
-  create_table "documents", force: :cascade do |t|
-    t.string   "name"
-    t.string   "attachment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -268,7 +262,6 @@ ActiveRecord::Schema.define(version: 20160708194753) do
     t.boolean  "admin",                  default: false
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "storytime_name"
     t.string   "name"
     t.text     "description"
     t.integer  "state_id"
