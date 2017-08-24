@@ -27,7 +27,12 @@ After the Walter Scott video was released showing the vast discrepancy between t
 
 ## Testing
 
-We use [RSpec](https://relishapp.com/rspec) to test the business logic. In addition, we use [Travis](https://travis-ci.org/BOWiki/BOW/) as a Continuous Integration (CI) Server and [Code Climate](https://codeclimate.com/github/BOWiki/BOW) to monitor code quality.
+We use [RSpec](https://relishapp.com/rspec) to test the business logic.
+In addition, we use [Travis](https://travis-ci.org/BOWiki/BOW/) as a Continuous
+Integration (CI) Server and
+[Code Climate](https://codeclimate.com/github/BOWiki/BOW) to monitor code quality.
+We also use [bullet](https://github.com/flyerhzm/bullet) to detect an N+1 query
+and raise an exception and fail the build, whether local or in CI.
 
 ## Services
 
