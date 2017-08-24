@@ -115,5 +115,10 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
+  # Add bullet wrapper to catch and log N+1 queries
+  if Bullet.enable?
+    config.before(:each) { Bullet.start_request }
+    config.after(:each)  { Bullet.end_request }
+  end
   
 end
