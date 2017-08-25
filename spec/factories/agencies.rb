@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :agency do |f|
-    f.name "MyAgency"
+    f.sequence(:name) {|n| "#{n}_Agency"}
     f.street_address "230 West 43rd St."
     f.city "New York City"
     f.state

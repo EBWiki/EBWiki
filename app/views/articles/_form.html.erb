@@ -81,10 +81,7 @@
   <fieldset class="fsStyle">
     <legend class="legendStyle">Enforcement Agencies Involved <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Agencies", :content => "Add law enforcement agencies involved here so we can grade their performance."})%></legend>
     <div id="links">
-      <%= f.association :agencies, 
-      		collection: Agency.all.sort_by{ |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }, 
-      		input_html: { multiple: true, class: 'select2'}
-      %>
+      <%= f.association :agencies, collection: agency_dropdown_collection, input_html: { multiple: true, class: 'select2'} %>
     </div>
 
     <% if params[:action] == "edit" %>

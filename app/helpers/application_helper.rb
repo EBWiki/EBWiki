@@ -1,8 +1,14 @@
 module ApplicationHelper
-  
-
   def active_page(active_page)
     @active == active_page ? "active" : ""
+  end
+  
+  def active_page_link(page, remote)
+    content_tag(:a, page, remote: remote, rel: (page.next? ? 'next' : (page.prev? ? 'prev' : nil)))
+  end
+  
+  def page_link(page, url, remote)
+    link_to(page, url, remote: remote, rel: (page.next? ? 'next' : (page.prev? ? 'prev' : nil)))
   end
   
 	def avatar_url(user,size)
@@ -27,5 +33,19 @@ module ApplicationHelper
       marker.infowindow controller.render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
     end
     @hash
+  end
+  
+  def state_dropdown
+    select_tag(:state_id, 
+      options_from_collection_for_select(State.all, :id, :name), 
+      include_blank: "Filter By State...",
+      class: 'form-control select2')
+  end
+  
+  def state_search_input
+    text_field_tag :query, params[:query], 
+      class: 'form-control', 
+      data: { list: State.all.map(&:name) } , 
+      placeholder: 'Name, City or Keywords...'
   end
 end

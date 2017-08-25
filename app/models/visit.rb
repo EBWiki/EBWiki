@@ -2,6 +2,7 @@ class Visit < ActiveRecord::Base
   has_many :ahoy_events, class_name: "Ahoy::Event"
   belongs_to :user
 
+  scope :this_month, -> { where(started_at: 30.days.ago..Time.now) }
   scope :property_count_over_time, -> (property, days) { where( "#{property}": "#{days}".to_i.days.ago..Time.now).count }
 
   def mom_visits_growth

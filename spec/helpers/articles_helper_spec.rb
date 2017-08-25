@@ -42,5 +42,30 @@ RSpec.describe ArticlesHelper, :type => :helper do
       expect(helper.article_sanity_check).to be_falsey
     end
   end
+  
+  describe "#recently_updated_case_list" do
+    it "displays title and date of articles when they are found" do
+      articles = FactoryGirl.create_list(:article, 10)
+      
+      expect(helper.recently_updated_case_list).to include(articles.first.title)
+      expect(helper.recently_updated_case_list).to include(articles.last.updated_at.strftime("%m.%e, %l:%M %p"))
+      expect(helper.recently_updated_case_list).not_to include('No cases added yet')
+    end
+    it "displays a notice if no articles are found" do
+      expect(helper.recently_updated_case_list).not_to include("<td>")
+      expect(helper.recently_updated_case_list).to include('No cases added yet')
+    end
+  end
+  
+  describe "#agency_dropdown_collection" do
+    it "alphabetically sorts agency names" do
+      article = FactoryGirl.create(:article)
+      agencies = FactoryGirl.create_list(:agency, 10)
+      Agency.first.update_attribute(:name, 'zzzzzzz')
+      
+      expect(helper.agency_dropdown_collection).to include(agencies.last)
+      expect(helper.agency_dropdown_collection.last).to eq(agencies.first)
+    end
+  end
 
 end
