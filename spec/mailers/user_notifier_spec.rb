@@ -32,10 +32,10 @@ RSpec.describe UserNotifier, type: :mailer do
     end
   end
 
-  describe 'notify_of_removal' do
+  describe 'send_deletion_email' do
     let(:follower) { mock_model User, name: 'A Follower', email: 'follower@ebwiki.org' }
     let(:article) { mock_model Article, title: 'John Smith', content: 'some content', state_id: 33 }
-    let(:mail) { UserNotifier.notify_of_removal([follower], article) }
+    let(:mail) { UserNotifier.send_deletion_email([follower], article) }
 
     it 'renders the subject' do
       expect(mail.subject).to eql('The @article.title case has been removed from EBWiki')
