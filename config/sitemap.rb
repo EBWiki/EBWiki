@@ -11,8 +11,8 @@ if Rails.env.production?
 # Instance of `SitemapGenerator::s3Adapter -- could have used wave adapter instead
   SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new(
     fog_provider: 'AWS',
-    aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-    aws_secret_access_key: ENV['AWS_SECRET_KEY_ID'],
+    aws_access_key_id: ENV['EBWIKI_AWS_ACCESS_KEY_ID'],
+    aws_secret_access_key: ENV['EBWIKI_AWS_SECRET_ACCESS_KEY'],
     fog_directory: ENV['FOG_DIRECTORY'],
     fog_region: ENV['S3_REGION'])
 

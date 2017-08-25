@@ -12,7 +12,7 @@ class UserNotifier < ApplicationMailer
   def send_deletion_email(users, article)
     @article = article
     users.each do|user|
-      Rails.logger.info("UserNotifier#send_deletion_email: Sending notification to #{user.email} that case #{article.tile} has been deleted")
+      Rails.logger.info("UserNotifier#send_deletion_email: Sending notification to #{user.email} that case #{article.title} has been deleted")
       mail( :to => user.email, :subject => 'The @article.title case has been removed from EBWiki' )
     end
   end
