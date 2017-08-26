@@ -60,6 +60,8 @@ gem 'split', require: 'split/dashboard'
 gem 'rollbar', '~> 2.11'
 group :development, :test do
 
+# Memory usage gem
+gem 'oink'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
@@ -74,7 +76,7 @@ group :development, :test do
   # tests and runs specs for you automatically when it detects changes
   gem 'guard-rspec'
 
-  gem 'oink'
+
 
   # Install a pre-commit hook to enforce code checks before commits
   gem "pre-commit"
