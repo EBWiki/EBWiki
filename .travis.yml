@@ -1,6 +1,6 @@
-language: ruby 2.3.0
+language: ruby 2.4.1
 rvm:
-- 2.3.0
+- 2.4.1
 notifications:
   email:
   - nyonmark@gmail.com
