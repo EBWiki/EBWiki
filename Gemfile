@@ -132,7 +132,7 @@ gem "select2-rails"
 gem "acts_as_follower"
 
 # messaging
-gem 'mailboxer', git: 'git://github.com/lacco/mailboxer.git'
+gem 'mailboxer', git: 'https://github.com/lacco/mailboxer.git'
 
 # track changes in model objects
 gem 'paper_trail', '~> 4.0.0.beta'
@@ -142,6 +142,8 @@ gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.
 
 # pagination
 gem 'kaminari'
+
+gem 'redis-namespace','~> 1.5.0'
 
 # access mailchimp api
 gem 'gibbon'

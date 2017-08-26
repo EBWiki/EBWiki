@@ -1,18 +1,18 @@
 GIT
-  remote: git://github.com/lacco/mailboxer.git
-  revision: d4f0e9c70e29fcc5c2b4b7c87379e1830d45a367
-  specs:
-    mailboxer (0.12.5)
-      carrierwave (>= 0.5.8)
-      rails (>= 3.2.0)
-
-GIT
   remote: https://github.com/galetahub/ckeditor.git
   revision: 32bc0c6702388549cb4b3f00f82afbc3798d6891
   specs:
     ckeditor (4.2.4)
       cocaine
       orm_adapter (~> 0.5.0)
+
+GIT
+  remote: https://github.com/lacco/mailboxer.git
+  revision: d4f0e9c70e29fcc5c2b4b7c87379e1830d45a367
+  specs:
+    mailboxer (0.12.5)
+      carrierwave (>= 0.5.8)
+      rails (>= 3.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -519,7 +519,9 @@ GEM
       nokogiri (~> 1.5)
       trollop (~> 2.1)
     rdoc (4.3.0)
-    redis (4.0.0)
+    redis (3.3.3)
+    redis-namespace (1.5.3)
+      redis (~> 3.0, >= 3.0.4)
     referer-parser (0.3.0)
     remotipart (1.3.1)
     request_store (1.3.2)
@@ -706,6 +708,7 @@ DEPENDENCIES
   rails-observers
   rails_12factor
   rails_admin (= 0.6.7)
+  redis-namespace (~> 1.5.0)
   rollbar (~> 2.1)
   rspec-activemodel-mocks
   rspec-rails (~> 3.0)
