@@ -13,7 +13,6 @@ RSpec.describe "articles/show.html.erb", type: :view do
   describe "on success" do
      it 'should not display a content field' do
       article = FactoryGirl.create(:article)
-      article.state = FactoryGirl.create(:state)
       assign(:article, article)
       assign(:commentable, article)
       assign(:comments, article.comments)
@@ -25,7 +24,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
 
     it 'displays litigation subheader if litigation text field is present' do
       article = FactoryGirl.create(:article, litigation: 'Legal Action')
-      article.state = FactoryGirl.create(:state)
+      
       assign(:article, article)
       assign(:commentable, article)
       assign(:comments, article.comments)
@@ -37,7 +36,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
 
     it 'displays summary subheader if overview text field is present' do
       article = FactoryGirl.create(:article, overview: 'overview text')
-      article.state = FactoryGirl.create(:state)
+      
       assign(:article, article)
       assign(:commentable, article)
       assign(:comments, article.comments)
@@ -49,7 +48,7 @@ RSpec.describe "articles/show.html.erb", type: :view do
 
     it 'displays community action subheader if overview text field is present' do
       article = FactoryGirl.create(:article, community_action: 'community text')
-      article.state = FactoryGirl.create(:state)
+      
       assign(:article, article)
       assign(:commentable, article)
       assign(:comments, article.comments)

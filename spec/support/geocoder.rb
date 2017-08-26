@@ -1,27 +1,76 @@
-module Geocoder
-  module Lookup
-    class Base
-      private
-      def read_fixture(file)
-        # specify the directory where you saved your json file
-        File.read(File.join("spec", "fixtures", "geocoder", file)).strip.gsub(/\n\s*/, "")
-      end
-    end
+addresses = {
+  "New York City NY" => {
+      'latitude' => 40.7573862,
+      'longitude' => -73.9881256,
+      'address' => '230 West 43rd St.',
+      'city' => 'New York City',
+      'state' => 'New York',
+      'state_code' => 'NY',
+      'country' => 'United States',
+      'country_code' => 'US'
+  },"230 West 43rd St. New York City NY 10036" => {
+      'latitude' => 40.7573862,
+      'longitude' => -73.9881256,
+      'address' => '230 West 43rd St., New York City, NY 10036',
+      'city' => 'New York City',
+      'state' => 'New York',
+      'state_code' => 'NY',
+      'country' => 'United States',
+      'country_code' => 'US'
+  },
+  [40.75747130000001, -73.9877319] => {
+      'latitude' => 40.75747130000001,
+      'longitude' => -73.9877319,
+      'address' => '229 West 43rd St., New York City, NY 10036',
+      'city' => 'New York City',
+      'state' => 'New York',
+      'state_code' => 'NY',
+      'country' => 'United States',
+      'country_code' => 'US'
+  },
+  "1867 Irving Road Worthington OH 43085" => {
+    'latitude' => 40.09846115112305,
+    'longitude' => -83.01747131347656,
+    'address' => 'Worthington, OH',
+    'city' => 'Worthington',
+    'state' => 'Ohio',
+    'state_code' => 'OH',
+    'country' => 'United States',
+    'country_code' => 'US'
+  },
+  "Albany NY" => {
+    'latitude' => 42.6525793,
+    'longitude' => -73.7562317,
+    'address' => 'Albany, NY',
+    'city' => 'Albany',
+    'state' => 'New York',
+    'state_code' => 'NY',
+    'country' => 'United States',
+    'country_code' => 'US'
+  },
+    "NY" => {
+    'latitude' => 42.6525793,
+    'longitude' => -73.7562317,
+    'address' => 'Albany, NY',
+    'city' => 'Albany',
+    'state' => 'New York',
+    'state_code' => 'NY',
+    'country' => 'United States',
+    'country_code' => 'US'
+  },
+    "Buffalo NY" => {
+    'latitude' => 42.6525793,
+    'longitude' => -73.7562317,
+    'address' => 'Albany, NY',
+    'city' => 'Albany',
+    'state' => 'New York',
+    'state_code' => 'NY',
+    'country' => 'United States',
+    'country_code' => 'US'
+  }
+ 
 
-    class Google < Base
-      private
-      def fetch_raw_data(query, reverse = false)
-        raise TimeoutError if query == "timeout"
-        raise SocketError if query == "socket_error"
-        file = case query
-          when "no results";   :no_results
-          when "no locality";  :no_locality
-          when "no city data"; :no_city_data
-          else                 :madison_square_garden
-        end
-        # make sure you specify the correct file name here
-        read_fixture "google_data.json"
-      end
-    end
-  end
-end
+}
+
+Geocoder.configure(:lookup => :test)
+addresses.each { |lookup, results| Geocoder::Lookup::Test.add_stub(lookup, [results]) }

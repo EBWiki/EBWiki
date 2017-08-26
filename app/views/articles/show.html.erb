@@ -30,7 +30,7 @@
 	    <div class="row">
 				<%= render 'button_group' %>
 			</div>
-			<%= render "comments/form" %>
+			<%= render "comments/add_comment_form" %>
 			<div class="commentList" >
 				<%= render "comments/comments" %>
 			</div>
@@ -39,7 +39,8 @@
 	  <div class="col-md-9">
       <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
-          <small><%= @article.city %>, <%= @article.state.name %>. <%= @article.date.strftime("%B %d, %Y") %></small>
+          <small><%= @article.city %>, <%= @article.state.name %></small> 
+      <br/><small><%= @article.date.strftime("%B %d, %Y") %></small>
           <% if @article.agencies.present? %>
             <p>Agencies:
               <% @article.agencies.each_with_index do |agency, index| %>

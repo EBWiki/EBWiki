@@ -6,8 +6,14 @@
 <span  class="page-header articleTitle">
   <h1 class="page-header articleTitle"><%= @agency.name %></h1>
   <h4><%= @agency.street_address %></h4>
-  <h4><%= @agency.city %>, <%= State.find(@agency.state_id).name %> <%= @agency.zipcode %></h4>
+  <h4><%= @agency.city %>, <%= State.from_agency(@agency).first.name %> <%= @agency.zipcode %></h4>
 </span>
+
+<% if @agency.jurisdiction.present? %>
+  <p>
+    <%= show_non_blank_fields("Type", @agency.jurisdiction.capitalize) %>
+  </p>
+<% end %>
 
 <p>
   <%= show_non_blank_fields "Department Head", @agency.lead_officer %>
