@@ -49,7 +49,6 @@ class AgenciesController < ApplicationController
   end
 
   # DELETE /agencies/1
-  # DELETE /agencies/1.json
   def destroy
     @agency.destroy
     respond_to do |format|
