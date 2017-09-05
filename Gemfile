@@ -24,6 +24,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # add back rails observer class removed from rails 4
 gem 'rails-observers'
 
+gem 'rack'
+
 # For configurable CORS domain settings
 gem 'rack-cors', :require => 'rack/cors'
 
@@ -52,9 +54,6 @@ gem 'ahoy_matey'
 gem 'split', require: 'split/dashboard'
 
 gem 'rollbar', '~> 2.1'
-
-# Memory usage gem
-gem 'oink'
 
 
 gem 'simplecov'
