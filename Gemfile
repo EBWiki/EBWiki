@@ -41,9 +41,6 @@ gem 'gotcha'
 # xml sitemap
 gem 'sitemap_generator'
 
-# task scheduler
-gem 'whenever', :require => false
-
 # Reduce N+1 queries
 gem "bullet"
 
