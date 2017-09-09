@@ -1,10 +1,10 @@
 module ApplicationHelper
-  
+
 
   def active_page(active_page)
     @active == active_page ? "active" : ""
   end
-  
+
 	def avatar_url(user,size)
     default_url = "#{root_url}default-user-icon.png"
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
@@ -21,7 +21,7 @@ module ApplicationHelper
 
   def marker_locations_for(articles)
     return nil if articles.blank?
-    @hash = Gmaps4rails.build_markers(articles.dup) do |article, marker|
+    @hash = Gmaps4rails.build_markers(articles) do |article, marker|
       marker.lat article.latitude
       marker.lng article.longitude
       marker.infowindow controller.render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
