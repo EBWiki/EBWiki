@@ -31,4 +31,22 @@ RSpec.describe UserNotifier, type: :mailer do
       expect(mail.body.encoded).to match(author.name)
     end
   end
+
+  describe 'send_deletion_email' do
+    let(:follower) { mock_model User, name: 'A Follower', email: 'follower@ebwiki.org' }
+    let(:article) { mock_model Article, title: 'John Smith', content: 'some content', state_id: 33 }
+    let(:mail) { UserNotifier.send_deletion_email([follower], article) }
+
+    it 'renders the subject' do
+      expect(mail.subject).to eql('The @article.title case has been removed from EBWiki')
+    end
+
+    it 'renders the receiver email' do
+      expect(mail.to).to eql([follower.email])
+    end
+
+    it 'renders the sender email' do
+      expect(mail.from).to eql(['EndBiasWiki@gmail.com'])
+    end
+  end
 end
