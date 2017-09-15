@@ -22,9 +22,9 @@ module ApplicationHelper
   def marker_locations_for(articles)
     return nil if articles.blank?
     @hash = Gmaps4rails.build_markers(articles) do |article, marker|
-      marker.lat article.latitude
-      marker.lng article.longitude
-      marker.infowindow controller.render_to_string(:partial => "/articles/info_window", :locals => { :article => article})
+      marker.lat article[1]
+      marker.lng article[2]
+      marker.infowindow controller.render_to_string(partial:"/articles/info_window", locals: { article: article})
     end
     @hash
   end
