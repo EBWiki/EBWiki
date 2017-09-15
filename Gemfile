@@ -1,7 +1,7 @@
 ruby "2.4.1"
 
 source 'https://rubygems.org'
-gem 'dotenv-rails', :groups => [:development, :test, :production], :require => 'dotenv/rails-now'
+gem 'dotenv-rails', groups: [:development, :test, :production], require:'dotenv/rails-now'
 
 gem 'rails', '4.2.9'
 # Use postgresql as the database for Active Record
@@ -27,7 +27,7 @@ gem 'rails-observers'
 gem 'rack'
 
 # For configurable CORS domain settings
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
 
 # help with charts and graphs
 gem 'chartkick'
@@ -70,7 +70,7 @@ end
 
 
 group :development do
-  gem 'brakeman', :require => false
+  gem 'brakeman', require: false
     # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 end
@@ -83,10 +83,10 @@ group :test do
   gem "launchy", "~> 2.4.2"
   gem "selenium-webdriver", "~> 2.43.0"
   gem 'shoulda-matchers', '~> 2.6.2'
-  gem 'cucumber-rails', :require => false
+  gem 'cucumber-rails', require: false
 end
 
-gem 'rails_12factor', :groups => [:production, :staging]
+gem 'rails_12factor', groups: [:production, :staging]
 gem 'bootstrap-sass'
 gem 'devise', '3.5.6'
 gem 'simple_form'
@@ -103,7 +103,7 @@ gem 'carrierwave'
 gem 'carrierwave-imageoptimizer'
 
 # allow deflated assets with heroku
-gem 'heroku_rails_deflate', :groups => [:production, :staging]
+gem 'heroku_rails_deflate', groups: [:production, :staging]
 
 #CMS panel for admin
 gem 'rails_admin','0.6.7'
@@ -150,7 +150,7 @@ gem 'metamagic'
 # Google News API help
 gem 'galerts'
 
-gem 'ckeditor', :git => 'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', git:'https://github.com/galetahub/ckeditor.git'
 
 # New Relic performance monitor
 gem 'newrelic_rpm'
