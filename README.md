@@ -52,4 +52,4 @@ EBWiki is using the [Apache 2.0 License](LICENSE.txt).
 
 ## Code of Conduct
 
-Link to Code to [Code Of Conduct](docs/CODE_OF_CONDUCT.md) document.
+Link to [Code Of Conduct](docs/CODE_OF_CONDUCT.md) document.
