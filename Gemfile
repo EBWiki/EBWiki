@@ -5,7 +5,7 @@ gem 'dotenv-rails', groups: [:development, :test, :production], require:'dotenv/
 
 gem 'rails', '4.2.9'
 # Use postgresql as the database for Active Record
-gem 'pg'
+gem 'pg', '0.20.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
