@@ -20,7 +20,7 @@ RSpec.describe MapsController, type: :controller do
     end
 
     it 'returns all articles' do
-      expect(assigns[:articles].size).to be > 20
+      expect(assigns[:articles].size).to be >= 20
     end
 
     describe 'each article' do
