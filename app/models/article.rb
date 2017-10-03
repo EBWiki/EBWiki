@@ -44,21 +44,27 @@ class Article < ActiveRecord::Base
   mount_uploader :avatar, AvatarUploader
 
   # before_validation :check_for_empty_fields
-  
+
   # Geocoding
   geocoded_by :full_address
-  before_save :geocode, if: Proc.new {|art| 
+  before_save :geocode, if: Proc.new {|art|
     art.address_changed? || art.city_changed? || art.state_id_changed? || art.zipcode_changed?
   } # auto-fetch coordinates
-  
 
-
+  before_save :set_default_avatar_url if Proc.new do |art|
+    art.avatar.changed?
+  end
   # Scopes
   scope :by_state, -> (state_id) {where(state_id: state_id)}
   scope :property_count_over_time, -> (property, days) { where( "#{property}": "#{days}".to_i.days.ago..Time.now).count }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
+  end
+
+
+  def set_default_avatar_url
+    self.default_avatar_url = self.avatar.url
   end
 
   def self.find_by_search(query)

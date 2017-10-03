@@ -79,7 +79,7 @@ describe Article, :versioning => true do
     article2 = FactoryGirl.create(:article, title: "The Title")
     expect(article2.slug).to eq "the-title-albany"
     expect(article.slug).not_to eq article2.slug
-    
+
   end
 
   it 'updates slug if article title is updated' do
@@ -138,15 +138,15 @@ describe "geocoded" do
     expect(article.latitude).to be_a(Float)
     expect(article.longitude).to be_a(Float)
   end
-  
+
   it "updates geocoded coordinates when relevant fields are updated" do
     article = FactoryGirl.create(:article)
     ohio = FactoryGirl.create(:state_ohio)
-    
+
     expect{ article.update_attributes({
-      city: "Worthington", 
-      state_id: ohio.id, 
-      address: "1867 Irving Road", 
+      city: "Worthington",
+      state_id: ohio.id,
+      address: "1867 Irving Road",
       zipcode: '43085'
     })}.to change{ article.latitude }
   end
@@ -200,5 +200,14 @@ describe "total case growth rate" do
     article = FactoryGirl.create(:article, created_at: 31.days.ago)
     article2 = FactoryGirl.create(:article)
     expect(Article.first.mom_cases_growth).to eq(100)
+  end
+end
+
+describe "#default_avatar_url" do
+  it 'takes the avatar''s default URL and turns this into a column' do
+    article = FactoryGirl.create(:article)
+    avatar_mock = double("Avatar", url:'https://avatar.com')
+    allow(article).to receive(:default_avatar_url).and_return(avatar_mock.url)
+    expect(article.default_avatar_url).to_not be_nil
   end
 end
