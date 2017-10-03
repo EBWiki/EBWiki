@@ -2,9 +2,9 @@
   <div class="col-lg-3" style="text-align:center;">
     <%= image_tag(article[3]) %>
     <br>
-    <%= link_to article[4], article_path(article) %>
+    <%= link_to article[4], article_path(article[0]) %>
   </div>
   <div class="col-lg-9">
-    <%= truncate(raw(article[5]), length:500) %>
+    <%= raw truncate(article[5], length:500) %>
   </div>
 </div>
