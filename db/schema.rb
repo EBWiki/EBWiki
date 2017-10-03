@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170520020651) do
+ActiveRecord::Schema.define(version: 20170919051847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,13 @@ ActiveRecord::Schema.define(version: 20170520020651) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "article_documents", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "document_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "article_officers", force: :cascade do |t|
     t.integer  "article_id"
     t.integer  "officer_id"
@@ -63,8 +70,8 @@ ActiveRecord::Schema.define(version: 20170520020651) do
 
   create_table "articles", force: :cascade do |t|
     t.string   "title"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "user_id"
     t.integer  "category_id"
     t.date     "date"
@@ -85,7 +92,8 @@ ActiveRecord::Schema.define(version: 20170520020651) do
     t.string   "country"
     t.boolean  "remove_avatar"
     t.text     "summary"
-    t.integer  "follows_count",    default: 0, null: false
+    t.integer  "follows_count",      default: 0, null: false
+    t.string   "default_avatar_url"
   end
 
   add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
@@ -107,6 +115,13 @@ ActiveRecord::Schema.define(version: 20170520020651) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "title"
+    t.string   "attachment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -262,6 +277,7 @@ ActiveRecord::Schema.define(version: 20170520020651) do
     t.boolean  "admin",                  default: false
     t.float    "latitude"
     t.float    "longitude"
+    t.string   "storytime_name"
     t.string   "name"
     t.text     "description"
     t.integer  "state_id"
