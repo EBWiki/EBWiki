@@ -5,7 +5,7 @@ RSpec.describe ArticlesController, type: :controller do
   before do
     allow_any_instance_of(ArticlesController).to receive(:make_undo_link).and_return("/articles/1")
   end
-  
+
   let(:articles) {FactoryGirl.create_list(:article, 20) }
   describe '#index' do
 
@@ -64,7 +64,7 @@ RSpec.describe ArticlesController, type: :controller do
     login_user
 
     context 'when valid' do
-     
+
       let(:article_attrs) { FactoryGirl.attributes_for(:article, state_id: 33) }
       let(:subject_attrs) { FactoryGirl.attributes_for(:subject) }
 
@@ -89,7 +89,7 @@ RSpec.describe ArticlesController, type: :controller do
       let(:article_attrs) { attributes_for(:invalid_article) }
 
       it 'fails' do
-        allow_any_instance_of(Article).to receive(:full_address).and_return(" Albany NY ") 
+        allow_any_instance_of(Article).to receive(:full_address).and_return(" Albany NY ")
         post :create, {'article': article_attrs}
         expect(response).to render_template(:new)
       end
@@ -101,7 +101,7 @@ RSpec.describe ArticlesController, type: :controller do
     let(:article) { create(:article) }
 
     context 'when valid' do
-      let(:new_values) { { :overview => "new overview", :city => "Buffalo", :summary => "A summary of changes"} }
+      let(:new_values) { { overview: "new overview", city: "Buffalo", summary: "A summary of changes"} }
 
       it 'success' do
         patch :update, ** new_values, id: article.id, article: new_values

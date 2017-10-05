@@ -1,18 +1,18 @@
 class UserNotifier < ApplicationMailer
-  default :from => 'EndBiasWiki@gmail.com'
+  default from: 'EndBiasWiki@gmail.com'
 
   def send_followers_email(users, article)
     @article = article
   	users.each do|user|
       Rails.logger.info("UserNotifier#send_followers_email: Sending notification to #{user.email} about case #{article.title}")
-      mail( :to => user.email, :subject => "The #{@article.title} case has been updated on EBWiki." )
+      mail( to: user.email, subject: "The #{@article.title} case has been updated on EBWiki." )
     end
   end
 
   def notify_of_removal(users, article)
     @article = article
     users.each do|user|
-      mail( :to => user.email, :subject => 'The @article.title case has been removed from EBWiki' )
+      mail( to: user.email, subject: 'The @article.title case has been removed from EBWiki' )
     end
   end
 

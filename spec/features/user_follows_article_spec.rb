@@ -4,7 +4,7 @@ feature "User follows an article from show" do
 	let(:article) { FactoryGirl.create(:article) }
 	scenario "User arrives at the article show page and clicks to follow" do
 		user = FactoryGirl.create(:user)
-		login_as(user, :scope => :user)
+		login_as(user, scope: :user)
 		visit article_path(article)
 		click_link 'Follow'
 		expect(article.followers.count).to eq(1)
@@ -13,7 +13,7 @@ feature "User follows an article from show" do
 	scenario "User arrives at the article show page and clicks to unfollow" do
 	  
 		user = FactoryGirl.create(:user)
-		login_as(user, :scope => :user)
+		login_as(user, scope: :user)
 		visit article_path(article)
 		click_link 'Follow'
 		click_link 'Unfollow'
@@ -36,7 +36,7 @@ end
 # 	scenario "User arrives at the article show page and clicks to follow" do
 # 	  
 # 		user = FactoryGirl.create(:user)
-# 		login_as(user, :scope => :user)
+# 		login_as(user, scope: :user)
 # 		visit articles_followers_path(article)
 # 		click_link 'Track this case'
 # 		expect(article.followers.count).to eq(1)

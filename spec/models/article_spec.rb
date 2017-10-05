@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Article, :versioning => true do
+describe Article, versioning: true do
   it "is invalid without a date" do
     article = build(:article, date: nil)
     expect(article).to be_invalid
@@ -70,7 +70,7 @@ describe Article, :versioning => true do
   end
   it 'copies the article.summary attribute to version.comment' do
     article = FactoryGirl.create(:article, title: "The Title")
-    article.update_attributes(:title => "The Title has changed", :summary => "fixed the title")
+    article.update_attributes(title: "The Title has changed", summary: "fixed the title")
     expect(article.versions.last.comment).to eq "fixed the title"
   end
 

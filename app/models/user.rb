@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   def add_to_mailchimp
     if self[subscribed]
       gb = Gibbon::Request.new
-      gb.lists.subscribe({:id => ENV['MAILCHIMP_LIST_ID'], :email => {:email => "#{self.email}"}, :merge_vars => {:FNAME => "#{self.name}"}})
+      gb.lists.subscribe({id: ENV['MAILCHIMP_LIST_ID'], email: {email: "#{self.email}"}, merge_vars: {FNAME: "#{self.name}"}})
     end
   end
 
@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
     gb = Gibbon::Request.new
     gb.lists(ENV['MAILCHIMP_LIST_ID']).members(Digest::MD5.hexdigest("#{self.email.downcase}")).retrieve
     rescue Gibbon::MailChimpError => e
-    return nil, :flash => { error: e.message }
+    return nil, flash: { error: e.message }
   end
 
   # returns mailchimp member id for users registered with MC

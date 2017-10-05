@@ -6,7 +6,7 @@ FactoryGirl.define do
     f.name "New York"
     f.ansi_code "NY"
   end
-  factory :state_ohio, :class => State do |f|
+  factory :state_ohio, class: State do |f|
     f.id
     f.name "Ohio"
     f.ansi_code "OH"

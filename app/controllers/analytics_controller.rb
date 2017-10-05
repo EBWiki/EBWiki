@@ -1,5 +1,5 @@
 class AnalyticsController < ApplicationController
-  before_action :check_for_admin_or_analyst, :only => [:show, :index]
+  before_action :check_for_admin_or_analyst, only: [:show, :index]
 
   def show
   end

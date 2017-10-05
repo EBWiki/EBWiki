@@ -72,5 +72,5 @@ addresses = {
 
 }
 
-Geocoder.configure(:lookup => :test)
+Geocoder.configure(lookup: :test)
 addresses.each { |lookup, results| Geocoder::Lookup::Test.add_stub(lookup, [results]) }

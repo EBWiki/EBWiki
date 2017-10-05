@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ArticlesHelper, :type => :helper do
+RSpec.describe ArticlesHelper, type: :helper do
   describe "#embed" do
     it "returns an empty string if the video URL is blank" do
       expect(helper.embed('')).to eql("")

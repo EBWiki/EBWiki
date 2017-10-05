@@ -24,8 +24,8 @@ SitemapGenerator::Sitemap.create do
   # Add all articles:
 
   Article.find_each do |article|
-    add article_path(article), :lastmod => article.updated_at
-    add articles_followers_path(article), :lastmod => article.updated_at
+    add article_path(article), lastmod: article.updated_at
+    add articles_followers_path(article), lastmod: article.updated_at
   end
 end
 
@@ -34,7 +34,7 @@ SitemapGenerator::Sitemap.create do
   # Add all agencies:
 
   Agency.find_each do |agency|
-    add agency_path(agency), :lastmod => agency.updated_at
+    add agency_path(agency), lastmod: agency.updated_at
   end
 
   # Put links creation logic here.
@@ -45,14 +45,14 @@ SitemapGenerator::Sitemap.create do
   # Usage: add(path, options={})
   #        (default options are used if you don't specify)
   #
-  # Defaults: :priority => 0.5, :changefreq => 'weekly',
-  #           :lastmod => Time.now, :host => default_host
+  # Defaults: priority: 0.5, changefreq: 'weekly',
+  #           lastmod: Time.now, host: default_host
   #
   # Examples:
   #
   # Add '/articles'
   #
-  #   add articles_path, :priority => 0.7, :changefreq => 'daily'
+  #   add articles_path, priority: 0.7, changefreq: 'daily'
   #
 
 end

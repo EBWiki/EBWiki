@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get '/articles/:id/followers', to: 'articles#followers', as: :articles_followers
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles do
-    resources :follows, :only => [:create, :destroy]
+    resources :follows, only: [:create, :destroy]
     resources :comments
   end
 
@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     resources :registrations
   end
 
-  mount Split::Dashboard, at: 'split', :anchor => false, :constraints => lambda { |request|
+  mount Split::Dashboard, at: 'split', anchor: false, constraints: lambda { |request|
     request.env['warden'].authenticated? # are we authenticated?
     request.env['warden'].authenticate! # authenticate if not already
     # or even check any other condition

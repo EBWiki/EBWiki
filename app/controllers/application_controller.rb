@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt  
 
   if Rails.env.staging?
-    http_basic_authenticate_with :name => ENV['STAGING_USERNAME'], :password => ENV['STAGING_PASSWORD']
+    http_basic_authenticate_with name: ENV['STAGING_USERNAME'], password: ENV['STAGING_PASSWORD']
   end
   
   # Prevent CSRF attacks by raising an exception.

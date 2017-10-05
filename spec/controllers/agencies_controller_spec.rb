@@ -54,7 +54,7 @@ RSpec.describe AgenciesController, type: :controller do
       before(:each) { get :edit, id: agency.id }
 
       it "assigns the requested agency as @agency" do
-        get :edit, {:id => agency.to_param}
+        get :edit, {id: agency.to_param}
         expect(assigns(:agency)).to eq(agency)
       end
     end
@@ -65,13 +65,13 @@ RSpec.describe AgenciesController, type: :controller do
     it "destroys the requested agency" do
       agency = FactoryGirl.create(:agency)
       expect {
-        delete :destroy, {:id => agency.to_param}
+        delete :destroy, {id: agency.to_param}
       }.to change(Agency, :count).by(-1)
     end
 
     it "redirects to the agencies list" do
       agency = FactoryGirl.create(:agency)
-      delete :destroy, {:id => agency.to_param}
+      delete :destroy, {id: agency.to_param}
       expect(response).to redirect_to(agencies_url)
     end
   end
