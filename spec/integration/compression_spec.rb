@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # # spec/integration/compression_spec.rb
 # sample spec doesn't work
 

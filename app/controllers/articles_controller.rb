@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ArticlesController < ApplicationController
-  before_action :find_article, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index, :show, :history, :followers]
+  before_action :find_article, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: %i[index show history followers]
 
   def new
     @article = current_user.articles.build
@@ -12,7 +14,7 @@ class ArticlesController < ApplicationController
     @articles = Article.includes(:state).by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && params[:state_id].present?
     @articles = Article.includes(:state).by_state(params[:state_id]).order('date DESC').page(params[:page]).per(page_size) if !params[:query].present? && params[:state_id].present?
     @articles = Article.search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
-    @articles = Article.all.order('date DESC').includes(:state).page(params[:page]).per(page_size) if (!params[:query].present? && !params[:state_id].present?)
+    @articles = Article.all.order('date DESC').includes(:state).page(params[:page]).per(page_size) if !params[:query].present? && !params[:state_id].present?
   end
 
   def show
@@ -24,8 +26,8 @@ class ArticlesController < ApplicationController
 
     # Check to make sure all required elements are here
     unless @article.present? && @article.present?	&& @commentable.present? && @comment.present? &&
-        @subjects.present?
-      flash[:error] = "There was an error showing this case. Please try again later"
+           @subjects.present?
+      flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to	root_path
     end
   end
@@ -54,12 +56,10 @@ class ArticlesController < ApplicationController
   def update
     @article = Article.friendly.find(params[:id])
     @article.slug = nil
-    if @article.remove_avatar?
-      @article.remove_avatar!
-    end
+    @article.remove_avatar! if @article.remove_avatar?
     if @article.update_attributes(article_params)
       flash[:success] = "Article was updated! #{make_undo_link}"
-      UserNotifier.send_followers_email(@article.followers,@article).deliver_now
+      UserNotifier.send_followers_email(@article.followers, @article).deliver_now
       redirect_to @article
     else
       render 'edit'
@@ -69,7 +69,7 @@ class ArticlesController < ApplicationController
   def destroy
     @article.destroy
     flash[:success] = "Article was removed! #{make_undo_link}"
-    UserNotifier.notify_of_removal(@article.followers,@article).deliver_now
+    UserNotifier.notify_of_removal(@article.followers, @article).deliver_now
     redirect_to root_path
   end
 
@@ -90,7 +90,7 @@ class ArticlesController < ApplicationController
       end
       flash[:success] = "Undid that! #{make_redo_link}"
     rescue
-      flash[:alert] = "Failed undoing the action..."
+      flash[:alert] = 'Failed undoing the action...'
     ensure
       redirect_to root_path
     end
@@ -111,12 +111,12 @@ class ArticlesController < ApplicationController
   # TODO: Move this function out of this controller. The view context alone indicates that
   # this should be a helper, instead
   def make_redo_link
-    params[:redo] == "true" ? link = "Undo that please!" : link = "Redo that please!"
+    link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
     view_context.link_to link, undo_path(@article_version.next, redo: !params[:redo]), method: :post
   end
 
   def article_params
-    params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, :remove_avatar, :summary, links_attributes: [:id, :url, :_destroy],  comments_attributes: [:comment, :content, :commentable_id, :commentable_type], subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy], agency_ids: [])
+    params.require(:article).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, :remove_avatar, :summary, links_attributes: %i[id url _destroy], comments_attributes: %i[comment content commentable_id commentable_type], subjects_attributes: %i[name age gender_id ethnicity_id unarmed homeless veteran mentally_ill id _destroy], agency_ids: [])
   end
 
   # from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)

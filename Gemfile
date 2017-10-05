@@ -1,7 +1,9 @@
-ruby "2.4.1"
+# frozen_string_literal: true
+
+ruby '2.4.1'
 
 source 'https://rubygems.org'
-gem 'dotenv-rails', groups: [:development, :test, :production], require:'dotenv/rails-now'
+gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
 
 gem 'rails', '4.2.9'
 # Use postgresql as the database for Active Record
@@ -30,9 +32,9 @@ gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 
 # help with charts and graphs
+gem 'active_median'
 gem 'chartkick'
 gem 'groupdate'
-gem 'active_median'
 gem 'hightop'
 
 # Simple Captcha for signing up
@@ -42,7 +44,7 @@ gem 'gotcha'
 gem 'sitemap_generator'
 
 # Reduce N+1 queries
-gem "bullet"
+gem 'bullet'
 
 # internal analytics
 gem 'ahoy_matey'
@@ -52,65 +54,62 @@ gem 'split', require: 'split/dashboard'
 
 gem 'rollbar', '~> 2.1'
 
-
 gem 'simplecov'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'rspec-rails', '~> 3.0'
-  gem 'rspec-activemodel-mocks'
   gem 'factory_girl_rails'
   gem 'guard-rspec'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-rails', '~> 3.0'
+  gem 'spring'
   # Install a pre-commit hook to enforce code checks before commits
-  gem "pre-commit"
+  gem 'pre-commit'
 end
-
-
 
 group :development do
   gem 'brakeman', require: false
-    # Access an IRB console on exception pages or by using <%= console %> in views
+  # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 end
 
 group :test do
-  gem "faker", "~> 1.4.3"
-  # makes it easy to programatically simulate users’ interactions
-  gem "capybara", "~> 2.4.3"
-  gem "database_cleaner", "~> 1.3.0"
-  gem "launchy", "~> 2.4.2"
-  gem "selenium-webdriver", "~> 2.43.0"
-  gem 'shoulda-matchers', '~> 2.6.2'
+  gem 'faker', '~> 1.4.3'
+  # makes it easy to programatically simulate users' interactions
+  gem 'capybara', '~> 2.4.3'
   gem 'cucumber-rails', require: false
+  gem 'database_cleaner', '~> 1.3.0'
+  gem 'launchy', '~> 2.4.2'
+  gem 'selenium-webdriver', '~> 2.43.0'
+  gem 'shoulda-matchers', '~> 2.6.2'
 end
 
-gem 'rails_12factor', groups: [:production, :staging]
 gem 'bootstrap-sass'
-gem 'devise', '3.5.6'
-gem 'simple_form'
-gem 'momentjs-rails'
 gem 'bootstrap3-datetimepicker-rails'
+gem 'devise', '3.5.6'
+gem 'momentjs-rails'
+gem 'rails_12factor', groups: %i[production staging]
+gem 'simple_form'
 
 # for aws cloud storage
 gem 'fog'
 # photo resizing
-gem "mini_magick"
+gem 'mini_magick'
 # file upload solution
 gem 'carrierwave'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
 # allow deflated assets with heroku
-gem 'heroku_rails_deflate', groups: [:production, :staging]
+gem 'heroku_rails_deflate', groups: %i[production staging]
 
-#CMS panel for admin
-gem 'rails_admin','0.6.7'
+# CMS panel for admin
+gem 'rails_admin', '0.6.7'
 
-gem 'puma'
 gem 'geocoder'
 gem 'gmaps4rails'
+gem 'puma'
 
 # implement elasticsearch
 gem 'searchkick'
@@ -122,10 +121,10 @@ gem 'cocoon'
 gem 'social-share-button'
 
 # select tag jquery plugin
-gem "select2-rails"
+gem 'select2-rails'
 
 # follower functionality
-gem "acts_as_follower"
+gem 'acts_as_follower'
 
 # messaging
 gem 'mailboxer', git: 'https://github.com/lacco/mailboxer.git'
@@ -139,7 +138,7 @@ gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.
 # pagination
 gem 'kaminari'
 
-gem 'redis-namespace','~> 1.5.0'
+gem 'redis-namespace', '~> 1.5.0'
 
 # access mailchimp api
 gem 'gibbon'
@@ -150,7 +149,7 @@ gem 'metamagic'
 # Google News API help
 gem 'galerts'
 
-gem 'ckeditor', git:'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor.git'
 
 # New Relic performance monitor
 gem 'newrelic_rpm'

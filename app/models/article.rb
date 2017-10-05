@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This is still called "Article", although its true name is "Case"
 # TODO: Rename this to Case
 #
@@ -24,21 +26,20 @@ class Article < ActiveRecord::Base
 
   # Friendly ID
   extend FriendlyId
-  friendly_id :slug_candidates, use: [:slugged, :finders]
+  friendly_id :slug_candidates, use: %i[slugged finders]
 
   # Elasticsearch Gem
   searchkick
 
-
   # Model Validations
-  validates :date, presence: { message: "Please add a date." }
+  validates :date, presence: { message: 'Please add a date.' }
   validate :article_date_cannot_be_in_the_future
-  validates :city, presence: { message: "Please add a city." }
-  validates :state_id, presence: { message: "Please specify the state where this incident occurred before saving." }
-  validates :title, presence: { message: "Please specify a title"}
+  validates :city, presence: { message: 'Please add a city.' }
+  validates :state_id, presence: { message: 'Please specify the state where this incident occurred before saving.' }
+  validates :title, presence: { message: 'Please specify a title' }
   validates_associated :subjects
-  validates :subjects, presence: { message: 'at least one subject is required'}
-  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the article.'}
+  validates :subjects, presence: { message: 'at least one subject is required' }
+  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the article.' }
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
@@ -47,24 +48,23 @@ class Article < ActiveRecord::Base
 
   # Geocoding
   geocoded_by :full_address
-  before_save :geocode, if: Proc.new {|art|
+  before_save :geocode, if: proc { |art|
     art.address_changed? || art.city_changed? || art.state_id_changed? || art.zipcode_changed?
   } # auto-fetch coordinates
 
-  before_save :set_default_avatar_url if Proc.new do |art|
+  before_save :set_default_avatar_url if proc do |art|
     art.avatar.changed?
   end
   # Scopes
-  scope :by_state, -> (state_id) {where(state_id: state_id)}
-  scope :property_count_over_time, -> (property, days) { where( "#{property}": "#{days}".to_i.days.ago..Time.now).count }
+  scope :by_state, ->(state_id) { where(state_id: state_id) }
+  scope :property_count_over_time, ->(property, days) { where("#{property}": days.to_s.to_i.days.ago..Time.now).count }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
   end
 
-
   def set_default_avatar_url
-    self.default_avatar_url = self.avatar.url
+    self.default_avatar_url = avatar.url
   end
 
   def self.find_by_search(query)
@@ -72,17 +72,17 @@ class Article < ActiveRecord::Base
   end
 
   def nearby_cases
-    self.try(:nearbys, 50).try(:order, "distance")
+    try(:nearbys, 50).try(:order, 'distance')
   end
 
   def article_date_cannot_be_in_the_future
     if date.present? && date > Date.today
-      errors.add(:date, "must be in the past")
+      errors.add(:date, 'must be in the past')
     end
   end
 
   def edit_summary
-    return summary
+    summary
   end
 
   # Try building a slug based on the following fields in
@@ -90,44 +90,44 @@ class Article < ActiveRecord::Base
   def slug_candidates
     [
       :title,
-      [:title, :city],
-      [:title, :city, :zipcode]
+      %i[title city],
+      %i[title city zipcode]
     ]
   end
 
   def mom_new_cases_growth
-    last_month_cases = Article.property_count_over_time("date", 30)
-    last_60_days_cases = Article.property_count_over_time("date", 60)
+    last_month_cases = Article.property_count_over_time('date', 30)
+    last_60_days_cases = Article.property_count_over_time('date', 60)
     prior_30_days_cases = last_60_days_cases - last_month_cases
 
-    return (((last_month_cases.to_f / prior_30_days_cases) - 1) * 100).round(2)
+    (((last_month_cases.to_f / prior_30_days_cases) - 1) * 100).round(2)
   end
 
   def mom_cases_growth
-    last_month_cases = Article.property_count_over_time("created_at", 30)
+    last_month_cases = Article.property_count_over_time('created_at', 30)
 
-    return (last_month_cases.to_f / (Article.count-last_month_cases) * 100).round(2)
+    (last_month_cases.to_f / (Article.count - last_month_cases) * 100).round(2)
   end
 
   def cases_updated_last_30_days
-    Article.property_count_over_time("updated_at", 30)
+    Article.property_count_over_time('updated_at', 30)
   end
 
   def mom_growth_in_case_updates
-    last_month_case_updates = Article.property_count_over_time("updated_at", 30)
-    last_60_days_case_updates = Article.property_count_over_time("updated_at", 60)
+    last_month_case_updates = Article.property_count_over_time('updated_at', 30)
+    last_60_days_case_updates = Article.property_count_over_time('updated_at', 60)
     prior_30_days_case_updates = last_60_days_case_updates - last_month_case_updates
 
-    return (((last_month_case_updates.to_f / prior_30_days_case_updates) - 1) * 100).round(2)
+    (((last_month_case_updates.to_f / prior_30_days_case_updates) - 1) * 100).round(2)
   end
 
-private
+  private
 
   def check_for_empty_fields
-    attrs = ["title", "date", "address", "city", "state", "zipcode", "state_id", "avatar", "video_url", "overview", "community_action", "litigation", "country", "remove_avatar"]
+    attrs = %w[title date address city state zipcode state_id avatar video_url overview community_action litigation country remove_avatar]
 
-    unless (self.changed & attrs).any?
-      self.errors[:base] << "You must change field other than summary to generate a new version"
+    unless (changed & attrs).any?
+      errors[:base] << 'You must change field other than summary to generate a new version'
     end
   end
 end

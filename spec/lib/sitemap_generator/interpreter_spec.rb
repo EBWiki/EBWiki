@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe SitemapGenerator::Interpreter do  
+describe SitemapGenerator::Interpreter do
   describe '.run' do
     it 'does not raise an error' do
       allow(SitemapGenerator::Sitemap).to receive(:ping_search_engines).and_return true

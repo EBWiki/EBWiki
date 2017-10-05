@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 FactoryGirl.define do
   factory :comment do
-    content "MyText"
-		comentable_id 1
-		commentable_type "MyString"
+    content 'MyText'
+    comentable_id 1
+    commentable_type 'MyString'
   end
 end

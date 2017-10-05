@@ -1,34 +1,36 @@
+# frozen_string_literal: true
+
 addresses = {
-  "New York City NY" => {
-      'latitude' => 40.7573862,
-      'longitude' => -73.9881256,
-      'address' => '230 West 43rd St.',
-      'city' => 'New York City',
-      'state' => 'New York',
-      'state_code' => 'NY',
-      'country' => 'United States',
-      'country_code' => 'US'
-  },"230 West 43rd St. New York City NY 10036" => {
-      'latitude' => 40.7573862,
-      'longitude' => -73.9881256,
-      'address' => '230 West 43rd St., New York City, NY 10036',
-      'city' => 'New York City',
-      'state' => 'New York',
-      'state_code' => 'NY',
-      'country' => 'United States',
-      'country_code' => 'US'
+  'New York City NY' => {
+    'latitude' => 40.7573862,
+    'longitude' => -73.9881256,
+    'address' => '230 West 43rd St.',
+    'city' => 'New York City',
+    'state' => 'New York',
+    'state_code' => 'NY',
+    'country' => 'United States',
+    'country_code' => 'US'
+  }, '230 West 43rd St. New York City NY 10036' => {
+    'latitude' => 40.7573862,
+    'longitude' => -73.9881256,
+    'address' => '230 West 43rd St., New York City, NY 10036',
+    'city' => 'New York City',
+    'state' => 'New York',
+    'state_code' => 'NY',
+    'country' => 'United States',
+    'country_code' => 'US'
   },
   [40.75747130000001, -73.9877319] => {
-      'latitude' => 40.75747130000001,
-      'longitude' => -73.9877319,
-      'address' => '229 West 43rd St., New York City, NY 10036',
-      'city' => 'New York City',
-      'state' => 'New York',
-      'state_code' => 'NY',
-      'country' => 'United States',
-      'country_code' => 'US'
+    'latitude' => 40.75747130000001,
+    'longitude' => -73.9877319,
+    'address' => '229 West 43rd St., New York City, NY 10036',
+    'city' => 'New York City',
+    'state' => 'New York',
+    'state_code' => 'NY',
+    'country' => 'United States',
+    'country_code' => 'US'
   },
-  "1867 Irving Road Worthington OH 43085" => {
+  '1867 Irving Road Worthington OH 43085' => {
     'latitude' => 40.09846115112305,
     'longitude' => -83.01747131347656,
     'address' => 'Worthington, OH',
@@ -38,7 +40,7 @@ addresses = {
     'country' => 'United States',
     'country_code' => 'US'
   },
-  "Albany NY" => {
+  'Albany NY' => {
     'latitude' => 42.6525793,
     'longitude' => -73.7562317,
     'address' => 'Albany, NY',
@@ -48,7 +50,7 @@ addresses = {
     'country' => 'United States',
     'country_code' => 'US'
   },
-    "NY" => {
+  'NY' => {
     'latitude' => 42.6525793,
     'longitude' => -73.7562317,
     'address' => 'Albany, NY',
@@ -58,7 +60,7 @@ addresses = {
     'country' => 'United States',
     'country_code' => 'US'
   },
-    "Buffalo NY" => {
+  'Buffalo NY' => {
     'latitude' => 42.6525793,
     'longitude' => -73.7562317,
     'address' => 'Albany, NY',
@@ -68,7 +70,6 @@ addresses = {
     'country' => 'United States',
     'country_code' => 'US'
   }
- 
 
 }
 

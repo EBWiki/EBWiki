@@ -1,5 +1,6 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   resources :agencies
   get 'analytics/show'
 
@@ -11,19 +12,19 @@ Rails.application.routes.draw do
   get '/guidelines', to: 'static#guidelines'
   get '/javascript_lab', to: 'static#javascript_lab'
 
-  get '/sitemap', to: redirect("http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz", status: 301)
+  get '/sitemap', to: redirect('http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz', status: 301)
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users, controllers: {
-    registrations: "users/registrations"
+    registrations: 'users/registrations'
   }
-  resources :users, only: [:show, :edit]
+  resources :users, only: %i[show edit]
 
   get '/articles/:id/history', to: 'articles#history', as: :articles_history
   get '/articles/:id/followers', to: 'articles#followers', as: :articles_followers
   post '/articles/:id/undo', to: 'articles#undo', as: :undo
   resources :articles do
-    resources :follows, only: [:create, :destroy]
+    resources :follows, only: %i[create destroy]
     resources :comments
   end
 
@@ -40,10 +41,10 @@ Rails.application.routes.draw do
   }
 
   # mailbox folder routes
-  get "mailbox", to: redirect("mailbox/inbox")
-  get "mailbox/inbox" => "mailbox#inbox", as: :mailbox_inbox
-  get "mailbox/sent" => "mailbox#sent", as: :mailbox_sent
-  get "mailbox/trash" => "mailbox#trash", as: :mailbox_trash
+  get 'mailbox', to: redirect('mailbox/inbox')
+  get 'mailbox/inbox' => 'mailbox#inbox', as: :mailbox_inbox
+  get 'mailbox/sent' => 'mailbox#sent', as: :mailbox_sent
+  get 'mailbox/trash' => 'mailbox#trash', as: :mailbox_trash
 
   # conversations
   resources :conversations do
@@ -57,4 +58,3 @@ Rails.application.routes.draw do
   # CKEditor
   mount Ckeditor::Engine => '/ckeditor'
 end
-

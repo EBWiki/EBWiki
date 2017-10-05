@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # require 'rails_helper'
 
 # RSpec.describe "/split.html.erb", type: :view do

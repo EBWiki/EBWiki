@@ -1,4 +1,6 @@
-require "simplecov"
+# frozen_string_literal: true
+
+require 'simplecov'
 SimpleCov.start
 require 'capybara/rspec'
 # This file is copied to spec/ when you run 'rails generate rspec:install'
@@ -11,8 +13,7 @@ include Warden::Test::Helpers
 Warden.test_mode!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -84,7 +85,7 @@ RSpec.configure do |config|
     # with the specs, so continue to use transaction strategy for speed.
     driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
 
-    if !driver_shares_db_connection_with_specs
+    unless driver_shares_db_connection_with_specs
       # Driver is probably for an external browser with an app
       # under test that does *not* share a database connection with the
       # specs, so use truncation strategy.
@@ -120,5 +121,4 @@ RSpec.configure do |config|
     config.before(:each) { Bullet.start_request }
     config.after(:each)  { Bullet.end_request }
   end
-
 end

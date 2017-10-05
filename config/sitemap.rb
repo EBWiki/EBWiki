@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "https://ebwiki.org"
+SitemapGenerator::Sitemap.default_host = 'https://ebwiki.org'
 
 # The directory to write sitemaps to locally
 SitemapGenerator::Sitemap.public_path = 'tmp/'
@@ -8,15 +10,16 @@ SitemapGenerator::Sitemap.sitemaps_path = 'sitemaps/'
 SitemapGenerator::Sitemap.create_index = true
 
 if Rails.env.production?
-# Instance of `SitemapGenerator::s3Adapter -- could have used wave adapter instead
+  # Instance of `SitemapGenerator::s3Adapter -- could have used wave adapter instead
   SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new(
     fog_provider: 'AWS',
     aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
     aws_secret_access_key: ENV['AWS_SECRET_KEY_ID'],
     fog_directory: ENV['FOG_DIRECTORY'],
-    fog_region: ENV['S3_REGION'])
+    fog_region: ENV['S3_REGION']
+  )
 
-# The remote host where your sitemaps will be hosted
+  # The remote host where your sitemaps will be hosted
   SitemapGenerator::Sitemap.sitemaps_host = "http://#{ENV['FOG_DIRECTORY']}.s3.amazonaws.com/"
 end
 
@@ -54,5 +57,4 @@ SitemapGenerator::Sitemap.create do
   #
   #   add articles_path, priority: 0.7, changefreq: 'daily'
   #
-
 end

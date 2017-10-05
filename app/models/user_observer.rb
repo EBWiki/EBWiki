@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserObserver < ActiveRecord::Observer
   observe :user
 

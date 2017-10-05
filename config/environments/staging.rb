@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -86,7 +88,5 @@ Rails.application.configure do
   Bullet.rails_logger = true
   Bullet.console = true
 
-  config.middleware.use Rack::HostRedirect, {
-    'blackops-staging.herokuapp.com' => 'staging.ebwiki.org'
-  }
+  config.middleware.use Rack::HostRedirect, 'blackops-staging.herokuapp.com' => 'staging.ebwiki.org'
 end

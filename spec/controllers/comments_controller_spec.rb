@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
-
   # describe "GET #index" do
   #   it "returns http success" do
   #     get :index
@@ -15,9 +16,9 @@ RSpec.describe CommentsController, type: :controller do
   #     expect(response).to have_http_status(:success)
   #   end
   # end
-  describe "Article comments" do
+  describe 'Article comments' do
     let(:article) { FactoryGirl.create(:article) }
-    let(:comment) { article.comments.create(content: "a pithy comment") }
+    let(:comment) { article.comments.create(content: 'a pithy comment') }
     login_user
 
     subject { comment }
@@ -32,12 +33,12 @@ RSpec.describe CommentsController, type: :controller do
       comment_attr = attributes_for(:comment)
       article = Article.last || create(:article)
 
-      expect{
+      expect do
         post :create, comment: comment_attr, article_id: article.id
-      }.to change(Comment,:count).by(1)
+      end.to change(Comment, :count).by(1)
     end
 
-    it "deletes comments when associated Article object is destroyed" do
+    it 'deletes comments when associated Article object is destroyed' do
       article.save
       comment.save
       article.destroy

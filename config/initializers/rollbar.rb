@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rollbar/rails'
 require 'rollbar/logger'
 Rollbar.configure do |config|
@@ -9,17 +11,11 @@ Rollbar.configure do |config|
   config.environment = ENV['ROLLBAR_ENV']
 
   # Here we'll disable in 'test':
-  if Rails.env.test?
-    config.enabled = false
-  end
+  config.enabled = false if Rails.env.test?
 
-  config.exception_level_filters.merge!({
-    'ActionController::RoutingError' => 'ignore'
-  })
+  config.exception_level_filters['ActionController::RoutingError'] = 'ignore'
 
-  config.exception_level_filters.merge!({
-    'ActionController::RoutingError' => lambda { |error| 'ignore' }
-  })
+  config.exception_level_filters.merge!('ActionController::RoutingError' => ->(_error) { 'ignore' })
 
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`,
