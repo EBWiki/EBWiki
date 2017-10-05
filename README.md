@@ -17,8 +17,8 @@ After the Walter Scott video was released showing the vast discrepancy between t
 
 ### System Requirements
 
-* Ruby 2.0.0 or higher
-* Rails 4.2.7 or higher
+* Ruby 2.4.1 or higher
+* Rails 4.2.9 or higher
 * Elasticsearch for searching cases
 * Postgres 9.4 or higher
 * Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing )
