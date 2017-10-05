@@ -89,7 +89,7 @@ gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '3.5.6'
 gem 'momentjs-rails'
-gem 'rails_12factor', groups: %i[production staging]
+gem 'rails_12factor', groups: [:production, :staging]
 gem 'simple_form'
 
 # for aws cloud storage
@@ -102,7 +102,7 @@ gem 'carrierwave'
 gem 'carrierwave-imageoptimizer'
 
 # allow deflated assets with heroku
-gem 'heroku_rails_deflate', groups: %i[production staging]
+gem 'heroku_rails_deflate', groups: [:production, :staging]
 
 # CMS panel for admin
 gem 'rails_admin', '0.6.7'
