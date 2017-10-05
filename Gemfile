@@ -161,4 +161,4 @@ gem 'httparty'
 # for setting middleware redirects
 gem 'rack-host-redirect'
 
-gem 'rack-mini-profiler'
+gem 'rubocop', require: false
