@@ -32,11 +32,11 @@
         <%= submit_tag "Search", class: "btn btn-primary" %>
         </div>
       <% end %>
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right medium-hide">
         <li>
           <%= link_to "What next?", "https://www.surveymonkey.com/r/5RSWFNY", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "What's next for EBWiki?",:content => "Click here to help us decide on a few features we are thinking of adding to EBWiki!"} %>
         </li>
-        <li>
+        <li class='medium-hide'>
           <% if user_signed_in? %>
 	        <%= link_to "Add a New Case", new_article_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
 	      <% end %>
@@ -45,6 +45,12 @@
 			<% if user_signed_in? %>
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{@current_user.email}" %><span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
+          <li class='medium-show'>
+          <%= link_to "What next?", "https://www.surveymonkey.com/r/5RSWFNY", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "What's next for EBWiki?",:content => "Click here to help us decide on a few features we are thinking of adding to EBWiki!"} %>
+          </li>
+          <li class='medium-show'>
+          <%= link_to "Add a New Case", new_article_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
+          </li>
           <li> <%= link_to "View Profile", user_path(current_user) %></li><br>
           <li> <%= link_to "Edit Profile", edit_user_path(current_user) %></li><br>
           <li> <%= link_to "View Inbox", mailbox_inbox_path %></li><br>

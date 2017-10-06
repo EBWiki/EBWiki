@@ -125,3 +125,9 @@ ul {
 .select2-container--classic .select2-selection--single {
   filter: unset;
 }
+
+/* Condense title bar when logged in */
+@media (min-width: 1200px) {
+  .medium-hide { display: none; }
+  .medium-show { display: inline-block; }
+}
