@@ -127,7 +127,7 @@ ul {
 }
 
 /* Condense title bar when logged in */
-@media (min-width: 1200px) {
+@media screen and (max-width: 1199px) {
   .medium-hide { display: none; }
   .medium-show { display: inline-block; }
 }
