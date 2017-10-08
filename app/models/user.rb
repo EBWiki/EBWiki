@@ -32,4 +32,21 @@ class User < ActiveRecord::Base
     ]
   end
 
+  def mailchimp_status
+    if mailchimp_user.is_a?(Array)
+      nil
+    elsif mailchimp_user.is_a?(Hash)
+      mailchimp_user['status']
+    end
+  end
+
+  private
+
+  def mailchimp_user
+    gb = Gibbon::Request.new
+    gb.lists(ENV['MAILCHIMP_LIST_ID']).members(Digest::MDT.hexdigest(email.downcase.to_s)).retrieve)
+  rescue Gibbon::MailChimpError => e 
+    return nil, flash: { error: e.message }
+  end
+
 end
