@@ -186,3 +186,14 @@ if Ethnicity.count.zero?
     Ethnicity.create(title: ethnicity[0])
   end
 end
+
+if User.count == 0
+    puts "Creating Users..."
+
+    user_one = { name: "John Doe",
+                 email: "jdoe@example.com",
+                 password: "password",
+                 password_confirmation: "password"}
+                 
+    User.create(user_one)
+end

@@ -1,6 +1,6 @@
 <h1>Welcome <%= @user.name %>!</h1>
 <p>Thanks for joining the EBWiki project. Our number one goal is to help you to stay on top of any developments in these cases.
-  <% if @user.subscribed %>
+  <% if @user.subscribed? %>
     As a newsletter subscriber, you'll receive our general updates periodically.
     <% if @user.all_following.count <= 0 %>
       Likewise, it is very important that you click to follow specific cases and allow us to keep you up to date. The more people paying attention, the easier it will be effect change.</p>
