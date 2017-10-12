@@ -61,29 +61,6 @@
         </div>
       </div>
     </div>
-
-  </div>
-
-  <!-- Comments List-->
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="chart-wrapper">
-        <div class="chart-title background-orange">
-          Recent Comments
-        </div>
-        <ul class="scroller">
-          <% Comment.order(created_at: :desc).each do |comment| %>
-            <li>
-              <blockquote class="blockquote">
-                <p><%= link_to truncate(Article.find(comment.commentable_id).title, length: 30), article_path(Article.find(comment.commentable_id)) %></p>
-                <p><%= link_to truncate(comment.content, length: 100), article_path(Article.find(comment.commentable_id)) %></p>
-                <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
-              </blockquote>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
   </div>
 
   <div class="row">
@@ -147,7 +124,7 @@
     <div class="col-sm-4">
       <div class="chart-wrapper">
         <div class="chart-title background-gray">
-          Most Viewed Cases - Last 7 days
+          Most Viewed by New Visitors - Last 7 days <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Cases Viewed By New Visitors", :content => "This metric shows the number of new visitors landing on specific EBWiki cases."})%>
         </div>
         <div class="chart-stage">
          <table class='table leader-list'>
@@ -175,6 +152,29 @@
 
     </div>
   </div><!-- row   -->
+
+  <!-- Comments List-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="chart-wrapper">
+        <div class="chart-title background-orange">
+          Recent Comments
+        </div>
+        <ul class="scroller">
+          <% Comment.order(created_at: :desc).each do |comment| %>
+            <li>
+              <blockquote class="blockquote">
+                <p><%= link_to truncate(Article.find(comment.commentable_id).title, length: 30), article_path(Article.find(comment.commentable_id)) %> -- <%= comment.created_at.strftime("%B %d, %Y") %></p>
+                <p><%= link_to truncate(comment.content, length: 100), article_path(Article.find(comment.commentable_id)) %></p>
+                <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
+              </blockquote>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+
 
 <!--     <div class="row">
       <div class="col-sm-3">

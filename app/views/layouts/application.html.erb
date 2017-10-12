@@ -4,11 +4,12 @@
 		<!-- Sets default title & meta tags throughout the site. Can be overridden with
 		     meta tag values in individual templates. -->
 	  <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="iwi5tloB23ci2pitnPbdAtLzceG4NW8Gps7H1unD504" />
 	  <%= metamagic title: "EBWiki - Ending Violence Against People of Color", description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.",	keywords: %w("police killing abuse") %>
 	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag 'application',  'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag 'markerclusterer' %>
-    <%= javascript_include_tag "http://www.google.com/jsapi", "chartkick" %>
+    <%= javascript_include_tag "https://www.google.com/jsapi", "chartkick" %>
 	  <%= csrf_meta_tags %>
   	  <!--  google maps -->
   	  <script src="//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry" type="text/javascript"></script>
@@ -52,8 +53,6 @@
 				</div> -->
 			</div>
 		</div>
-		<div class="container fixed">
-			<%= render 'layouts/footer' %>
-		</div>
+		<%= render 'layouts/footer' %>
 	</body>
 </html>

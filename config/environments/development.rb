@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -39,16 +41,18 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  config.web_console.whitelisted_ips = '10.240.0.0/16'
+
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # config.action_mailer.smtp_settings = {
-  #   :address        => 'smtp.sendgrid.net',
-  #   :port           => '587',
-  #   :authentication => :plain,
-  #   :user_name      => ENV['SENDGRID_USERNAME'],
-  #   :password       => ENV['SENDGRID_PASSWORD'],
-  #   :domain         => 'blackopswiki.herokuapp.com',
-  #   :enable_starttls_auto => true
+  #   address: 'smtp.sendgrid.net',
+  #   port: '587',
+  #   authentication: :plain,
+  #   user_name: ENV['SENDGRID_USERNAME'],
+  #   password: ENV['SENDGRID_PASSWORD'],
+  #   domain: 'ebwiki.herokuapp.com',
+  #   enable_starttls_auto: true
   # }
 
   # Bullet configuration

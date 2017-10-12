@@ -1,24 +1,21 @@
-class UserNotifier < ApplicationMailer
-  default :from => 'EndBiasWiki@gmail.com'
+# frozen_string_literal: true
 
-  # send a signup email to the user, pass in the user object that   contains the user's email address
-  def send_update_email(user,article)
-    @user = user
-    @article = article # controller getting fat with instance variables
-	  mail( :to => user.email, :subject => 'A new post has been added to EBWiki' )
-  end
+class UserNotifier < ApplicationMailer
+  default from: 'EndBiasWiki@gmail.com'
 
   def send_followers_email(users, article)
     @article = article
-  	users.each do|user|
-    mail( :to => user.email, :subject => "The #{@article.title} case has been updated on EBWiki." )
+    users.each do |user|
+      Rails.logger.info("UserNotifier#send_followers_email: Sending notification to #{user.email} about case #{article.title}")
+      mail(to: user.email, subject: "The #{@article.title} case has been updated on EBWiki.")
     end
   end
 
-  def notify_of_removal(users, article)
+  def send_deletion_email(users, article)
     @article = article
     users.each do|user|
-    mail( :to => user.email, :subject => 'The @article.title case has been removed from EBWiki' )
+      Rails.logger.info("UserNotifier#send_deletion_email: Sending notification to #{user.email} about case #{article.title}")
+      mail( :to => user.email, :subject => 'The @article.title case has been removed from EBWiki' )
     end
   end
 

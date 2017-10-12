@@ -1,15 +1,21 @@
+# frozen_string_literal: true
+
 require 'rollbar/rails'
+require 'rollbar/logger'
 Rollbar.configure do |config|
   # Without configuration, Rollbar is enabled in all environments.
   # To disable in specific environments, set config.enabled=false.
-  
+
   config.access_token = 'd7e6d22c94dd4726a9444913d77a485b'
 
+  config.environment = ENV['ROLLBAR_ENV']
+
   # Here we'll disable in 'test':
-  if Rails.env.test?
-    config.enabled = false
-  end
-  
+  config.enabled = false if Rails.env.test?
+
+  config.exception_level_filters['ActionController::RoutingError'] = 'ignore'
+
+  config.exception_level_filters.merge!('ActionController::RoutingError' => ->(_error) { 'ignore' })
 
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`,
@@ -21,7 +27,7 @@ Rollbar.configure do |config|
 
   # If you want to attach custom data to all exception and message reports,
   # provide a lambda like the following. It should return a hash.
-  # config.custom_data_method = lambda { {:some_key => "some_value" } }
+  # config.custom_data_method = lambda { {some_key: "some_value" } }
 
   # Add exception class names to the exception_level_filters hash to
   # change the level that exception is reported at. Note that if an exception

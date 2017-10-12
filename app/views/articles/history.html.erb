@@ -3,10 +3,14 @@
   <h4>Any time any information about a case is updated, a new version is created. This page tracks the changes made to the case over time including summaries to explain those changes where possible. As of now, the changes to the following attributes are tracked: address fields, content sections for overview, community_action and litigation as well as the article's title, date, photo and video links. <br><br>Properties not currently being tracked in versions include changes to Subjects, Comments and Links. In the future we will capture those changes as well. In the meantime, editors should note that changes to these associations will not create a new version of the case.</h4>
 
   <ul>
-    <% @versions.each do |version| %>
+    <% @versions.each_with_index do |version, i| %>
       <li>
         <b>Date:</b> <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
-        <b>Edited by:</b>
+        <% if i == @versions.size - 1 %>
+          <b>Added by:</b>
+        <% else %>
+          <b>Edited by:</b>
+        <% end %>
           <% if version.whodunnit && version.whodunnit != 'Guest' %>
             <% user = User.find_by_id(version.whodunnit) %>
             <% if user %>

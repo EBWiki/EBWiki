@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -43,7 +45,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = false
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
@@ -59,12 +61,12 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = 'd2pqbhqdp2wy5y.cloudfront.net'
+  config.action_controller.asset_host = 'https://d2pqbhqdp2wy5y.cloudfront.net'
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: 'blackops-staging.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: 'ebwiki-staging.herokuapp.com' }
 
   config.action_mailer.delivery_method = :test
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
@@ -85,4 +87,6 @@ Rails.application.configure do
   Bullet.alert = true
   Bullet.rails_logger = true
   Bullet.console = true
+
+  config.middleware.use Rack::HostRedirect, 'ebwiki-staging.herokuapp.com' => 'staging.ebwiki.org'
 end

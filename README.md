@@ -6,6 +6,8 @@ This is the codebase behind [EBWiki.org](http://ebwiki.org), a site dedicated to
 
 ## Example
 
+* Current Site: [Production](http://ebwiki.org)
+* Staging Site: (requires developer access)
 
 ## Motivation
 
@@ -13,11 +15,32 @@ After the Walter Scott video was released showing the vast discrepancy between t
 
 ## Installation
 
-TODO: Provide greater detail on installing EBWiki from scratch
+### System Requirements
+
+* Ruby 2.4.1 or higher
+* Rails 4.2.9 or higher
+* Elasticsearch for searching cases
+* Postgres 9.4 or higher
+* Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing )
+* Sendgrid (for outbound email)
+* SSL using [Let's Encrypt](letsencrypt.org) and [Substrakt](https://github.com/substrakt/letsencrypt-heroku) at [End Bias Certificate Manager](https://endbias-certificate-manager.herokuapp.com/)
 
 ## Testing
 
-We use [RSpec](https://relishapp.com/rspec) to test the business logic. In addition, we use [Travis](https://travis-ci.org/BOWiki/BOW/) as a Continuous Integration (CI) Server and [Code Climate](https://codeclimate.com/github/BOWiki/BOW) to monitor the quality of the code.
+We use [RSpec](https://relishapp.com/rspec) to test the business logic.
+In addition, we use [Travis](https://travis-ci.org/BOWiki/BOW/) as a Continuous
+Integration (CI) Server and
+[Code Climate](https://codeclimate.com/github/BOWiki/BOW) to monitor code quality.
+We also use [bullet](https://github.com/flyerhzm/bullet) to detect an N+1 query
+and raise an exception and fail the build, whether local or in CI.
+
+## Services
+
+EBWiki uses the following 3rd party services:
+* Trello for business project management
+* Monitis for system monitoring
+* Heroku for hosting
+* AWS S3 for file uploads
 
 ## Contributors
 
@@ -25,8 +48,8 @@ Contributors to this project can be found [here](https://github.com/BOWiki/BOW/g
 
 ## License
 
-TODO: Confirm license and link to it here.
+EBWiki is using the [Apache 2.0 License](LICENSE.txt).
 
 ## Code of Conduct
 
-Link to Code to [Code Of Conduct](docs/CODE_OF_CONDUCT.md) document.
+Link to [Code Of Conduct](docs/CODE_OF_CONDUCT.md) document.

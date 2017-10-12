@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Users::RegistrationsController < Devise::RegistrationsController
-# before_filter :configure_sign_up_params, only: [:create]
-# before_filter :configure_account_update_params, only: [:update]
+  # before_filter :configure_sign_up_params, only: [:create]
+  # before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -18,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         @minimum_password_length = resource_class.password_length.min
       end
       flash[:notice] = 'Invalid Captcha'
-      redirect_to "/users/sign_up"
+      redirect_to '/users/sign_up'
     end
   end
 

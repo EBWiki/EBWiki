@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # FriendlyId Global Configuration
 #
 # Use this to set up shared configuration options for your entire application.
@@ -16,8 +18,8 @@ FriendlyId.defaults do |config|
   # undesirable to allow as slugs. Edit this list as needed for your app.
   config.use :reserved
 
-  config.reserved_words = %w(new edit index session login logout users admin
-    stylesheets assets javascripts images)
+  config.reserved_words = %w[new edit index session login logout users admin
+                             stylesheets assets javascripts images]
 
   #  ## Friendly Finders
   #
@@ -82,7 +84,7 @@ FriendlyId.defaults do |config|
   #
   # config.use Module.new {
   #   def normalize_friendly_id(text)
-  #     text.to_slug.normalize! :transliterations => [:russian, :latin]
+  #     text.to_slug.normalize! transliterations: [:russian, :latin]
   #   end
   # }
 end

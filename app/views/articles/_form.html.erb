@@ -3,8 +3,8 @@
     <div id="error_explanation">
       <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
       <ul>
-      <% @article.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+      <% @article.errors.each do |field,msg| %>
+        <li style='list-style:none;'><%= raw("<strong>#{field.capitalize}:</strong> #{msg}") %></li>
       <% end %>
       </ul>
     </div>
@@ -36,7 +36,7 @@
 			  </div>
 				<h4>Add a YouTube or Vimeo video url relating to the case:</h4>
 				<%= f.input :video_url %>
-				<h4>Enter a category of abuse:</h4>
+				<h4>Cause of death:</h4>
 				<%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Choose a Category"} %>
 	    </div>
 		</fieldset>
@@ -81,7 +81,10 @@
   <fieldset class="fsStyle">
     <legend class="legendStyle">Enforcement Agencies Involved <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Agencies", :content => "Add law enforcement agencies involved here so we can grade their performance."})%></legend>
     <div id="links">
-      <%= f.association :agencies, collection: Agency.all, input_html: { multiple: true, class: 'select2'}%>
+      <%= f.association :agencies, 
+      		collection: Agency.all.sort_by{ |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }, 
+      		input_html: { multiple: true, class: 'select2'}
+      %>
     </div>
 
     <% if params[:action] == "edit" %>

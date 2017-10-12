@@ -1,11 +1,12 @@
-RailsAdmin.config do |config|  
+# frozen_string_literal: true
 
+RailsAdmin.config do |config|
   ### Popular gems integration
 
   ## == Devise == |config|
-  config.authorize_with do |controller|
+  config.authorize_with do |_controller|
     unless current_user.try(:admin?)
-      flash[:error] = "You are not an admin"
+      flash[:error] = 'You are not an admin'
       redirect_to main_app.root_path
     end
   end
@@ -36,6 +37,6 @@ RailsAdmin.config do |config|
   end
 
   class RailsAdmin::Config::Fields::Types::Uuid < RailsAdmin::Config::Fields::Base
-    RailsAdmin::Config::Fields::Types::register(self)
+    RailsAdmin::Config::Fields::Types.register(self)
   end
 end

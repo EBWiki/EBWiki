@@ -1,12 +1,16 @@
+# frozen_string_literal: true
+
 # Use this file to easily define all of your cron jobs.
 
 # refresh sitemap
-every 1.day, :at => '5:00 am' do
-	if Rails.env.production?
-	  rake "-s sitemap:refresh"
-	end
+every 1.day, at: '5:00 am' do
+  rake '-s sitemap:refresh' if Rails.env.production?
 end
 
+# preserve storage capacity by deleting oldest snapshot
+every 1.day, at: '5:15 am' do
+  rake 'autobus_cleanup' if Rails.env.production?
+end
 #
 # It's helpful, but not entirely necessary to understand cron before proceeding.
 # http://en.wikipedia.org/wiki/Cron
@@ -26,4 +30,3 @@ end
 # end
 
 # Learn more: http://github.com/javan/whenever
-
