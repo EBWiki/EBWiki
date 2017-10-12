@@ -87,9 +87,9 @@ Rails.application.configure do
     authentication: :plain,
     user_name: ENV['SENDGRID_USERNAME'],
     password: ENV['SENDGRID_PASSWORD'],
-    domain: 'blackopswiki.herokuapp.com',
+    domain: 'ebwiki.herokuapp.com',
     enable_starttls_auto: true
   }
 
-  config.middleware.use Rack::HostRedirect, 'blackopswiki.herokuapp.com' => 'ebwiki.org'
+  config.middleware.use Rack::HostRedirect, 'ebwiki.herokuapp.com' => 'ebwiki.org'
 end
