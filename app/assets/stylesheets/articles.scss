@@ -44,12 +44,13 @@
 }
 
 .articleImage {
-  margin-bottom: 10px;
-  margin-top: 50px;
+  margin: 40px 0 15px 0;
+  border-radius: 6px;
 }
 
 .articleTitle {
   text-align: left;
+  padding-bottom: 30px;
 }
 
 .timeAgo {
@@ -59,6 +60,23 @@
 .articleMap {
   width: 100%;
   padding-bottom: 10px;
+}
+
+.social-share-button {
+  display: flex;
+  height: 32px;
+  justify-content: space-between;
+}
+
+.ssb-icon {
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+}
+
+.btn-group-justified {
+    width: calc(100% - 30px);
+    margin: 15px 0 15px 15px;
 }
 
 // modifying gallery inmages for hover effects
