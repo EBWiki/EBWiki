@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 feature 'User follows an article from show' do
-  let(:article) { FactoryGirl.create(:article) }
+  let(:article) { FactoryBot.create(:article) }
   scenario 'User arrives at the article show page and clicks to follow' do
-    user = FactoryGirl.create(:user)
+    user = FactoryBot.create(:user)
     login_as(user, scope: :user)
     visit article_path(article)
     click_link 'Follow'
@@ -13,7 +13,7 @@ feature 'User follows an article from show' do
   end
 
   scenario 'User arrives at the article show page and clicks to unfollow' do
-    user = FactoryGirl.create(:user)
+    user = FactoryBot.create(:user)
     login_as(user, scope: :user)
     visit article_path(article)
     click_link 'Follow'
@@ -23,7 +23,7 @@ feature 'User follows an article from show' do
 end
 
 feature 'Non-logged in user attempts to follow an article from show' do
-  let(:article) { FactoryGirl.create(:article) }
+  let(:article) { FactoryBot.create(:article) }
   scenario 'User arrives at the article show page and clicks to follow' do
     visit article_path(article)
     click_link 'Follow'
@@ -32,10 +32,10 @@ feature 'Non-logged in user attempts to follow an article from show' do
 end
 
 # feature "User follows an article from followers page" do
-# 	let(:article) { FactoryGirl.create(:article) }
+# 	let(:article) { FactoryBot.create(:article) }
 # 	scenario "User arrives at the article show page and clicks to follow" do
 #
-# 		user = FactoryGirl.create(:user)
+# 		user = FactoryBot.create(:user)
 # 		login_as(user, scope: :user)
 # 		visit articles_followers_path(article)
 # 		click_link 'Track this case'

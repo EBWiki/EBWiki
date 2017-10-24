@@ -8,7 +8,7 @@ RSpec.describe ArticlesController, type: :controller do
     allow_any_instance_of(ArticlesController).to receive(:make_undo_link).and_return('/articles/1')
   end
 
-  let(:articles) { FactoryGirl.create_list(:article, 20) }
+  let(:articles) { FactoryBot.create_list(:article, 20) }
   describe '#index' do
     describe 'on success' do
       before(:each) { get :index }
@@ -65,8 +65,8 @@ RSpec.describe ArticlesController, type: :controller do
     login_user
 
     context 'when valid' do
-      let(:article_attrs) { FactoryGirl.attributes_for(:article, state_id: 33) }
-      let(:subject_attrs) { FactoryGirl.attributes_for(:subject) }
+      let(:article_attrs) { FactoryBot.attributes_for(:article, state_id: 33) }
+      let(:subject_attrs) { FactoryBot.attributes_for(:subject) }
 
       it 'success' do
         allow_any_instance_of(Article).to receive(:full_address).and_return('Albany NY')

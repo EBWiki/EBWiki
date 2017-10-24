@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 feature 'User checks mailbox' do
-  let!(:user) { FactoryGirl.create(:user) }
+  let!(:user) { FactoryBot.create(:user) }
   # This is a happy path feature spec; this covers the scenario
   # where a user logs onto the site and then accesses the mailbox URL
   scenario "Logged in user checks mailbox by accessing the 'mailbox' URL" do

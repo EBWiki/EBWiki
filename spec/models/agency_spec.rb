@@ -14,14 +14,14 @@ RSpec.describe Agency, type: :model do
   end
 
   it 'must have a unique name' do
-    agency = FactoryGirl.create(:agency, name: 'Dallas Police Department')
+    agency = FactoryBot.create(:agency, name: 'Dallas Police Department')
     agency2 = build(:agency, name: 'Dallas Police Department')
 
     expect(agency2).to be_invalid
   end
 
   it 'updates slug if agency title is updated' do
-    agency = FactoryGirl.create(:agency, name: 'The Title')
+    agency = FactoryBot.create(:agency, name: 'The Title')
     agency.slug = nil
     agency.name = 'Another Title'
     agency.save!
@@ -31,14 +31,14 @@ RSpec.describe Agency, type: :model do
 
   describe 'geocoded' do
     it 'generates longitude and latitude from city and state on save' do
-      agency = FactoryGirl.create(:agency)
+      agency = FactoryBot.create(:agency)
       expect(agency.latitude).to be_a(Float)
       expect(agency.longitude).to be_a(Float)
     end
 
     it 'updates geocoded coordinates when relevant fields are updated' do
-      agency = FactoryGirl.create(:agency)
-      ohio = FactoryGirl.create(:state_ohio)
+      agency = FactoryBot.create(:agency)
+      ohio = FactoryBot.create(:state_ohio)
 
       expect do
         agency.update_attributes(city: 'Worthington',

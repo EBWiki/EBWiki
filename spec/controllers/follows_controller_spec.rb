@@ -7,11 +7,11 @@ RSpec.describe FollowsController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       # before(:all) do
-      #   article = FactoryGirl.create(:article)
+      #   article = FactoryBot.create(:article)
       # end
       it 'creates the follow' do
-        @article = FactoryGirl.create(:article)
-        @follow = FactoryGirl.create(:follow, followable_id: @article.id)
+        @article = FactoryBot.create(:article)
+        @follow = FactoryBot.create(:follow, followable_id: @article.id)
         expect(assigns(:followers)).to eq(@article.reload.followers.first)
       end
     end
@@ -19,8 +19,8 @@ RSpec.describe FollowsController, type: :controller do
   describe '#DELETE destroy' do
     login_user
     it 'deletes a follow' do
-      article = FactoryGirl.create(:article)
-      follow = FactoryGirl.create(:follow, followable_id: article.id, follower_id: @user.id)
+      article = FactoryBot.create(:article)
+      follow = FactoryBot.create(:follow, followable_id: article.id, follower_id: @user.id)
       expect { delete :destroy, id: follow.id, article_id: article.id }
         .to change { article.followers.count }.by(-1)
     end

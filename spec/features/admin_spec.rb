@@ -21,7 +21,7 @@ describe User do
   end
 
   feature 'User signs in' do
-    let!(:user) { FactoryGirl.create(:user) }
+    let!(:user) { FactoryBot.create(:user) }
     # This is a happy path feature spec; this covers the scenario
     # where a user log into the site section, but
     # does not have the proper credentials access the admin section,
@@ -55,7 +55,7 @@ describe User do
   end
 
   feature 'Admin signs in' do
-    let!(:admin) { FactoryGirl.create(:admin) }
+    let!(:admin) { FactoryBot.create(:admin) }
 
     # This is a happy path feature spec; this covers the scenario
     # where an admin user logs into the site section and has

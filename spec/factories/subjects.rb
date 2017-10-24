@@ -2,7 +2,7 @@
 
 require 'faker'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :subject do
     name Faker::Name.name
     age 1
