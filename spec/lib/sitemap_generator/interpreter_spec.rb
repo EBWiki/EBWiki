@@ -8,7 +8,7 @@ describe SitemapGenerator::Interpreter do
       allow(SitemapGenerator::Sitemap).to receive(:ping_search_engines).and_return true
       allow(SitemapGenerator::Sitemap).to receive(:create).and_yield
 
-      # Create some test data here with FactoryGirl
+      # Create some test data here with FactoryBot
 
       expect { described_class.run }.not_to raise_error
     end

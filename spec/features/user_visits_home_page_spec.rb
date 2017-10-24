@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 feature 'User visits home page' do
-  let!(:state) { FactoryGirl.create(:state) }
-  let!(:articles) { FactoryGirl.create_list(:article, 20, state: state) }
+  let!(:state) { FactoryBot.create(:state) }
+  let!(:articles) { FactoryBot.create_list(:article, 20, state: state) }
   # TODO: Find a way to test the content of that selector
   scenario 'and sees the preview text on rollover' do
     visit(root_path)

@@ -27,7 +27,7 @@ RSpec.describe AgenciesController, type: :controller do
 
   describe 'GET #show' do
     context 'when requested agency exists' do
-      let(:agency) { FactoryGirl.create(:agency) }
+      let(:agency) { FactoryBot.create(:agency) }
       before(:each) { get :show, id: agency.id }
 
       it 'success' do
@@ -51,7 +51,7 @@ RSpec.describe AgenciesController, type: :controller do
   describe 'GET #edit' do
     login_user
     context 'when requested agency exists' do
-      let(:agency) { FactoryGirl.create(:agency) }
+      let(:agency) { FactoryBot.create(:agency) }
       before(:each) { get :edit, id: agency.id }
 
       it 'assigns the requested agency as @agency' do
@@ -64,14 +64,14 @@ RSpec.describe AgenciesController, type: :controller do
   describe 'DELETE #destroy' do
     login_user
     it 'destroys the requested agency' do
-      agency = FactoryGirl.create(:agency)
+      agency = FactoryBot.create(:agency)
       expect do
         delete :destroy, id: agency.to_param
       end.to change(Agency, :count).by(-1)
     end
 
     it 'redirects to the agencies list' do
-      agency = FactoryGirl.create(:agency)
+      agency = FactoryBot.create(:agency)
       delete :destroy, id: agency.to_param
       expect(response).to redirect_to(agencies_url)
     end

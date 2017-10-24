@@ -25,7 +25,7 @@ RSpec.describe ArticlesHelper, type: :helper do
 
   describe '#article_sanity_check' do
     it 'returns true if all the instance variables needed for the article are present' do
-      article = FactoryGirl.create(:article, community_action: 'community text')
+      article = FactoryBot.create(:article, community_action: 'community text')
 
       assign(:article, article)
       assign(:commentable, article)
@@ -35,7 +35,7 @@ RSpec.describe ArticlesHelper, type: :helper do
     end
 
     it 'returns false if any of the instance variables needed for the article are not present' do
-      article = FactoryGirl.create(:article, community_action: 'community text')
+      article = FactoryBot.create(:article, community_action: 'community text')
 
       assign(:article, article)
       assign(:commentable, article)

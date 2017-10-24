@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This will guess the Article class
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:id)
   factory :state do |f|
     f.id

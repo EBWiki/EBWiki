@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This will guess the User class
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     name 'johnny'
     sequence :email do |n|
@@ -20,7 +20,7 @@ FactoryGirl.define do
     password 'password'
     password_confirmation 'password'
     after :create do |_article|
-      user.articles << FactoryGirl.create(:article)
+      user.articles << FactoryBot.create(:article)
     end
   end
 end
