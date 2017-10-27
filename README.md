@@ -1,4 +1,4 @@
-<p><a href="https://travis-ci.org/BOWiki/BOW"><img src="https://travis-ci.org/BOWiki/BOW.svg?branch=master" alt="Build Status" style="max-width:100%;"></a>  <a href="https://codeclimate.com/github/BOWiki/BOW"><img src="https://codeclimate.com/github/BOWiki/BOW/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/BOWiki/BOW/coverage"><img src="https://codeclimate.com/github/BOWiki/BOW/badges/coverage.svg" /></a></p>
+<p><a href="https://travis-ci.org/EBWiki/EBWiki"><img src="https://travis-ci.org/EBWiki/EBWiki.svg?branch=master" alt="Build Status" style="max-width:100%;"></a>  <a href="https://codeclimate.com/github/EBWiki/EBWiki"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki/coverage"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/coverage.svg" /></a></p>
 
 ## Synopsis
 
