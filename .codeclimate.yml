@@ -44,4 +44,5 @@ exclude_paths:
 - db/schema.rb
 - spec/**/*.rb
 - "Gemfile.lock"
+- public/assets/*
 
