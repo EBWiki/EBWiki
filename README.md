@@ -44,7 +44,7 @@ EBWiki uses the following 3rd party services:
 
 ## Contributors
 
-Contributors to this project can be found [here](https://github.com/BOWiki/BOW/graphs/contributors)
+Contributors to this project can be found [here](https://github.com/BOWiki/BOW/graphs/contributors).
 
 ## License
 
