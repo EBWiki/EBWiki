@@ -13,6 +13,10 @@ This is the codebase behind [EBWiki.org](http://ebwiki.org), a site dedicated to
 
 After the Walter Scott video was released showing the vast discrepancy between the official report of the encounter and the video, a group of Black technologists had the idea of a site where information on each encounter could be stored and recorded. This would help show both the frequency with which this occurs as well as the way bias affects the proceedings.
 
+## Contributing
+
+All developers are welcome to contribute to the codebase.  We ask that, if possible, you address issues that are labelled `high priority` first, followed by those marked as `quick fix`.  All contributors are expected to adhere to our code of conduct, which can be found [here](docs/CODE_OF_CONDUCT.md).  Thank you for your contribution - details on our stack can be found below.
+
 ## Installation
 
 ### System Requirements
@@ -44,12 +48,8 @@ EBWiki uses the following 3rd party services:
 
 ## Contributors
 
-Contributors to this project can be found [here](https://github.com/BOWiki/BOW/graphs/contributors).
+Thank you to all of our contributors.  Contributors to the codebase can be found [here](https://github.com/BOWiki/BOW/graphs/contributors).
 
 ## License
 
 EBWiki is using the [Apache 2.0 License](LICENSE.txt).
-
-## Code of Conduct
-
-Our code of conduct can be found [here](docs/CODE_OF_CONDUCT.md).
