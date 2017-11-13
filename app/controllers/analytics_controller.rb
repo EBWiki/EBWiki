@@ -11,6 +11,7 @@ class AnalyticsController < ApplicationController
     @visits = Visit.where(started_at: @last_days.days.ago..Time.now)
     @users = User.where(created_at: @last_days.days.ago..Time.now)
     @views = Ahoy::Event.where(name: '$view')
+    @updates = PaperTrail::Version.where("created_at > ?", 30.days.ago)
   end
 
   private
