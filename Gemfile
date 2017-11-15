@@ -158,7 +158,4 @@ gem 'httparty'
 # for setting middleware redirects
 gem 'rack-host-redirect'
 
-# adding simple jquery news ticker -- integrates https://github.com/BenjaminRH/jquery-ticker
-gem 'ticker-rails'
-
 gem 'rubocop', require: false
