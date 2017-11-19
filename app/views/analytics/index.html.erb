@@ -168,7 +168,7 @@
             <th>Updates</th>
            </tr>
 
-           <% @updates.group(:whodunnit).order('count_id DESC').limit(10).count(:id).each_with_index do |who, i| %>
+           <% case_updaters_count(10).each_with_index do |who, i| %>
             <tr>
                 <% unless who[0].to_i == 0 %>
                   <td><%= i+1 %></td>
