@@ -26,7 +26,7 @@
           <div id=""><%= pie_chart @visits.where(started_at: 1.days.ago..Time.now).group(:browser).count %></div>
         </div>
         <div class="chart-notes">
-          Notes go down here
+          Visits according to browser
         </div>
       </div>
     </div>
@@ -86,7 +86,7 @@
          </table>
         </div>
         <div class="chart-notes">
-          These are the last ten updated articles
+          These are the 10 most recently updated articles
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@
          </table>
         </div>
         <div class="chart-notes">
-          These are the articles with the most followers
+          These are the 10 articles with the most followers
         </div>
       </div>
     </div>
@@ -154,14 +154,15 @@
         <div class="chart-title background-orange">
           Most Recent Editors - Last 30 days <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Active Editors", :content => "This metric shows the number of cases added or updated by editors in the past 30 days."})%>
         </div>
-        <div class="chart-stage">
-         <table class='table leader-list'>
-           <tr>
+      <div class="chart-stage">
+        <table class='table leader-list'>
+          <tr>
             <th>Editor</th>
             <th>Updates</th>
-           </tr>
+          </tr>
 
-           <% case_updaters_count(10).each do |who| %>
+          <% case_updaters_count(10).each do |who| %>
+          <!-- 'who' in this context refers to an array with 2 elements: user.id of the editor; and the total number of updates that editor is responsible for making -->
             <tr>
                 <% unless who[0].to_i == 0 %>
                   <td><%= @user = User.find(who[0].to_i).name %></td>
@@ -171,11 +172,11 @@
                   <td><%= who[1] %></td>
                 <% end %>
             </tr>
-           <% end %>
-         </table>
-        </div>
+          <% end %>
+        </table>
+      </div>
         <div class="chart-notes">
-          The ten most active editors over the last 30 days.
+          The 10 most active editors over the last 30 days.
         </div>
       </div>
     </div>
