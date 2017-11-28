@@ -73,14 +73,12 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Case</th>
             <th>Updated</th>
            </tr>
 
-           <% Article.order(updated_at: :desc).first(10).each_with_index do |article, i| %>
+           <% Article.order(updated_at: :desc).first(10).each do |article| %>
              <tr>
-               <td><%= i + 1 %></td>
                <td><%= link_to truncate(article.title, length: 14), article %></td>
                <td><small><%= article.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
              </tr>
@@ -102,14 +100,12 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Case</th>
             <th>Followers</th>
            </tr>
 
-           <% Article.order(follows_count: :desc).first(10).each_with_index do |article, i| %>
+           <% Article.order(follows_count: :desc).first(10).each do |article| %>
              <tr>
-               <td><%= i + 1 %></td>
                <td><%= link_to truncate(article.title, length: 25), article %></td>
                <td><%= link_to article.follows_count, articles_followers_path(article) %></td>
              </tr>
@@ -129,15 +125,13 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Page</th>
             <th>Views</th>
            </tr>
 
-           <% Visit.where(started_at: 7.days.ago..Time.now).group(:landing_page).order('count_id DESC').limit(13).count(:id).each_with_index do |visit, i| %>
+           <% Visit.where(started_at: 7.days.ago..Time.now).group(:landing_page).order('count_id DESC').limit(13).count(:id).each do |visit| %>
             <tr>
               <% if Article.find_by_slug(visit[0].split('/').last).present? %>
-                <td><%= i %></td>
                 <td><%= link_to truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), article_path(Article.find_by_slug(visit[0].split('/').last)) %></td>
                 <td><%= visit[1] %></td>
               <% end %>
@@ -163,19 +157,16 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Editor</th>
             <th>Updates</th>
            </tr>
 
-           <% case_updaters_count(10).each_with_index do |who, i| %>
+           <% case_updaters_count(10).each do |who| %>
             <tr>
                 <% unless who[0].to_i == 0 %>
-                  <td><%= i+1 %></td>
                   <td><%= @user = User.find(who[0].to_i).name %></td>
                   <td><%= link_to who[1], @user %></td>
                 <% else %>
-                  <td><%= i+1 %></td>
                   <td> Anonymous </td>
                   <td><%= who[1] %></td>
                 <% end %>
