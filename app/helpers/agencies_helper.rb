@@ -6,14 +6,14 @@ module AgenciesHelper
   end
 
   def link_to_name(agency)
-  	link_to(truncate(agency.name, length:50), agency)
+    link_to(truncate(agency.name, length: 50), agency)
   end
 
   def agency_updated_at(agency)
-  	agency.updated_at.strftime("%m.%e, %l:%M %p")
+    agency.updated_at.strftime('%m.%e, %l:%M %p')
   end
 
   def link_to_edit(agency)
-  	link_to('Edit', edit_agency_path(agency))
+    link_to('Edit', edit_agency_path(agency))
   end
 end
