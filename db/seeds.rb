@@ -333,3 +333,20 @@ if Article.count == 0
     Article.create(article)
   end
 end
+
+if Agency.count == 0
+  puts "Creating Agencies..."
+
+  agencies = [
+    { name: "City of Houston Police Department",
+      city: "Houston",
+      state_id: "44" },
+    { name: "City of Beaumont Police Department", 
+      city: "Beaumont",
+      state_id: "44" }
+  ]
+
+  agencies.each do |agency|
+    Agency.create(agency)
+  end
+end
