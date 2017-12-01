@@ -4,17 +4,16 @@
 
 <table class='table leader-list'>
   <tr>
-    <th></th>
     <th>Agency</th>
     <th>Updated</th>
+    <th></th>
   </tr>
 
-  <% Agency.all.order(:name).each_with_index do |agency, i| %>
+  <% @agencies.each do |agency| %>
     <tr>
-      <td><%= i + 1 %></td>
-      <td><%= link_to truncate(agency.name, length: 30), agency %></td>
-      <td><small><%= agency.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
-      <td><%= link_to 'Edit', edit_agency_path(agency) %></td>
+      <td><%= link_to_name(agency) %></td>
+      <td><small><%= agency_updated_at(agency) %></small></td>
+      <td><%= link_to_edit(agency) %></td>
     </tr>
   <% end %>
  </table>

@@ -105,7 +105,7 @@ if State.count.zero?
                 process_display = 0
                 '\\'
               end
-    print "\r\r Creating states #{percent}% #{display}"
+    print '\r\r Creating states #{percent}% #{display}'
   end
 end
 
@@ -186,27 +186,27 @@ if Ethnicity.count.zero?
   end
 end
 
-if User.count == 0
-    puts "Creating Users..."
+if User.count.zero?
+    puts 'Creating Users...'
 
     users = [
-      { name: "John Doe",
-        email: "jdoe@example.com",
-        password: "password",
-        password_confirmation: "password",
+      { name: 'John Doe',
+        email: 'jdoe@example.com',
+        password: 'password',
+        password_confirmation: 'password',
         admin: true },
-      { name: "Jane Smith",
-        email: "jsmith@example.com",
-        password: "password",
-        password_confirmation: "password" },
-      { name: "Jan Alleman",
-        email: "jalleman@example.com",
-        password: "password",
-        password_confirmation: "password" },
-      {name: "Zhang San",
-        email: "szhang@example.com",
-        password: "password",
-        password_confirmation: "password" }
+      { name: 'Jane Smith',
+        email: 'jsmith@example.com',
+        password: 'password',
+        password_confirmation: 'password' },
+      { name: 'Jan Alleman',
+        email: 'jalleman@example.com',
+        password: 'password',
+        password_confirmation: 'password' },
+      {name: 'Zhang San',
+        email: 'szhang@example.com',
+        password: 'password',
+        password_confirmation: 'password' }
     ]
     
     users.each do |user|            
@@ -214,122 +214,139 @@ if User.count == 0
     end
 end
 
-if Article.count == 0
-  puts "Creating Articles..."
+if Article.count.zero?
+  puts 'Creating Articles...'
 
   articles = [
-    { title: "Sven Svensson",
-      date: "01/10/2017",
-      subjects_attributes: { "0" => { name: "Sven Svensson",
-                                      age: "25"
+    { title: 'Sven Svensson',
+      date: '01/10/2017',
+      subjects_attributes: { '0' => { name: 'Sven Svensson',
+                                      age: '25'
                                     }
                            },
-      city: "Houston",
-      state_id: "44",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'Houston',
+      state_id: '44',
+      overview: 'a',
+      summary: 'Added a case' },
 
-    { title: "Janez Novak",
-      date: "02/10/2017",
-      subjects_attributes: { "0" => { name: "Janez Novak",
-                                      age: "26"
+    { title: 'Janez Novak',
+      date: '02/10/2017',
+      subjects_attributes: { '0' => { name: 'Janez Novak',
+                                      age: '26'
                                     }
                            },
-      city: "Little Rock",
-      state_id: "4",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'Little Rock',
+      state_id: '4',
+      overview: 'a',
+      summary: 'Added a case' },
       
-    { title: "Janina Kowalska",
-      date: "01/12/2011",
-      subjects_attributes: { "0" => { name: "Janina Kowalska",
-                                      age: "35"
+    { title: 'Janina Kowalska',
+      date: '01/12/2011',
+      subjects_attributes: { '0' => { name: 'Janina Kowalska',
+                                      age: '35'
                                     }
                            },
-      city: "Boulder",
-      state_id: "6",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'Boulder',
+      state_id: '6',
+      overview: 'a',
+      summary: 'Added a case' },
 
-    { title: "Kari Holm",
-      date: "11/05/2017",
-      subjects_attributes: { "0" => { name: "Kari Holm",
-                                      age: "20"
+    { title: 'Kari Holm',
+      date: '11/05/2017',
+      subjects_attributes: { '0' => { name: 'Kari Holm',
+                                      age: '20'
                                     }
                            },
-      city: "Jacksonville",
-      state_id: "10",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'Jacksonville',
+      state_id: '10',
+      overview: 'a',
+      summary: 'Added a case' },
 
-    { title: "Jonas Petraitis",
-      date: "31/10/2017",
-      subjects_attributes: { "0" => { name: "Jonas Petraitis",
-                                      age: "56"
+    { title: 'Jonas Petraitis',
+      date: '31/10/2017',
+      subjects_attributes: { '0' => { name: 'Jonas Petraitis',
+                                      age: '56'
                                     }
                            },
-      city: "Boise",
-      state_id: "13",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'Boise',
+      state_id: '13',
+      overview: 'a',
+      summary: 'Added a case' },
 
-    { title: "Manku Thimman",
-      date: "17/03/1997",
-      subjects_attributes: { "0" => { name: "Manku Thimma",
-                                      age: "33"
+    { title: 'Manku Thimman',
+      date: '17/03/1997',
+      subjects_attributes: { '0' => { name: 'Manku Thimma',
+                                      age: '33'
                                     }
                            },
-      city: "Gary",
-      state_id: "15",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'Gary',
+      state_id: '15',
+      overview: 'a',
+      summary: 'Added a case' },
 
-    { title: "Mario Rossi",
-      date: "21/11/2004",
-      subjects_attributes: { "0" => { name: "Mario Rossi",
-                                      age: "31"
+    { title: 'Mario Rossi',
+      date: '21/11/2004',
+      subjects_attributes: { '0' => { name: 'Mario Rossi',
+                                      age: '31'
                                     }
                            },
-      city: "Louisville",
-      state_id: "18",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'Louisville',
+      state_id: '18',
+      overview: 'a',
+      summary: 'Added a case' },
 
-    { title: "Max Mustermann",
-      date: "11/05/2014",
-      subjects_attributes: { "0" => { name: "Max Mustermann",
-                                      age: "25"
+    { title: 'Max Mustermann',
+      date: '11/05/2014',
+      subjects_attributes: { '0' => { name: 'Max Mustermann',
+                                      age: '25'
                                     }
                            },
-      city: "Amherst",
-      state_id: "22",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'Amherst',
+      state_id: '22',
+      overview: 'a',
+      summary: 'Added a case' },
 
-    { title: "Chichiko Bendeliani",
-      date: "09/07/2009",
-      subjects_attributes: { "0" => { name: "Chichiko Bendeliani",
-                                      age: "40"
+    { title: 'Chichiko Bendeliani',
+      date: '09/07/2009',
+      subjects_attributes: { '0' => { name: 'Chichiko Bendeliani',
+                                      age: '40'
                                     }
                            },
-      city: "St. Louis",
-      state_id: "26",
-      overview: "a",
-      summary: "Added a case" },
+      city: 'St. Louis',
+      state_id: '26',
+      overview: 'a',
+      summary: 'Added a case' },
 
-    { title: "Sally Housecoat",
-      date: "01/01/2001",
-      subjects_attributes: { "0" => { name: "Sally Housecoat",
-                                      age: "39"
+    { title: 'Sally Housecoat',
+      date: '01/01/2001',
+      subjects_attributes: { '0' => { name: 'Sally Housecoat',
+                                      age: '39'
                                     }
                            },
-      city: "Houston",
-      state_id: "44",
-      overview: "a",
-      summary: "Added a case" }
+      city: 'Houston',
+      state_id: '44',
+      overview: 'a',
+      summary: 'Added a case' }
   ]
   
   articles.each do |article|
     Article.create(article)
+  end
+end
+
+if Agency.count.zero?
+  puts 'Creating Agencies...'
+
+  agencies = [
+    { name: 'City of Houston Police Department',
+      city: 'Houston',
+      state_id: '44' },
+    { name: 'City of Beaumont Police Department', 
+      city: 'Beaumont',
+      state_id: '44' }
+  ]
+
+  agencies.each do |agency|
+    Agency.create(agency)
   end
 end
