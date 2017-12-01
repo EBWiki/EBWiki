@@ -19,7 +19,7 @@ class AnalyticsController < ApplicationController
   def check_for_admin_or_analyst
     authenticate_user!
 
-    return if current_user.admin? or current_user.analyst?
+    return if current_user.admin? || current_user.analyst?
     redirect_to root_url # or whatever
   end
 end
