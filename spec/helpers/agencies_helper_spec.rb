@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe AgenciesHelper, :type => :helper do
-  let(:agency) { FactoryGirl.create(:agency, name: 'Spec_Agency') }
+  let(:agency) { FactoryBot.create(:agency, name: 'Spec_Agency') }
 
   describe "#link_to_name" do
     it "displays formatted agency name" do
