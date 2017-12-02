@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe AgenciesHelper, :type => :helper do
   let(:agency) { FactoryGirl.create(:agency, name: 'Spec_Agency') }
