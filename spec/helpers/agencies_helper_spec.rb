@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-Rspec.describe AgenciesHelper, :type => :helper do
+RSpec.describe AgenciesHelper, :type => :helper do
   let(:agency) { FactoryGirl.create(:agency, name: 'Spec_Agency') }
 
   describe "#link_to_name" do
