@@ -8,9 +8,10 @@ class AnalyticsController < ApplicationController
   def index
     @last_days = 30
     @full_width_content = true
-    @visits = Visit.where(started_at: @last_days.days.ago..Time.now)
+    @visits = Visit.this_month
     @users = User.where(created_at: @last_days.days.ago..Time.now)
     @views = Ahoy::Event.where(name: '$view')
+    @articles = Article.this_month
   end
 
   private
@@ -18,12 +19,7 @@ class AnalyticsController < ApplicationController
   def check_for_admin_or_analyst
     authenticate_user!
 
-    if current_user.admin?
-      return
-    elsif current_user.analyst?
-      return
-    else
-      redirect_to root_url # or whatever
-    end
+    return if current_user.admin? || current_user.analyst?
+    redirect_to root_url # or whatever
   end
 end
