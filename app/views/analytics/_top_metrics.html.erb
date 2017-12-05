@@ -4,7 +4,7 @@
         Recent Visits <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Recent Visits", :content => "This metric shows the number of EBWiki visitors over the past 30 days."})%>
       </small>
       <div class="metric">
-        <%= Visit.where(started_at: 30.days.ago..Time.now).count %>
+        <%= @visits.count %>
       </div>
       <small>
         <%= Visit.first.mom_visits_growth %>% mom*
@@ -40,7 +40,7 @@
         New Cases <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "New Cases", :content => "This metric shows the number of cases in the EBWiki database dated within the past 30 days."})%>
       </small>
       <div class="metric">
-        <%= Article.where(date: 30.days.ago..Time.now).count %>
+        <%= @articles.count %>
       </div>
       <small>
         <%= Article.first.mom_new_cases_growth %>% mom*
