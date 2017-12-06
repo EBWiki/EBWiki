@@ -59,6 +59,9 @@ class Article < ActiveRecord::Base
   scope :by_state, ->(state_id) { where(state_id: state_id) }
   scope :this_month, -> { where(created_at: 30.days.ago..Date.today) }
   scope :property_count_over_time, ->(property, days) { where("#{property}": days.to_s.to_i.days.ago..Time.now).count }
+  scope :most_recent, -> (limit) { order("updated_at desc").limit(limit) }
+  scope :most_followers, -> (limit) { order(follows_count: :desc).limit(limit) }
+  scope :most_commented, -> (limit) { order(comments_count: :desc).limit(limit) }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
