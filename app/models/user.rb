@@ -16,6 +16,9 @@ class User < ActiveRecord::Base
   acts_as_messageable
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
+
+  #Scopes
+  scope :this_month, -> { where(created_at: 30.days.ago..Date.today) }
   
   def mailboxer_name
     name

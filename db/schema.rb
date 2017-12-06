@@ -54,6 +54,13 @@ ActiveRecord::Schema.define(version: 20170919051847) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "article_documents", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "document_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "article_officers", force: :cascade do |t|
     t.integer  "article_id"
     t.integer  "officer_id"
@@ -108,6 +115,13 @@ ActiveRecord::Schema.define(version: 20170919051847) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "title"
+    t.string   "attachment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -263,6 +277,7 @@ ActiveRecord::Schema.define(version: 20170919051847) do
     t.boolean  "admin",                  default: false
     t.float    "latitude"
     t.float    "longitude"
+    t.string   "storytime_name"
     t.string   "name"
     t.text     "description"
     t.integer  "state_id"
