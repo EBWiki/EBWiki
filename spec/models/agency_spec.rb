@@ -48,4 +48,67 @@ RSpec.describe Agency, type: :model do
       end.to change { agency.latitude }
     end
   end
+
+  describe 'scopes' do
+    it 'returns agencies by state' do
+      texas = FactoryBot.create(:state_texas)
+      new_york = FactoryBot.create(:state)
+
+      tx_agency_one = FactoryBot.create(:agency,
+                                        name: 'Houston Police Department',
+                                        street_address: nil,
+                                        city: 'Houston',
+                                        state_id: texas.id,
+                                        zipcode: nil)
+      tx_agency_two = FactoryBot.create(:agency,
+                                        name: 'Dallas Police Department',
+                                        street_address: nil,
+                                        city: 'Dallas',
+                                        state_id: texas.id,
+                                        zipcode: nil)
+      ny_agency = FactoryBot.create(:agency,
+                                    name: 'Buffalo Poice Department',
+                                    street_address: nil,
+                                    city: 'Buffalo',
+                                    state_id: new_york.id,
+                                    zipcode: nil)
+
+      texas_agencies = Agency.by_state(texas.id)
+      expect(texas_agencies.count).to be 2
+      expect(texas_agencies.to_a).not_to include(ny_agency)
+    end
+
+    it 'returns agencies by jurisdiction' do
+      dc = FactoryBot.create(:state_dc)
+      louisiana = FactoryBot.create(:state_louisiana)
+      texas = FactoryBot.create(:state_texas)
+
+      local_agency = FactoryBot.create(:agency,
+                                       name: 'Houston Police Department',
+                                       street_address: nil,
+                                       city: 'Houston',
+                                       state_id: texas.id,
+                                       zipcode: nil,
+                                       jurisdiction: :local),
+      state_agency = FactoryBot.create(:agency,
+                                       name: 'Louisiana State Police',
+                                       street_address: nil,
+                                       city: 'Baton Rouge',
+                                       state_id: louisiana.id,
+                                       zipcode: nil,
+                                       jurisdiction: :state),
+      national_agency = FactoryBot.create(:agency,
+                                          name: 'United States Departmen of Justice',
+                                          street_address: nil,
+                                          city: 'Washington',
+                                          state_id: dc.id,
+                                          zipcode: nil,
+                                          jurisdiction: :federal)
+
+      local_agencies = Agency.by_jurisdiction(:local)
+      expect(local_agencies.count).to be 1
+      expect(local_agencies.to_a).not_to include(state_agency)
+      expect(local_agencies.to_a).not_to include(national_agency)
+    end
+  end
 end

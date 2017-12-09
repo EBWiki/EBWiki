@@ -61,12 +61,53 @@ addresses = {
     'country_code' => 'US'
   },
   'Buffalo NY' => {
-    'latitude' => 42.6525793,
-    'longitude' => -73.7562317,
-    'address' => 'Albany, NY',
-    'city' => 'Albany',
+    'latitude' => 42.8962176,
+    'longitude' => -78.9344822,
+    'address' => 'Buffalo, NY',
+    'city' => 'Buffalo',
     'state' => 'New York',
     'state_code' => 'NY',
+    'country' => 'United States',
+    'country_code' => 'US'
+  },
+  'Houston TX' => {
+    'latitude' => 29.8159954,
+    'longitude' => -95.9617495,
+    'address' => 'Houston, TX',
+    'city' => 'Houston',
+    'state' => 'Texas',
+    'state_code' => 'TX',
+    'country' => 'United States',
+    'country_code' => 'US'
+  },
+  'Dallas TX' => {
+    'latitude' => 32.8203525,
+    'longitude' => -97.011731,
+    'address' => 'Dallas, TX',
+    'city' => 'Dallas',
+    'state' => 'Texas',
+    'state_code' => 'TX',
+    'country' => 'United States',
+    'country_code' => 'US'
+  },
+  'Baton Rouge LA' => {
+    'latitude' => 30.4416952,
+    'longitude' => -91.2515061,
+    'address' => 'Baton Rouge, LA',
+    'city' => 'Baton Rouge',
+    'state' => 'Louisiana',
+    'state_code' => 'LA',
+    'country' => 'United States',
+    'country_code' => 'US'
+  },
+
+  'Washington DC' => {
+    'latitude' => 38.89378,
+    'longitude' => -77.1546625,
+    'address' => 'Washington, DC',
+    'city' => 'Washington',
+    'state' => 'District of Columbia',
+    'state_code' => 'DC',
     'country' => 'United States',
     'country_code' => 'US'
   }
