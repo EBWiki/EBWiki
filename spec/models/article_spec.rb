@@ -221,4 +221,49 @@ RSpec.describe Article, type: :model, versioning: true do
       expect(article.default_avatar_url).to_not be_nil
     end
   end
+
+  describe 'scopes' do
+    it 'returns articles by state' do
+      new_york = FactoryBot.create(:state)
+      texas = FactoryBot.create(:state_texas)
+
+      tx_article_one = FactoryBot.create(:article,
+                                        city: 'Houston',
+                                        state_id: texas.id)
+      tx_article_two = FactoryBot.create(:article,
+                                        city: 'Dallas',
+                                        state_id: texas.id)
+      ny_article = FactoryBot.create(:article,
+                                    city: 'Buffalo',
+                                    state_id: new_york.id)
+
+      texas_articles = Article.by_state(texas.id)
+      expect(texas_articles.count).to eq 2
+      expect(texas_articles.to_a).not_to include(ny_article)
+    end
+
+    it 'returns articles created in the past month' do
+      dc = FactoryBot.create(:state_dc)
+      louisiana = FactoryBot.create(:state_louisiana)
+      texas = FactoryBot.create(:state_texas)
+
+      texas_article = FactoryBot.create(:article,
+                                       city: 'Houston',
+                                       state_id: texas.id,
+                                       created_at: Date.today)
+      louisiana_article = FactoryBot.create(:article,
+                                            city: 'Baton Rouge',
+                                            state_id: louisiana.id,
+                                            created_at: 5.weeks.ago)
+      dc_article = FactoryBot.create(:article,
+                                     city: 'Washington',
+                                     state_id: dc.id,
+                                     created_at: 1.year.ago)
+
+      recent_article = Article.this_month
+      expect(recent_article.count).to eq 1
+      expect(recent_article.to_a).not_to include(louisiana_article)
+      expect(recent_article.to_a).not_to include(dc_article)
+    end
+  end
 end
