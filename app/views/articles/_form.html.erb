@@ -1,7 +1,7 @@
 <%= simple_form_for @article do |f| %>
   <% if @article.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this case from being saved:</h2>
       <ul>
       <% @article.errors.each do |field,msg| %>
         <li style='list-style:none;'><%= raw("<strong>#{field.capitalize}:</strong> #{msg}") %></li>
@@ -109,7 +109,7 @@
 
 <div class="cold-md-12">
   <fieldset class="fsStyle">
-    <legend class="legendStyle">Summary of Changes to the Article <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Main Content Fields", :content => "Please summarize the edits you have made to this case.  These summaries populate the history tabs to make the history of the article more readable to users."})%></legend>
+    <legend class="legendStyle">Summary of Changes to the Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Main Content Fields", :content => "Please summarize the edits you have made to this case.  These summaries populate the history tabs to make the history of the case more readable to users."})%></legend>
     <%= f.input :summary %>
   </fieldset>
 </div>
