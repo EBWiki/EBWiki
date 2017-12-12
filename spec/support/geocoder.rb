@@ -90,6 +90,16 @@ addresses = {
     'country' => 'United States',
     'country_code' => 'US'
   },
+  'TX' => {
+    'latitude' => 29.787849,
+    'longitude' => -100.4530357,
+    'address' => 'Austin, TX',
+    'city' => 'Austin',
+    'state' => 'Texas',
+    'state_code' => 'TX',
+    'country' => 'United States',
+    'country_code' => 'US'
+  },
   'Baton Rouge LA' => {
     'latitude' => 30.4416952,
     'longitude' => -91.2515061,
