@@ -23,9 +23,6 @@ class Agency < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
-  scope :by_state, ->(state_id) { where(state_id: state_id) }
-  scope :by_jurisdiction, ->(jrdsn) { where(jurisdiction: jrdsn) }
-
   # Geocoding
   geocoded_by :full_address
   before_save :geocode, if: proc { |agcy|
