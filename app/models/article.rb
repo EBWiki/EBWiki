@@ -56,7 +56,6 @@ class Article < ActiveRecord::Base
     art.avatar.changed?
   end
   # Scopes
-  scope :by_state, ->(state_id) { where(state_id: state_id) }
   scope :this_month, -> { where(created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day) }
   scope :property_count_over_time, ->(property, days) { where("#{property}": days.to_s.to_i.days.ago..Time.now).count }
 

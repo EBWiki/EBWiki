@@ -223,24 +223,6 @@ RSpec.describe Article, type: :model, versioning: true do
   end
 
   describe 'scopes' do
-    it 'returns articles by state' do
-      new_york = FactoryBot.create(:state)
-      texas = FactoryBot.create(:state_texas)
-
-      tx_article_one = FactoryBot.create(:article,
-                                        city: 'Houston',
-                                        state_id: texas.id)
-      tx_article_two = FactoryBot.create(:article,
-                                        city: 'Dallas',
-                                        state_id: texas.id)
-      ny_article = FactoryBot.create(:article,
-                                    city: 'Buffalo',
-                                    state_id: new_york.id)
-
-      texas_articles = Article.by_state(texas.id)
-      expect(texas_articles.count).to eq 2
-      expect(texas_articles.to_a).not_to include(ny_article)
-    end
 
     it 'returns articles created in the past month' do
       dc = FactoryBot.create(:state_dc)
