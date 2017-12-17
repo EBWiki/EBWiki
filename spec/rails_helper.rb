@@ -9,6 +9,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'devise'
 require 'rspec/rails'
 require 'database_cleaner'
+require 'webmock/rspec'
 include Warden::Test::Helpers
 Warden.test_mode!
 # Requires supporting ruby files with custom matchers and macros, etc,
