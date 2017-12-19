@@ -12,12 +12,14 @@ describe User do
     # the user should not get a login error message, and  be able
     # to log into the admin section of the site.
     scenario 'with admin credentials' do
+      WebMock.allow_net_connect!
       visit new_user_session_path
       fill_in 'Email', with: admin.email
       fill_in 'Password', with: admin.password
       click_button 'Log in'
       visit analytics_index_path
       expect(page).to have_content 'Recent visits'
+      WebMock.disable_net_connect!
     end
 
     # This is a failure feature spec; this covers the scenario
