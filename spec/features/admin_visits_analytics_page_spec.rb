@@ -5,6 +5,7 @@ require 'rails_helper'
 describe User do
   feature 'Admin signs into analytics page' do
     let!(:admin) { FactoryBot.create(:admin) }
+    let!(:visit) { FactoryBot.create(:visit) }
     # This is a happy path feature spec; this covers the scenario
     # where an admin user logs into the site section and has
     # the proper credentials access the admin section,
