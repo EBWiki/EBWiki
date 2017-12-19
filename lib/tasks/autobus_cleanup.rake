@@ -9,10 +9,7 @@ task autobus_cleanup: :environment do
   p "Retrieved #{backups.size} backups!"
 
   # count total memory used by existing snapshots
-  total_storage = 0
-  backups.each do |snap|
-    total_storage += snap['size']
-  end
+  total_storage = Autobus.new.total_backup_size
 
   # if total memory used is over 99% of capacity, delete the last snapshot
   max_storage = 10_000_000_000 # 10gb limit on current plan

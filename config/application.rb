@@ -31,6 +31,8 @@ module EBWiki
 
     config.active_record.observers = :user_observer
 
+    config.autoload_paths << Rails.root.join('lib')
+
     # Do not swallow errors in after_commit/after_rollback callbacks.
 
     config.active_record.raise_in_transactional_callbacks = true
@@ -43,7 +45,7 @@ module EBWiki
                        routing_specs: false,
                        controller_specs: true,
                        request_specs: true
-      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+      g.fixture_replacement :factory_bot, dir: 'spec/factories'
     end
   end
 end
