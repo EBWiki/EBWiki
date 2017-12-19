@@ -5,7 +5,9 @@ require 'rails_helper'
 describe User do
   feature 'Admin signs into analytics page' do
     let!(:admin) { FactoryBot.create(:admin) }
-    let!(:visit) { FactoryBot.create(:visit) }
+    let!(:this_visit) { FactoryBot.create(:visit) }
+    let!(:follow) { FactoryBot.create(:follow) }
+    let!(:article) { FactoryBot.create(:article) }
     # This is a happy path feature spec; this covers the scenario
     # where an admin user logs into the site section and has
     # the proper credentials access the admin section,
@@ -19,7 +21,7 @@ describe User do
       fill_in 'Password', with: admin.password
       click_button 'Log in'
       visit analytics_index_path
-      expect(page).to have_content 'Recent visits'
+      expect(page).to have_content 'Recent Visits'
       WebMock.disable_net_connect!
     end
 
