@@ -57,8 +57,8 @@ class Article < ActiveRecord::Base
   end
   # Scopes
   scope :created_this_month, -> { where(created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day) }
-  scope :most_recent, -> (duration) { where(date: duration.beginning_of_day..Date.today.end_of_day) }
-  scope :recently_updated, -> (duration) { where(updated_at: duration.beginning_of_day..Date.today.end_of_day) }
+  scope :most_recent, ->(duration) { where(date: duration.beginning_of_day..Date.today.end_of_day) }
+  scope :recently_updated, ->(duration) { where(updated_at: duration.beginning_of_day..Date.today.end_of_day) }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
