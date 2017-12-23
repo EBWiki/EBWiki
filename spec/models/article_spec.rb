@@ -242,10 +242,56 @@ RSpec.describe Article, type: :model, versioning: true do
                                      state_id: dc.id,
                                      created_at: 1.year.ago)
 
-      recent_article = Article.this_month
+      recent_article = Article.created_this_month
       expect(recent_article.count).to eq 1
       expect(recent_article.to_a).not_to include(louisiana_article)
       expect(recent_article.to_a).not_to include(dc_article)
+    end
+
+    it 'returns the most recently occurring cases' do
+      dc = FactoryBot.create(:state_dc)
+      louisiana = FactoryBot.create(:state_louisiana)
+      texas = FactoryBot.create(:state_texas)
+
+      texas_article = FactoryBot.create(:article,
+                                        city: 'Houston',
+                                        state_id: texas.id,
+                                        date: Date.today)
+      louisiana_article = FactoryBot.create(:article,
+                                            city: 'Baton Rouge',
+                                            state_id: louisiana.id,
+                                            date: 2.weeks.ago)
+      dc_article = FactoryBot.create(:article,
+                                     city: 'Washington',
+                                     state_id: dc.id,
+                                     date: 1.year.ago)
+
+      recent_articles = Article.most_recent 1.month.ago
+      expect(recent_articles.count).to eq 2
+      expect(recent_articles.to_a).not_to include(dc_article)
+    end
+
+    it 'returns the most recently updated cases' do
+      dc = FactoryBot.create(:state_dc)
+      louisiana = FactoryBot.create(:state_louisiana)
+      texas = FactoryBot.create(:state_texas)
+
+      texas_article = FactoryBot.create(:article,
+                                        city: 'Houston',
+                                        state_id: texas.id,
+                                        updated_at: Date.today)
+      louisiana_article = FactoryBot.create(:article,
+                                            city: 'Baton Rouge',
+                                            state_id: louisiana.id,
+                                            updated_at: 2.weeks.ago)
+      dc_article = FactoryBot.create(:article,
+                                     city: 'Washington',
+                                     state_id: dc.id,
+                                     updated_at: 1.year.ago)
+
+      recent_articles = Article.recently_updated 1.month.ago
+      expect(recent_articles.count).to eq 2
+      expect(recent_articles.to_a).not_to include(dc_article)
     end
   end
 end
