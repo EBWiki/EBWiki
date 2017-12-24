@@ -6,7 +6,7 @@
 <span  class="page-header articleTitle">
   <h1 class="page-header articleTitle"><%= @agency.name %></h1>
   <h4><%= @agency.street_address %></h4>
-  <h4><%= @agency.city %>, <%= State.from_agency(@agency).first.name %> <%= @agency.zipcode %></h4>
+  <h4><%= @agency.city %>, <%= @agency_state %> <%= @agency.zipcode %></h4>
 </span>
 
 <% if @agency.jurisdiction.present? %>
