@@ -56,8 +56,9 @@ class Article < ActiveRecord::Base
     art.avatar.changed?
   end
   # Scopes
-  scope :this_month, -> { where(created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day) }
-  scope :property_count_over_time, ->(property, days) { where("#{property}": days.to_s.to_i.days.ago..Time.now).count }
+  scope :created_this_month, -> { where(created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day) }
+  scope :most_recent, ->(duration) { where(date: duration.beginning_of_day..Date.today.end_of_day) }
+  scope :recently_updated, ->(duration) { where(updated_at: duration.beginning_of_day..Date.today.end_of_day) }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
@@ -96,26 +97,26 @@ class Article < ActiveRecord::Base
   end
 
   def mom_new_cases_growth
-    last_month_cases = Article.property_count_over_time('date', 30)
-    last_60_days_cases = Article.property_count_over_time('date', 60)
+    last_month_cases = Article.most_recent(30.days.ago).count
+    last_60_days_cases = Article.most_recent(60.days.ago).count
     prior_30_days_cases = last_60_days_cases - last_month_cases
 
     (((last_month_cases.to_f / prior_30_days_cases) - 1) * 100).round(2)
   end
 
   def mom_cases_growth
-    last_month_cases = Article.property_count_over_time('created_at', 30)
+    last_month_cases = Article.created_this_month.count
 
     (last_month_cases.to_f / (Article.count - last_month_cases) * 100).round(2)
   end
 
   def cases_updated_last_30_days
-    Article.property_count_over_time('updated_at', 30)
+    Article.recently_updated(30.days.ago).count
   end
 
   def mom_growth_in_case_updates
-    last_month_case_updates = Article.property_count_over_time('updated_at', 30)
-    last_60_days_case_updates = Article.property_count_over_time('updated_at', 60)
+    last_month_case_updates = Article.recently_updated(30.days.ago).count
+    last_60_days_case_updates = Article.recently_updated(60.days.ago).count
     prior_30_days_case_updates = last_60_days_case_updates - last_month_case_updates
 
     (((last_month_case_updates.to_f / prior_30_days_case_updates) - 1) * 100).round(2)
