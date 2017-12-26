@@ -60,4 +60,10 @@ RSpec.describe Agency, type: :model do
     end
   end
 
+  it 'retrieves the state of the agency' do
+    agency = FactoryBot.create(:agency, state_id: @texas.id)
+    agency_state = agency.retrieve_state
+    expect(agency_state).to eq @texas.name
+  end
+
 end

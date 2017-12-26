@@ -46,4 +46,8 @@ class Agency < ActiveRecord::Base
       %i[name street_address city]
     ]
   end
+
+  def retrieve_state
+    State.where(id: state_id).pluck(:name).join
+  end
 end

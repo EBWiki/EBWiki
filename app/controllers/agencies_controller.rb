@@ -14,6 +14,7 @@ class AgenciesController < ApplicationController
   def show
     @back_url = session[:previous_url]
     @articles = @agency.articles
+    @agency_state = @agency.retrieve_state
   end
 
   # GET /agencies/new
