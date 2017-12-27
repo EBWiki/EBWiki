@@ -162,15 +162,17 @@
            </tr>
 
            <% case_updaters_count(10).each do |who| %>
-            <tr>
-                <% unless who[0].to_i == 0 %>
-                  <td><%= @user = User.find(who[0].to_i).name %></td>
-                  <td><%= link_to who[1], @user %></td>
+             <% user_id = who[0] %>
+             <% user_edits_count = who[1] %>
+             <tr>
+                <% unless user_id.to_i == 0 %>
+                  <td><%= @user = User.find(user_id.to_i).name %></td>
+                  <td><%= link_to user_edits_count, @user %></td>
                 <% else %>
                   <td> Anonymous </td>
-                  <td><%= who[1] %></td>
+                  <td><%= user_edits_count %></td>
                 <% end %>
-            </tr>
+             </tr>
            <% end %>
          </table>
         </div>
