@@ -23,6 +23,10 @@ module AnalyticsHelper
   	Article.first.cases_updated_last_30_days
   end
 
+  def mom_growth_in_case_updates
+  	Article.first.mom_growth_in_case_updates
+  end
+
   def total_number_of_cases
   	Article.count
   end

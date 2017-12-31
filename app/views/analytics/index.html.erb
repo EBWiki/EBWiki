@@ -188,12 +188,12 @@
           Recent Comments
         </div>
         <ul class="scroller">
-          <% Comment.order(created_at: :desc).each do |comment| %>
+          <% @comments.each do |comment| %>
             <li>
               <blockquote class="blockquote">
                 <p><%= link_to truncate(comment.commentable.title, length: 30), article_path(comment.commentable) %> -- <%= comment.created_at.strftime("%B %d, %Y") %></p>
                 <p><%= link_to truncate(comment.content, length: 100), article_path(comment.commentable) %></p>
-                <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
+                <small><%= link_to comment.user.name, user_path(comment.user) %></small>
               </blockquote>
             </li>
           <% end %>
