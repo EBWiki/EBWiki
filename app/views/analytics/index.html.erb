@@ -131,8 +131,8 @@
 
            <% visits_over_the_past_7_days_by_landing_page.each do |visit| %>
             <tr>
-              <% if landing_page_was_a_case? %>
-                <td><%= link_to truncate(landing_page_from_visit.title, length: 25), article_path(landing_page_from_visit) %></td>
+              <% if landing_page_was_a_case?(visit) %>
+                <td><%= link_to truncate(landing_page_from_visit(visit).title, length: 25), article_path(landing_page_from_visit(visit)) %></td>
                 <td><%= visit[1] %></td>
               <% end %>
             </tr>

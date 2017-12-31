@@ -63,11 +63,11 @@ module AnalyticsHelper
   	Visit.where(started_at: 7.days.ago..Time.now).group(:landing_page).order('count_id DESC').limit(13).count(:id)
   end
 
-  def landing_page_was_a_case?
+  def landing_page_was_a_case?(visit)
   	Article.find_by_slug(visit[0].split('/').last).present?
   end
 
-  def landing_page_from_visit
+  def landing_page_from_visit(visit)
   	Article.find_by_slug(visit[0].split('/').last)
   end
 
