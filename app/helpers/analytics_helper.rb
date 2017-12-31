@@ -35,10 +35,6 @@ module AnalyticsHelper
     Article.first.mom_cases_growth
   end
 
-  def mom_growth_in_case_updates
-    Article.first.mom_growth_in_case_updates
-  end
-
   def mom_follows_growth
     Follow.first.mom_follows_growth
   end
@@ -63,8 +59,12 @@ module AnalyticsHelper
     Article.order(follows_count: :desc).first(10)
   end
 
+  def visits_over_the_past_7_days
+    Visit.where(started_at: 7.days.ago..Time.now)
+  end
+
   def visits_over_the_past_7_days_by_landing_page
-    Visit.where(started_at: 7.days.ago..Time.now).group(:landing_page).order('count_id DESC').limit(13).count(:id)
+    visits_over_the_past_7_days.group(:landing_page).order('count_id DESC').limit(13).count(:id)
   end
 
   def landing_page_was_a_case?(visit)
