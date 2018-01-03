@@ -12,6 +12,7 @@ class AnalyticsController < ApplicationController
     @users = User.where(created_at: @last_days.days.ago..Time.now)
     @views = Ahoy::Event.where(name: '$view')
     @articles = Article.created_this_month
+    @comments = Comment.limit(100).order(created_at: :desc)
   end
 
   private

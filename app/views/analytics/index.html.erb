@@ -73,14 +73,12 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Case</th>
             <th>Updated</th>
            </tr>
 
-           <% Article.order(updated_at: :desc).first(10).each_with_index do |article, i| %>
+           <% most_recently_updated_cases.each do |article| %>
              <tr>
-               <td><%= i + 1 %></td>
                <td><%= link_to truncate(article.title, length: 14), article %></td>
                <td><small><%= article.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
              </tr>
@@ -102,14 +100,12 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Case</th>
             <th>Followers</th>
            </tr>
 
-           <% Article.order(follows_count: :desc).first(10).each_with_index do |article, i| %>
+           <% ten_most_followed_cases.each do |article| %>
              <tr>
-               <td><%= i + 1 %></td>
                <td><%= link_to truncate(article.title, length: 25), article %></td>
                <td><%= link_to article.follows_count, articles_followers_path(article) %></td>
              </tr>
@@ -117,7 +113,7 @@
          </table>
         </div>
         <div class="chart-notes">
-          These are the cases with the most followers
+          These are the articles with the most followers
         </div>
       </div>
     </div>
@@ -129,16 +125,14 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Page</th>
             <th>Views</th>
            </tr>
 
-           <% Visit.where(started_at: 7.days.ago..Time.now).group(:landing_page).order('count_id DESC').limit(13).count(:id).each_with_index do |visit, i| %>
+           <% visits_over_the_past_7_days_by_landing_page.each do |visit| %>
             <tr>
-              <% if Article.find_by_slug(visit[0].split('/').last).present? %>
-                <td><%= i %></td>
-                <td><%= link_to truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), article_path(Article.find_by_slug(visit[0].split('/').last)) %></td>
+              <% if landing_page_was_a_case?(visit) %>
+                <td><%= link_to truncate(landing_page_from_visit(visit).title, length: 25), article_path(landing_page_from_visit(visit)) %></td>
                 <td><%= visit[1] %></td>
               <% end %>
             </tr>
@@ -153,20 +147,53 @@
     </div>
   </div><!-- row   -->
 
-  <!-- Comments List-->
   <div class="row">
-    <div class="col-sm-12">
+  <!-- Editors List-->
+    <div class="col-sm-4">
       <div class="chart-wrapper">
         <div class="chart-title background-orange">
+          Most Recent Editors - Last 30 days <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Active Editors", :content => "This metric shows the number of cases added or updated by editors in the past 30 days."})%>
+        </div>
+        <div class="chart-stage">
+         <table class='table leader-list'>
+           <tr>
+            <th>Editor</th>
+            <th>Updates</th>
+           </tr>
+
+           <% case_updaters_count(10).each do |who| %>
+             <% user_id = who[0] %>
+             <% user_edits_count = who[1] %>
+             <tr>
+                <% unless user_id.to_i == 0 %>
+                  <td><%= editor(user_id.to_i).name %></td>
+                  <td><%= link_to user_edits_count, editor(user_id.to_i) %></td>
+                <% else %>
+                  <td> Anonymous </td>
+                  <td><%= user_edits_count %></td>
+                <% end %>
+             </tr>
+           <% end %>
+         </table>
+        </div>
+        <div class="chart-notes">
+          The ten most active editors over the last 30 days.
+        </div>
+      </div>
+    </div>
+  <!-- Comments List-->
+    <div class="col-sm-8">
+      <div class="chart-wrapper">
+        <div class="chart-title background-gray">
           Recent Comments
         </div>
         <ul class="scroller">
-          <% Comment.order(created_at: :desc).each do |comment| %>
+          <% @comments.each do |comment| %>
             <li>
               <blockquote class="blockquote">
-                <p><%= link_to truncate(Article.find(comment.commentable_id).title, length: 30), article_path(Article.find(comment.commentable_id)) %> -- <%= comment.created_at.strftime("%B %d, %Y") %></p>
-                <p><%= link_to truncate(comment.content, length: 100), article_path(Article.find(comment.commentable_id)) %></p>
-                <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
+                <p><%= link_to truncate(comment.commentable.title, length: 30), article_path(comment.commentable) %> -- <%= comment.created_at.strftime("%B %d, %Y") %></p>
+                <p><%= link_to truncate(comment.content, length: 100), article_path(comment.commentable) %></p>
+                <small><%= link_to comment.user.name, user_path(comment.user) %></small>
               </blockquote>
             </li>
           <% end %>
