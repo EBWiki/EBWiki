@@ -73,7 +73,7 @@ group :development do
 end
 
 group :test do
-  gem 'faker', '~> 1.4.3'
+  gem 'faker'
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 2.4.3'
   gem 'cucumber-rails', require: false
