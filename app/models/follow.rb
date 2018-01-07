@@ -19,7 +19,7 @@ class Follow < ActiveRecord::Base
     last_month_follows = Follow.this_month.count
     return 0 if last_month_follows.zero?
     previous_follows = Follow.count - last_month_follows
-    return (last_month_follows*100) if previous_follows.zero?
+    return (last_month_follows * 100) if previous_follows.zero?
 
     (last_month_follows.to_f / previous_follows * 100).round(2)
   end
