@@ -192,25 +192,67 @@ RSpec.describe Article, type: :model, versioning: true do
   end
 
   describe 'growth' do
-    it 'returns correct percentage increase for growth_in_case_updates' do
-      article = FactoryBot.create(:article, updated_at: 31.days.ago)
-      article2 = FactoryBot.create(:article)
-      article3 = FactoryBot.create(:article, updated_at: 10.days.ago)
-      article2.update_attribute(:video_url, 'new_video.com')
-      expect(Article.first.mom_growth_in_case_updates).to eq(100)
+    describe 'growth_in_case_updates' do
+      it 'returns the correct percentage increase' do
+        article = FactoryBot.create(:article, updated_at: 31.days.ago)
+        article2 = FactoryBot.create(:article)
+        article3 = FactoryBot.create(:article, updated_at: 10.days.ago)
+        article2.update_attribute(:video_url, 'new_video.com')
+        expect(Article.first.mom_growth_in_case_updates).to eq(100)
+      end
+
+      it 'returns 0 if no updates in last 30 days' do
+        article = FactoryBot.create(:article, updated_at: 31.days.ago)
+        expect(Article.first.mom_growth_in_case_updates).to eq(0)
+      end
+
+      # What happens if there were updates between 0-30 days ago but none 31-60 days ago?
+      it 'returns correct percentage if previous 30 days period saw no updates' do
+        article = FactoryBot.create(:article, updated_at: 10.days.ago)
+        expect(Article.first.mom_growth_in_case_updates).to eq(100)
+      end
     end
 
-    it 'returns the correct percentage increase for recent case growth rate' do
-      article = FactoryBot.create(:article, date: 31.days.ago)
-      article2 = FactoryBot.create(:article)
-      expect(Article.first.mom_new_cases_growth).to eq(0)
+    describe 'new case growth rate' do
+      it 'returns the correct percentage increase' do
+        article = FactoryBot.create(:article, date: 31.days.ago)
+        article2 = FactoryBot.create(:article)
+        expect(Article.first.mom_new_cases_growth).to eq(0)
+      end
+
+      it 'returns 0 if no new cases in last 30 days' do
+        article = FactoryBot.create(:article, date: 31.days.ago)
+        expect(Article.first.mom_new_cases_growth).to eq(0)
+      end
+
+      # What happens if there were new cases between 0-30 days ago but none 31-60 days ago?
+      it 'returns correct percentage if previous 30 days period saw no new cases' do
+        article_one = FactoryBot.create(:article, date: 10.days.ago)
+        article_two = FactoryBot.create(:article, date: 15.days.ago)
+        expect(Article.first.mom_new_cases_growth).to eq(200)
+      end
     end
 
-    it 'returns the correct percentage increase for total case growth rate' do
-      article = FactoryBot.create(:article, created_at: 31.days.ago)
-      article2 = FactoryBot.create(:article)
-      expect(Article.first.mom_cases_growth).to eq(100)
+    describe 'total case growth rate' do
+      it 'returns the correct percentage increase' do
+        article = FactoryBot.create(:article, created_at: 31.days.ago)
+        article2 = FactoryBot.create(:article)
+        expect(Article.first.mom_cases_growth).to eq(100)
+      end
+
+      it 'returns 0 if no created cases in last 30 days' do
+        article = FactoryBot.create(:article, created_at: 31.days.ago)
+        expect(Article.first.mom_cases_growth).to eq(0)
+      end
+
+      #What happens if all of the cases were created in the past 30 days?
+      it 'returns correct percentage if all cases created in the past 30 days' do
+        article_one = FactoryBot.create(:article, date: 10.days.ago)
+        article_two = FactoryBot.create(:article, date: 15.days.ago)
+        expect(Article.first.mom_cases_growth).to eq(200)
+      end
     end
+
   end
 
   describe '#default_avatar_url' do
