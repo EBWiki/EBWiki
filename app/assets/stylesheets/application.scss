@@ -126,3 +126,12 @@ ul {
 .select2-container--classic .select2-selection--single {
   filter: unset;
 }
+
+/* highlight certain text such as number of cases on home page */
+
+.highlight-metric {
+  background-color:#E0661D;
+  font-size: 1.25em;
+  color: #555;
+  outline: #747474 solid 2px;
+}
