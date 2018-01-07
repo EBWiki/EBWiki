@@ -2,8 +2,6 @@
 
 Rails.application.routes.draw do
   resources :agencies
-  get 'analytics/show'
-
   get 'analytics/index'
 
   get '/maps/index', to: 'maps#index'
