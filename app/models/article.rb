@@ -55,8 +55,9 @@ class Article < ActiveRecord::Base
   before_save :set_default_avatar_url if proc do |art|
     art.avatar.changed?
   end
+
   # Scopes
-  scope :created_this_month, -> { where(created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day) }
+  scope :created_this_month, -> { where(created_at: 30.days.ago.beginning_of_day..Date.today.end_of_day) }
   scope :most_recent, ->(duration) { where(date: duration.beginning_of_day..Date.today.end_of_day) }
   scope :recently_updated, ->(duration) { where(updated_at: duration.beginning_of_day..Date.today.end_of_day) }
 
@@ -98,14 +99,19 @@ class Article < ActiveRecord::Base
 
   def mom_new_cases_growth
     last_month_cases = Article.most_recent(30.days.ago).count
+    return 0 if last_month_cases.zero?
     last_60_days_cases = Article.most_recent(60.days.ago).count
     prior_30_days_cases = last_60_days_cases - last_month_cases
+    return (last_month_cases * 100) if prior_30_days_cases.zero?
 
     (((last_month_cases.to_f / prior_30_days_cases) - 1) * 100).round(2)
   end
 
   def mom_cases_growth
     last_month_cases = Article.created_this_month.count
+    return 0 if last_month_cases.zero?
+    previous_cases = Article.count - last_month_cases
+    return (last_month_cases * 100) if previous_cases.zero?
 
     (last_month_cases.to_f / (Article.count - last_month_cases) * 100).round(2)
   end
@@ -116,8 +122,10 @@ class Article < ActiveRecord::Base
 
   def mom_growth_in_case_updates
     last_month_case_updates = Article.recently_updated(30.days.ago).count
+    return 0 if last_month_case_updates.zero?
     last_60_days_case_updates = Article.recently_updated(60.days.ago).count
     prior_30_days_case_updates = last_60_days_case_updates - last_month_case_updates
+    return (last_month_case_updates * 100) if prior_30_days_case_updates.zero?
 
     (((last_month_case_updates.to_f / prior_30_days_case_updates) - 1) * 100).round(2)
   end
