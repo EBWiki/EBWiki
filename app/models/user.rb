@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
 
   has_many :articles
   has_many :comments
+  has_many :calendar_events
   acts_as_follower
   acts_as_messageable
   extend FriendlyId

@@ -1,6 +1,7 @@
 <%= simple_form_for @calendar_event, remote: true do |f| %>
   <div class="form-inputs">
     <%= f.input :title %>
+    <%= f.input :description %>
     <%= f.input :start_time %>
     <%= f.input :end_time %>
   </div>

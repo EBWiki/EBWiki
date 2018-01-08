@@ -10,6 +10,7 @@ class CalendarEventsController < ApplicationController
   # GET /calendar_events/1
   # GET /calendar_events/1.json
   def show
+    @event_owner = @calendar_event.user
   end
 
   # GET /calendar_events/new
@@ -34,6 +35,7 @@ class CalendarEventsController < ApplicationController
   # POST /calendar_events.json
   def create
     @calendar_event = CalendarEvent.new(calendar_event_params)
+    @calendar_event.user = current_user
 
     respond_to do |format|
       if @calendar_event.save
