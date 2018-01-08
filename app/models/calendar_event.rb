@@ -1,7 +1,7 @@
 # frozen_string_literal: true
+# Initializes CE Model
 
 class CalendarEvent < ActiveRecord::Base
-	
   validates :title, presence: true
 
   attr_accessor :date_range
@@ -9,6 +9,6 @@ class CalendarEvent < ActiveRecord::Base
   belongs_to :user
 
   def all_day_event?
-    self.start == self.start.midnight && self.end == self.end.midnight ? true : false
+    start == start.midnight && self.end == self.end.midnight ? true : false
   end
 end

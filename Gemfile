@@ -81,8 +81,8 @@ group :test do
   gem 'launchy', '~> 2.4.2'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 2.6.2'
-  gem 'webmock'
   gem 'pundit-matchers', '~> 1.4.1'
+  gem 'webmock'
 end
 
 gem 'bootstrap-sass'
@@ -169,5 +169,5 @@ gem 'fullcalendar-rails'
 gem 'jbuilder'
 
 # authorization and testing authorization
-gem "pundit"
+gem 'pundit'
 

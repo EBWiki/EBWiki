@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 json.array!(@calendar_events) do |event|
   json.extract! event, :id, :title, :description
   json.start event.start_time

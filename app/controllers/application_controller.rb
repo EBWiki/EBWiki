@@ -28,7 +28,6 @@ class ApplicationController < ActionController::Base
     user_signed_in? ? current_user.id : 'Guest'
   end
 
-
   private
 
   def mailbox
@@ -47,10 +46,10 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:warning] = "You are not authorized to perform this action."
+    flash[:warning] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || root_path)
   end
-  
+
   protected
 
   def configure_permitted_parameters

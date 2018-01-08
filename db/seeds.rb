@@ -356,15 +356,19 @@ if CalendarEvent.count.zero?
   puts 'Creating some sample CalendarEvents...'
 
   events = [
-    {title: "Event 1", start_time: Time.now.to_datetime.beginning_of_day, end_time: Time.now.to_datetime.end_of_day, description: 'This is test event 1'},
-    {title: "Event 2", start_time: 2.days.from_now.to_datetime.beginning_of_day, end_time: 2.days.from_now.to_datetime.end_of_day, description: 'This is test event 2'},
-    {title: "Event 3", start_time: 3.days.from_now.to_datetime.beginning_of_day, end_time: 3.days.from_now.to_datetime.end_of_day, description: 'This is test event 3'},
-    {title: "Event 4", start_time: 4.days.from_now.to_datetime.beginning_of_day, end_time: 4.days.from_now.to_datetime.end_of_day, description: 'This is test event 4'},
-    {title: "Event 5", start_time: 5.days.from_now.to_datetime.beginning_of_day, end_time: 5.days.from_now.to_datetime.end_of_day, description: 'This is test event 5'}
+    { title: 'Event 1', start_time: Time.now.to_datetime.beginning_of_day, 
+    end_time: Time.now.to_datetime.end_of_day, description: 'This is test event 1' },
+    { title: 'Event 2', start_time: 2.days.from_now.to_datetime.beginning_of_day,
+     end_time: 2.days.from_now.to_datetime.end_of_day, description: 'This is test event 2' },
+    { title: 'Event 3', start_time: 3.days.from_now.to_datetime.beginning_of_day,
+     end_time: 3.days.from_now.to_datetime.end_of_day, description: 'This is test event 3' },
+    { title: 'Event 4', start_time: 4.days.from_now.to_datetime.beginning_of_day,
+     end_time: 4.days.from_now.to_datetime.end_of_day, description: 'This is test event 4' },
+    { title: 'Event 5', start_time: 5.days.from_now.to_datetime.beginning_of_day,
+     end_time: 5.days.from_now.to_datetime.end_of_day, description: 'This is test event 5' }
   ]
 
   events.each do |event|
     CalendarEvent.create(event)
   end
 end
-
