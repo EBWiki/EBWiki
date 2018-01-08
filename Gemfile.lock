@@ -334,6 +334,10 @@ GEM
     formatador (0.2.5)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
+    fullcalendar-rails (3.4.0.0)
+      jquery-rails (>= 4.0.5, < 5.0.0)
+      jquery-ui-rails (>= 5.0.2)
+      momentjs-rails (>= 2.9.0)
     galerts (1.1.3)
       mechanize (~> 2.7)
     geocoder (1.4.5)
@@ -380,6 +384,9 @@ GEM
     image_optimizer (1.7.1)
     inflecto (0.0.2)
     ipaddress (0.8.3)
+    jbuilder (2.6.3)
+      activesupport (>= 3.0.0, < 5.2)
+      multi_json (~> 1.2)
     jquery-rails (4.3.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -698,6 +705,7 @@ DEPENDENCIES
   faker
   fog
   friendly_id (~> 5.1.0)
+  fullcalendar-rails
   galerts
   geocoder
   gibbon
@@ -708,6 +716,7 @@ DEPENDENCIES
   heroku_rails_deflate
   hightop
   httparty
+  jbuilder
   jquery-rails
   jquery-turbolinks
   kaminari

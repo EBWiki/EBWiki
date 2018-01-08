@@ -160,3 +160,9 @@ gem 'httparty'
 gem 'rack-host-redirect'
 
 gem 'rubocop', require: false
+
+# jquery calendar assets
+gem 'fullcalendar-rails'
+
+# helps with building json output
+gem 'jbuilder'

@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Calendar Events</h1>
+
+<%= link_to 'New Calendar event', new_calendar_event_path %>
+
+<div class="calendar"></div>
+
+<script type="text/javascript">
+  $('.calendar').fullCalendar({
+    events: '/calendar_events.json'
+  });
+</script>

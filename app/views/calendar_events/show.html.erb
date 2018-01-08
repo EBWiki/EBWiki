@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @calendar_event.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @calendar_event.description %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @calendar_event.start_time %>
+</p>
+
+<p>
+  <strong>End time:</strong>
+  <%= @calendar_event.end_time %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @calendar_event.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @calendar_event.longitude %>
+</p>
+
+<p>
+  <strong>Slug:</strong>
+  <%= @calendar_event.slug %>
+</p>
+
+<%= link_to 'Edit', edit_calendar_event_path(@calendar_event) %> |
+<%= link_to 'Back', calendar_events_path %>
