@@ -58,6 +58,7 @@ RSpec.describe CalendarEventsController, type: :controller do
   end
 
   describe "GET #new" do
+    login_user
     it "returns a success response" do
       get :new, {}, valid_session
       expect(response).to be_success

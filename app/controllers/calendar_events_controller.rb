@@ -15,6 +15,11 @@ class CalendarEventsController < ApplicationController
   # GET /calendar_events/new
   def new
     @calendar_event = CalendarEvent.new
+
+    respond_to do |format|
+      format.html { render :partial => 'new' }
+      format.js
+    end
   end
 
   # GET /calendar_events/1/edit

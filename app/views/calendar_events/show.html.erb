@@ -20,20 +20,12 @@
   <%= @calendar_event.end_time %>
 </p>
 
-<p>
-  <strong>Latitude:</strong>
-  <%= @calendar_event.latitude %>
-</p>
 
-<p>
-  <strong>Longitude:</strong>
-  <%= @calendar_event.longitude %>
-</p>
-
-<p>
-  <strong>Slug:</strong>
-  <%= @calendar_event.slug %>
-</p>
-
-<%= link_to 'Edit', edit_calendar_event_path(@calendar_event) %> |
-<%= link_to 'Back', calendar_events_path %>
+<%= link_to 'Edit', edit_calendar_event_path(@calendar_event), remote: true %> |
+<%= link_to 'Back', calendar_events_path %> | 
+<%= link_to 'Delete', 
+                @calendar_event, 
+                method: :delete, 
+                class: 'btn btn-default', 
+                data: { confirm: 'Are you sure?' }, 
+                remote: true unless @calendar_event.new_record? %>
