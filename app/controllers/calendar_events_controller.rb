@@ -24,6 +24,10 @@ class CalendarEventsController < ApplicationController
 
   # GET /calendar_events/1/edit
   def edit
+    respond_to do |format|
+      format.html { render :partial => 'edit' }
+      format.js
+    end
   end
 
   # POST /calendar_events
@@ -36,7 +40,7 @@ class CalendarEventsController < ApplicationController
         format.html { redirect_to @calendar_event, notice: 'Calendar event was successfully created.' }
         format.json { render :show, status: :created, location: @calendar_event }
       else
-        format.html { render :new }
+        format.html {render :partial => 'new'}
         format.json { render json: @calendar_event.errors, status: :unprocessable_entity }
       end
     end
@@ -48,9 +52,10 @@ class CalendarEventsController < ApplicationController
     respond_to do |format|
       if @calendar_event.update(calendar_event_params)
         format.html { redirect_to @calendar_event, notice: 'Calendar event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @calendar_event }
+        format.json {render :json => @calendar_event,
+                    :status => :created, :location => @calendar_event }
       else
-        format.html { render :edit }
+        format.html {render :partial => 'edit'}
         format.json { render json: @calendar_event.errors, status: :unprocessable_entity }
       end
     end
