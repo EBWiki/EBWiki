@@ -3,8 +3,6 @@
 class AnalyticsController < ApplicationController
   before_action :check_for_admin_or_analyst, only: %i[show index]
 
-  def show; end
-
   def index
     @last_days = 30
     @full_width_content = true
