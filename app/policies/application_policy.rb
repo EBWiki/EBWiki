@@ -40,7 +40,6 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
-  
 # Initializes Policy Scopes
   class Scope
     attr_reader :user, :scope
