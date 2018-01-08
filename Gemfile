@@ -82,6 +82,7 @@ group :test do
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 2.6.2'
   gem 'webmock'
+  gem 'pundit-matchers', '~> 1.4.1'
 end
 
 gem 'bootstrap-sass'
@@ -160,3 +161,13 @@ gem 'httparty'
 gem 'rack-host-redirect'
 
 gem 'rubocop', require: false
+
+# jquery calendar assets
+gem 'fullcalendar-rails'
+
+# helps with building json output
+gem 'jbuilder'
+
+# authorization and testing authorization
+gem "pundit"
+

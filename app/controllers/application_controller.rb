@@ -15,6 +15,9 @@ class ApplicationController < ActionController::Base
 
   helper_method :mailbox, :conversation
 
+  include Pundit
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def info_for_paper_trail
     # Save additional info
     { ip: request.remote_ip }
@@ -24,6 +27,7 @@ class ApplicationController < ActionController::Base
     # Save the user responsible for the action
     user_signed_in? ? current_user.id : 'Guest'
   end
+
 
   private
 
@@ -42,6 +46,11 @@ class ApplicationController < ActionController::Base
     redirect_to '/'
   end
 
+  def user_not_authorized
+    flash[:warning] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
+  end
+  
   protected
 
   def configure_permitted_parameters

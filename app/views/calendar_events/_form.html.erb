@@ -1,0 +1,22 @@
+<%= simple_form_for @calendar_event, remote: true do |f| %>
+  <div class="form-inputs">
+    <%= f.input :title %>
+    <%= f.input :description %>
+    <%= f.input :address %>
+    <%= f.input :city %>
+    <%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
+    <%= f.input :zipcode %>
+    <%= f.input :start_time %>
+    <%= f.input :end_time %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+    <%= link_to 'Delete', 
+                event, 
+                method: :delete, 
+                class: 'btn btn-danger', 
+                data: { confirm: 'Are you sure?' }, 
+                remote: true unless @calendar_event.new_record? %>
+  </div>
+<% end %>

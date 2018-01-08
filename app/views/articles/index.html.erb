@@ -12,6 +12,7 @@ meta title: "EBWiki - Ending Violence Against People of Color",
             <div class="text-center">
               <h3>
                 <%= render 'layouts/ab_test' %>
+                <%=  link_to 'Upcoming Events', calendar_events_path, class: "btn btn-warning" %>
                 <% if current_user.present? %>
                   <% unless current_user.mailchimp_status == "subscribed" %>
                     <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>

@@ -16,7 +16,8 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
-//= require moment
+//= require moment 
+//= require fullcalendar
 //= require bootstrap-datetimepicker
 //= require pickers
 //= require cocoon
