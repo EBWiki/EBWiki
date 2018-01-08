@@ -76,6 +76,7 @@ RSpec.describe CalendarEventsController, type: :controller do
   end
 
   describe "GET #edit" do
+    login_user
     it "returns a success response" do
       calendar_event = CalendarEvent.create! valid_attributes
       get :edit, {:id => calendar_event.to_param}, valid_session
@@ -84,6 +85,7 @@ RSpec.describe CalendarEventsController, type: :controller do
   end
 
   describe "POST #create" do
+    login_user
     context "with valid params" do
       it "creates a new CalendarEvent" do
         expect {
@@ -106,6 +108,7 @@ RSpec.describe CalendarEventsController, type: :controller do
   end
 
   describe "PUT #update" do
+    login_user
     context "with valid params" do
       let(:new_attributes) {
         {
@@ -140,15 +143,17 @@ RSpec.describe CalendarEventsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
+    login_user
     it "destroys the requested calendar_event" do
-      calendar_event = CalendarEvent.create! valid_attributes
+      calendar_event = FactoryBot.create(:calendar_event, user_id: @user.id)
+      calendar_event.user_id = @user.id
       expect {
         delete :destroy, {:id => calendar_event.to_param}, valid_session
       }.to change(CalendarEvent, :count).by(-1)
     end
 
     it "redirects to the calendar_events list" do
-      calendar_event = CalendarEvent.create! valid_attributes
+      calendar_event = FactoryBot.create(:calendar_event, user_id: @user.id)
       delete :destroy, {:id => calendar_event.to_param}, valid_session
       expect(response).to redirect_to(calendar_events_url)
     end

@@ -469,6 +469,11 @@ GEM
       pry (~> 0.10)
     public_suffix (3.0.1)
     puma (3.11.0)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
+    pundit-matchers (1.4.1)
+      pundit (~> 1.1, >= 1.1.0)
+      rspec-rails (>= 3.0.0)
     rack (1.6.8)
     rack-attack (5.0.1)
       rack
@@ -731,6 +736,8 @@ DEPENDENCIES
   pre-commit
   pry-byebug
   puma
+  pundit
+  pundit-matchers (~> 1.4.1)
   rack
   rack-cors
   rack-host-redirect

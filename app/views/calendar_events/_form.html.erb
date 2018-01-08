@@ -2,6 +2,10 @@
   <div class="form-inputs">
     <%= f.input :title %>
     <%= f.input :description %>
+    <%= f.input :address %>
+    <%= f.input :city %>
+    <%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
+    <%= f.input :zipcode %>
     <%= f.input :start_time %>
     <%= f.input :end_time %>
   </div>
