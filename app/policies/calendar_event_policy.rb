@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# Initializes CalendarEvent Policy
+# :nodoc:
 
 class CalendarEventPolicy < ApplicationPolicy
   def index?
@@ -23,7 +23,8 @@ class CalendarEventPolicy < ApplicationPolicy
   end
 
   private
-    def calendar_event
-      record
-    end
+
+  def calendar_event
+    record
+  end
 end

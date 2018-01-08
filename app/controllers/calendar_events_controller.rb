@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# CE controller actions
+# :nodoc:
 
 class CalendarEventsController < ApplicationController
   before_action :set_calendar_event, only: %i[show edit update destroy]
@@ -46,8 +46,10 @@ class CalendarEventsController < ApplicationController
     respond_to do |format|
       if @calendar_event.save
         format.html { redirect_to @calendar_event,
-                    notice: 'Calendar event was successfully created.' }
-        format.json { render :show, status: :created, location: @calendar_event }
+                      notice: 'Calendar event was successfully created.' 
+                    }
+        format.json { render :show, status: :created, location: @calendar_event
+                    }
       else
         format.html { render partial: 'new' }
         format.json { render json: @calendar_event.errors, status: :unprocessable_entity }
@@ -64,11 +66,14 @@ class CalendarEventsController < ApplicationController
                     notice: 'Calendar event was successfully updated.' }
         format.json { render json: @calendar_event,
                     :status => :created,
-                    location: @calendar_event }
+                    location: @calendar_event 
+                    }
       else
-        format.html { render partial: 'edit' }
-        format.json { render json: @calendar_event.errors,
-                    :status => :unprocessable_entity }
+        format.html { 
+          render partial: 'edit' }
+        format.json { 
+          render json: @calendar_event.errors, :status => :unprocessable_entity
+                    }
       end
     end
   end
@@ -78,8 +83,10 @@ class CalendarEventsController < ApplicationController
   def destroy
     @calendar_event.destroy
     respond_to do |format|
-      format.html { redirect_to calendar_events_url, 
-                  notice: 'Calendar event was successfully destroyed.' }
+      format.html { 
+        redirect_to calendar_events_url,
+        notice: 'Calendar event was successfully destroyed.'
+                  }
       format.json { head :no_content }
     end
   end
@@ -96,11 +103,11 @@ class CalendarEventsController < ApplicationController
     def calendar_event_params
       params.require(:calendar_event).permit(
         :title,
-        :description, 
-        :start_time, 
-        :end_time, 
-        :latitude, 
+        :description,
+        :start_time,
+        :end_time,
+        :latitude,
         :longitude, :slug, :address, :city, :state_id, :zipcode, :user_id
-        )
+                                            )
     end
 end

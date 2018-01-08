@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-# Initializes Policy class
+# :nodoc:
+
 class ApplicationPolicy
   attr_reader :user, :record
 
@@ -40,7 +41,7 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
-# Initializes Policy Scopes
+  # Initializes Policy Scopes
   class Scope
     attr_reader :user, :scope
 
