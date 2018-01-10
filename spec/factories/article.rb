@@ -6,7 +6,7 @@ FactoryBot.define do
     f.sequence(:title) { |n| "#{n}Title" }
     f.overview 'A new article'
     f.city 'Albany'
-    f.date Date.today
+    f.date Date.current
     f.state # { FactoryBot.create(:state) }
     f.subjects { [create(:subject)] }
     f.summary 'A summary of changes'

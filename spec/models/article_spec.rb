@@ -274,7 +274,7 @@ RSpec.describe Article, type: :model, versioning: true do
       texas_article = FactoryBot.create(:article,
                                        city: 'Houston',
                                        state_id: texas.id,
-                                       created_at: Date.today)
+                                       created_at: Time.current)
       louisiana_article = FactoryBot.create(:article,
                                             city: 'Baton Rouge',
                                             state_id: louisiana.id,
@@ -298,7 +298,7 @@ RSpec.describe Article, type: :model, versioning: true do
       texas_article = FactoryBot.create(:article,
                                         city: 'Houston',
                                         state_id: texas.id,
-                                        date: Date.today)
+                                        date: Time.current)
       louisiana_article = FactoryBot.create(:article,
                                             city: 'Baton Rouge',
                                             state_id: louisiana.id,
@@ -321,7 +321,7 @@ RSpec.describe Article, type: :model, versioning: true do
       texas_article = FactoryBot.create(:article,
                                         city: 'Houston',
                                         state_id: texas.id,
-                                        updated_at: Date.today)
+                                        updated_at: Time.current)
       louisiana_article = FactoryBot.create(:article,
                                             city: 'Baton Rouge',
                                             state_id: louisiana.id,
