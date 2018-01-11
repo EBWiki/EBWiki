@@ -11,6 +11,6 @@ FactoryBot.define do
     f.device_type 'desktop'
     f.screen_height '1024'
     f.screen_width '600'
-    f.started_at DateTime.now
+    f.started_at Time.current
   end
 end

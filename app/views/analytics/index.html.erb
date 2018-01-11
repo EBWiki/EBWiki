@@ -23,7 +23,7 @@
           Visits by browser - last 24 hours
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart @visits.where(started_at: 1.days.ago..Time.now).group(:browser).count %></div>
+          <div id=""><%= pie_chart @visits.where(started_at: 1.days.ago..Time.current).group(:browser).count %></div>
         </div>
         <div class="chart-notes">
           Notes go down here
@@ -54,7 +54,7 @@
           Referring Domains - last 24 hours
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart @visits.where(started_at: 1.day.ago..Time.now).group(:referring_domain).count %></div>
+          <div id=""><%= pie_chart @visits.where(started_at: 1.day.ago..Time.current).group(:referring_domain).count %></div>
         </div>
         <div class="chart-notes">
           These domains are where traffic has originated
@@ -134,7 +134,7 @@
             <th>Views</th>
            </tr>
 
-           <% Visit.where(started_at: 7.days.ago..Time.now).group(:landing_page).order('count_id DESC').limit(13).count(:id).each_with_index do |visit, i| %>
+           <% Visit.where(started_at: 7.days.ago..Time.current).group(:landing_page).order('count_id DESC').limit(13).count(:id).each_with_index do |visit, i| %>
             <tr>
               <% if Article.find_by_slug(visit[0].split('/').last).present? %>
                 <td><%= i %></td>

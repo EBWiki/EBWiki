@@ -9,7 +9,7 @@ class Follow < ActiveRecord::Base
   belongs_to :follower,   polymorphic: true
 
   # Scopes
-  scope :this_month, -> { where(created_at: 30.days.ago.beginning_of_day..Date.today.end_of_day) }
+  scope :this_month, -> { where(created_at: 30.days.ago.beginning_of_day..Time.current) }
 
   def block!
     update_attribute(:blocked, true)

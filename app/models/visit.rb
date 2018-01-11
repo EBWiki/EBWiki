@@ -4,8 +4,8 @@ class Visit < ActiveRecord::Base
   has_many :ahoy_events, class_name: 'Ahoy::Event'
   belongs_to :user
 
-  scope :this_month, -> { where(started_at: 30.days.ago.beginning_of_day..Date.today.end_of_day) }
-  scope :most_recent, ->(duration) { where(started_at: duration.beginning_of_day..Date.today.end_of_day) }
+  scope :this_month, -> { where(started_at: 30.days.ago.beginning_of_day..Time.current) }
+  scope :most_recent, ->(duration) { where(started_at: duration.beginning_of_day..Time.current) }
 
   def mom_visits_growth
     last_month_visits = Visit.this_month.count
