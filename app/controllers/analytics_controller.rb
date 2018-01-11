@@ -9,7 +9,7 @@ class AnalyticsController < ApplicationController
     @visits = Visit.this_month
     @users = User.where(created_at: @last_days.days.ago..Time.current)
     @views = Ahoy::Event.where(name: '$view')
-    @articles = Article.created_this_month
+    @articles = Article.most_recent 30.days.ago
   end
 
   private
