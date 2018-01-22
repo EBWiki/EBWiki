@@ -12,11 +12,40 @@ RSpec.describe Visit, type: :model do
       expect(Visit.this_month.to_a).not_to include(visit_one)
     end
 
+    it 'returns visits in the past week' do
+      visit_one = FactoryBot.create(:visit, started_at: 31.days.ago)
+      visit_two = FactoryBot.create(:visit, started_at: 4.days.ago)
+      expect(Visit.this_week.count).to eq(1)
+      expect(Visit.this_week.to_a).not_to include(visit_one)
+    end
+
+    it 'returns today"s visits' do
+      visit_one = FactoryBot.create(:visit, started_at: 10.days.ago)
+      visit_two = FactoryBot.create(:visit)
+      expect(Visit.today.count).to eq(1)
+      expect(Visit.today.to_a).not_to include(visit_one)
+    end
+
     it 'returns the most recent visits' do
       visit_one = FactoryBot.create(:visit, started_at: 50.days.ago)
       visit_two = FactoryBot.create(:visit, started_at: 10.days.ago)
       expect(Visit.most_recent(45.days.ago).count).to eq(1)
       expect(Visit.most_recent(45.days.ago).to_a).not_to include(visit_one)
+    end
+
+    it 'returns visits sorted by landing page' do
+      visit_one = FactoryBot.create(:visit,
+                                    landing_page: 'https://blackopswiki.herokuapp.com/about')
+      visit_two = FactoryBot.create(:visit,
+                                    landing_page: 'https://blackopswiki.herokuapp.com/about')
+      visit_three = FactoryBot.create(:visit)
+      visit_four = FactoryBot.create(:visit)
+      visit_five = FactoryBot.create(:visit,
+                                     landing_page: 'https://blackopswiki.herokuapp.com/analytics/index')
+
+      visits = Visit.sorted_by_hits 2
+      expect(visits.count).to eq(2)
+      expect(visits.to_a).not_to include [visit_five.landing_page, 1]
     end
   end
 

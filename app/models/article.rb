@@ -58,8 +58,10 @@ class Article < ActiveRecord::Base
 
   # Scopes
   scope :created_this_month, -> { where(created_at: 30.days.ago.beginning_of_day..Time.current) }
-  scope :most_recent, ->(duration) { where(date: duration.beginning_of_day..Time.current) }
+  scope :most_recent_occurrences, ->(duration) { where(date: duration.beginning_of_day..Time.current) }
   scope :recently_updated, ->(duration) { where(updated_at: duration.beginning_of_day..Time.current) }
+  scope :sorted_by_update, ->(limit) { order("updated_at desc").limit(limit) }
+  scope :sorted_by_followers, ->(limit) { order(follows_count: :desc).first(limit) }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
@@ -98,9 +100,9 @@ class Article < ActiveRecord::Base
   end
 
   def mom_new_cases_growth
-    last_month_cases = Article.most_recent(30.days.ago).count
+    last_month_cases = Article.most_recent_occurrences(30.days.ago).count
     return 0 if last_month_cases.zero?
-    last_60_days_cases = Article.most_recent(60.days.ago).count
+    last_60_days_cases = Article.most_recent_occurrences(60.days.ago).count
     prior_30_days_cases = last_60_days_cases - last_month_cases
     return (last_month_cases * 100) if prior_30_days_cases.zero?
 

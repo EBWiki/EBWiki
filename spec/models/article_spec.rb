@@ -12,7 +12,6 @@ RSpec.describe Article, type: :model, versioning: true do
 
     it 'is invalid without a state_id' do
       article = build(:article, state_id: nil)
-      article.stub(:full_address).and_return(' Albany NY ')
       expect(article).to be_invalid
     end
 
@@ -308,7 +307,7 @@ RSpec.describe Article, type: :model, versioning: true do
                                      state_id: dc.id,
                                      date: 1.year.ago)
 
-      recent_articles = Article.most_recent 1.month.ago
+      recent_articles = Article.most_recent_occurrences 1.month.ago
       expect(recent_articles.count).to eq 2
       expect(recent_articles.to_a).not_to include(dc_article)
     end
@@ -334,6 +333,58 @@ RSpec.describe Article, type: :model, versioning: true do
       recent_articles = Article.recently_updated 1.month.ago
       expect(recent_articles.count).to eq 2
       expect(recent_articles.to_a).not_to include(dc_article)
+    end
+
+    it 'returns cases sorted by update date' do
+      dc = FactoryBot.create(:state_dc)
+      louisiana = FactoryBot.create(:state_louisiana)
+      texas = FactoryBot.create(:state_texas)
+
+      texas_article = FactoryBot.create(:article,
+                                        city: 'Houston',
+                                        state_id: texas.id,
+                                        updated_at: Time.current)
+      louisiana_article = FactoryBot.create(:article,
+                                            city: 'Baton Rouge',
+                                            state_id: louisiana.id,
+                                            updated_at: 2.weeks.ago)
+      dc_article = FactoryBot.create(:article,
+                                     city: 'Washington',
+                                     state_id: dc.id,
+                                     updated_at: 1.year.ago)
+
+      sorted_articles = Article.sorted_by_update 2
+      expect(sorted_articles.count).to eq 2
+      expect(sorted_articles.to_a).not_to include(dc_article)
+    end
+
+    it 'returns cases sorted by number of followers' do
+      dc = FactoryBot.create(:state_dc)
+      louisiana = FactoryBot.create(:state_louisiana)
+      texas = FactoryBot.create(:state_texas)
+
+      texas_article = FactoryBot.create(:article,
+                                        city: 'Houston',
+                                        state_id: texas.id,
+                                        updated_at: Time.current)
+      louisiana_article = FactoryBot.create(:article,
+                                            city: 'Baton Rouge',
+                                            state_id: louisiana.id,
+                                            updated_at: 2.weeks.ago)
+      dc_article = FactoryBot.create(:article,
+                                     city: 'Washington',
+                                     state_id: dc.id,
+                                     updated_at: 1.year.ago)
+
+      follow_one = FactoryBot.create(:follow, followable_id: texas_article.id)
+      follow_two = FactoryBot.create(:follow, followable_id: texas_article.id)
+      follow_three = FactoryBot.create(:follow, followable_id: dc_article.id)
+      follow_four = FactoryBot.create(:follow, followable_id: dc_article.id)
+      follow_five = FactoryBot.create(:follow, followable_id: louisiana_article.id)
+
+      sorted_articles = Article.sorted_by_followers 2
+      expect(sorted_articles.count).to eq 2
+      expect(sorted_articles.to_a).not_to include(louisiana_article)
     end
   end
 end
