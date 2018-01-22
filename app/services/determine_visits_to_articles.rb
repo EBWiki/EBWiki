@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# This service object, given a list of URLs and the views for each one, will
+# return a list of cases the URLs lead to the corresponding views.
 class DetermineVisitsToArticles
   include Service
 

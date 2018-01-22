@@ -60,7 +60,7 @@ class Article < ActiveRecord::Base
   scope :created_this_month, -> { where(created_at: 30.days.ago.beginning_of_day..Time.current) }
   scope :most_recent_occurrences, ->(duration) { where(date: duration.beginning_of_day..Time.current) }
   scope :recently_updated, ->(duration) { where(updated_at: duration.beginning_of_day..Time.current) }
-  scope :sorted_by_update, ->(limit) { order("updated_at desc").limit(limit) }
+  scope :sorted_by_update, ->(limit) { order('updated_at desc').limit(limit) }
   scope :sorted_by_followers, ->(limit) { order(follows_count: :desc).first(limit) }
 
   def full_address

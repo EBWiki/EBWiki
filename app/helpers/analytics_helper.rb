@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module AnalyticsHelper
-
   def metric_grouped_by_day(data, metric)
     data.group_by_day(metric)
   end
