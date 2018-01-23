@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-# :nodoc:
+# Initializes CalendarEventPolicy class to manage authorizations
+
 
 class CalendarEventPolicy < ApplicationPolicy
   def index?
