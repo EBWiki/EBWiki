@@ -9,7 +9,7 @@
           Visits by Day - Last <%= @last_days %> days
         </div>
         <div class="chart-stage">
-          <%= column_chart @visits.group_by_day(:started_at).count %>
+          <%= column_chart metric_grouped_by_day(@visits_this_month, :started_at).count %>
         </div>
         <div class="chart-notes">
           Column heights represent the number of visitors on a specific day.
@@ -23,7 +23,7 @@
           Visits by browser - last 24 hours
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart @visits.where(started_at: 1.days.ago..Time.current).group(:browser).count %></div>
+          <div id=""><%= pie_chart metric_grouped_by_category(@visits_today, :browser).count %></div>
         </div>
         <div class="chart-notes">
           Notes go down here
@@ -40,7 +40,7 @@
           New Users by Day - Last <%= @last_days %> days (<%= @users.count %>)
         </div>
         <div class="chart-stage">
-          <%= column_chart @users.group_by_day(:created_at).count %>
+          <%= column_chart metric_grouped_by_day(@users, :created_at).count %>
         </div>
         <div class="chart-notes">
           Column heights represent the number of users added each day.
@@ -54,7 +54,7 @@
           Referring Domains - last 24 hours
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart @visits.where(started_at: 1.day.ago..Time.current).group(:referring_domain).count %></div>
+          <div id=""><%= pie_chart metric_grouped_by_category(@visits_today, :referring_domain).count %></div>
         </div>
         <div class="chart-notes">
           These domains are where traffic has originated
@@ -73,16 +73,14 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Case</th>
             <th>Updated</th>
            </tr>
 
-           <% Article.order(updated_at: :desc).first(10).each_with_index do |article, i| %>
+           <% @articles_sorted_by_update.each do |article| %>
              <tr>
-               <td><%= i + 1 %></td>
-               <td><%= link_to truncate(article.title, length: 14), article %></td>
-               <td><small><%= article.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
+               <td><%= link_to_article_title(article, 25) %></td>
+               <td><small><%= article_updated_at(article) %></small></td>
              </tr>
            <% end %>
          </table>
@@ -102,16 +100,14 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Case</th>
             <th>Followers</th>
            </tr>
 
-           <% Article.order(follows_count: :desc).first(10).each_with_index do |article, i| %>
+           <% @articles_sorted_by_followers.each do |article| %>
              <tr>
-               <td><%= i + 1 %></td>
-               <td><%= link_to truncate(article.title, length: 25), article %></td>
-               <td><%= link_to article.follows_count, articles_followers_path(article) %></td>
+               <td><%= link_to_article_title(article, 25) %></td>
+               <td><%= link_to_article_followers(article) %></td>
              </tr>
            <% end %>
          </table>
@@ -129,18 +125,16 @@
         <div class="chart-stage">
          <table class='table leader-list'>
            <tr>
-            <th></th>
             <th>Page</th>
             <th>Views</th>
            </tr>
 
-           <% Visit.where(started_at: 7.days.ago..Time.current).group(:landing_page).order('count_id DESC').limit(13).count(:id).each_with_index do |visit, i| %>
+           <% @most_visited_articles.each do |article_info| %>
+            <% article = article_info[0] %>
+            <% views = article_info[1] %>
             <tr>
-              <% if Article.find_by_slug(visit[0].split('/').last).present? %>
-                <td><%= i %></td>
-                <td><%= link_to truncate(Article.find_by_slug(visit[0].split('/').last).title, length: 25), article_path(Article.find_by_slug(visit[0].split('/').last)) %></td>
-                <td><%= visit[1] %></td>
-              <% end %>
+              <td><%= link_to_article_title(article, 25) %></td>
+              <td><%= views %></td>
             </tr>
            <% end %>
          </table>
@@ -161,12 +155,12 @@
           Recent Comments
         </div>
         <ul class="scroller">
-          <% Comment.order(created_at: :desc).each do |comment| %>
+          <% @most_recent_comments.each do |comment| %>
             <li>
               <blockquote class="blockquote">
-                <p><%= link_to truncate(Article.find(comment.commentable_id).title, length: 30), article_path(Article.find(comment.commentable_id)) %> -- <%= comment.created_at.strftime("%B %d, %Y") %></p>
-                <p><%= link_to truncate(comment.content, length: 100), article_path(Article.find(comment.commentable_id)) %></p>
-                <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
+                <p><%= link_to_article_title(comment.commentable, 25) %> -- <%= comment_created_at(comment) %></p>
+                <p><%= link_to_comment(comment, 100) %></p>
+                <small><%= link_to_comment_user(comment) %></small>
               </blockquote>
             </li>
           <% end %>
