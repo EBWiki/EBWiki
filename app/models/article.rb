@@ -57,6 +57,7 @@ class Article < ActiveRecord::Base
   end
 
   # Scopes
+  scope :by_state, ->(state_id) { where(state_id: state_id) }
   scope :created_this_month, -> { where(created_at: 30.days.ago.beginning_of_day..Time.current) }
   scope :most_recent_occurrences, ->(duration) { where(date: duration.beginning_of_day..Time.current) }
   scope :recently_updated, ->(duration) { where(updated_at: duration.beginning_of_day..Time.current) }
@@ -80,7 +81,7 @@ class Article < ActiveRecord::Base
   end
 
   def article_date_cannot_be_in_the_future
-    if date.present? && date > Date.today
+    if date.present? && date > Date.current
       errors.add(:date, 'must be in the past')
     end
   end
