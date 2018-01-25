@@ -47,6 +47,9 @@ class ArticlesController < ApplicationController
   def edit
     @article = Article.friendly.find(params[:id])
     @article.update_attribute(:summary, nil)
+    @agencies = Agency.all.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
+    @categories = Category.all
+    @states = State.all
   end
 
   def followers
