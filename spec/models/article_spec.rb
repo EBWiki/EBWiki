@@ -265,6 +265,22 @@ RSpec.describe Article, type: :model, versioning: true do
 
   describe 'scopes' do
 
+    it 'returns articles based on case' do
+      louisiana = FactoryBot.create(:state_louisiana)
+      texas = FactoryBot.create(:state_texas)
+
+      texas_article = FactoryBot.create(:article,
+                                       city: 'Houston',
+                                       state_id: texas.id)
+      louisiana_article = FactoryBot.create(:article,
+                                            city: 'Baton Rouge',
+                                            state_id: louisiana.id)
+
+      sorted_articles = Article.by_state texas.id
+      expect(sorted_articles.count).to eq 1
+      expect(sorted_articles.to_a).not_to include louisiana_article
+    end
+
     it 'returns articles created in the past month' do
       dc = FactoryBot.create(:state_dc)
       louisiana = FactoryBot.create(:state_louisiana)
