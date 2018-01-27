@@ -62,16 +62,14 @@ meta title: "EBWiki - Ending Violence Against People of Color",
           <h4 class='side-leader'>Recently Updated</h4>
            <table class='table leader-list'>
              <tr>
-              <th></th>
               <th>Case</th>
               <th>Updated</th>
              </tr>
 
-             <% Article.order(updated_at: :desc).first(10).each do |article| %>
+             <% @recently_updated_articles.each do |article| %>
                <tr>
-                 <td><%= Article.order(updated_at: :desc).first(10).index(article) + 1 %></td>
-                 <td><%= link_to truncate(article.title, length: 14), article %></td>
-                 <td><small><%= article.updated_at.strftime("%m.%e, %l:%M %p") %></small></td>
+                 <td><%= link_to_article_title(article, 25) %></td>
+                 <td><small><%= article_updated_at(article) %></small></td>
                </tr>
              <% end %>
            </table>

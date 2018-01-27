@@ -11,6 +11,7 @@ class ArticlesController < ApplicationController
 
   def index
     page_size = 12
+    @recently_updated_articles = Article.sorted_by_update 10
     @articles = Article.includes(:state).by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && params[:state_id].present?
     @articles = Article.includes(:state).by_state(params[:state_id]).order('date DESC').page(params[:page]).per(page_size) if !params[:query].present? && params[:state_id].present?
     @articles = Article.search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
