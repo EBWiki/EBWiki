@@ -47,7 +47,6 @@ class ApplicationController < ActionController::Base
     @state_objects ||= State.all
   end
 
-
   protected
 
   def configure_permitted_parameters

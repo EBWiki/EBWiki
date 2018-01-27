@@ -4,12 +4,16 @@ class ConversationsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @other_users = User.all.reject{ |u| u == current_user }.collect{|p| [ p.name, p.id ] }
+    @other_users = User.all.reject { |u| u == current_user }.collect { |p| [p.name, p.id] }
   end
 
   def create
     recipients = User.where(id: conversation_params[:recipients])
-    conversation = current_user.send_message(recipients, conversation_params[:body], conversation_params[:subject]).conversation
+    conversation = current_user
+                   .send_message(recipients,
+                                 conversation_params[:body],
+                                 conversation_params[:subject])
+                   .conversation
     flash[:success] = 'Your message was successfully sent!'
     redirect_to conversation_path(conversation)
   end
