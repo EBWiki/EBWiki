@@ -4,7 +4,7 @@ class ConversationsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @other_users = User.all.reject { |u| u == current_user }
+    @other_users = User.all.reject{ |u| u == current_user }.collect{|p| [ p.name, p.id ] }
   end
 
   def create
