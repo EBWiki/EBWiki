@@ -29,4 +29,12 @@ module ArticlesHelper
   def gender_dropdown_collection
     Gender.all.map { |gender| [gender.sex, gender.id] }.insert(3, '--------')
   end
+
+  def link_to_article_title(article, length)
+    link_to truncate(article.title, length: length), article
+  end
+
+  def article_updated_at(article)
+    article.updated_at.strftime("%m.%e, %l:%M %p")
+  end
 end
