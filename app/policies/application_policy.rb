@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-# Initializes Policy class to manage authorizations 
 
+# Initializes Policy class to manage authorizations
 
 class ApplicationPolicy
   attr_reader :user, :record
