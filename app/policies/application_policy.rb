@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-# :nodoc:
+
+# Initializes Policy Class to manage authorizations with POROs
 
 class ApplicationPolicy
   attr_reader :user, :record

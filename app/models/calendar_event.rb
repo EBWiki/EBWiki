@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Initializes CE Model
 
 class CalendarEvent < ActiveRecord::Base
