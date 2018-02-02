@@ -45,9 +45,8 @@ class CalendarEventsController < ApplicationController
     authorize @calendar_event
     respond_to do |format|
       if @calendar_event.save
-        format.html do 
-          redirect_to @calendar_event,
-          notice: 'Calendar event was successfully created.'
+        format.html do
+          redirect_to @calendar_event, notice: 'Calendar event was successfully created.'
         end
         format.json { render :show, status: :created, location: @calendar_event }
       else
@@ -63,8 +62,7 @@ class CalendarEventsController < ApplicationController
     respond_to do |format|
       if @calendar_event.update(calendar_event_params)
         format.html do
-          redirect_to @calendar_event,
-          notice: 'Calendar event was successfully updated.'
+          redirect_to @calendar_event, notice: 'Calendar event was successfully updated.'
         end
         format.json { render json: @calendar_event, status: :created, location: @calendar_event }
       else
@@ -80,8 +78,7 @@ class CalendarEventsController < ApplicationController
     @calendar_event.destroy
     respond_to do |format|
       format.html do
-        redirect_to calendar_events_url,
-        notice: 'Calendar event was successfully destroyed.'
+        redirect_to calendar_events_url, notice: 'Calendar event was successfully destroyed.'
       end
       format.json { head :no_content }
     end

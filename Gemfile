@@ -170,4 +170,3 @@ gem 'jbuilder'
 
 # authorization and testing authorization
 gem 'pundit'
-
