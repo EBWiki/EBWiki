@@ -79,9 +79,9 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', '~> 1.3.0'
   gem 'launchy', '~> 2.4.2'
+  gem 'pundit-matchers', '~> 1.4.1'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 2.6.2'
-  gem 'pundit-matchers', '~> 1.4.1'
   gem 'webmock'
 end
 
@@ -132,8 +132,8 @@ gem 'mailboxer', git: 'https://github.com/lacco/mailboxer.git'
 # track changes in model objects
 gem 'paper_trail', '~> 4.0.0.beta'
 
-# pretty urls
-gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+# pretty urls Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem 'friendly_id', '~> 5.1.0'
 
 # pagination
 gem 'kaminari'

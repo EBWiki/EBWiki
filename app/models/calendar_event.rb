@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Initializes CE Model
-
+# Initializes CalendarEvent Model
 class CalendarEvent < ActiveRecord::Base
   validates :title, presence: true
 
