@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # Inintializes CalendarEvent Policy to govern access to event controller actions
-
 class CalendarEventPolicy < ApplicationPolicy
   def index?
     true
