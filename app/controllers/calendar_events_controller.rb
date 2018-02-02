@@ -45,11 +45,11 @@ class CalendarEventsController < ApplicationController
     authorize @calendar_event
     respond_to do |format|
       if @calendar_event.save
-        format.html { redirect_to @calendar_event,
-                      notice: 'Calendar event was successfully created.'
-        }
-        format.json { render :show, status: :created, location: @calendar_event
-        }
+        format.html do 
+          redirect_to @calendar_event,
+          notice: 'Calendar event was successfully created.'
+        end
+        format.json { render :show, status: :created, location: @calendar_event }
       else
         format.html { render partial: 'new' }
         format.json { render json: @calendar_event.errors, status: :unprocessable_entity }
@@ -62,15 +62,14 @@ class CalendarEventsController < ApplicationController
   def update
     respond_to do |format|
       if @calendar_event.update(calendar_event_params)
-        format.html { redirect_to @calendar_event,
-                    notice: 'Calendar event was successfully updated.' }
-        format.json { render json: @calendar_event,
-                    :status => :created,
-                    location: @calendar_event
-        }
+        format.html do
+          redirect_to @calendar_event,
+          notice: 'Calendar event was successfully updated.'
+        end
+        format.json { render json: @calendar_event, status: :created, location: @calendar_event }
       else
         format.html { render partial: 'edit' }
-        format.json { render json: @calendar_event.errors, :status => :unprocessable_entity }
+        format.json { render json: @calendar_event.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -80,10 +79,10 @@ class CalendarEventsController < ApplicationController
   def destroy
     @calendar_event.destroy
     respond_to do |format|
-      format.html {
+      format.html do
         redirect_to calendar_events_url,
         notice: 'Calendar event was successfully destroyed.'
-      }
+      end
       format.json { head :no_content }
     end
   end
@@ -105,6 +104,6 @@ class CalendarEventsController < ApplicationController
         :end_time,
         :latitude,
         :longitude, :slug, :address, :city, :state_id, :zipcode, :user_id
-                                            )
+      )
     end
 end
