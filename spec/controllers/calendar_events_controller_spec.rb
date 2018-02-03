@@ -123,7 +123,7 @@ RSpec.describe CalendarEventsController, type: :controller do
         calendar_event = CalendarEvent.create! valid_attributes
         put :update, {:id => calendar_event.to_param, :calendar_event => new_attributes}, valid_session
         calendar_event.reload
-        expect(controller.notice).to eq('Calendar event was successfully updated.')
+        expect(controller.notice).to eq('Calendar event was updated.')
       end
 
       it "redirects to the calendar_event" do
