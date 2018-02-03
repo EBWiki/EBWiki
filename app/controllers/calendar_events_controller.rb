@@ -3,6 +3,7 @@
 # governs calendar event controller actions
 class CalendarEventsController < ApplicationController
   before_action :set_calendar_event, only: %i[show edit update destroy]
+  before_action :auth_events, only: %i[create]
 
   # GET /calendar_events
   # GET /calendar_events.json
@@ -19,7 +20,7 @@ class CalendarEventsController < ApplicationController
 
   # GET /calendar_events/new
   def new
-    @calendar_event = CalendarEvent.new
+    @calendar_event = current_user.calendar_events.build
     authorize @calendar_event
 
     respond_to do |format|
@@ -30,7 +31,6 @@ class CalendarEventsController < ApplicationController
 
   # GET /calendar_events/1/edit
   def edit
-    authorize @calendar_event
     respond_to do |format|
       format.html { render partial: 'edit' }
       format.js
@@ -40,9 +40,6 @@ class CalendarEventsController < ApplicationController
   # POST /calendar_events
   # POST /calendar_events.json
   def create
-    @calendar_event = CalendarEvent.new(calendar_event_params)
-    @calendar_event.user = current_user
-    authorize @calendar_event
     respond_to do |format|
       if @calendar_event.save
         format.html do
@@ -61,9 +58,7 @@ class CalendarEventsController < ApplicationController
   def update
     respond_to do |format|
       if @calendar_event.update(calendar_event_params)
-        format.html do
-          redirect_to @calendar_event, notice: 'Calendar event was successfully updated.'
-        end
+        format.html { redirect_to @calendar_event, notice: 'Calendar event was updated.' }
         format.json { render json: @calendar_event, status: :created, location: @calendar_event }
       else
         format.html { render partial: 'edit' }
@@ -89,6 +84,11 @@ class CalendarEventsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_calendar_event
     @calendar_event = CalendarEvent.find(params[:id])
+    authorize @calendar_event
+  end
+
+  def auth_events
+    @calendar_event = current_user.calendar_events.build(calendar_event_params)
     authorize @calendar_event
   end
 
