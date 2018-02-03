@@ -86,21 +86,21 @@ class CalendarEventsController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_calendar_event
-      @calendar_event = CalendarEvent.find(params[:id])
-      authorize @calendar_event
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_calendar_event
+    @calendar_event = CalendarEvent.find(params[:id])
+    authorize @calendar_event
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def calendar_event_params
-      params.require(:calendar_event).permit(
-        :title,
-        :description,
-        :start_time,
-        :end_time,
-        :latitude,
-        :longitude, :slug, :address, :city, :state_id, :zipcode, :user_id
-      )
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def calendar_event_params
+    params.require(:calendar_event).permit(
+      :title,
+      :description,
+      :start_time,
+      :end_time,
+      :latitude,
+      :longitude, :slug, :address, :city, :state_id, :zipcode, :user_id
+    )
+  end
 end
