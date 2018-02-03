@@ -11,6 +11,7 @@ RSpec.describe 'articles/index.html.erb', type: :view do
     assign(:articles, Kaminari.paginate_array([article1, article2]).page(1))
 
     assign(:recently_updated_articles, Article.sorted_by_update(2) )
+    assign(:state_objects, State.all)
     render
 
     expect(rendered).to match /John Doe/m

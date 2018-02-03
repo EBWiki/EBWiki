@@ -21,6 +21,7 @@ RSpec.describe 'articles/show.html.erb', type: :view do
       assign(:comments, article.comments)
       assign(:comment, Comment.new)
       assign(:subjects, article.subjects)
+      assign(:state_objects, State.all)
       render
       expect(rendered).not_to match /only a stub/m
     end
@@ -33,6 +34,7 @@ RSpec.describe 'articles/show.html.erb', type: :view do
       assign(:comments, article.comments)
       assign(:comment, Comment.new)
       assign(:subjects, article.subjects)
+      assign(:state_objects, State.all)
       render
       expect(response.body).to match /Legal Action/m
     end
@@ -45,6 +47,7 @@ RSpec.describe 'articles/show.html.erb', type: :view do
       assign(:comments, article.comments)
       assign(:comment, Comment.new)
       assign(:subjects, article.subjects)
+      assign(:state_objects, State.all)
       render
       expect(response.body).to match /Summary/m
     end
@@ -57,6 +60,7 @@ RSpec.describe 'articles/show.html.erb', type: :view do
       assign(:comments, article.comments)
       assign(:comment, Comment.new)
       assign(:subjects, article.subjects)
+      assign(:state_objects, State.all)
       render
       expect(response.body).to match /Community and Family/m
     end

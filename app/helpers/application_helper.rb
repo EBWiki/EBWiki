@@ -28,4 +28,18 @@ module ApplicationHelper
     end
     @hash
   end
+
+  def active_page_link(page, remote)
+    content_tag :a, page, remote: remote, rel: link_text(page)
+  end
+
+  def page_link(page, url, remote)
+    link_to page, url, remote: remote, rel: link_text(page)
+  end
+
+  def link_text(page)
+    return 'next' if page.next?
+    return 'prev' if page.prev?
+    nil
+  end
 end
