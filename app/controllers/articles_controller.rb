@@ -7,6 +7,8 @@ class ArticlesController < ApplicationController
   def new
     @article = current_user.articles.build
     @article.agencies.build
+    @categories = Category.all
+    @states = State.all
   end
 
   def index
