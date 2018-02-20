@@ -4,7 +4,7 @@ class ConversationsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @other_users = User.where.not(id: current_user.id).pluck(:id, :name)
+    @other_users = User.where.not(id: current_user.id).pluck(:name, :id)
   end
 
   def create
