@@ -50,7 +50,7 @@ class AgenciesController < ApplicationController
     end
   end
 
-  # DELETE /agencies/1
+  # DELETE /agencies/:id
   def destroy
     @agency.destroy
     respond_to do |format|
