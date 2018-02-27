@@ -12,8 +12,8 @@ class Agency < ActiveRecord::Base
     declare :private
   end
 
-  has_many :article_agencies
-  has_many :articles, through: :article_agencies
+  has_many :case_agencies
+  has_many :cases, through: :case_agencies
   belongs_to :state
 
   validates :name, presence: { message: 'Please enter a name.' }

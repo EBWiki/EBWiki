@@ -13,7 +13,7 @@ class AgenciesController < ApplicationController
   # GET /agencies/1
   def show
     @back_url = session[:previous_url]
-    @articles = @agency.articles
+    @cases = @agency.cases
     @agency_state = @agency.retrieve_state
   end
 

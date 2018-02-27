@@ -2,9 +2,9 @@
 
 # This will guess the Article class
 FactoryBot.define do
-  factory :article do |f|
+  factory :case do |f|
     f.sequence(:title) { |n| "#{n}Title" }
-    f.overview 'A new article'
+    f.overview 'A new case'
     f.city 'Albany'
     f.date Date.current
     f.state # { FactoryBot.create(:state) }
@@ -12,7 +12,7 @@ FactoryBot.define do
     f.summary 'A summary of changes'
   end
 
-  factory :invalid_article, class: Article do |f|
+  factory :invalid_case, class: Case do |f|
     f.title ''
     f.overview ''
     f.city ''

@@ -3,7 +3,7 @@
 # This is still called "Article", although its true name is "Case"
 # TODO: Rename this to Case
 #
-class Article < ActiveRecord::Base
+class Case < ActiveRecord::Base
   # TODO: Clean up relationship section
   belongs_to :user
   belongs_to :category
@@ -101,9 +101,9 @@ class Article < ActiveRecord::Base
   end
 
   def mom_new_cases_growth
-    last_month_cases = Article.most_recent_occurrences(30.days.ago).count
+    last_month_cases = Case.most_recent_occurrences(30.days.ago).count
     return 0 if last_month_cases.zero?
-    last_60_days_cases = Article.most_recent_occurrences(60.days.ago).count
+    last_60_days_cases = Case.most_recent_occurrences(60.days.ago).count
     prior_30_days_cases = last_60_days_cases - last_month_cases
     return (last_month_cases * 100) if prior_30_days_cases.zero?
 
@@ -111,22 +111,22 @@ class Article < ActiveRecord::Base
   end
 
   def mom_cases_growth
-    last_month_cases = Article.created_this_month.count
+    last_month_cases = Case.created_this_month.count
     return 0 if last_month_cases.zero?
-    previous_cases = Article.count - last_month_cases
+    previous_cases = Case.count - last_month_cases
     return (last_month_cases * 100) if previous_cases.zero?
 
-    (last_month_cases.to_f / (Article.count - last_month_cases) * 100).round(2)
+    (last_month_cases.to_f / (Case.count - last_month_cases) * 100).round(2)
   end
 
   def cases_updated_last_30_days
-    Article.recently_updated(30.days.ago).count
+    Case.recently_updated(30.days.ago).count
   end
 
   def mom_growth_in_case_updates
-    last_month_case_updates = Article.recently_updated(30.days.ago).count
+    last_month_case_updates = Case.recently_updated(30.days.ago).count
     return 0 if last_month_case_updates.zero?
-    last_60_days_case_updates = Article.recently_updated(60.days.ago).count
+    last_60_days_case_updates = Case.recently_updated(60.days.ago).count
     prior_30_days_case_updates = last_60_days_case_updates - last_month_case_updates
     return (last_month_case_updates * 100) if prior_30_days_case_updates.zero?
 
