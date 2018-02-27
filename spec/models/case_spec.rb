@@ -202,7 +202,7 @@ RSpec.describe Case, type: :model, versioning: true do
 
       it 'returns 0 if no updates in last 30 days' do
         this_case = FactoryBot.create(:case, updated_at: 31.days.ago)
-        expect(this_case.first.mom_growth_in_case_updates).to eq(0)
+        expect(Case.first.mom_growth_in_case_updates).to eq(0)
       end
 
       # What happens if there were updates between 0-30 days ago but none 31-60 days ago?

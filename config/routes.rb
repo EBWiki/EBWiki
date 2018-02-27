@@ -18,15 +18,15 @@ Rails.application.routes.draw do
   }
   resources :users, only: %i[show edit]
 
-  get '/articles/:id/history', to: 'articles#history', as: :articles_history
-  get '/articles/:id/followers', to: 'articles#followers', as: :articles_followers
-  post '/articles/:id/undo', to: 'articles#undo', as: :undo
-  resources :articles do
+  get '/cases/:id/history', to: 'cases#history', as: :cases_history
+  get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
+  post '/cases/:id/undo', to: 'cases#undo', as: :undo
+  resources :cases do
     resources :follows, only: %i[create destroy]
     resources :comments
   end
 
-  root 'articles#index'
+  root 'cases#index'
   resources :users do
     resources :registrations
   end

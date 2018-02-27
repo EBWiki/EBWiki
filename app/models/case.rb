@@ -15,9 +15,9 @@ class Case < ActiveRecord::Base
   has_many :subjects, dependent: :destroy
   accepts_nested_attributes_for :subjects, reject_if: :all_blank, allow_destroy: true
 
-  has_many :article_agencies, dependent: :destroy
-  has_many :agencies, through: :article_agencies
-  accepts_nested_attributes_for :article_agencies, reject_if: :all_blank, allow_destroy: true
+  has_many :case_agencies, dependent: :destroy
+  has_many :agencies, through: :case_agencies
+  accepts_nested_attributes_for :case_agencies, reject_if: :all_blank, allow_destroy: true
   # Paper Trail
   has_paper_trail ignore: [:summary], meta: { comment: :edit_summary }
 
@@ -33,13 +33,13 @@ class Case < ActiveRecord::Base
 
   # Model Validations
   validates :date, presence: { message: 'Please add a date.' }
-  validate :article_date_cannot_be_in_the_future
+  validate :case_date_cannot_be_in_the_future
   validates :city, presence: { message: 'Please add a city.' }
   validates :state_id, presence: { message: 'Please specify the state where this incident occurred before saving.' }
   validates :title, presence: { message: 'Please specify a title' }
   validates_associated :subjects
   validates :subjects, presence: { message: 'at least one subject is required' }
-  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the article.' }
+  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the case.' }
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
@@ -80,7 +80,7 @@ class Case < ActiveRecord::Base
     try(:nearbys, 50).try(:order, 'distance')
   end
 
-  def article_date_cannot_be_in_the_future
+  def case_date_cannot_be_in_the_future
     if date.present? && date > Date.current
       errors.add(:date, 'must be in the past')
     end
