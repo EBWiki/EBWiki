@@ -18,5 +18,5 @@ services:
 - elasticsearch
 - redis-server
 
-AWS_ACCESS_KEY_ID: 'dummydata'
-AWS_SECRET_KEY_ID: 'justTestingForTravis'
+aws_access_key_id: 'dummydata'
+aws_secret_access_key: 'justTestingForTravis'
