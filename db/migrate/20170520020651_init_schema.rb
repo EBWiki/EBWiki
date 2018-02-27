@@ -69,7 +69,6 @@ class InitSchema < ActiveRecord::Migration
       t.integer  'follows_count',    default: 0, null: false
     end
 
-    binding.pry
     unless index_exists? :articles, :slug, name: 'index_articles_on_slug'
       add_index 'articles', ['slug'], name: 'index_articles_on_slug', unique: true, using: :btree
     end
