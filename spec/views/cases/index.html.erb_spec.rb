@@ -2,15 +2,15 @@
 
 require 'rails_helper'
 
-RSpec.describe 'articles/index.html.erb', type: :view do
+RSpec.describe 'cases/index.html.erb', type: :view do
   it 'displays all the articles' do
-    article1 = FactoryBot.build(:article, title: 'John Doe')
-    article2 = FactoryBot.build(:article,
+    case1 = FactoryBot.build(:case, title: 'John Doe')
+    case2 = FactoryBot.build(:case,
                                  title: 'Jimmy Doe',
                                  state: State.where(ansi_code: 'NY').first)
-    assign(:articles, Kaminari.paginate_array([article1, article2]).page(1))
+    assign(:cases, Kaminari.paginate_array([case1, case2]).page(1))
 
-    assign(:recently_updated_articles, Article.sorted_by_update(2) )
+    assign(:recently_updated_cases, Case.sorted_by_update(2) )
     assign(:state_objects, State.all)
     render
 

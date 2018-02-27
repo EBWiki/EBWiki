@@ -2,9 +2,9 @@
      title and meta tags in conjunction with the metamagic
      method in app/views/layouts/application.html.erb
      TODO: Create a view helper that works for all pages -->
-<% meta title: "EBWiki tracking the case of #{@article.title}",
-     description: "#{@article.overview.truncate(155)}",
-     keywords: %w("@article.subjects.first.name police violence people color")
+<% meta title: "EBWiki tracking the case of #{@case.title}",
+     description: "#{@case.overview.truncate(155)}",
+     keywords: %w("@case.subjects.first.name police violence people color")
 %>
 <%= render 'layouts/header' %>
 <!-- Page Content -->
@@ -18,8 +18,8 @@
   <!-- Portfolio Item Row -->
   <div class="row">
     <div class="col-md-3">
-      <% if @article.avatar? %>
-        <%= image_tag(@article.avatar.large_avatar, :class => "img-responsive articleImage") %>
+      <% if @case.avatar? %>
+        <%= image_tag(@case.avatar.large_avatar, :class => "img-responsive articleImage") %>
       <% else %>
         <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
       <% end %>
@@ -39,13 +39,13 @@
     <div class="col-md-9">
       <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
-          <small><%= @article.city %>, <%= @article.state.name %></small>
-      <br/><small><%= @article.date.strftime("%B %d, %Y") %></small>
-          <% if @article.agencies.present? %>
+          <small><%= @case.city %>, <%= @case.state.name %></small>
+      <br/><small><%= @case.date.strftime("%B %d, %Y") %></small>
+          <% if @case.agencies.present? %>
             <p>Agencies:
-              <% @article.agencies.each_with_index do |agency, index| %>
+              <% @case.agencies.each_with_index do |agency, index| %>
                 <%= link_to agency.name, agency_path(agency) %>
-                <% unless index == @article.agencies.size - 1 %>
+                <% unless index == @case.agencies.size - 1 %>
                   <%= "|" %>
                 <% end %>
               <% end %>
@@ -53,40 +53,40 @@
           <% end %>
           <div>
             <% if current_user %>
-              <% if current_user.following?(@article) %>
+              <% if current_user.following?(@case) %>
               <% else %>
-                <%= link_to 'Follow This Case', article_follows_path(@article), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:content => "Click here to receive an email whenever this case is updated."} %>
+                <%= link_to 'Follow This Case', case_follows_path(@case), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:content => "Click here to receive an email whenever this case is updated."} %>
               <% end %>
             <% else %>
-              <%= link_to 'Follow This Case', article_follows_path(@article), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
+              <%= link_to 'Follow This Case', case_follows_path(@case), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
             <% end %>
           </div>
       </h1>
-      <p class="timeAgo">Last updated: <%= time_ago_in_words(@article.updated_at) %> ago</p>
-        <% if @article.followers.present? %>
+      <p class="timeAgo">Last updated: <%= time_ago_in_words(@case.updated_at) %> ago</p>
+        <% if @case.followers.present? %>
           <p>
-            <%= link_to 'People tracking this case', articles_followers_path(@article) %>: <span class="timeAgo"><%= @article.followers.count %></span>
-              <% unless @article.followers.include?(current_user) %>
-                -- Click here to <%= link_to 'Track this', article_follows_path(@article), :method => :post %>.
+            <%= link_to 'People tracking this case', cases_followers_path(@case) %>: <span class="timeAgo"><%= @case.followers.count %></span>
+              <% unless @case.followers.include?(current_user) %>
+                -- Click here to <%= link_to 'Track this', case_follows_path(@case), :method => :post %>.
               <% end %>
           </p>
         <% end %>
         <%= render 'main_content' %>
       <div class="row">
         <div class="col-md-12">
-          <% if @article.video_url.to_s != "" %>
+          <% if @case.video_url.to_s != "" %>
             <div class="embed-container">
-                <%= embed(@article.video_url) %>
+                <%= embed(@case.video_url) %>
             </div>
           <% end %>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12" >
-          <% if @article.links.count > 0 %>
+          <% if @case.links.count > 0 %>
             <h4 class="article_subheader">Additional Resources:</h4>
             <ul class="background-links" id="link-list">
-              <% @article.links.each do |link| %>
+              <% @case.links.each do |link| %>
                 <li>
                   <%= link_to link.url, "#{link.url}", target: '_blank' %> <span class="timeAgo">added <%= link.created_at.strftime("%b %d, %Y") %></span>
                 </li>
@@ -95,31 +95,31 @@
           <% end %>
         </div>
       </div>
-      <% if @article.nearby_cases.present? %>
+      <% if @case.nearby_cases.present? %>
       <!-- Related Projects Row -->
         <div class="row">
           <div class="col-lg-12">
-            <h3 class="page-header">EBWiki is tracking <%= @article.nearby_cases.size %> other case<%= "s" if @article.nearby_cases.size > 1 %> near <%= @article.city %>, <%= @article.state.name %>:</h3>
+            <h3 class="page-header">EBWiki is tracking <%= @case.nearby_cases.size %> other case<%= "s" if @case.nearby_cases.size > 1 %> near <%= @case.city %>, <%= @case.state.name %>:</h3>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-12">
-            <% @article.nearby_cases.each do |article| %>
+            <% @case.nearby_cases.each do |this_case| %>
             <div class="col-lg-2 col-md-4 col-xs-12">
               <div class="view view-first">
-                <% if article.avatar? %>
-                  <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
+                <% if this_case.avatar? %>
+                  <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), this_case %>
                 <% else %>
 
                   <div class="thumbnail text-center">
-                    <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), article %>
+                    <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), this_case %>
                     <div class="caption">
-                      <h4><%= article.title %></h4>
+                      <h4><%= this_case.title %></h4>
                     </div>
                   </div>
                 <% end %>
                 <div class="mask">
-                  <h2><%= link_to article.title, article, :class => "info2" %></h2>
+                  <h2><%= link_to this_case.title, this_case, :class => "info2" %></h2>
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
   handler = Gmaps.build('Google');
   handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
     markers = handler.addMarkers(<%= raw marker_locations_for(
-      @article.nearby_cases.map { |that_case|
+      @case.nearby_cases.map { |that_case|
         [that_case.id, that_case.latitude, that_case.longitude,
         that_case.default_avatar_url, that_case.title, that_case.overview]
       }

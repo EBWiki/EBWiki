@@ -2,24 +2,24 @@
      title and meta tags in conjunction with the metamagic
      method in app/views/layouts/application.html.erb
      TODO: Create a view helper that works for all pages -->
-<% meta title: "People tracking the case of #{@article.title}",
-     description: "There are #{@article.followers.count} people tracking the case of #{@article.title} on EBWiki",
-     keywords: %w(@article.subjects.first.name " police violence people color")
+<% meta title: "People tracking the case of #{@case.title}",
+     description: "There are #{@case.followers.count} people tracking the case of #{@case.title} on EBWiki",
+     keywords: %w(@case.subjects.first.name " police violence people color")
 %>
 <%= render 'layouts/header' %>
 <!-- Page Content -->
 <div class="container">
-  <% if @article.followers.present? %>
+  <% if @case.followers.present? %>
 	<!-- Article Followers Gallery -->
 		<div class="row">
 	    <div class="col-lg-12">
-        <h3 class="page-header">This case currently has <%= pluralize(@article.followers.count, 'follower') %> tracking it on EBWiki.</h3>
+        <h3 class="page-header">This case currently has <%= pluralize(@case.followers.count, 'follower') %> tracking it on EBWiki.</h3>
 				<h3 class="text-center"><%#= link_to 'Track this case', article_follows_path(@article), class: "btn btn-primary" %></h3>
       </div>
     </div>
 		<div class="row">
       <div class="col-lg-12">
-		    <% @article.followers.each do |follower| %>
+		    <% @case.followers.each do |follower| %>
 			    <div class="col-lg-2 col-md-4 col-xs-12">
           <div class="">
             <%= link_to image_tag(avatar_url(follower,200), :class => "img-responsive"), follower %>

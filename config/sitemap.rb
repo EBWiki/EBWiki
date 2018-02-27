@@ -24,11 +24,10 @@ if Rails.env.production?
 end
 
 SitemapGenerator::Sitemap.create do
-  # Add all articles:
-
-  Article.find_each do |article|
-    add article_path(article), lastmod: article.updated_at
-    add articles_followers_path(article), lastmod: article.updated_at
+  # Add all cases:
+  Case.find_each do |this_case|
+    add case_path(this_case), lastmod: this_case.updated_at
+    add case_followers_path(this_case), lastmod: this_case.updated_at
   end
 end
 
@@ -53,8 +52,8 @@ SitemapGenerator::Sitemap.create do
   #
   # Examples:
   #
-  # Add '/articles'
+  # Add '/cases'
   #
-  #   add articles_path, priority: 0.7, changefreq: 'daily'
+  #   add cases_path, priority: 0.7, changefreq: 'daily'
   #
 end

@@ -14,7 +14,7 @@ class AnalyticsController < ApplicationController
     @articles_occurring_this_month = Case.most_recent_occurrences 30.days.ago
     @articles_sorted_by_update = Case.sorted_by_update 10
     @articles_sorted_by_followers = Case.sorted_by_followers 10
-    @most_visited_articles = DetermineVisitsToArticles.call(@visits_this_week.sorted_by_hits(13))
+    @most_visited_articles = DetermineVisitsToCases.call(@visits_this_week.sorted_by_hits(13))
     @most_recent_comments = Comment.sorted_by_creation 15
   end
 

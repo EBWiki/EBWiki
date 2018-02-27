@@ -1,12 +1,12 @@
-<% if @article.overview.present? %>
+<% if @case.overview.present? %>
   <h4 class="article_subheader">Summary  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "The basics", :content => "This section attempts to encapsulate the basic facts of the case."})%></h4>
-	<p><%= sanitize @article.overview %></p>
+	<p><%= sanitize @case.overview %></p>
 <% end %>
-<% if @article.litigation.present? %>
+<% if @case.litigation.present? %>
   <h4 class="article_subheader">Legal Action  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Case Proceedings", :content => "This section outlines the legal steps that have occurred in the case, answering questions about administrative actions and more formal charges."})%></h4>
-	<p><%= sanitize @article.litigation %></p>
+	<p><%= sanitize @case.litigation %></p>
 <% end %>
-<% if @article.community_action.present? %>
+<% if @case.community_action.present? %>
   <h4 class="article_subheader">Community and Family Efforts  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Community Action", :content => "This section outlines the response of the local community and the victim's family."})%></h4>
-	<p><%= sanitize @article.community_action %></p>
+	<p><%= sanitize @case.community_action %></p>
 <% end %>
