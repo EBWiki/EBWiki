@@ -17,3 +17,6 @@ cache: bundler
 services:
 - elasticsearch
 - redis-server
+
+AWS_ACCESS_KEY_ID: 'dummydata'
+AWS_SECRET_KEY_ID: 'justTestingForTravis'
