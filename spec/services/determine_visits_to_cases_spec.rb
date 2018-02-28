@@ -9,6 +9,6 @@ describe DetermineVisitsToCases do
     visit_info = [['https://ebwiki.org/', 1],
                   [case_URL, 3]]
     cases = DetermineVisitsToCases.call(visit_info)
-    expect(cases).to eq([[cases, 3]])
+    expect(cases).to eq([cases, 3])
   end
 end

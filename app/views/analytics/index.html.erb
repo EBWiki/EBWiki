@@ -77,10 +77,10 @@
             <th>Updated</th>
            </tr>
 
-           <% @articles_sorted_by_update.each do |article| %>
+           <% @cases_sorted_by_update.each do |this_case| %>
              <tr>
-               <td><%= link_to_article_title(article, 25) %></td>
-               <td><small><%= article_updated_at(article) %></small></td>
+               <td><%= link_to_case_title(this_case, 25) %></td>
+               <td><small><%= case_updated_at(this_case) %></small></td>
              </tr>
            <% end %>
          </table>
@@ -104,10 +104,10 @@
             <th>Followers</th>
            </tr>
 
-           <% @articles_sorted_by_followers.each do |article| %>
+           <% @cases_sorted_by_followers.each do |this_case| %>
              <tr>
-               <td><%= link_to_article_title(article, 25) %></td>
-               <td><%= link_to_article_followers(article) %></td>
+               <td><%= link_to_case_title(this_case, 25) %></td>
+               <td><%= link_to_case_followers(this_case) %></td>
              </tr>
            <% end %>
          </table>
@@ -129,11 +129,11 @@
             <th>Views</th>
            </tr>
 
-           <% @most_visited_articles.each do |article_info| %>
-            <% article = article_info[0] %>
-            <% views = article_info[1] %>
+           <% @most_visited_cases.each do |case_info| %>
+            <% this_case = case_info[0] %>
+            <% views = case_info[1] %>
             <tr>
-              <td><%= link_to_article_title(article, 25) %></td>
+              <td><%= link_to_case_title(this_case, 25) %></td>
               <td><%= views %></td>
             </tr>
            <% end %>
@@ -158,7 +158,7 @@
           <% @most_recent_comments.each do |comment| %>
             <li>
               <blockquote class="blockquote">
-                <p><%= link_to_article_title(comment.commentable, 25) %> -- <%= comment_created_at(comment) %></p>
+                <p><%= link_to_case_title(comment.commentable, 25) %> -- <%= comment_created_at(comment) %></p>
                 <p><%= link_to_comment(comment, 100) %></p>
                 <small><%= link_to_comment_user(comment) %></small>
               </blockquote>
@@ -168,29 +168,5 @@
       </div>
     </div>
   </div>
-
-
-<!--     <div class="row">
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <img data-src="holder.js/100%x150/white">
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <img data-src="holder.js/100%x150/white">
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <img data-src="holder.js/100%x150/white">
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <img data-src="holder.js/100%x150/white">
-        </div>
-      </div>
-    </div> -->
   <p>* mom refers to a comparison of the most recent adjacent 30 day periods, not specific months</p>
 </div>
