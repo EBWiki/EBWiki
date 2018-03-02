@@ -47,7 +47,7 @@ gem 'sitemap_generator'
 gem 'bullet'
 
 # internal analytics
-gem 'ahoy_matey'
+gem 'ahoy_matey', '1.6.1'
 
 # use split gem for a/b testing
 gem 'split', require: 'split/dashboard'
@@ -57,13 +57,13 @@ gem 'rollbar', '~> 2.1'
 gem 'simplecov'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'pry-byebug'
   gem 'factory_bot_rails'
   gem 'guard-rspec'
-  gem 'rspec-activemodel-mocks'
-  gem 'rspec-rails', '~> 3.0'
+  gem 'pry-byebug'
   # Install a pre-commit hook to enforce code checks before commits
   gem 'pre-commit'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-rails', '~> 3.0'
 end
 
 group :development do
@@ -73,11 +73,11 @@ group :development do
 end
 
 group :test do
-  gem 'faker'
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 2.4.3'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', '~> 1.3.0'
+  gem 'faker'
   gem 'launchy', '~> 2.4.2'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 2.6.2'
@@ -88,7 +88,7 @@ gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '3.5.6'
 gem 'momentjs-rails'
-gem 'rails_12factor', groups: [:production, :staging]
+gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
 # for aws cloud storage
@@ -101,7 +101,7 @@ gem 'carrierwave'
 gem 'carrierwave-imageoptimizer'
 
 # allow deflated assets with heroku
-gem 'heroku_rails_deflate', groups: [:production, :staging]
+gem 'heroku_rails_deflate', groups: %i[production staging]
 
 # CMS panel for admin
 gem 'rails_admin', '0.6.7'
