@@ -20,7 +20,7 @@ class ConversationsController < ApplicationController
 
   def show
     @receipts = conversation.receipts_for(current_user)
-    #mark conversation as read
+    # mark conversation as read
     conversation.mark_as_read(current_user)
   end
 
