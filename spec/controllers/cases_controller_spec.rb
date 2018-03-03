@@ -9,7 +9,6 @@ RSpec.describe CasesController, type: :controller do
       :make_undo_link
     ).and_return('/cases/1')
   end
-
   let(:cases) { FactoryBot.create_list(:case, 20) }
 
   describe '#index' do

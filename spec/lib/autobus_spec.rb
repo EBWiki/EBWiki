@@ -11,8 +11,8 @@ describe Autobus, '#total_backup_size' do
          "kind": 'Daily',
          "created_at": '2017-12-17T08:00:31.841Z',
          "database": 'HEROKU_POSTGRESQL_YELLOW_URL',
-         "duration":27,
-         "size":30000,
+         "duration": 27,
+         "size": 30000,
          "test_status": 'Pass',
          "description": '',
          "url": 'https://autobus-eu.s3.amazonaws.com/YELLOW_5a36241f9340510731fe3e61.dump?AWSAccessKeyId=AKIAJENCGZ6XMPKWLLQA\\u0026Expires=1513540087\\u0026Signature=VFTzq9aWZfoPgiWs6LJvtcHj%2FnA%3D'
@@ -38,8 +38,8 @@ describe Autobus, '#total_backup_size' do
          "kind": 'Daily',
          "created_at": '2017-12-17T08:00:31.841Z',
          "database": 'HEROKU_POSTGRESQL_YELLOW_URL',
-         "duration":27,
-         "size":30000,
+         "duration": 27,
+         "size": 30000,
          "test_status": 'Pass',
          "description": '',
          "url": 'https://autobus-eu.s3.amazonaws.com/YELLOW_5a36241f9340510731fe3e61.dump?AWSAccessKeyId=AKIAJENCGZ6XMPKWLLQA\\u0026Expires=1513540087\\u0026Signature=VFTzq9aWZfoPgiWs6LJvtcHj%2FnA%3D'
@@ -49,8 +49,8 @@ describe Autobus, '#total_backup_size' do
          "kind": 'Daily',
          "created_at": '2017-12-17T03:50:21.586Z',
          "database": 'DATABASE_URL',
-         "duration":11,
-         "size":50000,
+         "duration": 11,
+         "size": 50000,
          "test_status": 'Pass',
          "description": '',
          "url": 'https://autobus-eu.s3.amazonaws.com/DATABASE_5a35e97d9340510731fe3cf9.dump?AWSAccessKeyId=AKIAJENCGZ6XMPKWLLQA\\u0026Expires=1513540087\\u0026Signature=6UB33lXo4%2FGbioO%2FKepbR%2BuJur8%3D'
