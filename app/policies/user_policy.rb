@@ -1,4 +1,5 @@
 # frozen_string_literal: true.
+# :nodoc:
 
 class UserPolicy
   attr_reader :current_user, :model
