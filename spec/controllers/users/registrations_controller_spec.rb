@@ -34,7 +34,7 @@ describe Users::RegistrationsController, '#create', type: :controller do
       expect do
         post :create, user: @attr
         expect(response).to redirect_to('/users/sign_up')
-      end.not_to change { User.count }
+      end.not_to(change{ User.count })
     end
   end
 end
