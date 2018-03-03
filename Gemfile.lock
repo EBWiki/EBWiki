@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/elabs/pundit
+  revision: 1036bd7cfbedc6579a09faf36e3c0b48dc34d908
+  specs:
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
+
+GIT
   remote: https://github.com/galetahub/ckeditor.git
   revision: 32bc0c6702388549cb4b3f00f82afbc3798d6891
   specs:
@@ -722,6 +729,7 @@ DEPENDENCIES
   pre-commit
   pry-byebug
   puma
+  pundit!
   rack
   rack-cors
   rack-host-redirect
@@ -754,4 +762,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
