@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-# This is still called "Article", although its true name is "Case"
-# TODO: Rename this to Case
-#
+# This is the main model of the application. Each death is a case.
+# TODO: Lots & lots of refactoring
 class Case < ActiveRecord::Base
   # TODO: Clean up relationship section
   belongs_to :user

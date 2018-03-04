@@ -20,7 +20,7 @@ SimpleForm.setup do |config|
     b.use :html5
 
     # Calculates placeholders automatically from I18n
-    # You can also pass a string as f.input placeholder: "Placeholder"
+    # You can also pass a string as f.input placeholder: 'Placeholder'
     b.use :placeholder
 
     ## Optional extensions
@@ -136,7 +136,7 @@ SimpleForm.setup do |config|
 
   # Namespaces where SimpleForm should look for custom input classes that
   # override default inputs.
-  # config.custom_inputs_namespaces << "CustomInputs"
+  # config.custom_inputs_namespaces << 'CustomInputs'
 
   # Default priority for time_zone inputs.
   # config.time_zone_priority = nil

@@ -10,11 +10,11 @@ task agencies_add: :environment do
     agency_hash = agency.to_hash
     agency = Agency.new(
       name: agency_hash['Agency'],
-      # phone: agency_hash["Phone"],
-      # address: agency_hash["Address"],
-      # city: agency_hash["City"],
+      # phone: agency_hash['Phone'],
+      # address: agency_hash['Address'],
+      # city: agency_hash['City'],
       state_id: agency_hash['State_id'],
-      # zipcode: agency_hash["Zip"],
+      # zipcode: agency_hash['Zip'],
     )
     agency.save
     p 'Created!'

@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Case, type: :model, versioning: true do
-
-  describe "validity" do
+  describe 'validity' do
     it 'is invalid without a date' do
       this_case = build(:case, date: nil)
       expect(this_case).to be_invalid
@@ -26,8 +25,10 @@ RSpec.describe Case, type: :model, versioning: true do
       expect(this_case).to be_invalid
     end
   end
+end
 
-  describe "versioning" do
+RSpec.describe Case, type: :model, versioning: true do
+  describe 'versioning' do
     it 'starts versioning when a new this_case is created' do
       this_case = FactoryBot.create(:case)
       expect(this_case.versions.size).to eq 1
@@ -88,8 +89,10 @@ RSpec.describe Case, type: :model, versioning: true do
       expect(this_case.versions.last.comment).to eq 'fixed the title'
     end
   end
+end
 
-  describe "slugs" do
+RSpec.describe Case, type: :model, versioning: true do
+  describe 'slugs' do
     it 'adds city to slug to maintain uniqueness' do
       this_case = FactoryBot.create(:case, title: 'The Title')
       this_case2 = FactoryBot.create(:case, title: 'The Title')
@@ -106,21 +109,24 @@ RSpec.describe Case, type: :model, versioning: true do
       expect(this_case.slug).to eq 'another-title'
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe '#new' do
     it 'takes three parameters and returns an Case object' do
       this_case = build(:case)
       expect(this_case).to be_an_instance_of Case
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe '#title' do
     it 'returns the correct title' do
       this_case = build(:case)
       expect(this_case.title).to include 'Title'
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe 'follower_count' do
     it 'gives the correct followers count' do
       this_case = FactoryBot.create(:case, id: 10)
@@ -140,14 +146,16 @@ RSpec.describe Case, type: :model, versioning: true do
       end.to change { this_case.reload.follows_count }.by(1)
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe '#content' do
     it 'returns the correct content' do
       this_case = build(:case)
       expect(this_case.overview).to eq 'A new case'
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe 'geocoded' do
     it 'generates longitude and latitude from city and state on save' do
       this_case = FactoryBot.create(:case)
@@ -161,13 +169,14 @@ RSpec.describe Case, type: :model, versioning: true do
 
       expect do
         this_case.update_attributes(city: 'Worthington',
-                                  state_id: ohio.id,
-                                  address: '1867 Irving Road',
-                                  zipcode: '43085')
+                                    state_id: ohio.id,
+                                    address: '1867 Irving Road',
+                                    zipcode: '43085')
       end.to change { this_case.latitude }
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe '#nearby_cases' do
     it 'returns an empty array if no cases are nearby' do
       this_case = FactoryBot.create(:case)
@@ -180,16 +189,18 @@ RSpec.describe Case, type: :model, versioning: true do
       expect { this_case.nearby_cases }.not_to raise_error
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe 'recently updated cases' do
     it 'returns only cases updated in past 30 days' do
-      this_case = FactoryBot.create(:case, updated_at: 31.days.ago)
+      FactoryBot.create(:case, updated_at: 31.days.ago)
       this_case2 = FactoryBot.create(:case)
       this_case2.update_attribute(:video_url, 'new_video.com')
       expect(Case.first.cases_updated_last_30_days).to eq(1)
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe 'growth' do
     describe 'growth_in_case_updates' do
       it 'returns the correct percentage increase' do
@@ -251,30 +262,30 @@ RSpec.describe Case, type: :model, versioning: true do
         expect(Case.first.mom_cases_growth).to eq(200)
       end
     end
-
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe '#default_avatar_url' do
-    it 'takes the avatar''s default URL and turns this into a column' do
+    it 'takes the avatar' 's default URL and turns this into a column' do
       this_case = FactoryBot.create(:case)
       avatar_mock = double('Avatar', url: 'https://avatar.com')
       allow(this_case).to receive(:default_avatar_url).and_return(avatar_mock.url)
       expect(this_case.default_avatar_url).to_not be_nil
     end
   end
-
+end
+RSpec.describe Case, type: :model, versioning: true do
   describe 'scopes' do
-
     it 'returns cases based on case' do
       louisiana = FactoryBot.create(:state_louisiana)
       texas = FactoryBot.create(:state_texas)
 
-      texas_case = FactoryBot.create(:case,
-                                       city: 'Houston',
-                                       state_id: texas.id)
+      FactoryBot.create(:case,
+                        city: 'Houston',
+                        state_id: texas.id)
       louisiana_case = FactoryBot.create(:case,
-                                            city: 'Baton Rouge',
-                                            state_id: louisiana.id)
+                                         city: 'Baton Rouge',
+                                         state_id: louisiana.id)
 
       sorted_cases = Case.by_state texas.id
       expect(sorted_cases.count).to eq 1
@@ -287,17 +298,17 @@ RSpec.describe Case, type: :model, versioning: true do
       texas = FactoryBot.create(:state_texas)
 
       texas_case = FactoryBot.create(:case,
-                                       city: 'Houston',
-                                       state_id: texas.id,
-                                       created_at: Time.current)
+                                     city: 'Houston',
+                                     state_id: texas.id,
+                                     created_at: Time.current)
       louisiana_case = FactoryBot.create(:case,
-                                            city: 'Baton Rouge',
-                                            state_id: louisiana.id,
-                                            created_at: 5.weeks.ago)
+                                         city: 'Baton Rouge',
+                                         state_id: louisiana.id,
+                                         created_at: 5.weeks.ago)
       dc_case = FactoryBot.create(:case,
-                                     city: 'Washington',
-                                     state_id: dc.id,
-                                     created_at: 1.year.ago)
+                                  city: 'Washington',
+                                  state_id: dc.id,
+                                  created_at: 1.year.ago)
 
       recent_case = Case.created_this_month
       expect(recent_case.count).to eq 1
@@ -311,17 +322,17 @@ RSpec.describe Case, type: :model, versioning: true do
       texas = FactoryBot.create(:state_texas)
 
       texas_case = FactoryBot.create(:case,
-                                        city: 'Houston',
-                                        state_id: texas.id,
-                                        date: Time.current)
+                                     city: 'Houston',
+                                     state_id: texas.id,
+                                     date: Time.current)
       louisiana_case = FactoryBot.create(:case,
-                                            city: 'Baton Rouge',
-                                            state_id: louisiana.id,
-                                            date: 2.weeks.ago)
+                                         city: 'Baton Rouge',
+                                         state_id: louisiana.id,
+                                         date: 2.weeks.ago)
       dc_case = FactoryBot.create(:case,
-                                     city: 'Washington',
-                                     state_id: dc.id,
-                                     date: 1.year.ago)
+                                  city: 'Washington',
+                                  state_id: dc.id,
+                                  date: 1.year.ago)
 
       recent_cases = Case.most_recent_occurrences 1.month.ago
       expect(recent_cases.count).to eq 2
@@ -334,17 +345,17 @@ RSpec.describe Case, type: :model, versioning: true do
       texas = FactoryBot.create(:state_texas)
 
       texas_case = FactoryBot.create(:case,
-                                        city: 'Houston',
-                                        state_id: texas.id,
-                                        updated_at: Time.current)
+                                     city: 'Houston',
+                                     state_id: texas.id,
+                                     updated_at: Time.current)
       louisiana_case = FactoryBot.create(:case,
-                                            city: 'Baton Rouge',
-                                            state_id: louisiana.id,
-                                            updated_at: 2.weeks.ago)
+                                         city: 'Baton Rouge',
+                                         state_id: louisiana.id,
+                                         updated_at: 2.weeks.ago)
       dc_case = FactoryBot.create(:case,
-                                     city: 'Washington',
-                                     state_id: dc.id,
-                                     updated_at: 1.year.ago)
+                                  city: 'Washington',
+                                  state_id: dc.id,
+                                  updated_at: 1.year.ago)
 
       recent_cases = Case.recently_updated 1.month.ago
       expect(recent_cases.count).to eq 2
@@ -357,17 +368,17 @@ RSpec.describe Case, type: :model, versioning: true do
       texas = FactoryBot.create(:state_texas)
 
       texas_case = FactoryBot.create(:case,
-                                        city: 'Houston',
-                                        state_id: texas.id,
-                                        updated_at: Time.current)
+                                     city: 'Houston',
+                                     state_id: texas.id,
+                                     updated_at: Time.current)
       louisiana_case = FactoryBot.create(:case,
-                                            city: 'Baton Rouge',
-                                            state_id: louisiana.id,
-                                            updated_at: 2.weeks.ago)
+                                         city: 'Baton Rouge',
+                                         state_id: louisiana.id,
+                                         updated_at: 2.weeks.ago)
       dc_case = FactoryBot.create(:case,
-                                     city: 'Washington',
-                                     state_id: dc.id,
-                                     updated_at: 1.year.ago)
+                                  city: 'Washington',
+                                  state_id: dc.id,
+                                  updated_at: 1.year.ago)
 
       sorted_cases = Case.sorted_by_update 2
       expect(sorted_cases.count).to eq 2
@@ -380,17 +391,17 @@ RSpec.describe Case, type: :model, versioning: true do
       texas = FactoryBot.create(:state_texas)
 
       texas_case = FactoryBot.create(:case,
-                                        city: 'Houston',
-                                        state_id: texas.id,
-                                        updated_at: Time.current)
+                                     city: 'Houston',
+                                     state_id: texas.id,
+                                     updated_at: Time.current)
       louisiana_case = FactoryBot.create(:case,
-                                            city: 'Baton Rouge',
-                                            state_id: louisiana.id,
-                                            updated_at: 2.weeks.ago)
+                                         city: 'Baton Rouge',
+                                         state_id: louisiana.id,
+                                         updated_at: 2.weeks.ago)
       dc_case = FactoryBot.create(:case,
-                                     city: 'Washington',
-                                     state_id: dc.id,
-                                     updated_at: 1.year.ago)
+                                  city: 'Washington',
+                                  state_id: dc.id,
+                                  updated_at: 1.year.ago)
 
       follow_one = FactoryBot.create(:follow, followable_id: texas_case.id)
       follow_two = FactoryBot.create(:follow, followable_id: texas_case.id)
