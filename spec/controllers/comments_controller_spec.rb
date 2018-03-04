@@ -12,6 +12,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 end
 RSpec.describe CommentsController, type: :controller do
+  let(:this_case) { FactoryBot.create(:case) }
   describe 'GET #new' do
     it 'returns http success' do
       get :new, case_id: this_case.id
@@ -20,6 +21,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 end
 RSpec.describe CommentsController, type: :controller do
+  let(:this_case) { FactoryBot.create(:case) }
   describe 'Case comments' do
     let(:this_case) { FactoryBot.create(:case) }
     let(:comment) { this_case.comments.create(content: 'a pithy comment') }
