@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# This model refers to law enforcement agencies involved in the cases
 class Agency < ActiveRecord::Base
+  # This is the jurisdiction of the agency
+  # TODO: Determine a better way to do these enums
   class Jurisdiction
     include EnumeratedType
 
@@ -17,8 +20,13 @@ class Agency < ActiveRecord::Base
   belongs_to :state
 
   validates :name, presence: { message: 'Please enter a name.' }
-  validates :name, uniqueness: { message: 'An agency with this name already exists and can be found. If you want to create a new agency, it must have a unique name.' }
-  validates :state_id, presence: { message: 'You must specify the state in which the incident occurred.' }
+  validates :name, uniqueness: {
+    message: 'An agency with this name already exists and can be found. If you'\
+             ' want to create a new agency, it must have a unique name.'
+  }
+  validates :state_id, presence: {
+    message: 'You must specify the state in which the incident occurred.'
+  }
 
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
@@ -26,7 +34,10 @@ class Agency < ActiveRecord::Base
   # Geocoding
   geocoded_by :full_address
   before_save :geocode, if: proc { |agcy|
-    agcy.street_address_changed? || agcy.city_changed? || agcy.state_id_changed? || agcy.zipcode_changed?
+    agcy.street_address_changed? ||
+      agcy.city_changed? ||
+      agcy.state_id_changed? ||
+      agcy.zipcode_changed?
   } # auto-fetch coordinates
 
   def full_address
