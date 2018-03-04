@@ -7,27 +7,31 @@
 # files.
 
 unless ARGV.any? { |a| a =~ /^gems/ } # Don't load anything when running the gems:* tasks
-
-  vendored_cucumber_bin = Dir["#{Rails.root}/vendor/{gems,plugins}/cucumber*/bin/cucumber"].first
-  $LOAD_PATH.unshift(File.dirname(vendored_cucumber_bin) + '/../lib') unless vendored_cucumber_bin.nil?
+  vendored_cucumber_path = "#{Rails.root}/vendor/{gems,plugins}/cucumber*/bin/cucumber"
+  vendored_cucumber_bin = Dir[vendored_cucumber_path].first
+  $LOAD_PATH.unshift(File.dirname(vendored_cucumber_bin) + '/../lib') \
+    unless vendored_cucumber_bin.nil?
 
   begin
     require 'cucumber/rake/task'
 
     namespace :cucumber do
-      Cucumber::Rake::Task.new({ ok: 'test:prepare' }, 'Run features that should pass') do |t|
+      pass_description = 'Run features that should pass'
+      Cucumber::Rake::Task.new({ ok: 'test:prepare' }, pass_description) do |t|
         t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
         t.fork = true # You may get faster startup if you set this to false
         t.profile = 'default'
       end
 
-      Cucumber::Rake::Task.new({ wip: 'test:prepare' }, 'Run features that are being worked on') do |t|
+      worked_on_description = 'Run features that are being worked on'
+      Cucumber::Rake::Task.new({ wip: 'test:prepare' }, worked_on_description) do |t|
         t.binary = vendored_cucumber_bin
         t.fork = true # You may get faster startup if you set this to false
         t.profile = 'wip'
       end
 
-      Cucumber::Rake::Task.new({ rerun: 'test:prepare' }, 'Record failing features and run only them if any exist') do |t|
+      only_them_if_exist_description = 'Record failing features and run only them if any exist'
+      Cucumber::Rake::Task.new({ rerun: 'test:prepare' }, only_them_if_exist_description) do |t|
         t.binary = vendored_cucumber_bin
         t.fork = true # You may get faster startup if you set this to false
         t.profile = 'rerun'
@@ -51,7 +55,8 @@ unless ARGV.any? { |a| a =~ /^gems/ } # Don't load anything when running the gem
       STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"
     end
 
-    # In case we don't have the generic Rails test:prepare hook, append a no-op task that we can depend upon.
+    # In case we don't have the generic Rails test:prepare hook,
+    # append a no-op task that we can depend upon.
     task 'test:prepare' do
     end
 
