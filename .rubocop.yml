@@ -9,3 +9,6 @@ AllCops:
     - db/migrate/*.rb
     - db/schema.rb
     - db/seeds.rb
+
+Style/Lambda:
+  Enabled: false

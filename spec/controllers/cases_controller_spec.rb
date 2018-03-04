@@ -119,13 +119,13 @@ RSpec.describe CasesController, type: :controller do
     login_user
     let(:this_case) { create(:case) }
     context 'when valid' do
-      let(:new_values) {
+      let(:new_values) do
         {
           overview: 'new overview',
           city: 'Buffalo',
           summary: 'A summary of changes'
         }
-      }
+      end
       it 'success' do
         patch :update, ** new_values, id: this_case.id, case: new_values
         expect(response).to redirect_to(case_path(Case.last))

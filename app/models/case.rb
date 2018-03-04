@@ -35,11 +35,18 @@ class Case < ActiveRecord::Base
   validates :date, presence: { message: 'Please add a date.' }
   validate :case_date_cannot_be_in_the_future
   validates :city, presence: { message: 'Please add a city.' }
-  validates :state_id, presence: { message: 'Please specify the state where this incident occurred before saving.' }
+  validates :state_id, presence: {
+    message: 'Please specify the state where this incident occurred before saving.'
+  }
   validates :title, presence: { message: 'Please specify a title' }
   validates_associated :subjects
-  validates :subjects, presence: { message: 'at least one subject is required' }
-  validates :summary, presence: { message: 'Please use the last field at the bottom of this form to summarize your edits to the case.' }
+  validates :subjects, presence: {
+    message: 'at least one subject is required'
+  }
+  validates :summary, presence: {
+    message: 'Please use the last field at the bottom of this form ' \
+      'to summarize your edits to the case.'
+  }
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
@@ -58,11 +65,21 @@ class Case < ActiveRecord::Base
 
   # Scopes
   scope :by_state, ->(state_id) { where(state_id: state_id) }
-  scope :created_this_month, -> { where(created_at: 30.days.ago.beginning_of_day..Time.current) }
-  scope :most_recent_occurrences, ->(duration) { where(date: duration.beginning_of_day..Time.current) }
-  scope :recently_updated, ->(duration) { where(updated_at: duration.beginning_of_day..Time.current) }
-  scope :sorted_by_update, ->(limit) { order('updated_at desc').limit(limit) }
-  scope :sorted_by_followers, ->(limit) { order(follows_count: :desc).first(limit) }
+  scope :created_this_month, -> {
+    where(created_at: 30.days.ago.beginning_of_day..Time.current)
+  }
+  scope :most_recent_occurrences, ->(duration) {
+    where(date: duration.beginning_of_day..Time.current)
+  }
+  scope :recently_updated, ->(duration) {
+    where(updated_at: duration.beginning_of_day..Time.current)
+  }
+  scope :sorted_by_update, ->(limit) {
+    order('updated_at desc').limit(limit)
+  }
+  scope :sorted_by_followers, ->(limit) {
+    order(follows_count: :desc).first(limit)
+  }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
@@ -136,8 +153,8 @@ class Case < ActiveRecord::Base
   private
 
   def check_for_empty_fields
-    attrs = %w[title date address city state zipcode state_id avatar video_url overview community_action litigation country remove_avatar]
-
+    attrs = %w[ title date address city state zipcode state_id avatar video_url
+                overview community_action litigation country remove_avatar ]
     unless (changed & attrs).any?
       errors[:base] << 'You must change field other than summary to generate a new version'
     end
