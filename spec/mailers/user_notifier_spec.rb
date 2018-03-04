@@ -41,7 +41,7 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:mail) { UserNotifier.send_deletion_email([follower], this_case) }
 
     it 'renders the subject' do
-      expect(mail.subject).to eql('The @this_case.title case has been removed from EBWiki')
+      expect(mail.subject).to eql("The #{this_case.title} case has been removed from EBWiki")
     end
 
     it 'renders the receiver email' do
