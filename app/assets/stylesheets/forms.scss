@@ -1,4 +1,3 @@
-
 legend a {
   color: inherit;
 }
@@ -66,3 +65,7 @@ legend {
 .form-control {
 	margin: 0 0 15px 0;
 }
+form abbr[title] {
+    border-bottom: none !important;
+    text-decoration: none !important;
+  }
