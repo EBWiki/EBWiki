@@ -1,8 +1,8 @@
 module Service
-	extend ActiveSupport::Concern
+  extend ActiveSupport::Concern
 
-	included do
-		def self.call(*args)
+  included do
+    def self.call(*args)
       new.call(*args)
     end
   end

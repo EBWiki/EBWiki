@@ -25,5 +25,5 @@ task autobus_cleanup: :environment do
     p 'The oldest snapshot has been deleted!'
     total_storage -= memory_2_b_freed
   end
-  p 'We''ve got plenty of room now. No need to destroy anything!'
+  p "#{I18n.t 'autobus.completion_message'}"
 end

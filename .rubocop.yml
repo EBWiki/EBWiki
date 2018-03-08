@@ -12,3 +12,6 @@ AllCops:
 
 Style/Lambda:
   Enabled: false
+
+Style/UnneededInterpolation:
+  Enabled: false

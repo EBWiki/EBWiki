@@ -28,10 +28,10 @@ class CasesController < ApplicationController
     @subjects = @case.subjects
 
     # Check to make sure all required elements are here
-    unless @case.present? && @case.present?	&& @commentable.present? && @comment.present? &&
+    unless @case.present? && @case.present?  && @commentable.present? && @comment.present? &&
            @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
-      redirect_to	root_path
+      redirect_to  root_path
     end
   end
 

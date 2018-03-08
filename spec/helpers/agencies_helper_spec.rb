@@ -1,6 +1,6 @@
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe AgenciesHelper, :type => :helper do
+RSpec.describe AgenciesHelper, type: :helper do
 
   before(:each) do
     @texas = FactoryBot.create(:state_texas)
