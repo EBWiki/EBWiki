@@ -2,6 +2,7 @@
 
 require 'observer'
 
+# EBWiki site user
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -48,5 +49,4 @@ class User < ActiveRecord::Base
   rescue Gibbon::MailChimpError => e
     return nil, flash: { error: e.message }
   end
-
 end
