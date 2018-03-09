@@ -26,3 +26,6 @@ en:
       subject_reply: 'You received a new reply on EBWiki about %{subject}'
   autobus:
     completion_message: "We've got plenty of room now. No need to destroy anything!"
+  cases_controller:
+    comments_attributes: [comment, content, commentable_id, commentable_type]
+    subjects_attributes: [name, age, gender_id, ethnicity_id, unarmed, homeless, veteran, mentally_ill, id, _destroy]

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper for analytics section of the site.
 module AnalyticsHelper
   def metric_grouped_by_day(data, metric)
     data.group_by_day(metric)

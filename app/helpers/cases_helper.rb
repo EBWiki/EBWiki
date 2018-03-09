@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper for case page, mostly the casw show page.
 module CasesHelper
   def embed(video_url)
     return '' if video_url.blank?
@@ -35,6 +36,6 @@ module CasesHelper
   end
 
   def case_updated_at(this_case)
-    this_case.updated_at.strftime("%m.%e, %l:%M %p")
+    this_case.updated_at.strftime('%m.%e, %l:%M %p')
   end
 end

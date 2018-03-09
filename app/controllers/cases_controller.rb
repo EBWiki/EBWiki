@@ -26,12 +26,11 @@ class CasesController < ApplicationController
     @comments = @commentable.comments
     @comment = Comment.new
     @subjects = @case.subjects
-
     # Check to make sure all required elements are here
-    unless @case.present? && @case.present?  && @commentable.present? && @comment.present? &&
+    unless @case.present? && @commentable.present? && @comment.present? &&
            @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
-      redirect_to  root_path
+      redirect_to root_path
     end
   end
 
@@ -75,7 +74,7 @@ class CasesController < ApplicationController
   def destroy
     @case.destroy
     flash[:success] = "Case was removed! #{make_undo_link}"
-    UserNotifier.send_deletion_email(@case.followers,@case).deliver_now
+    UserNotifier.send_deletion_email(@case.followers, @case).deliver_now
     redirect_to root_path
   end
 
@@ -122,7 +121,32 @@ class CasesController < ApplicationController
   end
 
   def case_params
-    params.require(:case).permit(:title, :age, :overview, :litigation, :community_action, :agency_id, :category_id, :date, :state_id, :city, :address, :zipcode, :longitude, :latitude, :avatar, :video_url, :remove_avatar, :summary, links_attributes: %i[id url _destroy], comments_attributes: %i[comment content commentable_id commentable_type], subjects_attributes: %i[name age gender_id ethnicity_id unarmed homeless veteran mentally_ill id _destroy], agency_ids: [])
+    params.require(:case).permit(
+                                :title,
+                                :age,
+                                :overview,
+                                :litigation,
+                                :community_action,
+                                :agency_id,
+                                :category_id,
+                                :date,
+                                :state_id,
+                                :city,
+                                :address,
+                                :zipcode,
+                                :longitude,
+                                :latitude,
+                                :avatar,
+                                :video_url,
+                                :remove_avatar,
+                                :summary,
+                                links_attributes: %i[id url _destroy],
+                                comments_attributes: \
+                                  I18n.t('cases_controller.comments_attributes').map(&:to_sym),
+                                subjects_attributes: \
+                                  I18n.t('cases_controller.subjects_attributes').map(&:to_sym),
+                                agency_ids: []
+                                )
   end
 
   # from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)
