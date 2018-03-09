@@ -72,6 +72,6 @@ class AgenciesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def agency_params
-    params.require(:agency).permit(:name, :street_address, :city, :state_id, :zipcode, :description, :telephone, :email, :website, :jurisdiction, :lead_officer)
+    params.require(:agency).permit( I18n.t('agencies_controller.agency_params').map(&:to_sym) )
   end
 end
