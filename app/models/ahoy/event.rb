@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Ahoy event used for tracking activity
 module Ahoy
+  # Ahoy event used for tracking activity
   class Event < ActiveRecord::Base
     include Ahoy::Properties
     self.table_name = 'ahoy_events'
