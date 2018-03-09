@@ -160,3 +160,6 @@ gem 'httparty'
 gem 'rack-host-redirect'
 
 gem 'rubocop', require: false
+
+# for authorization system.
+gem 'pundit', git: 'https://github.com/elabs/pundit'
