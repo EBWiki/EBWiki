@@ -14,7 +14,7 @@ RSpec.describe 'cases/index.html.erb', type: :view do
     assign(:state_objects, State.all)
     render
 
-    expect(rendered).to match /John Doe/m
-    expect(rendered).to match /Jimmy Doe/m
+    expect(rendered).to match(/John Doe/m)
+    expect(rendered).to match(/Jimmy Doe/m)
   end
 end
