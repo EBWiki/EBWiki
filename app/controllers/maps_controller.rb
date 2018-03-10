@@ -3,11 +3,11 @@
 class MapsController < ApplicationController
   def index
     @cases = Case.pluck(:id,
-                              :latitude,
-                              :longitude,
-                              :avatar,
-                              :title,
-                              :overview)
+                        :latitude,
+                        :longitude,
+                        :avatar,
+                        :title,
+                        :overview)
 
     # Substitute avatar URL for empty object in 4th variable
     @cases.each do |this_case|
