@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Cases controller. Containing really complex index method that needs some
+# Refactoring love.
 class CasesController < ApplicationController
   before_action :find_case, only: %i[show edit update destroy]
   before_action :authenticate_user!, except: %i[index show history followers]
@@ -85,7 +87,6 @@ class CasesController < ApplicationController
 
   def undo
     @case_version = PaperTrail::Version.find_by_id(params[:id])
-
     begin
       if @case_version.reify
         @case_version.reify.save
@@ -102,7 +103,6 @@ class CasesController < ApplicationController
   end
 
   private
-
   def find_case
     @case = Case.friendly.find(params[:id])
   end

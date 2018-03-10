@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Agencies Controller
 class AgenciesController < ApplicationController
   before_action :set_agency, only: %i[show edit update destroy]
   before_action :authenticate_user!, except: %i[index show]
@@ -72,6 +73,6 @@ class AgenciesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def agency_params
-    params.require(:agency).permit( I18n.t('agencies_controller.agency_params').map(&:to_sym) )
+    params.require(:agency).permit(I18n.t('agencies_controller.agency_params').map(&:to_sym))
   end
 end

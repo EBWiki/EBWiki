@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for conversations of EBWiki messages
 class ConversationsController < ApplicationController
   before_action :authenticate_user!
 

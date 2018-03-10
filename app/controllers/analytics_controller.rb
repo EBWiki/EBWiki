@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Controller for analytics page. A lot of reporting going on.
+# TODO: Some of these reports may need to be asynchronous as the data grows
 class AnalyticsController < ApplicationController
   before_action :check_for_admin_or_analyst, only: %i[show index]
 
@@ -18,13 +20,11 @@ class AnalyticsController < ApplicationController
     @most_recent_comments = Comment.sorted_by_creation 15
   end
 
-private
+  private
 
   def check_for_admin_or_analyst
     authenticate_user!
-
     return if current_user.admin? || current_user.analyst?
     redirect_to root_url # or whatever
   end
-
 end
