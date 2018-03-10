@@ -204,61 +204,61 @@ RSpec.describe Case, type: :model, versioning: true do
   describe 'growth' do
     describe 'growth_in_case_updates' do
       it 'returns the correct percentage increase' do
-        this_case = FactoryBot.create(:case, updated_at: 31.days.ago)
+        FactoryBot.create(:case, updated_at: 31.days.ago)
         this_case2 = FactoryBot.create(:case)
-        this_case3 = FactoryBot.create(:case, updated_at: 10.days.ago)
+        FactoryBot.create(:case, updated_at: 10.days.ago)
         this_case2.update_attribute(:video_url, 'new_video.com')
         expect(Case.first.mom_growth_in_case_updates).to eq(100)
       end
 
       it 'returns 0 if no updates in last 30 days' do
-        this_case = FactoryBot.create(:case, updated_at: 31.days.ago)
+        FactoryBot.create(:case, updated_at: 31.days.ago)
         expect(Case.first.mom_growth_in_case_updates).to eq(0)
       end
 
       # What happens if there were updates between 0-30 days ago but none 31-60 days ago?
       it 'returns correct percentage if previous 30 days period saw no updates' do
-        this_case = FactoryBot.create(:case, updated_at: 10.days.ago)
+        FactoryBot.create(:case, updated_at: 10.days.ago)
         expect(Case.first.mom_growth_in_case_updates).to eq(100)
       end
     end
 
     describe 'new case growth rate' do
       it 'returns the correct percentage increase' do
-        this_case = FactoryBot.create(:case, date: 31.days.ago)
-        this_case2 = FactoryBot.create(:case)
+        FactoryBot.create(:case, date: 31.days.ago)
+        FactoryBot.create(:case)
         expect(Case.first.mom_new_cases_growth).to eq(0)
       end
 
       it 'returns 0 if no new cases in last 30 days' do
-        this_case = FactoryBot.create(:case, date: 31.days.ago)
+         FactoryBot.create(:case, date: 31.days.ago)
         expect(Case.first.mom_new_cases_growth).to eq(0)
       end
 
       # What happens if there were new cases between 0-30 days ago but none 31-60 days ago?
       it 'returns correct percentage if previous 30 days period saw no new cases' do
-        case_one = FactoryBot.create(:case, date: 10.days.ago)
-        case_two = FactoryBot.create(:case, date: 15.days.ago)
+        FactoryBot.create(:case, date: 10.days.ago)
+        FactoryBot.create(:case, date: 15.days.ago)
         expect(Case.first.mom_new_cases_growth).to eq(200)
       end
     end
 
     describe 'total case growth rate' do
       it 'returns the correct percentage increase' do
-        case_one = FactoryBot.create(:case, created_at: 31.days.ago)
-        case_two = FactoryBot.create(:case)
+        FactoryBot.create(:case, created_at: 31.days.ago)
+        FactoryBot.create(:case)
         expect(Case.first.mom_cases_growth).to eq(100)
       end
 
       it 'returns 0 if no created cases in last 30 days' do
-        this_case = FactoryBot.create(:case, created_at: 31.days.ago)
+        FactoryBot.create(:case, created_at: 31.days.ago)
         expect(Case.first.mom_cases_growth).to eq(0)
       end
 
       #What happens if all of the cases were created in the past 30 days?
       it 'returns correct percentage if all cases created in the past 30 days' do
-        case_one = FactoryBot.create(:case, date: 10.days.ago)
-        case_two = FactoryBot.create(:case, date: 15.days.ago)
+        FactoryBot.create(:case, date: 10.days.ago)
+        FactoryBot.create(:case, date: 15.days.ago)
         expect(Case.first.mom_cases_growth).to eq(200)
       end
     end
@@ -297,7 +297,7 @@ RSpec.describe Case, type: :model, versioning: true do
       louisiana = FactoryBot.create(:state_louisiana)
       texas = FactoryBot.create(:state_texas)
 
-      texas_case = FactoryBot.create(:case,
+      FactoryBot.create(:case,
                                      city: 'Houston',
                                      state_id: texas.id,
                                      created_at: Time.current)
@@ -321,11 +321,11 @@ RSpec.describe Case, type: :model, versioning: true do
       louisiana = FactoryBot.create(:state_louisiana)
       texas = FactoryBot.create(:state_texas)
 
-      texas_case = FactoryBot.create(:case,
+      FactoryBot.create(:case,
                                      city: 'Houston',
                                      state_id: texas.id,
                                      date: Time.current)
-      louisiana_case = FactoryBot.create(:case,
+      FactoryBot.create(:case,
                                          city: 'Baton Rouge',
                                          state_id: louisiana.id,
                                          date: 2.weeks.ago)
@@ -344,11 +344,11 @@ RSpec.describe Case, type: :model, versioning: true do
       louisiana = FactoryBot.create(:state_louisiana)
       texas = FactoryBot.create(:state_texas)
 
-      texas_case = FactoryBot.create(:case,
+      FactoryBot.create(:case,
                                      city: 'Houston',
                                      state_id: texas.id,
                                      updated_at: Time.current)
-      louisiana_case = FactoryBot.create(:case,
+      FactoryBot.create(:case,
                                          city: 'Baton Rouge',
                                          state_id: louisiana.id,
                                          updated_at: 2.weeks.ago)
@@ -367,11 +367,11 @@ RSpec.describe Case, type: :model, versioning: true do
       louisiana = FactoryBot.create(:state_louisiana)
       texas = FactoryBot.create(:state_texas)
 
-      texas_case = FactoryBot.create(:case,
+      FactoryBot.create(:case,
                                      city: 'Houston',
                                      state_id: texas.id,
                                      updated_at: Time.current)
-      louisiana_case = FactoryBot.create(:case,
+      FactoryBot.create(:case,
                                          city: 'Baton Rouge',
                                          state_id: louisiana.id,
                                          updated_at: 2.weeks.ago)
@@ -403,11 +403,11 @@ RSpec.describe Case, type: :model, versioning: true do
                                   state_id: dc.id,
                                   updated_at: 1.year.ago)
 
-      follow_one = FactoryBot.create(:follow, followable_id: texas_case.id)
-      follow_two = FactoryBot.create(:follow, followable_id: texas_case.id)
-      follow_three = FactoryBot.create(:follow, followable_id: dc_case.id)
-      follow_four = FactoryBot.create(:follow, followable_id: dc_case.id)
-      follow_five = FactoryBot.create(:follow, followable_id: louisiana_case.id)
+      FactoryBot.create(:follow, followable_id: texas_case.id)
+      FactoryBot.create(:follow, followable_id: texas_case.id)
+      FactoryBot.create(:follow, followable_id: dc_case.id)
+      FactoryBot.create(:follow, followable_id: dc_case.id)
+      FactoryBot.create(:follow, followable_id: louisiana_case.id)
 
       sorted_cases = Case.sorted_by_followers 2
       expect(sorted_cases.count).to eq 2

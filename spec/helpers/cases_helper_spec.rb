@@ -3,17 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe CasesHelper, type: :helper do
+  let(:youtube_url) { I18n.t 'cases_helper.youtube_helper_url' }
+  let(:vimeo_url) { I18n.t 'cases_helper.vimeo_helper_url' }
+  let(:youtube_iframe_url) { I18n.t 'cases_helper.youtube_iframe_url' }
+  let(:vimeo_iframe_url) { I18n.t 'cases_helper.vimeo_iframe_url' }
   describe '#embed' do
     it 'returns an empty string if the video URL is blank' do
-      expect(helper.embed('')).to eql('')
+      expect(helper.embed(youtube_url)).to eql(youtube_iframe_url)
     end
 
     it 'returns a content tag if youtube video URL is provided' do
-      expect(helper.embed('https://www.youtube.com/watch?v=Mgn1r3_eM-s')).to eql('<iframe src="//www.youtube.com/embed/Mgn1r3_eM-s"></iframe>')
+      expect(helper.embed(youtube_url)).to eql(youtube_iframe_url)
     end
 
     it 'returns a content tag if vimeo video URL is provided' do
-      expect(helper.embed('https://vimeo.com/136536466')).to eql('<iframe src="https://player.vimeo.com/video/136536466"></iframe>')
+      expect(helper.embed(vimeo_url)).to eql(vimeo_iframe_urlq)
     end
   end
 
