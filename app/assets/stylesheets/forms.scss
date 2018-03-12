@@ -29,7 +29,8 @@ legend {
 	border-bottom: none;
 }
 
-.dropdown-menu {width: 100%;
+.dropdown-menu {
+    width: 100%;
 	position: fixed;
 	top: 50px;
 	left: 0;
@@ -66,3 +67,7 @@ legend {
 .form-control {
 	margin: 0 0 15px 0;
 }
+form abbr[title] {
+    border-bottom: none !important;
+    text-decoration: none !important;
+    }
