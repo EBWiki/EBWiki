@@ -1,3 +1,4 @@
+
 legend a {
   color: inherit;
 }
@@ -28,7 +29,8 @@ legend {
 	border-bottom: none;
 }
 
-.dropdown-menu {width: 100%;
+.dropdown-menu {
+    width: 100%;
 	position: fixed;
 	top: 50px;
 	left: 0;
@@ -68,4 +70,4 @@ legend {
 form abbr[title] {
     border-bottom: none !important;
     text-decoration: none !important;
-  }
+    }
