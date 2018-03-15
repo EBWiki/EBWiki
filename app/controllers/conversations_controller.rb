@@ -4,7 +4,7 @@ class ConversationsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @other_users = User.all.reject { |u| u == current_user }.collect { |p| [p.name, p.id] }
+    @other_users = User.where.not(id: current_user.id).pluck(:name, :id)
   end
 
   def create
