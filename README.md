@@ -21,17 +21,17 @@ All developers are welcome to contribute to the codebase.  We ask that, if possi
 
 ### System Requirements
 
-* Ruby 2.4.1 or higher
-* Rails 4.2.9 or higher
-* Elasticsearch for searching cases
-* Postgres 9.4 or higher
-* Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing )
-* Sendgrid (for outbound email)
-* SSL using [Let's Encrypt](letsencrypt.org) and [Substrakt](https://github.com/substrakt/letsencrypt-heroku) at [End Bias Certificate Manager](https://endbias-certificate-manager.herokuapp.com/)
+* Ruby 2.4.1 or higher.
+* Rails 4.2.9 or higher.
+* Elasticsearch for searching cases.
+* Postgres 9.4 or higher.
+* Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing ).
+* Sendgrid (for outbound email).
+* SSL using [Let's Encrypt](letsencrypt.org) and [Substrakt](https://github.com/substrakt/letsencrypt-heroku) at [End Bias Certificate Manager](https://endbias-certificate-manager.herokuapp.com/).
 
 ## Testing
 
-We use [RSpec](https://relishapp.com/rspec) to test the business logic.
+We use [RSpec](https://relishapp.com/rspec) to test the business logic
 In addition, we use [Travis](https://travis-ci.org/BOWiki/BOW/) as a Continuous
 Integration (CI) Server and
 [Code Climate](https://codeclimate.com/github/BOWiki/BOW) to monitor code quality.
