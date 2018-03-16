@@ -40,8 +40,11 @@ It is generally recommended that you have PostGreSQL and Elasticsearch start at 
 ## Configuration
 
 Using your command line, navigate to the location where you will store your local copy of the codebase. Use the following command to clone a copy of the repo to your local environment:
- ``` git clone https://github.com/EBWiki/EBWiki.git ```
- Once the git clone is complete, navigate into the `BOW` folder. Then, use the following command to install dependencies:
+
+``` git clone https://github.com/EBWiki/EBWiki.git ```
+
+Once the git clone is complete, navigate into the `BOW` folder. Then, use the following command to install dependencies:
+
 ``` bundle install ```
 
 ## AWS
@@ -51,18 +54,26 @@ Once the user has been created, open the tab to view the access key and secret a
 
 * ``` /config/initializers/s3.rb ```
 * ``` /config/sitemap.rb ```
+
 If you prefer, you can add these files to `.gitignore` so that your personal changes are not tracked.
 
 ## Postgres
 
 ### Linux
 Start the postgres console using the following command:
+
 ``` psql -p 5432 -h localhost -U postgres ```
+
 Next, create a user `blackops` with the password `ebwiki` or whatever password you prefer, using the following command:
+
 ``` CREATE USER blackops WITH PASSWORD 'ebwiki'; ```
+
 Exit the console using the following command:
+
 ``` \q ```
+
 Save your password as an environment variable by adding the following line to your `.bashrc`file:
+
 ``` export BLACKOPS_DATABASE_PASSWORD='ebwiki' ```
 
 ## Testing
