@@ -15,8 +15,8 @@ RSpec.describe Follow, type: :model do
     end
 
     it 'returns the correct percentage if all follows are within the past 30 days' do
-      follow_one = FactoryBot.create(:follow, created_at: 10.days.ago)
-      follow_two = FactoryBot.create(:follow, created_at: 15.days.ago)
+      FactoryBot.create(:follow, created_at: 10.days.ago)
+      FactoryBot.create(:follow, created_at: 15.days.ago)
       expect(Follow.first.mom_follows_growth).to eq(200)
     end
   end
