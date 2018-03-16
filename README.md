@@ -21,12 +21,10 @@ All developers are welcome to contribute to the codebase.  We ask that, if possi
 
 ### System Requirements
 
-* [Ruby 2.4.1 or higher](https://www.ruby-lang.org/en/downloads/)
-* [Rails 4.2.9 or higher](http://rubyonrails.org/)
-
+* Ruby 2.4.1 or higher
+* Rails 4.2.9 or higher
 * Postgres 9.4 or higher
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch) for searching cases.
-* [Redis](https://redis.io/) (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing ).
+* Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing ).
 * Sendgrid (for outbound email).
 * SSL using [Let's Encrypt](letsencrypt.org) and [Substrakt](https://github.com/substrakt/letsencrypt-heroku) at [End Bias Certificate Manager](https://endbias-certificate-manager.herokuapp.com/).
 
