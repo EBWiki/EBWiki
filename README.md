@@ -21,13 +21,38 @@ All developers are welcome to contribute to the codebase.  We ask that, if possi
 
 ### System Requirements
 
-* Ruby 2.4.1 or higher.
-* Rails 4.2.9 or higher.
-* Elasticsearch for searching cases.
-* Postgres 9.4 or higher.
-* Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing ).
+* [Git](https://git-scm.com/downloads)
+* [Ruby 2.4.1 or higher](https://www.ruby-lang.org/en/downloads/)
+* [Rails 4.2.9 or higher](http://rubyonrails.org/)
+
+To work on EBWiki locally you will need to have PostgreSQL and Elasticsearch running on your local environment. You will also need to have an Amazon Web Services (AWS) account to use S3 for storage. Information on how to install and configure these programs and services is listed below:
+
+* [Sign up for a free AWS account here](https://aws.amazon.com/free/) - Note that information on how to configure your account will be detailed further below.
+* [PostGreSQL](https://www.postgresql.org/) - * Postgres 9.4 or higher
+* [Elasticsearch](https://www.elastic.co/products/elasticsearch) for searching cases.
+* [Redis](https://redis.io/) (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing ).
+* [NodeJS](https://nodejs.org/en/) - Note: if you are using Windows Subsystem for Linux, you will need to follow the instructions to install Node within Ubuntu, not the standalone Windows version.
 * Sendgrid (for outbound email).
 * SSL using [Let's Encrypt](letsencrypt.org) and [Substrakt](https://github.com/substrakt/letsencrypt-heroku) at [End Bias Certificate Manager](https://endbias-certificate-manager.herokuapp.com/).
+
+It is generally recommended that you have PostGreSQL and Elasticsearch start at bootup.
+
+## Configuration
+
+Using your command line, navigate to the location where you will store your local copy of the codebase. Use the following command to clone a copy of the repo to your local environment:
+ ''' git clone https://github.com/EBWiki/EBWiki.git '''
+ Once the git clone is complete, navigate into the '<BOW>' folder. Then, use the following command to install dependencies:
+''' bundle install '''
+
+## AWS
+
+Login into your Amazon Web Services (AWS) account. Navigate to the IAM service using the products tab at the top left. Select the option to create a user. Set the name of the user to be EBWiki_user, or some other similar name. Choose the option for programmatic access. Click next. Select the policy for full access s3 permissions. Click next. After reviewing the details, select create user.
+Once the user has been created, open the tab to view the access key and secret access key. Add these values as environment variables to your .bashrc file. Reboot your command line prompt. If necessary, update the following files with your specific environment variable names:
+
+* ''' /config/initializers/s3.rb '''
+* ''' /config/sitemap.rb '''
+If you prefer, you can add these files to .gitignore so that your personal changes are not tracked.
+
 
 ## Testing
 
