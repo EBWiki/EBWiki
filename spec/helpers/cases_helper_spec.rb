@@ -17,7 +17,7 @@ RSpec.describe CasesHelper, type: :helper do
     end
 
     it 'returns a content tag if vimeo video URL is provided' do
-      expect(helper.embed(vimeo_url)).to eql(vimeo_iframe_urlq)
+      expect(helper.embed(vimeo_url)).to eql(vimeo_iframe_url)
     end
   end
 
