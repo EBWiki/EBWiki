@@ -76,6 +76,56 @@ Save your password as an environment variable by adding the following line to yo
 
 ``` export BLACKOPS_DATABASE_PASSWORD='ebwiki' ```
 
+### Windows
+
+Start the postgres console using the following command:
+
+``` psql -p 5432 -h localhost -U postgres ```
+
+Next, create a user `blackops` with the password `ebwiki` or whatever password you prefer, using the following command:
+
+`CREATE USER blackops WITH PASSWORD 'ebwiki';`
+
+Exit the console using the following command: 
+
+`\q`
+
+Save your password as an environment variable by adding the following line to your `.bashrc` file:
+
+`export BLACKOPS_DATABASE_PASSWORD='ebwiki'`
+
+Within `config/database.yml`, uncomment the following lines in the blocks for `development`, `test`, and `production`:
+
+`username: blackops`
+
+`password:<%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>`
+
+`host: localhost`
+
+`port:5432`
+
+### Database 
+
+Let's complete our local database setup.  First, create the development and test databases using the following command:
+
+`rake db:create`
+
+Then, apply the schema and migrations to the databases using the following command:
+
+`rake db:migrate`
+
+Finally, seed the database using:
+
+`rake db:seed`
+
+### Finish
+
+Now, everything should be completely set up!  Run the app locally on your computer using the following command:
+
+`rails s`
+
+You should be to view and interact with the site on http://localhost:3000.
+
 ## Testing
 
 We use [RSpec](https://relishapp.com/rspec) to test the business logic
