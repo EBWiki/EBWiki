@@ -40,19 +40,30 @@ It is generally recommended that you have PostGreSQL and Elasticsearch start at 
 ## Configuration
 
 Using your command line, navigate to the location where you will store your local copy of the codebase. Use the following command to clone a copy of the repo to your local environment:
- ''' git clone https://github.com/EBWiki/EBWiki.git '''
- Once the git clone is complete, navigate into the '<BOW>' folder. Then, use the following command to install dependencies:
-''' bundle install '''
+ ``` git clone https://github.com/EBWiki/EBWiki.git ```
+ Once the git clone is complete, navigate into the `BOW` folder. Then, use the following command to install dependencies:
+``` bundle install ```
 
 ## AWS
 
 Login into your Amazon Web Services (AWS) account. Navigate to the IAM service using the products tab at the top left. Select the option to create a user. Set the name of the user to be EBWiki_user, or some other similar name. Choose the option for programmatic access. Click next. Select the policy for full access s3 permissions. Click next. After reviewing the details, select create user.
 Once the user has been created, open the tab to view the access key and secret access key. Add these values as environment variables to your .bashrc file. Reboot your command line prompt. If necessary, update the following files with your specific environment variable names:
 
-* ''' /config/initializers/s3.rb '''
-* ''' /config/sitemap.rb '''
-If you prefer, you can add these files to .gitignore so that your personal changes are not tracked.
+* ``` /config/initializers/s3.rb ```
+* ``` /config/sitemap.rb ```
+If you prefer, you can add these files to `.gitignore` so that your personal changes are not tracked.
 
+## Postgres
+
+### Linux
+Start the postgres console using the following command:
+``` psql -p 5432 -h localhost -U postgres ```
+Next, create a user `blackops` with the password `ebwiki` or whatever password you prefer, using the following command:
+``` CREATE USER blackops WITH PASSWORD 'ebwiki'; ```
+Exit the console using the following command:
+``` \q ```
+Save your password as an environment variable by adding the following line to your `.bashrc`file:
+``` export BLACKOPS_DATABASE_PASSWORD='ebwiki' ```
 
 ## Testing
 
