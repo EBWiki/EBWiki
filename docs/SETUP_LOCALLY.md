@@ -2,14 +2,14 @@ This guide will explain the process of setting up a local development environmen
 
 # Table of Contents
 1. [Prerequisites](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#prerequisites)
-2. [Installation](##Installation)
-3. [Configuration](##Configuration)
-4. [AWS](##AWS)
-5. [Postgres](##Postgres)
-   * [Linux](###Linux)
-   * [Windows](###Windows)
-6. [Database](##Database)
-7. [Finish](##Finish)
+2. [Installation](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#installation)
+3. [Configuration](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#configuration)
+4. [AWS](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#aws)
+5. [Postgres](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#postgres)
+   * [Linux](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#linux)
+   * [Windows](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#windows)
+6. [Database](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#database)
+7. [Finish](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#finish)
 
 ## Prerequisites
 Before beginning the installation and configuration of your environment, ensure that you have a copy of git, Ruby, and Rails on your computer.  You can find installation instructions at the links below:
