@@ -1,7 +1,7 @@
 This guide will explain the process of setting up a local development environment for EBWiki.  The guide assumes that you are using a Linux based command line prompt and either a Linux or Windows Operating System.  If you are using a different command line prompt and/or operating system, note that the order and exact nature of the installation and configuration may vary.
 
 # Table of Contents
-1. [Prerequisites](##Prerequisites)
+1. [Prerequisites](docs/SETUP_LOCALLY.md#prerequisites)
 2. [Installation](##Installation)
 3. [Configuration](##Configuration)
 4. [AWS](##AWS)
