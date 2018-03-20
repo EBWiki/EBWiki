@@ -1,0 +1,15 @@
+{
+  "mock_backups_result": [
+    {
+      "id": "5a36241f9340510731fe3e61",
+      "kind": "Daily",
+      "created_at": "2017-12-17T08:00:31.841Z",
+      "database": "HEROKU_POSTGRESQL_YELLOW_URL",
+      "duration": "27",
+      "size": "30000",
+      "test_status": "Pass",
+      "description": "",
+      "url": "https://autobus-eu.s3.amazonaws.com/YELLOW_5a36241f9340510731fe3e61.dump?AWSAccessKeyId=AKIAJENCGZ6XMPKWLLQA\\u0026Expires=1513540087\\u0026Signature=VFTzq9aWZfoPgiWs6LJvtcHj%2FnA%3D",
+    }
+  ]
+}

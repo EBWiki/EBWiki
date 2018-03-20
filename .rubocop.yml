@@ -15,3 +15,6 @@ Style/Lambda:
 
 Style/UnneededInterpolation:
   Enabled: false
+
+Layout/FirstParameterIndentation:
+  Enabled: false
