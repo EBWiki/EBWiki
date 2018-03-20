@@ -15,15 +15,15 @@ RSpec.describe ConversationsController, type: :controller do
       expect(subject.current_user).to_not eq(nil)
     end
 
-    # it 'assigns a all other users to @other_users array' do
-    #   get :new
-    #   expect(assigns(:other_users)).class.to eq("Array")
-    # end
+    it 'assigns a all other users to @other_users array' do
+      get :new
+      expect(assigns((:other_users)).class).to eq(Array)
+    end
 
-    # it 'assigns a all other users to @other_users' do
-    #   get :new
-    #   expect(assigns(:other_users)).not_to include(current_user)
-    # end
+    it 'assigns a all other users to @other_users' do
+      get :new
+      expect(assigns(:other_users)).not_to include(subject.current_user)
+    end
 
     it 'renders the new template' do
       get :new
