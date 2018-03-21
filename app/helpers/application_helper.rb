@@ -15,13 +15,13 @@ module ApplicationHelper
     if params[:controller] == 'maps'
       '/maps/index'
     else
-      'articles'
+      'cases'
     end
   end
 
-  def marker_locations_for(articles)
-    return nil if articles.blank?
-    @hash = Gmaps4rails.build_markers(articles) do |this_case, marker|
+  def marker_locations_for(cases)
+    return nil if cases.blank?
+    @hash = Gmaps4rails.build_markers(cases) do |this_case, marker|
       marker.lat this_case[1]
       marker.lng this_case[2]
       marker.infowindow controller.render_to_string(
