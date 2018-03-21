@@ -7,7 +7,7 @@ meta title: "EBWiki - Mapping Violence Against People of Color",
   <% ab_finished('viewed_maps', reset: false) %>
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header underline">EBWiki below maps <%= @articles.count %> cases of violence against people of color. Read more <%= link_to 'about us',about_path %></h2>
+            <h2 class="page-header underline">EBWiki below maps <%= @cases.count %> cases of violence against people of color. Read more <%= link_to 'about us',about_path %></h2>
             <% if user_signed_in? %>
 	            Click the follow button below the image on any case page and we will keep you updated as these cases proceed.</p>
 						<% else %>
@@ -31,7 +31,7 @@ meta title: "EBWiki - Mapping Violence Against People of Color",
 	</div>
     <!-- End Map -->
 </div>
-<% marker_locations_for(@articles) %>
+<% marker_locations_for(@cases) %>
 <script type="">
 	handler = Gmaps.build('Google');
 	handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
