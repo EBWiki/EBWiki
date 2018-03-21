@@ -56,7 +56,7 @@ RSpec.describe CasesController, type: :controller do
         expect(response).to be_success
       end
       it 'assigns it to @case' do
-        expect(assigns(:case)).to eq this_case
+        expect(assigns(:this_case)).to eq this_case
       end
     end
     context 'when requested case does not exists' do
@@ -90,8 +90,8 @@ RSpec.describe CasesController, type: :controller do
         allow_any_instance_of(Case).to receive(:full_address).and_return('Albany NY')
         case_attrs['subjects_attributes'] = { '0' => subject_attrs }
         post :create, 'case': case_attrs
-        expect(assigns(:case)).to be_a_kind_of(Case)
-        expect(assigns(:case)).to be_persisted
+        expect(assigns(:this_case)).to be_a_kind_of(Case)
+        expect(assigns(:this_case)).to be_persisted
       end
     end
 
@@ -128,12 +128,12 @@ RSpec.describe CasesController, type: :controller do
       end
       it 'success' do
         patch :update, ** new_values, id: this_case.id, case: new_values
-        expect(response).to redirect_to(case_path(Case.last))
+        expect(response).to redirect_to(case_path(this_case))
       end
       it 'saves and assigns case to @case' do
         patch :update, ** new_values, id: this_case.id, case: new_values
-        expect(assigns(:case)).to be_a_kind_of(Case)
-        expect(assigns(:case)).to be_persisted
+        expect(assigns(:this_case)).to be_a_kind_of(Case)
+        expect(assigns(:this_case)).to be_persisted
       end
     end
 

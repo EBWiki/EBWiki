@@ -7,8 +7,8 @@ class CasesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show history followers]
 
   def new
-    @case = current_user.cases.build
-    @case.agencies.build
+    @this_case = current_user.cases.build
+    @this_case.agencies.build
     @categories = Category.all
     @states = State.all
   end
@@ -23,13 +23,13 @@ class CasesController < ApplicationController
   end
 
   def show
-    @case = Case.friendly.find(params[:id])
-    @commentable = @case
+    @this_case = Case.friendly.find(params[:id])
+    @commentable = @this_case
     @comments = @commentable.comments
     @comment = Comment.new
-    @subjects = @case.subjects
+    @subjects = @this_case.subjects
     # Check to make sure all required elements are here
-    unless @case.present? && @commentable.present? && @comment.present? &&
+    unless @this_case.present? && @commentable.present? && @comment.present? &&
            @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
@@ -37,52 +37,52 @@ class CasesController < ApplicationController
   end
 
   def create
-    @case = current_user.cases.build(case_params)
+    @this_case = current_user.cases.build(case_params)
     # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
-    if @case.save
+    if @this_case.save
       flash[:success] = "Article was created! #{make_undo_link}"
-      redirect_to @case
+      redirect_to @this_case
     else
       render 'new'
     end
   end
 
   def edit
-    @case = Case.friendly.find(params[:id])
-    @case.update_attribute(:summary, nil)
+    @this_case = Case.friendly.find(params[:id])
+    @this_case.update_attribute(:summary, nil)
     @agencies = Agency.all.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
     @categories = Category.all
     @states = State.all
   end
 
   def followers
-    @case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find(params[:id])
   end
 
   def update
-    @case = Case.friendly.find(params[:id])
-    @case.slug = nil
-    @case.remove_avatar! if @case.remove_avatar?
-    if @case.update_attributes(case_params)
+    @this_case = Case.friendly.find(params[:id])
+    @this_case.slug = nil
+    @this_case.remove_avatar! if @this_case.remove_avatar?
+    if @this_case.update_attributes(case_params)
       flash[:success] = "Case was updated! #{make_undo_link}"
-      UserNotifier.send_followers_email(@case.followers, @case).deliver_now
-      redirect_to @case
+      UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
+      redirect_to @this_case
     else
       render 'edit'
     end
   end
 
   def destroy
-    @case.destroy
+    @this_case.destroy
     flash[:success] = "Case was removed! #{make_undo_link}"
-    UserNotifier.send_deletion_email(@case.followers, @case).deliver_now
+    UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
     redirect_to root_path
   end
 
   def history
-    @case = Case.friendly.find(params[:id])
-    @versions = @case.versions.sort_by(&:created_at).reverse
+    @this_case = Case.friendly.find(params[:id])
+    @this_versions = @case.versions.sort_by(&:created_at).reverse
   end
 
   def undo
@@ -104,13 +104,13 @@ class CasesController < ApplicationController
 
   private
   def find_case
-    @case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find(params[:id])
   end
 
   # TODO: Move this function out of this controller. The view context alone indicates that
   # this should be a helper, instead
   def make_undo_link
-    view_context.link_to 'Undo that please!', undo_path(@case.versions.last), method: :post
+    view_context.link_to 'Undo that please!', undo_path(@this_case.versions.last), method: :post
   end
 
   # TODO: Move this function out of this controller. The view context alone indicates that
