@@ -6,12 +6,12 @@ describe Autobus, '#total_backup_size' do
   describe 'on success' do
     let(:mock_backups_result) do
       requests = JSON.parse(IO.read("#{Rails.root}/spec/fixtures/autobus_request.json"))
-      requests.mock_backups_result
+      requests['mock_backups_result']
     end
 
     let(:mock_backups_result_with_empty_size) do
       requests = JSON.parse(IO.read("#{Rails.root}/spec/fixtures/autobus_request.json"))
-      requests.mock_backups_result_with_empty_size
+      requests['mock_backups_result_with_empty_size']
     end
 
     let(:autobus_headers) do
