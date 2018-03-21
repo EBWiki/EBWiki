@@ -2,24 +2,24 @@
      title and meta tags in conjunction with the metamagic
      method in app/views/layouts/application.html.erb
      TODO: Create a view helper that works for all pages -->
-<% meta title: "People tracking the case of #{@case.title}",
-     description: "There are #{@case.followers.count} people tracking the case of #{@case.title} on EBWiki",
-     keywords: %w(@case.subjects.first.name " police violence people color")
+<% meta title: "People tracking the case of #{@this_case.title}",
+     description: "There are #{@this_case.followers.count} people tracking the case of #{@this_case.title} on EBWiki",
+     keywords: %w(@this_case.subjects.first.name " police violence people color")
 %>
 <%= render 'layouts/header' %>
 <!-- Page Content -->
 <div class="container">
-  <% if @case.followers.present? %>
+  <% if @this_case.followers.present? %>
 	<!-- Article Followers Gallery -->
 		<div class="row">
 	    <div class="col-lg-12">
-        <h3 class="page-header">This case currently has <%= pluralize(@case.followers.count, 'follower') %> tracking it on EBWiki.</h3>
-				<h3 class="text-center"><%#= link_to 'Track this case', article_follows_path(@article), class: "btn btn-primary" %></h3>
+        <h3 class="page-header">This case currently has <%= pluralize(@this_case.followers.count, 'follower') %> tracking it on EBWiki.</h3>
+				<h3 class="text-center"><%#= link_to 'Track this case', case_follows_path(@this_case), class: "btn btn-primary" %></h3>
       </div>
     </div>
 		<div class="row">
       <div class="col-lg-12">
-		    <% @case.followers.each do |follower| %>
+		    <% @this_case.followers.each do |follower| %>
 			    <div class="col-lg-2 col-md-4 col-xs-12">
           <div class="">
             <%= link_to image_tag(avatar_url(follower,200), :class => "img-responsive"), follower %>
@@ -33,7 +33,7 @@
     <!-- We may decide to include a map that shows where people following this case are located -->
   <% else %>
     <h3 class="page-header"> There is no one currently following this case.</h3>
-    <h3 class="text-center"><%#= link_to 'Track this case', article_follows_path(@article), class: "btn btn-primary" %></h3>
+    <h3 class="text-center"><%#= link_to 'Track this case', case_follows_path(@this_case), class: "btn btn-primary" %></h3>
 	<% end %>
 </div>
 
