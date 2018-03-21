@@ -26,7 +26,7 @@ module ApplicationHelper
       marker.lng this_case[2]
       marker.infowindow controller.render_to_string(
         partial: '/cases/info_window',
-        locals: { case: this_case }
+        locals: { this_case: this_case }
       )
     end
     @hash
