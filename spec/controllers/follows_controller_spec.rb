@@ -6,29 +6,26 @@ RSpec.describe FollowsController, type: :controller do
   # this test is failing!
   describe 'POST #create' do
     context 'with valid attributes' do
-      # before(:all) do
-      #   article = FactoryBot.create(:article)
-      # end
       it 'creates the follow' do
-        @article = FactoryBot.create(:article)
-        @follow = FactoryBot.create(:follow, followable_id: @article.id)
-        expect(assigns(:followers)).to eq(@article.reload.followers.first)
+        @case = FactoryBot.create(:case)
+        @follow = FactoryBot.create(:follow, followable_id: @case.id)
+        expect(assigns(:followers)).to eq(@case.reload.followers.first)
       end
     end
   end
   describe '#DELETE destroy' do
     login_user
     it 'deletes a follow' do
-      article = FactoryBot.create(:article)
-      follow = FactoryBot.create(:follow, followable_id: article.id, follower_id: @user.id)
-      expect { delete :destroy, id: follow.id, article_id: article.id }
-        .to change { article.followers.count }.by(-1)
+      this_case = FactoryBot.create(:case)
+      follow = FactoryBot.create(:follow, followable_id: this_case.id, follower_id: @user.id)
+      expect { delete :destroy, id: follow.id, case_id: this_case.id }
+        .to change { this_case.followers.count }.by(-1)
     end
 
     it 'deletes a follow throws an error when the follow does not exist' do
       follow_id = 9999
-      @article_id = 9999
-      expect { delete :destroy, id: follow_id, article_id: @article.id }
+      @case_id = 9999
+      expect { delete :destroy, id: follow_id, case_id: @case.id }
         .to raise_error(NoMethodError)
     end
   end

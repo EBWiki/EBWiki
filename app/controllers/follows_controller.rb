@@ -4,14 +4,14 @@ class FollowsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @article = Article.find(params[:article_id])
-    current_user.follow(@article)
-    redirect_to @article
+    @case = Case.find(params[:case_id])
+    current_user.follow(@case)
+    redirect_to @case
   end
 
   def destroy
-    @article = Article.find(params[:article_id])
-    current_user.stop_following(@article)
-    redirect_to @article
+    @case = Case.find(params[:case_id])
+    current_user.stop_following(@case)
+    redirect_to @case
   end
 end

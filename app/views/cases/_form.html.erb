@@ -1,9 +1,9 @@
-<%= simple_form_for @article do |f| %>
-  <% if @article.errors.any? %>
+<%= simple_form_for @this_case do |f| %>
+  <% if @this_case.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this case from being saved:</h2>
+      <h2><%= pluralize(@this_case.errors.count, "error") %> prohibited this case from being saved:</h2>
       <ul>
-      <% @article.errors.each do |field,msg| %>
+      <% @this_case.errors.each do |field,msg| %>
         <li style='list-style:none;'><%= raw("<strong>#{field.capitalize}:</strong> #{msg}") %></li>
       <% end %>
       </ul>
@@ -21,8 +21,8 @@
 					<h4>Upload a new image to replace the placeholder:</h4>
 				<% else %>
 					<h4>Current image showing on the case page: </h4>
-		      <% if @article.avatar? %>
-			      <%= image_tag(@article.avatar.medium_avatar, :class => "img-responsive") %>
+		      <% if @this_case.avatar? %>
+			      <%= image_tag(@this_case.avatar.medium_avatar, :class => "img-responsive") %>
 			      <%= f.input :remove_avatar, :label => 'Remove current image' %>
 			    <% else %>
 				    <%= image_tag('default-user-icon.png', :size => "150x150", :class => "img-responsive") %>

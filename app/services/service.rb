@@ -1,8 +1,10 @@
-module Service
-	extend ActiveSupport::Concern
+# frozen_string_literal: true
 
-	included do
-		def self.call(*args)
+module Service
+  extend ActiveSupport::Concern
+
+  included do
+    def self.call(*args)
       new.call(*args)
     end
   end

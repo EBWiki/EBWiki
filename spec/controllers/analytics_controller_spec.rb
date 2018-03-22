@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe AnalyticsController, type: :controller do
-
   describe 'GET #index without login' do
     it 'redirects to the sign in path' do
       get :index
@@ -18,11 +17,5 @@ RSpec.describe AnalyticsController, type: :controller do
       get :index
       expect(response).to render_template(:index)
     end
-
-    # it "populates an array of visits" do
-    #   visit = Factory(:visit)
-    #   get :index
-    #   assigns(:visits).should eq([visit])
-    # end
   end
 end

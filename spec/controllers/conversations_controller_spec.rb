@@ -11,13 +11,14 @@ RSpec.describe ConversationsController, type: :controller do
     end
 
     it 'should have a current_user' do
-      # note the fact that you should remove the "validate_session" parameter if this was a scaffold-generated controller
+      # note the fact that you should remove the "validate_session"
+      # parameter if this was a scaffold-generated controller
       expect(subject.current_user).to_not eq(nil)
     end
 
     it 'assigns a all other users to @other_users array' do
       get :new
-      expect(assigns((:other_users)).class).to eq(Array)
+      expect(assigns(:other_users).class).to eq(Array)
     end
 
     it 'assigns a all other users to @other_users' do

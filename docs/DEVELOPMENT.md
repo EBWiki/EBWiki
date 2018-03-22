@@ -19,3 +19,7 @@ Currently, EBWiki assets are precompiled in development and pushed up to
 different hosts through version control. While this occurred because of a
 Heroku error, this is not an optimal situation.
 
+# Third party services
+* Elasticsearch for searching cases
+* Postgres 9.4 or higher
+* Redis (currently for the [Split](https://github.com/splitrb/split) gem for A/B testing )

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Mailbox Controller. Part of EBWiki messages
 class MailboxController < ApplicationController
   before_action :authenticate_user!
   def inbox

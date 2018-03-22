@@ -16,10 +16,10 @@
         Total Cases <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Total Cases", :content => "This metric shows the total number of cases in the EBWiki database."})%>
       </small>
       <div class="metric">
-        <%= Article.count %>
+        <%= Case.count %>
       </div>
       <small>
-        <%= Article.first.mom_cases_growth %>% mom*
+        <%= Case.first.mom_cases_growth %>% mom*
       </small>
     </div>
     <!-- Cases Updated Last month and growth -->
@@ -28,10 +28,10 @@
         New Case Updates <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "New Case Updates", :content => "This metric shows the number of times EBWiki cases have been updated in the past 30 days."})%>
       </small>
       <div class="metric">
-        <%= Article.first.cases_updated_last_30_days %>
+        <%= Case.first.cases_updated_last_30_days %>
       </div>
       <small>
-        <%= Article.first.mom_growth_in_case_updates %>% mom*
+        <%= Case.first.mom_growth_in_case_updates %>% mom*
       </small>
     </div>
     <!-- Total New Cases Last month and growth -->
@@ -40,10 +40,10 @@
         New Cases <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "New Cases", :content => "This metric shows the number of cases in the EBWiki database dated within the past 30 days."})%>
       </small>
       <div class="metric">
-        <%= @articles_occurring_this_month.count %>
+        <%= @cases_occurring_this_month.count %>
       </div>
       <small>
-        <%= Article.first.mom_new_cases_growth %>% mom*
+        <%= Case.first.mom_new_cases_growth %>% mom*
       </small>
     </div>
     <!-- Total Followed Cases and growth -->

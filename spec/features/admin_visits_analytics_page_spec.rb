@@ -7,7 +7,7 @@ describe User do
     let!(:admin) { FactoryBot.create(:admin) }
     let!(:this_visit) { FactoryBot.create(:visit) }
     let!(:follow) { FactoryBot.create(:follow) }
-    let!(:article) { FactoryBot.create(:article) }
+    let!(:this_case) { FactoryBot.create(:case) }
     # This is a happy path feature spec; this covers the scenario
     # where an admin user logs into the site section and has
     # the proper credentials access the admin section,

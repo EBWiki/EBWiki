@@ -2,6 +2,7 @@
 
 require 'observer'
 
+# EBWiki site user
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -10,13 +11,13 @@ class User < ActiveRecord::Base
 
   validates :name, presence: { message: 'Please add a name.' }
 
-  has_many :articles
+  has_many :cases
   has_many :comments
   acts_as_follower
   acts_as_messageable
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
-  
+
   def mailboxer_name
     name
   end
@@ -45,8 +46,7 @@ class User < ActiveRecord::Base
   def mailchimp_user
     gb = Gibbon::Request.new
     gb.lists(ENV['MAILCHIMP_LIST_ID']).members(Digest::MD5.hexdigest(email.downcase.to_s)).retrieve
-  rescue Gibbon::MailChimpError => e 
+  rescue Gibbon::MailChimpError => e
     return nil, flash: { error: e.message }
   end
-
 end

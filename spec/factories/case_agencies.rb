@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :article_agency do
+  factory :case_agency do
   end
 end

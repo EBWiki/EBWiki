@@ -208,16 +208,16 @@ if User.count.zero?
         password: 'password',
         password_confirmation: 'password' }
     ]
-    
-    users.each do |user|            
+
+    users.each do |user|
       User.create(user)
     end
 end
 
-if Article.count.zero?
-  puts 'Creating Articles...'
+if Case.count.zero?
+  puts 'Creating Cases...'
 
-  articles = [
+  cases = [
     { title: 'Sven Svensson',
       date: '01/10/2017',
       subjects_attributes: { '0' => { name: 'Sven Svensson',
@@ -239,7 +239,7 @@ if Article.count.zero?
       state_id: '4',
       overview: 'a',
       summary: 'Added a case' },
-      
+
     { title: 'Janina Kowalska',
       date: '01/12/2011',
       subjects_attributes: { '0' => { name: 'Janina Kowalska',
@@ -328,9 +328,9 @@ if Article.count.zero?
       overview: 'a',
       summary: 'Added a case' }
   ]
-  
-  articles.each do |article|
-    Article.create(article)
+
+  cases.each do |this_case|
+    Case.create(this_case)
   end
 end
 
@@ -341,7 +341,7 @@ if Agency.count.zero?
     { name: 'City of Houston Police Department',
       city: 'Houston',
       state_id: '44' },
-    { name: 'City of Beaumont Police Department', 
+    { name: 'City of Beaumont Police Department',
       city: 'Beaumont',
       state_id: '44' }
   ]
