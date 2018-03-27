@@ -3,7 +3,7 @@
 # Cases controller. Containing really complex index method that needs some
 # Refactoring love.
 class CasesController < ApplicationController
-  before_action :find_case, only: %i[show edit update destroy]
+  before_action :find_case, only: %i[show edit update destroy history]
   before_action :authenticate_user!, except: %i[index show history followers]
 
   def new
@@ -81,8 +81,9 @@ class CasesController < ApplicationController
   end
 
   def history
-    @this_case = Case.friendly.find(params[:id])
-    @this_versions = @case.versions.sort_by(&:created_at).reverse
+    unless @case_history.blank? || @case_history.versions.blank?
+      @case_history = @this_case.try(:versions).sort_by(&:created_at).reverse
+    end
   end
 
   def undo
@@ -104,7 +105,7 @@ class CasesController < ApplicationController
 
   private
   def find_case
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find_by_id(params[:id])
   end
 
   # TODO: Move this function out of this controller. The view context alone indicates that
