@@ -176,3 +176,34 @@ RSpec.describe CasesController, type: :controller do
     end
   end
 end
+
+
+RSpec.describe CasesController, type: :controller do
+  # Stubbing out make_undo_link for all specs
+  before do
+    allow_any_instance_of(CasesController).to receive(
+      :make_undo_link
+    ).and_return('/cases/1')
+  end
+
+
+  describe '#history', versioning: true do
+    login_user
+    let(:this_case) { FactoryBot.create(:case) }
+    context 'when requested case exists' do
+
+      it 'shows the history page' do
+        this_case.update_attributes title: 'Updated Title'
+        get :history, id: this_case.id
+        expect(response).to render_template(:history)
+      end
+
+    end
+    context 'when requested case does not exists' do
+      it 'shows the history page with no history' do
+        get :history, id: -1
+        expect(response).to render_template(:history)
+      end
+    end
+  end
+end
