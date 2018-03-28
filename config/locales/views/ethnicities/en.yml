@@ -1,0 +1,8 @@
+en:
+  ethnicities:
+    arabic:          'Arabic'
+    asian:           'Asian'
+    black:           'Black'
+    hispanic:        'Hispanic'
+    native_american: 'Native American'
+    white:           'White'
