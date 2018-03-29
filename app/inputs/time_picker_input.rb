@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Time Picker for simple_form
 class TimePickerInput < DatePickerInput
   private
 

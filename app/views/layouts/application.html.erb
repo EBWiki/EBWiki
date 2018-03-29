@@ -47,7 +47,7 @@
 					<ul class="list-group">
 						<%= link_to "Show All Articles", root_path %>
 						<% Category.all.each do |category| %>
-							<li><%= link_to category.name, articles_path(category: category.name), class: "list-group-item" %></li>
+							<li><%= link_to category.name, cases_path(category: category.name), class: "list-group-item" %></li>
 						<% end %>
 					</ul>
 				</div> -->

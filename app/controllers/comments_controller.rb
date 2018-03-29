@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Case comments controller
 class CommentsController < ApplicationController
   before_filter :load_commentable
   before_action :authenticate_user!, only: [:create]

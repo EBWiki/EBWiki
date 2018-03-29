@@ -24,3 +24,15 @@ en:
     message_mailer:
       subject_new: 'You received a new EBWiki message about %{subject}'
       subject_reply: 'You received a new reply on EBWiki about %{subject}'
+  autobus:
+    completion_message: "We've got plenty of room now. No need to destroy anything!"
+  cases_controller:
+    comments_attributes: [comment, content, commentable_id, commentable_type]
+    subjects_attributes: [name, age, gender_id, ethnicity_id, unarmed, homeless, veteran, mentally_ill, id, _destroy]
+  agencies_controller:
+    agency_params: [ name, street_address, city, state_id, zipcode, description, telephone, email, website, jurisdiction, lead_officer]
+  cases_helper:
+    youtube_helper_url: "https://www.youtube.com/watch?v=Mgn1r3_eM-s"
+    vimeo_helper_url: "https://vimeo.com/136536466"
+    youtube_iframe_url: '<iframe src="//www.youtube.com/embed/Mgn1r3_eM-s"></iframe>'
+    vimeo_iframe_url: '<iframe src="https://player.vimeo.com/video/136536466"></iframe>'

@@ -20,7 +20,8 @@ RSpec.describe MailboxController, type: :controller do
       end
     end
   end
-
+end
+RSpec.describe MailboxController, type: :controller do
   describe 'GET #sent' do
     describe 'on success' do
       login_user
@@ -38,7 +39,8 @@ RSpec.describe MailboxController, type: :controller do
       end
     end
   end
-
+end
+RSpec.describe MailboxController, type: :controller do
   describe 'GET #trash' do
     describe 'on success' do
       login_user

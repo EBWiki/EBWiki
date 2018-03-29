@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Devise controller for registrations.  Includes captcha
 class RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create

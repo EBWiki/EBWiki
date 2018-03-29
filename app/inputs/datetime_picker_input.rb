@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Datetime Picker for simple_form
 class DatetimePickerInput < DatePickerInput
   private
 

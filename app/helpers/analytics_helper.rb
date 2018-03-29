@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper for analytics section of the site.
 module AnalyticsHelper
   def metric_grouped_by_day(data, metric)
     data.group_by_day(metric)
@@ -9,20 +10,16 @@ module AnalyticsHelper
     data.group(category)
   end
 
-  def link_to_article_title(article, length)
-    link_to truncate(article.title, length: length), article
+  def link_to_case_title(this_case, length)
+    link_to truncate(this_case.title, length: length), this_case
   end
 
-  def article_updated_at(article)
-    article.updated_at.strftime("%m.%e, %l:%M %p")
-  end
-
-  def link_to_article_followers(article)
-    link_to article.follows_count, articles_followers_path(article)
+  def link_to_case_followers(this_case)
+    link_to this_case.follows_count, cases_followers_path(this_case)
   end
 
   def comment_created_at(comment)
-    comment.created_at.strftime("%B %d, %Y")
+    comment.created_at.strftime('Y')
   end
 
   def link_to_comment(comment, length)

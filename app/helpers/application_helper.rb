@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
+# Main helper for the site. Helpers meant to be applicable to all pages
 module ApplicationHelper
   def active_page(active_page)
     @active == active_page ? 'active' : ''
   end
 
   def avatar_url(user, size)
-    default_url = "#{root_url}default-user-icon.png"
     gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
     "http://gravatar.com/avatar/#{gravatar_id}?s=#{size}"
   end
@@ -15,16 +15,19 @@ module ApplicationHelper
     if params[:controller] == 'maps'
       '/maps/index'
     else
-      'articles'
+      'cases'
     end
   end
 
-  def marker_locations_for(articles)
-    return nil if articles.blank?
-    @hash = Gmaps4rails.build_markers(articles) do |article, marker|
-      marker.lat article[1]
-      marker.lng article[2]
-      marker.infowindow controller.render_to_string(partial: '/articles/info_window', locals: { article: article })
+  def marker_locations_for(cases)
+    return nil if cases.blank?
+    @hash = Gmaps4rails.build_markers(cases) do |this_case, marker|
+      marker.lat this_case[1]
+      marker.lng this_case[2]
+      marker.infowindow controller.render_to_string(
+        partial: '/cases/info_window',
+        locals: { this_case: this_case }
+      )
     end
     @hash
   end

@@ -68,7 +68,11 @@ class InitSchema < ActiveRecord::Migration
       t.text     'summary'
       t.integer  'follows_count',    default: 0, null: false
     end
-    add_index 'articles', ['slug'], name: 'index_articles_on_slug', unique: true, using: :btree
+
+    unless index_exists? :articles, :slug, name: 'index_articles_on_slug'
+      add_index 'articles', ['slug'], name: 'index_articles_on_slug', unique: true, using: :btree
+    end
+
     add_index 'articles', ['user_id'], name: 'index_articles_on_user_id', using: :btree
     create_table 'categories', force: :cascade do |t|
       t.string   'name'

@@ -1,7 +1,20 @@
 Metrics/LineLength:
   Max: 100
 
+Metrics/BlockLength:
+  Max: 35
+
 AllCops:
   Exclude:
     - db/migrate/*.rb
     - db/schema.rb
+    - db/seeds.rb
+
+Style/Lambda:
+  Enabled: false
+
+Style/UnneededInterpolation:
+  Enabled: false
+
+Layout/FirstParameterIndentation:
+  Enabled: false
