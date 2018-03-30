@@ -37,6 +37,12 @@ Once the git clone is complete, navigate into the `BOW` folder.  Then, use the f
 
 `bundle install`
 
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/clone%203.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/clone.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/clone%202.PNG)
+
 ## AWS
 Login into your Amazon Web Services (AWS) account.  Navigate to the IAM service using the products tab at the top left.  Select the option to create a user.  Set the name of the user to be EBWiki_user, or some other similar name.  Choose the option for programmatic access.  Click next. Select the policy for full access s3 permissions.  Click next.  After reviewing the details, select create user.
 
@@ -45,6 +51,21 @@ Once the user has been created, open the tab to view the access key and secret a
 * `/config/sitemap.rb`
 
 If you prefer, you can add these files to `.gitignore` so that your personal changes are not tracked.
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws%20user.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/ebWiki%20aws.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws5.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws7.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws4.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws6.PNG)
+
 
 ## Postgres
 Choose the appropriate instruction set based on the operating system of your local environment.
@@ -89,9 +110,16 @@ Within `config/database.yml`, uncomment the following lines in the blocks for `d
 
 `password:<%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>`
 
+
 `host: localhost`
 
 `port:5432`
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/db1.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/db.PNG)
+
+![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws2.PNG)
 
 ## Database 
 Let's complete our local database setup.  First, create the development and test databases using the following command:
