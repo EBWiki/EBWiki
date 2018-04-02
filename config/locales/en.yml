@@ -29,6 +29,7 @@ en:
   cases_controller:
     comments_attributes: [comment, content, commentable_id, commentable_type]
     subjects_attributes: [name, age, gender_id, ethnicity_id, unarmed, homeless, veteran, mentally_ill, id, _destroy]
+    case_not_found_message: 'Case was not found!'
   agencies_controller:
     agency_params: [ name, street_address, city, state_id, zipcode, description, telephone, email, website, jurisdiction, lead_officer]
   cases_helper:

@@ -74,14 +74,18 @@ class CasesController < ApplicationController
   end
 
   def destroy
-    @this_case.destroy
-    flash[:success] = "Case was removed! #{make_undo_link}"
-    UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
+    if @this_case
+      @this_case.destroy
+      flash[:success] = "Case was removed! #{make_undo_link}"
+      UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
+    else
+      flash[:notice] = I18n.t('cases_controller.case_not_found_message')
+    end
     redirect_to root_path
   end
 
   def history
-    unless @case_history.blank? || @case_history.versions.blank?
+    unless @this_case.blank? || @this_case.versions.blank?
       @case_history = @this_case.try(:versions).sort_by(&:created_at).reverse
     end
   end
