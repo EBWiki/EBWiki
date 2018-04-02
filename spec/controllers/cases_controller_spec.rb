@@ -170,8 +170,9 @@ RSpec.describe CasesController, type: :controller do
       end
     end
     context 'when requested case does not exists' do
-      it 'throws ActiveRecord::RecordNotFound' do
-        expect { delete :destroy, id: -1 }.to raise_exception ActiveRecord::RecordNotFound
+      it 'returns a message that says that that case was not foun' do
+        expect(delete :destroy, id: -1).to redirect_to root_path
+        expect(flash[:notice]).to eq(I18n.t('cases_controller.case_not_found_message'))
       end
     end
   end
