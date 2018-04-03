@@ -35,21 +35,21 @@
             <% end %>
           </h3>
         <% end %>
-        <% @user.all_following.each do |article| %>
+        <% @user.all_following.each do |following_case| %>
           <div class="col-lg-2 col-md-4 col-xs-12">
               <div class="view view-first">
-                <% if article.avatar? %>
-                  <%= link_to image_tag(article.avatar.large_avatar, :class => "img-responsive"), article %>
+                <% if following_case.avatar? %>
+                  <%= link_to image_tag(following_case.avatar.large_avatar, :class => "img-responsive"), following_case %>
                 <% else %>
                   <div class="thumbnail text-center">
-                    <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), article %>
+                    <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), following_case %>
                     <div class="caption">
-                      <h4><%= article.subjects.first.name %></h4>
+                      <h4><%= following_case.subjects.first.name %></h4>
                     </div>
                   </div>
                 <% end %>
                 <div class="mask">
-                  <h2><%= link_to article.title, article, :class => "info2" %></h2>
+                  <h2><%= link_to following_case.title, following_case, :class => "info2" %></h2>
                 </div>
               </div>
           </div>
