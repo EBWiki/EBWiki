@@ -41,3 +41,6 @@ bower.json
 
 # Ignore pow environment settings
 .powenv
+
+# Ignore DS_Store files
+.DS_Store
