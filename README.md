@@ -29,7 +29,7 @@ All developers are welcome to contribute to the codebase.  We ask that, if possi
 * Sendgrid (for outbound email).
 * SSL using [Let's Encrypt](letsencrypt.org) and [Substrakt](https://github.com/substrakt/letsencrypt-heroku) at [End Bias Certificate Manager](https://endbias-certificate-manager.herokuapp.com/).
 
-For setting up a local development environment [here](docs/README.md)
+For setting up a local development environment [here](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md)
 
 ## Testing
 
