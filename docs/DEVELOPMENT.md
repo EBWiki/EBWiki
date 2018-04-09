@@ -14,11 +14,6 @@ In order for an issue on the EBWiki [issue](https://github.com/EBWiki/EBW/issues
 1. The code related to the ticket should be reviewed by at least one other developer. The other developer's stamp of approval should be on the ticket.
 1. Any high level architectural design changes to the app should be outlined in DEVELOPMENT.md or another document within the Github repository.
 
-# Precompiled Assets
-Currently, EBWiki assets are precompiled in development and pushed up to
-different hosts through version control. While this occurred because of a
-Heroku error, this is not an optimal situation.
-
 # Third party services
 * Elasticsearch for searching cases
 * Postgres 9.4 or higher
