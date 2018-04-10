@@ -1,0 +1,191 @@
+one:
+  title: 'Alabama' 
+
+two:
+  title: 'laska'
+
+three:   
+  title: 'Arizona' 
+
+four:   
+  title: 'Arkansas' 
+
+five:  
+  title: 'California'
+
+six:   
+  title: 'Colorado' 
+
+seven:  
+  title: 'Connecticut'
+
+eight:   
+  title: 'Delaware'
+
+nine:  
+  title: 'District of Columbia'
+
+ten:    
+  title: 'Florida' 
+
+eleven:  
+  title: 'Georgia'
+
+twelve:   
+  title: 'Hawaii' 
+
+thirteen:  
+  title: 'Idaho' 
+
+fourteen:  
+  title: 'Illinois'
+
+fifteen:   
+  title: 'Indiana' 
+
+sixteen:   
+  title: 'Iowa'
+
+seventeen:
+  title: 'Kansas' 
+
+eighteen:
+  title: 'Kentucky' 
+
+nineteen:  
+  title: 'Louisiana' 
+
+ twenty: 
+  title: 'Maine' 
+
+twenty one:  
+  title: 'Maryland' 
+
+twenty two:  
+  title: 'Massachusetts'
+
+twenty three:   
+  title: 'Michigan' 
+
+twenty four:
+  title: 'Minnesota'
+
+twenty five:   
+  title: 'Mississippi' 
+
+twenty six:  
+  title: 'Missouri' 
+
+twenty seven:  
+  title: 'Montana' 
+
+twenty eight:  
+  title: 'Nebraska' 
+
+twenty nine:  
+  title: 'Nevada' 
+
+thirty:  
+  title: 'New Hampshire'
+
+thity one:  
+  title: 'New Jersey' 
+
+thirty two:  
+  title: 'New Mexico' 
+
+thirty three:
+  title: 'New York'
+
+thirty four:   
+  title: 'North Carolina' 
+
+thirty five:  
+  title: 'North Dakota' 
+
+thirty six:  
+  title: 'Ohio'
+
+thirty seven:   
+  title: 'Oklahoma'
+
+thirty eight:   
+  title: 'Oregon' 
+
+thirty nine:  
+  title: 'Pennsylvania' 
+
+forty:  
+  title: 'Rhode Island'
+
+forty one:   
+  title: 'South Carolina' 
+
+forty two:  
+  title: 'South Dakota' 
+
+forty three:  
+  title: 'Tennessee' 
+
+forty four:  
+  title: 'Texas' 
+
+forty five:  
+  title: 'Utah'
+
+forty six:   
+  title: 'Vermont' 
+
+forty seven:  
+  title: 'Virginia' 
+
+forty eight:  
+  title: 'Washington'  
+
+forty nine:   
+  title: 'West Virginia' 
+
+fifty:  
+  title: 'Wisconsin' 
+
+fifty one:  
+  title: 'Wyoming'
+
+fifty two:  
+  title: 'Alberta' 
+
+fifty three:  
+  title: 'British Columbia' 
+
+fifty four:  
+  title: 'Manitoba'
+
+fifty five:   
+  title: 'New Brunswick' 
+
+fifty six:  
+  title: 'Newfoundland and Labrador' 
+
+fifty seven:  
+  title: 'Nova Scotia' 
+
+fifty eight:  
+  title: 'Ontario' 
+
+fifty nine:  
+  title: 'Prince Edward Island' 
+
+sixty:  
+  title: 'Quebec'
+
+sixty one:   
+  title: 'Saskatchewan'
+
+sixty two:   
+  title: 'Northwest Territories' 
+
+sixty three:  
+  title: 'Nunavut' 
+
+sixty four:  
+  title: 'Yukon Territory' 
