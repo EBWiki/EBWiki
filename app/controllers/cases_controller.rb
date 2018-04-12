@@ -3,12 +3,13 @@
 # Cases controller. Containing really complex index method that needs some
 # Refactoring love.
 class CasesController < ApplicationController
-  before_action :find_case, only: %i[show edit update destroy]
+  before_action :find_case, only: %i[show edit update destroy history]
   before_action :authenticate_user!, except: %i[index show history followers]
 
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
+    @agencies = Agency.all.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
     @categories = Category.all
     @states = State.all
   end
@@ -74,15 +75,20 @@ class CasesController < ApplicationController
   end
 
   def destroy
-    @this_case.destroy
-    flash[:success] = "Case was removed! #{make_undo_link}"
-    UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
+    if @this_case
+      @this_case.destroy
+      flash[:success] = "Case was removed! #{make_undo_link}"
+      UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
+    else
+      flash[:notice] = I18n.t('cases_controller.case_not_found_message')
+    end
     redirect_to root_path
   end
 
   def history
-    @this_case = Case.friendly.find(params[:id])
-    @this_versions = @case.versions.sort_by(&:created_at).reverse
+    unless @this_case.blank? || @this_case.versions.blank?
+      @case_history = @this_case.try(:versions).sort_by(&:created_at).reverse
+    end
   end
 
   def undo
@@ -104,7 +110,7 @@ class CasesController < ApplicationController
 
   private
   def find_case
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find_by_id(params[:id])
   end
 
   # TODO: Move this function out of this controller. The view context alone indicates that

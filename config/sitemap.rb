@@ -27,7 +27,7 @@ SitemapGenerator::Sitemap.create do
   # Add all cases:
   Case.find_each do |this_case|
     add case_path(this_case), lastmod: this_case.updated_at
-    add case_followers_path(this_case), lastmod: this_case.updated_at
+    add cases_followers_path(this_case), lastmod: this_case.updated_at
   end
 end
 
