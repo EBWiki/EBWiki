@@ -1,191 +1,191 @@
-one:
+alabama:
   title: 'Alabama' 
 
-two:
-  title: 'laska'
+alaska:
+  title: 'Alaska'
 
-three:   
+arizona:   
   title: 'Arizona' 
 
-four:   
+arkansas:   
   title: 'Arkansas' 
 
-five:  
+california:  
   title: 'California'
 
-six:   
+colorado:   
   title: 'Colorado' 
 
-seven:  
+connecticut:  
   title: 'Connecticut'
 
-eight:   
+delaware:   
   title: 'Delaware'
 
-nine:  
+district of columbia:  
   title: 'District of Columbia'
 
-ten:    
+florida:    
   title: 'Florida' 
 
-eleven:  
+georgia:  
   title: 'Georgia'
 
-twelve:   
+hawaii:   
   title: 'Hawaii' 
 
-thirteen:  
+idaho:  
   title: 'Idaho' 
 
-fourteen:  
+illinois:  
   title: 'Illinois'
 
-fifteen:   
+indiana:   
   title: 'Indiana' 
 
-sixteen:   
+iowa:   
   title: 'Iowa'
 
-seventeen:
+kansas:
   title: 'Kansas' 
 
-eighteen:
+kentucky:
   title: 'Kentucky' 
 
-nineteen:  
+louisiana:  
   title: 'Louisiana' 
 
- twenty: 
+maine: 
   title: 'Maine' 
 
-twenty one:  
+maryland:  
   title: 'Maryland' 
 
-twenty two:  
+massachusetts:  
   title: 'Massachusetts'
 
-twenty three:   
+michigan:   
   title: 'Michigan' 
 
-twenty four:
+minnesota:
   title: 'Minnesota'
 
-twenty five:   
+mississippi:   
   title: 'Mississippi' 
 
-twenty six:  
+missouri:  
   title: 'Missouri' 
 
-twenty seven:  
+montana:  
   title: 'Montana' 
 
-twenty eight:  
+nebraska:  
   title: 'Nebraska' 
 
-twenty nine:  
+nevada:  
   title: 'Nevada' 
 
-thirty:  
+new hampshire:  
   title: 'New Hampshire'
 
-thity one:  
+new jersey:  
   title: 'New Jersey' 
 
-thirty two:  
+new mexico:  
   title: 'New Mexico' 
 
-thirty three:
+new york:
   title: 'New York'
 
-thirty four:   
+north carolina:   
   title: 'North Carolina' 
 
-thirty five:  
+north dakota:  
   title: 'North Dakota' 
 
-thirty six:  
+ohio:  
   title: 'Ohio'
 
-thirty seven:   
+oklahoma:   
   title: 'Oklahoma'
 
-thirty eight:   
+oregon:   
   title: 'Oregon' 
 
-thirty nine:  
+pennsylvania:  
   title: 'Pennsylvania' 
 
-forty:  
+rhode island:  
   title: 'Rhode Island'
 
-forty one:   
+south carolina:   
   title: 'South Carolina' 
 
-forty two:  
+south dakota:  
   title: 'South Dakota' 
 
-forty three:  
+tennessee:  
   title: 'Tennessee' 
 
-forty four:  
+texas:  
   title: 'Texas' 
 
-forty five:  
+utah:  
   title: 'Utah'
 
-forty six:   
+vermont:   
   title: 'Vermont' 
 
-forty seven:  
+virginia:  
   title: 'Virginia' 
 
-forty eight:  
+washington:  
   title: 'Washington'  
 
-forty nine:   
+west virginia:   
   title: 'West Virginia' 
 
-fifty:  
+wisconsin:  
   title: 'Wisconsin' 
 
-fifty one:  
+wyoming:  
   title: 'Wyoming'
 
-fifty two:  
+alberta:  
   title: 'Alberta' 
 
-fifty three:  
+british columbia:  
   title: 'British Columbia' 
 
-fifty four:  
+manitoba:  
   title: 'Manitoba'
 
-fifty five:   
+new brunswick:   
   title: 'New Brunswick' 
 
-fifty six:  
+newfoundland and labrador:  
   title: 'Newfoundland and Labrador' 
 
-fifty seven:  
+nova scotia:  
   title: 'Nova Scotia' 
 
-fifty eight:  
+ontario:  
   title: 'Ontario' 
 
-fifty nine:  
+prince edward island:  
   title: 'Prince Edward Island' 
 
-sixty:  
+quebec:  
   title: 'Quebec'
 
-sixty one:   
+saskatchewan:   
   title: 'Saskatchewan'
 
-sixty two:   
+northwest territories:   
   title: 'Northwest Territories' 
 
-sixty three:  
+nunavut:  
   title: 'Nunavut' 
 
-sixty four:  
+yukon territory:  
   title: 'Yukon Territory' 
