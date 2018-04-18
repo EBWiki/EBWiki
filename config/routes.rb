@@ -23,10 +23,7 @@ Rails.application.routes.draw do
   post '/cases/:id/undo', to: 'cases#undo', as: :undo
 
   match '/articles', to: redirect('/cases', status: 301), via: :all
-  match '/articles/*action', to: redirect {|p, _| "/cases/#{p[:action]}"}, via: :all
-
-
-
+  match '/articles/*action', to: redirect { |p, _| "/cases/#{p[:action]}" }, via: :all
 
   resources :cases do
     resources :follows, only: %i[create destroy]
