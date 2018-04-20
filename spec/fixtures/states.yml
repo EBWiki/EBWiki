@@ -22,7 +22,7 @@ connecticut:
 delaware:   
   title: 'Delaware'
 
-district of columbia:  
+district_of_columbia:  
   title: 'District of Columbia'
 
 florida:    
@@ -85,22 +85,22 @@ nebraska:
 nevada:  
   title: 'Nevada' 
 
-new hampshire:  
+new_hampshire:  
   title: 'New Hampshire'
 
-new jersey:  
+new_jersey:  
   title: 'New Jersey' 
 
-new mexico:  
+new_mexico:  
   title: 'New Mexico' 
 
-new york:
+new_york:
   title: 'New York'
 
-north carolina:   
+north_carolina:   
   title: 'North Carolina' 
 
-north dakota:  
+north_dakota:  
   title: 'North Dakota' 
 
 ohio:  
@@ -115,13 +115,13 @@ oregon:
 pennsylvania:  
   title: 'Pennsylvania' 
 
-rhode island:  
+rhode_island:  
   title: 'Rhode Island'
 
-south carolina:   
+south_carolina:   
   title: 'South Carolina' 
 
-south dakota:  
+south_dakota:  
   title: 'South Dakota' 
 
 tennessee:  
@@ -142,7 +142,7 @@ virginia:
 washington:  
   title: 'Washington'  
 
-west virginia:   
+west_virginia:   
   title: 'West Virginia' 
 
 wisconsin:  
@@ -154,25 +154,25 @@ wyoming:
 alberta:  
   title: 'Alberta' 
 
-british columbia:  
+british_columbia:  
   title: 'British Columbia' 
 
 manitoba:  
   title: 'Manitoba'
 
-new brunswick:   
+new_brunswick:   
   title: 'New Brunswick' 
 
-newfoundland and labrador:  
+newfoundland_and_labrador:  
   title: 'Newfoundland and Labrador' 
 
-nova scotia:  
+nova_scotia:  
   title: 'Nova Scotia' 
 
 ontario:  
   title: 'Ontario' 
 
-prince edward island:  
+prince_edward_island:  
   title: 'Prince Edward Island' 
 
 quebec:  
@@ -181,11 +181,11 @@ quebec:
 saskatchewan:   
   title: 'Saskatchewan'
 
-northwest territories:   
+northwest_territories:   
   title: 'Northwest Territories' 
 
 nunavut:  
   title: 'Nunavut' 
 
-yukon territory:  
+yukon_territory:  
   title: 'Yukon Territory' 
