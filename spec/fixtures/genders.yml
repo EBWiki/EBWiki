@@ -103,7 +103,7 @@ pangender:
 trans:
   sex: 'Trans'
 
-trans*:
+trans_*:
   sex: 'Trans*'
 
 trans_female:
