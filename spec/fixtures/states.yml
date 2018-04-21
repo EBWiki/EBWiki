@@ -1,0 +1,191 @@
+alabama:
+  title: 'Alabama' 
+
+alaska:
+  title: 'Alaska'
+
+arizona:   
+  title: 'Arizona' 
+
+arkansas:   
+  title: 'Arkansas' 
+
+california:  
+  title: 'California'
+
+colorado:   
+  title: 'Colorado' 
+
+connecticut:  
+  title: 'Connecticut'
+
+delaware:   
+  title: 'Delaware'
+
+district_of_columbia:  
+  title: 'District of Columbia'
+
+florida:    
+  title: 'Florida' 
+
+georgia:  
+  title: 'Georgia'
+
+hawaii:   
+  title: 'Hawaii' 
+
+idaho:  
+  title: 'Idaho' 
+
+illinois:  
+  title: 'Illinois'
+
+indiana:   
+  title: 'Indiana' 
+
+iowa:   
+  title: 'Iowa'
+
+kansas:
+  title: 'Kansas' 
+
+kentucky:
+  title: 'Kentucky' 
+
+louisiana:  
+  title: 'Louisiana' 
+
+maine: 
+  title: 'Maine' 
+
+maryland:  
+  title: 'Maryland' 
+
+massachusetts:  
+  title: 'Massachusetts'
+
+michigan:   
+  title: 'Michigan' 
+
+minnesota:
+  title: 'Minnesota'
+
+mississippi:   
+  title: 'Mississippi' 
+
+missouri:  
+  title: 'Missouri' 
+
+montana:  
+  title: 'Montana' 
+
+nebraska:  
+  title: 'Nebraska' 
+
+nevada:  
+  title: 'Nevada' 
+
+new_hampshire:  
+  title: 'New Hampshire'
+
+new_jersey:  
+  title: 'New Jersey' 
+
+new_mexico:  
+  title: 'New Mexico' 
+
+new_york:
+  title: 'New York'
+
+north_carolina:   
+  title: 'North Carolina' 
+
+north_dakota:  
+  title: 'North Dakota' 
+
+ohio:  
+  title: 'Ohio'
+
+oklahoma:   
+  title: 'Oklahoma'
+
+oregon:   
+  title: 'Oregon' 
+
+pennsylvania:  
+  title: 'Pennsylvania' 
+
+rhode_island:  
+  title: 'Rhode Island'
+
+south_carolina:   
+  title: 'South Carolina' 
+
+south_dakota:  
+  title: 'South Dakota' 
+
+tennessee:  
+  title: 'Tennessee' 
+
+texas:  
+  title: 'Texas' 
+
+utah:  
+  title: 'Utah'
+
+vermont:   
+  title: 'Vermont' 
+
+virginia:  
+  title: 'Virginia' 
+
+washington:  
+  title: 'Washington'  
+
+west_virginia:   
+  title: 'West Virginia' 
+
+wisconsin:  
+  title: 'Wisconsin' 
+
+wyoming:  
+  title: 'Wyoming'
+
+alberta:  
+  title: 'Alberta' 
+
+british_columbia:  
+  title: 'British Columbia' 
+
+manitoba:  
+  title: 'Manitoba'
+
+new_brunswick:   
+  title: 'New Brunswick' 
+
+newfoundland_and_labrador:  
+  title: 'Newfoundland and Labrador' 
+
+nova_scotia:  
+  title: 'Nova Scotia' 
+
+ontario:  
+  title: 'Ontario' 
+
+prince_edward_island:  
+  title: 'Prince Edward Island' 
+
+quebec:  
+  title: 'Quebec'
+
+saskatchewan:   
+  title: 'Saskatchewan'
+
+northwest_territories:   
+  title: 'Northwest Territories' 
+
+nunavut:  
+  title: 'Nunavut' 
+
+yukon_territory:  
+  title: 'Yukon Territory' 
