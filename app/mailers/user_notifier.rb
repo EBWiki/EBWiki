@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UserNotifier < ApplicationMailer
+  helper UserNotifierHelper
+
   default from: 'EndBiasWiki@gmail.com'
 
   def send_followers_email(users, this_case)
