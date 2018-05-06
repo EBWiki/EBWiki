@@ -225,7 +225,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Houston',
-      state_id: '44',
+      state: State.where(name: 'Texas').first,
       overview: 'a',
       summary: 'Added a case' },
 
@@ -236,7 +236,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Little Rock',
-      state_id: '4',
+      state: State.where(name: 'Arkansas').first,
       overview: 'a',
       summary: 'Added a case' },
 
@@ -247,7 +247,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Boulder',
-      state_id: '6',
+      state: State.where(name: 'Colorado').first,
       overview: 'a',
       summary: 'Added a case' },
 
@@ -257,7 +257,7 @@ if Case.count.zero?
                                       age: '20'
                                     }
                            },
-      city: 'Jacksonville',
+      city: State.where(name: 'Florida').first,
       state_id: '10',
       overview: 'a',
       summary: 'Added a case' },
@@ -269,7 +269,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Boise',
-      state_id: '13',
+      state_id: State.where(name: 'Idaho').first,
       overview: 'a',
       summary: 'Added a case' },
 
@@ -280,7 +280,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Gary',
-      state_id: '15',
+      state_id: State.where(name: 'Indiana').first,
       overview: 'a',
       summary: 'Added a case' },
 
@@ -291,7 +291,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Louisville',
-      state_id: '18',
+      state: State.where(name: 'Kentucky').first,
       overview: 'a',
       summary: 'Added a case' },
 
@@ -302,7 +302,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Amherst',
-      state_id: '22',
+      state: State.where(name: 'Massachusetts').first,
       overview: 'a',
       summary: 'Added a case' },
 
@@ -313,7 +313,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'St. Louis',
-      state_id: '26',
+      state:  State.where(name: 'Missouri').first,
       overview: 'a',
       summary: 'Added a case' },
 
@@ -324,12 +324,13 @@ if Case.count.zero?
                                     }
                            },
       city: 'Houston',
-      state_id: '44',
+      state_id: State.where(name: 'Texas').first,
       overview: 'a',
       summary: 'Added a case' }
   ]
 
   cases.each do |this_case|
+    "Adding case #{this_case['title']}"
     Case.create(this_case)
   end
 end
@@ -340,10 +341,10 @@ if Agency.count.zero?
   agencies = [
     { name: 'City of Houston Police Department',
       city: 'Houston',
-      state_id: '44' },
+      state:  State.where(name: 'Texas').first },
     { name: 'City of Beaumont Police Department',
       city: 'Beaumont',
-      state_id: '44' }
+      state:  State.where(name: 'Texas').first }
   ]
 
   agencies.each do |agency|
