@@ -305,7 +305,7 @@ if Case.count.zero?
   ]
 
   cases.each do |this_case|
-    "Adding case #{this_case['title']}"
+    Rails.logger.info "Adding case #{this_case['title']}"
     Case.create(this_case)
   end
 end
