@@ -78,9 +78,7 @@ if State.count.zero?
       { ansi_code: 'NU', iso: 'CA-NU', name: 'Nunavut' },
       { ansi_code: 'YT', iso: 'CA-YT', name: 'Yukon Territory' }
     ]
-  total = states.length.to_f
-  process_counter = 0
-  process_display = 0
+
   states.each do |state|
     State.create(state)
   end
