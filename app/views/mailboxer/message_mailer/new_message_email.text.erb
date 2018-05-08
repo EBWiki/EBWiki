@@ -4,7 +4,7 @@ You have a new message: <%= @subject %>
 You have received a new message in your EBWiki inbox:
 
 -----------------------------------------------
-<%= @message.body.html_safe? ? @message.body : strip_tags(@message.body) %>
+<%= sanitize @message.body %>
 -----------------------------------------------
 
 Visit <%= root_url %> and go to your inbox for more info.
