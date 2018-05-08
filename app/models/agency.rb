@@ -4,7 +4,7 @@
 class Agency < ActiveRecord::Base
   # This is the jurisdiction of the agency
   # TODO: Determine a better way to do these enums
-  class Jurisdiction
+  class Jurisdiction_type
     include EnumeratedType
 
     declare :none
