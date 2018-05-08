@@ -83,29 +83,6 @@ if State.count.zero?
   process_display = 0
   states.each do |state|
     State.create(state)
-    process_counter += 1
-    percent = ((process_counter / total) * 100).round(1)
-    display = case process_display
-              when 0
-                process_display += 1
-                '|'
-              when 1
-                process_display += 1
-                '/'
-              when 2
-                process_display += 1
-                '-'
-              when 3
-                process_display += 1
-                '|'
-              when 4
-                process_display += 1
-                '-'
-              when 5
-                process_display = 0
-                '\\'
-              end
-    print '\r\r Creating states #{percent}% #{display}'
   end
 end
 
