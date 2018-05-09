@@ -5,7 +5,7 @@ ruby '2.4.1'
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
 
-gem 'rails', '4.2.9'
+gem 'rails', '~> 4.2.10'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20.0'
 # Use SCSS for stylesheets
@@ -104,7 +104,7 @@ gem 'carrierwave-imageoptimizer'
 gem 'heroku_rails_deflate', groups: %i[production staging]
 
 # CMS panel for admin
-gem 'rails_admin', '0.6.7'
+gem 'rails_admin', '~> 1.3.0'
 
 gem 'geocoder'
 gem 'gmaps4rails'
