@@ -26,7 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # add back rails observer class removed from rails 4
 gem 'rails-observers'
 
-gem 'rack'
+gem 'rack', '~> 1.1'
 
 # For configurable CORS domain settings
 gem 'rack-cors', require: 'rack/cors'
