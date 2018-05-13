@@ -6,7 +6,7 @@
      description: "There are #{@this_case.followers.count} people tracking the case of #{@this_case.title} on EBWiki",
      keywords: %w(@this_case.subjects.first.name " police violence people color")
 %>
-<%= render 'layouts/header' %>
+
 <!-- Page Content -->
 <div class="container">
   <% if @this_case.followers.present? %>
