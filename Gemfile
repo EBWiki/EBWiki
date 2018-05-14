@@ -111,7 +111,7 @@ gem 'gmaps4rails'
 gem 'puma'
 
 # implement elasticsearch
-gem 'searchkick'
+gem 'searchkick', '~> 2'
 
 # manage nested forms
 gem 'cocoon'
