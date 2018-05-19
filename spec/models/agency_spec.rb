@@ -42,6 +42,11 @@ RSpec.describe Agency, type: :model do
     agency.reload
     expect(agency.slug).to eq 'another-title'
   end
+  it 'has a valid listed jurisdiction type' do
+    jurisdiction_type = %w(none local state federal university private)
+    agency = FactoryBot.create(:agency, name: 'The agency', state_id: @texas.id, jurisdiction_type: 'local')
+    expect(jurisdiction_type).to include(agency.jurisdiction_type)
+  end
 
   describe 'geocoded' do
     it 'generates longitude and latitude from city and state on save' do
