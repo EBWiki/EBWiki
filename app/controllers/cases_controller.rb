@@ -19,7 +19,7 @@ class CasesController < ApplicationController
     @recently_updated_cases = Case.sorted_by_update 10
     @cases = Case.includes(:state).by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && params[:state_id].present?
     @cases = Case.includes(:state).by_state(params[:state_id]).order('date DESC').page(params[:page]).per(page_size) if !params[:query].present? && params[:state_id].present?
-    @cases = Case.search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
+    @cases = Case.search(params[:query], fields: ["*"], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
     @cases = Case.all.order('date DESC').includes(:state).page(params[:page]).per(page_size) if !params[:query].present? && !params[:state_id].present?
   end
 

@@ -78,34 +78,9 @@ if State.count.zero?
       { ansi_code: 'NU', iso: 'CA-NU', name: 'Nunavut' },
       { ansi_code: 'YT', iso: 'CA-YT', name: 'Yukon Territory' }
     ]
-  total = states.length.to_f
-  process_counter = 0
-  process_display = 0
+
   states.each do |state|
     State.create(state)
-    process_counter += 1
-    percent = ((process_counter / total) * 100).round(1)
-    display = case process_display
-              when 0
-                process_display += 1
-                '|'
-              when 1
-                process_display += 1
-                '/'
-              when 2
-                process_display += 1
-                '-'
-              when 3
-                process_display += 1
-                '|'
-              when 4
-                process_display += 1
-                '-'
-              when 5
-                process_display = 0
-                '\\'
-              end
-    print '\r\r Creating states #{percent}% #{display}'
   end
 end
 
@@ -330,7 +305,7 @@ if Case.count.zero?
   ]
 
   cases.each do |this_case|
-    "Adding case #{this_case['title']}"
+    Rails.logger.info "Adding case #{this_case['title']}"
     Case.create(this_case)
   end
 end
