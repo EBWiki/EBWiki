@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Given a relation containing all of the agency objects, sort them by name while accounting for ordinal
-# numbers
+# Given a relation containing all of the agency objects, sort them by name while accounting for
+# ordinal numbers
 class SortAgenciesOrdinally
   include Service
 
