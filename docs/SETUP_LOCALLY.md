@@ -1,15 +1,15 @@
 This guide will explain the process of setting up a local development environment for EBWiki.  The guide assumes that you are using a Linux based command line prompt and either a Linux or Windows Operating System.  If you are using a different command line prompt and/or operating system, note that the order and exact nature of the installation and configuration may vary.
 
 # Table of Contents
-1. [Prerequisites](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#prerequisites)
-2. [Installation](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#installation)
-3. [Configuration](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#configuration)
-4. [AWS](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#aws)
-5. [Postgres](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#postgres)
-   * [Linux](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#linux)
-   * [Windows](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#windows)
-6. [Database](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#database)
-7. [Finish](https://github.com/EBWiki/EBWiki/blob/docs/SETUP_LOCALLY.md#finish)
+1. [Prerequisites](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#prerequisites)
+2. [Installation](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#installation)
+3. [Configuration](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#configuration)
+4. [AWS](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#aws)
+5. [Postgres](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#postgres)
+   * [Linux](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#linux)
+   * [Windows](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#windows)
+6. [Database](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#database)
+7. [Finish](https://github.com/EBWiki/EBWiki/docs/SETUP_LOCALLY.md#finish)
 
 ## Prerequisites
 Before beginning the installation and configuration of your environment, ensure that you have a copy of git, Ruby, and Rails on your computer.  You can find installation instructions at the links below:
@@ -33,15 +33,15 @@ Using your command line, navigate to the location where you will store your loca
 
 `git clone https://github.com/EBWiki/EBWiki.git`
 
-Once the git clone is complete, navigate into the `BOW` folder.  Then, use the following command to install dependencies:
+Once the git clone is complete, navigate into the `EBWiki` folder.  Then, use the following command to install dependencies:
 
 `bundle install`
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/clone%203.PNG)
+![Screenshot](https://i.imgur.com/Udjb0sD.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/clone.PNG)
+![Screenshot](https://i.imgur.com//vN5xlOt.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/clone%202.PNG)
+![Screenshot](https://i.imgur.com/vY46FOe.jpg)
 
 ## AWS
 Login into your Amazon Web Services (AWS) account.  Navigate to the IAM service using the products tab at the top left.  Select the option to create a user.  Set the name of the user to be EBWiki_user, or some other similar name.  Choose the option for programmatic access.  Click next. Select the policy for full access s3 permissions.  Click next.  After reviewing the details, select create user.
@@ -52,19 +52,19 @@ Once the user has been created, open the tab to view the access key and secret a
 
 If you prefer, you can add these files to `.gitignore` so that your personal changes are not tracked.
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/aws.PNG)
+![Screenshot](https://i.imgur.com/AjfaJLd.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/aws%20user.PNG)
+![Screenshot](https://i.imgur.com/KFvdZgx.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/ebWiki%20aws.PNG)
+![Screenshot](https://i.imgur.com/2UAsjDy.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/aws5.PNG)
+![Screenshot](https://i.imgur.com/RKkiuXV.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/aws7.PNG)
+![Screenshot](https://i.imgur.com/TyHKkPI.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/aws4.PNG)
+![Screenshot](https://i.imgur.com/TyHKkPI.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/aws6.PNG)
+![Screenshot](https://i.imgur.com/89XU1nF.jpg)
 
 
 ## Postgres
@@ -115,11 +115,11 @@ Within `config/database.yml`, uncomment the following lines in the blocks for `d
 
 `port:5432`
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/db1.PNG)
+![Screenshot](https://i.imgur.com/XJADAoj.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/db.PNG)
+![Screenshot](https://imgur.com/EGbEdvg.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/screenshots/aws2.PNG)
+![Screenshot](https://i.imgur.com/CdOnsI7.jpg)
 
 ## Database 
 Let's complete our local database setup.  First, create the development and test databases using the following command:
