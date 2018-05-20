@@ -70,6 +70,8 @@ class CasesController < ApplicationController
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
+      @categories = Category.all
+      @states = State.all
       render 'edit'
     end
   end
