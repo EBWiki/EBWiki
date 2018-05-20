@@ -28,7 +28,7 @@ class Case < ActiveRecord::Base
   friendly_id :slug_candidates, use: %i[slugged finders]
 
   # Elasticsearch Gem
-  searchkick
+  searchkick _all: false, default_fields: ["*"]
 
   # Model Validations
   validates :date, presence: { message: 'Please add a date.' }
