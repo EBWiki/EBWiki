@@ -82,10 +82,29 @@ Next, create a user `blackops` with the password `ebwiki` or whatever password y
 Exit the console using the following command:
 
  `\q`
+ 
+### Environmental Variables
 
-Save your password as an environment variable by adding the following line to your `.bashrc` file:
+EBWiki uses environmental variables to run with different configurations in 
+different environments. In order to set the variables, create a file named 
+`.env` at the top level of the project and fill in data for the following:
+In order to fill in this credentials, you'll have to get:
+* AWs Credentials from Amazon.com
+* Mailchimp Credentials from Mailchimp.com. Failing that, get the configuration 
+from an EBWiki team member
 
-`export BLACKOPS_DATABASE_PASSWORD='ebwiki'`
+
+```
+AWS_ACCESS_KEY_ID=<AWS Credentials>
+AWS_SECRET_KEY_ID=<AWS Credentials>
+MAILCHIMP_API_KEY=<Mailchimp Credentials>
+MAILCHIMP_LINK=<Mailchimp Credentials>
+MAILCHIMP_LIST_ID=<Mailchimp Credentials>
+SEARCHBOX_URL=<Elasticsearch URL>
+CODECLIMATE_REPO_TOKEN=<Codeclimate API>
+AUTOBUS_SNAPSHOT_URL=<Autobus URL>
+BLACKOPS_DATABASE_PASSWORD=<local database password>
+```
 
 ### Windows
 Start the postgres console using the following command:
