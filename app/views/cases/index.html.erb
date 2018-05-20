@@ -3,7 +3,6 @@ meta title: "EBWiki - Ending Violence Against People of Color",
      description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.",
      keywords: %w("police killing abuse")
 %>
-<%= render 'layouts/header' %>
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
@@ -11,7 +10,7 @@ meta title: "EBWiki - Ending Violence Against People of Color",
 
             <div class="text-center">
               <h3>
-                
+
                 <% if current_user.present? %>
                   <% unless current_user.mailchimp_status == "subscribed" %>
                     <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
