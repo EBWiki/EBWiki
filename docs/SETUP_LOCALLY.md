@@ -86,7 +86,9 @@ Exit the console using the following command:
 ### Environmental Variables
 
 EBWiki uses environmental variables to run with different configurations in 
-different environments. In order to set the variables, create a file named 
+different environments through the [dotenv](https://github.com/bkeepers/dotenv) 
+gem. For more information, consult the dotenv documentation, but in the meantime,
+to set the variables, create a file named 
 `.env` at the top level of the project and fill in data for the following:
 In order to fill in this credentials, you'll have to get:
 * AWs Credentials from Amazon.com
