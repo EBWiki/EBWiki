@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'cases/index.html.erb', type: :view do
-  it 'displays all the articles' do
+  it 'displays all the cases' do
     case1 = FactoryBot.build(:case, title: 'John Doe')
     case2 = FactoryBot.build(:case,
                                  title: 'Jimmy Doe',

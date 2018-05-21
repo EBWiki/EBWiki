@@ -5,15 +5,22 @@ notifications:
   email:
   - nyonmark@gmail.com
   - dariusgoore@gmail.com
+  - rlgreen91@gmail.com
   slack:
     secure: nGWlUFUuQjsn6zxJQqY6+ljlSHnz9We+OHi6UV4690Aw9RSDVmcNIGiCJB8DoySwYuppcTq/G2YEw5+vxHKRTWv0zHLNLQ8hfAlBxM5rPEFCrdvL+P9fQfZcuPGI2RUq4c0nCZ63a1Tgt3119kBw91qLGG4CWTMtcNO2mKMfNixdwwwbPKr/bqQHbgfi0zl66RKERBJdtljZneKD68AelFLm9YUtfOCNreY+sZ5LTaYEpG8REEqW1MJt3iI3lGs/YUscpwuyBa9fPoD5B6FUD9K9dS5rsjznYStB3dNqkoeVFZP0LQd1+Rk2GVwqmDfhAuCB5tUOH5zdET4U7sw8//ZzceAztABSEuKQVg4TUnSBBN4+vB1KDO8kFGItaY7xqFywIHvGXUu54e7XUgvMT5tfgblfNJTKbBx3loIydJmQTiRLGOChlKICi46kdzoOKCTiYxfCFsJvjTe7e5eE48Ardi6vnxFxOtPnbHIcrM1ImRfaYKJ1+5tZZEXtAnni4D9xcg3KMdsyTJsi4Obl51tH4BGy13gzG7HrsuRgLkAGYGjvDCf6W5tmktVz23R+JR3aGrBV1/AfPPYoJxXXsylt4kh5BY7gSGe2S8nw/hTI5VQ5GRrUhB8K9jmEE7nt4bBkQv1M/vXTs85HQvwyGK/UdS3nS86QnEmi0FIQmxA=
 addons:
   postgresql: '9.4'
 before_script:
-- psql -c 'create database travis_ci_test;' -U postgres; cp config/database.ci.yml
-  config/database.yml
+- psql -c 'create database travis_ci_test;' -U postgres
+- cp config/database.ci.yml config/database.yml
 - bundle exec rake db:create db:migrate db:schema:load
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./bin/cc-test-reporter
+- chmod +x ./bin/cc-test-reporter
+- ./bin/cc-test-reporter before-build
 cache: bundler
 services:
 - elasticsearch
 - redis-server
+
+after_script:
+  - ./bin/cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
