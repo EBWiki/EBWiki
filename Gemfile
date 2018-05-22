@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.4.1'
+ruby '2.5.1'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
@@ -86,7 +86,7 @@ end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '3.5.6'
+gem 'devise', '4.4'
 gem 'momentjs-rails'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
