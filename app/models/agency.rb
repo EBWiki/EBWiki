@@ -32,7 +32,7 @@ class Agency < ActiveRecord::Base
     message: 'You must specify the state in which the incident occurred.'
   }
   validates :jurisdiction_type, inclusion: { 
-    in: ['none','state','local','federal','university','private'],
+    in: %w(none state local federal university private),
     message: 'You must enter one of the listed jurisdiction type.' 
   }  
   extend FriendlyId
