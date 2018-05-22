@@ -69,4 +69,12 @@ legend {
 form abbr[title] {
     border-bottom: none !important;
     text-decoration: none !important;
- } 
+ }
+
+/* Position search button in a better way */
+.search-btn {
+	position: relative;
+	bottom: 7px;
+	left: 10px;
+}
+

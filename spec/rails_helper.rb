@@ -62,6 +62,11 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
+
+    # and disable callbacks
+    Searchkick.disable_callbacks
+    
+    
     if config.use_transactional_fixtures?
       raise(<<-MSG)
         Delete line `config.use_transactional_fixtures = true` from rails_helper.rb
@@ -100,6 +105,13 @@ RSpec.configure do |config|
 
   config.append_after(:each) do
     DatabaseCleaner.clean
+  end
+  
+  # Seachkick testing config
+  config.around(:each, search: true) do |example|
+    Searchkick.callbacks(true) do
+      example.run
+    end
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests

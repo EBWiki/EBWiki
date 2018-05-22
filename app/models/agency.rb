@@ -19,6 +19,10 @@ class Agency < ActiveRecord::Base
   has_many :cases, through: :case_agencies
   belongs_to :state
 
+  before_save do
+    self.name = name.lstrip
+  end
+
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
     message: 'An agency with this name already exists and can be found. If you'\
@@ -61,4 +65,5 @@ class Agency < ActiveRecord::Base
   def retrieve_state
     State.where(id: state_id).pluck(:name).join
   end
+
 end

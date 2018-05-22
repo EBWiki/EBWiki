@@ -49,7 +49,7 @@ RSpec.describe Case, type: :model, versioning: true do
 
     it 'adds a version when the date is changed' do
       this_case = FactoryBot.create(:case)
-      this_case.update_attribute(:date, Date.yesterday)
+      this_case.update_attribute(:date, (Time.current - 1.day))
       expect(this_case.versions.size).to eq 2
     end
 
