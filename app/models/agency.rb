@@ -31,6 +31,9 @@ class Agency < ActiveRecord::Base
   validates :state_id, presence: {
     message: 'You must specify the state in which the incident occurred.'
   }
+  validates :jurisdiction_type, inclusion: { in: %w(none state local federal university private),
+   message: '%{value} is not  valid jurisdiction type' }  
+
 
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged

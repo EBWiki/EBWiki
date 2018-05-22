@@ -9,27 +9,29 @@ RSpec.describe Agency, type: :model do
   end
 
   it 'is invalid without a name' do
-    agency = build(:agency, name: nil, state_id: @texas.id)
+    agency = build(:agency, name: nil, state_id: @texas.id, jurisdiction_type: 'local')
     expect(agency).to be_invalid
   end
 
   it 'removes leading white space from name' do
-    agency = FactoryBot.create(:agency, name: "  Fake agency", state_id: @texas.id)
+    agency = FactoryBot.create(:agency, name: "  Fake agency", state_id: @texas.id, jurisdiction_type: 'local')
     expect(agency.name).to eql("Fake agency")
   end
 
   it 'is invalid without a state' do
-    agency = build(:agency, name: 'The Agency', state_id: nil)
+    agency = build(:agency, name: 'The Agency', state_id: nil, jurisdiction_type: 'kenya')
     expect(agency).to be_invalid
   end
 
   it 'must have a unique name' do
     agency = FactoryBot.create(:agency,
                                name: 'Dallas Police Department',
-                               state_id: @texas.id)
+                               state_id: @texas.id,
+                               jurisdiction_type: 'none')
     agency2 = build(:agency,
                     name: 'Dallas Police Department',
-                    state_id: @texas.id)
+                    state_id: @texas.id,
+                    jurisdiction_type: 'local')
 
     expect(agency2).to be_invalid
   end
@@ -38,32 +40,35 @@ RSpec.describe Agency, type: :model do
     agency = Agency.new(name: 'The Title', state_id: @texas.id)
     agency.slug = nil
     agency.name = 'Another Title'
+    agency.jurisdiction_type = 'local'
     agency.save!
     agency.reload
     expect(agency.slug).to eq 'another-title'
   end
-  it 'has a valid listed jurisdiction type' do
-    jurisdiction_type = %w(none local state federal university private)
-    agency = FactoryBot.create(:agency, name: 'The agency', state_id: @texas.id, jurisdiction_type: 'local')
-    expect(jurisdiction_type).to include(agency.jurisdiction_type)
+   it 'is invalid without listed jurisdiction type' do
+    jurisdiction_type = %w(none state local federal university private)
+    agency = build(:agency, name: 'the title', state_id: @texas.id, jurisdiction_type: nil )
+    expect(agency).to be_invalid
   end
 
   describe 'geocoded' do
     it 'generates longitude and latitude from city and state on save' do
       agency = FactoryBot.create(:agency,
                                  city: 'Houston',
+                                 jurisdiction_type: 'local',
                                  state_id: @texas.id )
       expect(agency.latitude).to be_a(Float)
       expect(agency.longitude).to be_a(Float)
     end
 
     it 'updates geocoded coordinates when relevant fields are updated' do
-      agency = FactoryBot.create(:agency, state_id: @texas.id)
+      agency = FactoryBot.create(:agency, state_id: @texas.id, jurisdiction_type: 'local')
       ohio = FactoryBot.create(:state_ohio)
 
       expect do
         agency.update_attributes(city: 'Worthington',
                                  state_id: ohio.id,
+                                 jurisdiction_type: 'local',
                                  street_address: '1867 Irving Road',
                                  zipcode: '43085')
       end.to change { agency.latitude }
@@ -71,7 +76,7 @@ RSpec.describe Agency, type: :model do
   end
 
   it 'retrieves the state of the agency' do
-    agency = FactoryBot.create(:agency, state_id: @texas.id)
+    agency = FactoryBot.create(:agency, state_id: @texas.id, jurisdiction_type: 'local')
     agency_state = agency.retrieve_state
     expect(agency_state).to eq @texas.name
   end
