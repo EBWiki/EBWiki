@@ -97,9 +97,8 @@ class Case < ActiveRecord::Base
   end
 
   def case_date_cannot_be_in_the_future
-    if date.present? && date > Date.current
-      errors.add(:date, 'must be in the past')
-    end
+    errors.add(:date, 'must be in the past') if
+    date.present? && date > Date.current
   end
 
   def edit_summary
@@ -154,8 +153,7 @@ class Case < ActiveRecord::Base
   def check_for_empty_fields
     attrs = %w[ title date address city state zipcode state_id avatar video_url
                 overview community_action litigation country remove_avatar ]
-    unless (changed & attrs).any?
-      errors[:base] << 'You must change field other than summary to generate a new version'
-    end
+    errors[:base] << 'You must change field other than summary to generate a new version' unless
+    (changed & attrs).any?
   end
 end

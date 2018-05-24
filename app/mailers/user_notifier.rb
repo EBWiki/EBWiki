@@ -15,7 +15,7 @@ class UserNotifier < ApplicationMailer
 
   def send_deletion_email(users, this_case)
     @this_case = this_case
-    users.each do|user|
+    users.each do |user|
       Rails.logger.info("UserNotifier#send_deletion_email: Sending notification to #{user.email} about case #{this_case.title}")
       mail(to: user.email, subject: "The #{@this_case.title} case has been removed from EBWiki")
     end

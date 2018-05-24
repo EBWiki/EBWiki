@@ -341,7 +341,7 @@ RSpec.describe Case, type: :model, versioning: true do
         :case,
         city: 'Houston',
         state_id: texas.id,
-        date: Time.current,
+        date: Time.current
       )
       FactoryBot.create(:case,
                         city: 'Baton Rouge',
