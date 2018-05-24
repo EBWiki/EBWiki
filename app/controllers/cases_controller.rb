@@ -87,7 +87,7 @@ class CasesController < ApplicationController
 
   def history
     unless @this_case.blank? || @this_case.versions.blank?
-      @case_history = @this_case.try(:versions).sort_by(&:created_at).reverse
+      @case_history = @this_case.try(:versions).order(created_at: :asc)
     end
   end
 

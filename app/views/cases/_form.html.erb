@@ -115,11 +115,8 @@
 <% end %>
 
 <script type="text/javascript">
-    $('.datetimepicker').datetimepicker();
-</script>
-
-<script type="text/javascript">
+  $('.datetimepicker').datetimepicker();
   $('input[id=lefile_article]').change(function() {
-  $('#photoCover_article').val(_.last($(this).val().split("\\")));
+  	$('#photoCover_article').val(_.last($(this).val().split("\\")));
   });
 </script>
