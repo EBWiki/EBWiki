@@ -68,4 +68,22 @@ describe SortAgenciesOrdinally do
                                      agency_two])
     end
   end
+
+  context 'when two agencies have very similar names' do
+    before do
+      agency_one
+      agency_two
+    end
+
+    it 'sorts the agencies correctly' do
+      agency_three = FactoryBot.create(:agency, name: "1st Police Division of Santa Ana")
+      agency_four = FactoryBot.create(:agency, name: "1st Police Division of Santa Clara")
+
+      sorted_agencies = SortAgenciesOrdinally.call(Agency.all)
+      expect(sorted_agencies).to eq([agency_three,
+                                     agency_four,
+                                     agency_one,
+                                     agency_two])
+    end
+  end
 end

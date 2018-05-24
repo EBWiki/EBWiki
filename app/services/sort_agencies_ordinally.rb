@@ -16,15 +16,15 @@ class SortAgenciesOrdinally
 
   private
 
-  # Performs ordinal sort removes number portion from string to sort
-  # number portion properly, then returns array of agency objects based on sorted names
+  # Performs ordinal sort removes number portion from string, then sorts names based on
+  # number then following words
   def ordinal_sort(agencies)
     name_object_hash = {}
     agencies.each { |agency| name_object_hash[agency.name] = agency }
 
     names = name_object_hash.keys
     sorted_names = names.sort_by do |n|
-      [n.split(/(\d+)/)[1].to_i, n.split(/\s/)[1]]
+      [n.split(/(\d+)/)[1].to_i, n.split(/\s/)]
     end
 
     sorted_names.collect { |n| name_object_hash[n] }
