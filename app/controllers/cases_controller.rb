@@ -52,7 +52,7 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
-    @agencies = Agency.all.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
+    @agencies = SortAgenciesOrdinally.call(Agency.all)
     @categories = Category.all
     @states = State.all
   end

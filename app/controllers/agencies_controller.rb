@@ -8,7 +8,7 @@ class AgenciesController < ApplicationController
 
   # GET /agencies
   def index
-    @agencies = Agency.all
+    @agencies = SortAgenciesOrdinally.call(Agency.all)
   end
 
   # GET /agencies/1
