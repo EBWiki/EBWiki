@@ -88,8 +88,8 @@ class CasesController < ApplicationController
   end
 
   def history
-      @case_history = @this_case.try(:versions).order(created_at: :desc) unless
-      @this_case.blank? || @this_case.versions.blank?
+    @case_history = @this_case.try(:versions).order(created_at: :desc) unless
+    @this_case.blank? || @this_case.versions.blank?
   end
 
   def undo
