@@ -98,7 +98,7 @@
       <!-- Related Projects Row -->
         <div class="row">
           <div class="col-lg-12">
-            <h3 class="page-header">EBWiki is tracking <%= @this_case.nearby_cases.size %> other case<%= "s" if @this_case.nearby_cases.size > 1 %> near <%= @this_case.city %>, <%= @this_case.state.name %>:</h3>
+            <h3 class="page-header">EBWiki is tracking <%= pluralize(@this_case.nearby_cases.size, "case")%> near <%= @this_case.city %>, <%= @this_case.state.name %>:</h3>
           </div>
         </div>
         <div class="row">
