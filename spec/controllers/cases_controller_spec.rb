@@ -9,10 +9,10 @@ RSpec.describe CasesController, type: :controller do
       :make_undo_link
     ).and_return('/cases/1')
   end
-  let(:cases) { FactoryBot.create_list(:case, 20) }
 
   describe '#index' do
     describe 'on success' do
+      let(:cases) { FactoryBot.create_list(:case, 20) }
       before(:each) { get :index }
       it 'assigns the first 12 cases to @cases' do
         expect(assigns(:cases)).to match_array cases[0..11]
@@ -27,13 +27,11 @@ RSpec.describe CasesController, type: :controller do
           raise ActionController::InvalidAuthenticityToken
         end
       end
-      describe 'index' do
-        it 'does not raise an error' do
-          expect { get :index }.not_to raise_error
-        end
-        it 'redirects to the home page' do
-          expect(get(:index)).to redirect_to('/')
-        end
+      it 'does not raise an error' do
+        expect { get :index }.not_to raise_error
+      end
+      it 'redirects to the home page' do
+        expect(get(:index)).to redirect_to('/')
       end
     end
   end
@@ -139,9 +137,19 @@ RSpec.describe CasesController, type: :controller do
 
     context 'when invalid' do
       let(:new_values) { attributes_for(:invalid_case) }
-      it 'redirects to the edit page' do
+      before(:each) do 
         patch :update, id: this_case.id, case: new_values
+      end
+      it 'redirects to the edit page' do
         expect(response).to render_template(:edit)
+      end
+      
+       it 'has a non-empty set of categories' do
+        expect(assigns['categories']).to_not be_nil
+      end
+      
+      it 'has a non-empty set of states' do
+        expect(assigns['states']).to_not be_nil
       end
     end
   end

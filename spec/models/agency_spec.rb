@@ -13,6 +13,11 @@ RSpec.describe Agency, type: :model do
     expect(agency).to be_invalid
   end
 
+  it 'removes leading white space from name' do
+    agency = FactoryBot.create(:agency, name: "  Fake agency", state_id: @texas.id)
+    expect(agency.name).to eql("Fake agency")
+  end
+
   it 'is invalid without a state' do
     agency = build(:agency, name: 'The Agency', state_id: nil)
     expect(agency).to be_invalid
