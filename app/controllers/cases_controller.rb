@@ -92,7 +92,6 @@ class CasesController < ApplicationController
     @this_case.blank? || @this_case.versions.blank?
   end
 
-
   def undo
     @case_version = PaperTrail::Version.find_by_id(params[:id])
     begin
