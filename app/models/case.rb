@@ -62,6 +62,10 @@ class Case < ActiveRecord::Base
     art.avatar.changed?
   end
 
+  before_save do
+    self.overview = ActionController::Base.helpers.strip_tags(overview)
+  end
+
   # Scopes
   scope :by_state, ->(state_id) { where(state_id: state_id) }
   scope :created_this_month, -> {

@@ -24,6 +24,11 @@ RSpec.describe Case, type: :model do
       this_case = build(:case, summary: nil)
       expect(this_case).to be_invalid
     end
+
+    it 'saves the overview without any html tags' do
+      this_case = create(:case, overview: "<a href='google.com'>Google</a>")
+      expect(this_case.overview).to eq('Google')
+    end
   end
 end
 
