@@ -19,7 +19,7 @@ module AnalyticsHelper
   end
 
   def comment_created_at(comment)
-    comment.created_at.strftime('Y')
+    comment.created_at.strftime('%B %d, %Y')
   end
 
   def link_to_comment(comment, length)
