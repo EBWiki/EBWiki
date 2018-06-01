@@ -22,6 +22,12 @@ Rails.application.configure do
   # NGINX, varnish or squid.
   # config.action_dispatch.rack_cache = true
 
+
+  # Set X-Content-Type-Options header to 'nosniff' to prevent MIME sniffing
+  config.action_dispatch.default_headers = { 
+    'X-Content-Type-Options' => 'nosniff'
+  }
+  
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.serve_static_files = true
@@ -45,7 +51,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = false
+  config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
