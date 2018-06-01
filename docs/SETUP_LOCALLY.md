@@ -1,21 +1,22 @@
 This guide will explain the process of setting up a local development environment for EBWiki.  The guide assumes that you are using a Linux based command line prompt and either a Linux or Windows Operating System.  If you are using a different command line prompt and/or operating system, note that the order and exact nature of the installation and configuration may vary.
 
 # Table of Contents
-1. [Prerequisites](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#prerequisites)
-2. [Installation](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#installation)
-3. [Configuration](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#configuration)
-4. [AWS](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#aws)
-5. [Postgres](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#postgres)
-   * [Linux](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#linux)
-   * [Windows](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#windows)
-6. [Database](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#database)
-7. [Finish](https://github.com/EBWiki/EBWiki/blob/docs/docs/SETUP_LOCALLY.md#finish)
+<<<<<<< HEAD
+1. [Prerequisites](#prerequisites)
+2. [Installation](#installation)
+3. [App Configuration](#app-configuration)
+4. [AWS Configuration](#aws-configuration)
+5. [Postgres Setup](#postgres-setup)
+   * [Linux](#linux)
+   * [Windows](#windows)
+6. [Local Database Setup](#local-database-setup)
+7. [Finish](#finish)
 
 ## Prerequisites
 Before beginning the installation and configuration of your environment, ensure that you have a copy of git, Ruby, and Rails on your computer.  You can find installation instructions at the links below:
 * [Git](https://git-scm.com/downloads)
 * [Ruby v2.4.1](https://www.ruby-lang.org/en/downloads/)
-* [Rails v4.2.9](http://rubyonrails.org/)
+* [Rails v4.2.10](http://rubyonrails.org/)
 
 ## Installation
 To work on EBWiki locally you will need to have PostgreSQL and Elasticsearch running on your local environment.  You will also need to have an Amazon Web Services (AWS) account to use S3 for storage.  Information on how to install and configure these programs and services is listed below:
@@ -28,22 +29,26 @@ To work on EBWiki locally you will need to have PostgreSQL and Elasticsearch run
 
 It is generally recommended that you have PostGreSQL and Elasticsearch start at bootup.
 
-## Configuration
+## App Configuration
 Using your command line, navigate to the location where you will store your local copy of the codebase.  Use the following command to clone a copy of the repo to your local environment:
 
 `git clone https://github.com/EBWiki/EBWiki.git`
 
-Once the git clone is complete, navigate into the `BOW` folder.  Then, use the following command to install dependencies:
+**Important Note: You must clone a copy of the repo from the EBWiki organization.  If you try to fork the repo, then Travis, our continuous integration service, will error out when you submit your PR.**
+
+Once the git clone is complete, navigate into the `EBWiki` folder.  Then, use the following command to install dependencies:
 
 `bundle install`
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/clone%203.PNG)
+![Screenshot](https://i.imgur.com/Udjb0sD.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/clone.PNG)
+![Screenshot](https://i.imgur.com//vN5xlOt.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/clone%202.PNG)
+![Screenshot](https://i.imgur.com/vY46FOe.jpg)
 
-## AWS
+Finally, contact us at rlgreen91@gmail.com so that we can add you as a contributor to the repo - please include your Github username.  This will allow you push access to the repo so you can avoid issues with Travis.
+
+## AWS Configuration
 Login into your Amazon Web Services (AWS) account.  Navigate to the IAM service using the products tab at the top left.  Select the option to create a user.  Set the name of the user to be EBWiki_user, or some other similar name.  Choose the option for programmatic access.  Click next. Select the policy for full access s3 permissions.  Click next.  After reviewing the details, select create user.
 
 Once the user has been created, open the tab to view the access key and secret access key.  Add these values as environment variables to your .bashrc file.  Reboot your command line prompt.  If necessary, update the following files with your specific environment variable names:
@@ -52,22 +57,22 @@ Once the user has been created, open the tab to view the access key and secret a
 
 If you prefer, you can add these files to `.gitignore` so that your personal changes are not tracked.
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws.PNG)
+![Screenshot](https://i.imgur.com/AjfaJLd.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws%20user.PNG)
+![Screenshot](https://i.imgur.com/KFvdZgx.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/ebWiki%20aws.PNG)
+![Screenshot](https://i.imgur.com/2UAsjDy.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws5.PNG)
+![Screenshot](https://i.imgur.com/RKkiuXV.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws7.PNG)
+![Screenshot](https://i.imgur.com/TyHKkPI.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws4.PNG)
+![Screenshot](https://i.imgur.com/TyHKkPI.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws6.PNG)
+![Screenshot](https://i.imgur.com/89XU1nF.jpg)
 
 
-## Postgres
+## Postgres Setup
 Choose the appropriate instruction set based on the operating system of your local environment.
 
 ### Linux
@@ -82,10 +87,31 @@ Next, create a user `blackops` with the password `ebwiki` or whatever password y
 Exit the console using the following command:
 
  `\q`
+ 
+### Environmental Variables
 
-Save your password as an environment variable by adding the following line to your `.bashrc` file:
+EBWiki uses environmental variables to run with different configurations in 
+different environments through the [dotenv](https://github.com/bkeepers/dotenv) 
+gem. For more information, consult the dotenv documentation, but in the meantime,
+to set the variables, create a file named 
+`.env` at the top level of the project and fill in data for the following:
+In order to fill in this credentials, you'll have to get:
+* AWs Credentials from Amazon.com
+* Mailchimp Credentials from Mailchimp.com. Failing that, get the configuration 
+from an EBWiki team member
 
-`export BLACKOPS_DATABASE_PASSWORD='ebwiki'`
+
+```
+AWS_ACCESS_KEY_ID=<AWS Credentials>
+AWS_SECRET_KEY_ID=<AWS Credentials>
+MAILCHIMP_API_KEY=<Mailchimp Credentials>
+MAILCHIMP_LINK=<Mailchimp Credentials>
+MAILCHIMP_LIST_ID=<Mailchimp Credentials>
+SEARCHBOX_URL=<Elasticsearch URL>
+CODECLIMATE_REPO_TOKEN=<Codeclimate API>
+AUTOBUS_SNAPSHOT_URL=<Autobus URL>
+BLACKOPS_DATABASE_PASSWORD=<local database password>
+```
 
 ### Windows
 Start the postgres console using the following command:
@@ -115,13 +141,13 @@ Within `config/database.yml`, uncomment the following lines in the blocks for `d
 
 `port:5432`
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/db1.PNG)
+![Screenshot](https://i.imgur.com/XJADAoj.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/db.PNG)
+![Screenshot](https://imgur.com/EGbEdvg.jpg)
 
-![Screenshot](https://github.com/EBWiki/EBWiki/blob/docs/docs/screenshots/aws2.PNG)
+![Screenshot](https://i.imgur.com/CdOnsI7.jpg)
 
-## Database 
+## Local Database Setup
 Let's complete our local database setup.  First, create the development and test databases using the following command:
 
 `rake db:create`
@@ -140,3 +166,4 @@ Now, everything should be completely set up!  Run the app locally on your comput
 `rails s`
 
 You should be to view and interact with the site on http://localhost:3000.  Now you're ready to get start contributing!
+

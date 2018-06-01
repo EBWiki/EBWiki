@@ -26,7 +26,7 @@
       <div class="">
         <%= social_share_button_tag("Take a look at what I just found on EBWiki:") %>
       </div>
-      <div class="row">
+      <div class="row case-btns">
         <%= render 'button_group' %>
       </div>
       <%= render "comments/add_comment_form" %>
@@ -98,7 +98,7 @@
       <!-- Related Projects Row -->
         <div class="row">
           <div class="col-lg-12">
-            <h3 class="page-header">EBWiki is tracking <%= @this_case.nearby_cases.size %> other case<%= "s" if @this_case.nearby_cases.size > 1 %> near <%= @this_case.city %>, <%= @this_case.state.name %>:</h3>
+            <h3 class="page-header">EBWiki is tracking <%= pluralize(@this_case.nearby_cases.size, "case")%> near <%= @this_case.city %>, <%= @this_case.state.name %>:</h3>
           </div>
         </div>
         <div class="row">

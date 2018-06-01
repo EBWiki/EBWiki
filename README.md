@@ -15,7 +15,7 @@ After the Walter Scott video was released showing the vast discrepancy between t
 
 ## Contributing
 
-All developers are welcome to contribute to the codebase.  We ask that, if possible, you address issues that are labelled `high priority` first, followed by those marked as `quick fix`.  All contributors are expected to adhere to our code of conduct, which can be found [here](docs/CODE_OF_CONDUCT.md).  Thank you for your contribution - details on our stack can be found below.
+All developers are welcome to contribute to the codebase.  For general information on contributing, consult [this guide](docs/DEVELOPMENT.md)  We ask that, if possible, you address issues that are labelled `high priority` first, followed by those marked as `quick fix`.  All contributors are expected to adhere to our code of conduct, which can be found [here](docs/CODE_OF_CONDUCT.md).  Thank you for your contribution - details on our stack can be found below.
 
 ## Installation
 
@@ -29,7 +29,7 @@ All developers are welcome to contribute to the codebase.  We ask that, if possi
 * Sendgrid (for outbound email).
 * SSL using [Let's Encrypt](letsencrypt.org) and [Substrakt](https://github.com/substrakt/letsencrypt-heroku) at [End Bias Certificate Manager](https://endbias-certificate-manager.herokuapp.com/).
 
-For setting up a local development environment [here](docs/SETUP_LOCALLY.md)
+For instructions on setting up a local development environment, click [here](docs/SETUP_LOCALLY.md)
 
 ## Testing
 

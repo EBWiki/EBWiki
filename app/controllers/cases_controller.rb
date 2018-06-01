@@ -52,7 +52,7 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
-    @agencies = Agency.all.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
+    @agencies = SortAgenciesOrdinally.call(Agency.all)
     @categories = Category.all
     @states = State.all
   end
@@ -70,6 +70,8 @@ class CasesController < ApplicationController
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
+      @categories = Category.all
+      @states = State.all
       render 'edit'
     end
   end
@@ -86,9 +88,8 @@ class CasesController < ApplicationController
   end
 
   def history
-    unless @this_case.blank? || @this_case.versions.blank?
-      @case_history = @this_case.try(:versions).sort_by(&:created_at).reverse
-    end
+    @case_history = @this_case.try(:versions).order(created_at: :desc) unless
+    @this_case.blank? || @this_case.versions.blank?
   end
 
   def undo
@@ -109,6 +110,7 @@ class CasesController < ApplicationController
   end
 
   private
+
   def find_case
     @this_case = Case.friendly.find_by_id(params[:id])
   end
