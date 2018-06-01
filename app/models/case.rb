@@ -47,6 +47,8 @@ class Case < ActiveRecord::Base
       'to summarize your edits to the case.'
   }
 
+  validates :overview, length: { maximum: 500 }, allow_nil: true
+
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
