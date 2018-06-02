@@ -25,6 +25,15 @@ RSpec.describe Case, type: :model do
       expect(this_case).to be_invalid
     end
   end
+
+  describe 'overview' do
+    it 'saves the overview without any html tags' do
+      this_case = create(:case, overview: "<a href='google.com'>Google</a>")
+      expect(this_case.overview).to eq('Google')
+    end
+
+    it { should validate_length_of(:overview) }
+  end
 end
 
 RSpec.describe Case, type: :model, versioning: true do
