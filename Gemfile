@@ -80,7 +80,7 @@ group :test do
   gem 'faker'
   gem 'launchy', '~> 2.4.2'
   gem 'selenium-webdriver', '~> 2.43.0'
-  gem 'shoulda-matchers', '~> 2.6.2'
+  gem 'shoulda-matchers', '~> 3.1.1'
   gem 'webmock'
 end
 
