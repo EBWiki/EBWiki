@@ -65,8 +65,8 @@ RSpec.configure do |config|
 
     # and disable callbacks
     Searchkick.disable_callbacks
-    
-    
+
+
     if config.use_transactional_fixtures?
       raise(<<-MSG)
         Delete line `config.use_transactional_fixtures = true` from rails_helper.rb
@@ -106,7 +106,7 @@ RSpec.configure do |config|
   config.append_after(:each) do
     DatabaseCleaner.clean
   end
-  
+
   # Seachkick testing config
   config.around(:each, search: true) do |example|
     Searchkick.callbacks(true) do
@@ -133,5 +133,18 @@ RSpec.configure do |config|
   if Bullet.enable?
     config.before(:each) { Bullet.start_request }
     config.after(:each)  { Bullet.end_request }
+  end
+end
+
+# Config settings Shoulda Matchers gem
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    # Choose a test framework:
+    with.test_framework :rspec
+
+    # Choose one or more libraries:
+    with.library :active_record
+    with.library :active_model
+    with.library :action_controller
   end
 end

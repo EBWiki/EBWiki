@@ -47,6 +47,9 @@ class Case < ActiveRecord::Base
       'to summarize your edits to the case.'
   }
 
+  validates :overview, length: { maximum: 500 }
+  validates_presence_of :overview, message: 'A brief overview of the case is required'
+
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
