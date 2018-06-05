@@ -32,9 +32,8 @@ class Agency < ActiveRecord::Base
     message: 'You must specify the state in which the incident occurred.'
   }
   validates :jurisdiction_type, inclusion: { 
-    in: %w(none state local federal university private),
-    message: 'You must enter one of the listed jurisdiction type.' 
-  }  
+  in: %w(none state local federal university private), allow_nil:true
+  }
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
