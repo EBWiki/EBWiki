@@ -1,5 +1,5 @@
 <% if @this_case.overview.present? %>
-  <h4 class="article_subheader">Summary  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "The basics", :content => "This section attempts to encapsulate the basic facts of the case."})%></h4>
+  <h4 class="article_subheader">Overview  <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "The basics", :content => "This section attempts to encapsulate the basic facts of the case."})%></h4>
 	<p><%= sanitize @this_case.overview %></p>
 <% end %>
 <% if @this_case.litigation.present? %>
