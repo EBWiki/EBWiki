@@ -43,13 +43,9 @@ RSpec.describe Agency, type: :model do
     expect(agency.slug).to eq 'another-title'
   end
 
-  it 'is invalid without listed jurisdiction type' do
-    agency = build(:agency, name: 'the title', state_id: @texas.id, jurisdiction_type: 'local')
-    expect(agency).to be_valid
-  end
-
    it 'is invalid without listed jurisdiction type' do
-    agency = build(:agency, name: 'the title', state_id: @texas.id,  jurisdiction_type:'college')
+    jurisdiction_type = %w(none state local federal university private)
+    agency = build(:agency, name: 'the title', state_id: @texas.id, jurisdiction_type: 'Unlisted Jurisdiction Type')
     expect(agency).to be_invalid
   end
 
