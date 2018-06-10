@@ -202,6 +202,7 @@ if Case.count.zero?
       city: 'Houston',
       state: State.where(name: 'Texas').first,
       overview: 'a',
+      blurb: 'Sven Svensson',
       summary: 'Added a case' },
 
     { title: 'Janez Novak',
@@ -213,6 +214,7 @@ if Case.count.zero?
       city: 'Little Rock',
       state: State.where(name: 'Arkansas').first,
       overview: 'a',
+      blurb: 'Janez Novak',
       summary: 'Added a case' },
 
     { title: 'Janina Kowalska',
@@ -224,6 +226,7 @@ if Case.count.zero?
       city: 'Boulder',
       state: State.where(name: 'Colorado').first,
       overview: 'a',
+      blurb: 'Janina Kowalska',
       summary: 'Added a case' },
 
     { title: 'Kari Holm',
@@ -232,9 +235,10 @@ if Case.count.zero?
                                       age: '20'
                                     }
                            },
-      city: State.where(name: 'Florida').first,
-      state_id: '10',
+      city: 'Pensacola',
+      state_id: State.where(name: 'Florida').first,
       overview: 'a',
+      blurb: 'Kari Holm',
       summary: 'Added a case' },
 
     { title: 'Jonas Petraitis',
@@ -246,6 +250,7 @@ if Case.count.zero?
       city: 'Boise',
       state_id: State.where(name: 'Idaho').first,
       overview: 'a',
+      blurb: 'Jonas Petraitis',
       summary: 'Added a case' },
 
     { title: 'Manku Thimman',
@@ -257,6 +262,7 @@ if Case.count.zero?
       city: 'Gary',
       state_id: State.where(name: 'Indiana').first,
       overview: 'a',
+      blurb: 'Manku Thimman',
       summary: 'Added a case' },
 
     { title: 'Mario Rossi',
@@ -268,6 +274,7 @@ if Case.count.zero?
       city: 'Louisville',
       state: State.where(name: 'Kentucky').first,
       overview: 'a',
+      blurb: 'Mario Rossi',
       summary: 'Added a case' },
 
     { title: 'Max Mustermann',
@@ -279,6 +286,7 @@ if Case.count.zero?
       city: 'Amherst',
       state: State.where(name: 'Massachusetts').first,
       overview: 'a',
+      blurb: 'Max Mustermann',
       summary: 'Added a case' },
 
     { title: 'Chichiko Bendeliani',
@@ -290,6 +298,7 @@ if Case.count.zero?
       city: 'St. Louis',
       state:  State.where(name: 'Missouri').first,
       overview: 'a',
+      blurb: 'Chichiko Bendeliani',
       summary: 'Added a case' },
 
     { title: 'Sally Housecoat',
@@ -301,6 +310,7 @@ if Case.count.zero?
       city: 'Houston',
       state_id: State.where(name: 'Texas').first,
       overview: 'a',
+      blurb: 'Sally Housecoat',
       summary: 'Added a case' }
   ]
 
