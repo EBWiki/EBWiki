@@ -53,7 +53,7 @@ RSpec.describe 'cases/show.html.erb', type: :view do
     assign(:subjects, this_case.subjects)
     assign(:state_objects, State.all)
     render
-    expect(response.body).to match(/Summary/m)
+    expect(response.body).to match(/Overview/m)
   end
 end
 RSpec.describe 'cases/show.html.erb', type: :view do
