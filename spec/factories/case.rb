@@ -11,6 +11,10 @@ FactoryBot.define do
     f.subjects { [create(:subject)] }
     f.summary 'A summary of changes'
     f.blurb 'Blurb about case'
+
+    trait :skip_validate do
+      to_create { |instance| instance.save(validate: false) }
+    end
   end
 
   factory :invalid_case, class: Case do |f|
