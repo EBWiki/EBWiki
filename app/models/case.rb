@@ -47,8 +47,10 @@ class Case < ActiveRecord::Base
       'to summarize your edits to the case.'
   }
 
-  validates :overview, length: { maximum: 500 }
-  validates_presence_of :overview, message: 'A brief overview of the case is required'
+  validates_presence_of :overview, message: 'An overview of the case is required'
+
+  validates :blurb, length: { maximum: 500 }
+  validates_presence_of :blurb, message: 'A blurb about the case is required.'
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
@@ -66,7 +68,7 @@ class Case < ActiveRecord::Base
   end
 
   before_save do
-    self.overview = ActionController::Base.helpers.strip_tags(overview)
+    self.blurb = ActionController::Base.helpers.strip_tags(blurb)
   end
 
   # Scopes

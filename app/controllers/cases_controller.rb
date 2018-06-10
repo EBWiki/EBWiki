@@ -148,6 +148,7 @@ class CasesController < ApplicationController
                                   :video_url,
                                   :remove_avatar,
                                   :summary,
+                                  :blurb,
                                   links_attributes: %i[id url _destroy],
                                   comments_attributes: \
                                     I18n.t('cases_controller.comments_attributes').map(&:to_sym),

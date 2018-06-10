@@ -10,6 +10,7 @@ FactoryBot.define do
     f.state # { FactoryBot.create(:state) }
     f.subjects { [create(:subject)] }
     f.summary 'A summary of changes'
+    f.blurb 'Blurb about case'
   end
 
   factory :invalid_case, class: Case do |f|

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227022027) do
+ActiveRecord::Schema.define(version: 20180607033516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,58 @@ ActiveRecord::Schema.define(version: 20180227022027) do
   add_index "ahoy_events", ["time"], name: "index_ahoy_events_on_time", using: :btree
   add_index "ahoy_events", ["user_id"], name: "index_ahoy_events_on_user_id", using: :btree
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id", using: :btree
+
+  create_table "article_agencies", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "agency_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "article_documents", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "document_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "article_officers", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "officer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "user_id"
+    t.integer  "category_id"
+    t.date     "date"
+    t.integer  "state_id"
+    t.string   "city"
+    t.string   "address"
+    t.string   "zipcode"
+    t.float    "longitude"
+    t.float    "latitude"
+    t.string   "avatar"
+    t.string   "slug"
+    t.string   "video_url"
+    t.string   "state"
+    t.integer  "age"
+    t.text     "overview"
+    t.text     "community_action"
+    t.text     "litigation"
+    t.string   "country"
+    t.boolean  "remove_avatar"
+    t.text     "summary"
+    t.integer  "follows_count",      default: 0, null: false
+    t.string   "default_avatar_url"
+  end
+
+  add_index "articles", ["slug"], name: "index_articles_on_slug", unique: true, using: :btree
+  add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
 
   create_table "case_agencies", force: :cascade do |t|
     t.integer  "case_id"
@@ -87,6 +139,7 @@ ActiveRecord::Schema.define(version: 20180227022027) do
     t.text     "summary"
     t.integer  "follows_count",      default: 0, null: false
     t.string   "default_avatar_url"
+    t.text     "blurb"
   end
 
   add_index "cases", ["slug"], name: "index_cases_on_slug", unique: true, using: :btree
@@ -108,6 +161,13 @@ ActiveRecord::Schema.define(version: 20180227022027) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "title"
+    t.string   "attachment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -263,6 +323,7 @@ ActiveRecord::Schema.define(version: 20180227022027) do
     t.boolean  "admin",                  default: false
     t.float    "latitude"
     t.float    "longitude"
+    t.string   "storytime_name"
     t.string   "name"
     t.text     "description"
     t.integer  "state_id"

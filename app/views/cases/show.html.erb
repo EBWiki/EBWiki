@@ -3,7 +3,7 @@
      method in app/views/layouts/application.html.erb
      TODO: Create a view helper that works for all pages -->
 <% meta title: "EBWiki tracking the case of #{@this_case.title}",
-     description: "#{@this_case.overview.truncate(155)}",
+     description: "#{@this_case.blurb}",
      keywords: %w("@this_case.subjects.first.name police violence people color")
 %>
 <!-- Page Content -->
@@ -150,7 +150,7 @@
     markers = handler.addMarkers(<%= raw marker_locations_for(
       @this_case.nearby_cases.map { |that_case|
         [that_case.id, that_case.latitude, that_case.longitude,
-        that_case.default_avatar_url, that_case.title, that_case.overview]
+        that_case.default_avatar_url, that_case.title, that_case.blurb]
       }
     ).to_json %>);
     handler.bounds.extendWith(markers);
