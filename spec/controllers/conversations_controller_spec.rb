@@ -7,7 +7,7 @@ RSpec.describe ConversationsController, type: :controller do
     login_user
     it 'should be successful' do
       get :new
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'should have a current_user' do
