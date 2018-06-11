@@ -9,6 +9,11 @@ RSpec.describe Case, type: :model do
       expect(this_case).to be_invalid
     end
 
+    it 'should not accept dates in the future' do
+      this_case = build(:case, date: 10.days.from_now)
+      expect(this_case).to be_invalid
+    end
+
     it 'is invalid without a state_id' do
       this_case = build(:case, state_id: nil)
       expect(this_case).to be_invalid
