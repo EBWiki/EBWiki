@@ -10,18 +10,14 @@ RSpec.describe CommentsController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
-end
-RSpec.describe CommentsController, type: :controller do
-  let(:this_case) { FactoryBot.create(:case) }
+
   describe 'GET #new' do
     it 'returns http success' do
       get :new, case_id: this_case.id
       expect(response).to have_http_status(:success)
     end
   end
-end
-RSpec.describe CommentsController, type: :controller do
-  let(:this_case) { FactoryBot.create(:case) }
+
   describe 'Case comments' do
     let(:this_case) { FactoryBot.create(:case) }
     let(:comment) { this_case.comments.create(content: 'a pithy comment') }
@@ -29,11 +25,11 @@ RSpec.describe CommentsController, type: :controller do
 
     subject { comment }
 
-    it { should be_valid }
+    it { is_expected.to be_valid }
 
-    it { should respond_to(:content) }
-    it { should respond_to(:commentable_type) }
-    it { should respond_to(:commentable_id) }
+    it { is_expected.to respond_to(:content) }
+    it { is_expected.to respond_to(:commentable_type) }
+    it { is_expected.to respond_to(:commentable_id) }
 
     it 'creates a new comment with valid attributes' do
       comment_attr = attributes_for(:comment)

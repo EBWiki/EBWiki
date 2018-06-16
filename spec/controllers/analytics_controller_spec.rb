@@ -6,7 +6,7 @@ RSpec.describe AnalyticsController, type: :controller do
   describe 'GET #index without login' do
     it 'redirects to the sign in path' do
       get :index
-      subject.should redirect_to new_user_session_path
+      expect(response).to redirect_to new_user_session_path
     end
   end
 

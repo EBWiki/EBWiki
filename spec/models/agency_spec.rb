@@ -19,7 +19,7 @@ RSpec.describe Agency, type: :model do
   end
 
   it 'is invalid without a state' do
-    agency = build(:agency, name: 'The Agency', state_id: nil)
+    agency = build(:agency, name: 'The Agency', state_id: nil, jurisdiction_type: 'local')
     expect(agency).to be_invalid
   end
 
@@ -41,6 +41,12 @@ RSpec.describe Agency, type: :model do
     agency.save!
     agency.reload
     expect(agency.slug).to eq 'another-title'
+  end
+
+   it 'is invalid without listed jurisdiction type' do
+    jurisdiction_type = %w(none state local federal university private)
+    agency = build(:agency, name: 'the title', state_id: @texas.id, jurisdiction_type: 'Unlisted Jurisdiction Type')
+    expect(agency).to be_invalid
   end
 
   describe 'geocoded' do

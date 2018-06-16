@@ -4,7 +4,7 @@
 class Agency < ActiveRecord::Base
   # This is the jurisdiction of the agency
   # TODO: Determine a better way to do these enums
-  class Jurisdiction
+  class JurisdictionType
     include EnumeratedType
 
     declare :none
@@ -31,7 +31,9 @@ class Agency < ActiveRecord::Base
   validates :state_id, presence: {
     message: 'You must specify the state in which the incident occurred.'
   }
-
+  validates :jurisdiction_type, inclusion: {
+    in: %w(none state local federal university private)
+    }, allow_nil: true
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
