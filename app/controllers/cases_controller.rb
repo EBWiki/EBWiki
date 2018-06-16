@@ -9,7 +9,7 @@ class CasesController < ApplicationController
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
-    @agencies = Agency.all.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
+    @agencies = SortAgenciesOrdinally.call(Agency.all)
     @categories = Category.all
     @states = State.all
   end
@@ -148,6 +148,7 @@ class CasesController < ApplicationController
                                   :video_url,
                                   :remove_avatar,
                                   :summary,
+                                  :blurb,
                                   links_attributes: %i[id url _destroy],
                                   comments_attributes: \
                                     I18n.t('cases_controller.comments_attributes').map(&:to_sym),

@@ -106,6 +106,13 @@
 
 <div class="cold-md-12">
   <fieldset class="fsStyle">
+  	<legend class="legendStyle">Blurb About Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover', :placement => "bottom", :title => "Blurb", :content => "A text-only summary of the case.  All HTML will automatically be stripped, and the field is limited to 500 characters or less"})%></legend>
+  	<%= f.input :blurb %>
+  </fieldset>
+</div>
+
+<div class="cold-md-12">
+  <fieldset class="fsStyle">
     <legend class="legendStyle">Summary of Changes to the Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Main Content Fields", :content => "Please summarize the edits you have made to this case.  These summaries populate the history tabs to make the history of the case more readable to users."})%></legend>
     <%= f.input :summary %>
   </fieldset>
