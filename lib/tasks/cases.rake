@@ -9,8 +9,7 @@ namespace :cases do
     # rubocop:disable LineLength
     ActiveRecord::Base.transaction do
       cases.each do |this_case|
-        this_case.blurb = "#{this_case.title}, on #{this_case.date} in #{this_case.city}, #{this_case.state.name}"
-        this_case.save!
+        this_case.update_attribute blurb, "#{this_case.title}, on #{this_case.date} in #{this_case.city}, #{this_case.state.name}"
         print '.'
       end
     end
