@@ -637,7 +637,7 @@ GEM
       redis (>= 2.1)
       simple-random (>= 0.9.3)
       sinatra (>= 1.2.6)
-    sprockets (3.7.1)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.1)
