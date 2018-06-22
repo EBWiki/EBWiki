@@ -19,7 +19,7 @@
     <%= f.collection_select :state_id, State.all, :id, :name, {prompt: "State"}, label:"State" %>
     <%= f.input :zipcode %>
     <%= f.input :description %>
-    <%= f.input :jurisdiction, collection: Agency::Jurisdiction.map(&:name) %>
+    <%= f.input :jurisdiction, collection: Agency::JurisdictionType.map(&:name) %>
     <%= f.input :telephone %>
     <%= f.input :email %>
     <%= f.input :website %>
