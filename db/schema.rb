@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227022027) do
+ActiveRecord::Schema.define(version: 20180508095145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,12 +27,12 @@ ActiveRecord::Schema.define(version: 20180227022027) do
     t.string   "email"
     t.string   "website"
     t.string   "lead_officer"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "slug"
     t.float    "longitude"
     t.float    "latitude"
-    t.string   "jurisdiction"
+    t.string   "jurisdiction_type"
   end
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
