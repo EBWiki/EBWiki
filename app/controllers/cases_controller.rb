@@ -42,9 +42,12 @@ class CasesController < ApplicationController
     # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
-      flash[:success] = "Article was created! #{make_undo_link}"
+      flash[:success] = "Case was created! #{make_undo_link}"
       redirect_to @this_case
     else
+      @agencies = SortAgenciesOrdinally.call(Agency.all)
+      @categories = Category.all
+      @states = State.all
       render 'new'
     end
   end

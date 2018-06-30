@@ -47,6 +47,13 @@ ActiveRecord::Schema.define(version: 20180607033516) do
   add_index "ahoy_events", ["user_id"], name: "index_ahoy_events_on_user_id", using: :btree
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id", using: :btree
 
+  create_table "article_documents", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "document_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "case_agencies", force: :cascade do |t|
     t.integer  "case_id"
     t.integer  "agency_id"
@@ -109,6 +116,13 @@ ActiveRecord::Schema.define(version: 20180607033516) do
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "title"
+    t.string   "attachment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
@@ -334,6 +348,7 @@ ActiveRecord::Schema.define(version: 20180607033516) do
 
   add_index "visits", ["user_id"], name: "index_visits_on_user_id", using: :btree
 
+  add_foreign_key "links", "cases"
   add_foreign_key "links", "cases"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
