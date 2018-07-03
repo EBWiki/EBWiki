@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180607033516) do
+ActiveRecord::Schema.define(version: 20180703071052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,13 +46,6 @@ ActiveRecord::Schema.define(version: 20180607033516) do
   add_index "ahoy_events", ["time"], name: "index_ahoy_events_on_time", using: :btree
   add_index "ahoy_events", ["user_id"], name: "index_ahoy_events_on_user_id", using: :btree
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id", using: :btree
-
-  create_table "article_documents", force: :cascade do |t|
-    t.integer  "article_id"
-    t.integer  "document_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
 
   create_table "case_agencies", force: :cascade do |t|
     t.integer  "case_id"
@@ -117,13 +110,6 @@ ActiveRecord::Schema.define(version: 20180607033516) do
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
 
-  create_table "documents", force: :cascade do |t|
-    t.string   "title"
-    t.string   "attachment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "ethnicities", force: :cascade do |t|
     t.string   "title"
     t.datetime "created_at", null: false
@@ -173,6 +159,7 @@ ActiveRecord::Schema.define(version: 20180607033516) do
     t.integer  "case_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "title"
   end
 
   add_index "links", ["case_id"], name: "index_links_on_case_id", using: :btree
