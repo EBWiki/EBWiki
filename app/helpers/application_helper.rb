@@ -45,4 +45,8 @@ module ApplicationHelper
     return 'prev' if page.prev?
     nil
   end
+
+  def object_updated_at(object)
+    object.updated_at.strftime('%m.%e, %l:%M %p')
+  end
 end
