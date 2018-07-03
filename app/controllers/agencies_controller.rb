@@ -44,7 +44,7 @@ class AgenciesController < ApplicationController
   def update
     respond_to do |format|
       if @agency.update(agency_params.except(:jurisdiction))
-         @agency.jurisdiction_type = params[:jurisdiction]
+        @agency.jurisdiction_type = params[:jurisdiction]
         format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }
       else
         format.html { render :edit }
