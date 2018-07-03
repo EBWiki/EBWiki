@@ -31,10 +31,6 @@ module CasesHelper
     Gender.all.map { |gender| [gender.sex, gender.id] }.insert(3, '--------')
   end
 
-  def link_to_case_title(this_case, length)
-    link_to truncate(this_case.title, length: length), this_case
-  end
-
   def case_updated_at(this_case)
     this_case.updated_at.strftime('%m.%e, %l:%M %p')
   end
