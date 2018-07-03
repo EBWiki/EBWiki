@@ -46,7 +46,7 @@ module ApplicationHelper
     nil
   end
 
-  def object_updated_at(object)
+  def display_updated_at(object)
     object.updated_at.strftime('%m.%e, %l:%M %p')
   end
 end

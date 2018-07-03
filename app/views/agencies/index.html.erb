@@ -12,7 +12,7 @@
   <% @agencies.each do |agency| %>
     <tr>
       <td><%= link_to_name(agency) %></td>
-      <td><small><%= object_updated_at(agency) %></small></td>
+      <td><small><%= display_updated_at(agency) %></small></td>
       <td><%= link_to_edit(agency) %></td>
     </tr>
   <% end %>
