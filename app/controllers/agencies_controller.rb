@@ -16,7 +16,6 @@ class AgenciesController < ApplicationController
     @back_url = session[:previous_url]
     @cases = @agency.cases
     @agency_state = @agency.retrieve_state
-    @agency.jurisdiction_type = params[:jurisdiction]
   end
 
   # GET /agencies/new
@@ -31,7 +30,7 @@ class AgenciesController < ApplicationController
   def create
     @back_url = session[:previous_url]
     @agency = Agency.new(agency_params.except(:jurisdiction))
-
+    @agency.jurisdiction_type = params[:jurisdiction]
     respond_to do |format|
       if @agency.save
         format.html { redirect_to @back_url, notice: 'Agency was successfully created.' }
@@ -45,6 +44,7 @@ class AgenciesController < ApplicationController
   def update
     respond_to do |format|
       if @agency.update(agency_params.except(:jurisdiction))
+         @agency.jurisdiction_type = params[:jurisdiction]
         format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }
       else
         format.html { render :edit }
