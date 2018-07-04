@@ -2,7 +2,7 @@
 
 # Given a relation containing all of the agency objects, sort them by name while accounting for
 # ordinal numbers
-class SortAgenciesOrdinally
+class SortCollectionOrdinally
   include Service
 
   def call(agencies)

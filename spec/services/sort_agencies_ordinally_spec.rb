@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SortAgenciesOrdinally do
+describe SortCollectionOrdinally do
 
   let(:agency_one) { FactoryBot.create(:agency, name: "Alan Anderson PD") }
   let(:agency_two) { FactoryBot.create(:agency, name: "Bob Barker PD") }
@@ -15,7 +15,7 @@ describe SortAgenciesOrdinally do
     end
 
     it 'sorts the agencies correctly' do
-      sorted_agencies = SortAgenciesOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
       expect(sorted_agencies).to eq([agency_one, agency_two])
     end
   end
@@ -28,7 +28,7 @@ describe SortAgenciesOrdinally do
     end
 
     it 'sorts the agencies correctly' do
-      sorted_agencies = SortAgenciesOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
       expect(sorted_agencies).to eq([agency_three, agency_one, agency_two])
     end
   end
@@ -43,7 +43,7 @@ describe SortAgenciesOrdinally do
     it 'sorts the agencies correctly' do
       agency_four = FactoryBot.create(:agency, name: '18th PD')
 
-      sorted_agencies = SortAgenciesOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
       expect(sorted_agencies).to eq([agency_three,
                                      agency_four,
                                      agency_one,
@@ -61,7 +61,7 @@ describe SortAgenciesOrdinally do
     it 'sorts the agencies correctly' do
       agency_four = FactoryBot.create(:agency, name: '1st Police Department')
 
-      sorted_agencies = SortAgenciesOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
       expect(sorted_agencies).to eq([agency_three,
                                      agency_four,
                                      agency_one,
@@ -79,7 +79,7 @@ describe SortAgenciesOrdinally do
       agency_three = FactoryBot.create(:agency, name: "1st Police Division of Santa Ana")
       agency_four = FactoryBot.create(:agency, name: "1st Police Division of Santa Clara")
 
-      sorted_agencies = SortAgenciesOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
       expect(sorted_agencies).to eq([agency_three,
                                      agency_four,
                                      agency_one,

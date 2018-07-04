@@ -9,7 +9,7 @@ class CasesController < ApplicationController
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
-    @agencies = SortAgenciesOrdinally.call(Agency.all)
+    @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = Category.all
     @states = State.all
   end
@@ -45,7 +45,7 @@ class CasesController < ApplicationController
       flash[:success] = "Case was created! #{make_undo_link}"
       redirect_to @this_case
     else
-      @agencies = SortAgenciesOrdinally.call(Agency.all)
+      @agencies = SortCollectionOrdinally.call(Agency.all)
       @categories = Category.all
       @states = State.all
       render 'new'
@@ -55,7 +55,7 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
-    @agencies = SortAgenciesOrdinally.call(Agency.all)
+    @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = Category.all
     @states = State.all
   end
