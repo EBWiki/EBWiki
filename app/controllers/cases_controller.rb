@@ -55,7 +55,7 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
-    @agencies = SortAgenciesOrdinally.call(Agency.all)
+    @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = Category.all
     @states = State.all
   end
@@ -116,19 +116,6 @@ class CasesController < ApplicationController
 
   def find_case
     @this_case = Case.friendly.find_by_id(params[:id])
-  end
-
-  # TODO: Move this function out of this controller. The view context alone indicates that
-  # this should be a helper, instead
-  def make_undo_link
-    view_context.link_to 'Undo that please!', undo_path(@this_case.versions.last), method: :post
-  end
-
-  # TODO: Move this function out of this controller. The view context alone indicates that
-  # this should be a helper, instead
-  def make_redo_link
-    link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
-    view_context.link_to link, undo_path(@case_version.next, redo: !params[:redo]), method: :post
   end
 
   def case_params
