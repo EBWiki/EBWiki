@@ -73,12 +73,13 @@ RSpec.describe CasesController, type: :controller do
     ).and_return('/cases/1')
   end
   let(:cases) { FactoryBot.create_list(:case, 20) }
+  
   describe '#create' do
     login_user
     context 'when valid' do
       let(:case_attrs) { FactoryBot.attributes_for(:case, state_id: 33) }
       let(:subject_attrs) { FactoryBot.attributes_for(:subject) }
-      it 'success' do
+      it 'saves the new case & redirects to show the case created' do
         allow_any_instance_of(Case).to receive(:full_address).and_return('Albany NY')
         case_attrs['subjects_attributes'] = { '0' => subject_attrs }
         post :create, 'case': case_attrs
@@ -98,6 +99,8 @@ RSpec.describe CasesController, type: :controller do
       it 'fails' do
         allow_any_instance_of(Case).to receive(:full_address).and_return(' Albany NY ')
         post :create, 'case': case_attrs
+        expect(assigns(:categories)).to match_array([])
+        expect(assigns(:states)).to match_array([])
         expect(response).to render_template(:new)
       end
     end
