@@ -21,7 +21,7 @@
             class: 'form-control select2') %>
         </div>
         <div class="navbar-form navbar-left">
-          <%= text_field_tag :query, params[:query], class: 'form-control', data: { list: State.all.map(&:name) } , placeholder: 'Name, City or Keywords...' %>
+          <%= text_field_tag :query, params[:query], class: 'form-control', data: { list: SortCollectionOrdinally.call(State.all.map(&:name)) } , placeholder: 'Name, City or Keywords...' %>
         <%= submit_tag "Search", class: "btn btn-primary search-btn" %>
         </div>
       <% end %>

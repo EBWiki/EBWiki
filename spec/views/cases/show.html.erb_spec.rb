@@ -14,7 +14,7 @@ RSpec.describe 'cases/show.html.erb', type: :view do
     assign(:comments, this_case.comments)
     assign(:comment, Comment.new)
     assign(:subjects, this_case.subjects)
-    assign(:state_objects, State.all)
+    assign(:state_objects, SortCollectionOrdinally.call(State.all))
     render
     expect(rendered).not_to match(/only a stub/m)
   end
@@ -33,7 +33,7 @@ RSpec.describe 'cases/show.html.erb', type: :view do
     assign(:comments, this_case.comments)
     assign(:comment, Comment.new)
     assign(:subjects, this_case.subjects)
-    assign(:state_objects, State.all)
+    assign(:state_objects, SortCollectionOrdinally.call(State.all))
     render
     expect(response.body).to match(/Legal Action/m)
   end
@@ -51,7 +51,7 @@ RSpec.describe 'cases/show.html.erb', type: :view do
     assign(:comments, this_case.comments)
     assign(:comment, Comment.new)
     assign(:subjects, this_case.subjects)
-    assign(:state_objects, State.all)
+    assign(:state_objects, SortCollectionOrdinally.call(State.all))
     render
     expect(response.body).to match(/Overview/m)
   end
@@ -69,7 +69,7 @@ RSpec.describe 'cases/show.html.erb', type: :view do
     assign(:comments, this_case.comments)
     assign(:comment, Comment.new)
     assign(:subjects, this_case.subjects)
-    assign(:state_objects, State.all)
+    assign(:state_objects, SortCollectionOrdinally.call(State.all))
     render
     expect(response.body).to match(/Community and Family/m)
   end

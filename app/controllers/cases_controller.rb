@@ -10,8 +10,8 @@ class CasesController < ApplicationController
     @this_case = current_user.cases.build
     @this_case.agencies.build
     @agencies = SortCollectionOrdinally.call(Agency.all)
-    @categories = Category.all
-    @states = State.all
+    @categories = SortCollectionOrdinally.call(Category.all)
+    @states = SortCollectionOrdinally.call(State.all)
   end
 
   def index
@@ -19,7 +19,7 @@ class CasesController < ApplicationController
     @recently_updated_cases = Case.sorted_by_update 10
     @cases = Case.includes(:state).by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && params[:state_id].present?
     @cases = Case.includes(:state).by_state(params[:state_id]).order('date DESC').page(params[:page]).per(page_size) if !params[:query].present? && params[:state_id].present?
-    @cases = Case.search(params[:query], fields: ["*"], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
+    @cases = Case.search(params[:query], fields: ['*'], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
     @cases = Case.all.order('date DESC').includes(:state).page(params[:page]).per(page_size) if !params[:query].present? && !params[:state_id].present?
   end
 
@@ -46,8 +46,8 @@ class CasesController < ApplicationController
       redirect_to @this_case
     else
       @agencies = SortCollectionOrdinally.call(Agency.all)
-      @categories = Category.all
-      @states = State.all
+      @categories = SortCollectionOrdinally.call(Category.all)
+      @states = SortCollectionOrdinally.call(State.all)
       render 'new'
     end
   end
@@ -56,8 +56,8 @@ class CasesController < ApplicationController
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
     @agencies = SortCollectionOrdinally.call(Agency.all)
-    @categories = Category.all
-    @states = State.all
+    @categories = SortCollectionOrdinally.call(Category.all)
+    @states = SortCollectionOrdinally.call(State.all)
   end
 
   def followers
@@ -73,8 +73,8 @@ class CasesController < ApplicationController
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
-      @categories = Category.all
-      @states = State.all
+      @categories = SortCollectionOrdinally.call(Category.all)
+      @states = SortCollectionOrdinally.call(State.all)
       render 'edit'
     end
   end
@@ -116,19 +116,6 @@ class CasesController < ApplicationController
 
   def find_case
     @this_case = Case.friendly.find_by_id(params[:id])
-  end
-
-  # TODO: Move this function out of this controller. The view context alone indicates that
-  # this should be a helper, instead
-  def make_undo_link
-    view_context.link_to 'Undo that please!', undo_path(@this_case.versions.last), method: :post
-  end
-
-  # TODO: Move this function out of this controller. The view context alone indicates that
-  # this should be a helper, instead
-  def make_redo_link
-    link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
-    view_context.link_to link, undo_path(@case_version.next, redo: !params[:redo]), method: :post
   end
 
   def case_params
