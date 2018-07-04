@@ -46,6 +46,10 @@ module ApplicationHelper
     nil
   end
 
+  def display_updated_at(object)
+    object.updated_at.strftime('%m.%e, %l:%M %p')
+  end
+  
   def link_to_case_title(this_case, length)
     link_to truncate(this_case.title, length: length), this_case
   end
