@@ -17,11 +17,10 @@
  *= require_self
 
  */
-  # css colour variable
-    $orange: #F65732;
-    $gray: #666666;
-    $black: #000000;
-    $dark gray: #4D4D4D;
+$color-orange: #F65732;
+$color-gray: #666666;
+$color-black: #000000;
+$color-dark-gray: #4D4D4D;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
