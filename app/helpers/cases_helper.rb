@@ -36,6 +36,15 @@ module CasesHelper
   end
   
   def case_updated_at(this_case)
-    this_case.updated_at.strftime('%m.%e, %l:%M %p')
+    this_case.updated_at.strftime('%m.%e,%l:%M %p')
+  end
+
+  def make_undo_link
+    view_context.link_to 'Undo that please!', undo_path(@this_case.versions.last), method: :post
+  end
+
+  def make_redo_link
+    link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
+    view_context.link_to link, undo_path(@case_version.next, redo: !params[:redo]), method: :post
   end
 end
