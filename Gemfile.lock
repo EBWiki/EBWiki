@@ -443,7 +443,7 @@ GEM
     net-http-digest_auth (1.4.1)
     net-http-persistent (2.9.4)
     newrelic_rpm (5.1.0.344)
-    nokogiri (1.8.2)
+    nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -718,7 +718,7 @@ DEPENDENCIES
   heroku_rails_deflate
   hightop
   httparty
-  jquery-rails
+  jquery-rails (~> 4.3, >= 4.3.3)
   jquery-turbolinks
   kaminari
   launchy (~> 2.4.2)
