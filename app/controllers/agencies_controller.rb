@@ -29,8 +29,8 @@ class AgenciesController < ApplicationController
   # POST /agencies
   def create
     @back_url = session[:previous_url]
-    @agency = Agency.new(agency_params)
-
+    @agency = Agency.new(agency_params.except(:jurisdiction))
+    @agency.jurisdiction_type = params[:jurisdiction]
     respond_to do |format|
       if @agency.save
         format.html { redirect_to @back_url, notice: 'Agency was successfully created.' }
@@ -43,7 +43,8 @@ class AgenciesController < ApplicationController
   # PATCH/PUT /agencies/1
   def update
     respond_to do |format|
-      if @agency.update(agency_params)
+      if @agency.update(agency_params.except(:jurisdiction))
+        @agency.jurisdiction_type = params[:jurisdiction]
         format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }
       else
         format.html { render :edit }
