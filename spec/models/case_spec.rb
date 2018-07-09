@@ -26,6 +26,12 @@ RSpec.describe Case, type: :model do
       expect(this_case).to be_invalid
     end
 
+    it 'is invalid without a link' do
+      this_case = create(:case)
+      this_case.links = []
+      expect(this_case).to be_invalid
+    end
+
     it 'is invalid without a summary' do
       this_case = build(:case, summary: nil)
       expect(this_case).to be_invalid

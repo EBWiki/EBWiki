@@ -79,15 +79,18 @@ RSpec.describe CasesController, type: :controller do
     context 'when valid' do
       let(:case_attrs) { FactoryBot.attributes_for(:case, state_id: 33) }
       let(:subject_attrs) { FactoryBot.attributes_for(:subject) }
+      let(:link_attrs) { FactoryBot.attributes_for(:link) }
       it 'saves the new case & redirects to show the case created' do
         allow_any_instance_of(Case).to receive(:full_address).and_return('Albany NY')
         case_attrs['subjects_attributes'] = { '0' => subject_attrs }
+        case_attrs['links_attributes'] = { '0' => link_attrs }
         post :create, 'case': case_attrs
         expect(response).to redirect_to(case_path(Case.last))
       end
       it 'saves and assigns new case to @case' do
         allow_any_instance_of(Case).to receive(:full_address).and_return('Albany NY')
         case_attrs['subjects_attributes'] = { '0' => subject_attrs }
+        case_attrs['links_attributes'] = { '0' => link_attrs }
         post :create, 'case': case_attrs
         expect(assigns(:this_case)).to be_a_kind_of(Case)
         expect(assigns(:this_case)).to be_persisted
