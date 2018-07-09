@@ -41,6 +41,9 @@ class Case < ActiveRecord::Base
   validates :subjects, presence: {
     message: 'at least one subject is required'
   }
+  validates :links, presence: {
+    message: 'at least one link is required'
+  }
   validates :summary, presence: {
     message: 'Please use the last field at the bottom of this form ' \
       'to summarize your edits to the case.'
