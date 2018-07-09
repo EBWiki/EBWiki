@@ -43,9 +43,6 @@ gem 'gotcha'
 # xml sitemap
 gem 'sitemap_generator'
 
-# Reduce N+1 queries
-gem 'bullet'
-
 # internal analytics
 gem 'ahoy_matey', '1.6.1'
 
@@ -60,6 +57,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'guard-rspec'
   gem 'pry-byebug'
+  # Reduce N+1 queries
+  gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
   gem 'pre-commit'
   gem 'rspec-activemodel-mocks'
