@@ -29,7 +29,7 @@ class Agency < ActiveRecord::Base
              ' want to create a new agency, it must have a unique name.'
   }
   validates :state_id, presence: {
-    message: 'You must specify the state in which the incident occurred.'
+    message: 'You must specify the state in which the agency is located.'
   }
   validates :jurisdiction_type, inclusion: {
     in: %w(none state local federal university private)
