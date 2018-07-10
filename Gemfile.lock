@@ -692,7 +692,7 @@ DEPENDENCIES
   bootstrap-sass
   bootstrap3-datetimepicker-rails
   brakeman
-  bullet
+  bullet (~> 5.7)
   capybara (~> 2.4.3)
   carrierwave
   carrierwave-imageoptimizer
@@ -764,4 +764,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
