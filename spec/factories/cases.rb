@@ -9,6 +9,7 @@ FactoryBot.define do
     f.date Date.current
     f.state # { FactoryBot.create(:state) }
     f.subjects { [create(:subject)] }
+    f.links { [create(:link)] }
     f.summary 'A summary of changes'
     f.blurb 'Blurb about case'
 
