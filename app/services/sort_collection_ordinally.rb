@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-# Given a relation containing all of the agency objects, sort them by name while accounting for
+# Given a relation containing all of the element objects, sort them by name while accounting for
 # ordinal numbers
 class SortCollectionOrdinally
   include Service
 
-  def call(agencies)
-    first_sort = agencies.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
-    names_with_numbers = first_sort.select { |agency| agency.name.match(/(\d+)/) }
+  def call(collection)
+    first_sort = collection.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
+    names_with_numbers = first_sort.select { |element| element.name.match(/(\d+)/) }
     return first_sort if names_with_numbers.empty?
     names_with_no_numbers = first_sort - names_with_numbers
     sorted_names_with_numbers = ordinal_sort(names_with_numbers)
@@ -18,9 +18,9 @@ class SortCollectionOrdinally
 
   # Performs ordinal sort removes number portion from string, then sorts names based on
   # number then following words
-  def ordinal_sort(agencies)
+  def ordinal_sort(collection)
     name_object_hash = {}
-    agencies.each { |agency| name_object_hash[agency.name] = agency }
+    collection.each { |element| name_object_hash[element.name] = element }
 
     names = name_object_hash.keys
     sorted_names = names.sort_by do |n|
