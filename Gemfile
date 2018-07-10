@@ -27,6 +27,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rails-observers'
 
 gem 'rack'
+gem 'momentjs-rails'
+gem 'fullcalendar-rails', '~> 3.9'
 
 # For configurable CORS domain settings
 gem 'rack-cors', require: 'rack/cors'
@@ -86,7 +88,6 @@ end
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '3.5.6'
-gem 'momentjs-rails'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
