@@ -9,9 +9,9 @@ class CasesController < ApplicationController
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
-    @agencies = SortAgenciesOrdinally.call(Agency.all)
-    @categories = Category.all
-    @states = State.all
+    @agencies = SortCollectionOrdinally.call(Agency.all)
+    @categories = SortCollectionOrdinally.call(Category.all)
+    @states = SortCollectionOrdinally.call(State.all)
   end
 
   def index
@@ -19,7 +19,7 @@ class CasesController < ApplicationController
     @recently_updated_cases = Case.sorted_by_update 10
     @cases = Case.includes(:state).by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && params[:state_id].present?
     @cases = Case.includes(:state).by_state(params[:state_id]).order('date DESC').page(params[:page]).per(page_size) if !params[:query].present? && params[:state_id].present?
-    @cases = Case.search(params[:query], fields: ["*"], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
+    @cases = Case.search(params[:query], fields: ['*'], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
     @cases = Case.all.order('date DESC').includes(:state).page(params[:page]).per(page_size) if !params[:query].present? && !params[:state_id].present?
   end
 
@@ -45,9 +45,9 @@ class CasesController < ApplicationController
       flash[:success] = "Case was created! #{make_undo_link}"
       redirect_to @this_case
     else
-      @agencies = SortAgenciesOrdinally.call(Agency.all)
-      @categories = Category.all
-      @states = State.all
+      @agencies = SortCollectionOrdinally.call(Agency.all)
+      @categories = SortCollectionOrdinally.call(Category.all)
+      @states = SortCollectionOrdinally.call(State.all)
       render 'new'
     end
   end
@@ -55,9 +55,9 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
-    @agencies = SortAgenciesOrdinally.call(Agency.all)
-    @categories = Category.all
-    @states = State.all
+    @agencies = SortCollectionOrdinally.call(Agency.all)
+    @categories = SortCollectionOrdinally.call(Category.all)
+    @states = SortCollectionOrdinally.call(State.all)
   end
 
   def followers
@@ -73,8 +73,8 @@ class CasesController < ApplicationController
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
-      @categories = Category.all
-      @states = State.all
+      @categories = SortCollectionOrdinally.call(Category.all)
+      @states = SortCollectionOrdinally.call(State.all)
       render 'edit'
     end
   end

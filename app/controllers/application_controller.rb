@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# application controller
 class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
 
@@ -44,7 +45,7 @@ class ApplicationController < ActionController::Base
   end
 
   def state_objects
-    @state_objects ||= State.all
+    @state_objects ||= SortCollectionOrdinally.call(State.all)
   end
 
   protected
