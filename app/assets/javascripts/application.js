@@ -26,3 +26,6 @@
 //= require select2
 //= require_tree .
 //= require ckeditor/init
+//= require fullcalendar
+
+$('#calendar').fullCalendar({});

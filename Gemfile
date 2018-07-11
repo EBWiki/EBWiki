@@ -4,7 +4,7 @@ ruby '2.4.1'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
-
+gem 'fullcalendar-rails', '~> 3.9'
 gem 'rails', '~> 4.2.10'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20.0'
@@ -26,6 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # add back rails observer class removed from rails 4
 gem 'rails-observers'
 
+gem 'momentjs-rails'
 gem 'rack'
 
 # For configurable CORS domain settings
@@ -86,7 +87,6 @@ end
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '3.5.6'
-gem 'momentjs-rails'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
