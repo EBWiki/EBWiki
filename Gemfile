@@ -39,7 +39,7 @@ gem 'groupdate'
 gem 'hightop'
 
 # Simple Captcha for signing up
-gem 'gotcha'
+gem 'gotcha', '0.0.6'
 
 # xml sitemap
 gem 'sitemap_generator', '6.0'

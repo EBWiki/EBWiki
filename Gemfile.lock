@@ -717,7 +717,7 @@ DEPENDENCIES
   geocoder
   gibbon
   gmaps4rails
-  gotcha
+  gotcha (= 0.0.6)
   groupdate
   guard-rspec
   heroku_rails_deflate
