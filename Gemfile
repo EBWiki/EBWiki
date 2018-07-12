@@ -42,7 +42,7 @@ gem 'hightop'
 gem 'gotcha'
 
 # xml sitemap
-gem 'sitemap_generator'
+gem 'sitemap_generator', '6.0'
 
 # internal analytics
 gem 'ahoy_matey', '1.6.1'
