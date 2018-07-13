@@ -4,40 +4,28 @@ require 'rails_helper'
 
 RSpec.describe Case, type: :model do
   describe 'validity' do
-    it 'is invalid without a date' do
-      this_case = build(:case, date: nil)
-      expect(this_case).to be_invalid
+    it { should validate_presence_of(:city).with_message('Please add a city.') }
+    it { should validate_presence_of(:subjects).with_message('at least one subject is required') }
+    it { should validate_presence_of(:links).with_message('at least one link is required') }
+
+    it do should validate_presence_of(:overview)
+      .with_message('An overview of the case is required') 
     end
 
+    it do 
+      should validate_presence_of(:summary).with_message('Please use the last field at the bottom of this form ' \
+      'to summarize your edits to the case.') 
+    end
+
+    it do should validate_presence_of(:state_id).
+      with_message('Please specify the state where this incident occurred before saving.') 
+    end
+   
     it 'should not accept dates in the future' do
       this_case = build(:case, date: 10.days.from_now)
       expect(this_case).to be_invalid
       expect(this_case.errors.to_a).to include('Date must be in the past')
     end
-
-    it 'is invalid without a state_id' do
-      this_case = build(:case, state_id: nil)
-      expect(this_case).to be_invalid
-    end
-
-    it 'is invalid without a subject' do
-      this_case = create(:case)
-      this_case.subjects = []
-      expect(this_case).to be_invalid
-    end
-
-    it 'is invalid without a link' do
-      this_case = create(:case)
-      this_case.links = []
-      expect(this_case).to be_invalid
-    end
-
-    it 'is invalid without a summary' do
-      this_case = build(:case, summary: nil)
-      expect(this_case).to be_invalid
-    end
-
-    it { should validate_presence_of(:overview).with_message('An overview of the case is required') }
   end
 
   describe 'blurb' do
