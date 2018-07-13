@@ -35,6 +35,12 @@ class CasesController < ApplicationController
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
+    # If an old id or a numeric id was used to find the record, then
+    # the request path will not match the article_path, and we should do
+    # a 301 redirect that uses the current friendly id.
+    if request.path != case_path(@case)
+      return redirect_to @case, status: :moved_permanently
+    end
   end
 
   def create
