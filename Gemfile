@@ -33,10 +33,10 @@ gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 
 # help with charts and graphs
-gem 'active_median'
-gem 'chartkick'
-gem 'groupdate'
-gem 'hightop'
+gem 'active_median', '~> 0.1'
+gem 'chartkick', '~> 2.3'
+gem 'groupdate', '~> 4.0'
+gem 'hightop', '~> 0.2'
 
 # Simple Captcha for signing up
 gem 'gotcha', '0.0.6'
