@@ -12,6 +12,9 @@ gem 'pg', '0.20.0'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+
+# Reduce N+1 queries
+gem 'bullet', '~> 5.7'
 # Syntax
 gem 'enumerated_type'
 
@@ -59,7 +62,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'pry-byebug'
   # Reduce N+1 queries
-  gem 'bullet', '~> 5.7'
+  # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
   gem 'pre-commit'
   gem 'rspec-activemodel-mocks'
