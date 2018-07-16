@@ -8,30 +8,16 @@ RSpec.describe Agency, type: :model do
     @texas = FactoryBot.create(:state_texas)
   end
 
-  it 'is invalid without a name' do
-    agency = build(:agency, name: nil, state_id: @texas.id)
-    expect(agency).to be_invalid
+  it { should validate_presence_of(:name).with_message('Please enter a name.') }
+
+  it do
+   should validate_presence_of(:state_id)
+   .with_message('You must specify the state in which the agency is located.') 
   end
 
   it 'removes leading white space from name' do
     agency = FactoryBot.create(:agency, name: "  Fake agency", state_id: @texas.id)
     expect(agency.name).to eql("Fake agency")
-  end
-
-  it 'is invalid without a state' do
-    agency = build(:agency, name: 'The Agency', state_id: nil, jurisdiction_type: 'local')
-    expect(agency).to be_invalid
-  end
-
-  it 'must have a unique name' do
-    agency = FactoryBot.create(:agency,
-                               name: 'Dallas Police Department',
-                               state_id: @texas.id)
-    agency2 = build(:agency,
-                    name: 'Dallas Police Department',
-                    state_id: @texas.id)
-
-    expect(agency2).to be_invalid
   end
 
   it 'updates slug if agency title is updated' do
