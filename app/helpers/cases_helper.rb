@@ -26,12 +26,6 @@ module CasesHelper
       @subjects.present?)
   end
 
-  # method to help with genders
-  def gender_dropdown_collection
-    sorted_gender = SortCollectionOrdinally.call(Gender.all)
-    sorted_gender.map { |gender| [gender.sex, gender.id] }.insert(3, '--------')
-  end
-
   def link_to_case_title(this_case, length)
     link_to truncate(this_case.title, length: length), this_case
   end
