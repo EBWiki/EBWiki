@@ -12,6 +12,9 @@ gem 'pg', '0.20.0'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+
+# Reduce N+1 queries
+gem 'bullet', '~> 5.7'
 # Syntax
 gem 'enumerated_type'
 
@@ -33,10 +36,10 @@ gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 
 # help with charts and graphs
-gem 'active_median'
-gem 'chartkick'
-gem 'groupdate'
-gem 'hightop'
+gem 'active_median', '~> 0.1'
+gem 'chartkick', '~> 2.3'
+gem 'groupdate', '~> 4.0'
+gem 'hightop', '~> 0.2'
 
 # Simple Captcha for signing up
 gem 'gotcha', '0.0.6'
@@ -59,7 +62,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'pry-byebug'
   # Reduce N+1 queries
-  gem 'bullet', '~> 5.7'
+  # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
   gem 'pre-commit'
   gem 'rspec-activemodel-mocks'
