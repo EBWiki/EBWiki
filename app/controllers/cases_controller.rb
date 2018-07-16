@@ -118,6 +118,12 @@ class CasesController < ApplicationController
     end
   end
 
+  private
+
+  def find_case
+    @this_case = Case.friendly.find_by_id(params[:id])
+  end
+
   def make_undo_link
     view_context.link_to 'Undo that please!', undo_path(@this_case.versions.last), method: :post
   end
@@ -125,12 +131,6 @@ class CasesController < ApplicationController
   def make_redo_link
     link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
     view_context.link_to link, undo_path(@case_version.next, redo: !params[:redo]), method: :post
-  end
-
-  private
-
-  def find_case
-    @this_case = Case.friendly.find_by_id(params[:id])
   end
 
   def case_params
