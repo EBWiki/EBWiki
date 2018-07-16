@@ -38,8 +38,8 @@ class CasesController < ApplicationController
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the article_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if request.path != case_path(@case)
-      return redirect_to @case, status: :moved_permanently
+    if request.path != case_path(@this_case)
+      return redirect_to @this_case, status: :moved_permanently
     end
   end
 
@@ -116,6 +116,15 @@ class CasesController < ApplicationController
     ensure
       redirect_to root_path
     end
+  end
+
+  def make_undo_link
+    view_context.link_to 'Undo that please!', undo_path(@this_case.versions.last), method: :post
+  end
+
+  def make_redo_link
+    link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
+    view_context.link_to link, undo_path(@case_version.next, redo: !params[:redo]), method: :post
   end
 
   private
