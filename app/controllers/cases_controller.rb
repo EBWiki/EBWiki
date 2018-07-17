@@ -38,9 +38,7 @@ class CasesController < ApplicationController
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the article_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if request.path != case_path(@this_case)
-      return redirect_to @this_case, status: :moved_permanently
-    end
+    return redirect_to @this_case, status: :moved_permanent if request.path != case_path(@this_case)
   end
 
   def create
