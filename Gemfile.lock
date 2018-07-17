@@ -735,7 +735,7 @@ DEPENDENCIES
   paper_trail (~> 4.2.0)
   pg (= 0.20.0)
   pre-commit
-  pry-byebug
+  pry-byebug (~> 3.6)
   puma
   rack
   rack-cors
