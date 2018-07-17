@@ -11,29 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180703071052) do
+ActiveRecord::Schema.define(version: 20180712191243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "agencies", force: :cascade do |t|
-    t.string   "name"
-    t.string   "street_address"
-    t.string   "city"
-    t.integer  "state_id"
-    t.string   "zipcode"
-    t.text     "description"
-    t.string   "telephone"
-    t.string   "email"
-    t.string   "website"
-    t.string   "lead_officer"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.string   "slug"
-    t.float    "longitude"
-    t.float    "latitude"
-    t.string   "jurisdiction_type"
-  end
+# Could not dump table "agencies" because of following StandardError
+#   Unknown type 'jurisdiction' for column 'jurisdiction'
 
   create_table "ahoy_events", id: :uuid, default: nil, force: :cascade do |t|
     t.uuid     "visit_id"
