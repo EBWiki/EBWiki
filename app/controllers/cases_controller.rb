@@ -33,12 +33,12 @@ class CasesController < ApplicationController
     unless @this_case.present? && @commentable.present? && @comment.present? &&
            @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
-      redirect_to root_path
+      # If an old id or a numeric id was used to find the record, then
+      # the request path will not match the case_path, and we should do
+      # a 301 redirect that uses the current friendly id.
+      return redirect_to @this_case, status: :moved_permanent if request.path != case_path(@this_case)
+      render 'index'
     end
-    # If an old id or a numeric id was used to find the record, then
-    # the request path will not match the article_path, and we should do
-    # a 301 redirect that uses the current friendly id.
-    return redirect_to @this_case, status: :moved_permanent if request.path != case_path(@this_case)
   end
 
   def create

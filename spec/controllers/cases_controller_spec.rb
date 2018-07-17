@@ -51,7 +51,7 @@ RSpec.describe CasesController, type: :controller do
       let(:this_case) { cases.first }
       before(:each) { get :show, id: this_case.id }
       it 'success' do
-        expect(response).to redirect_to(case_path(this_case))
+        expect(response).to be_success
       end
       it 'assigns it to @case' do
         expect(assigns(:this_case)).to eq this_case
