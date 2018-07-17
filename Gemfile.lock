@@ -734,7 +734,7 @@ DEPENDENCIES
   newrelic_rpm
   paper_trail (~> 4.2.0)
   pg (= 0.20.0)
-  pre-commit
+  pre-commit (~> 0.38)
   pry-byebug
   puma
   rack

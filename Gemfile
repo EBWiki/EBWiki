@@ -64,7 +64,7 @@ group :development, :test do
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
-  gem 'pre-commit'
+  gem 'pre-commit', '~> 0.38'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-rails', '~> 3.0'
 end
