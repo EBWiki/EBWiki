@@ -9,12 +9,9 @@
   <h4><%= @agency.city %>, <%= @agency_state %> <%= @agency.zipcode %></h4>
 </span>
 
-<% if @agency.jurisdiction_type.present? %>
-  <p>
-    <%= show_non_blank_fields("Type", @agency.jurisdiction_type.capitalize) %>
-  </p>
-<% end %>
-
+<p>
+  <%= show_non_blank_fields("Type", @agency.jurisdiction_type.capitalize) %>
+</p>
 <p>
   <%= show_non_blank_fields "Department Head", @agency.lead_officer %>
 </p>
