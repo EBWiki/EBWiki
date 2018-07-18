@@ -21,7 +21,7 @@ gem 'enumerated_type'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '~> 5.1'
 # Jquery.turbolinks fixes binded event problems cause by Turbolinks
 gem 'jquery-turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -64,7 +64,7 @@ group :development, :test do
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
-  gem 'pre-commit'
+  gem 'pre-commit', '~> 0.38'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-rails', '~> 3.0'
 end
