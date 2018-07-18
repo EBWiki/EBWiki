@@ -57,17 +57,16 @@ GEM
     acts_as_follower (0.2.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    ahoy_matey (1.6.1)
+    ahoy_matey (2.1.0)
       addressable
       browser (~> 2.0)
-      geocoder
-      rack-attack (< 6)
-      railties
-      referer-parser (>= 0.3.0)
+      device_detector
+      geocoder (>= 1.4.5)
+      railties (>= 4.2)
+      referer-parser (>= 0.3)
       request_store
-      safely_block (>= 0.1.1)
+      safely_block (>= 0.2.1)
       user_agent_parser
-      uuidtools
     arel (6.0.4)
     ast (2.4.0)
     autoprefixer-rails (8.5.2)
@@ -142,6 +141,7 @@ GEM
     cucumber-wire (0.0.1)
     database_cleaner (1.3.0)
     debug_inspector (0.0.3)
+    device_detector (1.0.1)
     devise (3.5.6)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -475,8 +475,6 @@ GEM
     public_suffix (3.0.2)
     puma (3.11.4)
     rack (1.6.10)
-    rack-attack (5.2.0)
-      rack
     rack-cors (1.0.2)
     rack-host-redirect (1.3.0)
       rack
@@ -668,7 +666,6 @@ GEM
     unicode-display_width (1.3.3)
     uniform_notifier (1.11.0)
     user_agent_parser (2.4.1)
-    uuidtools (2.1.5)
     warden (1.2.7)
       rack (>= 1.0)
     web-console (2.3.0)
@@ -692,7 +689,7 @@ PLATFORMS
 DEPENDENCIES
   active_median (~> 0.1)
   acts_as_follower
-  ahoy_matey (= 1.6.1)
+  ahoy_matey (= 2.1)
   bootstrap-sass
   bootstrap3-datetimepicker-rails
   brakeman
