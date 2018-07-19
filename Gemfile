@@ -60,7 +60,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails'
   gem 'guard-rspec'
-  gem 'pry-byebug'
+  gem 'pry-byebug', '~> 3.6'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits

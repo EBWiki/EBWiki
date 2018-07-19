@@ -734,8 +734,8 @@ DEPENDENCIES
   newrelic_rpm
   paper_trail (~> 4.2.0)
   pg (= 0.20.0)
-  pre-commit (~> 0.38)
-  pry-byebug
+  pre-commit
+  pry-byebug (~> 3.6)
   puma
   rack
   rack-cors
@@ -760,7 +760,7 @@ DEPENDENCIES
   sitemap_generator (= 6.0)
   social-share-button
   split
-  turbolinks (~> 5.1)
+  turbolinks
   uglifier (= 4.1)
   web-console (~> 2.0)
   webmock
