@@ -153,7 +153,8 @@ if Ethnicity.count.zero?
     ['Hispanic'],
     ['Native American'],
     ['Asian'],
-    ['Arabic']
+    ['Arabic'],
+    ['Pacific Islander']
   ]
 
   ethnicities.each do |ethnicity|
