@@ -25,12 +25,6 @@
 </p>
 
 <p>
-  <% if @agency.website.present? %>
-     Website: <%= link_to @agency.website, @agency.website %>
-  <% end %>
-</p>
-
-<p>
   <%= show_non_blank_fields "Notes", @agency.description %>
 </p>
 <%= link_to 'Back', session[:previous_url], :class => "btn-default" %>
