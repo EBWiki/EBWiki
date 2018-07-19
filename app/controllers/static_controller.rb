@@ -9,4 +9,6 @@ class StaticController < ApplicationController
   def javascript_lab
     redirect_to root_path if Rails.env.production?
   end
+
+  def contribution_guidelines; end
 end
