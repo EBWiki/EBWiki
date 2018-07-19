@@ -48,7 +48,7 @@ gem 'gotcha', '0.0.6'
 gem 'sitemap_generator', '6.0'
 
 # internal analytics
-gem 'ahoy_matey', '1.6.1'
+gem 'ahoy_matey', '2.1'
 
 # use split gem for a/b testing
 gem 'split', require: 'split/dashboard'
