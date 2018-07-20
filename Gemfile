@@ -11,14 +11,17 @@ gem 'pg', '0.20.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '4.1'
+
+# Reduce N+1 queries
+gem 'bullet', '~> 5.7'
 # Syntax
 gem 'enumerated_type'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '~> 5.1'
 # Jquery.turbolinks fixes binded event problems cause by Turbolinks
 gem 'jquery-turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -33,10 +36,10 @@ gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 
 # help with charts and graphs
-gem 'active_median'
-gem 'chartkick'
-gem 'groupdate'
-gem 'hightop'
+gem 'active_median', '~> 0.1'
+gem 'chartkick', '~> 2.3'
+gem 'groupdate', '~> 4.0'
+gem 'hightop', '~> 0.2'
 
 # Simple Captcha for signing up
 gem 'gotcha', '0.0.6'
@@ -45,7 +48,7 @@ gem 'gotcha', '0.0.6'
 gem 'sitemap_generator', '6.0'
 
 # internal analytics
-gem 'ahoy_matey', '1.6.1'
+gem 'ahoy_matey', '2.1'
 
 # use split gem for a/b testing
 gem 'split', require: 'split/dashboard'
@@ -57,11 +60,11 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails'
   gem 'guard-rspec'
-  gem 'pry-byebug'
+  gem 'pry-byebug', '~> 3.6'
   # Reduce N+1 queries
-  gem 'bullet', '~> 5.7'
+  # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
-  gem 'pre-commit'
+  gem 'pre-commit', '~> 0.38'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-rails', '~> 3.0'
 end
