@@ -25,7 +25,7 @@ gem 'turbolinks', '~> 5.1'
 # Jquery.turbolinks fixes binded event problems cause by Turbolinks
 gem 'jquery-turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'sdoc', '~> 1.0', group: :doc
 # add back rails observer class removed from rails 4
 gem 'rails-observers'
 
