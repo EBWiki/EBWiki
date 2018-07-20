@@ -15,6 +15,12 @@ RSpec.describe Agency, type: :model do
    .with_message('You must specify the state in which the agency is located.') 
   end
 
+  it do
+    should validate_uniqueness_of(:name).ignoring_case_sensitivity
+    .with_message('An agency with this name already exists and can be found. If you'\
+                  ' want to create a new agency, it must have a unique name.') 
+  end
+
   it 'removes leading white space from name' do
     agency = FactoryBot.create(:agency, name: "  Fake agency", state_id: @texas.id)
     expect(agency.name).to eql("Fake agency")
