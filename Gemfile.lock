@@ -755,7 +755,7 @@ DEPENDENCIES
   simplecov
   sitemap_generator (= 6.0)
   social-share-button
-  split
+  split (= 3.2)
   turbolinks (~> 5.1)
   uglifier (= 4.1)
   web-console (~> 2.0)
