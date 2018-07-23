@@ -27,6 +27,10 @@
 <p>
   <%= show_non_blank_fields "Notes", @agency.description %>
 </p>
+
+<p>
+  <%= show_non_blank_fields "Website", @agency.website %>
+</p>
 <%= link_to 'Back', session[:previous_url], :class => "btn-default" %>
 <%= link_to 'Edit', edit_agency_path(@agency), :class => "btn-warning" %>
 
