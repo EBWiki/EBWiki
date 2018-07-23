@@ -734,7 +734,7 @@ DEPENDENCIES
   pry-byebug (~> 3.6)
   puma
   rack
-  rack-cors
+  rack-cors (~> 1.0)
   rack-host-redirect
   rails (~> 4.2.10)
   rails-observers
