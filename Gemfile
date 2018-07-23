@@ -56,6 +56,9 @@ gem 'split', require: 'split/dashboard'
 gem 'rollbar', '~> 2.1'
 
 gem 'simplecov'
+
+# JSON renderer for Rails
+gem 'jb', '~> 0.5.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails'
