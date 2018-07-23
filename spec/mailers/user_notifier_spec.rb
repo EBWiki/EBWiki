@@ -20,7 +20,6 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:mail) { UserNotifier.send_followers_email([follower], this_case) }
 
     it 'renders the subject' do
-      binding.pry
       expect(mail.subject).to eql("The #{this_case.title} case has been updated on EBWiki.")
     end
 
