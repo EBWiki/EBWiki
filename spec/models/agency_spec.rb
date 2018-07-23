@@ -16,6 +16,7 @@ RSpec.describe Agency, type: :model do
   end
 
   it do
+    FactoryBot.create(:agency)
     should validate_uniqueness_of(:name).ignoring_case_sensitivity
     .with_message('An agency with this name already exists and can be found. If you'\
                   ' want to create a new agency, it must have a unique name.') 
