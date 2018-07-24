@@ -33,7 +33,7 @@ gem 'momentjs-rails'
 gem 'rack'
 
 # For configurable CORS domain settings
-gem 'rack-cors', require: 'rack/cors'
+gem 'rack-cors', '~> 1.0', require: 'rack/cors'
 
 # help with charts and graphs
 gem 'active_median', '~> 0.1'
