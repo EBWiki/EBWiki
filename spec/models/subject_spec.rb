@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Subject, type: :model do
-  it 'is invalid without a name' do
-    subject = build(:subject, name: nil)
-    expect(subject).to be_invalid
+  describe 'Validations' do
+    it { should validate_presence_of(:name).with_message('Name of the victim can\'t be blank.') }
   end
 end
