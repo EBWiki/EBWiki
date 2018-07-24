@@ -33,7 +33,7 @@ gem 'momentjs-rails'
 gem 'rack'
 
 # For configurable CORS domain settings
-gem 'rack-cors', require: 'rack/cors'
+gem 'rack-cors', '~> 1.0', require: 'rack/cors'
 
 # help with charts and graphs
 gem 'active_median', '~> 0.1'
@@ -51,11 +51,14 @@ gem 'sitemap_generator', '6.0'
 gem 'ahoy_matey', '2.1'
 
 # use split gem for a/b testing
-gem 'split', require: 'split/dashboard'
+gem 'split', '3.2', require: 'split/dashboard'
 
 gem 'rollbar', '~> 2.1'
 
 gem 'simplecov'
+
+# JSON renderer for Rails
+gem 'jb', '~> 0.5.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails'
@@ -89,7 +92,7 @@ end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '3.5.6'
+gem 'devise', '3.5.10'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
