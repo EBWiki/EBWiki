@@ -23,9 +23,9 @@ gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks', '~> 5.1'
 # Jquery.turbolinks fixes binded event problems cause by Turbolinks
-gem 'jquery-turbolinks'
+gem 'jquery-turbolinks', '~> 2.1'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'sdoc', '~> 1.0', group: :doc
 # add back rails observer class removed from rails 4
 gem 'rails-observers'
 
@@ -33,7 +33,7 @@ gem 'momentjs-rails'
 gem 'rack'
 
 # For configurable CORS domain settings
-gem 'rack-cors', require: 'rack/cors'
+gem 'rack-cors', '~> 1.0', require: 'rack/cors'
 
 # help with charts and graphs
 gem 'active_median', '~> 0.1'
@@ -51,11 +51,14 @@ gem 'sitemap_generator', '6.0'
 gem 'ahoy_matey', '2.1'
 
 # use split gem for a/b testing
-gem 'split', require: 'split/dashboard'
+gem 'split', '3.2', require: 'split/dashboard'
 
 gem 'rollbar', '~> 2.1'
 
 gem 'simplecov'
+
+# JSON renderer for Rails
+gem 'jb', '~> 0.5.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails'
@@ -89,7 +92,7 @@ end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '3.5.6'
+gem 'devise', '3.5.10'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
