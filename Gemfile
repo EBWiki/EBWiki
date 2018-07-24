@@ -51,7 +51,7 @@ gem 'sitemap_generator', '6.0'
 gem 'ahoy_matey', '2.1'
 
 # use split gem for a/b testing
-gem 'split', require: 'split/dashboard'
+gem 'split', '3.2', require: 'split/dashboard'
 
 gem 'rollbar', '~> 2.1'
 
