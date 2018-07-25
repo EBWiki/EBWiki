@@ -82,7 +82,7 @@ group :test do
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 2.4.3'
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner', '~> 1.3.0'
+  gem 'database_cleaner', '~> 1.7'
   gem 'faker'
   gem 'launchy', '~> 2.4.2'
   gem 'selenium-webdriver', '~> 2.43.0'
