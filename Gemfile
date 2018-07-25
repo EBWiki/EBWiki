@@ -73,7 +73,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'brakeman', require: false
+  gem 'brakeman', '~> 4.3', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 end

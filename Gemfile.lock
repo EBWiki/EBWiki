@@ -692,7 +692,7 @@ DEPENDENCIES
   ahoy_matey (= 2.1)
   bootstrap-sass
   bootstrap3-datetimepicker-rails
-  brakeman
+  brakeman (~> 4.3)
   bullet (~> 5.7)
   capybara (~> 2.4.3)
   carrierwave
