@@ -62,7 +62,7 @@ gem 'jb', '~> 0.5.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 4.10'
-  gem 'guard-rspec'
+  gem 'guard-rspec', '~> 4.7'
   gem 'pry-byebug', '~> 3.6'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'

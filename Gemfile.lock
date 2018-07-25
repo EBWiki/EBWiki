@@ -716,7 +716,7 @@ DEPENDENCIES
   gmaps4rails
   gotcha (= 0.0.6)
   groupdate (~> 4.0)
-  guard-rspec
+  guard-rspec (~> 4.7)
   heroku_rails_deflate
   hightop (~> 0.2)
   httparty
