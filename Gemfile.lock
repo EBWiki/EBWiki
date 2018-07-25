@@ -706,7 +706,7 @@ DEPENDENCIES
   devise (= 3.5.10)
   dotenv-rails
   enumerated_type
-  factory_bot_rails
+  factory_bot_rails (~> 4.10)
   faker
   fog
   friendly_id (~> 5.1.0)
