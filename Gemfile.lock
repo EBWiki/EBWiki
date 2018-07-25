@@ -724,7 +724,7 @@ DEPENDENCIES
   jquery-rails (~> 4.3, >= 4.3.3)
   jquery-turbolinks (~> 2.1)
   kaminari
-  launchy (~> 2.4.2)
+  launchy (~> 2.4)
   mailboxer!
   metamagic
   mini_magick

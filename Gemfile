@@ -84,7 +84,7 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', '~> 1.3.0'
   gem 'faker'
-  gem 'launchy', '~> 2.4.2'
+  gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
   gem 'webmock'
