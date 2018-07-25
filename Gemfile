@@ -55,7 +55,7 @@ gem 'split', '3.2', require: 'split/dashboard'
 
 gem 'rollbar', '~> 2.1'
 
-gem 'simplecov'
+gem 'simplecov', '~> 0.16.1'
 
 # JSON renderer for Rails
 gem 'jb', '~> 0.5.0'
