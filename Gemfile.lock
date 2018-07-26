@@ -87,12 +87,13 @@ GEM
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11.0)
     byebug (10.0.2)
-    capybara (2.4.4)
-      mime-types (>= 1.16)
-      nokogiri (>= 1.3.3)
-      rack (>= 1.0.0)
-      rack-test (>= 0.5.4)
-      xpath (~> 2.0)
+    capybara (3.4.2)
+      addressable
+      mini_mime (>= 0.1.3)
+      nokogiri (~> 1.8)
+      rack (>= 1.6.0)
+      rack-test (>= 0.6.3)
+      xpath (~> 3.1)
     carrierwave (1.2.2)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
@@ -142,12 +143,11 @@ GEM
     database_cleaner (1.3.0)
     debug_inspector (0.0.3)
     device_detector (1.0.1)
-    devise (3.5.6)
+    devise (4.0.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
+      railties (>= 4.1.0, < 5.1)
       responders
-      thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.3)
     docile (1.3.1)
@@ -175,7 +175,7 @@ GEM
     factory_bot_rails (4.10.0)
       factory_bot (~> 4.10.0)
       railties (>= 3.0.0)
-    faker (1.8.7)
+    faker (1.9.1)
       i18n (>= 0.7)
     faraday (0.15.2)
       multipart-post (>= 1.2, < 3)
@@ -383,6 +383,8 @@ GEM
     image_optimizer (1.7.2)
     inflecto (0.0.2)
     ipaddress (0.8.3)
+    jb (0.5.0)
+      multi_json
     jquery-rails (4.3.3)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -539,7 +541,7 @@ GEM
       json (>= 1.8)
       nokogiri (~> 1.5)
       trollop (~> 2.1)
-    rdoc (4.3.0)
+    rdoc (6.0.4)
     redis (3.3.5)
     redis-namespace (1.5.3)
       redis (~> 3.0, >= 3.0.4)
@@ -601,9 +603,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    sdoc (0.4.2)
-      json (~> 1.7, >= 1.7.7)
-      rdoc (~> 4.0)
+    sdoc (1.0.0)
+      rdoc (>= 5.0)
     searchkick (3.1.0)
       activemodel (>= 4.2)
       elasticsearch (>= 5)
@@ -680,8 +681,8 @@ GEM
     webrobots (0.1.2)
     websocket (1.2.8)
     xml-simple (1.1.5)
-    xpath (2.1.0)
-      nokogiri (~> 1.3)
+    xpath (3.1.0)
+      nokogiri (~> 1.8)
 
 PLATFORMS
   ruby
@@ -692,9 +693,9 @@ DEPENDENCIES
   ahoy_matey (= 2.1)
   bootstrap-sass
   bootstrap3-datetimepicker-rails
-  brakeman
+  brakeman (~> 4.3)
   bullet (~> 5.7)
-  capybara (~> 2.4.3)
+  capybara (~> 3.4)
   carrierwave
   carrierwave-imageoptimizer
   chartkick (~> 2.3)
@@ -702,11 +703,11 @@ DEPENDENCIES
   cocoon
   cucumber-rails
   database_cleaner (~> 1.3.0)
-  devise (= 3.5.6)
+  devise (= 4.0.3)
   dotenv-rails
   enumerated_type
-  factory_bot_rails
-  faker
+  factory_bot_rails (~> 4.10)
+  faker (~> 1.9)
   fog
   friendly_id (~> 5.1.0)
   fullcalendar-rails (~> 3.9)
@@ -716,12 +717,13 @@ DEPENDENCIES
   gmaps4rails
   gotcha (= 0.0.6)
   groupdate (~> 4.0)
-  guard-rspec
+  guard-rspec (~> 4.7)
   heroku_rails_deflate
   hightop (~> 0.2)
   httparty
+  jb (~> 0.5.0)
   jquery-rails (~> 4.3, >= 4.3.3)
-  jquery-turbolinks
+  jquery-turbolinks (~> 2.1)
   kaminari
   launchy (~> 2.4.2)
   mailboxer!
@@ -731,33 +733,33 @@ DEPENDENCIES
   newrelic_rpm
   paper_trail (~> 4.2.0)
   pg (= 0.20.0)
-  pre-commit
+  pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
   puma
   rack
-  rack-cors
+  rack-cors (~> 1.0)
   rack-host-redirect
   rails (~> 4.2.10)
   rails-observers
   rails_12factor
   rails_admin (~> 1.3.0)
   redis-namespace (~> 1.5.0)
-  rollbar (~> 2.1)
+  rollbar (~> 2.16)
   rspec-activemodel-mocks
   rspec-rails (~> 3.0)
   rubocop
   sass-rails (~> 5.0)
-  sdoc (~> 0.4.0)
+  sdoc (~> 1.0)
   searchkick (~> 3)
   select2-rails
   selenium-webdriver (~> 2.43.0)
   shoulda-matchers (~> 3.1.1)
   simple_form
-  simplecov
+  simplecov (~> 0.16.1)
   sitemap_generator (= 6.0)
   social-share-button
-  split
-  turbolinks
+  split (= 3.2)
+  turbolinks (~> 5.1)
   uglifier (= 4.1)
   web-console (~> 2.0)
   webmock
