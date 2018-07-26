@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180712191243) do
+ActiveRecord::Schema.define(version: 20180716121459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,13 +140,15 @@ ActiveRecord::Schema.define(version: 20180712191243) do
 
   create_table "links", force: :cascade do |t|
     t.string   "url"
-    t.integer  "case_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "linkable_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.string   "title"
+    t.string   "linkable_type"
   end
 
-  add_index "links", ["case_id"], name: "index_links_on_case_id", using: :btree
+  add_index "links", ["linkable_id", "linkable_type"], name: "index_links_on_linkable_id_and_linkable_type", using: :btree
+  add_index "links", ["linkable_id"], name: "index_links_on_linkable_id", using: :btree
 
   create_table "mailboxer_conversation_opt_outs", force: :cascade do |t|
     t.integer "unsubscriber_id"
@@ -319,7 +321,7 @@ ActiveRecord::Schema.define(version: 20180712191243) do
 
   add_index "visits", ["user_id"], name: "index_visits_on_user_id", using: :btree
 
-  add_foreign_key "links", "cases"
+  add_foreign_key "links", "cases", column: "linkable_id"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
   add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
