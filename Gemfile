@@ -62,7 +62,7 @@ gem 'jb', '~> 0.5.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 4.10'
-  gem 'guard-rspec'
+  gem 'guard-rspec', '~> 4.7'
   gem 'pry-byebug', '~> 3.6'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
@@ -80,10 +80,10 @@ end
 
 group :test do
   # makes it easy to programatically simulate users' interactions
-  gem 'capybara', '~> 2.4.3'
+  gem 'capybara', '~> 3.4'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', '~> 1.7'
-  gem 'faker'
+  gem 'faker', '~> 1.9'
   gem 'launchy', '~> 2.4.2'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
@@ -92,7 +92,7 @@ end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '4.0.0.rc1'
+gem 'devise', '4.0.3'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
