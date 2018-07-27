@@ -448,7 +448,7 @@ GEM
     nested_form (0.3.2)
     net-http-digest_auth (1.4.1)
     net-http-persistent (2.9.4)
-    newrelic_rpm (5.1.0.344)
+    newrelic_rpm (5.2.0.345)
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     notiffany (0.1.1)
@@ -730,7 +730,7 @@ DEPENDENCIES
   metamagic
   mini_magick
   momentjs-rails
-  newrelic_rpm
+  newrelic_rpm (~> 5.2.0)
   paper_trail (~> 4.2.0)
   pg (= 0.20.0)
   pre-commit (~> 0.38)
