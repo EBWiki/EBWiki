@@ -714,7 +714,7 @@ DEPENDENCIES
   galerts
   geocoder
   gibbon
-  gmaps4rails
+  gmaps4rails (~> 2.1)
   gotcha (= 0.0.6)
   groupdate (~> 4.0)
   guard-rspec (~> 4.7)
