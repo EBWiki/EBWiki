@@ -142,7 +142,7 @@ gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.
 # pagination
 gem 'kaminari'
 
-gem 'redis-namespace', '~> 1.5.0'
+gem 'redis-namespace', '~> 1.6'
 
 # access mailchimp api
 gem 'gibbon'
