@@ -738,7 +738,7 @@ DEPENDENCIES
   puma
   rack
   rack-cors (~> 1.0)
-  rack-host-redirect
+  rack-host-redirect (~> 1.3)
   rails (~> 4.2.10)
   rails-observers
   rails_12factor

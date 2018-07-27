@@ -162,6 +162,6 @@ gem 'newrelic_rpm'
 gem 'httparty'
 
 # for setting middleware redirects
-gem 'rack-host-redirect'
+gem 'rack-host-redirect', '~> 1.3'
 
 gem 'rubocop', require: false
