@@ -713,7 +713,7 @@ DEPENDENCIES
   fullcalendar-rails (~> 3.9)
   galerts
   geocoder
-  gibbon
+  gibbon (~> 3.2)
   gmaps4rails
   gotcha (= 0.0.6)
   groupdate (~> 4.0)

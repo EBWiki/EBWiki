@@ -145,7 +145,7 @@ gem 'kaminari'
 gem 'redis-namespace', '~> 1.5.0'
 
 # access mailchimp api
-gem 'gibbon'
+gem 'gibbon', '~> 3.2'
 
 # metatag helper
 gem 'metamagic'
