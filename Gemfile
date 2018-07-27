@@ -164,4 +164,4 @@ gem 'httparty'
 # for setting middleware redirects
 gem 'rack-host-redirect'
 
-gem 'rubocop', require: false
+gem 'rubocop', '~> 0.58', require: false
