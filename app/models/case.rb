@@ -8,6 +8,7 @@ class Case < ActiveRecord::Base
   belongs_to :category
   belongs_to :state
   has_many :links, dependent: :destroy
+  has_many :links, as: :linkable
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :follows, as: :followable, dependent: :destroy
