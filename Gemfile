@@ -112,7 +112,7 @@ gem 'heroku_rails_deflate', groups: %i[production staging]
 gem 'rails_admin', '~> 1.3.0'
 
 gem 'geocoder'
-gem 'gmaps4rails'
+gem 'gmaps4rails', '~> 2.1'
 gem 'puma'
 
 # implement elasticsearch
