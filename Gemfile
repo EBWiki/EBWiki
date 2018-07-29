@@ -151,7 +151,7 @@ gem 'gibbon'
 gem 'metamagic'
 
 # Google News API help
-gem 'galerts'
+gem 'galerts', '~> 1.1'
 
 gem 'ckeditor', '~> 4.2', git: 'https://github.com/galetahub/ckeditor.git'
 

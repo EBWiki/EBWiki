@@ -713,7 +713,7 @@ DEPENDENCIES
   fog
   friendly_id (~> 5.1.0)
   fullcalendar-rails (~> 3.9)
-  galerts
+  galerts (~> 1.1)
   geocoder
   gibbon
   gmaps4rails (~> 2.1)
