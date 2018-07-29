@@ -153,7 +153,7 @@ gem 'metamagic'
 # Google News API help
 gem 'galerts'
 
-gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', '~> 4.2', git: 'https://github.com/galetahub/ckeditor.git'
 
 # New Relic performance monitor
 gem 'newrelic_rpm', '~> 5.2.0'
