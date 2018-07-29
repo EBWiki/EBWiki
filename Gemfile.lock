@@ -722,7 +722,7 @@ DEPENDENCIES
   guard-rspec (~> 4.7)
   heroku_rails_deflate
   hightop (~> 0.2)
-  httparty
+  httparty (~> 0.16)
   jb (~> 0.5.0)
   jquery-rails (~> 4.3, >= 4.3.3)
   jquery-turbolinks (~> 2.1)

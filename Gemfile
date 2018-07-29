@@ -159,7 +159,7 @@ gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor.git'
 gem 'newrelic_rpm'
 
 # for HTTParty
-gem 'httparty'
+gem 'httparty', '~> 0.16'
 
 # for setting middleware redirects
 gem 'rack-host-redirect', '~> 1.3'
