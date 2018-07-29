@@ -156,7 +156,7 @@ gem 'galerts'
 gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor.git'
 
 # New Relic performance monitor
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', '~> 5.2.0'
 
 # for HTTParty
 gem 'httparty', '~> 0.16'
