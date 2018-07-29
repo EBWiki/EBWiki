@@ -330,7 +330,7 @@ GEM
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     formatador (0.2.5)
-    friendly_id (5.1.0)
+    friendly_id (5.2.4)
       activerecord (>= 4.0.0)
     fullcalendar-rails (3.9.0.0)
       jquery-rails (>= 4.0.5, < 5.0.0)
@@ -711,7 +711,7 @@ DEPENDENCIES
   factory_bot_rails (~> 4.10)
   faker (~> 1.9)
   fog
-  friendly_id (~> 5.1.0)
+  friendly_id (~> 5.2)
   fullcalendar-rails (~> 3.9)
   galerts (~> 1.1)
   geocoder
