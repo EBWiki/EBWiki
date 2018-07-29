@@ -753,7 +753,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 1.0)
   searchkick (~> 3)
-  select2-rails
+  select2-rails (~> 4.0)
   selenium-webdriver (~> 2.43.0)
   shoulda-matchers (~> 3.1)
   simple_form

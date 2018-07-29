@@ -125,7 +125,7 @@ gem 'cocoon'
 gem 'social-share-button'
 
 # select tag jquery plugin
-gem 'select2-rails'
+gem 'select2-rails', '~> 4.0'
 
 # follower functionality
 gem 'acts_as_follower'
