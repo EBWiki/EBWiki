@@ -693,7 +693,7 @@ DEPENDENCIES
   active_median (~> 0.1)
   acts_as_follower
   ahoy_matey (= 2.1)
-  bootstrap-sass
+  bootstrap-sass (~> 3.3)
   bootstrap3-datetimepicker-rails
   brakeman (~> 4.3)
   bullet (~> 5.7)
