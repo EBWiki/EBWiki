@@ -764,7 +764,7 @@ DEPENDENCIES
   turbolinks (~> 5.1)
   uglifier (= 4.1)
   web-console (~> 2.0)
-  webmock
+  webmock (~> 3.4)
 
 RUBY VERSION
    ruby 2.4.1p111
