@@ -6,6 +6,12 @@ class CasesController < ApplicationController
   before_action :find_case, only: %i[show edit update destroy history]
   before_action :authenticate_user!, except: %i[index show history followers]
 
+  def strip_tags
+    before_save do
+    self.blurb = ActionController::Base.helpers.strip_tags(blurb)
+    end
+  end
+
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
