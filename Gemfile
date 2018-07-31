@@ -106,7 +106,7 @@ gem 'carrierwave'
 gem 'carrierwave-imageoptimizer'
 
 # allow deflated assets with heroku
-gem 'heroku_rails_deflate', groups: %i[production staging]
+gem 'heroku_rails_deflate', '~> 1.0', groups: %i[production staging]
 
 # CMS panel for admin
 gem 'rails_admin', '~> 1.3.0'
