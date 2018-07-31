@@ -81,16 +81,16 @@ end
 group :test do
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 3.4'
-  gem 'cucumber-rails', '~> 1.6', require: false
-  gem 'database_cleaner', '~> 1.3.0'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner', '~> 1.7'
   gem 'faker', '~> 1.9'
-  gem 'launchy', '~> 2.4'
+  gem 'launchy', '~> 2.4.2'
   gem 'selenium-webdriver', '~> 2.43.0'
-  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda-matchers', '~> 3.1.1'
   gem 'webmock'
 end
 
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 3.3'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '4.0.3'
 gem 'rails_12factor', groups: %i[production staging]
@@ -112,7 +112,7 @@ gem 'heroku_rails_deflate', groups: %i[production staging]
 gem 'rails_admin', '~> 1.3.0'
 
 gem 'geocoder'
-gem 'gmaps4rails', '~> 2.1'
+gem 'gmaps4rails'
 gem 'puma'
 
 # implement elasticsearch
@@ -125,7 +125,7 @@ gem 'cocoon'
 gem 'social-share-button'
 
 # select tag jquery plugin
-gem 'select2-rails', '~> 4.0'
+gem 'select2-rails'
 
 # follower functionality
 gem 'acts_as_follower'
@@ -137,12 +137,12 @@ gem 'mailboxer', git: 'https://github.com/lacco/mailboxer.git'
 gem 'paper_trail', '~> 4.2.0'
 
 # pretty urls
-gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
 gem 'kaminari'
 
-gem 'redis-namespace', '~> 1.6'
+gem 'redis-namespace', '~> 1.5.0'
 
 # access mailchimp api
 gem 'gibbon'
@@ -151,17 +151,17 @@ gem 'gibbon'
 gem 'metamagic'
 
 # Google News API help
-gem 'galerts', '~> 1.1'
+gem 'galerts'
 
-gem 'ckeditor', '~> 4.2', git: 'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor.git'
 
 # New Relic performance monitor
-gem 'newrelic_rpm', '~> 5.2.0'
+gem 'newrelic_rpm'
 
 # for HTTParty
-gem 'httparty', '~> 0.16'
+gem 'httparty'
 
 # for setting middleware redirects
-gem 'rack-host-redirect', '~> 1.3'
+gem 'rack-host-redirect'
 
-gem 'rubocop', '~> 0.58', require: false
+gem 'rubocop', require: false
