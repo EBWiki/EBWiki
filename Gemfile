@@ -140,7 +140,7 @@ gem 'paper_trail', '~> 4.2.0'
 gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
-gem 'kaminari'
+gem 'kaminari', '~> 1.1'
 
 gem 'redis-namespace', '~> 1.5.0'
 
