@@ -82,15 +82,15 @@ group :test do
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 3.4'
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner', '~> 1.3.0'
+  gem 'database_cleaner', '~> 1.7'
   gem 'faker', '~> 1.9'
   gem 'launchy', '~> 2.4.2'
-  gem 'selenium-webdriver', '~> 2.43.0'
+  gem 'selenium-webdriver', '~> 3.13'
   gem 'shoulda-matchers', '~> 3.1.1'
   gem 'webmock'
 end
 
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 3.3'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '4.0.3'
 gem 'rails_12factor', groups: %i[production staging]
@@ -119,7 +119,7 @@ gem 'puma'
 gem 'searchkick', '~> 3'
 
 # manage nested forms
-gem 'cocoon'
+gem 'cocoon', '~> 1.2'
 
 # add social share buttons
 gem 'social-share-button'
@@ -140,12 +140,12 @@ gem 'paper_trail', '~> 4.2.0'
 gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
-gem 'kaminari'
+gem 'kaminari', '~> 1.1'
 
 gem 'redis-namespace', '~> 1.5.0'
 
 # access mailchimp api
-gem 'gibbon'
+gem 'gibbon', '~> 3.2'
 
 # metatag helper
 gem 'metamagic'
