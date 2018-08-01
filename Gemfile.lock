@@ -697,7 +697,7 @@ DEPENDENCIES
   carrierwave-imageoptimizer
   chartkick (~> 2.3)
   ckeditor!
-  cocoon
+  cocoon (~> 1.2)
   cucumber-rails
   database_cleaner (~> 1.7)
   devise (= 4.0.3)
