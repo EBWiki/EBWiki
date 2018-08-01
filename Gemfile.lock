@@ -725,7 +725,7 @@ DEPENDENCIES
   launchy (~> 2.4.2)
   mailboxer!
   metamagic
-  mini_magick
+  mini_magick (~> 4.8)
   momentjs-rails
   newrelic_rpm
   paper_trail (~> 4.2.0)
