@@ -475,7 +475,7 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     public_suffix (3.0.2)
-    puma (3.11.4)
+    puma (3.12.0)
     rack (1.6.10)
     rack-cors (1.0.2)
     rack-host-redirect (1.3.0)
@@ -732,7 +732,7 @@ DEPENDENCIES
   pg (= 0.20.0)
   pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
-  puma
+  puma (~> 3.12)
   rack
   rack-cors (~> 1.0)
   rack-host-redirect
