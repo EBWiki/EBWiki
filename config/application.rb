@@ -47,5 +47,7 @@ module EBWiki
                        request_specs: true
       g.fixture_replacement :factory_bot, dir: 'spec/factories'
     end
+
+    config.active_record.schema_format = :sql
   end
 end
