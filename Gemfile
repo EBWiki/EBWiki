@@ -99,7 +99,7 @@ gem 'simple_form'
 # for aws cloud storage
 gem 'fog'
 # photo resizing
-gem 'mini_magick'
+gem 'mini_magick', '~> 4.8'
 # file upload solution
 gem 'carrierwave'
 # image optimizer that works with carrierwave
