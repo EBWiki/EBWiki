@@ -103,7 +103,7 @@ gem 'mini_magick'
 # file upload solution
 gem 'carrierwave'
 # image optimizer that works with carrierwave
-gem 'carrierwave-imageoptimizer'
+gem 'carrierwave-imageoptimizer', '~> 1.4'
 
 # allow deflated assets with heroku
 gem 'heroku_rails_deflate', '~> 1.0', groups: %i[production staging]

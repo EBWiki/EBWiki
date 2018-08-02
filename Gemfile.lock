@@ -694,7 +694,7 @@ DEPENDENCIES
   bullet (~> 5.7)
   capybara (~> 3.4)
   carrierwave
-  carrierwave-imageoptimizer
+  carrierwave-imageoptimizer (~> 1.4)
   chartkick (~> 2.3)
   ckeditor!
   cocoon (~> 1.2)
