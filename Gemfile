@@ -113,7 +113,7 @@ gem 'rails_admin', '~> 1.4'
 
 gem 'geocoder', '~> 1.5'
 gem 'gmaps4rails'
-gem 'puma'
+gem 'puma', '~> 3.12'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3'
