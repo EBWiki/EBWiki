@@ -109,7 +109,7 @@ gem 'carrierwave-imageoptimizer'
 gem 'heroku_rails_deflate', groups: %i[production staging]
 
 # CMS panel for admin
-gem 'rails_admin', '~> 1.3.0'
+gem 'rails_admin', '~> 1.4'
 
 gem 'geocoder', '~> 1.5'
 gem 'gmaps4rails'
