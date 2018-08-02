@@ -747,7 +747,7 @@ DEPENDENCIES
   rubocop
   sass-rails (~> 5.0)
   sdoc (~> 1.0)
-  searchkick (~> 3)
+  searchkick (~> 3.1)
   select2-rails
   selenium-webdriver (~> 3.13)
   shoulda-matchers (~> 3.1.1)
