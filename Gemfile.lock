@@ -689,7 +689,7 @@ DEPENDENCIES
   acts_as_follower
   ahoy_matey (= 2.1)
   bootstrap-sass (~> 3.3)
-  bootstrap3-datetimepicker-rails
+  bootstrap3-datetimepicker-rails (~> 4.17)
   brakeman (~> 4.3)
   bullet (~> 5.7)
   capybara (~> 3.4)

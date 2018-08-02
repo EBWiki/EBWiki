@@ -91,7 +91,7 @@ group :test do
 end
 
 gem 'bootstrap-sass', '~> 3.3'
-gem 'bootstrap3-datetimepicker-rails'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'devise', '4.0.3'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form', '4.0'
