@@ -6,6 +6,14 @@ GIT
       orm_adapter (~> 0.5.0)
       terrapin
 
+GIT
+  remote: https://github.com/lacco/mailboxer.git
+  revision: d4f0e9c70e29fcc5c2b4b7c87379e1830d45a367
+  specs:
+    mailboxer (0.12.5)
+      carrierwave (>= 0.5.8)
+      rails (>= 3.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -411,9 +419,6 @@ GEM
     lumberjack (1.0.13)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
-    mailboxer (0.14.0)
-      carrierwave (>= 0.5.8)
-      rails (>= 4.2.0)
     mechanize (2.7.5)
       domain_name (~> 0.5, >= 0.5.1)
       http-cookie (~> 1.0)
@@ -718,7 +723,7 @@ DEPENDENCIES
   jquery-turbolinks (~> 2.1)
   kaminari (~> 1.1)
   launchy (~> 2.4.2)
-  mailboxer (~> 0.14)
+  mailboxer (~> 0.12)!
   metamagic
   mini_magick
   momentjs-rails
