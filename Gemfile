@@ -91,29 +91,29 @@ group :test do
 end
 
 gem 'bootstrap-sass', '~> 3.3'
-gem 'bootstrap3-datetimepicker-rails'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'devise', '4.0.3'
 gem 'rails_12factor', groups: %i[production staging]
-gem 'simple_form'
+gem 'simple_form', '4.0'
 
 # for aws cloud storage
 gem 'fog'
 # photo resizing
-gem 'mini_magick'
+gem 'mini_magick', '~> 4.8'
 # file upload solution
 gem 'carrierwave'
 # image optimizer that works with carrierwave
-gem 'carrierwave-imageoptimizer'
+gem 'carrierwave-imageoptimizer', '~> 1.4'
 
 # allow deflated assets with heroku
-gem 'heroku_rails_deflate', groups: %i[production staging]
+gem 'heroku_rails_deflate', '~> 1.0', groups: %i[production staging]
 
 # CMS panel for admin
-gem 'rails_admin', '~> 1.3.0'
+gem 'rails_admin', '~> 1.4'
 
-gem 'geocoder'
+gem 'geocoder', '~> 1.5'
 gem 'gmaps4rails'
-gem 'puma'
+gem 'puma', '~> 3.12'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3'
