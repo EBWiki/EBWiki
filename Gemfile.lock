@@ -715,7 +715,7 @@ DEPENDENCIES
   gotcha (= 0.0.6)
   groupdate (~> 4.0)
   guard-rspec (~> 4.7)
-  heroku_rails_deflate
+  heroku_rails_deflate (~> 1.0)
   hightop (~> 0.2)
   httparty
   jb (~> 0.5.0)
