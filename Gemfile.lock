@@ -73,8 +73,6 @@ GEM
       execjs
     backports (3.11.3)
     bcrypt (3.1.12)
-    binding_of_caller (0.8.0)
-      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -668,11 +666,10 @@ GEM
     user_agent_parser (2.4.1)
     warden (1.2.7)
       rack (>= 1.0)
-    web-console (2.3.0)
-      activemodel (>= 4.0)
-      binding_of_caller (>= 0.7.2)
-      railties (>= 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
+    web-console (3.3.0)
+      activemodel (>= 4.2)
+      debug_inspector
+      railties (>= 4.2)
     webmock (3.4.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -760,7 +757,7 @@ DEPENDENCIES
   split (= 3.2)
   turbolinks (~> 5.1)
   uglifier (= 4.1)
-  web-console (~> 2.0)
+  web-console (~> 3.3)
   webmock
 
 RUBY VERSION
