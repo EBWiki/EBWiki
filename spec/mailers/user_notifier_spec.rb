@@ -17,10 +17,8 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:follower) { FactoryBot.create(:user, name: 'A Follower', email: 'follower@ebwiki.org') }
     let(:author) { FactoryBot.create(:user, name: 'John', email: 'john@email.com') }
     let(:user)      { FactoryBot.create(:user) }
-    #let(:this_case) { FactoryBot.attributes_for(:case, state_id: 33) }
-    let(:this_case) { user.cases.create! attributes_for(:case, state_id: 33) }
-    #let(:this_case) { FactoryBot.create(:case, state_id: 33) }
-    #let(:this_case) { FactoryBot.create(:case, title: 'John Smith', overview: 'some content', state_id: 33) }
+    let(:state)      { FactoryBot.create(:state, id: 33) }
+    let(:this_case) { user.cases.create! attributes_for(:case, state_id: state.id) }
     let(:mail) { UserNotifier.send_followers_email([follower], this_case) }
 
     it 'renders the subject' do
