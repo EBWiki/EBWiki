@@ -15,6 +15,7 @@ class Agency < ActiveRecord::Base
     declare :private
   end
 
+  has_paper_trail
   has_many :case_agencies
   has_many :cases, through: :case_agencies
   belongs_to :state
