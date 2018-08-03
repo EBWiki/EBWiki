@@ -140,7 +140,7 @@ GEM
       railties (>= 4, < 6)
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
-    database_cleaner (1.7.0)
+    database_cleaner (1.3.0)
     debug_inspector (0.0.3)
     device_detector (1.0.1)
     devise (4.0.3)
@@ -330,7 +330,7 @@ GEM
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     formatador (0.2.5)
-    friendly_id (5.1.0)
+    friendly_id (5.2.4)
       activerecord (>= 4.0.0)
     fullcalendar-rails (3.9.0.0)
       jquery-rails (>= 4.0.5, < 5.0.0)
@@ -338,7 +338,7 @@ GEM
       momentjs-rails (>= 2.9.0)
     galerts (1.1.3)
       mechanize (~> 2.7)
-    geocoder (1.5.0)
+    geocoder (1.4.9)
     gherkin (5.1.0)
     gibbon (3.2.0)
       faraday (>= 0.9.1)
@@ -383,6 +383,7 @@ GEM
     image_optimizer (1.7.2)
     inflecto (0.0.2)
     ipaddress (0.8.3)
+    jaro_winkler (1.5.1)
     jb (0.5.0)
       multi_json
     jquery-rails (4.3.3)
@@ -448,7 +449,7 @@ GEM
     nested_form (0.3.2)
     net-http-digest_auth (1.4.1)
     net-http-persistent (2.9.4)
-    newrelic_rpm (5.1.0.344)
+    newrelic_rpm (5.2.0.345)
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     notiffany (0.1.1)
@@ -461,11 +462,11 @@ GEM
       activesupport (>= 3.0, < 6.0)
       request_store (~> 1.1)
     parallel (1.12.1)
-    parser (2.5.1.0)
+    parser (2.5.1.2)
       ast (~> 2.4.0)
     pg (0.20.0)
     pluginator (1.5.0)
-    powerpack (0.1.1)
+    powerpack (0.1.2)
     pre-commit (0.38.1)
       pluginator (~> 1.5)
     pry (0.11.3)
@@ -475,7 +476,7 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     public_suffix (3.0.2)
-    puma (3.12.0)
+    puma (3.11.4)
     rack (1.6.10)
     rack-cors (1.0.2)
     rack-host-redirect (1.3.0)
@@ -511,13 +512,13 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
-    rails_admin (1.4.0)
+    rails_admin (1.3.0)
       builder (~> 3.1)
       coffee-rails (~> 4.0)
       font-awesome-rails (>= 3.0, < 5)
       haml (>= 4.0, < 6)
       jquery-rails (>= 3.0, < 5)
-      jquery-ui-rails (>= 5.0, < 7)
+      jquery-ui-rails (~> 5.0)
       kaminari (>= 0.14, < 2.0)
       nested_form (~> 0.3)
       rack-pjax (>= 0.7)
@@ -543,8 +544,8 @@ GEM
       trollop (~> 2.1)
     rdoc (6.0.4)
     redis (3.3.5)
-    redis-namespace (1.5.3)
-      redis (~> 3.0, >= 3.0.4)
+    redis-namespace (1.6.0)
+      redis (>= 3.0.4)
     referer-parser (0.3.0)
     remotipart (1.4.2)
     request_store (1.4.1)
@@ -579,9 +580,10 @@ GEM
       rspec-mocks (~> 3.7.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.1)
-    rubocop (0.56.0)
+    rubocop (0.58.2)
+      jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
-      parser (>= 2.5)
+      parser (>= 2.5, != 2.5.1.1)
       powerpack (~> 0.1)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
@@ -611,9 +613,11 @@ GEM
       hashie
     select2-rails (4.0.3)
       thor (~> 0.14)
-    selenium-webdriver (3.13.1)
+    selenium-webdriver (2.43.0)
       childprocess (~> 0.5)
-      rubyzip (~> 1.2)
+      multi_json (~> 1.0)
+      rubyzip (~> 1.0)
+      websocket (~> 1.0)
     shellany (0.0.1)
     shoulda-matchers (3.1.2)
       activesupport (>= 4.0.0)
@@ -662,7 +666,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
-    unicode-display_width (1.3.3)
+    unicode-display_width (1.4.0)
     uniform_notifier (1.11.0)
     user_agent_parser (2.4.1)
     warden (1.2.7)
@@ -677,6 +681,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff
     webrobots (0.1.2)
+    websocket (1.2.8)
     xml-simple (1.1.5)
     xpath (3.1.0)
       nokogiri (~> 1.8)
@@ -688,70 +693,70 @@ DEPENDENCIES
   active_median (~> 0.1)
   acts_as_follower
   ahoy_matey (= 2.1)
-  bootstrap-sass (~> 3.3)
-  bootstrap3-datetimepicker-rails (~> 4.17)
+  bootstrap-sass
+  bootstrap3-datetimepicker-rails
   brakeman (~> 4.3)
   bullet (~> 5.7)
   capybara (~> 3.4)
   carrierwave (~> 1.2)
-  carrierwave-imageoptimizer (~> 1.4)
+  carrierwave-imageoptimizer
   chartkick (~> 2.3)
-  ckeditor!
-  cocoon (~> 1.2)
-  cucumber-rails
-  database_cleaner (~> 1.7)
+  ckeditor (~> 4.2)!
+  cocoon
+  cucumber-rails (~> 1.6)
+  database_cleaner (~> 1.3.0)
   devise (= 4.0.3)
   dotenv-rails
   enumerated_type
   factory_bot_rails (~> 4.10)
   faker (~> 1.9)
   fog
-  friendly_id (~> 5.1.0)
+  friendly_id (~> 5.2)
   fullcalendar-rails (~> 3.9)
-  galerts
-  geocoder (~> 1.5)
-  gibbon (~> 3.2)
-  gmaps4rails
+  galerts (~> 1.1)
+  geocoder
+  gibbon
+  gmaps4rails (~> 2.1)
   gotcha (= 0.0.6)
   groupdate (~> 4.0)
   guard-rspec (~> 4.7)
-  heroku_rails_deflate (~> 1.0)
+  heroku_rails_deflate
   hightop (~> 0.2)
-  httparty
+  httparty (~> 0.16)
   jb (~> 0.5.0)
   jquery-rails (~> 4.3, >= 4.3.3)
   jquery-turbolinks (~> 2.1)
-  kaminari (~> 1.1)
-  launchy (~> 2.4.2)
+  kaminari
+  launchy (~> 2.4)
   mailboxer!
   metamagic
-  mini_magick (~> 4.8)
+  mini_magick
   momentjs-rails
-  newrelic_rpm
+  newrelic_rpm (~> 5.2.0)
   paper_trail (~> 4.2.0)
   pg (= 0.20.0)
   pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
-  puma (~> 3.12)
+  puma
   rack
   rack-cors (~> 1.0)
-  rack-host-redirect
+  rack-host-redirect (~> 1.3)
   rails (~> 4.2.10)
   rails-observers
   rails_12factor
-  rails_admin (~> 1.4)
-  redis-namespace (~> 1.5.0)
+  rails_admin (~> 1.3.0)
+  redis-namespace (~> 1.6)
   rollbar (~> 2.16)
   rspec-activemodel-mocks
   rspec-rails (~> 3.0)
-  rubocop
+  rubocop (~> 0.58)
   sass-rails (~> 5.0)
   sdoc (~> 1.0)
   searchkick (~> 3)
-  select2-rails
-  selenium-webdriver (~> 3.13)
-  shoulda-matchers (~> 3.1.1)
-  simple_form (= 4.0)
+  select2-rails (~> 4.0)
+  selenium-webdriver (~> 2.43.0)
+  shoulda-matchers (~> 3.1)
+  simple_form
   simplecov (~> 0.16.1)
   sitemap_generator (= 6.0)
   social-share-button
@@ -759,7 +764,7 @@ DEPENDENCIES
   turbolinks (~> 5.1)
   uglifier (= 4.1)
   web-console (~> 2.0)
-  webmock
+  webmock (~> 3.4)
 
 RUBY VERSION
    ruby 2.4.1p111
