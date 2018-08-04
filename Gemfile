@@ -93,7 +93,7 @@ end
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '4.0.3'
-gem 'rails_12factor', groups: %i[production staging]
+gem 'rails_12factor', '~> 0.0.3', groups: %i[production staging]
 gem 'simple_form'
 
 # for aws cloud storage
@@ -101,7 +101,7 @@ gem 'fog'
 # photo resizing
 gem 'mini_magick'
 # file upload solution
-gem 'carrierwave'
+gem 'carrierwave', '~> 1.2'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
@@ -116,7 +116,7 @@ gem 'gmaps4rails', '~> 2.1'
 gem 'puma'
 
 # implement elasticsearch
-gem 'searchkick', '~> 3'
+gem 'searchkick', '~> 3.1'
 
 # manage nested forms
 gem 'cocoon'
