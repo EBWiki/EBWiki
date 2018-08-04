@@ -743,7 +743,7 @@ DEPENDENCIES
   rack-host-redirect (~> 1.3)
   rails (~> 4.2.10)
   rails-observers
-  rails_12factor
+  rails_12factor (~> 0.0.3)
   rails_admin (~> 1.3.0)
   redis-namespace (~> 1.6)
   rollbar (~> 2.16)
