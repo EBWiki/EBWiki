@@ -457,10 +457,11 @@ GEM
       shellany (~> 0.0)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
-    paper_trail (4.2.0)
-      activerecord (>= 3.0, < 6.0)
-      activesupport (>= 3.0, < 6.0)
+    paper_trail (9.2.0)
+      activerecord (>= 4.2, < 5.3)
+      paper_trail-association_tracking (< 2)
       request_store (~> 1.1)
+    paper_trail-association_tracking (1.0.0)
     parallel (1.12.1)
     parser (2.5.1.2)
       ast (~> 2.4.0)
@@ -733,7 +734,7 @@ DEPENDENCIES
   mini_magick
   momentjs-rails
   newrelic_rpm (~> 5.2.0)
-  paper_trail (~> 4.2.0)
+  paper_trail (~> 9.2)
   pg (= 0.20.0)
   pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
