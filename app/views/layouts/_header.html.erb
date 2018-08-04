@@ -33,9 +33,9 @@
 	    </li>
         <li class="dropdown">
 			<% if user_signed_in? %>
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{@current_user.email}" %><span class="caret"></span></a>
+           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{current_user.email}" %><span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-          <%if signed_in? && @current_user.admin? %>
+          <%if signed_in? && current_user.admin? %>
 			      <li><%= link_to "Admin", rails_admin.dashboard_path %></li>
 		      <% end %>
           <li> <%= link_to "Profile", user_path(current_user) %></li>
