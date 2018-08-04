@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  it 'is invalid without a name' do
-    user = build(:user, name: nil)
-    expect(user).to be_invalid
+  describe 'Validations' do
+    it { should validate_presence_of(:name).with_message('Please add a name.') }
   end
 end
