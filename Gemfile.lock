@@ -698,7 +698,7 @@ DEPENDENCIES
   brakeman (~> 4.3)
   bullet (~> 5.7)
   capybara (~> 3.4)
-  carrierwave
+  carrierwave (~> 1.2)
   carrierwave-imageoptimizer
   chartkick (~> 2.3)
   ckeditor (~> 4.2)!
