@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   end
 
   def send_user_email
-    OnboardUser.call(self)
+    OnBoardUser.call(self)
   end
 
   def mailchimp_status

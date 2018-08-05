@@ -1,4 +1,4 @@
-module OnboardUser
+class OnBoardUser
   include Service
   def call(user)
     AddUserToMailchimp.call(user)
