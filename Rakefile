@@ -15,3 +15,7 @@ end
 RuboCop::RakeTask.new(:rubocop) do |t|
   t.options = ['--display-cop-names']
 end
+
+task "db:schema:load" do
+  Rake::Task["db:structure:load"].invoke
+end
