@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :state_objects
+  before_action :set_paper_trail_whodunnit
+
 
   helper_method :mailbox, :conversation
 
