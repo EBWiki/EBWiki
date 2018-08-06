@@ -131,7 +131,7 @@ gem 'select2-rails', '~> 4.0'
 gem 'acts_as_follower'
 
 # messaging
-gem 'mailboxer', git: 'https://github.com/lacco/mailboxer.git'
+gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 
 # track changes in model objects
 gem 'paper_trail', '~> 4.2.0'

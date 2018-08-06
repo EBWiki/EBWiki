@@ -725,7 +725,7 @@ DEPENDENCIES
   jquery-turbolinks (~> 2.1)
   kaminari
   launchy (~> 2.4)
-  mailboxer!
+  mailboxer (~> 0.12)!
   metamagic
   mini_magick
   momentjs-rails
