@@ -9,6 +9,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'devise'
 require 'rspec/rails'
 require 'database_cleaner'
+require 'paper_trail/frameworks/rspec'
 require 'webmock/rspec'
 require 'paper_trail/frameworks/rspec'
 include Warden::Test::Helpers
