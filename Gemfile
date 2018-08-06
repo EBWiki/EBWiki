@@ -16,7 +16,7 @@ gem 'uglifier', '4.1'
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
 # Syntax
-gem 'enumerated_type'
+gem 'enumerated_type', '~> 0.5'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'

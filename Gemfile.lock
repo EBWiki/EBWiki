@@ -706,7 +706,7 @@ DEPENDENCIES
   database_cleaner (~> 1.3.0)
   devise (= 4.1.1)
   dotenv-rails
-  enumerated_type
+  enumerated_type (~> 0.5)
   factory_bot_rails (~> 4.10)
   faker (~> 1.9)
   fog
