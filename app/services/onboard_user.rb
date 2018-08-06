@@ -1,4 +1,7 @@
-class OnBoardUser
+# frozen_string_literal: true
+
+# This class is used when a new user is added to the site
+class OnboardUser
   include Service
   def call(user)
     AddUserToMailchimp.call(user)
