@@ -86,9 +86,9 @@ group :test do
   gem 'faker', '~> 1.9'
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
+  gem 'shoulda-matchers', '~> 3.1.1'
   # Confirmation emails sent after commit
   gem 'test_after_commit', '~> 1.1'
-  gem 'shoulda-matchers', '~> 3.1.1'
   gem 'webmock'
 end
 
