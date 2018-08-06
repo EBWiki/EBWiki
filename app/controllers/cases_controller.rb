@@ -34,11 +34,11 @@ class CasesController < ApplicationController
     unless @this_case.present? && @commentable.present? && @comment.present? &&
            @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
+      redirect_to root_path
       # If an old id or a numeric id was used to find the record, then
       # the request path will not match the case_path, and we should do
       # a 301 redirect that uses the current friendly id.
       return redirect_to @this_case, status: :moved_permanent if request.path != case_path(@this_case)
-      render 'index'
     end
   end
 
@@ -122,15 +122,6 @@ class CasesController < ApplicationController
 
   def find_case
     @this_case = Case.friendly.find_by_id(params[:id])
-  end
-
-  def make_undo_link
-    view_context.link_to 'Undo that please!', undo_path(@this_case.versions.last), method: :post
-  end
-
-  def make_redo_link
-    link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
-    view_context.link_to link, undo_path(@case_version.next, redo: !params[:redo]), method: :post
   end
 
   def case_params
