@@ -35,7 +35,7 @@ class AgenciesController < ApplicationController
       flash[:success] = "Agency was successfully created. #{make_undo_link}"
       redirect_to @agency
     else
-      render "new"
+      render 'new'
     end 
   end
 
@@ -46,16 +46,14 @@ class AgenciesController < ApplicationController
       flash[:success] = "Agency was successfully updated. #{make_undo_link}"
       redirect_to @agency
     else
-      render "edit"
+      render 'edit'
     end
   end
 
   def destroy
     @agency.destroy
-    respond_to do |format|
-      format.html { redirect_to agencies_path, 
-                    notice: "Agency was successfully destroyed. #{make_undo_link}" }
-    end
+    flash[:success] = "Agency was successfully destroyed. #{make_undo_link}"
+    redirect_to agencies_path
   end
 
   def history
@@ -73,7 +71,7 @@ class AgenciesController < ApplicationController
       end
       flash[:success] = "Undid that! #{make_redo_link}"
     rescue
-      flash[:alert] = 'Action failed'
+      flash[:alert] = 'Failed undoing the action'
     ensure
       redirect_to root_path
     end
@@ -83,13 +81,15 @@ class AgenciesController < ApplicationController
 
   def make_undo_link
     view_context.link_to 'Click here to undo', 
-      agency_undo_path(@agency.versions.last), method: :post
+    agency_undo_path(@agency.versions.last), 
+    method: :post
   end
 
   def make_redo_link
     params[:redo] == 'true' ? link = 'Click here to undo' : link = 'Click here to redo!'
-    view_context.link_to link, agency_undo_path(@agency_version.next, 
-        redo: !params[:redo]), method: :post
+    view_context.link_to link, 
+    agency_undo_path(@agency_version.next, redo: !params[:redo]), 
+    method: :post
   end
 
   # Use callbacks to share common setup or constraints between actions.
