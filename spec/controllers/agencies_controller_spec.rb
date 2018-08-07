@@ -66,14 +66,14 @@ RSpec.describe AgenciesController, type: :controller do
     it 'destroys the requested agency' do
       agency = FactoryBot.create(:agency)
       expect do
-        delete :destroy, id: agency.to_param, method: :delete
+        delete :destroy, id: agency.to_param
       end.to change(Agency, :count).by(-1)
     end
 
     it 'redirects to the agencies list' do
       agency = FactoryBot.create(:agency)
-      delete :destroy, id: agency.to_param, method: :delete
-      expect(response).to redirect_to(agencies_path)
+      delete :destroy, id: agency.to_param
+      expect(response).to redirect_to(agencies_url)
     end
   end
 end
