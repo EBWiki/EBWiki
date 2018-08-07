@@ -16,7 +16,6 @@ feature 'User visits case history page' do
 
   let(:case_without_history) { FactoryBot.create(:case) }
   scenario 'User arrives at the case history of a null case' do
-    pending
     user = FactoryBot.create(:user)
     allow(case_without_history).to receive(:versions).and_return(nil)
     login_as(user, scope: :user)
