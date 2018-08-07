@@ -51,9 +51,12 @@ class AgenciesController < ApplicationController
   end
 
   def destroy
-    @agency = Agency.find(params[:id])
-    @agency.destroy
-    flash[:success] = "Agency was successfully destroyed. #{undo_link}"
+    if @agency
+      @agency.destroy
+      flash[:success] = "Agency removed!"
+    else
+      flash[:notice] = 'Not found'
+    end
     redirect_to agencies_url
   end
 
