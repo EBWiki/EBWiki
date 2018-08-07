@@ -64,7 +64,7 @@ class AgenciesController < ApplicationController
   private
 
   def undo_link
-    view_context.link_to('undo', versions_revert_path(@agency.versions.last), method: :post)
+    view_context.link_to('Undo please!', versions_revert_path(@agency.versions.last), method: :post)
   end
 
   # Use callbacks to share common setup or constraints between actions.

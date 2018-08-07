@@ -35,11 +35,11 @@ module CasesHelper
   end
 
   def make_undo_link
-    view_context.link_to 'Undo that please!', versions_revert_path(@case.versions.last), method: :post
+    view_context.link_to 'Undo please!', versions_revert_path(@case.versions.last), method: :post
   end
 
   def make_redo_link
-    link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
+    link = params[:redo] == 'true' ? 'Undo please!' : 'Redo that please!'
     view_context.link_to link, undo_path(@case_version.next, redo: !params[:redo]), method: :post
   end
 end
