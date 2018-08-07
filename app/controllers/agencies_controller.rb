@@ -32,45 +32,65 @@ class AgenciesController < ApplicationController
     @agency = Agency.new(agency_params.except(:jurisdiction))
     @agency.jurisdiction_type = params[:jurisdiction]
     
-      if @agency.save
-        
-        flash[:success] = "Agency was successfully created. #{make_undo_link}"
-        redirect_to @agency
-      else
-        render "new"
-      end
+    if @agency.save
+
+      flash[:success] = "Agency was successfully created. #{make_undo_link}"
+      redirect_to @agency
+    else
+      render "new"
+    end
     
   end
 
   # PATCH/PUT /agencies/1
   def update
 
-    # respond_to do |format|
-      if @agency.update(agency_params.except(:jurisdiction))
-        @agency.jurisdiction_type = params[:jurisdiction]
+
+    if @agency.update(agency_params.except(:jurisdiction))
+      @agency.jurisdiction_type = params[:jurisdiction]
       
-        flash[:success] = "Agency was successfully updated. #{make_undo_link}"
-        redirect_to @agency
-      else
-        render "edit"
-        
-      end
+      flash[:success] = "Agency was successfully updated. #{make_undo_link}"
+      redirect_to @agency
+
+    else
+      render "edit"
+
+    end
   end
 
   # DELETE /agencies/1
+  # def destroy
+  #  @agency.destroy
+
+  #  flash[:success] = "Agency was successfully destroyed. #{make_undo_link}"
+
+  #  redirect_to agencies_path
+
+  # end
+
   def destroy
     @agency.destroy
-    
-      flash[:success] = "Agency was successfully destroyed. #{make_undo_link}"
-      redirect_to agencies_url
-    
+    respond_to do |format|
+      format.html { redirect_to agencies_path, notice: 'Agency was successfully destroyed. #{make_undo_link}' }
+    end
   end
 
   #papertrail
 
-  def history
 
-  @agency_history = PaperTrail::Version.order('created_at DESC')
+  def history
+    @agency_history = @agency.try(:versions).order(created_at: :desc) unless
+    @agency.blank? || @agency.versions.blank?
+  end
+
+  # def history
+
+  #   @agency_history = PaperTrail::Version.order('created_at DESC')
+  # end
+
+  def history
+    @case_history = @this_case.try(:versions).order(created_at: :desc) unless
+    @this_case.blank? || @this_case.versions.blank?
   end
 
   
@@ -88,7 +108,7 @@ class AgenciesController < ApplicationController
       end
       flash[:success] = "Undid that! #{make_redo_link}"
     rescue
-      
+
       flash[:alert] = "Action failed"
     ensure
       redirect_to root_path
