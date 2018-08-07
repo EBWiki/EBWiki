@@ -73,10 +73,7 @@ class AgenciesController < ApplicationController
   @agency_history = PaperTrail::Version.order('created_at DESC')
   end
 
-  def history2
-    @agency_history = @this_agency.try(:versions).order(created_at: :desc) unless
-    @this_agency.blank? || @this_agency.versions.blank?
-  end
+  
 
   def undo
     @agency_version = PaperTrail::Version.find_by_id(params[:id])
@@ -100,33 +97,7 @@ class AgenciesController < ApplicationController
   end
 
 
-  # def undo
-  #   @post_version = PaperTrail::Version.find_by_id(params[:id])
-
-  #   begin
-  #     if @post_version.reify
-  #       @post_version.reify.save
-  #     else
-  #       # For undoing the create action
-  #       @post_version.item.destroy
-  #     end
-  #     flash[:success] = "Undid that!"
-  #   rescue
-  #     flash[:alert] = "Failed undoing the action..."
-  #   ensure
-  #     redirect_to root_path
-  #   end
-  # end
-
-
-  # def make_undo_link
-  #   view_context.link_to 'Undo that please!', undo_path(@this_agency.versions.last), method: :post
-  # end
-
-  # def make_redo_link
-  #   link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
-  #   view_context.link_to link, undo_path(@agency_version.next, redo: !params[:redo]), method: :post
-  # end
+  
 
   private
 
