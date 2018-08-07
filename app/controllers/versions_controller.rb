@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Agencies Controller
+# Versions Controller
 class VersionsController < ApplicationController
   # Undoing
   def revert
@@ -10,14 +10,16 @@ class VersionsController < ApplicationController
     else
       @version.item.destroy
     end
-    redirect_to :back, notice: 'Undid #{@version.event}. #{link}'
+    redirect_to :back, notice: "Undid #{@version.event}. #{link}"
   end
 
   private
 
-  #link to undo/redo
+  # link to undo/redo
   def link
     link_name = params[:redo] == 'true' ? 'Undo please!' : 'Redo please!'
-    link = view_context.link_to(link_name, versions_revert_path(@version.next, redo: !params[:redo]), method: :post)
+    view_context.link_to(
+      link_name, versions_revert_path(@version.next, redo: !params[:redo]), method: :post
+      )
   end
 end
