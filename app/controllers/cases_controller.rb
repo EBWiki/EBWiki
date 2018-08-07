@@ -108,7 +108,7 @@ class CasesController < ApplicationController
       end
       flash[:success] = "Undid that! #{make_redo_link}"
     rescue
-      flash[:alert] = 'Failed undoing the action...'
+      flash[:alert] = 'Failed undoing the action...case'
     ensure
       redirect_to root_path
     end

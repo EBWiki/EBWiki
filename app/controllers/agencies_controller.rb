@@ -81,6 +81,7 @@ class AgenciesController < ApplicationController
   def undo
     @agency_version = PaperTrail::Version.find_by_id(params[:id])
 
+
     begin
       if @agency_version.reify
         @agency_version.reify.save
@@ -90,10 +91,11 @@ class AgenciesController < ApplicationController
       end
       flash[:success] = "Undid that! #{make_redo_link}"
     rescue
-      byebug
-      flash[:alert] = 'Failed undoing the action...'
+      
+      flash[:alert] = "Action failed"
     ensure
       redirect_to root_path
+
     end
   end
 
@@ -129,12 +131,12 @@ class AgenciesController < ApplicationController
   private
 
   def make_undo_link
-    view_context.link_to 'Click here to undo', undo_path(@agency.versions.last), method: :post
+    view_context.link_to 'Click here to undo', agency_undo_path(@agency.versions.last), method: :post
   end
 
   def make_redo_link
-    params[:redo] == "true" ? link = "Click here to undo" : link = "Redo that plz!"
-    view_context.link_to link, undo_path(@post_version.next, redo: !params[:redo]), method: :post
+    params[:redo] == "true" ? link = "Click here to undo" : link = "Click here to redo!"
+    view_context.link_to link, agency_undo_path(@agency_version.next, redo: !params[:redo]), method: :post
   end
   # Use callbacks to share common setup or constraints between actions.
   def set_agency

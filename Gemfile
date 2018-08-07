@@ -63,7 +63,9 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 4.10'
   gem 'guard-rspec', '~> 4.7'
-  gem 'pry-byebug', '~> 3.6'
+
+  #uncommeent this 
+  # gem 'pry-byebug', '~> 3.6'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
@@ -167,3 +169,6 @@ gem 'httparty', '~> 0.16'
 gem 'rack-host-redirect', '~> 1.3'
 
 gem 'rubocop', '~> 0.58', require: false
+
+#remove this
+gem 'pry-byebug', '~> 3.6'
