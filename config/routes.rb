@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   post '/agencies/:id/undo', to: 'agencies#undo', as: :agency_undo
   resources :agencies
 
+  post '/versions/:id/revert', to: 'versions#revert', as: :versions_revert
+
   get '/cases/:id/history', to: 'cases#history', as: :cases_history
   get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
   post '/cases/:id/undo', to: 'cases#undo', as: :undo

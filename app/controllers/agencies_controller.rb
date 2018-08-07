@@ -30,20 +30,20 @@ class AgenciesController < ApplicationController
   def create
     @back_url = session[:previous_url]
     @agency = Agency.new(agency_params.except(:jurisdiction))
-    @agency.jurisdiction_type = params[:jurisdiction] 
+    @agency.jurisdiction_type = params[:jurisdiction]
     if @agency.save
-      flash[:success] = "Agency was successfully created. #{make_undo_link}"
+      flash[:success] = "Agency was successfully created. #{undo_link}"
       redirect_to @agency
     else
       render 'new'
-    end 
+    end
   end
 
   # PATCH/PUT /agencies/1
   def update
     if @agency.update(agency_params.except(:jurisdiction))
-      @agency.jurisdiction_type = params[:jurisdiction]     
-      flash[:success] = "Agency was successfully updated. #{make_undo_link}"
+      @agency.jurisdiction_type = params[:jurisdiction]
+      flash[:success] = "Agency was successfully updated. #{undo_link}"
       redirect_to @agency
     else
       render 'edit'
@@ -52,7 +52,7 @@ class AgenciesController < ApplicationController
 
   def destroy
     @agency.destroy
-    flash[:success] = "Agency was successfully destroyed. #{make_undo_link}"
+    flash[:success] = "Agency was successfully destroyed. #{undo_link}"
     redirect_to agencies_path
   end
 
@@ -61,35 +61,10 @@ class AgenciesController < ApplicationController
     @agency.blank? || @agency.versions.blank?
   end
 
-  def undo
-    @agency_version = PaperTrail::Version.find_by_id(params[:id])
-    begin
-      if @agency_version.reify
-        @agency_version.reify.save
-      else
-        @agency_version.item.destroy
-      end
-      flash[:success] = "Undid that! #{make_redo_link}"
-    rescue
-      flash[:alert] = 'Failed undoing the action'
-    ensure
-      redirect_to root_path
-    end
-  end
-
   private
 
-  def make_undo_link
-    view_context.link_to 'Click here to undo', 
-    agency_undo_path(@agency.versions.last), 
-    method: :post
-  end
-
-  def make_redo_link
-    params[:redo] == 'true' ? link = 'Click here to undo' : link = 'Click here to redo!'
-    view_context.link_to link, 
-    agency_undo_path(@agency_version.next, redo: !params[:redo]), 
-    method: :post
+  def undo_link
+    view_context.link_to('undo', versions_revert_path(@agency.versions.last), method: :post)
   end
 
   # Use callbacks to share common setup or constraints between actions.
