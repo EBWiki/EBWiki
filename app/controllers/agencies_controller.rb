@@ -51,6 +51,7 @@ class AgenciesController < ApplicationController
   end
 
   def destroy
+    @agency = Agency.friendly.find(params[:id])
     @agency.destroy
     flash[:success] = "Agency was successfully destroyed. #{undo_link}"
     redirect_to agencies_path
