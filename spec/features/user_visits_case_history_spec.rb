@@ -21,6 +21,6 @@ feature 'User visits case history page' do
     allow(case_without_history).to receive(:versions).and_return(nil)
     login_as(user, scope: :user)
     visit cases_history_path(case_without_history)
-    expect(page).to have_text("There is no history for this case.")
+    expect(page).to have_text("There is no history for this case." || "There is no history for this Agency.")
   end
 end

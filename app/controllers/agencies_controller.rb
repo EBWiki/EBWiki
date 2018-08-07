@@ -53,7 +53,7 @@ class AgenciesController < ApplicationController
   def destroy
     if @agency
       @agency.destroy
-      flash[:success] = "Agency removed!"
+      flash[:success] = "Agency removed! #{undo_link}"
     else
       flash[:notice] = 'Not found'
     end
@@ -68,7 +68,11 @@ class AgenciesController < ApplicationController
   private
 
   def undo_link
-    view_context.link_to('Undo please!', versions_revert_path(@agency.versions.last), method: :post)
+    begin
+      view_context.link_to('Undo please!', versions_revert_path(@agency.versions.last), method: :post)
+    rescue StandardError => e 
+      flash[:notice] = 'Error encountered'
+    end
   end
 
   # Use callbacks to share common setup or constraints between actions.
