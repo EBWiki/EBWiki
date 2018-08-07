@@ -14,7 +14,4 @@ module AgenciesHelper
     link_to('Edit', edit_agency_path(agency))
   end
 
-
-
-
 end
