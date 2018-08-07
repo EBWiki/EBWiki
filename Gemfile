@@ -86,14 +86,16 @@ group :test do
   gem 'faker', '~> 1.9'
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
-  gem 'shoulda-matchers', '~> 3.1'
-  gem 'webmock', '~> 3.4'
+  gem 'shoulda-matchers', '~> 3.1.1'
+  # Confirmation emails sent after commit
+  gem 'test_after_commit', '~> 1.1'
+  gem 'webmock'
 end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '4.0.3'
-gem 'rails_12factor', '~> 0.0.3', groups: %i[production staging]
+gem 'devise', '4.1.1'
+gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
 # for aws cloud storage
