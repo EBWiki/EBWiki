@@ -31,37 +31,111 @@ class AgenciesController < ApplicationController
     @back_url = session[:previous_url]
     @agency = Agency.new(agency_params.except(:jurisdiction))
     @agency.jurisdiction_type = params[:jurisdiction]
-    respond_to do |format|
+    
       if @agency.save
-        format.html { redirect_to @back_url, notice: 'Agency was successfully created.' }
+        
+        flash[:success] = "Agency was successfully created. #{make_undo_link}"
+        redirect_to @agency
       else
-        format.html { render :new }
+        render "new"
       end
-    end
+    
   end
 
   # PATCH/PUT /agencies/1
   def update
-    respond_to do |format|
+
+    # respond_to do |format|
       if @agency.update(agency_params.except(:jurisdiction))
         @agency.jurisdiction_type = params[:jurisdiction]
-        format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }
+      
+        flash[:success] = "Agency was successfully updated. #{make_undo_link}"
+        redirect_to @agency
       else
-        format.html { render :edit }
+        render "edit"
+        
       end
-    end
   end
 
   # DELETE /agencies/1
   def destroy
     @agency.destroy
-    respond_to do |format|
-      format.html { redirect_to agencies_url, notice: 'Agency was successfully destroyed.' }
+    
+      flash[:success] = "Agency was successfully destroyed. #{make_undo_link}"
+      redirect_to agencies_url
+    
+  end
+
+  #papertrail
+
+  def history
+
+  @agency_history = PaperTrail::Version.order('created_at DESC')
+  end
+
+  def history2
+    @agency_history = @this_agency.try(:versions).order(created_at: :desc) unless
+    @this_agency.blank? || @this_agency.versions.blank?
+  end
+
+  def undo
+    @agency_version = PaperTrail::Version.find_by_id(params[:id])
+
+    begin
+      if @agency_version.reify
+        @agency_version.reify.save
+      else
+        # For undoing the create action
+        @agency_version.item.destroy
+      end
+      flash[:success] = "Undid that! #{make_redo_link}"
+    rescue
+      byebug
+      flash[:alert] = 'Failed undoing the action...'
+    ensure
+      redirect_to root_path
     end
   end
 
+
+  # def undo
+  #   @post_version = PaperTrail::Version.find_by_id(params[:id])
+
+  #   begin
+  #     if @post_version.reify
+  #       @post_version.reify.save
+  #     else
+  #       # For undoing the create action
+  #       @post_version.item.destroy
+  #     end
+  #     flash[:success] = "Undid that!"
+  #   rescue
+  #     flash[:alert] = "Failed undoing the action..."
+  #   ensure
+  #     redirect_to root_path
+  #   end
+  # end
+
+
+  # def make_undo_link
+  #   view_context.link_to 'Undo that please!', undo_path(@this_agency.versions.last), method: :post
+  # end
+
+  # def make_redo_link
+  #   link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
+  #   view_context.link_to link, undo_path(@agency_version.next, redo: !params[:redo]), method: :post
+  # end
+
   private
 
+  def make_undo_link
+    view_context.link_to 'Click here to undo', undo_path(@agency.versions.last), method: :post
+  end
+
+  def make_redo_link
+    params[:redo] == "true" ? link = "Click here to undo" : link = "Redo that plz!"
+    view_context.link_to link, undo_path(@post_version.next, redo: !params[:redo]), method: :post
+  end
   # Use callbacks to share common setup or constraints between actions.
   def set_agency
     @agency = Agency.friendly.find(params[:id])

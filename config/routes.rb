@@ -16,6 +16,9 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
   resources :users, only: %i[show edit]
+
+  get '/agencies/history', to: 'agencies#history', as: :agencies_history
+  post '/agencies/:id/undo', to: 'agencies#undo', as: :agency_undo
   resources :agencies
 
   get '/cases/:id/history', to: 'cases#history', as: :cases_history
