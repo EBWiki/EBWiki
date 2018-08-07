@@ -1,0 +1,29 @@
+<div class="container">
+  <h1>History</h1>
+  <h4>
+    
+    Man at work
+  </h4>
+  <!-- <h4>Any time any information about a case is updated, a new version is created. This page tracks the changes made to the case over time including summaries to explain those changes where possible. As of now, the changes to the following attributes are tracked: address fields, content sections for overview, community_action and litigation as well as the article's title, date, photo and video links. <br><br>Properties not currently being tracked in case_history include changes to Subjects, Comments and Links. In the future we will capture those changes as well. In the meantime, editors should note that changes to these associations will not create a new version of the case.</h4> -->
+
+  <ul>
+
+    <% @agency_history.each do |version| %>
+      <li>
+        <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
+        Event ID: <%= version.id %><br/>
+        <b>Target:</b> <%= version.item_type %>
+        <small>(id: <%= version.item_id %>)</small>; <b>action</b> <%= version.event %>;<br/>
+        <div>
+          More info:
+          <pre><%= version.object %></pre>
+        </div>
+      </li>
+    <% end %>
+
+<div>
+  Changeset:
+  <pre><%= version.changeset %></pre>
+</div>
+  </ul>
+</div>

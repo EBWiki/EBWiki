@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.8
+-- Dumped from database version 9.6.5
 -- Dumped by pg_dump version 9.6.9
 
 SET statement_timeout = 0;
@@ -104,6 +104,38 @@ CREATE TABLE public.ahoy_events (
     properties text,
     "time" timestamp without time zone
 );
+
+
+--
+-- Name: article_documents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.article_documents (
+    id integer NOT NULL,
+    article_id integer,
+    document_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: article_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.article_documents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: article_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.article_documents_id_seq OWNED BY public.article_documents.id;
 
 
 --
@@ -287,6 +319,38 @@ CREATE SEQUENCE public.comments_id_seq
 --
 
 ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
+
+
+--
+-- Name: documents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.documents (
+    id integer NOT NULL,
+    title character varying,
+    attachment character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.documents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
 
 
 --
@@ -905,6 +969,13 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 
 
 --
+-- Name: article_documents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.article_documents ALTER COLUMN id SET DEFAULT nextval('public.article_documents_id_seq'::regclass);
+
+
+--
 -- Name: case_agencies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -937,6 +1008,13 @@ ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.c
 --
 
 ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
+
+
+--
+-- Name: documents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.documents_id_seq'::regclass);
 
 
 --
@@ -1068,6 +1146,14 @@ ALTER TABLE ONLY public.ahoy_events
 
 
 --
+-- Name: article_documents article_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.article_documents
+    ADD CONSTRAINT article_documents_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: case_agencies case_agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1105,6 +1191,14 @@ ALTER TABLE ONLY public.categories
 
 ALTER TABLE ONLY public.comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: documents documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.documents
+    ADD CONSTRAINT documents_pkey PRIMARY KEY (id);
 
 
 --
