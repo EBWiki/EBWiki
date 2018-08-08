@@ -141,7 +141,7 @@ class CasesController < ApplicationController
                                   :remove_avatar,
                                   :summary,
                                   :blurb,
-                                  links_attributes: %i[id url _destroy],
+                                  links_attributes: %i[id url title _destroy],
                                   comments_attributes: \
                                     I18n.t('cases_controller.comments_attributes').map(&:to_sym),
                                   subjects_attributes: \
