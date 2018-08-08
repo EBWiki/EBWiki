@@ -94,7 +94,7 @@ end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '4.1.1'
+gem 'devise', '4.2.1'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
