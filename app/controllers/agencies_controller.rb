@@ -68,11 +68,7 @@ class AgenciesController < ApplicationController
   private
 
   def undo_link
-    begin
-      view_context.link_to('Undo please!', versions_revert_path(@agency.versions.last), method: :post)
-    rescue StandardError => e 
-      flash[:notice] = 'Error encountered'
-    end
+    view_context.link_to('Undo please!', versions_revert_path(@agency.versions.last), method: :post)
   end
 
   # Use callbacks to share common setup or constraints between actions.

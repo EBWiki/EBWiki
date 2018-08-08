@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   }
   resources :users, only: %i[show edit]
 
-  get '/agencies/history', to: 'agencies#history', as: :agencies_history
+  get '/agencies/:id/history', to: 'agencies#history', as: :agencies_history
   post '/agencies/:id/undo', to: 'agencies#undo', as: :agency_undo
   resources :agencies
 

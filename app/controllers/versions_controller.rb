@@ -17,9 +17,13 @@ class VersionsController < ApplicationController
 
   # link to undo/redo
   def link
-    link_name = params[:redo] == 'true' ? 'Undo please!' : 'Redo please!'
-    view_context.link_to(
-      link_name, versions_revert_path(@version.next, redo: !params[:redo]), method: :post
-    )
+    begin
+      link_name = params[:redo] == 'true' ? 'Undo please!' : 'Redo please!'
+      view_context.link_to(
+        link_name, versions_revert_path(@version.next, redo: !params[:redo]), method: :post
+      )  
+    rescue Exception
+      flash[:notice] = 'Error'
+    end
   end
 end
