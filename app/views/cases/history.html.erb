@@ -4,35 +4,35 @@
 
   <ul>
     <% if @case_history %>
-      <% @case_history.each_with_index do |version, i| %>
-        <li>
-          <b>Date:</b> <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
-          <% if i == @case_history.size - 1 %>
-            <b>Added by:</b>
-          <% else %>
-            <b>Edited by:</b>
-          <% end %>
-            <% if version.whodunnit && version.whodunnit != 'Guest' %>
-              <% user = User.find_by_id(version.whodunnit) %>
-              <% if user %>
-                <%= user.try(:name) %>
-                (last seen at <%= l(user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>)
-              <% end %>
-            <% else %>
-              Guest
-            <% end %>
-          <div>
-            <b>Description of changes:</b>
-            <% if version.comment.present? %>
-              <pre><%= version.comment %></pre>
-            <% else %>
-              <pre>No edit summary is available for this version.</pre>
-            <% end %>
-          </div>
-        </li>
+    <% @case_history.each_with_index do |version, i| %>
+    <li>
+      <b>Date:</b> <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
+      <% if i == @case_history.size - 1 %>
+      <b>Added by:</b>
+      <% else %>
+      <b>Edited by:</b>
       <% end %>
+      <% if version.whodunnit && version.whodunnit != 'Guest' %>
+      <% user = User.find_by_id(version.whodunnit) %>
+      <% if user %>
+      <%= user.try(:name) %>
+      (last seen at <%= l(user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>)
+      <% end %>
+      <% else %>
+      Guest
+      <% end %>
+      <div>
+        <b>Description of changes:</b>
+        <% if version.comment.present? %>
+        <pre><%= version.comment %></pre>
+        <% else %>
+        <pre>No edit summary is available for this version.</pre>
+        <% end %>
+      </div>
+    </li>
+    <% end %>
     <% else %>
-      <h1>There is no history for this case.</h1>
+    <h1>There is no history for this case.</h1>
     <% end %>
   </ul>
 </div>

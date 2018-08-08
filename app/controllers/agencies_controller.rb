@@ -31,36 +31,47 @@ class AgenciesController < ApplicationController
     @back_url = session[:previous_url]
     @agency = Agency.new(agency_params.except(:jurisdiction))
     @agency.jurisdiction_type = params[:jurisdiction]
-    respond_to do |format|
-      if @agency.save
-        format.html { redirect_to @back_url, notice: 'Agency was successfully created.' }
-      else
-        format.html { render :new }
-      end
+    if @agency.save
+      flash[:success] = "Agency was successfully created. #{undo_link}"
+      redirect_to @agency
+    else
+      render 'new'
     end
   end
 
   # PATCH/PUT /agencies/1
   def update
-    respond_to do |format|
-      if @agency.update(agency_params.except(:jurisdiction))
-        @agency.jurisdiction_type = params[:jurisdiction]
-        format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }
-      else
-        format.html { render :edit }
-      end
+    if @agency.update(agency_params.except(:jurisdiction))
+      @agency.jurisdiction_type = params[:jurisdiction]
+      flash[:success] = "Agency was successfully updated. #{undo_link}"
+      redirect_to @agency
+    else
+      render 'edit'
     end
   end
 
-  # DELETE /agencies/1
   def destroy
-    @agency.destroy
-    respond_to do |format|
-      format.html { redirect_to agencies_url, notice: 'Agency was successfully destroyed.' }
+    if @agency
+      @agency.destroy
+      flash[:success] = "Agency removed! #{undo_link}"
+    else
+      flash[:notice] = 'Not found'
     end
+    redirect_to agencies_url
+  end
+
+  def history
+    @agency_history = @agency.try(:versions).order(created_at: :desc) unless
+    @agency.blank? || @agency.versions.blank?
   end
 
   private
+
+  def undo_link
+    view_context.link_to('Undo please!', versions_revert_path(@agency.versions.last), method: :post)
+  rescue StandardError
+    flash[:notice] = 'Error'
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_agency

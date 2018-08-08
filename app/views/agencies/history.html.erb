@@ -1,0 +1,27 @@
+<div class="container">
+  <h1>History</h1>
+  <h4>Any time any information about an agency is updated, a new version is created. This page tracks the changes made to the agency over time including summaries to explain those changes where possible.</h4>
+  <ul>
+    <% if @agency_history %>
+      <% @agency_history.each do |version, i| %>
+        <li>
+          <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
+          <% if i == @case_history.size - 1 %>
+            <b>Added by:</b>
+          <% else %>
+            <b>Edited by:</b>
+          <% end %>
+          Event ID: <%= version.id %><br/>
+          <b>Target:</b> <%= version.item_type %>
+          <small>(id: <%= version.item_id %>)</small>; <b>action</b> <%= version.event %>;<br/>
+          <div>
+            More info:
+            <pre><%= version.object %></pre>
+          </div>
+        </li>
+      <% end %>
+    <% else %>
+    <h1>There is no history for this Agency.</h1>
+  <% end %>
+  </ul>
+</div>
