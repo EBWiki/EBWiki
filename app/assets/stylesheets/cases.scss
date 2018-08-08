@@ -262,3 +262,13 @@
 #unfollow-button {
   font-size: small;
 }
+.btn-group {
+    position:relative;
+  float:left;
+}
+.btn-group.back{
+    left:70%;
+}
+.btn-group.submit{
+    left:69%;
+}
