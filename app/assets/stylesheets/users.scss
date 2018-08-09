@@ -40,3 +40,27 @@
 	width: 118px;
 	height: 120px;
 }
+
+.btn-group {
+    position:relative;
+	float:left;
+}
+
+.btn-group.back{
+    left:70%;
+}
+
+.btn-group.submit{
+    left:69%;
+}
+
+.btn-group.back .btn-primary{
+	background-color: #4D4D4D !important;
+	border-color: #4D4D4D !important;
+	color: white !important;
+}
+
+.btn-group.submit .btn-success{
+	background-color: #F65732 !important;
+	border-color: #F65732 !important;
+}

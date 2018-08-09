@@ -16,7 +16,7 @@ gem 'uglifier', '4.1'
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
 # Syntax
-gem 'enumerated_type'
+gem 'enumerated_type', '~> 0.5'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
@@ -53,16 +53,16 @@ gem 'ahoy_matey', '2.1'
 # use split gem for a/b testing
 gem 'split', '3.2', require: 'split/dashboard'
 
-gem 'rollbar', '~> 2.1'
+gem 'rollbar', '~> 2.16'
 
-gem 'simplecov'
+gem 'simplecov', '~> 0.16.1'
 
 # JSON renderer for Rails
 gem 'jb', '~> 0.5.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'factory_bot_rails'
-  gem 'guard-rspec'
+  gem 'factory_bot_rails', '~> 4.10'
+  gem 'guard-rspec', '~> 4.7'
   gem 'pry-byebug', '~> 3.6'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
@@ -73,26 +73,28 @@ group :development, :test do
 end
 
 group :development do
-  gem 'brakeman', require: false
+  gem 'brakeman', '~> 4.3', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 3.3'
 end
 
 group :test do
   # makes it easy to programatically simulate users' interactions
-  gem 'capybara', '~> 2.4.3'
-  gem 'cucumber-rails', require: false
+  gem 'capybara', '~> 3.4'
+  gem 'cucumber-rails', '~> 1.6', require: false
   gem 'database_cleaner', '~> 1.3.0'
-  gem 'faker'
-  gem 'launchy', '~> 2.4.2'
+  gem 'faker', '~> 1.9'
+  gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
+  # Confirmation emails sent after commit
+  gem 'test_after_commit', '~> 1.1'
   gem 'webmock'
 end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '3.5.10'
+gem 'devise', '4.4.3'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
@@ -101,7 +103,7 @@ gem 'fog'
 # photo resizing
 gem 'mini_magick'
 # file upload solution
-gem 'carrierwave'
+gem 'carrierwave', '~> 1.2'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
@@ -112,11 +114,11 @@ gem 'heroku_rails_deflate', groups: %i[production staging]
 gem 'rails_admin', '~> 1.3.0'
 
 gem 'geocoder'
-gem 'gmaps4rails'
+gem 'gmaps4rails', '~> 2.1'
 gem 'puma'
 
 # implement elasticsearch
-gem 'searchkick', '~> 3'
+gem 'searchkick', '~> 3.1'
 
 # manage nested forms
 gem 'cocoon'
@@ -125,24 +127,24 @@ gem 'cocoon'
 gem 'social-share-button'
 
 # select tag jquery plugin
-gem 'select2-rails'
+gem 'select2-rails', '~> 4.0'
 
 # follower functionality
 gem 'acts_as_follower'
 
 # messaging
-gem 'mailboxer', git: 'https://github.com/lacco/mailboxer.git'
+gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 
 # track changes in model objects
-gem 'paper_trail', '~> 4.2.0'
+gem 'paper_trail', '~> 5.0.0'
 
 # pretty urls
-gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
 gem 'kaminari'
 
-gem 'redis-namespace', '~> 1.5.0'
+gem 'redis-namespace', '~> 1.6'
 
 # access mailchimp api
 gem 'gibbon'
@@ -151,17 +153,17 @@ gem 'gibbon'
 gem 'metamagic'
 
 # Google News API help
-gem 'galerts'
+gem 'galerts', '~> 1.1'
 
-gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', '~> 4.2', git: 'https://github.com/galetahub/ckeditor.git'
 
 # New Relic performance monitor
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', '~> 5.2.0'
 
 # for HTTParty
-gem 'httparty'
+gem 'httparty', '~> 0.16'
 
 # for setting middleware redirects
-gem 'rack-host-redirect'
+gem 'rack-host-redirect', '~> 1.3'
 
-gem 'rubocop', require: false
+gem 'rubocop', '~> 0.58', require: false
