@@ -17,6 +17,8 @@ class MessagesController < ApplicationController
     redirect_to conversation_path(conversation)
   end
 
+  private
+
   def message_params
     params.require(:message).permit(:body, :subject, recipients: [])
   end
