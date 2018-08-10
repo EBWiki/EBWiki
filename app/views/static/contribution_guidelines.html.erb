@@ -18,11 +18,13 @@ Above all, it is important to understand that in contributing to EBWiki, users a
       <p>To add a new case:</p>
         <ol>
           <li>Login with an email and password</li><br>
-          <p><%= image_tag("login.png", :alt => "login") %><br>If you have not signed up, click sign up at the top right corner of the header <%= image_tag("signup.png", :alt => "sign up") %></p>
-          <li>Click the “Add a New Case" Button in the Top right corner of the header, fill the form and click "SIGN UP" Button to submit</li><br>
+          <p><%= image_tag("login.png", :alt => "login") %><br>If you have not signed up, click sign up at the top right corner of the header or the link below log in button, fill the form and click "SIGN UP" Button to submit 
+          <%= image_tag("signup.png", :alt => "sign up") %></p>
+          <li>Click the “Add a New Case" Button in the Top right corner of the header. </li><br>
           <%= image_tag("addcase.png", :alt => "Add case") %>
           <li>Enter content in the fields as indicated (Date, Victim Name and State)</li><br>
-          <%= image_tag("caseform.png", :alt => "Case Form") %>                                               <li>Click‘CREATE CASE' to submit</li>
+          <%= image_tag("newcase.png", :alt => "New case Form") %>
+          <%= image_tag("caseform.png", :alt => "Case Form") %> <br>                                          <li>Ensure all required fields are filled, click‘CREATE CASE' to submit </li>
           <%= image_tag("createcase.png", :alt => "Create Case") %>
         </ol>  
       </div>
@@ -50,7 +52,13 @@ Above all, it is important to understand that in contributing to EBWiki, users a
       </h4>
     </div>
     <div id="collapse3" class="panel-collapse collapse">
-      <div class="panel-body">content coming soon</div>
+      <div class="panel-body">
+        <p>To follow existing case, login and view an case. This will display page similar to editing a case. Click on the Follow button beneath the image to follow a case(when this button is clicked, it changes to “Unfollow”).<br>
+        To unfollow existing case, view an case from your profile and click Unfollow button.<br>
+        Once one follows a case, the case is displayed on the user profile as shown:
+        <%= image_tag("profile.png", :alt => "User profile") %>
+         </p>
+      </div>
     </div>
   </div>
 </div> 
