@@ -16,4 +16,8 @@ class MessagesController < ApplicationController
     flash[:success] = 'Message has been sent!'
     redirect_to conversation_path(conversation)
   end
+
+  def message_params
+    params.require(:message).permit(:body, :subject, recipients: [])
+  end
 end
