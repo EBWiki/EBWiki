@@ -99,7 +99,7 @@ gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
 # for aws cloud storage
-gem 'fog'
+gem 'fog', '2.0'
 # photo resizing
 gem 'mini_magick'
 # file upload solution
