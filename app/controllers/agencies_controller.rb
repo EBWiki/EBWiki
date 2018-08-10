@@ -61,19 +61,23 @@ class AgenciesController < ApplicationController
   end
 
   def undo
-    @agency_version = PaperTrail::Version.find_by_id(params[:id])
     begin
-      if @agency_version.reify
-        @agency_version.reify.save
-      else
-        # For undoing the create action
-        @agency_version.item.destroy
+      @agency_version = PaperTrail::Version.find_by_id(params[:id])
+      begin
+        if @agency_version.reify
+          @agency_version.reify.save
+        else
+          # For undoing the create action
+          @agency_version.item.destroy
+        end
+        flash[:success] = "Undid that! #{make_redo_link}"
+      rescue
+        flash[:alert] = 'Failed undoing the action...'
+      ensure
+        redirect_to root_path
       end
-      flash[:success] = "Undid that! #{make_redo_link}"
-    rescue
-      flash[:alert] = 'Failed undoing the action...'
-    ensure
-      redirect_to root_path
+    rescue Exception
+      flash[:alert] = "Couldn't find item id"
     end
   end
 
