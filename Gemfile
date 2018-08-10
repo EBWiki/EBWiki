@@ -94,12 +94,12 @@ end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '4.1.1'
+gem 'devise', '4.4.3'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
 # for aws cloud storage
-gem 'fog'
+gem 'fog', '2.0'
 # photo resizing
 gem 'mini_magick'
 # file upload solution
