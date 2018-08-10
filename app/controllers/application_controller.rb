@@ -2,6 +2,8 @@
 
 # application controller
 class ApplicationController < ActionController::Base
+  before_action :store_user_location!, if: :storable_location?
+
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
 
   if Rails.env.staging?
@@ -47,6 +49,14 @@ class ApplicationController < ActionController::Base
 
   def state_objects
     @state_objects ||= SortCollectionOrdinally.call(State.all)
+  end
+
+  def storable_location?
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+  end
+
+  def store_user_location!
+    store_location_for(:user, request.fullpath)
   end
 
   protected
