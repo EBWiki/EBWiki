@@ -1,3 +1,8 @@
+$color-orange: #F65732;
+$color-gray: #666666;
+$color-black: #000000;
+$color-dark-gray: #4D4D4D;
+
 .btn {
     padding: 14px 24px;
     border: 0 none;
@@ -91,6 +96,6 @@
 }
 
 .btn-warning {
-    background: #F65732 !important;
-    color: #ffffff !important;  
+    background: $color-orange !important;
+    color: white !important;  
 }
