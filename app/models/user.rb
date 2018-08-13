@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
   has_many :comments
   acts_as_follower
   acts_as_messageable
-  after_create :send_user_email
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
 
@@ -32,10 +31,6 @@ class User < ActiveRecord::Base
       :name,
       %i[name id]
     ]
-  end
-
-  def send_user_email
-    OnboardUser.call(self)
   end
 
   def mailchimp_status
