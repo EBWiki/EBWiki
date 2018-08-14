@@ -12,8 +12,8 @@
           <% else %>
             <b>Edited by:</b>
           <% end %>
-            <% if version.whodunnit && version.whodunnit != 'Guest' %>
-              <% user = User.find_by_id(version.whodunnit) %>
+            <% if version.paper_trail.whodunnit && version.paper_trail.whodunnit != 'Guest' %>
+              <% user = User.find_by_id(version.paper_trail.whodunnit) %>
               <% if user %>
                 <%= user.try(:name) %>
                 (last seen at <%= l(user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>)
