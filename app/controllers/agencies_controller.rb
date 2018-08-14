@@ -4,7 +4,7 @@
 class AgenciesController < ApplicationController
   before_action :set_agency, only: %i[show edit update destroy]
   before_action :authenticate_user!, except: %i[index show]
-  after_filter 'save_my_previous_url', only: %i[new show edit]
+  before_action 'save_my_previous_url', only: %i[new show edit]
 
   # GET /agencies
   def index
