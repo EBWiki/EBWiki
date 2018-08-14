@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.4.1'
+ruby '2.4.4'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
@@ -16,7 +16,7 @@ gem 'uglifier', '4.1'
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
 # Syntax
-gem 'enumerated_type'
+gem 'enumerated_type', '~> 0.5'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
@@ -75,7 +75,7 @@ end
 group :development do
   gem 'brakeman', '~> 4.3', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 3.3'
 end
 
 group :test do
@@ -86,18 +86,20 @@ group :test do
   gem 'faker', '~> 1.9'
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
-  gem 'shoulda-matchers', '~> 3.1'
-  gem 'webmock', '~> 3.4'
+  gem 'shoulda-matchers', '~> 3.1.1'
+  # Confirmation emails sent after commit
+  gem 'test_after_commit', '~> 1.1'
+  gem 'webmock'
 end
 
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '4.0.3'
-gem 'rails_12factor', '~> 0.0.3', groups: %i[production staging]
+gem 'devise', '4.4.3'
+gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
 # for aws cloud storage
-gem 'fog'
+gem 'fog', '2.0'
 # photo resizing
 gem 'mini_magick'
 # file upload solution
@@ -131,10 +133,10 @@ gem 'select2-rails', '~> 4.0'
 gem 'acts_as_follower'
 
 # messaging
-gem 'mailboxer', git: 'https://github.com/lacco/mailboxer.git'
+gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 
 # track changes in model objects
-gem 'paper_trail', '~> 4.2.0'
+gem 'paper_trail', '~> 5.2.3'
 
 # pretty urls
 gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+

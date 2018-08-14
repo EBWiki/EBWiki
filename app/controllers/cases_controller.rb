@@ -47,7 +47,7 @@ class CasesController < ApplicationController
     # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
-      flash[:success] = "Case was created! #{make_undo_link}"
+      flash[:success] = 'Case was created!' # {make_undo_link}
       redirect_to @this_case
     else
       @agencies = SortCollectionOrdinally.call(Agency.all)
@@ -75,7 +75,7 @@ class CasesController < ApplicationController
     @this_case.slug = nil
     @this_case.remove_avatar! if @this_case.remove_avatar?
     if @this_case.update_attributes(case_params)
-      flash[:success] = "Case was updated! #{make_undo_link}"
+      flash[:success] = 'Case was updated!' # {make_undo_link}
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
@@ -88,7 +88,7 @@ class CasesController < ApplicationController
   def destroy
     if @this_case
       @this_case.destroy
-      flash[:success] = "Case was removed! #{make_undo_link}"
+      flash[:success] = 'Case was removed!' # {make_undo_link}
       UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
     else
       flash[:notice] = I18n.t('cases_controller.case_not_found_message')
@@ -110,7 +110,7 @@ class CasesController < ApplicationController
         # For undoing the create action
         @case_version.item.destroy
       end
-      flash[:success] = "Undid that! #{make_redo_link}"
+      flash[:success] = 'Undid that!' # {make_redo_link}
     rescue
       flash[:alert] = 'Failed undoing the action...'
     ensure
