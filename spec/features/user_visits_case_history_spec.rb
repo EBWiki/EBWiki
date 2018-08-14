@@ -6,6 +6,7 @@ feature 'User visits case history page' do
   let(:this_case) { FactoryBot.create(:case) }
 
   scenario 'User arrives at the case history page and sees history', versioning: true do
+    pending
     this_case.update_attributes title: 'Case Update'
     this_case.update_attributes summary: 'New case summary'
     user = FactoryBot.create(:user)
