@@ -58,7 +58,7 @@ class OrganizationsController < ApplicationController
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || super
   end
-  
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
