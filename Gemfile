@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.4.1'
+ruby '2.4.4'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
@@ -16,7 +16,7 @@ gem 'uglifier', '4.1'
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
 # Syntax
-gem 'enumerated_type'
+gem 'enumerated_type', '~> 0.5'
 
 # Use gem pundit for authorization
 gem 'pundit', '~> 2.0'
@@ -77,93 +77,95 @@ end
 group :development do
   gem 'brakeman', '~> 4.3', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 3.3'
 end
 
 group :test do
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 3.4'
-  gem 'cucumber-rails', require: false
-  gem 'database_cleaner', '~> 1.7'
+  gem 'cucumber-rails', '~> 1.6', require: false
+  gem 'database_cleaner', '~> 1.3.0'
   gem 'faker', '~> 1.9'
-  gem 'launchy', '~> 2.4.2'
-  gem 'selenium-webdriver', '~> 3.13'
+  gem 'launchy', '~> 2.4'
+  gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
+  # Confirmation emails sent after commit
+  gem 'test_after_commit', '~> 1.1'
   gem 'webmock'
 end
 
-gem 'bootstrap-sass', '~> 3.3'
-gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
-gem 'devise', '4.0.3'
+gem 'bootstrap-sass'
+gem 'bootstrap3-datetimepicker-rails'
+gem 'devise', '4.4.3'
 gem 'rails_12factor', groups: %i[production staging]
-gem 'simple_form', '4.0'
+gem 'simple_form'
 
 # for aws cloud storage
-gem 'fog'
+gem 'fog', '2.0'
 # photo resizing
-gem 'mini_magick', '~> 4.8'
+gem 'mini_magick'
 # file upload solution
-gem 'carrierwave'
+gem 'carrierwave', '~> 1.2'
 # image optimizer that works with carrierwave
-gem 'carrierwave-imageoptimizer', '~> 1.4'
+gem 'carrierwave-imageoptimizer'
 
 # allow deflated assets with heroku
-gem 'heroku_rails_deflate', '~> 1.0', groups: %i[production staging]
+gem 'heroku_rails_deflate', groups: %i[production staging]
 
 # CMS panel for admin
-gem 'rails_admin', '~> 1.4'
+gem 'rails_admin', '~> 1.3.0'
 
-gem 'geocoder', '~> 1.5'
-gem 'gmaps4rails'
-gem 'puma', '~> 3.12'
+gem 'geocoder'
+gem 'gmaps4rails', '~> 2.1'
+gem 'puma'
 
 # implement elasticsearch
-gem 'searchkick', '~> 3'
+gem 'searchkick', '~> 3.1'
 
 # manage nested forms
-gem 'cocoon', '~> 1.2'
+gem 'cocoon'
 
 # add social share buttons
 gem 'social-share-button'
 
 # select tag jquery plugin
-gem 'select2-rails'
+gem 'select2-rails', '~> 4.0'
 
 # follower functionality
 gem 'acts_as_follower'
 
 # messaging
-gem 'mailboxer', git: 'https://github.com/lacco/mailboxer.git'
+gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 
 # track changes in model objects
-gem 'paper_trail', '~> 4.2.0'
+gem 'paper_trail', '~> 5.2.3'
 
 # pretty urls
-gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
-gem 'kaminari', '~> 1.1'
+gem 'kaminari'
 
-gem 'redis-namespace', '~> 1.5.0'
+gem 'redis-namespace', '~> 1.6'
 
 # access mailchimp api
-gem 'gibbon', '~> 3.2'
+gem 'gibbon'
 
 # metatag helper
 gem 'metamagic'
 
 # Google News API help
-gem 'galerts'
+gem 'galerts', '~> 1.1'
 
-gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', '~> 4.2', git: 'https://github.com/galetahub/ckeditor.git'
 
 # New Relic performance monitor
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', '~> 5.2.0'
 
 # for HTTParty
-gem 'httparty'
+gem 'httparty', '~> 0.16'
 
 # for setting middleware redirects
-gem 'rack-host-redirect'
+gem 'rack-host-redirect', '~> 1.3'
 
-gem 'rubocop', require: false
+gem 'rubocop', '~> 0.58', require: false
