@@ -53,10 +53,12 @@ RSpec.describe CasesController, type: :controller do
       it 'success' do
         expect(response).to be_success
       end
+
       it 'assigns it to @case' do
         expect(assigns(:this_case)).to eq this_case
       end
     end
+
     context 'when requested case does not exists' do
       it 'throws ActiveRecord::RecordNotFound' do
         expect { get :show, id: -1 }.to raise_exception ActiveRecord::RecordNotFound
