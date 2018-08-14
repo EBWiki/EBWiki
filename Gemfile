@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.4.1'
+ruby '2.4.4'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
@@ -101,7 +101,7 @@ gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
 # for aws cloud storage
-gem 'fog'
+gem 'fog', '2.0'
 # photo resizing
 gem 'mini_magick'
 # file upload solution
@@ -138,7 +138,7 @@ gem 'acts_as_follower'
 gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 
 # track changes in model objects
-gem 'paper_trail', '~> 5.0.0'
+gem 'paper_trail', '~> 5.2.3'
 
 # pretty urls
 gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
