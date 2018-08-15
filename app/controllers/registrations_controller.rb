@@ -6,6 +6,7 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     if gotcha_valid?
       super
+      OnboardUser.call(resource)
     else
       clean_up_passwords resource
       set_minimum_password_length
