@@ -20,6 +20,14 @@ class CommentsController < ApplicationController
     redirect_to @commentable, notice: 'Comment created!'
   end
 
+  def after_sign_up_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
   private
 
   def load_commentable
