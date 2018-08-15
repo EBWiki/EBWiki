@@ -12,7 +12,7 @@ describe User do
     scenario 'without sign in' do
       visit new_user_session_path
       click_button 'Log in'
-      expect(page).to have_content 'Invalid email or password'
+      expect(page).to have_content 'Invalid Email or password'
       visit rails_admin.dashboard_path
       expect(page).to have_content 'You are not an admin'
       visit split_dashboard_path
@@ -48,7 +48,7 @@ describe User do
     scenario 'without any credentials' do
       visit new_user_session_path
       click_button 'Log in'
-      expect(page).to have_content 'Invalid email or password'
+      expect(page).to have_content 'Invalid Email or password'
       visit rails_admin.dashboard_path
       expect(page).to have_content 'You are not an admin'
       visit split_dashboard_path
@@ -88,7 +88,7 @@ describe User do
       fill_in 'Email', with: admin.email
       fill_in 'Password', with: 'bad_password'
       click_button 'Log in'
-      expect(page).to have_content 'Invalid email or password'
+      expect(page).to have_content 'Invalid Email or password'
       visit rails_admin.dashboard_path
       expect(page).to have_content 'You are not an admin'
     end
@@ -101,7 +101,7 @@ describe User do
     scenario 'without any credentials' do
       visit new_user_session_path
       click_button 'Log in'
-      expect(page).to have_content 'Invalid email or password'
+      expect(page).to have_content 'Invalid Email or password'
       visit rails_admin.dashboard_path
       expect(page).to have_content 'You are not an admin'
     end

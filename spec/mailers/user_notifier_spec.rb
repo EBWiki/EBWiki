@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-PaperTrail.enabled = false
+Case.paper_trail.disable
 RSpec.describe UserNotifier, type: :mailer do
 
   before(:each) do
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
   end
-  
+
   after(:each) do
     ActionMailer::Base.deliveries.clear
   end
@@ -20,6 +20,13 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:state)      { FactoryBot.create(:state, id: 33) }
     let(:this_case) { user.cases.create! attributes_for(:case, state_id: state.id) }
     let(:mail) { UserNotifier.send_followers_email([follower], this_case) }
+
+    before do
+      allow(this_case).to receive_message_chain('versions.last.paper_trail.whodunnit').and_return(User.last)
+      allow(this_case).to receive_message_chain('versions.last.comment').and_return('Comment')
+      allow(Rails.logger).to receive(:info)
+      allow(User).to receive(:find).and_return(author)
+    end
 
     it 'renders the subject' do
       expect(mail.subject).to eql("The #{this_case.title} case has been updated on EBWiki.")
@@ -44,7 +51,7 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:follower) { FactoryBot.create(:user, name: 'A Follower', email: 'follower@ebwiki.org') }
     let(:this_case) { FactoryBot.create(:case) }
     let(:mail) { UserNotifier.send_deletion_email([follower], this_case) }
-     
+
     it 'renders the subject' do
       expect(mail.subject).to eql("The #{this_case.title} case has been removed from EBWiki")
     end
@@ -79,12 +86,12 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:admin) { FactoryBot.create(:user, name: 'A Follower', email: 'admin@ebwiki.org', admin: true) }
     let(:non_admin) { FactoryBot.create(:user, name: 'A Follower', email: 'non_admin@ebwiki.org', admin: false) }
     let!(:mail)     { AdminNotifier.new_user_email(admin) }
-    
+
     it 'renders the subject and receiver email' do
       expect(mail.subject).to eql("A new user #{admin.email} has been added.")
       expect(mail.to).to eq([admin.email])
     end
-    
+
     it 'renders the sender email' do
       expect(mail.from).to eql(['EndBiasWiki@gmail.com'])
     end
