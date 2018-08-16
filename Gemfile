@@ -136,7 +136,7 @@ gem 'acts_as_follower'
 gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 
 # track changes in model objects
-gem 'paper_trail', '~> 5.2.3'
+gem 'paper_trail', '~> 9.2.0'
 
 # pretty urls
 gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
