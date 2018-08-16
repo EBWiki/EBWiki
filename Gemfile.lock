@@ -758,6 +758,7 @@ DEPENDENCIES
   pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
   puma
+  pundit (~> 2.0)
   rack
   rack-cors (~> 1.0)
   rack-host-redirect (~> 1.3)
