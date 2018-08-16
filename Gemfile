@@ -19,7 +19,7 @@ gem 'bullet', '~> 5.7'
 gem 'enumerated_type', '~> 0.5'
 
 # Use gem pundit for authorization
-gem 'pundit', '~> 2.0'
+gem 'pundit', '~> 2.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
