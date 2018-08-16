@@ -6,7 +6,6 @@ RSpec.describe Case, type: :model do
   describe 'validity' do
     it { should validate_presence_of(:city).with_message('Please add a city.') }
     it { should validate_presence_of(:subjects).with_message('at least one subject is required') }
-    it { should validate_presence_of(:links).with_message('at least one link is required') }
 
     it do should validate_presence_of(:overview)
       .with_message('An overview of the case is required') 
