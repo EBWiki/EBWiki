@@ -41,6 +41,14 @@ class ConversationsController < ApplicationController
     redirect_to mailbox_inbox_path
   end
 
+  def after_sign_up_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
   private
 
   def conversation_params
