@@ -114,6 +114,14 @@ class CasesController < ApplicationController
     end
   end
 
+  def after_sign_up_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
   private
 
   def find_case
@@ -141,7 +149,7 @@ class CasesController < ApplicationController
                                   :remove_avatar,
                                   :summary,
                                   :blurb,
-                                  links_attributes: %i[id url _destroy],
+                                  links_attributes: %i[id url title _destroy],
                                   comments_attributes: \
                                     I18n.t('cases_controller.comments_attributes').map(&:to_sym),
                                   subjects_attributes: \
