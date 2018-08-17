@@ -28,8 +28,6 @@ gem 'turbolinks', '~> 5.1'
 gem 'jquery-turbolinks', '~> 2.1'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 1.0', group: :doc
-# add back rails observer class removed from rails 4
-gem 'rails-observers'
 
 gem 'momentjs-rails'
 gem 'rack'
