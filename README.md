@@ -28,7 +28,7 @@ Instructions on setting up a local development environment can be found [here](d
 
 In general, contributors will use the following languages, frameworks, and technologies:
 
-* [Ruby 2.4.4](https://www.ruby-lang.org/en/downloads/)
+* [Ruby 2.5.1](https://www.ruby-lang.org/en/downloads/)
 * [Rails 4.2.10](http://rubyonrails.org/)
 * [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 * [Postgres 9.4](https://www.postgresql.org/) or higher
