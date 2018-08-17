@@ -97,23 +97,6 @@ class CasesController < ApplicationController
     @this_case.blank? || @this_case.versions.blank?
   end
 
-  def undo
-    @case_version = PaperTrail::Version.find_by_id(params[:id])
-    begin
-      if @case_version.reify
-        @case_version.reify.save
-      else
-        # For undoing the create action
-        @case_version.item.destroy
-      end
-      flash[:success] = 'Undid that!' # {make_redo_link}
-    rescue
-      flash[:alert] = 'Failed undoing the action...'
-    ensure
-      redirect_to root_path
-    end
-  end
-
   def after_sign_up_path_for(resource)
     stored_location_for(resource) || super
   end

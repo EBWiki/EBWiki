@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   get '/cases/:id/history', to: 'cases#history', as: :cases_history
   get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
-  post '/cases/:id/undo', to: 'cases#undo', as: :undo
+  post 'versions/:id/revert', to: 'versions#revert', as: :revert
 
   match '/articles', to: redirect('/cases', status: 301), via: :all
   match '/articles/*action', to: redirect { |p, _| "/cases/#{p[:action]}" }, via: :all
