@@ -16,9 +16,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       OnboardUser.call(resource)
     else
       clean_up_passwords resource
-      set_minimum_password_length
+      @minimum_password_length = resource_class.password_length.min if devise_mapping.validatable?
       flash[:notice] = 'Invalid Captcha'
-      respond_with resource
+      redirect_to '/users/sign_up'
     end
   end
 
