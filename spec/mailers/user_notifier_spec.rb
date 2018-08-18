@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-Case.paper_trail.disable
+PaperTrail.request.disable_model(Case)
 RSpec.describe UserNotifier, type: :mailer do
-
   before(:each) do
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
@@ -16,8 +15,8 @@ RSpec.describe UserNotifier, type: :mailer do
   describe 'send_followers_email' do
     let(:follower) { FactoryBot.create(:user, name: 'A Follower', email: 'follower@ebwiki.org') }
     let(:author) { FactoryBot.create(:user, name: 'John', email: 'john@email.com') }
-    let(:user)      { FactoryBot.create(:user) }
-    let(:state)      { FactoryBot.create(:state, id: 33) }
+    let(:user) { FactoryBot.create(:user) }
+    let(:state) { FactoryBot.create(:state, id: 33) }
     let(:this_case) { user.cases.create! attributes_for(:case, state_id: state.id) }
     let(:mail) { UserNotifier.send_followers_email([follower], this_case) }
 
