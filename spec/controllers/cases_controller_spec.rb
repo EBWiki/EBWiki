@@ -95,6 +95,10 @@ RSpec.describe CasesController, type: :controller do
         expect(assigns(:this_case)).to be_a_kind_of(Case)
         expect(assigns(:this_case)).to be_persisted
       end
+      it "saves the blurb without any html tags" do
+      this_case = create(:case, blurb: "<a href='google.com'>Google</a>")
+      expect(this_case.blurb).to eq("Google")
+    end
     end
 
     context 'when invalid' do
