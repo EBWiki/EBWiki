@@ -489,6 +489,8 @@ GEM
       pry (~> 0.10)
     public_suffix (3.0.2)
     puma (3.12.0)
+    pundit (2.0.0)
+      activesupport (>= 3.0.0)
     rack (1.6.10)
     rack-cors (1.0.2)
     rack-host-redirect (1.3.0)
@@ -519,8 +521,6 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
-    rails-observers (0.1.5)
-      activemodel (>= 4.0)
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
@@ -578,10 +578,6 @@ GEM
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
       rspec-mocks (~> 3.8.0)
-    rspec-activemodel-mocks (1.0.3)
-      activemodel (>= 3.0)
-      activesupport (>= 3.0)
-      rspec-mocks (>= 2.99, < 4.0)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.1)
@@ -758,16 +754,15 @@ DEPENDENCIES
   pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
   puma
+  pundit (~> 2.0.0)
   rack
   rack-cors (~> 1.0)
   rack-host-redirect (~> 1.3)
   rails (~> 4.2.10)
-  rails-observers
   rails_12factor
   rails_admin (~> 1.3.0)
   redis-namespace (~> 1.6)
   rollbar (~> 2.16)
-  rspec-activemodel-mocks
   rspec-rails (~> 3.0)
   rubocop (~> 0.58)
   sass-rails (~> 5.0)
@@ -788,7 +783,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 2.4.4p296
+   ruby 2.5.1p57
 
 BUNDLED WITH
    1.16.3

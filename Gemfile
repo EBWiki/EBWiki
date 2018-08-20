@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.4.4'
+ruby '2.5.1'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
@@ -18,6 +18,8 @@ gem 'bullet', '~> 5.7'
 # Syntax
 gem 'enumerated_type', '~> 0.5'
 
+# Use gem pundit for authorization
+gem 'pundit', '~> 2.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -26,8 +28,6 @@ gem 'turbolinks', '~> 5.1'
 gem 'jquery-turbolinks', '~> 2.1'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 1.0', group: :doc
-# add back rails observer class removed from rails 4
-gem 'rails-observers'
 
 gem 'momentjs-rails'
 gem 'rack'
@@ -68,7 +68,6 @@ group :development, :test do
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
   gem 'pre-commit', '~> 0.38'
-  gem 'rspec-activemodel-mocks'
   gem 'rspec-rails', '~> 3.0'
 end
 
