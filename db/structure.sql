@@ -65,7 +65,7 @@ CREATE TABLE agencies (
     longitude double precision,
     latitude double precision,
     jurisdiction_type character varying DEFAULT 'none'::character varying,
-    jurisdiction jurisdiction
+    jurisdiction jurisdiction DEFAULT 'none'::jurisdiction
 );
 
 

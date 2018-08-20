@@ -1,5 +1,6 @@
 class ChangeColumnDefault < ActiveRecord::Migration
-  def change
-  	change_column_default :agencies, :jurisdiction_type, 'none'
+  def up
+  	change_column_default :agencies, :jurisdiction, 'none'
   end
+  
 end
