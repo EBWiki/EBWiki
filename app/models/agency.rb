@@ -14,7 +14,6 @@ class Agency < ActiveRecord::Base
     declare :university
     declare :private
   end
-
   has_paper_trail
   has_many :case_agencies
   has_many :cases, through: :case_agencies
@@ -23,7 +22,10 @@ class Agency < ActiveRecord::Base
   before_save do
     self.name = name.lstrip
   end
-
+  enum jurisdiction: {
+    none: 'none', local: 'local', state: 'state', federal: 'federal', university: 'university',
+    private: 'private'
+  }
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
     message: 'An agency with this name already exists and can be found. If you'\
@@ -33,8 +35,8 @@ class Agency < ActiveRecord::Base
     message: 'You must specify the state in which the agency is located.'
   }
   validates :jurisdiction_type, inclusion: {
-    in: %w(none state local federal university private)
-    }, allow_nil: true
+    in: %w[none state local federal university private]
+  }, allow_nil: true
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
@@ -68,5 +70,4 @@ class Agency < ActiveRecord::Base
   def retrieve_state
     State.where(id: state_id).pluck(:name).join
   end
-
 end
