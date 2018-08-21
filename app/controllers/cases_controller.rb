@@ -5,13 +5,6 @@
 class CasesController < ApplicationController
   before_action :find_case, only: %i[show edit update destroy history]
   before_action :authenticate_user!, except: %i[index show history followers]
-  #before_action :strip_tags, only: %i[create update]
-
-  
-  before_action only: %i[create update] do
-    @this_case = current_user.cases.build(case_params)
-    self.blurb = ActionController::Base.helpers.strip_tags(blurb)
-  end
 
   def new
     @this_case = current_user.cases.build
@@ -47,6 +40,7 @@ class CasesController < ApplicationController
 
   def create
     @this_case = current_user.cases.build(case_params)
+    @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
