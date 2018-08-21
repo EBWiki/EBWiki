@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# versions controller
 class VersionsController < ApplicationController
+  # rubocop:disable MethodLength
+
   def revert
     @case = PaperTrail::Version.find_by_id(params[:id])
     begin
@@ -17,4 +20,5 @@ class VersionsController < ApplicationController
       redirect_to :back
     end
   end
+  # rubocop:enable MethodLength
 end
