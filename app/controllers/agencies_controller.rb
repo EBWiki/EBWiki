@@ -33,7 +33,7 @@ class AgenciesController < ApplicationController
     @agency.jurisdiction_type = agency_params[:jurisdiction]
     respond_to do |format|
       if @agency.save
-        format.html { redirect_to @back_url, notice: 'Agency was successfully created.' }
+        format.html { redirect_to @back_url, notice: "Agency was successfully created. #{make_undo_link}" }
       else
         format.html { render :new }
       end
@@ -45,7 +45,7 @@ class AgenciesController < ApplicationController
     respond_to do |format|
       if @agency.update(agency_params.except(:jurisdiction))
         @agency.jurisdiction_type = agency_params[:jurisdiction]
-        format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }
+        format.html { redirect_to @agency, notice: "Agency was successfully updated.#{make_undo_link}" }
       else
         format.html { render :edit }
       end
@@ -56,7 +56,24 @@ class AgenciesController < ApplicationController
   def destroy
     @agency.destroy
     respond_to do |format|
-      format.html { redirect_to agencies_url, notice: 'Agency was successfully destroyed.' }
+      format.html { redirect_to agencies_url, notice: "Agency was successfully destroyed. #{make_undo_link}" }
+    end
+  end
+
+  def undo
+    @agency_version = PaperTrail::Version.find_by_id(params[:id])
+    begin
+      if @agency_version.reify
+        @agency_version.reify.save
+      else
+        # For undoing the create action
+        @agency_version.item.destroy
+      end
+      flash[:success] = "Undid that! #{make_redo_link}"
+    rescue
+      flash[:alert] = 'Failed undoing the agency action...'
+    ensure
+      redirect_to root_path
     end
   end
 
@@ -69,6 +86,19 @@ class AgenciesController < ApplicationController
   end
 
   private
+
+  def make_undo_link
+    begin
+      view_context.link_to 'Undo that please!', agency_undo_path(@agency.versions.last), method: :post
+    rescue Exception
+      flash[:alert] = 'Failed generating undo link'
+    end
+  end
+
+  def make_redo_link
+    link = params[:redo] == 'true' ? 'Undo that please!' : 'Redo that please!'
+    view_context.link_to link, agency_undo_path(@agency_version.next, redo: !params[:redo]), method: :post
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_agency
