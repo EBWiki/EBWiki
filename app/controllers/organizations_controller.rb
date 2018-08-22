@@ -44,7 +44,7 @@ class OrganizationsController < ApplicationController
   def destroy
     @organization.destroy
     flash[:success] = 'Organization was successfully destroyed.'
-    redirect_to organizations_url    
+    redirect_to organizations_url
   end
 
   def after_sign_up_path_for(resource)
