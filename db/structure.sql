@@ -64,7 +64,7 @@ CREATE TABLE agencies (
     slug character varying,
     longitude double precision,
     latitude double precision,
-    jurisdiction_type character varying DEFAULT 'none'::character varying,
+    jurisdiction_type character varying,
     jurisdiction jurisdiction DEFAULT 'none'::jurisdiction
 );
 
@@ -1513,4 +1513,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180716121459');
 INSERT INTO schema_migrations (version) VALUES ('20180729010543');
 
 INSERT INTO schema_migrations (version) VALUES ('20180816124609');
+
+INSERT INTO schema_migrations (version) VALUES ('20180823203142');
 
