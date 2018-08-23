@@ -3,11 +3,6 @@
 require 'rails_helper'
 PaperTrail.request.disable_model(Case)
 RSpec.describe UserNotifier, type: :mailer do
-  before(:each) do
-    ActionMailer::Base.perform_deliveries = true
-    ActionMailer::Base.deliveries = []
-  end
-
   after(:each) do
     ActionMailer::Base.deliveries.clear
   end
