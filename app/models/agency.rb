@@ -23,8 +23,8 @@ class Agency < ActiveRecord::Base
     self.name = name.lstrip
   end
   enum jurisdiction: {
-    unknown: 'unknown', local: 'local', state: 'state', federal: 'federal', university: 'university',
-    not_provided: 'not_provided'
+    unknown: 'unknown', local: 'local', state: 'state', federal: 'federal',
+    university: 'university', not_provided: 'not_provided'
   }
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
