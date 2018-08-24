@@ -47,10 +47,6 @@ class ApplicationController < ActionController::Base
     redirect_to '/'
   end
 
-  def state_objects
-    @state_objects ||= SortCollectionOrdinally.call(State.all)
-  end
-
   def storable_location?
     request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
   end
