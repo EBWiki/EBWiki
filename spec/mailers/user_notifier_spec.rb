@@ -21,7 +21,7 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:mail) { UserNotifier.send_followers_email([follower], this_case) }
 
     before do
-      allow(this_case).to receive_message_chain('versions.last.paper_trail.whodunnit').and_return(User.last)
+      allow(this_case).to receive_message_chain('versions.last.whodunnit').and_return(User.last)
       allow(this_case).to receive_message_chain('versions.last.comment').and_return('Comment')
       allow(Rails.logger).to receive(:info)
       allow(User).to receive(:find).and_return(author)
