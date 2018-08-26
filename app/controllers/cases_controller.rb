@@ -9,6 +9,7 @@ class CasesController < ApplicationController
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
+    @this_case.links.build
     @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
@@ -56,6 +57,7 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
+    @this_case.links.build
     @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
