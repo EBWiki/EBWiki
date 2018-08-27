@@ -65,7 +65,7 @@ class CasesController < ApplicationController
   end
 
   def followers
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find(params[:case_slug])
   end
 
   def update
@@ -100,7 +100,7 @@ class CasesController < ApplicationController
   end
 
   def undo
-    @case_version = PaperTrail::Version.find_by_id(params[:id])
+    @case_version = PaperTrail::Version.find_by_id(params[:case_slug])
     begin
       if @case_version.reify
         @case_version.reify.save
