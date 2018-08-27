@@ -6,7 +6,8 @@ source /vagrant/dev_provisions/environment.sh
 
 echo '#########################################################'
 echo '##  Provisioning the EBWiki Development Environment'
-echo '##  This will take some time :D'
+echo '##  This will take a while :D'
+echo "##  Start time: $(date)"
 echo '##  Provisioning the EBWiki Development Environment' > ${INSTALL_LOG}
 echo '#########################################################'
 
@@ -45,13 +46,12 @@ apt-get install -qq openjdk-8-jre 2>&1 >> ${INSTALL_LOG}
 echo '##  Installing Elasticsearch'
 cp /vagrant/dev_provisions/elastic-6.x.list /etc/apt/sources.list.d
 wget -q https://artifacts.elastic.co/GPG-KEY-elasticsearch -O /tmp/GPG-KEY-elasticsearch
-apt-key add /tmp/GPG-KEY-elasticsearch
-apt-get update
+(apt-key add /tmp/GPG-KEY-elasticsearch) 2>&1 >> ${INSTALL_LOG}
+apt-get update 2>&1 >> ${INSTALL_LOG}
 apt-get install -qq elasticsearch 2>&1 >> ${INSTALL_LOG}
 systemctl enable elasticsearch 2>&1 >> ${INSTALL_LOG}
 /etc/init.d/elasticsearch start 2>&1 >> ${INSTALL_LOG}
 until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:9200) -eq 200 ]; do sleep 1; done
-echo "elastic = $(curl -sX GET 'http://localhost:9200')"
 
 echo '##  Installing NGINX'
 apt-get install -qq nginx 2>&1 >> ${INSTALL_LOG}
@@ -78,12 +78,12 @@ apt-get install -qq \
     2>&1 >> ${INSTALL_LOG}
 
 curl -sSL https://rvm.io/mpapis.asc > /tmp/gpg.txt
-gpg --no-tty --quiet --import /tmp/gpg.txt 2>&1 >> ${INSTALL_LOG}
+gpg --no-tty --quiet --import /tmp/gpg.txt 2>/dev/null
 curl -sSL https://get.rvm.io > /tmp/get.rvm.sh
 chmod +x /tmp/get.rvm.sh
-/tmp/get.rvm.sh stable 2>&1 >> ${INSTALL_LOG}
+/tmp/get.rvm.sh --quiet-curl stable  2>&1 >> ${INSTALL_LOG}
 source /etc/profile.d/rvm.sh 2>&1 >> ${INSTALL_LOG}
-rvm install 2.5.1 2>&1 >> ${INSTALL_LOG}
+(rvm install 2.5.1) 2>&1 >> ${INSTALL_LOG}
 rvm use 2.5.1 --default 2>&1 >> ${INSTALL_LOG}
 
 echo '##  Installing Rails'
@@ -97,13 +97,12 @@ gem install fakes3 2>&1 >> ${INSTALL_LOG}
 fakes3 -r ${FAKE_S3_HOME} -p ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
 
 echo '##  Running bundle install'
-cd /vagrant && bundle install 2>&1 >> ${INSTALL_LOG}
+(cd /vagrant && bundle install) 2>&1 >> ${INSTALL_LOG}
 
 /etc/init.d/elasticsearch start
 until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:9200) -eq 200 ]; do sleep 1; done
-echo "elastic = $(curl -sX GET 'http://localhost:9200')"
+
 echo '##  Running rake commands...'
-DATABASE_URL=postgres://blackops:ebwiki@localhost/blackops_test
 for env in development;
 do
     for rake_step in create migrate seed;
@@ -115,8 +114,9 @@ done
 
 echo
 echo
+echo '#########################################################'
 echo '##  Installation complete!'
-echo
+echo "##  End time: $(date)"
 echo '#########################################################'
 echo '##  Environment Summary'
 echo '#########################################################'
@@ -128,7 +128,8 @@ echo "java    = $(java -version 2>&1 | grep version)"
 echo "psql    = $(psql --version)"
 echo "nginx   = $(nginx -v 2>&1)"
 echo "elastic = $(curl -sX GET 'http://localhost:9200')"
+echo '#########################################################'
 
 echo
 echo "##  Starting EBWiki on ${PROJECT_URL}"
-rails server 2>&1 >> /tmp/ebwiki.log &
+cd /vagrant && rails server 2>&1 >> /tmp/ebwiki.log &
