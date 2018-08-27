@@ -86,4 +86,15 @@ describe SortCollectionOrdinally do
                                      agency_two])
     end
   end
+  
+  context "when genders are used" do
+    it 'sorts the genders properly' do
+      male = FactoryBot.create(:gender, sex: 'male')
+      female = FactoryBot.create(:gender, sex: 'female')
+      trans_male = FactoryBot.create(:gender, sex: 'trans_male')
+      
+      sorted_genders = SortCollectionOrdinally.call(Gender.all)
+      expect(sorted_genders).to eq([female, male, trans_male])
+    end
+  end
 end
