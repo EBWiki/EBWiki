@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class EventStatus < ActiveRecord::Base
+class EventStatus < ApplicationRecord
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Encapsulates the many genders that are affected by this
-class Gender < ActiveRecord::Base
+class Gender < ApplicationRecord
   has_many :subjects
   alias_attribute :name, :sex
 end

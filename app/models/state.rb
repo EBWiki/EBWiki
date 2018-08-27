@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Model representing USA state
-class State < ActiveRecord::Base
+class State < ApplicationRecord
   has_many :cases
   has_many :agencies
   searchkick

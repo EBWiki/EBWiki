@@ -2,7 +2,7 @@
 
 # This is the main model of the application. Each death is a case.
 # TODO: Lots & lots of refactoring
-class Case < ActiveRecord::Base
+class Case < ApplicationRecord
   # TODO: Clean up relationship section
   belongs_to :user
   belongs_to :category

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # The subject (AKA victim) of the case
-class Subject < ActiveRecord::Base
+class Subject < ApplicationRecord
   belongs_to :case
   belongs_to :gender
   belongs_to :ethnicity
