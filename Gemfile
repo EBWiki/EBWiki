@@ -86,8 +86,6 @@ group :test do
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
-  # Confirmation emails sent after commit
-  gem 'test_after_commit', '~> 1.1'
   gem 'webmock'
 end
 
@@ -132,7 +130,7 @@ gem 'select2-rails', '~> 4.0'
 gem 'acts_as_follower'
 
 # messaging
-gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
+gem 'mailboxer', '~> 0.15'
 
 # track changes in model objects
 gem 'paper_trail', '~> 9.2.0'
