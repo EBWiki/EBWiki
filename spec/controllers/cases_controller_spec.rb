@@ -209,14 +209,14 @@ RSpec.describe CasesController, type: :controller do
 
       it 'shows the history page' do
         this_case.update_attributes title: 'Updated Title'
-        get :history, id: this_case.id
+        get :history, case_slug: this_case.slug
         expect(response).to render_template(:history)
       end
 
     end
     context 'when requested case does not exists' do
       it 'shows the history page with no history' do
-        get :history, id: -1
+        get :history, case_slug: -1
         expect(response).to render_template(:history)
       end
     end
@@ -240,14 +240,14 @@ RSpec.describe CasesController, type: :controller do
 
       it 'shows the history page' do
         this_case.update_attributes title: 'Updated Title'
-        get :history, id: this_case.id
+        get :history, case_slug: this_case.slug
         expect(response).to render_template(:history)
       end
 
     end
     context 'when requested case does not exists' do
       it 'shows the history page with no history' do
-        get :history, id: -1
+        get :history, case_slug: -1
         expect(response).to render_template(:history)
       end
     end
