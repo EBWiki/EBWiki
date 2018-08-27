@@ -130,5 +130,5 @@ echo "nginx   = $(nginx -v 2>&1)"
 echo "elastic = $(curl -sX GET 'http://localhost:9200')"
 
 echo
-echo '##  Starting EBWiki ....'
+echo "##  Starting EBWiki on ${PROJECT_URL}"
 rails server 2>&1 >> /tmp/ebwiki.log &
