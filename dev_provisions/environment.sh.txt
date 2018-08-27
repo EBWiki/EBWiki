@@ -1,3 +1,4 @@
+export PROJECT_URL='http://192.168.68.68'
 export INSTALL_LOG='/tmp/install.log'
 export DEBIAN_FRONTEND=noninteractive
 export BLACKOPS_DATABASE_PASSWORD='ebwiki'
