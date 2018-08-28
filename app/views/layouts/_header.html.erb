@@ -16,7 +16,7 @@
     <%= form_tag cases_path, method: :get do %>
         <div class="navbar-form navbar-left">
           <%= select_tag(:state_id,
-            options_from_collection_for_select(@state_objects, :id, :name),
+            #options_from_collection_for_select(@state_objects, :id, :name),
             include_blank: "Filter By State",
             class: 'form-control select2') %>
         </div>

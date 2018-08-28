@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_paper_trail_whodunnit
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :state_objects
   before_action :set_paper_trail_whodunnit
 
   helper_method :mailbox, :conversation
@@ -45,10 +44,6 @@ class ApplicationController < ActionController::Base
     Rails.logger.warn warning_message
     Rollbar.warning warning_message
     redirect_to '/'
-  end
-
-  def state_objects
-    @state_objects ||= SortCollectionOrdinally.call(State.all)
   end
 
   def storable_location?
