@@ -22,33 +22,29 @@ class OrganizationsController < ApplicationController
   # POST /organizations
   def create
     @organization = Organization.new(organization_params)
-
-    respond_to do |format|
-      if @organization.save
-        format.html { redirect_to @organization, notice: 'Organization was successfully created.' }
-      else
-        format.html { render :new }
-      end
+    if @organization.save
+      flash[:success] = 'Organization was successfully created.'
+      redirect_to @organization
+    else
+      render 'new'
     end
   end
 
   # PATCH/PUT /organizations/1
   def update
-    respond_to do |format|
-      if @organization.update(organization_params)
-        format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
-      else
-        format.html { render :edit }
-      end
+    if @organization.update(organization_params)
+      flash[:success] = 'Organization was successfully updated.'
+      redirect_to @organization
+    else
+      render 'edit'
     end
   end
 
   # DELETE /organizations/1
   def destroy
     @organization.destroy
-    respond_to do |format|
-      format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
-    end
+    flash[:success] = 'Organization was successfully destroyed.'
+    redirect_to organizations_url
   end
 
   def after_sign_up_path_for(resource)
