@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
   post '/cases/:id/undo', to: 'cases#undo', as: :undo
 
+  get '/articles', to: redirect('/cases', status: 301)
   namespace 'articles' do
     %w[index edit show destroy update history new create followers undo].each do |action|
       get action, action: action
