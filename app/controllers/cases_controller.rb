@@ -9,6 +9,7 @@ class CasesController < ApplicationController
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
+    @this_case.links.build
     @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
@@ -26,13 +27,11 @@ class CasesController < ApplicationController
 
   def show
     @this_case = Case.friendly.find(params[:id])
-    @commentable = @this_case
-    @comments = @commentable.comments
+    @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
     # Check to make sure all required elements are here
-    unless @this_case.present? && @commentable.present? && @comment.present? &&
-           @subjects.present?
+    unless @this_case.present? && @comment.present? && @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
@@ -57,6 +56,7 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
+    @this_case.links.build
     @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)

@@ -51,6 +51,14 @@ class ConversationsController < ApplicationController
 
   private
 
+  def mailbox
+    @mailbox ||= current_user.mailbox
+  end
+
+  def conversation
+    @conversation ||= mailbox.conversations.find(params[:id])
+  end
+
   def conversation_params
     params.require(:conversation).permit(:subject, :body, recipients: [])
   end
