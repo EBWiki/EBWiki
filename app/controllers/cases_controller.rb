@@ -71,6 +71,7 @@ class CasesController < ApplicationController
     @this_case = Case.friendly.find(params[:id])
     @this_case.slug = nil
     @this_case.remove_avatar! if @this_case.remove_avatar?
+    @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!' # {make_undo_link}
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
