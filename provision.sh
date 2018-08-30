@@ -14,7 +14,6 @@ echo '#########################################################'
 env >> ${INSTALL_LOG}
 cp /vagrant/dev_provisions/database.yml /vagrant/config/database.yml
 
-
 echo '##  Updating the apt cache'
 apt-get update 2>&1 >> ${INSTALL_LOG}
 
@@ -36,6 +35,11 @@ apt-get install -qq \
     sqlite3 \
     zlib1g-dev \
     2>&1 >> ${INSTALL_LOG}
+
+echo '## Installing Redis'
+apt-get install -qq redis-server 2>&1 >> ${INSTALL_LOG}
+cp /vagrant/dev_provisions/redis.conf /etc/redis/redis.conf
+systemctl restart redis.service
 
 echo '##  Installing Node.js'
 apt-get install -qq nodejs npm 2>&1 >> ${INSTALL_LOG}
@@ -127,9 +131,12 @@ echo "npm     = $(npm -v)"
 echo "java    = $(java -version 2>&1 | grep version)"
 echo "psql    = $(psql --version)"
 echo "nginx   = $(nginx -v 2>&1)"
+echo "redis   = $(redis-server --version | awk '{print $3}')"
 echo "elastic = $(curl -sX GET 'http://localhost:9200')"
 echo '#########################################################'
 
 echo
 echo "##  Starting EBWiki on ${PROJECT_URL}"
+echo '##  Run 'vagrant ssh' to connect to the VM'
+echo '##  Run 'vagrant status' for tips on working with the VM'
 cd /vagrant && rails server 2>&1 >> /tmp/ebwiki.log &
