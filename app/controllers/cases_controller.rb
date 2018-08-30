@@ -3,7 +3,6 @@
 # Cases controller. Containing really complex index method that needs some
 # Refactoring love.
 class CasesController < ApplicationController
-  before_action :find_case, only: %i[show edit update destroy history]
   before_action :authenticate_user!, except: %i[index show history followers]
 
   def new
@@ -84,6 +83,7 @@ class CasesController < ApplicationController
   end
 
   def destroy
+    @this_case = Case.friendly.find_by_id(params[:id])
     if @this_case
       @this_case.destroy
       flash[:success] = 'Case was removed!' # {make_undo_link}
@@ -95,12 +95,13 @@ class CasesController < ApplicationController
   end
 
   def history
+    @this_case = Case.friendly.find_by_id(params[:id])
     @case_history = @this_case.try(:versions).order(created_at: :desc) unless
     @this_case.blank? || @this_case.versions.blank?
   end
 
   def undo
-    @case_version = PaperTrail::Version.find_by_id(params[:id])
+    @case_version = PaperTrail::Version.find(params[:id])
     begin
       if @case_version.reify
         @case_version.reify.save
@@ -127,7 +128,7 @@ class CasesController < ApplicationController
   private
 
   def find_case
-    @this_case = Case.friendly.find_by_id(params[:id])
+    Case.friendly.find(params[:id])
   end
 
   def case_params
