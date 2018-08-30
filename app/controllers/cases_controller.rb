@@ -95,8 +95,8 @@ class CasesController < ApplicationController
   end
 
   def history
-    @case_history = @this_case.try(:versions).order(created_at: :desc) unless
-    @this_case.blank? || @this_case.versions.blank?
+    @case_history = @this_case.versions.order(created_at: :desc) unless
+      check_case_presence
   end
 
   def undo
@@ -128,6 +128,11 @@ class CasesController < ApplicationController
 
   def find_case
     @this_case = Case.friendly.find_by_id(params[:id])
+  end
+
+  def check_case_presence
+    NullCase.new if
+      @this_case.blank? || @this_case.versions.blank?
   end
 
   def case_params
