@@ -67,10 +67,6 @@ class Case < ApplicationRecord
     art.avatar.changed?
   end
 
-  before_save do
-    self.blurb = ActionController::Base.helpers.strip_tags(blurb)
-  end
-
   # Scopes
   scope :by_state, ->(state_id) { where(state_id: state_id) }
   scope :created_this_month, -> {

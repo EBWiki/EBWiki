@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :ethnicity do
-    title 'Black'
+    title { 'Black' }
   end
 end
