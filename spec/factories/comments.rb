@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :comment do
-    content 'MyText'
+    content { 'MyText' }
     commentable_id 1
-    commentable_type 'MyString'
+    commentable_type { 'MyString' }
   end
 end
