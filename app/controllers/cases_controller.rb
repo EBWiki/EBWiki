@@ -83,19 +83,22 @@ class CasesController < ApplicationController
   end
 
   def destroy
-    @this_case = Case.friendly.find_by_id(params[:id])
-    if @this_case
-      @this_case.destroy
-      flash[:success] = 'Case was removed!' # {make_undo_link}
-      UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
-    else
+    begin
+      @this_case = Case.friendly.find(params[:id])
+      if @this_case
+        @this_case.destroy
+        flash[:success] = 'Case was removed!' # {make_undo_link}
+        UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
+      end
+    rescue ActiveRecord::RecordNotFound
       flash[:notice] = I18n.t('cases_controller.case_not_found_message')
     end
     redirect_to root_path
   end
 
   def history
-    @this_case = Case.friendly.find_by_id(params[:id])
+    @this_case = Case.friendly.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
     @case_history = @this_case.try(:versions).order(created_at: :desc) unless
     @this_case.blank? || @this_case.versions.blank?
   end
@@ -126,10 +129,6 @@ class CasesController < ApplicationController
   end
 
   private
-
-  def find_case
-    Case.friendly.find(params[:id])
-  end
 
   def case_params
     params.require(:case).permit(
