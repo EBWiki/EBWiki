@@ -9,6 +9,7 @@ class CasesController < ApplicationController
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
+    @this_case.links.build
     @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
@@ -26,13 +27,11 @@ class CasesController < ApplicationController
 
   def show
     @this_case = Case.friendly.find(params[:id])
-    @commentable = @this_case
-    @comments = @commentable.comments
+    @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
     # Check to make sure all required elements are here
-    unless @this_case.present? && @commentable.present? && @comment.present? &&
-           @subjects.present?
+    unless @this_case.present? && @comment.present? && @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
       # If an old id or a numeric id was used to find the record, then
@@ -44,6 +43,7 @@ class CasesController < ApplicationController
 
   def create
     @this_case = current_user.cases.build(case_params)
+    @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
@@ -60,6 +60,7 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.update_attribute(:summary, nil)
+    @this_case.links.build
     @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
@@ -74,6 +75,7 @@ class CasesController < ApplicationController
     @this_case = Case.friendly.find(params[:id])
     @this_case.slug = nil
     @this_case.remove_avatar! if @this_case.remove_avatar?
+    @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!' # {make_undo_link}
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
@@ -118,6 +120,14 @@ class CasesController < ApplicationController
     end
   end
 
+  def after_sign_up_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
   private
 
   def find_case
@@ -145,7 +155,7 @@ class CasesController < ApplicationController
                                   :remove_avatar,
                                   :summary,
                                   :blurb,
-                                  links_attributes: %i[id url _destroy],
+                                  links_attributes: %i[id url title _destroy],
                                   comments_attributes: \
                                     I18n.t('cases_controller.comments_attributes').map(&:to_sym),
                                   subjects_attributes: \

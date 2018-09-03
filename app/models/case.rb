@@ -42,9 +42,6 @@ class Case < ActiveRecord::Base
   validates :subjects, presence: {
     message: 'at least one subject is required'
   }
-  validates :links, presence: {
-    message: 'at least one link is required'
-  }
   validates :summary, presence: {
     message: 'Please use the last field at the bottom of this form ' \
       'to summarize your edits to the case.'
@@ -68,10 +65,6 @@ class Case < ActiveRecord::Base
 
   before_save :set_default_avatar_url if proc do |art|
     art.avatar.changed?
-  end
-
-  before_save do
-    self.blurb = ActionController::Base.helpers.strip_tags(blurb)
   end
 
   # Scopes

@@ -75,11 +75,10 @@ RSpec.describe CasesController, type: :controller do
     ).and_return('/cases/1')
   end
   let(:cases) { FactoryBot.create_list(:case, 20) }
-  
   describe '#create' do
     login_user
     context 'when valid' do
-      let(:case_attrs) { FactoryBot.attributes_for(:case, state_id: 33) }
+      let(:case_attrs) { FactoryBot.attributes_for(:case, state_id: 33, blurb: "<a href='google.com'>Google</a>") }
       let(:subject_attrs) { FactoryBot.attributes_for(:subject) }
       let(:link_attrs) { FactoryBot.attributes_for(:link) }
       it 'saves the new case & redirects to show the case created' do
@@ -87,6 +86,7 @@ RSpec.describe CasesController, type: :controller do
         case_attrs['subjects_attributes'] = { '0' => subject_attrs }
         case_attrs['links_attributes'] = { '0' => link_attrs }
         post :create, 'case': case_attrs
+        expect(Case.last.blurb).to eq('Google')
         expect(response).to redirect_to(case_path(Case.last))
       end
       it 'saves and assigns new case to @case' do
@@ -151,11 +151,9 @@ RSpec.describe CasesController, type: :controller do
       it 'redirects to the edit page' do
         expect(response).to render_template(:edit)
       end
-      
-       it 'has a non-empty set of categories' do
+      it 'has a non-empty set of categories' do
         expect(assigns['categories']).to_not be_nil
       end
-      
       it 'has a non-empty set of states' do
         expect(assigns['states']).to_not be_nil
       end
@@ -194,7 +192,6 @@ RSpec.describe CasesController, type: :controller do
   end
 end
 
-
 RSpec.describe CasesController, type: :controller do
   # Stubbing out make_undo_link for all specs
   before do
@@ -203,18 +200,15 @@ RSpec.describe CasesController, type: :controller do
     ).and_return('/cases/1')
   end
 
-
   describe '#history', versioning: true do
     login_user
     let(:this_case) { FactoryBot.create(:case) }
     context 'when requested case exists' do
-
       it 'shows the history page' do
         this_case.update_attributes title: 'Updated Title'
         get :history, id: this_case.id
         expect(response).to render_template(:history)
       end
-
     end
     context 'when requested case does not exists' do
       it 'shows the history page with no history' do
@@ -225,7 +219,6 @@ RSpec.describe CasesController, type: :controller do
   end
 end
 
-
 RSpec.describe CasesController, type: :controller do
   # Stubbing out make_undo_link for all specs
   before do
@@ -234,18 +227,15 @@ RSpec.describe CasesController, type: :controller do
     ).and_return('/cases/1')
   end
 
-
   describe '#history', versioning: true do
     login_user
     let(:this_case) { FactoryBot.create(:case) }
     context 'when requested case exists' do
-
       it 'shows the history page' do
         this_case.update_attributes title: 'Updated Title'
         get :history, id: this_case.id
         expect(response).to render_template(:history)
       end
-
     end
     context 'when requested case does not exists' do
       it 'shows the history page with no history' do

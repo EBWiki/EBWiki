@@ -41,7 +41,23 @@ class ConversationsController < ApplicationController
     redirect_to mailbox_inbox_path
   end
 
+  def after_sign_up_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
   private
+
+  def mailbox
+    @mailbox ||= current_user.mailbox
+  end
+
+  def conversation
+    @conversation ||= mailbox.conversations.find(params[:id])
+  end
 
   def conversation_params
     params.require(:conversation).permit(:subject, :body, recipients: [])

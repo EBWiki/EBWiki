@@ -2,6 +2,11 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$color-orange: #F65732;
+$color-gray: #666666;
+$color-black: #000000;
+$color-dark-gray: #4D4D4D;
+
 .background-links{
   font-size: 1em;
   color: #fff;
@@ -271,4 +276,9 @@
 }
 .btn-group.submit{
     left:69%;
+}
+
+.btn-warning {
+    background: $color-orange !important;
+    color: white !important;  
 }
