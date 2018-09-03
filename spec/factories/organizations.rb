@@ -2,10 +2,10 @@
 
 FactoryBot.define do
   factory :organization do
-    name 'MyString'
-    description 'MyText'
-    website 'MyString'
-    telephone 'MyString'
-    avatar 'MyString'
+    name Faker::Name.name
+    description { 'This is just for testing' }
+    website { 'www.test.com' }
+    telephone { '123456789' }
+    avatar { 'MyString' }
   end
 end

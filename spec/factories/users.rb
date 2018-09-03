@@ -3,7 +3,7 @@
 # This will guess the User class
 FactoryBot.define do
   factory :user do
-    name 'johnny'
+    name Faker::Name.name
     sequence :email do |n|
       "person#{n}@example.com"
     end
