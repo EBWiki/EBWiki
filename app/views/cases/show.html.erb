@@ -54,10 +54,10 @@
             <% if current_user %>
               <% if current_user.following?(@this_case) %>
               <% else %>
-                <%= link_to 'Follow This Case', case_follows_path(@this_case), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:content => "Click here to receive an email whenever this case is updated."} %>
+                <%= link_to 'Follow This Case', case_follows_path(@this_case), :method => :post, class: "btn-lg btn-primary text-center follow-btn-large", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:content => "Click here to receive an email whenever this case is updated."} %>
               <% end %>
             <% else %>
-              <%= link_to 'Follow This Case', case_follows_path(@this_case), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
+              <%= link_to 'Follow This Case', case_follows_path(@this_case), :method => :post, class: "btn-lg btn-primary text-center follow-btn-large", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
             <% end %>
           </div>
       </h1>
