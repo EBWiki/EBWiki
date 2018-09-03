@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :event_status do
-    name { 'test' }
+    name { Faker::Name.name }
   end
 end
