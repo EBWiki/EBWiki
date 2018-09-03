@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   get '/cases/:id/history', to: 'cases#history', as: :cases_history
   get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
 
-
   get '/articles', to: redirect('/cases', status: 301)
   namespace 'articles' do
     %w[index edit show destroy update history new create followers undo].each do |action|
@@ -35,7 +34,7 @@ Rails.application.routes.draw do
     resources :follows, only: %i[create destroy]
     resources :comments
     scope module: 'cases' do
-       post 'versions/:id/revert', to: 'versions#revert', as: :revert
+      post 'versions/:id/revert', to: 'versions#revert', as: :revert
     end
   end
 
