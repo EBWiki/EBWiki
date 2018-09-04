@@ -2,18 +2,23 @@
 
 # Case comments controller
 class CommentsController < ApplicationController
-  before_action :load_commentable
   before_action :authenticate_user!, only: [:create]
 
   def index
+    resource, id = request.path.split('/')[1, 2]
+    @commentable = resource.singularize.classify.constantize.find(id)
     @comments = @commentable.comments
   end
 
   def new
+    resource, id = request.path.split('/')[1, 2]
+    @commentable = resource.singularize.classify.constantize.find(id)
     @comment = @commentable.comments.new
   end
 
   def create
+    resource, id = request.path.split('/')[1, 2]
+    @commentable = resource.singularize.classify.constantize.find(id)
     @comment = @commentable.comments.new comment_params
     @comment.user = current_user
     @comment.save
@@ -29,11 +34,6 @@ class CommentsController < ApplicationController
   end
 
   private
-
-  def load_commentable
-    resource, id = request.path.split('/')[1, 2]
-    @commentable = resource.singularize.classify.constantize.find(id)
-  end
 
   def comment_params
     params.require(:comment).permit(:content)
