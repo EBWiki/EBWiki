@@ -26,11 +26,6 @@ RSpec.describe Case, type: :model do
   end
 
   describe "blurb" do
-    it "saves the blurb without any html tags" do
-      this_case = create(:case, blurb: "<a href='google.com'>Google</a>")
-      expect(this_case.blurb).to eq("Google")
-    end
-
     it { should validate_presence_of(:blurb).with_message("A blurb about the case is required.") }
     it { should validate_length_of(:blurb).is_at_most(500) }
   end

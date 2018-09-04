@@ -3,7 +3,6 @@
 # Cases controller. Containing really complex index method that needs some
 # Refactoring love.
 class CasesController < ApplicationController
-  before_action :find_case, only: %i[show edit update destroy history]
   before_action :authenticate_user!, except: %i[index show history followers]
 
   def new
@@ -27,13 +26,11 @@ class CasesController < ApplicationController
 
   def show
     @this_case = Case.friendly.find(params[:id])
-    @commentable = @this_case
-    @comments = @commentable.comments
+    @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
     # Check to make sure all required elements are here
-    unless @this_case.present? && @commentable.present? && @comment.present? &&
-           @subjects.present?
+    unless @this_case.present? && @comment.present? && @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
@@ -41,6 +38,7 @@ class CasesController < ApplicationController
 
   def create
     @this_case = current_user.cases.build(case_params)
+    @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
@@ -72,6 +70,7 @@ class CasesController < ApplicationController
     @this_case = Case.friendly.find(params[:id])
     @this_case.slug = nil
     @this_case.remove_avatar! if @this_case.remove_avatar?
+    @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!' # {make_undo_link}
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
@@ -84,23 +83,26 @@ class CasesController < ApplicationController
   end
 
   def destroy
-    if @this_case
+    begin
+      @this_case = Case.friendly.find(params[:id])
       @this_case.destroy
       flash[:success] = 'Case was removed!' # {make_undo_link}
       UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
-    else
+    rescue ActiveRecord::RecordNotFound
       flash[:notice] = I18n.t('cases_controller.case_not_found_message')
     end
     redirect_to root_path
   end
 
   def history
+    @this_case = Case.friendly.find(params[:id])
     @case_history = @this_case.try(:versions).order(created_at: :desc) unless
     @this_case.blank? || @this_case.versions.blank?
+  rescue ActiveRecord::RecordNotFound
   end
 
   def undo
-    @case_version = PaperTrail::Version.find_by_id(params[:id])
+    @case_version = PaperTrail::Version.find(params[:id])
     begin
       if @case_version.reify
         @case_version.reify.save
@@ -125,10 +127,6 @@ class CasesController < ApplicationController
   end
 
   private
-
-  def find_case
-    @this_case = Case.friendly.find_by_id(params[:id])
-  end
 
   def case_params
     params.require(:case).permit(
