@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
+# Organizations controller
 class OrganizationsController < ApplicationController
-  before_action :set_organization, only: %i[show edit update destroy]
-
   # GET /organizations
   def index
     @organizations = Organization.all
   end
 
   # GET /organizations/1
-  def show; end
+  def show
+    @organization = Organization.find(params[:id])
+  end
 
   # GET /organizations/new
   def new
@@ -17,7 +18,9 @@ class OrganizationsController < ApplicationController
   end
 
   # GET /organizations/1/edit
-  def edit; end
+  def edit
+    @organization = Organization.find(params[:id])
+  end
 
   # POST /organizations
   def create
@@ -32,6 +35,7 @@ class OrganizationsController < ApplicationController
 
   # PATCH/PUT /organizations/1
   def update
+    @organization = Organization.find(params[:id])
     if @organization.update(organization_params)
       flash[:success] = 'Organization was successfully updated.'
       redirect_to @organization
@@ -42,6 +46,7 @@ class OrganizationsController < ApplicationController
 
   # DELETE /organizations/1
   def destroy
+    @organization = Organization.find(params[:id])
     @organization.destroy
     flash[:success] = 'Organization was successfully destroyed.'
     redirect_to organizations_url
@@ -56,11 +61,6 @@ class OrganizationsController < ApplicationController
   end
 
   private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_organization
-    @organization = Organization.find(params[:id])
-  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def organization_params
