@@ -3,7 +3,6 @@
 # Helper for case page, mostly the casw show page.
 module CasesHelper
   def embed(video_url)
-    return '' if video_url.blank?
     if video_url.include? 'youtube.com'
       youtube_id = video_url.to_s.split('=').last
       content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{youtube_id}")
