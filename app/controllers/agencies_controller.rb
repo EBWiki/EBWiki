@@ -33,7 +33,9 @@ class AgenciesController < ApplicationController
     @agency.jurisdiction_type = agency_params[:jurisdiction]
     respond_to do |format|
       if @agency.save
-        format.html { redirect_to @back_url, notice: 'Agency was successfully created.', status: :created }
+        format.html { redirect_to @back_url,
+                      notice: 'Agency was successfully created.',
+                      status: :created }
       else
         format.html { render :new }
       end
