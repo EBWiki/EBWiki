@@ -1,7 +1,6 @@
 This guide will explain the process of setting up a local development environment for EBWiki.  The guide assumes that you are using a Linux based command line prompt and either a Linux or Windows Operating System.  If you are using a different command line prompt and/or operating system, note that the order and exact nature of the installation and configuration may vary.
 
 # Table of Contents
-<<<<<<< HEAD
 1. [Prerequisites](#prerequisites)
 2. [Installation](#installation)
 3. [App Configuration](#app-configuration)
@@ -15,7 +14,7 @@ This guide will explain the process of setting up a local development environmen
 ## Prerequisites
 Before beginning the installation and configuration of your environment, ensure that you have a copy of git, Ruby, and Rails on your computer.  You can find installation instructions at the links below:
 * [Git](https://git-scm.com/downloads)
-* [Ruby v2.4.1](https://www.ruby-lang.org/en/downloads/)
+* [Ruby v2.5.1](https://www.ruby-lang.org/en/downloads/)
 * [Rails v4.2.10](http://rubyonrails.org/)
 
 ## Installation

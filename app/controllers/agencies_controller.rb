@@ -4,7 +4,7 @@
 class AgenciesController < ApplicationController
   before_action :set_agency, only: %i[show edit update destroy]
   before_action :authenticate_user!, except: %i[index show]
-  after_filter 'save_my_previous_url', only: %i[new show edit]
+  before_action :save_my_previous_url, only: %i[new show edit]
 
   # GET /agencies
   def index
@@ -61,6 +61,14 @@ class AgenciesController < ApplicationController
   end
 
   private
+
+  def after_sign_up_path_for(resource)
+    stored_location_for(resource) || super
+  end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || super
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_agency

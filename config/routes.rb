@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   get '/sitemap', to: redirect('http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz', status: 301)
 
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
@@ -23,7 +23,12 @@ Rails.application.routes.draw do
   get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
   post '/cases/:id/undo', to: 'cases#undo', as: :undo
 
-  match '/articles', to: redirect('/cases', status: 301), via: :all
+  get '/articles', to: redirect('/cases', status: 301)
+  namespace 'articles' do
+    %w[index edit show destroy update history new create followers undo].each do |action|
+      get action, action: action
+    end
+  end
   match '/articles/*action', to: redirect { |p, _| "/cases/#{p[:action]}" }, via: :all
 
   resources :cases do
@@ -45,9 +50,9 @@ Rails.application.routes.draw do
 
   # mailbox folder routes
   get 'mailbox', to: redirect('mailbox/inbox')
-  get 'mailbox/inbox' => 'mailbox#inbox', as: :mailbox_inbox
-  get 'mailbox/sent' => 'mailbox#sent', as: :mailbox_sent
-  get 'mailbox/trash' => 'mailbox#trash', as: :mailbox_trash
+  get 'mailbox/inbox', to: 'mailbox#inbox', as: :mailbox_inbox
+  get 'mailbox/sent', to: 'mailbox#sent', as: :mailbox_sent
+  get 'mailbox/trash', to: 'mailbox#trash', as: :mailbox_trash
 
   # conversations
   resources :conversations do
@@ -59,5 +64,5 @@ Rails.application.routes.draw do
   end
 
   # CKEditor
-  mount Ckeditor::Engine => '/ckeditor'
+  mount Ckeditor::Engine, at: '/ckeditor'
 end

@@ -3,4 +3,5 @@
 # Encapsulates the many genders that are affected by this
 class Gender < ActiveRecord::Base
   has_many :subjects
+  alias_attribute :name, :sex
 end
