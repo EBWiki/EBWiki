@@ -73,7 +73,7 @@
         <%= render 'main_content' %>
       <div class="row">
         <div class="col-md-12">
-          <% if @this_case.video_url.to_s != "" %>
+          <% if @this_case.video_url? %>
             <div class="embed-container">
                 <%= embed(@this_case.video_url) %>
             </div>
