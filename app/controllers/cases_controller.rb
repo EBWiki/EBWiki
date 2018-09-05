@@ -12,7 +12,7 @@ class CasesController < ApplicationController
     @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
-    @genders = SortCollectionOrdinally.call(Gender.all)
+    @genders = SortCollectionOrdinally.call(Gender.all, 'sex')
   end
 
   def index
