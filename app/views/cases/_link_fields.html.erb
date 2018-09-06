@@ -1,5 +1,13 @@
 <div class="nested-fields">
   <%= f.input :url %>
-  <%= f.input :title %>
+  <%= f.input :title, :id => "title", :onclick => "autocomplete()" %>
   <%= link_to_remove_association "remove link", f %>
+
+  <script>
+  var url = "#{url}";
+  $.get(url, function autocomplete() {
+  	
+  });
+  autocomplete(document.getElementById("title").document.title;
+  </script>
 </div>
