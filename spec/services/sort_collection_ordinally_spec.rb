@@ -15,7 +15,7 @@ describe SortCollectionOrdinally do
     end
 
     it 'sorts the agencies correctly' do
-      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(collection: Agency.all)
       expect(sorted_agencies).to eq([agency_one, agency_two])
     end
   end
@@ -28,7 +28,7 @@ describe SortCollectionOrdinally do
     end
 
     it 'sorts the agencies correctly' do
-      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(collection: Agency.all)
       expect(sorted_agencies).to eq([agency_three, agency_one, agency_two])
     end
   end
@@ -43,7 +43,7 @@ describe SortCollectionOrdinally do
     it 'sorts the agencies correctly' do
       agency_four = FactoryBot.create(:agency, name: '18th PD')
 
-      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(collection: Agency.all)
       expect(sorted_agencies).to eq([agency_three,
                                      agency_four,
                                      agency_one,
@@ -61,7 +61,7 @@ describe SortCollectionOrdinally do
     it 'sorts the agencies correctly' do
       agency_four = FactoryBot.create(:agency, name: '1st Police Department')
 
-      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(collection: Agency.all)
       expect(sorted_agencies).to eq([agency_three,
                                      agency_four,
                                      agency_one,
@@ -79,7 +79,7 @@ describe SortCollectionOrdinally do
       agency_three = FactoryBot.create(:agency, name: "1st Police Division of Santa Ana")
       agency_four = FactoryBot.create(:agency, name: "1st Police Division of Santa Clara")
 
-      sorted_agencies = SortCollectionOrdinally.call(Agency.all)
+      sorted_agencies = SortCollectionOrdinally.call(collection: Agency.all)
       expect(sorted_agencies).to eq([agency_three,
                                      agency_four,
                                      agency_one,
@@ -93,7 +93,7 @@ describe SortCollectionOrdinally do
       female = FactoryBot.create(:gender, sex: 'female')
       trans_male = FactoryBot.create(:gender, sex: 'trans_male')
 
-      sorted_genders = SortCollectionOrdinally.call(Gender.all, 'sex')
+      sorted_genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
       expect(sorted_genders).to eq([female, male, trans_male])
     end
   end
