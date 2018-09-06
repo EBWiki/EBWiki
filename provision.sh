@@ -106,10 +106,12 @@ echo '##  Running bundle install'
 /etc/init.d/elasticsearch start
 until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:9200) -eq 200 ]; do sleep 1; done
 
+chown postgres /vagrant/db/structure.sql
+
 echo '##  Running rake commands...'
 for env in development;
 do
-    for rake_step in create db:structure:load seed;
+    for rake_step in create structure:load seed;
     do
         echo "## DATABASE_URL=postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost/blackops_${env} rake db:${rake_step}"
         cd /vagrant && DATABASE_URL=postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost/blackops_${env} rake db:${rake_step} 2>&1 >> ${INSTALL_LOG};
