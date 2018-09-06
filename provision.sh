@@ -109,7 +109,7 @@ until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://
 echo '##  Running rake commands...'
 for env in development;
 do
-    for rake_step in create migrate seed;
+    for rake_step in create db:structure:load seed;
     do
         echo "## DATABASE_URL=postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost/blackops_${env} rake db:${rake_step}"
         cd /vagrant && DATABASE_URL=postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost/blackops_${env} rake db:${rake_step} 2>&1 >> ${INSTALL_LOG};
