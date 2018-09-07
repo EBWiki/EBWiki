@@ -26,7 +26,11 @@ class Case < ActiveRecord::Base
 
   # Friendly ID
   extend FriendlyId
-  friendly_id :slug_candidates, use: %i[slugged finders]
+  friendly_id :slug_candidates, use: %i[slugged history finders]
+  # will change the slug if the title changed
+  def should_generate_new_friendly_id?
+    title_changed?
+  end
 
   # Elasticsearch Gem
   searchkick _all: false, default_fields: ['*']

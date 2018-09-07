@@ -3,14 +3,10 @@
 require 'rails_helper'
 
 feature 'User visits a case' do
-  let(:this_case) { FactoryBot.create(:case) }
-  scenario ' User visits a case using the current case id' do
-    visit "/cases/#{this_case.id}"
-    expect(page.driver.status_code).to eq(301)
-  end
-
-  scenario ' User visits a case using the old case id' do
-    visit case_path(this_case)
-    expect(page.driver.status_code).to eq(200)
+  let(:this_case) { FactoryBot.create(:case, title: 'old title') }
+  scenario 'User visits a case using the old case title' do
+    this_case.update_attributes title: 'new title'
+    visit '/cases/old-title'
+    expect(current_path).to eq('/cases/new-title')
   end
 end
