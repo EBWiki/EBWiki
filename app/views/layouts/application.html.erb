@@ -28,7 +28,7 @@
 	</head>
 	<body>
 		<div class="container">
-		  <% flash.except(:undo, :redo).each do |key, value| %>
+		  <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
       <div class="alert alert-<%= key %>">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <% if flash[:redo] %>
