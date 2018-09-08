@@ -6,7 +6,7 @@ FactoryBot.define do
     f.sequence(:title) { |n| "#{n}Title" }
     f.overview { 'A new case' }
     f.city { 'Albany' }
-    f.date Date.current
+    f.date { Date.current }
     f.state # { FactoryBot.create(:state) }
     f.subjects { [create(:subject)] }
     f.links { [create(:link)] }
@@ -19,10 +19,10 @@ FactoryBot.define do
   end
 
   factory :invalid_case, class: Case do |f|
-    f.title ''
-    f.overview ''
-    f.city ''
-    f.date ''
+    f.title { '' }
+    f.overview { '' }
+    f.city { '' }
+    f.date { '' }
     # association :state, name: nil
   end
 end
