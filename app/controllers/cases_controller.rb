@@ -30,7 +30,7 @@ class CasesController < ApplicationController
     @comment = Comment.new
     @subjects = @this_case.subjects
     # Check to make sure all required elements are here
-    unless @this_case.present? && @comment.present? && @subjects.present?
+    unless @this_case.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
