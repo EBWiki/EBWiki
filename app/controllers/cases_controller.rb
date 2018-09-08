@@ -25,7 +25,7 @@ class CasesController < ApplicationController
   end
 
   def show
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
