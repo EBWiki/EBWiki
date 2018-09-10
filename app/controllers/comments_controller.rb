@@ -37,7 +37,6 @@ class CommentsController < ApplicationController
     @commentable = resource.singularize.classify.constantize.find(id)
   end
 
-
   def comment_params
     params.require(:comment).permit(:content)
   end
