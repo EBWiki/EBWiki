@@ -34,6 +34,9 @@ Rails.application.routes.draw do
   resources :cases do
     resources :follows, only: %i[create destroy]
     resources :comments
+    scope module: 'cases' do
+      post 'versions/:id/revert', to: 'versions#revert', as: :revert
+    end
   end
 
   root 'cases#index'

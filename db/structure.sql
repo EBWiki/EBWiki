@@ -744,7 +744,8 @@ CREATE TABLE public.states (
     iso character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    ansi_code character varying
+    ansi_code character varying,
+    slug character varying
 );
 
 
@@ -1619,4 +1620,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180716121459');
 INSERT INTO schema_migrations (version) VALUES ('20180729010543');
 
 INSERT INTO schema_migrations (version) VALUES ('20180816124609');
+
+INSERT INTO schema_migrations (version) VALUES ('20180904123943');
 
