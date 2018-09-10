@@ -35,8 +35,8 @@ class AgenciesController < ApplicationController
     @agency.jurisdiction_type = agency_params[:jurisdiction]
     if @agency.save
       flash[:success] = 'Agency was successfully created.'
+      redirect_to @back_url,
       status: :created
-      redirect_to @back_url
     else
       render 'new'
     end
