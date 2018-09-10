@@ -33,29 +33,24 @@ class AgenciesController < ApplicationController
     @back_url = session[:previous_url]
     @agency = Agency.new(agency_params.except(:jurisdiction))
     @agency.jurisdiction_type = agency_params[:jurisdiction]
-    respond_to do |format|
-      if @agency.save
-        format.html {
-          redirect_to @back_url,
-          notice: 'Agency was successfully created.',
-          status: :created
-        }
-      else
-        format.html { render :new }
-      end
+    if @agency.save
+      flash[:success] = 'Agency was successfully created.'
+      status: :created
+      redirect_to @back_url
+    else
+      render 'new'
     end
   end
 
   # PATCH/PUT /agencies/1
   def update
     @agency = Agency.friendly.find(params[:id])
-    respond_to do |format|
-      if @agency.update(agency_params.except(:jurisdiction))
-        @agency.jurisdiction_type = agency_params[:jurisdiction]
-        format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }
-      else
-        format.html { render :edit }
-      end
+    if @agency.update(agency_params.except(:jurisdiction))
+      @agency.jurisdiction_type = agency_params[:jurisdiction]
+      flash[:success] = 'Agency was successfully updated.'
+      redirect_to @agency
+    else
+      render 'edit'
     end
   end
 
@@ -63,9 +58,8 @@ class AgenciesController < ApplicationController
   def destroy
     @agency = Agency.friendly.find(params[:id])
     @agency.destroy
-    respond_to do |format|
-      format.html { redirect_to agencies_url, notice: 'Agency was successfully destroyed.' }
-    end
+    flash[:notice] = 'Agency was successfully destroyed.'
+    redirect_to agencies_url
   end
 
   private
