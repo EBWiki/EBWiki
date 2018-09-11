@@ -51,7 +51,7 @@ RSpec.describe CasesController, type: :controller do
       let(:this_case) { cases.first }
       before(:each) { get :show, id: this_case.id }
       it 'success' do
-        expect(response).to be_success
+        expect(response.status).to eq 301
       end
 
       it 'assigns it to @case' do

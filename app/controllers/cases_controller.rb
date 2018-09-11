@@ -3,6 +3,7 @@
 # Cases controller. Containing really complex index method that needs some
 # Refactoring love.
 class CasesController < ApplicationController
+  before_filter :find_case, only: %i[show]
   before_action :authenticate_user!, except: %i[index show history followers]
 
   def new
@@ -33,12 +34,7 @@ class CasesController < ApplicationController
     unless @this_case.present? && @comment.present? && @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
-    end  
-      # If an old id or a numeric id was used to find the record, then
-      # the request path will not match the case_path, and we should do
-      # a 301 redirect that uses the current friendly id.
-    return redirect_to @this_case, status: :moved_permanent if request.path != case_path(@this_case)
-     
+    end
   end
 
   def create
@@ -132,6 +128,15 @@ class CasesController < ApplicationController
   end
 
   private
+
+  def find_case
+    @this_case = Case.friendly.find params[:id]
+
+    # If an old id or a numeric id was used to find the record, then
+    # the request path will not match the post_path, and we should do
+    # a 301 redirect that uses the current friendly id.
+    return redirect_to @this_case, status: :moved_permanently if request.path != case_path(@this_case)
+  end
 
   def case_params
     params.require(:case).permit(
