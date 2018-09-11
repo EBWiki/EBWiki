@@ -33,11 +33,12 @@ class CasesController < ApplicationController
     unless @this_case.present? && @comment.present? && @subjects.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
+    end  
       # If an old id or a numeric id was used to find the record, then
       # the request path will not match the case_path, and we should do
       # a 301 redirect that uses the current friendly id.
-    end
     return redirect_to @this_case, status: :moved_permanent if request.path != case_path(@this_case)
+     
   end
 
   def create
@@ -72,7 +73,7 @@ class CasesController < ApplicationController
 
   def update
     @this_case = Case.friendly.find(params[:id])
-    @this_case.slug = nil
+    # @this_case.slug = nil
     @this_case.remove_avatar! if @this_case.remove_avatar?
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     if @this_case.update_attributes(case_params)
