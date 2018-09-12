@@ -59,8 +59,6 @@ class Case < ActiveRecord::Base
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
-  # before_validation :check_for_empty_fields
-
   # Geocoding
   geocoded_by :full_address
   before_save :geocode, if: proc { |art|
@@ -155,14 +153,5 @@ class Case < ActiveRecord::Base
     return (last_month_case_updates * 100) if prior_30_days_case_updates.zero?
 
     (((last_month_case_updates.to_f / prior_30_days_case_updates) - 1) * 100).round(2)
-  end
-
-  private
-
-  def check_for_empty_fields
-    attrs = %w[ title date address city state zipcode state_id avatar video_url
-                overview community_action litigation country remove_avatar ]
-    errors[:base] << 'You must change field other than summary to generate a new version' unless
-    (changed & attrs).any?
   end
 end
