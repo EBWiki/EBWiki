@@ -44,7 +44,7 @@ class CasesController < ApplicationController
     if @this_case.save
       flash[:success] = 'Case was created!'
       flash[:undo] = @this_case.versions
-      redirect_to @this_case
+      redirect_to @this_case, status: :created
     else
       @agencies = SortCollectionOrdinally.call(Agency.all)
       @categories = SortCollectionOrdinally.call(Category.all)
