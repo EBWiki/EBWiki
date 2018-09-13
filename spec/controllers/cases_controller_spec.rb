@@ -49,9 +49,9 @@ RSpec.describe CasesController, type: :controller do
   describe '#show' do
     context 'when requested case exists' do
       let(:this_case) { cases.first }
-      before(:each) { get :show, id: this_case.id }
+      before(:each) { get :show, id: this_case.slug }
       it 'success' do
-        expect(response.status).to eq 301
+        expect(response).to be_success
       end
 
       it 'assigns it to @case' do

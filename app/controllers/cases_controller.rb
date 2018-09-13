@@ -3,7 +3,6 @@
 # Cases controller. Containing really complex index method that needs some
 # Refactoring love.
 class CasesController < ApplicationController
-  before_filter :find_case, only: %i[show]
   before_action :authenticate_user!, except: %i[index show history followers]
 
   def new
@@ -26,6 +25,7 @@ class CasesController < ApplicationController
   end
 
   def show
+    find_case and return
     @this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
     @comments = @this_case.comments
     @comment = Comment.new
@@ -133,13 +133,12 @@ class CasesController < ApplicationController
   private
 
   def find_case
-    @this_case = Case.friendly.find params[:id]
-
+    this_case = Case.friendly.find params[:id]
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the post_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    return redirect_to @this_case, status: :moved_permanently if
-    request.path != case_path(@this_case)
+    return redirect_to this_case, status: :moved_permanently if
+    request.path != case_path(this_case)
   end
 
   def case_params
