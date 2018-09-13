@@ -2,18 +2,20 @@
 
 # Case comments controller
 class CommentsController < ApplicationController
-  before_action :load_commentable
   before_action :authenticate_user!, only: [:create]
 
   def index
+    @commentable = load_commentable
     @comments = @commentable.comments
   end
 
   def new
+    @commentable = load_commentable
     @comment = @commentable.comments.new
   end
 
   def create
+    @commentable = load_commentable
     @comment = @commentable.comments.new comment_params
     @comment.user = current_user
     @comment.save

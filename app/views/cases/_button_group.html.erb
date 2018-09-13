@@ -3,11 +3,11 @@
 		<% if (follow = current_user.follows.find_by_followable_id(@this_case.id)) %>
 		    <%= link_to 'Unfollow', case_follow_path(@this_case, follow), :confirm => "Are you sure you want to unfollow this case?", :method => :delete, class: "btn btn-primary.outline", id: "unfollow-button" %>
     <% else %>
-      <%= link_to 'Follow', case_follows_path(@this_case), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Stay on top of this!",:content => "Click here to receive an email whenever this case is updated."} %>
+      <%= link_to 'Follow', case_follows_path(@this_case), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Stay on top of this!",:content => "Click here to receive an email whenever this case is updated."}, id: "follow-btn-small" %>
     <% end %>
-		<%= link_to "Edit", edit_case_path(@this_case), class: "btn btn-success", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Something not right?",:content => "Click here to make changes to this case.  We're relying on folks like you to help us stay accurate!"} %>
+		<%= link_to "Edit", edit_case_path(@this_case), class: "btn btn-success", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Something not right?",:content => "Click here to make changes to this case.  We're relying on folks like you to help us stay accurate!"}, id: "edit-btn" %>
 	<% else %>
-    <%= link_to 'Follow', case_follows_path(@this_case), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
+    <%= link_to 'Follow', case_follows_path(@this_case), :method => :post, class: "btn btn-primary", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."}, id: "follow-btn-large" %>
 	<% end %>
-	<%= link_to "History", cases_history_path(@this_case), class: "btn btn-info", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track Changes",:content => "Click here to see all the past edits to this case."} %>
+	<%= link_to "History", cases_history_path(@this_case), class: "btn btn-info", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track Changes",:content => "Click here to see all the past edits to this case."}, id: "history-btn" %>
 </div>
