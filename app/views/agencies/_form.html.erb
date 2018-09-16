@@ -1,6 +1,6 @@
 <%= simple_form_for(@agency) do |f| %>
   <%= f.error_notification %>
-  
+
   <% if @agency.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@agency.errors.count, "error") %> prohibited this case from being saved:</h2>
@@ -16,10 +16,10 @@
     <%= f.input :name %>
     <%= f.input :street_address %>
     <%= f.input :city %>
-    <%= f.collection_select :state_id, SortCollectionOrdinally.call(State.all), :id, :name, {prompt: "State"}, label:"State" %>
+    <%= f.collection_select :state_id, @states, :id, :name, {prompt: "State"}, label:"State" %>
     <%= f.input :zipcode %>
     <%= f.input :description %>
-    <%= f.input :jurisdiction_type, collection: Agency::JurisdictionType.map(&:name) %>
+    <%= f.input :jurisdiction_type, collection: @jurisdiction_types %>
     <%= f.input :telephone %>
     <%= f.input :email %>
     <%= f.input :website %>
@@ -30,5 +30,5 @@
     <div class ="btn-group submit">
       <%= f.button :submit, class: "btn btn-success" %>
     </div>
-  </div>  
+  </div>
 <% end %>
