@@ -13,6 +13,7 @@ class CasesController < ApplicationController
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
     @genders = SortCollectionOrdinally.call(Gender.all)
+    @ethnicities = Ethnicity.all
   end
 
   def index
@@ -62,10 +63,11 @@ class CasesController < ApplicationController
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
     @genders = SortCollectionOrdinally.call(Gender.all)
+    @ethnicities = Ethnicity.all
   end
 
   def followers
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find(params[:case_slug])
   end
 
   def update
@@ -98,14 +100,14 @@ class CasesController < ApplicationController
   end
 
   def history
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find_by_slug(params[:case_slug])
     @case_history = @this_case.try(:versions).order(created_at: :desc) unless
     @this_case.blank? || @this_case.versions.blank?
   rescue ActiveRecord::RecordNotFound
   end
 
   def undo
-    @case_version = PaperTrail::Version.find(params[:id])
+    @case_version = PaperTrail::Version.find(params[:case_slug])
     begin
       if @case_version.reify
         @case_version.reify.save

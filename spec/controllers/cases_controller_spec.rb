@@ -7,7 +7,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-    ).and_return('/cases/1')
+      ).and_return('/cases/1')
   end
 
   describe '#index' do
@@ -42,7 +42,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-    ).and_return('/cases/1')
+      ).and_return('/cases/1')
   end
   let(:cases) { FactoryBot.create_list(:case, 20) }
 
@@ -72,7 +72,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-    ).and_return('/cases/1')
+      ).and_return('/cases/1')
   end
   let(:cases) { FactoryBot.create_list(:case, 20) }
   describe '#create' do
@@ -117,7 +117,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-    ).and_return('/cases/1')
+      ).and_return('/cases/1')
   end
 
   let(:cases) { FactoryBot.create_list(:case, 20) }
@@ -134,39 +134,39 @@ RSpec.describe CasesController, type: :controller do
       end
       it 'success' do
         patch :update, ** new_values, id: this_case.id, case: new_values
-        expect(response).to redirect_to(case_path(this_case))
-      end
-      it 'saves and assigns case to @case' do
-        patch :update, ** new_values, id: this_case.id, case: new_values
-        expect(assigns(:this_case)).to be_a_kind_of(Case)
-        expect(assigns(:this_case)).to be_persisted
-      end
-    end
+          expect(response).to redirect_to(case_path(this_case))
+        end
+        it 'saves and assigns case to @case' do
+          patch :update, ** new_values, id: this_case.id, case: new_values
+            expect(assigns(:this_case)).to be_a_kind_of(Case)
+            expect(assigns(:this_case)).to be_persisted
+          end
+        end
 
-    context 'when invalid' do
-      let(:new_values) { attributes_for(:invalid_case) }
-      before(:each) do 
-        patch :update, id: this_case.id, case: new_values
+        context 'when invalid' do
+          let(:new_values) { attributes_for(:invalid_case) }
+          before(:each) do 
+            patch :update, id: this_case.id, case: new_values
+            end
+            it 'redirects to the edit page' do
+              expect(response).to render_template(:edit)
+            end
+            it 'has a non-empty set of categories' do
+              expect(assigns['categories']).to_not be_nil
+            end
+            it 'has a non-empty set of states' do
+              expect(assigns['states']).to_not be_nil
+            end
+          end
+        end
       end
-      it 'redirects to the edit page' do
-        expect(response).to render_template(:edit)
-      end
-      it 'has a non-empty set of categories' do
-        expect(assigns['categories']).to_not be_nil
-      end
-      it 'has a non-empty set of states' do
-        expect(assigns['states']).to_not be_nil
-      end
-    end
-  end
-end
 
-RSpec.describe CasesController, type: :controller do
+      RSpec.describe CasesController, type: :controller do
   # Stubbing out make_undo_link for all specs
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-    ).and_return('/cases/1')
+      ).and_return('/cases/1')
   end
 
   let(:cases) { FactoryBot.create_list(:case, 20) }
@@ -197,7 +197,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-    ).and_return('/cases/1')
+      ).and_return('/cases/1')
   end
 
   describe '#history', versioning: true do
@@ -206,13 +206,13 @@ RSpec.describe CasesController, type: :controller do
     context 'when requested case exists' do
       it 'shows the history page' do
         this_case.update_attributes title: 'Updated Title'
-        get :history, id: this_case.id
+        get :history, case_slug: this_case.slug
         expect(response).to render_template(:history)
       end
     end
     context 'when requested case does not exists' do
       it 'shows the history page with no history' do
-        get :history, id: -1
+        get :history, case_slug: -1
         expect(response).to render_template(:history)
       end
     end
