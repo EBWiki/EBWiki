@@ -25,4 +25,10 @@ class MailboxController < ApplicationController
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || super
   end
+
+  private
+
+  def mailbox
+    @mailbox ||= current_user.mailbox
+  end
 end

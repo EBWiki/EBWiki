@@ -1,7 +1,6 @@
 This guide will explain the process of setting up a local development environment for EBWiki.  The guide assumes that you are using a Linux based command line prompt and either a Linux or Windows Operating System.  If you are using a different command line prompt and/or operating system, note that the order and exact nature of the installation and configuration may vary.
 
 # Table of Contents
-<<<<<<< HEAD
 1. [Prerequisites](#prerequisites)
 2. [Installation](#installation)
 3. [App Configuration](#app-configuration)
@@ -122,7 +121,7 @@ Next, create a user `blackops` with the password `ebwiki` or whatever password y
 
 `CREATE USER blackops WITH PASSWORD 'ebwiki';`
 
-Exit the console using the following command: 
+Exit the console using the following command:
 
 `\q`
 
@@ -148,7 +147,13 @@ Within `config/database.yml`, uncomment the following lines in the blocks for `d
 ![Screenshot](https://i.imgur.com/CdOnsI7.jpg)
 
 ## Local Database Setup
-Let's complete our local database setup.  First, create the development and test databases using the following command:
+Let's complete our local database setup.  First, create a copy of config/database.example.yml to config/database.yml using:
+
+`cp config/database.example.yml config/database.yml`
+
+You may need to change the username and/or password to the ones you used during postgres setup before proceeding. You don't need to change anything if you used `ebwiki` as the password.
+
+Now, create the development and test databases using the following command:
 
 `rake db:create`
 

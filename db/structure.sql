@@ -676,7 +676,8 @@ CREATE TABLE states (
     iso character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    ansi_code character varying
+    ansi_code character varying,
+    slug character varying
 );
 
 
@@ -838,7 +839,7 @@ CREATE TABLE versions (
     object_changes text,
     ip character varying,
     transaction_id integer,
-    comment text,
+    comment text DEFAULT ''::text,
     author_id integer
 );
 
@@ -1517,4 +1518,8 @@ INSERT INTO schema_migrations (version) VALUES ('20180816124609');
 INSERT INTO schema_migrations (version) VALUES ('20180823203142');
 
 INSERT INTO schema_migrations (version) VALUES ('20180824134701');
+
+INSERT INTO schema_migrations (version) VALUES ('20180904123943');
+
+INSERT INTO schema_migrations (version) VALUES ('20180911071251');
 
