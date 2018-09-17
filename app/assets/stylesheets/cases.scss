@@ -265,10 +265,21 @@ $color-dark-gray: #4D4D4D;
 }
 
 #unfollow-button {
-  font-size: small;
+  // font-size: small;
+  color: white;
+  background-color: $color-gray;
+  letter-spacing: -1px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+}
+#history-btn, #follow-btn-small, #edit-btn{
+  background-color: $color-orange;
+  color: white;
+  border: 1px solid #000000;
+  border-radius: 4px;
 }
 .btn-group {
-    position:relative;
+  position:relative;
   float:left;
 }
 .btn-group.back{

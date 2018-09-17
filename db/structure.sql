@@ -842,7 +842,7 @@ CREATE TABLE public.versions (
     object_changes text,
     ip character varying,
     transaction_id integer,
-    comment text,
+    comment text DEFAULT ''::text,
     author_id integer
 );
 
@@ -1519,4 +1519,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180729010543');
 INSERT INTO schema_migrations (version) VALUES ('20180816124609');
 
 INSERT INTO schema_migrations (version) VALUES ('20180904123943');
+
+INSERT INTO schema_migrations (version) VALUES ('20180911071251');
 
