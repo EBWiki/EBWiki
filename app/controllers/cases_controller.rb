@@ -13,6 +13,7 @@ class CasesController < ApplicationController
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
     @genders = SortCollectionOrdinally.call(Gender.all)
+    @ethnicities = Ethnicity.all
   end
 
   def index
@@ -25,12 +26,12 @@ class CasesController < ApplicationController
   end
 
   def show
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
     # Check to make sure all required elements are here
-    unless @this_case.present? && @comment.present? && @subjects.present?
+    unless @this_case.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
@@ -61,10 +62,11 @@ class CasesController < ApplicationController
     @categories = SortCollectionOrdinally.call(Category.all)
     @states = SortCollectionOrdinally.call(State.all)
     @genders = SortCollectionOrdinally.call(Gender.all)
+    @ethnicities = Ethnicity.all
   end
 
   def followers
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find(params[:case_slug])
   end
 
   def update
@@ -102,7 +104,7 @@ class CasesController < ApplicationController
   end
 
   def undo
-    @case_version = PaperTrail::Version.find(params[:id])
+    @case_version = PaperTrail::Version.find(params[:case_slug])
     begin
       if @case_version.reify
         @case_version.reify.save

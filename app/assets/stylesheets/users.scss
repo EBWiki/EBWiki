@@ -57,6 +57,10 @@ $color-dark-gray: #4D4D4D;
     left:69%;
 }
 
+.btn-success{
+  background-color: $color-orange !important;
+}
+
 .btn-group.back .btn-primary{
 	background-color: $color-gray !important;
 	border-color: $color-gray !important;
@@ -64,6 +68,5 @@ $color-dark-gray: #4D4D4D;
 }
 
 .btn-group.submit .btn-success{
-	background-color: $color-orange !important;
 	border-color: $color-orange !important;
 }

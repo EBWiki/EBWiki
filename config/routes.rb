@@ -19,8 +19,9 @@ Rails.application.routes.draw do
   resources :users, only: %i[show edit]
   resources :agencies
 
-  get '/cases/:id/history', to: 'cases#history', as: :cases_history
-  get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
+  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
+  get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
+  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
 
   get '/articles', to: redirect('/cases', status: 301)
   namespace 'articles' do
