@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   def state_objects
-    @state_objects ||= SortCollectionOrdinally.call(collection: State.all)
+    @state_objects ||= SortCollectionOrdinally.call(collection: State.all, column_name: e.send(:column_name))
   end
 
   def storable_location?
