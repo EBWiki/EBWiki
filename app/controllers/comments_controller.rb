@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
     @comment = @commentable.comments.new comment_params
     @comment.user = current_user
     @comment.save
-    redirect_to @commentable, notice: 'Comment created!', status: :created
+    redirect_to @commentable, notice: 'Comment created!'
   end
 
   def after_sign_up_path_for(resource)

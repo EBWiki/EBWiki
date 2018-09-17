@@ -16,7 +16,7 @@ class ConversationsController < ApplicationController
                                  conversation_params[:subject])
                    .conversation
     flash[:success] = 'Your message was successfully sent!'
-    redirect_to conversation_path(conversation), status: :created
+    render 'show', status: :created
   end
 
   def show
