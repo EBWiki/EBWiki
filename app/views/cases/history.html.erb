@@ -16,7 +16,6 @@
               <% user = User.find_by_id(version.whodunnit) %>
               <% if user %>
                 <%= user.name %>
-                (last seen at <%= l(user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>)
               <% end %>
             <% else %>
               Guest
