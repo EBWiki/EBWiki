@@ -20,5 +20,5 @@ module CasesHelper
 
   def case_updated_at(this_case)
     this_case.updated_at.strftime('%m.%e,%l:%M %p')
-  end 
+  end
 end

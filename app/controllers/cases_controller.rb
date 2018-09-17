@@ -66,7 +66,7 @@ class CasesController < ApplicationController
   end
 
   def followers
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find(params[:case_slug])
   end
 
   def update
@@ -100,14 +100,14 @@ class CasesController < ApplicationController
   end
 
   def history
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.friendly.find_by_slug(params[:case_slug])
     @case_history = @this_case.try(:versions).order(created_at: :desc) unless
     @this_case.blank? || @this_case.versions.blank?
   rescue ActiveRecord::RecordNotFound
   end
 
   def undo
-    @case_version = PaperTrail::Version.find(params[:id])
+    @case_version = PaperTrail::Version.find(params[:case_slug])
     begin
       if @case_version.reify
         @case_version.reify.save
