@@ -23,7 +23,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new(organization_params)
     if @organization.save
       flash[:success] = 'Organization was successfully created.'
-      render  'show', status: :created
+      render 'show', status: :created
     else
       render 'new'
     end
