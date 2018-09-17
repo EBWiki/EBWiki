@@ -121,7 +121,7 @@ Next, create a user `blackops` with the password `ebwiki` or whatever password y
 
 `CREATE USER blackops WITH PASSWORD 'ebwiki';`
 
-Exit the console using the following command: 
+Exit the console using the following command:
 
 `\q`
 
@@ -147,7 +147,13 @@ Within `config/database.yml`, uncomment the following lines in the blocks for `d
 ![Screenshot](https://i.imgur.com/CdOnsI7.jpg)
 
 ## Local Database Setup
-Let's complete our local database setup.  First, create the development and test databases using the following command:
+Let's complete our local database setup.  First, create a copy of config/database.example.yml to config/database.yml using:
+
+`cp config/database.example.yml config/database.yml`
+
+You may need to change the username and/or password to the ones you used during postgres setup before proceeding. You don't need to change anything if you used `ebwiki` as the password.
+
+Now, create the development and test databases using the following command:
 
 `rake db:create`
 

@@ -4,7 +4,10 @@
       <div class="col-md-2">
         <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
         <%= truncate(@user.name, length:16) %>
-        <br />
+        <br>
+        Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
+        <br>
+        <br>
         <% if @user == current_user %>
           <%= link_to 'Edit Profile', edit_user_path(current_user), :class => "btn btn-success" %></a>
           <div class="panel panel-default mailFoldershort">
