@@ -24,7 +24,7 @@ class Agency < ActiveRecord::Base
   end
   enum jurisdiction: {
     unknown: 'unknown', local: 'local', state: 'state', federal: 'federal',
-    university: 'university', not_provided: 'not_provided'
+    university: 'university', commercial: 'commercial'
   }
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
