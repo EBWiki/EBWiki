@@ -85,7 +85,7 @@ RSpec.describe CasesController, type: :controller do
         case_attrs['links_attributes'] = { '0' => link_attrs }
         post :create, 'case': case_attrs
         expect(Case.last.blurb).to eq('Google')
-        expect(response).to redirect_to(case_path(Case.last))
+        expect(response).to be_created
       end
       it 'saves and assigns new case to @case' do
         allow_any_instance_of(Case).to receive(:full_address).and_return('Albany NY')
@@ -143,7 +143,7 @@ RSpec.describe CasesController, type: :controller do
 
         context 'when invalid' do
           let(:new_values) { attributes_for(:invalid_case) }
-          before(:each) do 
+          before(:each) do
             patch :update, id: this_case.id, case: new_values
             end
             it 'redirects to the edit page' do
