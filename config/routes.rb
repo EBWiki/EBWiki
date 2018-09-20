@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
   get '/javascript_lab', to: 'static#javascript_lab'
-  get '/contribution_guidelines', to: 'static#contribution_guidelines'
+  get '/instructions', to: 'static#instructions'
 
   get '/sitemap', to: redirect('http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz', status: 301)
 
