@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
   get '/javascript_lab', to: 'static#javascript_lab'
-  get '/contribution_guidelines', to: 'static#contribution_guidelines'
+  get '/instructions', to: 'static#instructions'
 
   get '/sitemap', to: redirect('http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz', status: 301)
 
@@ -19,16 +19,24 @@ Rails.application.routes.draw do
   resources :users, only: %i[show edit]
   resources :agencies
 
-  get '/cases/:id/history', to: 'cases#history', as: :cases_history
-  get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
-  post '/cases/:id/undo', to: 'cases#undo', as: :undo
+  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
+  get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
+  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
 
-  match '/articles', to: redirect('/cases', status: 301), via: :all
+  get '/articles', to: redirect('/cases', status: 301)
+  namespace 'articles' do
+    %w[index edit show destroy update history new create followers undo].each do |action|
+      get action, action: action
+    end
+  end
   match '/articles/*action', to: redirect { |p, _| "/cases/#{p[:action]}" }, via: :all
 
   resources :cases do
     resources :follows, only: %i[create destroy]
     resources :comments
+    scope module: 'cases' do
+      post 'versions/:id/revert', to: 'versions#revert', as: :revert
+    end
   end
 
   root 'cases#index'

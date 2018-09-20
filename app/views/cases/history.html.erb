@@ -1,6 +1,6 @@
 <div class="container">
   <h1>History</h1>
-  <h4>Any time any information about a case is updated, a new version is created. This page tracks the changes made to the case over time including summaries to explain those changes where possible. As of now, the changes to the following attributes are tracked: address fields, content sections for overview, community_action and litigation as well as the article's title, date, photo and video links. <br><br>Properties not currently being tracked in case_history include changes to Subjects, Comments and Links. In the future we will capture those changes as well. In the meantime, editors should note that changes to these associations will not create a new version of the case.</h4>
+  <h4>Any time any information about a case is updated, a new version is created. This page tracks the changes made to the case over time including summaries to explain those changes where possible. As of now, the changes to the following attributes are tracked: address fields, content sections for overview, community action and litigation as well as the case's title, date, photo and video links. <br><br>Properties not currently being tracked in case history include changes to subjects, comments and links. In the future we will capture those changes as well. In the meantime, editors should note that changes to these associations will not create a new version of the case.</h4>
 
   <ul>
     <% if @case_history %>
@@ -12,11 +12,10 @@
           <% else %>
             <b>Edited by:</b>
           <% end %>
-            <% if version.paper_trail.whodunnit && version.paper_trail.whodunnit != 'Guest' %>
-              <% user = User.find_by_id(version.paper_trail.whodunnit) %>
+            <% if version.whodunnit && version.whodunnit != 'Guest' %>
+              <% user = User.find_by_id(version.whodunnit) %>
               <% if user %>
-                <%= user.try(:name) %>
-                (last seen at <%= l(user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>)
+                <%= user.name %>
               <% end %>
             <% else %>
               Guest

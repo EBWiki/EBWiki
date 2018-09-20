@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :gender do
-    sex 'Male'
+    sex { 'Male' }
   end
 end
