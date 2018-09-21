@@ -33,13 +33,12 @@
   </div>
 
   <% if action_name == 'edit' %>
-    <%= link_to 'Show', @agency %> |
-    <%= link_to 'Back', agencies_path %>
+    <span class="btn-show">
+      <%= link_to 'Show', @agency, class: "btn btn-success" %>
+    </span>
   <% end %>
 
-  <% if action_name == 'new' %>
     <div class="btn-group back">
       <%= link_to 'Back', agencies_path, class: 'btn btn-primary' %>
     </div>
-  <% end %>
 <% end %>
