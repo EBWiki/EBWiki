@@ -9,7 +9,6 @@ describe Agency do
       login_as(user, scope: :user)
       visit new_agency_path
       fill_in 'Name', with: 'Test'
-      find_field('#agency_state_id').find(:xpath, 'option[1]').select_option
       click_button 'Create Agency'
       expect(page.driver.status_code).to eq(200)
     end
@@ -24,7 +23,6 @@ describe Agency do
       login_as(user, scope: :user)
       visit new_agency_path
       fill_in 'Name', with: ''
-      find_field('#agency_state_id').find(:xpath, 'option[1]').select_option
       click_button 'Create Agency'
       expect(page).to have_content('Please enter a name.')
     end
