@@ -6,11 +6,10 @@ describe Agency do
     let!(:state) { FactoryBot.create(:state) }
     scenario 'Logged in user with correct agency params' do
       collection = SortCollectionOrdinally.call(State.all)
-      allow_any_instance_of(:SortCollectionOrdinally).to receive(State.all).and_return(collection)
       login_as(user, scope: :user)
       visit new_agency_path
       fill_in 'Name', with: 'Test'
-      find_field('state_id').text
+      find_field('#agency_state_id').find(:xpath, 'option[1]').select_option
       click_button 'Create Agency'
       expect(page.driver.status_code).to eq(200)
     end
@@ -22,10 +21,10 @@ describe Agency do
 
     scenario 'user creates agency with in correct credentials' do
       collection = SortCollectionOrdinally.call(State.all)
-      allow_any_instance_of(:SortCollectionOrdinally).to receive(State.all).and_return(collection)
       login_as(user, scope: :user)
       visit new_agency_path
       fill_in 'Name', with: ''
+      find_field('#agency_state_id').find(:xpath, 'option[1]').select_option
       click_button 'Create Agency'
       expect(page).to have_content('Please enter a name.')
     end
