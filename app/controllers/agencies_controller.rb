@@ -2,8 +2,9 @@
 
 # Agencies Controller
 class AgenciesController < ApplicationController
+  before_action :set_agency, only: %i[show edit update destroy]
   before_action :authenticate_user!, except: %i[index show]
-  before_action :save_my_previous_url, only: %i[new show edit]
+  after_filter 'save_my_previous_url', only: %i[new show edit]
 
   # GET /agencies
   def index
@@ -12,7 +13,6 @@ class AgenciesController < ApplicationController
 
   # GET /agencies/1
   def show
-    @agency = Agency.friendly.find(params[:id])
     @back_url = session[:previous_url]
     @cases = @agency.cases
     @agency_state = @agency.retrieve_state
@@ -24,16 +24,13 @@ class AgenciesController < ApplicationController
   end
 
   # GET /agencies/1/edit
-  def edit
-    @agency = Agency.friendly.find(params[:id])
-  end
+  def edit; end
 
   # POST /agencies
   def create
     @back_url = session[:previous_url]
     @agency = Agency.new(agency_params.except(:jurisdiction))
     @agency.jurisdiction_type = agency_params[:jurisdiction]
-    @agency.jurisdiction = agency_params[:jurisdiction]
     respond_to do |format|
       if @agency.save
         format.html { redirect_to @back_url, notice: 'Agency was successfully created.' }
@@ -48,7 +45,6 @@ class AgenciesController < ApplicationController
     respond_to do |format|
       if @agency.update(agency_params.except(:jurisdiction))
         @agency.jurisdiction_type = agency_params[:jurisdiction]
-        @agency.jurisdiction = agency_params[:jurisdiction]
         format.html { redirect_to @agency, notice: 'Agency was successfully updated.' }
       else
         format.html { render :edit }
@@ -58,20 +54,17 @@ class AgenciesController < ApplicationController
 
   # DELETE /agencies/1
   def destroy
-    @agency = Agency.friendly.find(params[:id])
     @agency.destroy
-    flash[:notice] = 'Agency was successfully destroyed.'
-    redirect_to agencies_url
+    respond_to do |format|
+      format.html { redirect_to agencies_url, notice: 'Agency was successfully destroyed.' }
+    end
   end
 
   private
 
-  def after_sign_up_path_for(resource)
-    stored_location_for(resource) || super
-  end
-
-  def after_sign_in_path_for(resource)
-    stored_location_for(resource) || super
+  # Use callbacks to share common setup or constraints between actions.
+  def set_agency
+    @agency = Agency.friendly.find(params[:id])
   end
 
   def save_my_previous_url
