@@ -143,7 +143,7 @@ RSpec.describe CasesController, type: :controller do
 
         context 'when invalid' do
           let(:new_values) { attributes_for(:invalid_case) }
-          before(:each) do 
+          before(:each) do
             patch :update, id: this_case.id, case: new_values
             end
             it 'redirects to the edit page' do
@@ -156,6 +156,21 @@ RSpec.describe CasesController, type: :controller do
               expect(assigns['states']).to_not be_nil
             end
           end
+
+          context  'with an empty summary' do
+            let(:new_values) do
+            {
+              summary: ''
+           }
+          end
+          it 'is not successfully updated' do
+             patch :update, id: this_case.id, case: new_values
+           # put :update, params: {id: this_case.to_param, case: new_values}
+            #patch :update, ** new_values, id: this_case.id, case: new_values
+              binding.pry
+            expect(response).to redirect_to(case_path(this_case))
+         end
+        end
         end
       end
 

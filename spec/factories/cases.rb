@@ -23,6 +23,7 @@ FactoryBot.define do
     f.overview { '' }
     f.city { '' }
     f.date { '' }
+    f.summary {''}
     # association :state, name: nil
   end
 end
