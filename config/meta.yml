@@ -1,7 +1,7 @@
 # config/meta.yml
 
-meta_product_name: "Product Name"
-meta_title: "Product name - Product tagline"
-meta_description: "Relevant description"
-meta_image: "cover.png"                       # should exist in `app/assets/images/`
-twitter_account: "@product_twitter_account"   # required for Twitter Cards
+meta_title: 'EBWiki'
+meta_description: 'EBWiki is a webapp working to harness the power of community to end bias in law enforcement that
+                    has led to disparate treatment of people of color with tragic results'
+meta_image: 'EBWikiLogo.png'
+twitter_account: '@endbiaswiki'
