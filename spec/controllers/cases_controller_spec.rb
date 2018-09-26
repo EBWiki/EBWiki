@@ -7,7 +7,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-      ).and_return('/cases/1')
+    ).and_return('/cases/1')
   end
 
   describe '#index' do
@@ -42,7 +42,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-      ).and_return('/cases/1')
+    ).and_return('/cases/1')
   end
   let(:cases) { FactoryBot.create_list(:case, 20) }
 
@@ -70,7 +70,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-      ).and_return('/cases/1')
+    ).and_return('/cases/1')
   end
   let(:cases) { FactoryBot.create_list(:case, 20) }
   describe '#create' do
@@ -115,7 +115,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-      ).and_return('/cases/1')
+    ).and_return('/cases/1')
   end
 
   let(:cases) { FactoryBot.create_list(:case, 20) }
@@ -131,55 +131,51 @@ RSpec.describe CasesController, type: :controller do
         }
       end
       it 'success' do
-        patch :update, ** new_values, id: this_case.id, case: new_values
-          expect(response).to redirect_to(case_path(this_case))
-        end
-        it 'saves and assigns case to @case' do
-          patch :update, ** new_values, id: this_case.id, case: new_values
-            expect(assigns(:this_case)).to be_a_kind_of(Case)
-            expect(assigns(:this_case)).to be_persisted
-          end
-        end
-
-        context 'when invalid' do
-          let(:new_values) { attributes_for(:invalid_case) }
-          before(:each) do
-            patch :update, id: this_case.id, case: new_values
-            end
-            it 'redirects to the edit page' do
-              expect(response).to render_template(:edit)
-            end
-            it 'has a non-empty set of categories' do
-              expect(assigns['categories']).to_not be_nil
-            end
-            it 'has a non-empty set of states' do
-              expect(assigns['states']).to_not be_nil
-            end
-          end
-
-          context  'with an empty summary' do
-            let(:new_values) do
-            {
-              summary: ''
-           }
-          end
-          it 'is not successfully updated' do
-             patch :update, id: this_case.id, case: new_values
-           # put :update, params: {id: this_case.to_param, case: new_values}
-            #patch :update, ** new_values, id: this_case.id, case: new_values
-              binding.pry
-            expect(response).to redirect_to(case_path(this_case))
-         end
-        end
-        end
+        patch :update, **new_values, id: this_case.id, case: new_values
+        expect(response).to redirect_to(case_path(this_case))
       end
+      it 'saves and assigns case to @case' do
+        patch :update, **new_values, id: this_case.id, case: new_values
+        expect(assigns(:this_case)).to be_a_kind_of(Case)
+        expect(assigns(:this_case)).to be_persisted
+      end
+    end
 
-      RSpec.describe CasesController, type: :controller do
+    context 'when invalid' do
+      let(:new_values) { attributes_for(:invalid_case) }
+      before(:each) do
+        patch :update, id: this_case.id, case: new_values
+      end
+      it 'redirects to the edit page' do
+        expect(response).to render_template(:edit)
+      end
+      it 'has a non-empty set of categories' do
+        expect(assigns['categories']).to_not be_nil
+      end
+      it 'has a non-empty set of states' do
+        expect(assigns['states']).to_not be_nil
+      end
+    end
+
+    context 'with an empty summary' do
+      let(:new_values) do
+        { summary: '' }
+      end
+      it 'is not successfully updated' do
+        patch :update, id: this_case.id, case: new_values
+        this_case.reload
+        expect(response).to render_template(:edit)
+      end
+    end
+  end
+end
+
+RSpec.describe CasesController, type: :controller do
   # Stubbing out make_undo_link for all specs
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-      ).and_return('/cases/1')
+    ).and_return('/cases/1')
   end
 
   let(:cases) { FactoryBot.create_list(:case, 20) }
@@ -210,7 +206,7 @@ RSpec.describe CasesController, type: :controller do
   before do
     allow_any_instance_of(CasesController).to receive(
       :make_undo_link
-      ).and_return('/cases/1')
+    ).and_return('/cases/1')
   end
 
   describe '#history', versioning: true do
