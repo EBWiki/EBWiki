@@ -8,6 +8,6 @@ feature 'Editor edits an case' do
     user = FactoryBot.create(:user)
     login_as(user, scope: :user)
     visit "/cases/#{this_case.id}/edit"
-    expect(page).to have_content('Edit Case for "' + this_case.subjects.first.name + '"')
+    expect(page).to have_content('Editing Case ' + this_case.title)
   end
 end
