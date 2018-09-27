@@ -52,7 +52,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public.agencies (
     id integer NOT NULL,
-    name character varying NOT NULL,
+    name character varying,
     street_address character varying,
     city character varying,
     state_id integer,
@@ -763,7 +763,7 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false,
     latitude double precision,
     longitude double precision,
-    name character varying NOT NULL,
+    name character varying,
     description text,
     state_id integer,
     state character varying,
@@ -1523,10 +1523,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180904123943');
 INSERT INTO schema_migrations (version) VALUES ('20180911071251');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926083147');
-
-INSERT INTO schema_migrations (version) VALUES ('20180926085044');
-
-INSERT INTO schema_migrations (version) VALUES ('20180926091204');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926092536');
 
