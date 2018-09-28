@@ -36,7 +36,7 @@
     </div>
 
     <div class="col-md-9">
-      <h1 class="page-header articleTitle"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
+      <h1 class="page-header case-title"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
           <small><%= @this_case.city %>, <%= @this_case.state.name %></small>
       <br/><small><%= @this_case.date.strftime("%B %d, %Y") %></small>
