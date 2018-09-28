@@ -118,8 +118,11 @@
   </fieldset>
 </div>
   <br>
-<div class="btn-group submit"> 
+<div class="btn-group submit">
   <%= f.button :submit, :class => 'btn btn-success' %>
+</div>
+<div class="btn-group back">
+  <%= link_to 'Back to Home', root_path, class: 'btn btn-primary' %>
 </div>
 <% end %>
 
