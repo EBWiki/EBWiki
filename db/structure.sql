@@ -709,7 +709,7 @@ ALTER SEQUENCE public.states_id_seq OWNED BY public.states.id;
 
 CREATE TABLE public.subjects (
     id integer NOT NULL,
-    name character varying,
+    name character varying NOT NULL,
     age integer,
     gender_id integer,
     ethnicity_id integer,
@@ -763,7 +763,7 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false,
     latitude double precision,
     longitude double precision,
-    name character varying,
+    name character varying NOT NULL,
     description text,
     state_id integer,
     state character varying,
@@ -1521,4 +1521,8 @@ INSERT INTO schema_migrations (version) VALUES ('20180816124609');
 INSERT INTO schema_migrations (version) VALUES ('20180904123943');
 
 INSERT INTO schema_migrations (version) VALUES ('20180911071251');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926083147');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926091204');
 
