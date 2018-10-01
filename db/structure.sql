@@ -763,7 +763,7 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false,
     latitude double precision,
     longitude double precision,
-    name character varying,
+    name character varying NOT NULL,
     description text,
     state_id integer,
     state character varying,
@@ -1525,4 +1525,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180911071251');
 INSERT INTO schema_migrations (version) VALUES ('20180926083147');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926085044');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926091204');
 
