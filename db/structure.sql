@@ -192,12 +192,12 @@ CREATE TABLE public.cases (
     video_url character varying,
     state character varying,
     age integer,
-    overview text,
+    overview text NOT NULL,
     community_action text,
     litigation text,
     country character varying,
     remove_avatar boolean,
-    summary text,
+    summary text NOT NULL,
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
     blurb text
@@ -1525,4 +1525,8 @@ INSERT INTO schema_migrations (version) VALUES ('20180911071251');
 INSERT INTO schema_migrations (version) VALUES ('20180926083147');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926091204');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926092536');
+
+INSERT INTO schema_migrations (version) VALUES ('20181001124317');
 
