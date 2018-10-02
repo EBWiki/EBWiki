@@ -45,7 +45,7 @@ gem 'hightop', '~> 0.2'
 gem 'gotcha', '0.0.6'
 
 # xml sitemap
-gem 'sitemap_generator', '6.0'
+gem 'sitemap_generator', '6.0.1'
 
 # internal analytics
 gem 'ahoy_matey', '2.1'
