@@ -21,23 +21,16 @@
             class: 'form-control select2') %>
         </div>
         <div class="navbar-form navbar-left">
-          <%= link_to 'Get our newsletter', @mailchip_url, class: "btn btn-default" %>
-        </div>
-        <div class="navbar-form navbar-left">
-        <div class="col-md-4">
           <%= text_field_tag :query, params[:query], class: 'form-control', data: { list:State.all.map(&:name) } , placeholder: 'Name, City or Keywords...' %>
         <%= submit_tag "Search", class: "btn btn-primary search-btn" %>
         </div>
-        <div class="col-md-4">
-          <% if user_signed_in? %>
-          <%= link_to "Add a New Case", new_case_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
-          <% end %>
-          </div>
-        </div>
       <% end %>
-      <div class="nav navbar-nav navbar-right">
-      <div class="col-md-4">
-      <ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <% if user_signed_in? %>
+	        <%= link_to "Add a New Case", new_case_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
+	      <% end %>
+	    </li>
         <li class="dropdown">
 			<% if user_signed_in? %>
            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{current_user.email}" %><span class="caret"></span></a>
@@ -47,17 +40,15 @@
 		      <% end %>
           <li> <%= link_to "Profile", user_path(current_user) %></li>
           <li> <%= link_to "View Inbox", mailbox_inbox_path %></li>
-          <li> <%= link_to "Log Out", destroy_user_session_path, :method => :delete %></li>
+          <li> <%= link_to "Log Out", destroy_user_session_path, :method => :delete %>
           
         </ul>
-        </li>
 			<% else %>
-			  <%= link_to "Login", new_user_session_path %>
-			  <%= link_to "Sign Up", new_user_registration_path %>
+			  <li> <%= link_to "Login", new_user_session_path %></li>
+			  <li><%= link_to "Sign Up", new_user_registration_path %></li>
 			<% end %>
+        </li>
       </ul>
-      </div>
-      </div>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
