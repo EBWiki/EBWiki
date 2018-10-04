@@ -52,7 +52,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public.agencies (
     id integer NOT NULL,
-    name character varying,
+    name character varying NOT NULL,
     street_address character varying,
     city character varying,
     state_id integer,
@@ -175,7 +175,7 @@ ALTER SEQUENCE public.case_officers_id_seq OWNED BY public.case_officers.id;
 
 CREATE TABLE public.cases (
     id integer NOT NULL,
-    title character varying,
+    title character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id integer,
@@ -1524,9 +1524,13 @@ INSERT INTO schema_migrations (version) VALUES ('20180911071251');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926083147');
 
+INSERT INTO schema_migrations (version) VALUES ('20180926085044');
+
 INSERT INTO schema_migrations (version) VALUES ('20180926091204');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926092536');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926123043');
 
 INSERT INTO schema_migrations (version) VALUES ('20181001124317');
 
