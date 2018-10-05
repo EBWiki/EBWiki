@@ -166,3 +166,6 @@ gem 'httparty', '~> 0.16'
 gem 'rack-host-redirect', '~> 1.3'
 
 gem 'rubocop', '~> 0.58', require: false
+
+# for storing cookies via active record storage to avoid 4kb limit
+gem 'activerecord-session_store'
