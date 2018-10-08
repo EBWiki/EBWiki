@@ -96,7 +96,7 @@ class Case < ActiveRecord::Base
   end
 
   def nearby_cases
-    try(:nearbys, 50).try(:order, 'distance')
+    self&.nearbys(50)&.order('distance') || Case.none
   end
 
   def case_date_validator
