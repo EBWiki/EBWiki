@@ -197,7 +197,7 @@ CREATE TABLE public.cases (
     litigation text,
     country character varying,
     remove_avatar boolean,
-    summary text,
+    summary text NOT NULL,
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
     blurb text
@@ -1246,6 +1246,7 @@ ALTER TABLE ONLY public.visits
 
 --
 -- Name: fk_followables; Type: INDEX; Schema: public; Owner: -
+<<<<<<< HEAD
 --
 
 CREATE INDEX fk_followables ON public.follows USING btree (followable_id, followable_type);
@@ -1333,6 +1334,88 @@ CREATE INDEX index_friendly_id_slugs_on_sluggable_type ON public.friendly_id_slu
 --
 
 CREATE UNIQUE INDEX index_genders_on_slug ON public.genders USING btree (slug);
+=======
+--
+
+CREATE INDEX fk_followables ON public.follows USING btree (followable_id, followable_type);
+
+
+--
+-- Name: fk_follows; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX fk_follows ON public.follows USING btree (follower_id, follower_type);
+
+
+--
+-- Name: index_ahoy_events_on_time; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ahoy_events_on_time ON public.ahoy_events USING btree ("time");
+
+
+--
+-- Name: index_ahoy_events_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ahoy_events_on_user_id ON public.ahoy_events USING btree (user_id);
+
+
+--
+-- Name: index_ahoy_events_on_visit_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ahoy_events_on_visit_id ON public.ahoy_events USING btree (visit_id);
+
+
+--
+-- Name: index_cases_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_cases_on_slug ON public.cases USING btree (slug);
+
+
+--
+-- Name: index_cases_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cases_on_user_id ON public.cases USING btree (user_id);
+
+
+--
+-- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON public.comments USING btree (commentable_id, commentable_type);
+
+
+--
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type ON public.friendly_id_slugs USING btree (slug, sluggable_type);
+
+
+--
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope ON public.friendly_id_slugs USING btree (slug, sluggable_type, scope);
+
+
+--
+-- Name: index_friendly_id_slugs_on_sluggable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_friendly_id_slugs_on_sluggable_id ON public.friendly_id_slugs USING btree (sluggable_id);
+
+
+--
+-- Name: index_friendly_id_slugs_on_sluggable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_friendly_id_slugs_on_sluggable_type ON public.friendly_id_slugs USING btree (sluggable_type);
+>>>>>>> e1a20c63df13155bd32282c7667e48c7f0b01abe
 
 
 --
@@ -1540,5 +1623,9 @@ INSERT INTO schema_migrations (version) VALUES ('20180926092536');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926123043');
 
+<<<<<<< HEAD
 INSERT INTO schema_migrations (version) VALUES ('20181004104057');
+=======
+INSERT INTO schema_migrations (version) VALUES ('20181001124317');
+>>>>>>> e1a20c63df13155bd32282c7667e48c7f0b01abe
 
