@@ -1,0 +1,17 @@
+chokings:
+  name: 'Chokings'
+
+shootings:
+  name: 'Shootings'
+
+beatings:
+  name: 'Beatings'
+
+tasings:
+  name: 'Tasings'
+
+Unknown:
+  name: 'Unknown'
+
+vehicular:
+  name: 'Vehicular'
