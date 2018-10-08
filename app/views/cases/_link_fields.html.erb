@@ -1,5 +1,7 @@
 <div class="nested-fields">
   <%= f.input :url %>
   <%= f.input :title %>
-  <%= link_to_remove_association "remove link", f %>
+  <div class='btn-group'>
+    <%= link_to_remove_association "remove link", f, class: 'btn btn-primary btn-remove' %>
   </div>
+</div>
