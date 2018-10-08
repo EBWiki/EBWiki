@@ -197,7 +197,7 @@ CREATE TABLE public.cases (
     litigation text,
     country character varying,
     remove_avatar boolean,
-    summary text,
+    summary text NOT NULL,
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
     blurb text
@@ -1532,6 +1532,8 @@ INSERT INTO schema_migrations (version) VALUES ('20180926091204');
 INSERT INTO schema_migrations (version) VALUES ('20180926092536');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926123043');
+
+INSERT INTO schema_migrations (version) VALUES ('20181001124317');
 
 INSERT INTO schema_migrations (version) VALUES ('20181008175901');
 
