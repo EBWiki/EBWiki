@@ -42,7 +42,7 @@ cp /vagrant/dev_provisions/redis.conf /etc/redis/redis.conf
 systemctl restart redis.service
 
 echo '##  Installing Node.js'
-apt-get install -qq nodejs npm 2>&1 >> ${INSTALL_LOG}
+apt-get install -qq nodejs npm node-gyp nodejs-dev libssl1.0-dev 2>&1 >> ${INSTALL_LOG}
 
 echo '##  Installing Java Runtime Environment'
 apt-get install -qq openjdk-8-jre 2>&1 >> ${INSTALL_LOG}
