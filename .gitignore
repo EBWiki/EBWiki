@@ -47,3 +47,9 @@ bower.json
 
 # remove database.yml from files being pushed
 config/database.yml
+
+# Local dev files and directories
+.vscode
+.vagrant
+environment.sh
+
