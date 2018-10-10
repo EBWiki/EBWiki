@@ -6,7 +6,7 @@ source /vagrant/dev_provisions/environment.sh
 
 echo '#########################################################'
 echo '##  Provisioning the EBWiki Development Environment'
-echo '##  This will take a while :D'
+echo '##  This will take a while :D (10-15 mins depending on network)'
 echo "##  Start time: $(date)"
 echo '##  Provisioning the EBWiki Development Environment' > ${INSTALL_LOG}
 echo '#########################################################'
@@ -15,7 +15,9 @@ env >> ${INSTALL_LOG}
 cp /vagrant/dev_provisions/database.yml /vagrant/config/database.yml
 
 echo '##  Updating the apt cache'
+apt-mark hold grub-common grub-pc grub-pc-bin grub2-common
 apt-get update 2>&1 >> ${INSTALL_LOG}
+apt-get upgrade -q --assume-yes 2>&1 >> ${INSTALL_LOG}
 
 echo '##  Installing dependencies'
 apt-get install -qq \
@@ -36,13 +38,13 @@ apt-get install -qq \
     zlib1g-dev \
     2>&1 >> ${INSTALL_LOG}
 
-echo '## Installing Redis'
+echo '##  Installing Redis'
 apt-get install -qq redis-server 2>&1 >> ${INSTALL_LOG}
 cp /vagrant/dev_provisions/redis.conf /etc/redis/redis.conf
 systemctl restart redis.service
 
 echo '##  Installing Node.js'
-apt-get install -qq nodejs npm node-gyp nodejs-dev libssl1.0-dev 2>&1 >> ${INSTALL_LOG}
+apt-get install -qq nodejs 2>&1 >> ${INSTALL_LOG}
 
 echo '##  Installing Java Runtime Environment'
 apt-get install -qq openjdk-8-jre 2>&1 >> ${INSTALL_LOG}
@@ -67,7 +69,7 @@ apt-get install -qq postgresql 2>&1 >> ${INSTALL_LOG}
 su - postgres -c \
 psql <<__END__
 CREATE USER blackops WITH PASSWORD '${BLACKOPS_DATABASE_PASSWORD}';
-ALTER USER blackops CREATEDB;
+ALTER USER blackops WITH SUPERUSER;
 __END__
 
 echo '##  Installing Ruby (via RVM)'
