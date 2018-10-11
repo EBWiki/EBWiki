@@ -3,12 +3,10 @@
      method in app/views/layouts/application.html.erb
      TODO: Create a view helper that works for all pages -->
 <% meta title: "EBWiki editing the case of #{@this_case.title}",
-     description: "#{@this_case.overview.truncate(155)}",
+     description: "#{@this_case.blurb.truncate(155)}",
      keywords: %w("@this_case.subjects.first.name police violence people color")
 %>
 
-<h1>Edit Case for "<%= @this_case.subjects.first.name %>"</h1>
+<h1>Editing Case <%= @this_case.title %></h1>
 
 <%= render 'form' %>
-
-<%= link_to 'Cancel', root_path, class: 'btn btn-success' %>

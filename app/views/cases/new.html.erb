@@ -1,12 +1,8 @@
-<!-- the meta tag is for use with metamagic gem which generates 
+<!-- the meta tag is for use with metamagic gem which generates
      title and meta tags in conjunction with the metamagic
-     method in app/views/layouts/application.html.erb 
+     method in app/views/layouts/application.html.erb
      TODO: Create a view helper that works for all pages -->
 <% meta %>
 <h1>New Case</h1>
 
 <%= render 'form' %>
-
-<div class="btn-group back">
-  <%= link_to 'Back to Home', root_path, class: 'btn btn-primary' %>
-</div>  

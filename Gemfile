@@ -45,7 +45,7 @@ gem 'hightop', '~> 0.2'
 gem 'gotcha', '0.0.6'
 
 # xml sitemap
-gem 'sitemap_generator', '6.0'
+gem 'sitemap_generator', '~> 6.0'
 
 # internal analytics
 gem 'ahoy_matey', '2.1'
@@ -166,3 +166,6 @@ gem 'httparty', '~> 0.16'
 gem 'rack-host-redirect', '~> 1.3'
 
 gem 'rubocop', '~> 0.58', require: false
+
+# for storing cookies via active record storage to avoid 4kb limit
+gem 'activerecord-session_store'

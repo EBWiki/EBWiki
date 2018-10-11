@@ -19,7 +19,7 @@
     <%= f.collection_select :state_id, SortCollectionOrdinally.call(collection: State.all), :id, :name, {prompt: "State"}, label:"State" %>
     <%= f.input :zipcode %>
     <%= f.input :description %>
-    <%= f.input :jurisdiction_type, collection: Agency::JurisdictionType.map(&:name) %>
+    <%= f.input :jurisdiction_type, collection: @jurisdiction_types %>
     <%= f.input :telephone %>
     <%= f.input :email %>
     <%= f.input :website %>
@@ -31,4 +31,13 @@
       <%= f.button :submit, class: "btn btn-success" %>
     </div>
   </div>
+<<<<<<< HEAD
 <% end %>
+=======
+
+  <div class="btn-group back">
+    <%= link_to 'Back', agencies_path, class: 'btn btn-primary' %>
+  </div>
+
+<% end %>
+>>>>>>> 1e55e17c0083785eb019991fafc6a24dba967424
