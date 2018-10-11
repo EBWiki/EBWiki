@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   get 'analytics/index'
 
-  get '/maps/index', to: 'maps#index'
+  get '/maps', to: 'maps#index'
 
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
