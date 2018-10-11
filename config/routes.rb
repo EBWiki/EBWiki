@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get '/javascript_lab', to: 'static#javascript_lab'
   get '/instructions', to: 'static#instructions'
 
-  get '/sitemap', to: redirect('http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz', status: 301)
+  get '/sitemap', to: redirect(ENV['EBWIKI_SITEMAP_URL'], status: 301)
 
   mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
   devise_for :users, controllers: {
