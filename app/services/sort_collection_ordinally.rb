@@ -5,10 +5,11 @@
 class SortCollectionOrdinally
   include Service
 
-  def call(collection:, column_name: column_name)
-    first_sort = collection.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
+  def call(collection:, column_name: 'name')
+    first_sort = collection.sort_by { |e| ActiveSupport::Inflector.transliterate(e.send(column_name).downcase) }
     names_with_numbers = first_sort.select { |element| element.name.match(/(\d+)/) }
     return first_sort if names_with_numbers.empty?
+
     names_with_no_numbers = first_sort - names_with_numbers
     sorted_names_with_numbers = ordinal_sort(names_with_numbers)
     sorted_names_with_numbers + names_with_no_numbers
