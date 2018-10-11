@@ -6,9 +6,6 @@
      description: "#{@this_case.blurb}",
      keywords: %w("@this_case.subjects.first.name police violence people color")
 %>
-<% content_for :meta_title, "#{@this_case.title} is on #{DEFAULT_META["meta_product_name"]}" %>
-<% content_for :meta_description, @this_case.blurb %>
-<%# <% content_for :meta_image, cl_image_path(@this_case.avatar.path) %> %>
 <!-- Page Content -->
 <div class="container">
 
@@ -188,3 +185,4 @@
     });
   }
 </script>
+

@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { host: 'http://test.host' || 'localhost' || 'https://ebwiki.org' }
+   { host: ENV["HOST"] || "localhost:3000" }
   end
 
   private
