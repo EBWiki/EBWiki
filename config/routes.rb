@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'analytics/index'
+  get '/analytics', to: 'analytics#index'
 
   get '/maps/index', to: 'maps#index'
 
