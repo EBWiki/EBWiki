@@ -114,7 +114,7 @@
 <div class="cold-md-12">
   <fieldset class="fsStyle">
     <legend class="legendStyle">Summary of Changes to the Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Main Content Fields", :content => "Please summarize the edits you have made to this case.  These summaries populate the history tabs to make the history of the case more readable to users."})%></legend>
-    <%= f.input :summary %>
+    <%= f.input :summary, as: :text, value: nil %>
   </fieldset>
 </div>
   <br>
