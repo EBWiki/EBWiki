@@ -110,6 +110,7 @@ SEARCHBOX_URL=<Elasticsearch URL>
 CODECLIMATE_REPO_TOKEN=<Codeclimate API>
 AUTOBUS_SNAPSHOT_URL=<Autobus URL>
 BLACKOPS_DATABASE_PASSWORD=<local database password>
+EBWIKI_SITEMAP_URL=http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz
 ```
 
 ### Windows
