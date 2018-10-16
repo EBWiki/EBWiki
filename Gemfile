@@ -169,3 +169,6 @@ gem 'rubocop', '~> 0.58', require: false
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
+
+# to make our own markers
+gem 'therubyracer', platforms: :ruby
