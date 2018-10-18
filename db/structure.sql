@@ -106,6 +106,40 @@ CREATE TABLE public.ahoy_events (
 
 
 --
+-- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.calendar_events (
+    id integer NOT NULL,
+    title character varying,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
+    description text,
+    city character varying,
+    state_id integer
+);
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.calendar_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.calendar_events_id_seq OWNED BY public.calendar_events.id;
+
+
+--
 -- Name: case_agencies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -941,6 +975,13 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.calendar_events ALTER COLUMN id SET DEFAULT nextval('public.calendar_events_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.case_agencies ALTER COLUMN id SET DEFAULT nextval('public.case_agencies_id_seq'::regclass);
 
 
@@ -1105,6 +1146,14 @@ ALTER TABLE ONLY public.agencies
 
 ALTER TABLE ONLY public.ahoy_events
     ADD CONSTRAINT ahoy_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events
+    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -1609,4 +1658,6 @@ INSERT INTO schema_migrations (version) VALUES ('20181003130555');
 INSERT INTO schema_migrations (version) VALUES ('20181005060647');
 
 INSERT INTO schema_migrations (version) VALUES ('20181008175901');
+
+INSERT INTO schema_migrations (version) VALUES ('20181013103240');
 
