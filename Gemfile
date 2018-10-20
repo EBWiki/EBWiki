@@ -137,6 +137,9 @@ gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 # track changes in model objects
 gem 'paper_trail', '~> 9.2.0'
 
+# needed for paper_trail to track changes done via rails_admin views
+gem 'paper_trail-association_tracking'
+
 # pretty urls
 gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
