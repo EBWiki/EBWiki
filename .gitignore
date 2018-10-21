@@ -46,4 +46,4 @@ bower.json
 .DS_Store
 
 # remove database.yml from files being pushed
-config/database.yml
+/config/database.yml
