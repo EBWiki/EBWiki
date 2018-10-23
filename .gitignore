@@ -23,18 +23,18 @@ pickle-email-*.html
 config/initializers/secret_token.rb
 config/secrets.yml
 
-## Environment normalisation:
+## Environment normalization:
 /.bundle
 /vendor/bundle
 /.env
 
-# these should all be checked in to normalise the environment:
+# These should all be checked in to normalize the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
 
-# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+# Unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 
-# if using bower-rails ignore default bower_components path bower.json files
+# If using bower-rails ignore default bower_components path bower.json files
 /vendor/assets/bower_components
 *.bowerrc
 bower.json
@@ -45,5 +45,5 @@ bower.json
 # Ignore DS_Store files
 .DS_Store
 
-# remove database.yml from files being pushed
+# Remove database.yml from files being pushed
 config/database.yml
