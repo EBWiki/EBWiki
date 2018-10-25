@@ -107,6 +107,40 @@ CREATE TABLE public.ahoy_events (
 
 
 --
+-- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.calendar_events (
+    id integer NOT NULL,
+    title character varying,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
+    description text,
+    city character varying,
+    state_id integer
+);
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.calendar_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.calendar_events_id_seq OWNED BY public.calendar_events.id;
+
+
+--
 -- Name: case_agencies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -183,7 +217,7 @@ CREATE TABLE public.cases (
     category_id integer,
     date date,
     state_id integer,
-    city character varying,
+    city character varying NOT NULL,
     address character varying,
     zipcode character varying,
     longitude double precision,
@@ -427,7 +461,8 @@ CREATE TABLE public.genders (
     id integer NOT NULL,
     sex character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slug character varying
 );
 
 
@@ -938,6 +973,13 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 
 
 --
+-- Name: calendar_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events ALTER COLUMN id SET DEFAULT nextval('public.calendar_events_id_seq'::regclass);
+
+
+--
 -- Name: case_agencies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1105,6 +1147,14 @@ ALTER TABLE ONLY public.agencies
 
 ALTER TABLE ONLY public.ahoy_events
     ADD CONSTRAINT ahoy_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: calendar_events calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events
+    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -1523,6 +1573,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING b
 
 
 --
+-- Name: subjects fk_rails_94f26cc552; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subjects
+    ADD CONSTRAINT fk_rails_94f26cc552 FOREIGN KEY (case_id) REFERENCES public.cases(id) ON DELETE CASCADE;
+
+
+--
 -- Name: links fk_rails_d221076f62; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1594,11 +1652,15 @@ INSERT INTO schema_migrations (version) VALUES ('20180926092536');
 
 INSERT INTO schema_migrations (version) VALUES ('20180926123043');
 
+INSERT INTO schema_migrations (version) VALUES ('20181001124317');
+
 INSERT INTO schema_migrations (version) VALUES ('20181003112438');
 
 INSERT INTO schema_migrations (version) VALUES ('20181003130555');
 
-INSERT INTO schema_migrations (version) VALUES ('20181001124317');
-
 INSERT INTO schema_migrations (version) VALUES ('20181005060647');
+
+INSERT INTO schema_migrations (version) VALUES ('20181008175901');
+
+INSERT INTO schema_migrations (version) VALUES ('20181013103240');
 
