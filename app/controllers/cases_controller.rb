@@ -56,7 +56,6 @@ class CasesController < ApplicationController
 
   def edit
     @this_case = Case.friendly.find(params[:id])
-    @this_case.update_attribute(:summary, nil)
     @this_case.links.build
     @agencies = SortCollectionOrdinally.call(Agency.all)
     @categories = SortCollectionOrdinally.call(Category.all)
