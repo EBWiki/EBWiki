@@ -216,7 +216,7 @@ CREATE TABLE public.cases (
     category_id integer,
     date date,
     state_id integer,
-    city character varying,
+    city character varying NOT NULL,
     address character varying,
     zipcode character varying,
     longitude double precision,
@@ -1653,6 +1653,8 @@ INSERT INTO schema_migrations (version) VALUES ('20180926123043');
 
 INSERT INTO schema_migrations (version) VALUES ('20181001124317');
 
+INSERT INTO schema_migrations (version) VALUES ('20181003112438');
+
 INSERT INTO schema_migrations (version) VALUES ('20181003130555');
 
 INSERT INTO schema_migrations (version) VALUES ('20181005060647');
@@ -1660,4 +1662,6 @@ INSERT INTO schema_migrations (version) VALUES ('20181005060647');
 INSERT INTO schema_migrations (version) VALUES ('20181008175901');
 
 INSERT INTO schema_migrations (version) VALUES ('20181013103240');
+
+INSERT INTO schema_migrations (version) VALUES ('20181018123139');
 
