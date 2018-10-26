@@ -841,7 +841,10 @@ CREATE TABLE public.users (
     linkedin character varying,
     slug character varying,
     subscribed boolean,
-    analyst boolean DEFAULT false
+    analyst boolean DEFAULT false,
+    confirmation_token character varying,
+    confirmed_at timestamp without time zone,
+    confirmation_sent_at timestamp without time zone
 );
 
 
@@ -1663,4 +1666,8 @@ INSERT INTO schema_migrations (version) VALUES ('20181005060647');
 INSERT INTO schema_migrations (version) VALUES ('20181008175901');
 
 INSERT INTO schema_migrations (version) VALUES ('20181013103240');
+
+INSERT INTO schema_migrations (version) VALUES ('20181025220728');
+
+INSERT INTO schema_migrations (version) VALUES ('20181026005352');
 
