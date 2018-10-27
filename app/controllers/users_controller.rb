@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    authorize @user
     if @user.update_attributes(user_params)
       flash[:success] = 'Your profile was updated!'
       redirect_to @user
