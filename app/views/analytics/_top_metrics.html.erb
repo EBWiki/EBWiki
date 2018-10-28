@@ -55,7 +55,7 @@
         <%= Follow.count %>
       </div>
       <small>
-        <%= Follow.first.mom_follows_growth %>% mom*
+        <%= Follow.first.mom_follows_growth rescue 0.0 %>% mom*
       </small>
     </div>
     <!-- Case Updates Sent -->
