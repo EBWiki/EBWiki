@@ -20,8 +20,6 @@ class ApplicationController < ActionController::Base
   before_action :state_objects
   before_action :set_paper_trail_whodunnit
 
-  
-
   def info_for_paper_trail
     # Save additional info
     { ip: request.remote_ip }
