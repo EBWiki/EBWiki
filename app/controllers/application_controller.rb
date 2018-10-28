@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   before_action :state_objects
   before_action :set_paper_trail_whodunnit
 
-  helper_method :mailbox, :conversation
+  helper_method :mailbox
 
   def info_for_paper_trail
     # Save additional info
@@ -33,6 +33,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def mailbox
+    @mailbox ||= current_user.mailbox
+  end
 
   def log_invalid_token_attempt
     warning_message = 'Invalid Auth Token error'
