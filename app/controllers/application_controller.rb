@@ -20,6 +20,8 @@ class ApplicationController < ActionController::Base
   before_action :state_objects
   before_action :set_paper_trail_whodunnit
 
+  helper_method :mailbox, :conversation
+
   def info_for_paper_trail
     # Save additional info
     { ip: request.remote_ip }
@@ -32,6 +34,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  
+
+  
+
   def log_invalid_token_attempt
     warning_message = 'Invalid Auth Token error'
     Rails.logger.warn warning_message
@@ -40,7 +46,7 @@ class ApplicationController < ActionController::Base
   end
 
   def state_objects
-    @state_objects ||= SortCollectionOrdinally.call(State.all)
+    @state_objects ||= SortCollectionOrdinally.call(collection: State.all)
   end
 
   def storable_location?
