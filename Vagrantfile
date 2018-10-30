@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+
 VAGRANTFILE_API_VERSION = '2'
 
 guest_ip = '192.168.68.68'
