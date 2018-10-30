@@ -44,7 +44,10 @@ cp /vagrant/dev_provisions/redis.conf /etc/redis/redis.conf
 systemctl restart redis.service
 
 echo '##  Installing Node.js'
-apt-get install -qq nodejs 2>&1 >> ${INSTALL_LOG}
+wget -qO- "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | bash 2>&1 >> ${INSTALL_LOG}
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 2>&1 >> ${INSTALL_LOG}
+nvm install --lts 2>&1 >> ${INSTALL_LOG}
 
 echo '##  Installing Java Runtime Environment'
 apt-get install -qq openjdk-8-jre 2>&1 >> ${INSTALL_LOG}
@@ -119,6 +122,9 @@ do
         cd /vagrant && DATABASE_URL=postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost/blackops_${env} rake db:${rake_step} 2>&1 >> ${INSTALL_LOG};
     done
 done
+
+#echo '## Restoring production database dump...'
+#pg_restore --verbose --clean --no-acl --no-owner --no-password --dbname="postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost:5432/blackops_development" "/vagrant/${DATABASE_DUMP_FILE}" 2>&1 >> ${INSTALL_LOG}
 
 echo
 echo
