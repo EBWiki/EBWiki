@@ -757,6 +757,7 @@ DEPENDENCIES
   momentjs-rails
   newrelic_rpm (~> 5.2.0)
   paper_trail (~> 9.2.0)
+  paper_trail-association_tracking
   pg (= 0.20.0)
   pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
@@ -793,4 +794,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.3
