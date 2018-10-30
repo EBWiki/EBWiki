@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-# -*- mode: ruby -*-
 # vi: set ft=ruby :
+# -*- mode: ruby -*-
 
 VAGRANTFILE_API_VERSION = '2'
 
