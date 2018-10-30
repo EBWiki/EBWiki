@@ -41,9 +41,10 @@ ratings:
 exclude_paths:
 - app/assets/javascripts/markerclusterer.js
 - vendor/assets/javascripts/*.js
-- db/schema.rb
-- spec/**/*.rb
+- db/
+- spec/
 - "Gemfile.lock"
 - public/assets/**/*
 - doc/**/*
 - docs/**/*
+- config/
