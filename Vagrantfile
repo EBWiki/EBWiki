@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# vi: set ft=ruby :
 # -*- mode: ruby -*-
 
 VAGRANTFILE_API_VERSION = '2'
