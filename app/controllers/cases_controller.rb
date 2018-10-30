@@ -9,11 +9,10 @@ class CasesController < ApplicationController
     @this_case = current_user.cases.build
     @this_case.agencies.build
     @this_case.links.build
-    @agencies = SortCollectionOrdinally.call(Agency.all)
-    @categories = SortCollectionOrdinally.call(Category.all)
-    @states = SortCollectionOrdinally.call(State.all)
-    @genders = SortCollectionOrdinally.call(Gender.all)
-    @ethnicities = Ethnicity.all
+    @agencies = SortCollectionOrdinally.call(collection: Agency.all)
+    @categories = SortCollectionOrdinally.call(collection: Category.all)
+    @states = SortCollectionOrdinally.call(collection: State.all)
+    @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
   end
 
   def index
@@ -47,22 +46,20 @@ class CasesController < ApplicationController
       flash[:undo] = @this_case.versions
       redirect_to @this_case
     else
-      @agencies = SortCollectionOrdinally.call(Agency.all)
-      @categories = SortCollectionOrdinally.call(Category.all)
-      @states = SortCollectionOrdinally.call(State.all)
+      @agencies = SortCollectionOrdinally.call(collection: Agency.all)
+      @categories = SortCollectionOrdinally.call(collection: Category.all)
+      @states = SortCollectionOrdinally.call(collection: State.all)
       render 'new'
     end
   end
 
   def edit
     @this_case = Case.friendly.find(params[:id])
-    @this_case.update_attribute(:summary, nil)
     @this_case.links.build
-    @agencies = SortCollectionOrdinally.call(Agency.all)
-    @categories = SortCollectionOrdinally.call(Category.all)
-    @states = SortCollectionOrdinally.call(State.all)
-    @genders = SortCollectionOrdinally.call(Gender.all)
-    @ethnicities = Ethnicity.all
+    @agencies = SortCollectionOrdinally.call(collection: Agency.all)
+    @categories = SortCollectionOrdinally.call(collection: Category.all)
+    @states = SortCollectionOrdinally.call(collection: State.all)
+    @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
   end
 
   def followers
@@ -80,8 +77,8 @@ class CasesController < ApplicationController
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
-      @categories = SortCollectionOrdinally.call(Category.all)
-      @states = SortCollectionOrdinally.call(State.all)
+      @categories = SortCollectionOrdinally.call(collection: Category.all)
+      @states = SortCollectionOrdinally.call(collection: State.all)
       render 'edit'
     end
   end

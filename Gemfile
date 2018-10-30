@@ -45,7 +45,7 @@ gem 'hightop', '~> 0.2'
 gem 'gotcha', '0.0.6'
 
 # xml sitemap
-gem 'sitemap_generator', '6.0'
+gem 'sitemap_generator', '~> 6.0'
 
 # internal analytics
 gem 'ahoy_matey', '2.1'
@@ -137,6 +137,9 @@ gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 # track changes in model objects
 gem 'paper_trail', '~> 9.2.0'
 
+# needed for paper_trail to track changes done via rails_admin views
+gem 'paper_trail-association_tracking'
+
 # pretty urls
 gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
@@ -166,3 +169,6 @@ gem 'httparty', '~> 0.16'
 gem 'rack-host-redirect', '~> 1.3'
 
 gem 'rubocop', '~> 0.58', require: false
+
+# for storing cookies via active record storage to avoid 4kb limit
+gem 'activerecord-session_store'

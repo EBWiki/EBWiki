@@ -52,4 +52,3 @@ config/database.yml
 .vscode
 .vagrant
 environment.sh
-

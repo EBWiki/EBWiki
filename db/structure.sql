@@ -2,7 +2,11 @@
 -- PostgreSQL database dump
 --
 
+<<<<<<< HEAD
 -- Dumped from database version 9.6.8
+=======
+-- Dumped from database version 9.6.10
+>>>>>>> master
 -- Dumped by pg_dump version 9.6.10
 
 SET statement_timeout = 0;
@@ -107,6 +111,40 @@ CREATE TABLE public.ahoy_events (
 
 
 --
+-- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.calendar_events (
+    id integer NOT NULL,
+    title character varying,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
+    description text,
+    city character varying,
+    state_id integer
+);
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.calendar_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.calendar_events_id_seq OWNED BY public.calendar_events.id;
+
+
+--
 -- Name: case_agencies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -183,7 +221,7 @@ CREATE TABLE public.cases (
     category_id integer,
     date date,
     state_id integer,
-    city character varying,
+    city character varying NOT NULL,
     address character varying,
     zipcode character varying,
     longitude double precision,
@@ -297,7 +335,8 @@ CREATE TABLE public.ethnicities (
     id integer NOT NULL,
     title character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slug character varying
 );
 
 
@@ -427,7 +466,8 @@ CREATE TABLE public.genders (
     id integer NOT NULL,
     sex character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slug character varying
 );
 
 
@@ -941,6 +981,13 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 -- Name: case_agencies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.calendar_events ALTER COLUMN id SET DEFAULT nextval('public.calendar_events_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.case_agencies ALTER COLUMN id SET DEFAULT nextval('public.case_agencies_id_seq'::regclass);
 
 
@@ -1060,6 +1107,13 @@ ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.ses
 -- Name: states id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.states ALTER COLUMN id SET DEFAULT nextval('public.states_id_seq'::regclass);
 
 
@@ -1108,7 +1162,19 @@ ALTER TABLE ONLY public.ahoy_events
 
 
 --
+<<<<<<< HEAD
 -- Name: case_agencies case_agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+=======
+-- Name: calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events
+    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: case_agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+>>>>>>> master
 --
 
 ALTER TABLE ONLY public.case_agencies
@@ -1236,7 +1302,11 @@ ALTER TABLE ONLY public.organizations
 
 
 --
+<<<<<<< HEAD
 -- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+=======
+-- Name: sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+>>>>>>> master
 --
 
 ALTER TABLE ONLY public.sessions
@@ -1244,7 +1314,11 @@ ALTER TABLE ONLY public.sessions
 
 
 --
+<<<<<<< HEAD
 -- Name: states states_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+=======
+-- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+>>>>>>> master
 --
 
 ALTER TABLE ONLY public.states
@@ -1523,7 +1597,15 @@ CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING b
 
 
 --
--- Name: links fk_rails_d221076f62; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_94f26cc552; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subjects
+    ADD CONSTRAINT fk_rails_94f26cc552 FOREIGN KEY (case_id) REFERENCES public.cases(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_rails_d221076f62; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.links
@@ -1596,5 +1678,21 @@ INSERT INTO schema_migrations (version) VALUES ('20180926123043');
 
 INSERT INTO schema_migrations (version) VALUES ('20181001124317');
 
+<<<<<<< HEAD
 INSERT INTO schema_migrations (version) VALUES ('20181005060647');
 
+=======
+INSERT INTO schema_migrations (version) VALUES ('20181003112438');
+
+INSERT INTO schema_migrations (version) VALUES ('20181003130555');
+
+INSERT INTO schema_migrations (version) VALUES ('20181005060647');
+
+INSERT INTO schema_migrations (version) VALUES ('20181008175901');
+
+INSERT INTO schema_migrations (version) VALUES ('20181013103240');
+
+INSERT INTO schema_migrations (version) VALUES ('20181025082828');
+
+INSERT INTO schema_migrations (version) VALUES ('20181025220728');
+>>>>>>> master

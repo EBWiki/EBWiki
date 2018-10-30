@@ -7,7 +7,7 @@ class AgenciesController < ApplicationController
 
   # GET /agencies
   def index
-    @agencies = SortCollectionOrdinally.call(Agency.all)
+    @agencies = SortCollectionOrdinally.call(collection: Agency.all)
   end
 
   # GET /agencies/1
@@ -21,11 +21,15 @@ class AgenciesController < ApplicationController
   # GET /agencies/new
   def new
     @agency = Agency.new
+    @states = SortCollectionOrdinally.call(collection: State.all)
+    @jurisdiction_types = Agency::JurisdictionType.map(&:name)
   end
 
   # GET /agencies/1/edit
   def edit
     @agency = Agency.friendly.find(params[:id])
+    @states = SortCollectionOrdinally.call(collection: State.all)
+    @jurisdiction_types = Agency::JurisdictionType.map(&:name)
   end
 
   # POST /agencies

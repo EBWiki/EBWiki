@@ -5,12 +5,13 @@
 class SortCollectionOrdinally
   include Service
 
-  def call(collection)
-    first_sort = collection.sort_by { |e| ActiveSupport::Inflector.transliterate(e.name.downcase) }
-    names_with_numbers = first_sort.select { |element| element.name.match(/(\d+)/) }
+  def call(collection:, column_name: 'name')
+    first_sort = collection.sort_by { |e| ActiveSupport::Inflector.transliterate(e.send(column_name).downcase) }
+    names_with_numbers = first_sort.select { |element| element.send(column_name).match(/(\d+)/) }
     return first_sort if names_with_numbers.empty?
+
     names_with_no_numbers = first_sort - names_with_numbers
-    sorted_names_with_numbers = ordinal_sort(names_with_numbers)
+    sorted_names_with_numbers = ordinal_sort(collection: names_with_numbers)
     sorted_names_with_numbers + names_with_no_numbers
   end
 
@@ -18,9 +19,9 @@ class SortCollectionOrdinally
 
   # Performs ordinal sort removes number portion from string, then sorts names based on
   # number then following words
-  def ordinal_sort(collection)
+  def ordinal_sort(collection:, column_name: 'name')
     name_object_hash = {}
-    collection.each { |element| name_object_hash[element.name] = element }
+    collection.each { |element| name_object_hash[element.send(column_name)] = element }
 
     names = name_object_hash.keys
     sorted_names = names.sort_by do |n|

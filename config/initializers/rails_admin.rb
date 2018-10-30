@@ -23,13 +23,27 @@ RailsAdmin.config do |config|
   config.actions do
     dashboard                     # mandatory
     index                         # mandatory
-    new
-    export
-    bulk_delete
-    show
-    edit
-    delete
-    show_in_app
+    new do
+      except ['CalendarEvent']
+    end
+    export do
+      except ['CalendarEvent']
+    end
+    bulk_delete do
+      except ['CalendarEvent']
+    end
+    show do
+      except ['CalendarEvent']
+    end
+    edit do
+      except ['CalendarEvent']
+    end
+    delete do
+      except ['CalendarEvent']
+    end
+    show_in_app do
+      except ['CalendarEvent']
+    end
 
     ## With an audit adapter, you can add:
     # history_index

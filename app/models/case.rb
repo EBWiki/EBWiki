@@ -12,7 +12,7 @@ class Case < ActiveRecord::Base
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :follows, as: :followable, dependent: :destroy
-  has_many :subjects, dependent: :destroy
+  has_many :subjects
   accepts_nested_attributes_for :subjects, reject_if: :all_blank, allow_destroy: true
 
   has_many :case_agencies, dependent: :destroy
@@ -96,7 +96,7 @@ class Case < ActiveRecord::Base
   end
 
   def nearby_cases
-    try(:nearbys, 50).try(:order, 'distance')
+    try(:nearbys, 50).try(:order, 'distance') || []
   end
 
   def case_date_validator
