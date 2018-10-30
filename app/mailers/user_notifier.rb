@@ -25,4 +25,9 @@ class UserNotifier < ApplicationMailer
     @user = user
     mail(to: @user.email, subject: 'Welcome to EndBiasWiki')
   end
+
+  def reset_confirmation(user)
+    @user = user
+    mail(to: @user.email, subject: 'Password Change Confirmation')
+  end
 end
