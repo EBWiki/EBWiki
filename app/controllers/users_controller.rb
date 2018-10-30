@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     stored_location_for(resource) || super
   end
 
-  def update_user
+  def update_user_email
     @user = User.find(params[:id])
     authorize @user
     if @user.update_attributes(user_param)
