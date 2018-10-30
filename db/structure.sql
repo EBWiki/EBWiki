@@ -330,7 +330,8 @@ CREATE TABLE public.ethnicities (
     id integer NOT NULL,
     title character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slug character varying
 );
 
 
@@ -1665,3 +1666,4 @@ INSERT INTO schema_migrations (version) VALUES ('20181013103240');
 
 INSERT INTO schema_migrations (version) VALUES ('20181025082828');
 
+INSERT INTO schema_migrations (version) VALUES ('20181025220728');
