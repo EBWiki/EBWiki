@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.14
--- Dumped by pg_dump version 9.5.14
+-- Dumped from database version 9.6.10
+-- Dumped by pg_dump version 9.6.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -330,7 +330,8 @@ CREATE TABLE public.ethnicities (
     id integer NOT NULL,
     title character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slug character varying
 );
 
 
@@ -1673,6 +1674,8 @@ INSERT INTO schema_migrations (version) VALUES ('20181008175901');
 
 INSERT INTO schema_migrations (version) VALUES ('20181013103240');
 
-INSERT INTO schema_migrations (version) VALUES ('20181018123139');
+INSERT INTO schema_migrations (version) VALUES ('20181025082828');
+
+INSERT INTO schema_migrations (version) VALUES ('20181025220728');
 
 INSERT INTO schema_migrations (version) VALUES ('20181026005352');
