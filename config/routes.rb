@@ -42,6 +42,9 @@ Rails.application.routes.draw do
 
   root 'cases#index'
   resources :users do
+    member do
+      patch "update_email" 
+    end
     resources :registrations
   end
 
