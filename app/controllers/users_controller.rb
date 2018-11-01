@@ -38,22 +38,10 @@ class UsersController < ApplicationController
     end
   end
 
-  def update_password
-    authorize @user
-    if @user.update_attributes(password_params)
-      UserNotifier.reset_confirmation(@user).deliver_now
-      flash[:success] = 'Your password was updated!'
-      redirect_to @user
-    else
-      render 'edit'
-    end
-  end
-
   private
   def user_params
     params.require(:user).permit(:name, :email, :description, :subscribed)
   end
-
   def find_user
     @user = User.find(params[:id])
     redirect_to users_path unless @user.present?
@@ -63,5 +51,8 @@ class UsersController < ApplicationController
   end
   def password_params
     params.require(:user).permit(:password)
+  end
+  def user_param
+    params.require(:user).permit(:email)
   end
 end

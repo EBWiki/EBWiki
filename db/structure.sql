@@ -841,7 +841,10 @@ CREATE TABLE public.users (
     linkedin character varying,
     slug character varying,
     subscribed boolean,
-    analyst boolean DEFAULT false
+    analyst boolean DEFAULT false,
+    confirmation_token character varying,
+    confirmed_at timestamp without time zone,
+    confirmation_sent_at timestamp without time zone
 );
 
 
@@ -1510,6 +1513,13 @@ CREATE INDEX index_sessions_on_updated_at ON public.sessions USING btree (update
 
 
 --
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btree (confirmation_token);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1667,3 +1677,5 @@ INSERT INTO schema_migrations (version) VALUES ('20181013103240');
 INSERT INTO schema_migrations (version) VALUES ('20181025082828');
 
 INSERT INTO schema_migrations (version) VALUES ('20181025220728');
+
+INSERT INTO schema_migrations (version) VALUES ('20181026005352');

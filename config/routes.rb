@@ -4,7 +4,7 @@ SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 Rails.application.routes.draw do
   get '/analytics', to: 'analytics#index'
 
-  get '/maps/index', to: 'maps#index'
+  get '/maps', to: 'maps#index'
 
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
@@ -43,8 +43,7 @@ Rails.application.routes.draw do
   root 'cases#index'
   resources :users do
     member do
-      patch :update_email
-      patch :update_password
+      patch "update_email" 
     end
     resources :registrations
   end
