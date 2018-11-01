@@ -4,6 +4,7 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :store_user_location!, if: :storable_location?
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
@@ -30,6 +31,12 @@ class ApplicationController < ActionController::Base
   def user_for_paper_trail
     # Save the user responsible for the action
     user_signed_in? ? current_user.id : 'Guest'
+  end
+
+
+  def configure_permitted_parameters
+    update_attrs = [:password, :password_confirmation, :current_password]
+    devise_parameter_sanitizer.permit :account_update, keys: update_attrs
   end
 
   private

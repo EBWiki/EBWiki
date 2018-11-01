@@ -2,7 +2,7 @@
 
 # EBWiki Users controller
 class UsersController < ApplicationController
-  before_action :find_user, only: [:show, :edit,:update,:update_email,:update_password]
+  before_action :find_user, only: [:show, :edit,:update,:update_email]
   
   def show
    
@@ -33,17 +33,6 @@ class UsersController < ApplicationController
     authorize @user
     if @user.update_attributes(email_params)
       flash[:success] = 'Your email was updated!'
-      redirect_to @user
-    else
-      render 'edit'
-    end
-  end
-
-  def update_password
-    authorize @user
-    if @user.update_attributes(password_params)
-      UserNotifier.reset_confirmation(@user)
-      flash[:success] = 'Your password was updated!'
       redirect_to @user
     else
       render 'edit'
