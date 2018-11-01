@@ -4,8 +4,7 @@
 class UsersController < ApplicationController
   before_action :find_user, only: [:show, :edit,:update,:update_email]
   
-  def show
-   
+  def show   
   end
 
   def edit
@@ -40,7 +39,6 @@ class UsersController < ApplicationController
   end
 
   private
-
   def user_params
     params.require(:user).permit(:name, :email, :description, :subscribed)
   end
@@ -49,7 +47,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     redirect_to users_path unless @user.present?
   end
-
   def email_params
     params.require(:user).permit(:email)
   end
