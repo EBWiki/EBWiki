@@ -49,6 +49,7 @@ class CasesController < ApplicationController
       @agencies = SortCollectionOrdinally.call(collection: Agency.all)
       @categories = SortCollectionOrdinally.call(collection: Category.all)
       @states = SortCollectionOrdinally.call(collection: State.all)
+      @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
       render 'new'
     end
   end
@@ -114,7 +115,7 @@ class CasesController < ApplicationController
       end
       flash[:success] = 'Undid that!'
       flash[:undo] = @this_case.versions
-    rescue
+    rescue StandardError
       flash[:alert] = 'Failed undoing the action...'
     ensure
       redirect_to root_path
