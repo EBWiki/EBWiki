@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 
 Rails.application.routes.draw do
@@ -43,7 +44,7 @@ Rails.application.routes.draw do
   root 'cases#index'
   resources :users do
     member do
-      patch "update_email" 
+      patch 'update_email'
     end
     resources :registrations
   end

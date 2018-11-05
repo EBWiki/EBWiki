@@ -10,12 +10,12 @@ RSpec.describe 'maps/index.html.erb', type: :view do
                                  state: State.find_by(ansi_code: 'NY'))
     assign(:cases, Kaminari.paginate_array(
         Case.pluck(:id,
-                    :latitude,
-                    :longitude,
-                    :avatar,
-                    :title,
-                    :overview)
-    ).page(1))
+                   :latitude,
+                   :longitude,
+                   :avatar,
+                   :title,
+                   :overview)
+      ).page(1))
     render
 
     expect(rendered).to match(/John Doe/m)

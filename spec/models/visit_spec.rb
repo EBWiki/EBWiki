@@ -38,7 +38,7 @@ RSpec.describe Visit, type: :model do
       visit_one = FactoryBot.create(:visit,
                                     landing_page: 'https://blackopswiki.herokuapp.com/about')
       FactoryBot.create(:visit,
-                                    landing_page: 'https://blackopswiki.herokuapp.com/about')
+                        landing_page: 'https://blackopswiki.herokuapp.com/about')
       FactoryBot.create(:visit)
       FactoryBot.create(:visit)
       visit_five = FactoryBot.create(:visit,
@@ -60,7 +60,7 @@ RSpec.describe Visit, type: :model do
     end
 
     it 'returns 0 if no new visits' do
-       FactoryBot.create(:visit, started_at: 31.days.ago)
+      FactoryBot.create(:visit, started_at: 31.days.ago)
       expect(Visit.first.mom_visits_growth).to eq(0)
     end
 

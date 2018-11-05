@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-
   describe 'scopes' do
     it 'returns comments sorted by desc create time' do
       comment_one = FactoryBot.create(:comment)
