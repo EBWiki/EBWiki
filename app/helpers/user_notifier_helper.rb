@@ -2,9 +2,20 @@
 
 # Set of helper methods for composing email messages
 module UserNotifierHelper
-  FOLLOW_CALL_TO_ACTION = 'It is very important that you click to follow one or more cases and allow us to keep you up to date. The more people paying attention, the easier it will be to affect change.'
-  SUBSCRIBER_MESSAGE = "As a newsletter subscriber, you'll receive our general updates periodically."
-  SUBSCRIBER_CALL_TO_ACTION = "#{ActionController::Base.helpers.link_to('Subscribe to our newsletter as well', ENV['MAILCHIMP_LINK'])} for periodic general updates and commentaries on this issue."
+  FOLLOW_CALL_TO_ACTION = <<~FCTA
+    It is very important that you click to follow one or more cases and allow us to keep
+    you up to date. The more people paying attention, the easier it will be to affect change.
+  FCTA
+
+  SUBSCRIBER_MESSAGE = <<~SM
+    As a newsletter subscriber, you'll receive our general updates periodically.
+  SM
+
+  subscriber_link = 'Subscribe to our newsletter as well', ENV['MAILCHIMP_LINK']
+  SUBSCRIBER_CALL_TO_ACTION = <<~SCTA
+    #{ActionController::Base.helpers.link_to(subscriber_link)}
+    for periodic general updates and commentaries on this issue.
+  SCTA
 
   def create_welcome_email_message(user, is_subscribed)
     followed_cases = user.all_following.count

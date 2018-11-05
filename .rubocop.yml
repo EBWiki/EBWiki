@@ -10,6 +10,9 @@ AllCops:
     - db/schema.rb
     - db/seeds.rb
     - db/structure.sql
+    - bin/*
+    - script/*
+    - config/routes.rb
 
 Style/Lambda:
   Enabled: false
