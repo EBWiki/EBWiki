@@ -8,7 +8,7 @@ module UserNotifierHelper
   FCTA
 
   SUBSCRIBER_MESSAGE = <<~SM
-    As a newsletter subscriber, you'll receive our general updates periodically.
+    As a newsletter subscriber, you''ll receive our general updates periodically.
   SM
 
   subscriber_link = 'Subscribe to our newsletter as well', ENV['MAILCHIMP_LINK']
