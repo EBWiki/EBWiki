@@ -135,39 +135,37 @@ class CasesController < ApplicationController
   end
 
   def check_case_presence
-      @this_case.versions.order(created_at: :desc) unless
+    @this_case.versions.order(created_at: :desc) unless
       @this_case.blank? || @this_case.versions.blank?
-      rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound
   end
 
   def case_params
     params.require(:case).permit(
-                                  :title,
-                                  :age,
-                                  :overview,
-                                  :litigation,
-                                  :community_action,
-                                  :agency_id,
-                                  :category_id,
-                                  :date,
-                                  :state_id,
-                                  :city,
-                                  :address,
-                                  :zipcode,
-                                  :longitude,
-                                  :latitude,
-                                  :avatar,
-                                  :video_url,
-                                  :remove_avatar,
-                                  :summary,
-                                  :blurb,
-                                  links_attributes: %i[id url title _destroy],
-                                  comments_attributes: \
-                                    I18n.t('cases_controller.comments_attributes').map(&:to_sym),
-                                  subjects_attributes: \
-                                    I18n.t('cases_controller.subjects_attributes').map(&:to_sym),
-                                  agency_ids: []
-                                )
+      :title,
+      :age,
+      :overview,
+      :litigation,
+      :community_action,
+      :agency_id,
+      :category_id,
+      :date,
+      :state_id,
+      :city,
+      :address,
+      :zipcode,
+      :longitude,
+      :latitude,
+      :avatar,
+      :video_url,
+      :remove_avatar,
+      :summary,
+      :blurb,
+      links_attributes: %i[id url title _destroy],
+      comments_attributes: I18n.t('cases_controller.comments_attributes').map(&:to_sym),
+      subjects_attributes: I18n.t('cases_controller.subjects_attributes').map(&:to_sym),
+      agency_ids: [],
+    )
   end
 
   # from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)
