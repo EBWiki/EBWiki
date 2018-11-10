@@ -98,6 +98,7 @@ class CasesController < ApplicationController
   end
 
   def history
+    @this_case = Case.friendly.find_by_slug(params[:case_slug])
     @case_history = check_case_presence
   end
 
@@ -134,11 +135,9 @@ class CasesController < ApplicationController
   end
 
   def check_case_presence
-    if @this_case.blank? || @this_case.versions.blank?
-      NullCase.new
-    else
-      @this_case.versions.order(created_at: :desc)
-    end
+      @this_case.versions.order(created_at: :desc) unless
+      @this_case.blank? || @this_case.versions.blank?
+      rescue ActiveRecord::RecordNotFound
   end
 
   def case_params
