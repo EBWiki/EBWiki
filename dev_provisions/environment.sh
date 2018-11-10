@@ -1,3 +1,4 @@
+export EBWIKI_SITEMAP_URL=http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz
 export PROJECT_URL='http://192.168.68.68'
 export INSTALL_LOG='/tmp/install.log'
 export DEBIAN_FRONTEND=noninteractive
