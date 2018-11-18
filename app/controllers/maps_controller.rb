@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Handle map related actions
 class MapsController < ApplicationController
   def index
     @cases = Case.pluck(:id,
