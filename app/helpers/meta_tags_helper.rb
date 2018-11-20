@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+  # frozen_string_literal: true
 
   # Helper for meta tags to assign default tags or page-specific content_tag
 
