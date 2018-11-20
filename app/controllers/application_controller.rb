@@ -33,6 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
+
     # need heroku config:set HOST=www.ebwiki.org
     { host: ENV['HOST'] || 'localhost:3000' }
   end

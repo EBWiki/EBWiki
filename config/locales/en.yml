@@ -37,3 +37,5 @@ en:
     vimeo_helper_url: "https://vimeo.com/136536466"
     youtube_iframe_url: '<iframe src="//www.youtube.com/embed/Mgn1r3_eM-s"></iframe>'
     vimeo_iframe_url: '<iframe src="https://player.vimeo.com/video/136536466"></iframe>'
+  development:
+    host: 'localhost:3000'
