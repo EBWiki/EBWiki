@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
-# Helper for meta tags to assign default tags or page-specific content_tag
+  # Helper for meta tags to assign default tags or page-specific content_tag
 
   def meta_title
-    content_for?(:meta_title) ? content_for(:meta_title) : DEFAULT_META["meta_title"]
+    content_for?(:meta_title) ? content_for(:meta_title) : DEFAULT_META['meta_title']
   end
 
   def meta_description
-    content_for?(:meta_description) ?
-      content_for(:meta_description) : DEFAULT_META['meta_description']
+    if content_for?(:meta_description)
+      content_for(:meta_description)
+    else
+      DEFAULT_META['meta_description']
   end
 
   def meta_image
