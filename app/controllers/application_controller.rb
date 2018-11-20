@@ -32,13 +32,11 @@ class ApplicationController < ActionController::Base
     user_signed_in? ? current_user.id : 'Guest'
   end
 
-  def default_url_options #need heroku config:set HOST=www.ebwiki.org
-    { host: ENV["HOST"] || "localhost:3000" }
+  def default_url_options # need heroku config:set HOST=www.ebwiki.org
+    { host: ENV['HOST'] || 'localhost:3000' }
   end
 
   private
-
-
 
   def log_invalid_token_attempt
     warning_message = 'Invalid Auth Token error'
