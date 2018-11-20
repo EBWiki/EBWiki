@@ -1,0 +1,6 @@
+meta_product_name: "End Bias Wiki"
+meta_title: "EBWiki - Ending Violence Against People of Color"
+meta_description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results."
+meta_image: "EBWikiHeadLogo.png"     # should exist in `app/assets/images/`
+meta_keywords: "police killing abuse"
+twitter_account: "@EndBiasWiki"
