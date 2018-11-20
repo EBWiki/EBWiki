@@ -11,6 +11,7 @@
       content_for(:meta_description)
     else
       DEFAULT_META['meta_description']
+    end
   end
 
   def meta_image
