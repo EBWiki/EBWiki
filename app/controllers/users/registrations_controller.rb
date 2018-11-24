@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-#Handles user registration
+# Handles user registration
 class Users::RegistrationsController < Devise::RegistrationsController
-
   # POST /resource
   def create
     if gotcha_valid?
