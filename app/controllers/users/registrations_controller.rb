@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+#Handles user registration
 class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
