@@ -46,7 +46,7 @@ bower.json
 .DS_Store
 
 # remove database.yml from files being pushed
-config/database.yml
+# config/database.yml
 
 # Local dev files and directories
 .vscode
