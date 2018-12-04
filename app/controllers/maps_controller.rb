@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
+include MapsHelper
+
 # Handle map related actions
 class MapsController < ApplicationController
   def index
-    @cases = Case.pluck(:id,
-                        :latitude,
-                        :longitude,
-                        :avatar,
-                        :title,
-                        :overview)
-
-    # Substitute avatar URL for empty object in 4th variable
-    @cases.each do |this_case|
-      this_case[3] = Case.find_by_id(this_case[0]).avatar.medium_avatar.to_s
+    @cases = fetch_cases
+    @cases = @cases.map do |this_case|
+      [
+        this_case['id'],
+        this_case['latitude'],
+        this_case['longitude'],
+        this_case['avatar'],
+        this_case['title'],
+        this_case['overview']
+      ]
     end
   end
 
