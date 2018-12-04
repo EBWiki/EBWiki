@@ -103,7 +103,9 @@ RSpec.describe CasesController, type: :controller do
         allow_any_instance_of(Case).to receive(:full_address).and_return(' Albany NY ')
         post :create, 'case': case_attrs
         expect(assigns(:categories)).to match_array([])
+        expect(assigns(:agencies)).to match_array([])
         expect(assigns(:states)).to match_array([])
+        expect(assigns(:genders)).to match_array([])
         expect(response).to render_template(:new)
       end
     end
@@ -194,7 +196,7 @@ RSpec.describe CasesController, type: :controller do
     end
     context 'when requested case does not exists' do
       it 'returns a message that says that that case was not found' do
-        expect(delete :destroy, id: -1).to redirect_to root_path
+        expect(delete(:destroy, id: -1)).to redirect_to root_path
         expect(flash[:notice]).to eq(I18n.t('cases_controller.case_not_found_message'))
       end
     end
