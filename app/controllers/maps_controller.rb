@@ -8,12 +8,9 @@ class MapsController < ApplicationController
     @cases = fetch_cases
     @cases = @cases.map do |this_case|
       [
-        this_case['id'],
-        this_case['latitude'],
-        this_case['longitude'],
-        this_case['avatar'],
-        this_case['title'],
-        this_case['overview']
+        this_case['id'], this_case['latitude'],
+        this_case['longitude'], this_case['avatar'],
+        this_case['title'], this_case['overview']
       ]
     end
   end

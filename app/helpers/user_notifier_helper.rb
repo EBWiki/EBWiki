@@ -10,7 +10,7 @@ module UserNotifierHelper
   SUBSCRIBER_MESSAGE = "As a newsletter subscriber, you'll \
     receive our general updates periodically."
 
-  subscriber_link_copy = 'Subscribe to our newsletter as well', ENV['MAILCHIMP_LINK']
+  subscriber_link_copy = "Subscribe to our newsletter as well #{ENV['MAILCHIMP_LINK']}"
   subscriber_link = ActionController::Base.helpers.link_to(subscriber_link_copy)
   SUBSCRIBER_CALL_TO_ACTION = "#{subscriber_link} for periodic \
    general updates and commentaries on this issue."
