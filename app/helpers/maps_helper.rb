@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Fetches the cases using Redis cache
 module MapsHelper
   def fetch_cases
     cases = $redis.get('cases')

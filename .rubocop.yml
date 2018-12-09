@@ -25,3 +25,9 @@ Layout/FirstParameterIndentation:
 
 Style/ClassAndModuleChildren:
   Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Security/JSONLoad:
+  Enabled: false
