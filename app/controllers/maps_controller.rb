@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-include MapsHelper
-
 # Handle map related actions
 class MapsController < ApplicationController
+  include MapsHelper
   def index
     @cases = fetch_cases
     @cases = @cases.map do |this_case|
