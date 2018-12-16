@@ -15,6 +15,7 @@ class Visit < ActiveRecord::Base
   def mom_visits_growth
     last_month_visits = Visit.this_month.count
     return 0 if last_month_visits.zero?
+
     last_60_days_visits = Visit.most_recent(60.days.ago).count
     prior_30_days_visits = last_60_days_visits - last_month_visits
     return (last_month_visits * 100) if prior_30_days_visits.zero?
