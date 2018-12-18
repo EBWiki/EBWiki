@@ -13,6 +13,7 @@ class CasesController < ApplicationController
     @categories = SortCollectionOrdinally.call(collection: Category.all)
     @states = SortCollectionOrdinally.call(collection: State.all)
     @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
+    @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')
   end
 
   def index
@@ -61,6 +62,7 @@ class CasesController < ApplicationController
     @categories = SortCollectionOrdinally.call(collection: Category.all)
     @states = SortCollectionOrdinally.call(collection: State.all)
     @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
+    @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')
   end
 
   def followers
