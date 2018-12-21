@@ -49,8 +49,16 @@ module ApplicationHelper
   def display_updated_at(object)
     object.updated_at.strftime('%m.%e, %l:%M %p')
   end
-  
+
   def link_to_case_title(this_case, length)
     link_to truncate(this_case.title, length: length), this_case
+  end
+
+  def default_meta_tags
+    {
+      title:       'EBWiki - Ending Violence Against People of Color',
+      description: 'EBWiki is a new web application working to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.',
+      keywords: %w[police killing abuse]
+    }
   end
 end

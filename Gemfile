@@ -59,6 +59,7 @@ gem 'simplecov', '~> 0.16.1'
 
 # JSON renderer for Rails
 gem 'jb', '~> 0.5.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 4.10'
@@ -152,7 +153,7 @@ gem 'redis-namespace', '~> 1.6'
 gem 'gibbon'
 
 # metatag helper
-gem 'metamagic'
+gem 'meta-tags'
 
 # Google News API help
 gem 'galerts', '~> 1.1'

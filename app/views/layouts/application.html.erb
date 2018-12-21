@@ -5,7 +5,8 @@
 		     meta tag values in individual templates. -->
 	  <meta name=viewport content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="iwi5tloB23ci2pitnPbdAtLzceG4NW8Gps7H1unD504" />
-	  <%= metamagic title: "EBWiki - Ending Violence Against People of Color", description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.",	keywords: %w("police killing abuse") %>
+		<%= display_meta_tags(default_meta_tags) %>
+
 	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag 'application',  'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag 'markerclusterer' %>

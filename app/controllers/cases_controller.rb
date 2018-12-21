@@ -26,6 +26,7 @@ class CasesController < ApplicationController
 
   def show
     @this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
+    set_social_tags
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
@@ -166,5 +167,30 @@ class CasesController < ApplicationController
   # why did they set commentable here?
   def set_commentable
     @commentable = Case.friendly.find(params[:id])
+  end
+
+  def set_og_tags
+    set_meta_tags og: {
+      title: @this_case.title,
+      type: 'website',
+      url: "https://ebwiki.org/cases #{@this_case.slug}",
+      description: @this_case.overview.truncate(160),
+      image: @this_case.avatar
+    }
+  end
+
+  def set_twitter_tags
+    set_meta_tags twitter: {
+      card: "photo",
+      title: @this_case.title,
+      site: @EndBiasWiki,
+      url: "https://ebwiki.org/cases/#{@this_case.slug}",
+      description: @this_case.overview.truncate(160)
+    }
+  end
+
+  def set_social_tags
+    set_twitter_tags
+    set_og_tags
   end
 end
