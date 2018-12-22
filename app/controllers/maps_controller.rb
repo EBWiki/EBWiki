@@ -28,21 +28,21 @@ class MapsController < ApplicationController
 
   def set_og_tags
     set_meta_tags og: {
-      title: "EBWiki - Mapping Violence Against People of Color",
+      title: 'EBWiki - Mapping Violence Against People of Color',
       type: 'website',
-      url: "https://ebwiki.org/maps",
-      description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases"
+      url: 'https://ebwiki.org/maps',
+      description: 'EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases'
       # image: add_this
     }
   end
 
   def set_twitter_tags
     set_meta_tags twitter: {
-      card: "photo",
-      title: "EBWiki - Mapping Violence Against People of Color",
+      card: 'summary',
+      title: 'EBWiki - Mapping Violence Against People of Color',
       site: @EndBiasWiki,
-      url: "https://ebwiki.org/maps",
-      description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases"
+      url: 'https://ebwiki.org/maps',
+      description: 'EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases'
     }
   end
 
