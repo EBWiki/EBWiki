@@ -2,6 +2,7 @@
 
 class MapsController < ApplicationController
   def index
+    set_social_tags
     @cases = Case.pluck(:id,
                         :latitude,
                         :longitude,
@@ -21,5 +22,32 @@ class MapsController < ApplicationController
 
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || super
+  end
+
+  private
+
+  def set_og_tags
+    set_meta_tags og: {
+      title: "EBWiki - Mapping Violence Against People of Color",
+      type: 'website',
+      url: "https://ebwiki.org/maps",
+      description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases"
+      # image: add_this
+    }
+  end
+
+  def set_twitter_tags
+    set_meta_tags twitter: {
+      card: "photo",
+      title: "EBWiki - Mapping Violence Against People of Color",
+      site: @EndBiasWiki,
+      url: "https://ebwiki.org/maps",
+      description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases"
+    }
+  end
+
+  def set_social_tags
+    set_twitter_tags
+    set_og_tags
   end
 end
