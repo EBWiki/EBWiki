@@ -173,7 +173,7 @@ class CasesController < ApplicationController
     set_meta_tags og: {
       title: @this_case.title,
       type: 'website',
-      url: "https://ebwiki.org/cases#{@this_case.slug}",
+      url: 'https://ebwiki.org/cases#{@this_case.slug}',
       description: @this_case.overview.truncate(160),
       image: @this_case.avatar
     }
@@ -181,7 +181,7 @@ class CasesController < ApplicationController
 
   def set_twitter_tags
     set_meta_tags twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: @this_case.title,
       site: @EndBiasWiki,
       url: "https://ebwiki.org/cases/#{@this_case.slug}",

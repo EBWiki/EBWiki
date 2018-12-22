@@ -31,7 +31,10 @@ class MapsController < ApplicationController
       title: 'EBWiki - Mapping Violence Against People of Color',
       type: 'website',
       url: 'https://ebwiki.org/maps',
-      description: 'EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases'
+      description: 'EBWiki is a new web application
+      working to harness the power of community to end
+      bias in law enforcement. This page contains a
+      geographic look at recent cases'
       # image: add_this
     }
   end
@@ -42,7 +45,10 @@ class MapsController < ApplicationController
       title: 'EBWiki - Mapping Violence Against People of Color',
       site: @EndBiasWiki,
       url: 'https://ebwiki.org/maps',
-      description: 'EBWiki is a new web application working to harness the power of community to end bias in law enforcement. This page contains a geographic look at recent cases'
+      description: 'EBWiki is a new web application
+      working to harness the power of community to end
+      bias in law enforcement. This page contains a
+      geographic look at recent cases'
     }
   end
 

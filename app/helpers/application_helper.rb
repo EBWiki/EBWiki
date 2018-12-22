@@ -57,7 +57,11 @@ module ApplicationHelper
   def default_meta_tags
     {
       title:       'EBWiki - Ending Violence Against People of Color',
-      description: 'EBWiki is a new web application working to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.',
+      description: 'EBWiki is a new web application
+       working to harness the power of community to end
+       bias in law enforcement that has led to disparate
+       treatment of people of color with tragic
+       results.',
       keywords: %w[police killing abuse]
     }
   end
