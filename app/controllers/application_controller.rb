@@ -2,6 +2,8 @@
 
 # application controller
 class ApplicationController < ActionController::Base
+  include Pundit
+
   before_action :store_user_location!, if: :storable_location?
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
@@ -31,15 +33,9 @@ class ApplicationController < ActionController::Base
   end
 
   private
+ 
 
-  def mailbox
-    @mailbox ||= current_user.mailbox
-  end
-
-  def conversation
-    @conversation ||= mailbox.conversations.find(params[:id])
-  end
-
+  
   def log_invalid_token_attempt
     warning_message = 'Invalid Auth Token error'
     Rails.logger.warn warning_message
@@ -48,7 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
   def state_objects
-    @state_objects ||= SortCollectionOrdinally.call(State.all)
+    @state_objects ||= SortCollectionOrdinally.call(collection: State.all)
   end
 
   def storable_location?

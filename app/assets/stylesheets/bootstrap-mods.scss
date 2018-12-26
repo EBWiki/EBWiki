@@ -1,3 +1,5 @@
+$color-orange: #F65732;
+
 .btn {
     padding: 14px 24px;
     border: 0 none;
@@ -5,20 +7,24 @@
     letter-spacing: 1px;
     text-transform: uppercase;
 }
- 
+
 .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
 }
- 
+
+.btn-lg{
+    background-color: $color-orange !important;
+}
+
 .btn-primary {
     background: #0099cc;
     color: #ffffff;
 }
- 
+
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
     background: #33a6cc;
 }
- 
+
 .btn-primary:active, .btn-primary.active {
     background: #007299;
     box-shadow: none;
@@ -88,5 +94,10 @@
     box-shadow: none;
     margin-bottom: -3px;
     margin-top: 3px;
+}
+
+.btn-success{
+  background-color: $color-orange !important;
+  border-color: $color-orange !important;
 }
 

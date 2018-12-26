@@ -33,8 +33,8 @@ class Agency < ApplicationRecord
     message: 'You must specify the state in which the agency is located.'
   }
   validates :jurisdiction_type, inclusion: {
-    in: %w(none state local federal university private)
-    }, allow_nil: true
+    in: %w[none state local federal university private]
+  }, allow_nil: true
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
@@ -68,5 +68,4 @@ class Agency < ApplicationRecord
   def retrieve_state
     State.where(id: state_id).pluck(:name).join
   end
-
 end

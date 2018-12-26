@@ -12,7 +12,7 @@ class Case < ApplicationRecord
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :follows, as: :followable, dependent: :destroy
-  has_many :subjects, dependent: :destroy
+  has_many :subjects
   accepts_nested_attributes_for :subjects, reject_if: :all_blank, allow_destroy: true
 
   has_many :case_agencies, dependent: :destroy
@@ -55,8 +55,6 @@ class Case < ApplicationRecord
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
-  # before_validation :check_for_empty_fields
-
   # Geocoding
   geocoded_by :full_address
   before_save :geocode, if: proc { |art|
@@ -98,7 +96,7 @@ class Case < ApplicationRecord
   end
 
   def nearby_cases
-    try(:nearbys, 50).try(:order, 'distance')
+    try(:nearbys, 50).try(:order, 'distance') || []
   end
 
   def case_date_validator
@@ -123,6 +121,7 @@ class Case < ApplicationRecord
   def mom_new_cases_growth
     last_month_cases = Case.most_recent_occurrences(30.days.ago).count
     return 0 if last_month_cases.zero?
+
     last_60_days_cases = Case.most_recent_occurrences(60.days.ago).count
     prior_30_days_cases = last_60_days_cases - last_month_cases
     return (last_month_cases * 100) if prior_30_days_cases.zero?
@@ -133,6 +132,7 @@ class Case < ApplicationRecord
   def mom_cases_growth
     last_month_cases = Case.created_this_month.count
     return 0 if last_month_cases.zero?
+
     previous_cases = Case.count - last_month_cases
     return (last_month_cases * 100) if previous_cases.zero?
 
@@ -146,19 +146,11 @@ class Case < ApplicationRecord
   def mom_growth_in_case_updates
     last_month_case_updates = Case.recently_updated(30.days.ago).count
     return 0 if last_month_case_updates.zero?
+
     last_60_days_case_updates = Case.recently_updated(60.days.ago).count
     prior_30_days_case_updates = last_60_days_case_updates - last_month_case_updates
     return (last_month_case_updates * 100) if prior_30_days_case_updates.zero?
 
     (((last_month_case_updates.to_f / prior_30_days_case_updates) - 1) * 100).round(2)
-  end
-
-  private
-
-  def check_for_empty_fields
-    attrs = %w[ title date address city state zipcode state_id avatar video_url
-                overview community_action litigation country remove_avatar ]
-    errors[:base] << 'You must change field other than summary to generate a new version' unless
-    (changed & attrs).any?
   end
 end

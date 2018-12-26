@@ -2,10 +2,14 @@
     <%= f.input :name %>
     <%= f.input :age %>
     <%= f.collection_select :gender_id, @genders, :id, :sex, {prompt: "Choose a Gender"} %>
-    <%= f.input :ethnicity_id,:collection => Ethnicity.all,:label_method => :title,:value_method => :id,:label => "Race" ,:include_blank => false %>
+    <%= f.input :ethnicity_id,:collection => @ethnicities,:label_method => :title,:value_method => :id,:label => "Race" ,:include_blank => false %>
     <%= f.input :unarmed %>
     <%= f.input :mentally_ill %>
     <%= f.input :homeless%>
     <%= f.input :veteran %>
-    <%= link_to_remove_association "remove subject (you need at least one)", f %>
+    <div class='btn-group'>
+      <%= link_to_remove_association "remove subject", f, class: 'btn btn-primary btn-remove' %>
+    </div>
+
 </div>
+<br><br>

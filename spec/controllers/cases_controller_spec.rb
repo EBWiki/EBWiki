@@ -103,7 +103,9 @@ RSpec.describe CasesController, type: :controller do
         allow_any_instance_of(Case).to receive(:full_address).and_return(' Albany NY ')
         post :create, 'case': case_attrs
         expect(assigns(:categories)).to match_array([])
+        expect(assigns(:agencies)).to match_array([])
         expect(assigns(:states)).to match_array([])
+        expect(assigns(:genders)).to match_array([])
         expect(response).to render_template(:new)
       end
     end
@@ -131,11 +133,11 @@ RSpec.describe CasesController, type: :controller do
         }
       end
       it 'success' do
-        patch :update, ** new_values, id: this_case.id, case: new_values
+        patch :update, **new_values, id: this_case.id, case: new_values
         expect(response).to redirect_to(case_path(this_case))
       end
       it 'saves and assigns case to @case' do
-        patch :update, ** new_values, id: this_case.id, case: new_values
+        patch :update, **new_values, id: this_case.id, case: new_values
         expect(assigns(:this_case)).to be_a_kind_of(Case)
         expect(assigns(:this_case)).to be_persisted
       end
@@ -143,7 +145,7 @@ RSpec.describe CasesController, type: :controller do
 
     context 'when invalid' do
       let(:new_values) { attributes_for(:invalid_case) }
-      before(:each) do 
+      before(:each) do
         patch :update, id: this_case.id, case: new_values
       end
       it 'redirects to the edit page' do
@@ -154,6 +156,17 @@ RSpec.describe CasesController, type: :controller do
       end
       it 'has a non-empty set of states' do
         expect(assigns['states']).to_not be_nil
+      end
+    end
+
+    context 'with an empty summary' do
+      let(:new_values) do
+        { summary: '' }
+      end
+      it 'is not successfully updated' do
+        patch :update, id: this_case.id, case: new_values
+        this_case.reload
+        expect(response).to render_template(:edit)
       end
     end
   end
@@ -183,7 +196,7 @@ RSpec.describe CasesController, type: :controller do
     end
     context 'when requested case does not exists' do
       it 'returns a message that says that that case was not found' do
-        expect(delete :destroy, id: -1).to redirect_to root_path
+        expect(delete(:destroy, id: -1)).to redirect_to root_path
         expect(flash[:notice]).to eq(I18n.t('cases_controller.case_not_found_message'))
       end
     end
@@ -204,13 +217,13 @@ RSpec.describe CasesController, type: :controller do
     context 'when requested case exists' do
       it 'shows the history page' do
         this_case.update_attributes title: 'Updated Title'
-        get :history, id: this_case.id
+        get :history, case_slug: this_case.slug
         expect(response).to render_template(:history)
       end
     end
     context 'when requested case does not exists' do
       it 'shows the history page with no history' do
-        get :history, id: -1
+        get :history, case_slug: -1
         expect(response).to render_template(:history)
       end
     end

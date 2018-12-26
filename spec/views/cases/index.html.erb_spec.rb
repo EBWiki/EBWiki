@@ -9,7 +9,7 @@ RSpec.describe 'cases/index.html.erb', type: :view do
     assign(:cases, Kaminari.paginate_array([case1, case2]).page(1))
 
     assign(:recently_updated_cases, Case.sorted_by_update(2))
-    assign(:state_objects, SortCollectionOrdinally.call(State.all))
+    assign(:state_objects, SortCollectionOrdinally.call(collection: State.all))
     render
 
     expect(rendered).to match(/John Doe/m)

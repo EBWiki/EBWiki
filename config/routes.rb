@@ -1,15 +1,17 @@
-Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  get 'analytics/index'
+# frozen_string_literal: true
+SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 
-  get '/maps/index', to: 'maps#index'
+Rails.application.routes.draw do
+  get '/analytics', to: 'analytics#index'
+
+  get '/maps', to: 'maps#index'
 
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
   get '/javascript_lab', to: 'static#javascript_lab'
-  get '/contribution_guidelines', to: 'static#contribution_guidelines'
+  get '/instructions', to: 'static#instructions'
 
-  get '/sitemap', to: redirect('http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz', status: 301)
+  get '/sitemap', to: redirect(SITEMAP_URL, status: 301)
 
   mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
   devise_for :users, controllers: {
@@ -18,8 +20,9 @@ Rails.application.routes.draw do
   resources :users, only: %i[show edit]
   resources :agencies
 
-  get '/cases/:id/history', to: 'cases#history', as: :cases_history
-  get '/cases/:id/followers', to: 'cases#followers', as: :cases_followers
+  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
+  get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
+  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
 
   get '/articles', to: redirect('/cases', status: 301)
   namespace 'articles' do
@@ -39,6 +42,9 @@ Rails.application.routes.draw do
 
   root 'cases#index'
   resources :users do
+    member do
+      patch "update_email"
+    end
     resources :registrations
   end
 
