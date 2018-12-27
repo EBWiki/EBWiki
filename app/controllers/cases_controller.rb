@@ -173,7 +173,7 @@ class CasesController < ApplicationController
     set_meta_tags og: {
       title: @this_case.title,
       type: 'website',
-      url: 'https://ebwiki.org/cases#{@this_case.slug}',
+      url: "https://ebwiki.org/cases#{@this_case.slug}",
       description: @this_case.overview.truncate(160),
       image: @this_case.avatar
     }
