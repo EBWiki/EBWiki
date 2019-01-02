@@ -149,3 +149,12 @@ Shoulda::Matchers.configure do |config|
     with.library :action_controller
   end
 end
+
+module ActionDispatch
+  class TestRequest
+    # Override host, by default it is test.host
+    def host
+      'localhost:3000'
+    end
+  end
+end
