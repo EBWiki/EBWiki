@@ -33,12 +33,10 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { host: ENV.fetch("HOST", "localhost:3000") }
+    { host: ENV.fetch('HOST', "localhost:3000") }
   end
 
   private
-
-
 
   def log_invalid_token_attempt
     warning_message = 'Invalid Auth Token error'
