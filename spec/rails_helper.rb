@@ -87,6 +87,10 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
+  config.before(:each, type: :controller) do
+    @request.host = "localhost:3000"
+  end
+
   config.before(:each, type: :feature) do
     # :rack_test driver's Rack app under test shares database connection
     # with the specs, so continue to use transaction strategy for speed.
@@ -147,14 +151,5 @@ Shoulda::Matchers.configure do |config|
     with.library :active_record
     with.library :active_model
     with.library :action_controller
-  end
-end
-
-module ActionDispatch
-  class TestRequest
-    # Override host, by default it is test.host
-    def host
-      'localhost:3000'
-    end
   end
 end

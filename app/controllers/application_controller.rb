@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { host: ENV.fetch('HOST', "localhost:3000") }
+    { host: ENV.fetch('HOST', 'localhost:3000') }
   end
 
   private
