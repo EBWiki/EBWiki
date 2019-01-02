@@ -32,10 +32,14 @@ class ApplicationController < ActionController::Base
     user_signed_in? ? current_user.id : 'Guest'
   end
 
-  private
- 
+  def default_url_options
+    { host: ENV.fetch("HOST", "localhost:3000") }
+  end
 
-  
+  private
+
+
+
   def log_invalid_token_attempt
     warning_message = 'Invalid Auth Token error'
     Rails.logger.warn warning_message
