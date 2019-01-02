@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 feature 'User follows an case from show' do
-  let(:this_case) { FactoryBot.create(:case) }
+  let!(:this_case) { FactoryBot.create(:case) }
   scenario 'User arrives at the case show page and clicks to follow' do
     user = FactoryBot.create(:user)
     login_as(user, scope: :user)
@@ -23,7 +23,7 @@ feature 'User follows an case from show' do
 end
 
 feature 'Non-logged in user attempts to follow an case from show' do
-  let(:this_case) { FactoryBot.create(:case) }
+  let!(:this_case) { FactoryBot.create(:case) }
   scenario 'User arrives at the case show page and clicks to follow' do
     visit case_path(this_case)
     click_link 'Follow'
