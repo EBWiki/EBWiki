@@ -9,7 +9,7 @@ feature 'User follows an case from show' do
     login_as(user, scope: :user)
     visit case_path(this_case)
     click_link 'Follow'
-    expect(page).to have_content('Unfollow')
+    expect(page).to have_link('Unfollow')
   end
 
   scenario 'User arrives at the case show page and clicks to unfollow' do
