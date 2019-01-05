@@ -29,6 +29,9 @@ class CasesController < ApplicationController
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
+    if user_signed_in?
+      @follow_id = current_user.follows.find_by_followable_id(@this_case.id)
+    end
     # Check to make sure all required elements are here
     unless @this_case.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
@@ -39,7 +42,6 @@ class CasesController < ApplicationController
   def create
     @this_case = current_user.cases.build(case_params)
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
-    # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
       flash[:success] = 'Case was created!'
