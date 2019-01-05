@@ -24,20 +24,20 @@ class CasesController < ApplicationController
     @cases = Case.all.order('date DESC').includes(:state).page(params[:page]).per(page_size) if !params[:query].present? && !params[:state_id].present?
   end
 
+  # rubocop:disable Metrics/AbcSize
   def show
     @this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
-    if user_signed_in?
-      @follow_id = current_user.follows.find_by_followable_id(@this_case.id)
-    end
+    @follow_id = current_user.follows.find_by_followable_id(@this_case.id) if user_signed_in?
     # Check to make sure all required elements are here
     unless @this_case.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def create
     @this_case = current_user.cases.build(case_params)
