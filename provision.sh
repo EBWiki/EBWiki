@@ -24,6 +24,7 @@ apt-get install -qq \
     apt-transport-https\
     build-essential \
     curl \
+    g++ \
     gcc \
     git-core \
     libcurl4-openssl-dev \
@@ -34,6 +35,7 @@ apt-get install -qq \
     libxml2-dev \
     libxslt-dev \
     libyaml-dev \
+    make \
     sqlite3 \
     zlib1g-dev \
     2>&1 >> ${INSTALL_LOG}
@@ -76,22 +78,25 @@ ALTER USER blackops WITH SUPERUSER;
 __END__
 
 echo '##  Installing Ruby (via RVM)'
+echo '### Install system dependencies...'
 apt-get install -qq \
     automake \
     bison \
-    gpgv2 \
+    gnupg2 \
     libffi-dev \
     libgdbm-dev \
     libncurses5-dev \
     libtool \
     2>&1 >> ${INSTALL_LOG}
 
-curl -sSL https://rvm.io/mpapis.asc > /tmp/gpg.txt
-gpg --no-tty --quiet --import /tmp/gpg.txt 2>/dev/null
-curl -sSL https://get.rvm.io > /tmp/get.rvm.sh
-chmod +x /tmp/get.rvm.sh
-/tmp/get.rvm.sh --quiet-curl stable  2>&1 >> ${INSTALL_LOG}
-source /etc/profile.d/rvm.sh 2>&1 >> ${INSTALL_LOG}
+echo '### Install gpg keys...'
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB 2>&1 >> ${INSTALL_LOG}
+
+echo '### Install RVM...'
+curl -sSL https://get.rvm.io | bash -s stable --ruby 2>&1 >> ${INSTALL_LOG}
+source /usr/local/rvm/scripts/rvm 2>&1 >> ${INSTALL_LOG}
+
+echo '### Install ruby 2.5.1...'
 (rvm install 2.5.1) 2>&1 >> ${INSTALL_LOG}
 rvm use 2.5.1 --default 2>&1 >> ${INSTALL_LOG}
 
