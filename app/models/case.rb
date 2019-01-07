@@ -121,6 +121,7 @@ class Case < ActiveRecord::Base
   def mom_new_cases_growth
     last_month_cases = Case.most_recent_occurrences(30.days.ago).count
     return 0 if last_month_cases.zero?
+
     last_60_days_cases = Case.most_recent_occurrences(60.days.ago).count
     prior_30_days_cases = last_60_days_cases - last_month_cases
     return (last_month_cases * 100) if prior_30_days_cases.zero?
@@ -131,6 +132,7 @@ class Case < ActiveRecord::Base
   def mom_cases_growth
     last_month_cases = Case.created_this_month.count
     return 0 if last_month_cases.zero?
+
     previous_cases = Case.count - last_month_cases
     return (last_month_cases * 100) if previous_cases.zero?
 
@@ -144,6 +146,7 @@ class Case < ActiveRecord::Base
   def mom_growth_in_case_updates
     last_month_case_updates = Case.recently_updated(30.days.ago).count
     return 0 if last_month_case_updates.zero?
+
     last_60_days_case_updates = Case.recently_updated(60.days.ago).count
     prior_30_days_case_updates = last_60_days_case_updates - last_month_case_updates
     return (last_month_case_updates * 100) if prior_30_days_case_updates.zero?

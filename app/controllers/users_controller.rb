@@ -51,4 +51,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:email)
   end
   
+   def mailbox
+    @mailbox ||= current_user.mailbox
+  end
 end

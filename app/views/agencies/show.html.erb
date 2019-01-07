@@ -1,7 +1,7 @@
-<% meta title: "EBWiki is tracking the #{@agency.name}",
-     description: "EBWiki is following the involvement of the #{@agency.name} in killings of people of color.",
-     keywords: %w("@agency.name police violence people color African-American Latino")
-%>
+<!-- Meta Tag Information -->
+<% content_for :meta_title, "EBWiki is tracking the #{@agency.name}" %>
+<% content_for :meta_description, "EBWiki is following the involvement of the #{@agency.name} in killings of people of color." %>
+<% content_for :meta_keywords, "#{@agency.name} police violence people color" %>
 
 <span  class="page-header caseTitle">
   <h1 class="page-header caseTitle"><%= @agency.name %></h1>

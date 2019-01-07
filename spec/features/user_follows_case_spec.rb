@@ -3,22 +3,24 @@
 require 'rails_helper'
 
 feature 'User follows an case from show' do
-  let(:this_case) { FactoryBot.create(:case) }
   scenario 'User arrives at the case show page and clicks to follow' do
     user = FactoryBot.create(:user)
+    this_case = FactoryBot.create(:case)
     login_as(user, scope: :user)
     visit case_path(this_case)
     click_link 'Follow'
-    expect(this_case.followers.count).to eq(1)
+    visit case_path(this_case)
+    expect(page).to have_link('Unfollow')
   end
 
   scenario 'User arrives at the case show page and clicks to unfollow' do
     user = FactoryBot.create(:user)
+    this_case = FactoryBot.create(:case)
+    user.follow(this_case)
     login_as(user, scope: :user)
     visit case_path(this_case)
-    click_link 'Follow'
     click_link 'Unfollow'
-    expect(this_case.followers.count).to eq(0)
+    expect(page).to have_link('Follow')
   end
 end
 

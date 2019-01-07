@@ -33,16 +33,13 @@ class ApplicationController < ActionController::Base
     user_signed_in? ? current_user.id : 'Guest'
   end
 
-
   def configure_permitted_parameters
     update_attrs = [:password, :password_confirmation, :current_password]
     devise_parameter_sanitizer.permit :account_update, keys: update_attrs
   end
 
   private
- 
 
-  
   def log_invalid_token_attempt
     warning_message = 'Invalid Auth Token error'
     Rails.logger.warn warning_message
