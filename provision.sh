@@ -96,7 +96,7 @@ echo '### Install RVM...'
 curl -sSL https://get.rvm.io | bash -s stable --ruby 2>&1 >> ${INSTALL_LOG}
 source /usr/local/rvm/scripts/rvm 2>&1 >> ${INSTALL_LOG}
 
-echo '### Install ruby 2.5.1...'
+echo '### Install ruby 2.6.0...'
 (rvm install 2.5.1) 2>&1 >> ${INSTALL_LOG}
 rvm use 2.5.1 --default 2>&1 >> ${INSTALL_LOG}
 
@@ -158,4 +158,5 @@ echo
 echo '##  To provision the database, run the following commands:'
 echo '##       vagrant ssh'
 echo '##       source /vagrant/dev_provisions/provision_database.sh'
+source /vagrant/dev_provisions/provision_database.sh 2>&1 >> ${INSTALL_LOG}
 cd /vagrant && rails server 2>&1 >> /tmp/ebwiki.log &
