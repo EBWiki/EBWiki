@@ -151,9 +151,6 @@ gem 'redis-namespace', '~> 1.6'
 # access mailchimp api
 gem 'gibbon'
 
-# metatag helper
-gem 'metamagic'
-
 # Google News API help
 gem 'galerts', '~> 1.1'
 
