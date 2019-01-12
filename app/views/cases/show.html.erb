@@ -1,11 +1,8 @@
-<!-- the meta tag is for use with metamagic gem which generates
-     title and meta tags in conjunction with the metamagic
-     method in app/views/layouts/application.html.erb
-     TODO: Create a view helper that works for all pages -->
-<% meta title: "#{@this_case.title} - #{@this_case.city} on EBWiki",
-     description: "#{@this_case.blurb}",
-     keywords: %w("#{@this_case.subjects.first.name} police violence people color")
-%>
+<!-- Meta Tag Information -->
+<% content_for :meta_title, "#{@this_case.title} - #{@this_case.city} on EBWiki" %>
+<% content_for :meta_description, "#{@this_case.blurb}" %>
+<% content_for :meta_keywords, "#{@this_case.subjects.first.name} police violence people color" %>
+
 <!-- Page Content -->
 <div class="container">
 
