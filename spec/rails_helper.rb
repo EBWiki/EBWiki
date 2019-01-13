@@ -46,6 +46,7 @@ RSpec.configure do |config|
   # Include Devise test helpers
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :feature
+  config.include Devise::Test::IntegrationHelpers, type: :request
   config.extend ControllerMacros, type: :controller
   config.extend ControllerMacros, type: :feature
 
@@ -89,6 +90,10 @@ RSpec.configure do |config|
 
   config.before(:each, type: :controller) do
     @request.host = "localhost:3000"
+  end
+
+  config.before(:each, type: :request) do
+    host!("localhost:3000")
   end
 
   config.before(:each, type: :feature) do
