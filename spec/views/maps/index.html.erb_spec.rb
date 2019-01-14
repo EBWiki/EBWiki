@@ -7,7 +7,7 @@ RSpec.describe 'maps/index.html.erb', type: :view do
     case1 = FactoryBot.create(:case, title: 'John Doe')
     case2 = FactoryBot.create(:case,
                                  title: 'Jimmy Doe',
-                                 state: State.where(ansi_code: 'NY').first)
+                                 state: State.find_by(ansi_code: 'NY'))
     assign(:cases, Kaminari.paginate_array(
         Case.pluck(:id,
                     :latitude,
