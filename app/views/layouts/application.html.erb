@@ -46,13 +46,7 @@
 		  <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
       <div class="alert alert-<%= key %>">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <% if flash[:redo] %>
-          <%= value link_to("Redo changes", revert_path(flash[:redo]), method: :post, class: '.alert-link') %>
-        <% elsif flash[:undo] %>
-          <%= value link_to("Undo changes", revert_path(flash[:undo]), method: :post, class: '.alert-link') %>
-        <% else %>
         <%= value.html_safe %>
-      <% end %>
     </div>
   <% end %>
 		</div>
