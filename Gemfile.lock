@@ -453,6 +453,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
+    mock_redis (0.19.0)
     momentjs-rails (2.20.1)
       railties (>= 3.1)
     multi_json (1.13.1)
@@ -566,8 +567,24 @@ GEM
       trollop (~> 2.1)
     rdoc (6.1.1)
     redis (4.1.0)
+    redis-actionpack (5.0.2)
+      actionpack (>= 4.0, < 6)
+      redis-rack (>= 1, < 3)
+      redis-store (>= 1.1.0, < 2)
+    redis-activesupport (5.0.7)
+      activesupport (>= 3, < 6)
+      redis-store (>= 1.3, < 2)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
+    redis-rack (2.0.5)
+      rack (>= 1.5, < 3)
+      redis-store (>= 1.2, < 2)
+    redis-rails (5.0.2)
+      redis-actionpack (>= 5.0, < 6)
+      redis-activesupport (>= 5.0, < 6)
+      redis-store (>= 1.2, < 2)
+    redis-store (1.6.0)
+      redis (>= 2.2, < 5)
     referer-parser (0.3.0)
     regexp_parser (1.3.0)
     remotipart (1.4.2)
@@ -759,6 +776,7 @@ DEPENDENCIES
   launchy (~> 2.4)
   mailboxer (~> 0.12)!
   mini_magick
+  mock_redis
   momentjs-rails
   newrelic_rpm (~> 5.2.0)
   paper_trail (~> 9.2.0)
@@ -774,7 +792,10 @@ DEPENDENCIES
   rails (~> 4.2.11)
   rails_12factor
   rails_admin (~> 1.3.0)
+  redis
   redis-namespace (~> 1.6)
+  redis-rails
+  redis-store
   rollbar (~> 2.16)
   rspec-rails (~> 3.8)
   rubocop (~> 0.58)
@@ -799,4 +820,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.3
+   1.17.1
