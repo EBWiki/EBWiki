@@ -4,7 +4,7 @@
 # Refactoring love.
 class CasesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show history followers]
-  before_action :set_instance_vars, only: %i[edit new]
+  before_action :set_instance_vars, only: %i[edit new create]
 
   def new
     @this_case = current_user.cases.build
