@@ -7,8 +7,8 @@ feature 'Editor edits an case' do
   scenario 'Editor tries to save a case and fails' do
     user = FactoryBot.create(:user)
     login_as(user, scope: :user)
-    visit "/cases/new"
-    click_button "Create Case"
+    visit '/cases/new'
+    click_button 'Create Case'
     expect(page).to have_content('New Case')
   end
 end

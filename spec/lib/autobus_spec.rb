@@ -37,9 +37,9 @@ describe Autobus, '#total_backup_size' do
       allow(mock_backups_result).to receive(:strip) { mock_backups_result }
       allow(mock_backups_result).to receive(:encoding) { Encoding::UTF_8 }
       allow(mock_backups_result).to receive(:gsub) { mock_backups_result }
-      stub_request(:get, ENV['AUTOBUS_SNAPSHOT_URL']).
-        with(headers: autobus_headers).
-        to_return(status: 200, body: mock_backups_result, headers: {})
+      stub_request(:get, ENV['AUTOBUS_SNAPSHOT_URL'])
+        .with(headers: autobus_headers)
+        .to_return(status: 200, body: mock_backups_result, headers: {})
       expect(subject.total_backup_size).to eq(80_000)
     end
   end

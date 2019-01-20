@@ -68,6 +68,7 @@ group :development, :test do
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
+  gem 'mock_redis'
   gem 'pre-commit', '~> 0.38'
   gem 'rspec-rails', '~> 3.8'
 end
@@ -146,7 +147,10 @@ gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 # pagination
 gem 'kaminari'
 
+gem 'redis'
 gem 'redis-namespace', '~> 1.6'
+gem 'redis-rails'
+gem 'redis-store'
 
 # access mailchimp api
 gem 'gibbon'
