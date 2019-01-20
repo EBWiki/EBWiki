@@ -89,6 +89,7 @@ group :test do
   # Confirmation emails sent after commit
   gem 'test_after_commit', '~> 1.1'
   gem 'webmock'
+  gem 'vcr', '~> 3.0'
 end
 
 gem 'bootstrap-sass'

@@ -697,6 +697,7 @@ GEM
     unicode-display_width (1.4.1)
     uniform_notifier (1.12.1)
     user_agent_parser (2.5.0)
+    vcr (3.0.3)
     warden (1.2.7)
       rack (>= 1.0)
     web-console (3.3.0)
@@ -792,6 +793,7 @@ DEPENDENCIES
   test_after_commit (~> 1.1)
   turbolinks (~> 5.1)
   uglifier (= 4.1)
+  vcr (~> 3.0)
   web-console (~> 3.3)
   webmock
 
