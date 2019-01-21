@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<!-- Sets default title & meta tags throughout the site. Can be overridden with
-		     meta tag values in individual templates. -->
-	  <meta name=viewport content="width=device-width, initial-scale=1">
-    <meta name="google-site-verification" content="iwi5tloB23ci2pitnPbdAtLzceG4NW8Gps7H1unD504" />
-	  <%= metamagic title: "EBWiki - Ending Violence Against People of Color", description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.",	keywords: %w("police killing abuse") %>
+		<title><%= meta_title %></title>
+		<meta name="description" content="<%= meta_description %>">
+		<meta name="keywords" content="<%= meta_keywords %>">
+
+		<!-- Facebook Open Graph data -->
+		<meta property="og:title" content="<%= meta_title %>" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="<%= request.original_url %>" />
+		<meta property="og:image" content="<%= meta_image %>" />
+		<meta property="og:description" content="<%= meta_description %>" />
+		<meta property="og:site_name" content="<%= meta_title %>" />
+
+		<!-- Twitter Card data -->
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:site" content="<%= DEFAULT_META["twitter_account"] %>">
+		<meta name="twitter:title" content="<%= meta_title %>">
+		<meta name="twitter:description" content="<%= meta_description %>">
+		<meta name="twitter:creator" content="<%= DEFAULT_META["twitter_account"] %>">
+		<meta name="twitter:image:src" content="<%= meta_image %>">
+
 	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag 'application',  'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag 'markerclusterer' %>
@@ -31,13 +46,7 @@
 		  <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
       <div class="alert alert-<%= key %>">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <% if flash[:redo] %>
-          <%= value link_to("Redo changes", revert_path(flash[:redo]), method: :post, class: '.alert-link') %>
-        <% elsif flash[:undo] %>
-          <%= value link_to("Undo changes", revert_path(flash[:undo]), method: :post, class: '.alert-link') %>
-        <% else %>
         <%= value.html_safe %>
-      <% end %>
     </div>
   <% end %>
 		</div>

@@ -282,22 +282,21 @@ $color-dark-gray: #4D4D4D;
   position:relative;
   float:left;
 }
-.btn-group.back{
+.btn-group.back {
     left:62% !important;
 }
-.btn-group.submit{
+.btn-group.submit {
     left:61% !important;
 }
 
 .btn.btn-warning {
     background: $color-orange !important;
     color: white !important;
-
 }
 .btn-remove {
   background-color: $color-gray !important;
   border-radius: 4px !important;
-
-  // left: 100%;
-  // margin-bottom: -20%;
+}
+.rel-links {
+  margin-top: -60px;
 }

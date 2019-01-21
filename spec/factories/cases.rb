@@ -12,7 +12,6 @@ FactoryBot.define do
     f.links { [create(:link)] }
     f.summary { 'A summary of changes' }
     f.blurb { 'Blurb about case' }
-
   end
 
   factory :invalid_case, class: Case do |f|
@@ -20,7 +19,7 @@ FactoryBot.define do
     f.overview { '' }
     f.city { '' }
     f.date { '' }
-    f.summary {''}
+    f.summary { '' }
     # association :state, name: nil
   end
 end

@@ -5,7 +5,7 @@ ruby '2.5.1'
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'fullcalendar-rails', '~> 3.9'
-gem 'rails', '~> 4.2.10'
+gem 'rails', '~> 4.2.11'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20.0'
 # Use SCSS for stylesheets
@@ -68,6 +68,7 @@ group :development, :test do
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
+  gem 'mock_redis'
   gem 'pre-commit', '~> 0.38'
   gem 'rspec-rails', '~> 3.8'
 end
@@ -146,13 +147,13 @@ gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 # pagination
 gem 'kaminari'
 
+gem 'redis'
 gem 'redis-namespace', '~> 1.6'
+gem 'redis-rails'
+gem 'redis-store'
 
 # access mailchimp api
 gem 'gibbon'
-
-# metatag helper
-gem 'metamagic'
 
 # Google News API help
 gem 'galerts', '~> 1.1'

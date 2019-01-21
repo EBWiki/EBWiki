@@ -3,9 +3,8 @@
 require 'rails_helper'
 
 describe SortCollectionOrdinally do
-
-  let(:agency_one) { FactoryBot.create(:agency, name: "Alan Anderson PD") }
-  let(:agency_two) { FactoryBot.create(:agency, name: "Bob Barker PD") }
+  let(:agency_one) { FactoryBot.create(:agency, name: 'Alan Anderson PD') }
+  let(:agency_two) { FactoryBot.create(:agency, name: 'Bob Barker PD') }
   let(:agency_three) { FactoryBot.create(:agency, name: '1st PD') }
 
   context 'when no agencies start with a number' do
@@ -76,8 +75,8 @@ describe SortCollectionOrdinally do
     end
 
     it 'sorts the agencies correctly' do
-      agency_three = FactoryBot.create(:agency, name: "1st Police Division of Santa Ana")
-      agency_four = FactoryBot.create(:agency, name: "1st Police Division of Santa Clara")
+      agency_three = FactoryBot.create(:agency, name: '1st Police Division of Santa Ana')
+      agency_four = FactoryBot.create(:agency, name: '1st Police Division of Santa Clara')
 
       sorted_agencies = SortCollectionOrdinally.call(collection: Agency.all)
       expect(sorted_agencies).to eq([agency_three,
@@ -87,7 +86,7 @@ describe SortCollectionOrdinally do
     end
   end
 
-  context "when genders are used" do
+  context 'when genders are used' do
     it 'sorts the genders properly' do
       male = FactoryBot.create(:gender, sex: 'male')
       female = FactoryBot.create(:gender, sex: 'female')

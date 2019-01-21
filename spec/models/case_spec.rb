@@ -7,16 +7,20 @@ RSpec.describe Case, type: :model do
     it { should validate_presence_of(:city).with_message('Please add a city.') }
     it { should validate_presence_of(:subjects).with_message('at least one subject is required') }
 
-    it do should validate_presence_of(:overview)
-                   .with_message('An overview of the case is required')     end
+    it do
+      should validate_presence_of(:overview)
+        .with_message('An overview of the case is required')
+    end
 
     it do
       should validate_presence_of(:summary).with_message('Please use the last field at the bottom of this form ' \
              'to summarize your edits to the case.')
     end
 
-    it do should validate_presence_of(:state_id).
-                   with_message('Please specify the state where this incident occurred before saving.')     end
+    it do
+      should validate_presence_of(:state_id)
+        .with_message('Please specify the state where this incident occurred before saving.')
+    end
 
     it 'should not accept dates in the future' do
       this_case = build(:case, date: 10.days.from_now)
@@ -35,7 +39,7 @@ describe 'versioning', versioning: true do
   it 'starts versioning when a new this_case is created' do
     this_case = FactoryBot.create(:case)
     expect(this_case.versions.size).to eq 2
-    expect(this_case.versions.map(&:event)).to eq ['create', 'update']
+    expect(this_case.versions.map(&:event)).to eq %w[create update]
     expect(this_case.versions[0].event).to eq 'create'
   end
 
@@ -43,49 +47,49 @@ describe 'versioning', versioning: true do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:title, 'A New Title')
     expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq ['create', 'update', 'update']
+    expect(this_case.versions.map(&:event)).to eq %w[create update update]
   end
 
   it 'adds a version when the overview is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:overview, 'An Old Case')
     expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq ['create', 'update', 'update']
+    expect(this_case.versions.map(&:event)).to eq %w[create update update]
   end
 
   it 'adds a version when the date is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:date, (Time.current - 1.day))
     expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq ['create', 'update', 'update']
+    expect(this_case.versions.map(&:event)).to eq %w[create update update]
   end
 
   it 'adds a version when the city is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:city, 'Buffalo')
     expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq ['create', 'update', 'update']
+    expect(this_case.versions.map(&:event)).to eq %w[create update update]
   end
 
   it 'adds a version when the avatar is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:avatar, 'new_avatar')
     expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq ['create', 'update', 'update']
+    expect(this_case.versions.map(&:event)).to eq %w[create update update]
   end
 
   it 'adds a version when the video url is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:video_url, 'new_video.com')
     expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq ['create', 'update', 'update']
+    expect(this_case.versions.map(&:event)).to eq %w[create update update]
   end
 
   it 'adds a version when the slug is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:slug, 'joel-osteen')
     expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq ['create', 'update', 'update']
+    expect(this_case.versions.map(&:event)).to eq %w[create update update]
   end
 
   it 'does not add a version when the attribute is the same' do
@@ -152,7 +156,7 @@ describe 'follower_count', versioning: true do
         follower_id: 1,
         followable_id: this_case.id,
         followable_type: 'Case',
-        follower_type: 'User',
+        follower_type: 'User'
       )
     end.to change { this_case.reload.follows_count }.by(1)
   end
@@ -330,7 +334,7 @@ describe 'scopes', versioning: true do
       :case,
       city: 'Houston',
       state_id: texas.id,
-      date: Time.current,
+      date: Time.current
     )
     FactoryBot.create(:case,
                       city: 'Baton Rouge',
