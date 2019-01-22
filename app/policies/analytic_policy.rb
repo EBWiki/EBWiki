@@ -10,10 +10,10 @@ class AnalyticPolicy < Struct.new(:user, :analytic)
   end
 
   def index?
-    user.admin? or user.analyst?
+    user.admin? || user.analyst?
   end
 
   def show?
-    user.admin? or user.analyst?
+    user.admin? || user.analyst?
   end
 end
