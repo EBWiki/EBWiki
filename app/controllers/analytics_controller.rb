@@ -3,8 +3,7 @@
 # Controller for analytics page. A lot of reporting going on.
 # TODO: Some of these reports may need to be asynchronous as the data grows
 class AnalyticsController < ApplicationController
-
-   def index
+  def index
     authenticate_user!
     authorize :analytic, :index?
     @last_days = 30
