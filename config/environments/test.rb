@@ -40,6 +40,8 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  config.cache_store = :redis_store, 'redis://localhost:6379', { expires_in: 90.minutes }
+
   # Enable bullet gem during testing
   config.after_initialize do
     Bullet.enable = true

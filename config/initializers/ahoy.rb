@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Setup for the Ahoy datastore
 class Ahoy::Store < Ahoy::DatabaseStore
   # customize here
   Ahoy.api = true

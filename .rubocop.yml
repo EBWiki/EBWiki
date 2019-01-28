@@ -10,6 +10,9 @@ AllCops:
     - db/schema.rb
     - db/seeds.rb
     - db/structure.sql
+    - bin/*
+    - script/*
+    - config/routes.rb
 
 Style/Lambda:
   Enabled: false
@@ -18,4 +21,13 @@ Style/UnneededInterpolation:
   Enabled: false
 
 Layout/FirstParameterIndentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Security/JSONLoad:
   Enabled: false
