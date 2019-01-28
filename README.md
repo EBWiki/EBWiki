@@ -2,7 +2,7 @@
 
 # EBWiki
 
-[EBWiki.org](http://ebwiki.org)is a site dedicated to documenting instances where people of color are killed by law enforcement officers during routine interactions.  
+[EBWiki.org](http://ebwiki.org) is a site dedicated to documenting instances where people of color are killed by law enforcement officers during routine interactions.  
 
 ## Motivation
 
