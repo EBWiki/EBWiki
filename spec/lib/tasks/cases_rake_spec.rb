@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 describe 'cases:add_blurb' do
   include_context 'rake'
 
-  let(:cases) { create_list(:case, 5, :skip_validate, blurb: nil)}
+  let(:cases) { create_list(:case, 5, :skip_validate, blurb: nil) }
 
   it 'adds a blurb to each case' do
     subject.invoke

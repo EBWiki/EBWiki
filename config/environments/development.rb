@@ -54,6 +54,7 @@ Rails.application.configure do
   #   domain: 'ebwiki.herokuapp.com',
   #   enable_starttls_auto: true
   # }
+  config.cache_store = :redis_store, 'redis://localhost:6379', { expires_in: 90.minutes }
 
   # Bullet configuration
   Bullet.enable = true

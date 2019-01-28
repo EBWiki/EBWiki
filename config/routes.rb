@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
-Rails.application.routes.draw do
-  get 'analytics/index'
+SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 
-  get '/maps/index', to: 'maps#index'
+Rails.application.routes.draw do
+  get '/analytics', to: 'analytics#index'
+
+  get '/maps', to: 'maps#index'
 
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
   get '/javascript_lab', to: 'static#javascript_lab'
-  get '/contribution_guidelines', to: 'static#contribution_guidelines'
+  get '/instructions', to: 'static#instructions'
 
-  get '/sitemap', to: redirect('http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz', status: 301)
+  get '/sitemap', to: redirect(SITEMAP_URL, status: 301)
 
   mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
   devise_for :users, controllers: {
@@ -41,6 +43,9 @@ Rails.application.routes.draw do
 
   root 'cases#index'
   resources :users do
+    member do
+      patch 'update_email'
+    end
     resources :registrations
   end
 

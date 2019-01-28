@@ -20,7 +20,7 @@ describe User do
       fill_in 'Email', with: admin.email
       fill_in 'Password', with: admin.password
       click_button 'Log in'
-      visit analytics_index_path
+      visit analytics_path
       expect(page).to have_content 'Recent Visits'
       WebMock.disable_net_connect!
     end

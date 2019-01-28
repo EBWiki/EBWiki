@@ -2,11 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.14
--- Dumped by pg_dump version 9.5.14
+-- Dumped from database version 9.6.8
+-- Dumped by pg_dump version 9.6.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -52,7 +53,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public.agencies (
     id integer NOT NULL,
-    name character varying,
+    name character varying NOT NULL,
     street_address character varying,
     city character varying,
     state_id integer,
@@ -103,6 +104,72 @@ CREATE TABLE public.ahoy_events (
     properties text,
     "time" timestamp without time zone
 );
+
+
+--
+-- Name: article_documents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.article_documents (
+    id integer NOT NULL,
+    article_id integer,
+    document_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: article_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.article_documents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: article_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.article_documents_id_seq OWNED BY public.article_documents.id;
+
+
+--
+-- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.calendar_events (
+    id integer NOT NULL,
+    title character varying,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
+    description text,
+    city character varying,
+    state_id integer
+);
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.calendar_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.calendar_events_id_seq OWNED BY public.calendar_events.id;
 
 
 --
@@ -175,14 +242,14 @@ ALTER SEQUENCE public.case_officers_id_seq OWNED BY public.case_officers.id;
 
 CREATE TABLE public.cases (
     id integer NOT NULL,
-    title character varying,
+    title character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id integer,
     category_id integer,
     date date,
     state_id integer,
-    city character varying,
+    city character varying NOT NULL,
     address character varying,
     zipcode character varying,
     longitude double precision,
@@ -192,12 +259,12 @@ CREATE TABLE public.cases (
     video_url character varying,
     state character varying,
     age integer,
-    overview text,
+    overview text NOT NULL,
     community_action text,
     litigation text,
     country character varying,
     remove_avatar boolean,
-    summary text,
+    summary text NOT NULL,
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
     blurb text
@@ -289,6 +356,38 @@ ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
 
 
 --
+-- Name: documents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.documents (
+    id integer NOT NULL,
+    title character varying,
+    attachment character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.documents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
+
+
+--
 -- Name: ethnicities; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -296,7 +395,8 @@ CREATE TABLE public.ethnicities (
     id integer NOT NULL,
     title character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slug character varying
 );
 
 
@@ -426,7 +526,8 @@ CREATE TABLE public.genders (
     id integer NOT NULL,
     sex character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slug character varying
 );
 
 
@@ -670,6 +771,38 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: sessions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sessions (
+    id integer NOT NULL,
+    session_id character varying NOT NULL,
+    data text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sessions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
+
+
+--
 -- Name: states; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -709,7 +842,7 @@ ALTER SEQUENCE public.states_id_seq OWNED BY public.states.id;
 
 CREATE TABLE public.subjects (
     id integer NOT NULL,
-    name character varying,
+    name character varying NOT NULL,
     age integer,
     gender_id integer,
     ethnicity_id integer,
@@ -763,7 +896,8 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false,
     latitude double precision,
     longitude double precision,
-    name character varying,
+    storytime_name character varying,
+    name character varying NOT NULL,
     description text,
     state_id integer,
     state character varying,
@@ -773,7 +907,10 @@ CREATE TABLE public.users (
     linkedin character varying,
     slug character varying,
     subscribed boolean,
-    analyst boolean DEFAULT false
+    analyst boolean DEFAULT false,
+    confirmation_token character varying,
+    confirmed_at timestamp without time zone,
+    confirmation_sent_at timestamp without time zone
 );
 
 
@@ -898,161 +1035,189 @@ CREATE TABLE public.visits (
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: agencies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.agencies_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: article_documents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.article_documents ALTER COLUMN id SET DEFAULT nextval('public.article_documents_id_seq'::regclass);
+
+
+--
+-- Name: calendar_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events ALTER COLUMN id SET DEFAULT nextval('public.calendar_events_id_seq'::regclass);
+
+
+--
+-- Name: case_agencies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.case_agencies ALTER COLUMN id SET DEFAULT nextval('public.case_agencies_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: case_officers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.case_officers ALTER COLUMN id SET DEFAULT nextval('public.case_officers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.cases ALTER COLUMN id SET DEFAULT nextval('public.cases_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: comments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: documents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.documents_id_seq'::regclass);
+
+
+--
+-- Name: ethnicities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ethnicities ALTER COLUMN id SET DEFAULT nextval('public.ethnicities_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: event_statuses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.event_statuses ALTER COLUMN id SET DEFAULT nextval('public.event_statuses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: follows id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.follows ALTER COLUMN id SET DEFAULT nextval('public.follows_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: friendly_id_slugs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('public.friendly_id_slugs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: genders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.genders ALTER COLUMN id SET DEFAULT nextval('public.genders_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: links id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.links ALTER COLUMN id SET DEFAULT nextval('public.links_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: mailboxer_conversation_opt_outs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_conversation_opt_outs ALTER COLUMN id SET DEFAULT nextval('public.mailboxer_conversation_opt_outs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: mailboxer_conversations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_conversations ALTER COLUMN id SET DEFAULT nextval('public.mailboxer_conversations_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: mailboxer_notifications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_notifications ALTER COLUMN id SET DEFAULT nextval('public.mailboxer_notifications_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: mailboxer_receipts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_receipts ALTER COLUMN id SET DEFAULT nextval('public.mailboxer_receipts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: organizations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.organizations ALTER COLUMN id SET DEFAULT nextval('public.organizations_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: sessions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
+
+
+--
+-- Name: states id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.states ALTER COLUMN id SET DEFAULT nextval('public.states_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: subjects id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.subjects ALTER COLUMN id SET DEFAULT nextval('public.subjects_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: version_associations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.version_associations ALTER COLUMN id SET DEFAULT nextval('public.version_associations_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: versions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.versions_id_seq'::regclass);
 
 
 --
--- Name: agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: agencies agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.agencies
@@ -1060,7 +1225,7 @@ ALTER TABLE ONLY public.agencies
 
 
 --
--- Name: ahoy_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ahoy_events ahoy_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ahoy_events
@@ -1068,7 +1233,23 @@ ALTER TABLE ONLY public.ahoy_events
 
 
 --
--- Name: case_agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: article_documents article_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.article_documents
+    ADD CONSTRAINT article_documents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: calendar_events calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events
+    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: case_agencies case_agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.case_agencies
@@ -1076,7 +1257,7 @@ ALTER TABLE ONLY public.case_agencies
 
 
 --
--- Name: case_officers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: case_officers case_officers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.case_officers
@@ -1084,7 +1265,7 @@ ALTER TABLE ONLY public.case_officers
 
 
 --
--- Name: cases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: cases cases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.cases
@@ -1092,7 +1273,7 @@ ALTER TABLE ONLY public.cases
 
 
 --
--- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.categories
@@ -1100,7 +1281,7 @@ ALTER TABLE ONLY public.categories
 
 
 --
--- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.comments
@@ -1108,7 +1289,15 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- Name: ethnicities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: documents documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.documents
+    ADD CONSTRAINT documents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ethnicities ethnicities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ethnicities
@@ -1116,7 +1305,7 @@ ALTER TABLE ONLY public.ethnicities
 
 
 --
--- Name: event_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: event_statuses event_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.event_statuses
@@ -1124,7 +1313,7 @@ ALTER TABLE ONLY public.event_statuses
 
 
 --
--- Name: follows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: follows follows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.follows
@@ -1132,7 +1321,7 @@ ALTER TABLE ONLY public.follows
 
 
 --
--- Name: friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: friendly_id_slugs friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.friendly_id_slugs
@@ -1140,7 +1329,7 @@ ALTER TABLE ONLY public.friendly_id_slugs
 
 
 --
--- Name: genders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: genders genders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.genders
@@ -1148,7 +1337,7 @@ ALTER TABLE ONLY public.genders
 
 
 --
--- Name: links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: links links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.links
@@ -1156,7 +1345,7 @@ ALTER TABLE ONLY public.links
 
 
 --
--- Name: mailboxer_conversation_opt_outs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mailboxer_conversation_opt_outs mailboxer_conversation_opt_outs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_conversation_opt_outs
@@ -1164,7 +1353,7 @@ ALTER TABLE ONLY public.mailboxer_conversation_opt_outs
 
 
 --
--- Name: mailboxer_conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mailboxer_conversations mailboxer_conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_conversations
@@ -1172,7 +1361,7 @@ ALTER TABLE ONLY public.mailboxer_conversations
 
 
 --
--- Name: mailboxer_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mailboxer_notifications mailboxer_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_notifications
@@ -1180,7 +1369,7 @@ ALTER TABLE ONLY public.mailboxer_notifications
 
 
 --
--- Name: mailboxer_receipts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: mailboxer_receipts mailboxer_receipts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_receipts
@@ -1188,7 +1377,7 @@ ALTER TABLE ONLY public.mailboxer_receipts
 
 
 --
--- Name: organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.organizations
@@ -1196,7 +1385,15 @@ ALTER TABLE ONLY public.organizations
 
 
 --
--- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: states states_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.states
@@ -1204,7 +1401,7 @@ ALTER TABLE ONLY public.states
 
 
 --
--- Name: subjects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: subjects subjects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.subjects
@@ -1212,7 +1409,7 @@ ALTER TABLE ONLY public.subjects
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
@@ -1220,7 +1417,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: version_associations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: version_associations version_associations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.version_associations
@@ -1228,7 +1425,7 @@ ALTER TABLE ONLY public.version_associations
 
 
 --
--- Name: versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: versions versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.versions
@@ -1236,7 +1433,7 @@ ALTER TABLE ONLY public.versions
 
 
 --
--- Name: visits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: visits visits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.visits
@@ -1255,6 +1452,13 @@ CREATE INDEX fk_followables ON public.follows USING btree (followable_id, follow
 --
 
 CREATE INDEX fk_follows ON public.follows USING btree (follower_id, follower_type);
+
+
+--
+-- Name: index_ahoy_events_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ahoy_events_on_name ON public.ahoy_events USING btree (name);
 
 
 --
@@ -1286,6 +1490,13 @@ CREATE UNIQUE INDEX index_cases_on_slug ON public.cases USING btree (slug);
 
 
 --
+-- Name: index_cases_on_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cases_on_title ON public.cases USING btree (title);
+
+
+--
 -- Name: index_cases_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1297,6 +1508,13 @@ CREATE INDEX index_cases_on_user_id ON public.cases USING btree (user_id);
 --
 
 CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON public.comments USING btree (commentable_id, commentable_type);
+
+
+--
+-- Name: index_follows_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_follows_on_created_at ON public.follows USING btree (created_at);
 
 
 --
@@ -1398,6 +1616,48 @@ CREATE INDEX index_mailboxer_receipts_on_receiver_id_and_receiver_type ON public
 
 
 --
+-- Name: index_sessions_on_session_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_sessions_on_session_id ON public.sessions USING btree (session_id);
+
+
+--
+-- Name: index_sessions_on_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sessions_on_updated_at ON public.sessions USING btree (updated_at);
+
+
+--
+-- Name: index_states_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_states_on_name ON public.states USING btree (name);
+
+
+--
+-- Name: index_users_on_admin; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_admin ON public.users USING btree (admin);
+
+
+--
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btree (confirmation_token);
+
+
+--
+-- Name: index_users_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_created_at ON public.users USING btree (created_at);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1447,6 +1707,13 @@ CREATE INDEX index_versions_on_transaction_id ON public.versions USING btree (tr
 
 
 --
+-- Name: index_visits_on_started_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_visits_on_started_at ON public.visits USING btree (started_at);
+
+
+--
 -- Name: index_visits_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1461,7 +1728,15 @@ CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING b
 
 
 --
--- Name: fk_rails_d221076f62; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: subjects fk_rails_94f26cc552; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subjects
+    ADD CONSTRAINT fk_rails_94f26cc552 FOREIGN KEY (case_id) REFERENCES public.cases(id) ON DELETE CASCADE;
+
+
+--
+-- Name: links fk_rails_d221076f62; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.links
@@ -1469,7 +1744,7 @@ ALTER TABLE ONLY public.links
 
 
 --
--- Name: mb_opt_outs_on_conversations_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: mailboxer_conversation_opt_outs mb_opt_outs_on_conversations_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_conversation_opt_outs
@@ -1477,7 +1752,7 @@ ALTER TABLE ONLY public.mailboxer_conversation_opt_outs
 
 
 --
--- Name: notifications_on_conversation_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: mailboxer_notifications notifications_on_conversation_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_notifications
@@ -1485,7 +1760,7 @@ ALTER TABLE ONLY public.mailboxer_notifications
 
 
 --
--- Name: receipts_on_notification_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: mailboxer_receipts receipts_on_notification_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.mailboxer_receipts
@@ -1497,6 +1772,270 @@ ALTER TABLE ONLY public.mailboxer_receipts
 --
 
 SET search_path TO "$user", public;
+
+INSERT INTO schema_migrations (version) VALUES ('20150411045119');
+
+INSERT INTO schema_migrations (version) VALUES ('20150411054020');
+
+INSERT INTO schema_migrations (version) VALUES ('20150411054517');
+
+INSERT INTO schema_migrations (version) VALUES ('20150411060853');
+
+INSERT INTO schema_migrations (version) VALUES ('20150411060938');
+
+INSERT INTO schema_migrations (version) VALUES ('20150411122751');
+
+INSERT INTO schema_migrations (version) VALUES ('20150411124715');
+
+INSERT INTO schema_migrations (version) VALUES ('20150411130113');
+
+INSERT INTO schema_migrations (version) VALUES ('20150412010636');
+
+INSERT INTO schema_migrations (version) VALUES ('20150412011843');
+
+INSERT INTO schema_migrations (version) VALUES ('20150412014130');
+
+INSERT INTO schema_migrations (version) VALUES ('20150413164803');
+
+INSERT INTO schema_migrations (version) VALUES ('20150413164945');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415032541');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415044450');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415044451');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415144255');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415171903');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415173749');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415182911');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415183753');
+
+INSERT INTO schema_migrations (version) VALUES ('20150416173320');
+
+INSERT INTO schema_migrations (version) VALUES ('20150419221553');
+
+INSERT INTO schema_migrations (version) VALUES ('20150420183623');
+
+INSERT INTO schema_migrations (version) VALUES ('20150427111411');
+
+INSERT INTO schema_migrations (version) VALUES ('20150430114813');
+
+INSERT INTO schema_migrations (version) VALUES ('20150430115058');
+
+INSERT INTO schema_migrations (version) VALUES ('20150430115608');
+
+INSERT INTO schema_migrations (version) VALUES ('20150501015011');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015757');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015758');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015759');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015760');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015761');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015762');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015763');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015764');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015765');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015766');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015767');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015768');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015769');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015770');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015771');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015772');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015773');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015774');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015775');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015776');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015777');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015778');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015779');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015780');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015781');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015782');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015783');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015784');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015785');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015786');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015787');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015788');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015789');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015790');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015791');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015792');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015793');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015794');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015795');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015796');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015797');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015798');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015799');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015800');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015801');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015802');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015803');
+
+INSERT INTO schema_migrations (version) VALUES ('20150516015804');
+
+INSERT INTO schema_migrations (version) VALUES ('20150610134530');
+
+INSERT INTO schema_migrations (version) VALUES ('20150610145558');
+
+INSERT INTO schema_migrations (version) VALUES ('20150610152921');
+
+INSERT INTO schema_migrations (version) VALUES ('20150610153742');
+
+INSERT INTO schema_migrations (version) VALUES ('20150610155451');
+
+INSERT INTO schema_migrations (version) VALUES ('20150613024616');
+
+INSERT INTO schema_migrations (version) VALUES ('20150613024617');
+
+INSERT INTO schema_migrations (version) VALUES ('20150616144746');
+
+INSERT INTO schema_migrations (version) VALUES ('20150616145710');
+
+INSERT INTO schema_migrations (version) VALUES ('20150620052647');
+
+INSERT INTO schema_migrations (version) VALUES ('20150621123958');
+
+INSERT INTO schema_migrations (version) VALUES ('20150627182101');
+
+INSERT INTO schema_migrations (version) VALUES ('20150627214620');
+
+INSERT INTO schema_migrations (version) VALUES ('20150627214621');
+
+INSERT INTO schema_migrations (version) VALUES ('20150627214622');
+
+INSERT INTO schema_migrations (version) VALUES ('20150628111851');
+
+INSERT INTO schema_migrations (version) VALUES ('20150703173803');
+
+INSERT INTO schema_migrations (version) VALUES ('20150704214350');
+
+INSERT INTO schema_migrations (version) VALUES ('20150711165418');
+
+INSERT INTO schema_migrations (version) VALUES ('20150711171226');
+
+INSERT INTO schema_migrations (version) VALUES ('20150711220852');
+
+INSERT INTO schema_migrations (version) VALUES ('20150711223508');
+
+INSERT INTO schema_migrations (version) VALUES ('20150716081959');
+
+INSERT INTO schema_migrations (version) VALUES ('20150721210914');
+
+INSERT INTO schema_migrations (version) VALUES ('20150724221034');
+
+INSERT INTO schema_migrations (version) VALUES ('20150728144434');
+
+INSERT INTO schema_migrations (version) VALUES ('20150728144741');
+
+INSERT INTO schema_migrations (version) VALUES ('20150728160532');
+
+INSERT INTO schema_migrations (version) VALUES ('20150728160732');
+
+INSERT INTO schema_migrations (version) VALUES ('20150728161406');
+
+INSERT INTO schema_migrations (version) VALUES ('20150730023101');
+
+INSERT INTO schema_migrations (version) VALUES ('20150731024304');
+
+INSERT INTO schema_migrations (version) VALUES ('20150806203252');
+
+INSERT INTO schema_migrations (version) VALUES ('20150806203403');
+
+INSERT INTO schema_migrations (version) VALUES ('20150905173353');
+
+INSERT INTO schema_migrations (version) VALUES ('20150906203304');
+
+INSERT INTO schema_migrations (version) VALUES ('20160130190718');
+
+INSERT INTO schema_migrations (version) VALUES ('20160130193631');
+
+INSERT INTO schema_migrations (version) VALUES ('20160130200139');
+
+INSERT INTO schema_migrations (version) VALUES ('20160316002607');
+
+INSERT INTO schema_migrations (version) VALUES ('20160316005234');
+
+INSERT INTO schema_migrations (version) VALUES ('20160316010947');
+
+INSERT INTO schema_migrations (version) VALUES ('20160323064052');
+
+INSERT INTO schema_migrations (version) VALUES ('20160515184220');
+
+INSERT INTO schema_migrations (version) VALUES ('20160517083501');
+
+INSERT INTO schema_migrations (version) VALUES ('20160517095316');
+
+INSERT INTO schema_migrations (version) VALUES ('20160613161246');
+
+INSERT INTO schema_migrations (version) VALUES ('20160627185018');
+
+INSERT INTO schema_migrations (version) VALUES ('20160629194154');
+
+INSERT INTO schema_migrations (version) VALUES ('20160629195510');
+
+INSERT INTO schema_migrations (version) VALUES ('20160630162855');
+
+INSERT INTO schema_migrations (version) VALUES ('20160708194753');
+
+INSERT INTO schema_migrations (version) VALUES ('20160802133753');
+
+INSERT INTO schema_migrations (version) VALUES ('20160802145517');
+
+INSERT INTO schema_migrations (version) VALUES ('20170519002221');
 
 INSERT INTO schema_migrations (version) VALUES ('20170520020651');
 
@@ -1521,4 +2060,48 @@ INSERT INTO schema_migrations (version) VALUES ('20180816124609');
 INSERT INTO schema_migrations (version) VALUES ('20180904123943');
 
 INSERT INTO schema_migrations (version) VALUES ('20180911071251');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926083147');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926085044');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926091204');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926092536');
+
+INSERT INTO schema_migrations (version) VALUES ('20180926123043');
+
+INSERT INTO schema_migrations (version) VALUES ('20181001124317');
+
+INSERT INTO schema_migrations (version) VALUES ('20181003112438');
+
+INSERT INTO schema_migrations (version) VALUES ('20181003130555');
+
+INSERT INTO schema_migrations (version) VALUES ('20181005060647');
+
+INSERT INTO schema_migrations (version) VALUES ('20181008175901');
+
+INSERT INTO schema_migrations (version) VALUES ('20181013103240');
+
+INSERT INTO schema_migrations (version) VALUES ('20181025082828');
+
+INSERT INTO schema_migrations (version) VALUES ('20181025220728');
+
+INSERT INTO schema_migrations (version) VALUES ('20181026005352');
+
+INSERT INTO schema_migrations (version) VALUES ('20190112221750');
+
+INSERT INTO schema_migrations (version) VALUES ('20190112222534');
+
+INSERT INTO schema_migrations (version) VALUES ('20190112223009');
+
+INSERT INTO schema_migrations (version) VALUES ('20190112223318');
+
+INSERT INTO schema_migrations (version) VALUES ('20190112223645');
+
+INSERT INTO schema_migrations (version) VALUES ('20190112224118');
+
+INSERT INTO schema_migrations (version) VALUES ('20190112224451');
+
+INSERT INTO schema_migrations (version) VALUES ('20190112224801');
 

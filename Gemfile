@@ -5,7 +5,7 @@ ruby '2.5.1'
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'fullcalendar-rails', '~> 3.9'
-gem 'rails', '~> 4.2.10'
+gem 'rails', '~> 4.2.11'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20.0'
 # Use SCSS for stylesheets
@@ -45,7 +45,7 @@ gem 'hightop', '~> 0.2'
 gem 'gotcha', '0.0.6'
 
 # xml sitemap
-gem 'sitemap_generator', '6.0'
+gem 'sitemap_generator', '~> 6.0'
 
 # internal analytics
 gem 'ahoy_matey', '2.1'
@@ -68,6 +68,7 @@ group :development, :test do
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
+  gem 'mock_redis'
   gem 'pre-commit', '~> 0.38'
   gem 'rspec-rails', '~> 3.8'
 end
@@ -137,19 +138,22 @@ gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
 # track changes in model objects
 gem 'paper_trail', '~> 9.2.0'
 
+# needed for paper_trail to track changes done via rails_admin views
+gem 'paper_trail-association_tracking'
+
 # pretty urls
 gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
 gem 'kaminari'
 
+gem 'redis'
 gem 'redis-namespace', '~> 1.6'
+gem 'redis-rails'
+gem 'redis-store'
 
 # access mailchimp api
 gem 'gibbon'
-
-# metatag helper
-gem 'metamagic'
 
 # Google News API help
 gem 'galerts', '~> 1.1'
@@ -166,3 +170,6 @@ gem 'httparty', '~> 0.16'
 gem 'rack-host-redirect', '~> 1.3'
 
 gem 'rubocop', '~> 0.58', require: false
+
+# for storing cookies via active record storage to avoid 4kb limit
+gem 'activerecord-session_store'

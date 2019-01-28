@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'simplecov'
+require 'pundit/rspec'
 SimpleCov.start
 require 'capybara/rspec'
 # This file is copied to spec/ when you run 'rails generate rspec:install'
@@ -84,6 +85,10 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, type: :controller) do
+    @request.host = "localhost:3000"
   end
 
   config.before(:each, type: :feature) do

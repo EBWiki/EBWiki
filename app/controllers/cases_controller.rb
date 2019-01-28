@@ -9,11 +9,10 @@ class CasesController < ApplicationController
     @this_case = current_user.cases.build
     @this_case.agencies.build
     @this_case.links.build
-    @agencies = SortCollectionOrdinally.call(Agency.all)
-    @categories = SortCollectionOrdinally.call(Category.all)
-    @states = SortCollectionOrdinally.call(State.all)
-    @genders = SortCollectionOrdinally.call(Gender.all)
-    @ethnicities = Ethnicity.all
+    @agencies = SortCollectionOrdinally.call(collection: Agency.all)
+    @categories = SortCollectionOrdinally.call(collection: Category.all)
+    @states = SortCollectionOrdinally.call(collection: State.all)
+    @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
   end
 
   def index
@@ -25,45 +24,46 @@ class CasesController < ApplicationController
     @cases = Case.all.order('date DESC').includes(:state).page(params[:page]).per(page_size) if !params[:query].present? && !params[:state_id].present?
   end
 
+  # rubocop:disable Metrics/AbcSize
   def show
     @this_case = find_case
     @this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
+    @follow_id = current_user.follows.find_by_followable_id(@this_case.id) if user_signed_in?
     # Check to make sure all required elements are here
     unless @this_case.present?
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def create
     @this_case = current_user.cases.build(case_params)
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
-    # This could be a very expensive query as the userbase gets larger.
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
       flash[:success] = 'Case was created!'
       flash[:undo] = @this_case.versions
       redirect_to @this_case
     else
-      @agencies = SortCollectionOrdinally.call(Agency.all)
-      @categories = SortCollectionOrdinally.call(Category.all)
-      @states = SortCollectionOrdinally.call(State.all)
+      @agencies = SortCollectionOrdinally.call(collection: Agency.all)
+      @categories = SortCollectionOrdinally.call(collection: Category.all)
+      @states = SortCollectionOrdinally.call(collection: State.all)
+      @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
       render 'new'
     end
   end
 
   def edit
     @this_case = Case.friendly.find(params[:id])
-    @this_case.update_attribute(:summary, nil)
     @this_case.links.build
-    @agencies = SortCollectionOrdinally.call(Agency.all)
-    @categories = SortCollectionOrdinally.call(Category.all)
-    @states = SortCollectionOrdinally.call(State.all)
-    @genders = SortCollectionOrdinally.call(Gender.all)
-    @ethnicities = Ethnicity.all
+    @agencies = SortCollectionOrdinally.call(collection: Agency.all)
+    @categories = SortCollectionOrdinally.call(collection: Category.all)
+    @states = SortCollectionOrdinally.call(collection: State.all)
+    @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
   end
 
   def followers
@@ -80,8 +80,8 @@ class CasesController < ApplicationController
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
-      @categories = SortCollectionOrdinally.call(Category.all)
-      @states = SortCollectionOrdinally.call(State.all)
+      @categories = SortCollectionOrdinally.call(collection: Category.all)
+      @states = SortCollectionOrdinally.call(collection: State.all)
       render 'edit'
     end
   end
@@ -117,7 +117,7 @@ class CasesController < ApplicationController
       end
       flash[:success] = 'Undid that!'
       flash[:undo] = @this_case.versions
-    rescue
+    rescue StandardError
       flash[:alert] = 'Failed undoing the action...'
     ensure
       redirect_to root_path

@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    authorize @user
     if @user.update_attributes(user_params)
       flash[:success] = 'Your profile was updated!'
       redirect_to @user
@@ -28,9 +29,28 @@ class UsersController < ApplicationController
     stored_location_for(resource) || super
   end
 
+  def update_email
+    @user = User.find(params[:id])
+    authorize @user
+    if @user.update_attributes(user_param)
+      flash[:success] = 'Email updated Successfully!'
+      redirect_to @user
+    else
+      render 'edit'
+    end
+  end
+
   private
 
   def user_params
     params.require(:user).permit(:name, :email, :description, :subscribed)
   end
+
+  def user_param
+    params.require(:user).permit(:email)
+  end
+
+  def mailbox
+    @mailbox ||= current_user.mailbox
+ end
 end

@@ -201,7 +201,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Houston',
-      state: State.where(name: 'Texas').first,
+      state: State.find_by(name: 'Texas'),
       overview: 'a',
       blurb: 'Sven Svensson',
       summary: 'Added a case' },
@@ -213,7 +213,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Little Rock',
-      state: State.where(name: 'Arkansas').first,
+      state: State.find_by(name: 'Arkansas'),
       overview: 'a',
       blurb: 'Janez Novak',
       summary: 'Added a case' },
@@ -225,7 +225,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Boulder',
-      state: State.where(name: 'Colorado').first,
+      state: State.find_by(name: 'Colorado'),
       overview: 'a',
       blurb: 'Janina Kowalska',
       summary: 'Added a case' },
@@ -237,7 +237,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Pensacola',
-      state_id: State.where(name: 'Florida').first,
+      state_id: State.find_by(name: 'Florida').firs,
       overview: 'a',
       blurb: 'Kari Holm',
       summary: 'Added a case' },
@@ -249,7 +249,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Boise',
-      state_id: State.where(name: 'Idaho').first,
+      state_id: State.find_by(name: 'Idaho'),
       overview: 'a',
       blurb: 'Jonas Petraitis',
       summary: 'Added a case' },
@@ -261,7 +261,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Gary',
-      state_id: State.where(name: 'Indiana').first,
+      state_id: State.find_by(name: 'Indiana'),
       overview: 'a',
       blurb: 'Manku Thimman',
       summary: 'Added a case' },
@@ -273,7 +273,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Louisville',
-      state: State.where(name: 'Kentucky').first,
+      state: State.find_by(name: 'Kentucky'),
       overview: 'a',
       blurb: 'Mario Rossi',
       summary: 'Added a case' },
@@ -285,7 +285,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Amherst',
-      state: State.where(name: 'Massachusetts').first,
+      state: State.find_by(name: 'Massachusetts'),
       overview: 'a',
       blurb: 'Max Mustermann',
       summary: 'Added a case' },
@@ -297,7 +297,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'St. Louis',
-      state:  State.where(name: 'Missouri').first,
+      state:  State.find_by(name: 'Missouri'),
       overview: 'a',
       blurb: 'Chichiko Bendeliani',
       summary: 'Added a case' },
@@ -309,7 +309,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Houston',
-      state_id: State.where(name: 'Texas').first,
+      state_id: State.find_by(name: 'Texas'),
       overview: 'a',
       blurb: 'Sally Housecoat',
       summary: 'Added a case' }
