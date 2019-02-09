@@ -8,15 +8,12 @@ feature 'User visits user profile page' do
 
   scenario 'and sees the cases that they follow' do
     cases.each do |this_case|
-      user.follows(this_case)
+      user.follow(this_case)
     end
     login_as(user, scope: :user)
     visit("/users/#{user.id}")
-    # Confirms that the links to the cases are on the page
-    expect(page).to have_selector('.img-responsive')
-    # Confirms that the article links are on the home page
-    cases[0..19].each do |this_case|
-      expect(page).to have_content(this_case.avatar.url)
+    cases.each do |this_case|
+      expect(page).to have_content(this_case.title)
     end
   end
 end
