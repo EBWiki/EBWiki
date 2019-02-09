@@ -43,8 +43,8 @@ class AvatarUploader < CarrierWave::Uploader::Base
     %w[jpg jpeg gif png]
   end
 
-  #Add default icon as case avatar
-  def default_url(*args)
+  # Add default icon as case avatar
+  def default_url(*)
     ActionController::Base.helpers.asset_path('default-user-icon.png')
   end
 end
