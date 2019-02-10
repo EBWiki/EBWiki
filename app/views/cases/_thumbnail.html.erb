@@ -1,0 +1,18 @@
+<div class="col-lg-3 col-md-4 col-xs-2">
+  <div class="view view-first">
+    <div class="thumbnail text-center">
+      <% if this_case.avatar? %>
+        <%= link_to image_tag(this_case.avatar.large_avatar, :class => "img-responsive"), this_case %>
+      <% else %>
+        <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), this_case %>
+        <div class="caption">
+          <h4><%= this_case.subjects.first.name %></h4>
+        </div>
+      <% end %>
+    </div>
+    <div class="mask">
+      <h2><%= link_to this_case.title, this_case, :class => "info2" %></h2>
+      <h5><%= this_case.date.strftime("%B %d, %Y") %> - <%= this_case.city %>, <%= this_case.state.ansi_code %></h5>
+    </div>
+  </div>
+</div>
