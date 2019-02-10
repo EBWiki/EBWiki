@@ -33,7 +33,7 @@ If everything looks great on staging, then we'll push the code to production wit
 
 There are a number of guides available for running EBWiki in your local environment:
 * [Running locally using a text editor and terminal](SETUP_LOCALLY.md)
-* [Running in a Cloud9 workspace](https://github.com/EBWiki/EBWiki/wiki/Running-EB-Wiki-development-environment-on-Cloud9-(WIP))
+* [Running in an AWS Cloud9 workspace](SETUP_AWS_CLOUD9.md)
 
 ## Restoring Local Database from Production Backup
 
