@@ -237,7 +237,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Pensacola',
-      state_id: State.find_by(name: 'Florida').firs,
+      state_id: State.find_by(name: 'Florida').first,
       overview: 'a',
       blurb: 'Kari Holm',
       summary: 'Added a case' },
