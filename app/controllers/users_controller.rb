@@ -4,6 +4,7 @@
 class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
+    @cases = @user.all_following
   end
 
   def edit
