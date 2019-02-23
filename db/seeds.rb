@@ -189,7 +189,6 @@ if User.count.zero?
       User.create(user)
     end
 end
-binding.pry
 if Case.count.zero?
   puts 'Creating Cases...'
   cases = [
