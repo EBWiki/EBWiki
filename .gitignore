@@ -52,3 +52,6 @@ bower.json
 .vscode
 .vagrant
 environment.sh
+
+# Ignore database.yml from version control...
+config/database.yml
