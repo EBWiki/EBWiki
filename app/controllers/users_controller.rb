@@ -62,6 +62,6 @@ class UsersController < ApplicationController
     Bullet.enable = false
     yield
   ensure
-    Bullet.enable = true
+    Bullet.enable = previous_value
   end
 end
