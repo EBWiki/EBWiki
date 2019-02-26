@@ -55,9 +55,9 @@ class UsersController < ApplicationController
 
   def mailbox
     @mailbox ||= current_user.mailbox
- end
+  end
 
- def skip_bullet
+  def skip_bullet
     previous_value = Bullet.enable?
     Bullet.enable = false
     yield
