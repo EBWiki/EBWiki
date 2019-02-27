@@ -18,6 +18,8 @@ class AnalyticsController < ApplicationController
     @cases_sorted_by_followers = Case.sorted_by_followers 10
     @most_visited_cases = DetermineVisitsToCases.call(@visits_this_week.sorted_by_hits(13))
     @most_recent_comments = Comment.sorted_by_creation 15
+    @case_updates_30 = PaperTrail::Version.where('created_at > ?', 30.days.ago)
+    @case_updaters_count_10 = @case_updates_30.group(:whodunnit).order('count_id DESC').limit(10).count(:id)
   end
 
   private
