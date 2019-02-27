@@ -147,26 +147,59 @@
     </div>
   </div><!-- row   -->
 
-  <!-- Comments List-->
   <div class="row">
-    <div class="col-sm-12">
-      <div class="chart-wrapper">
-        <div class="chart-title background-orange">
-          Recent Comments
+    <!-- Editors List-->
+      <div class="col-sm-4">
+        <div class="chart-wrapper">
+          <div class="chart-title background-orange">
+            Most Recent Editors - Last 30 days <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Active Editors", :content => "This metric shows the number of cases added or updated by editors in the past 30 days."})%>
+          </div>
+          <div class="chart-stage">
+           <table class='table leader-list'>
+             <tr>
+              <th>Editor</th>
+              <th>Updates</th>
+             </tr>
+
+             <% case_updaters_count(10).each do |who| %>
+               <% user_id = who[0] %>
+               <% user_object = who[1] %>
+               <tr>
+                 <% unless user_id.to_i == 0 %>
+                   <td><%= @user = User.find(user_id.to_i).name %></td>
+                   <td><%= link_to user_object, @user %></td>
+                 <% else %>
+                   <td> Anonymous </td>
+                   <td><%= user_object %></td>
+                 <% end %>
+               </tr>
+             <% end %>
+           </table>
+          </div>
+          <div class="chart-notes">
+            The ten most active editors over the last 30 days.
+          </div>
         </div>
-        <ul class="scroller">
-          <% @most_recent_comments.each do |comment| %>
-            <li>
-              <blockquote class="blockquote">
-                <p><%= link_to_case_title(comment.commentable, 25) %> -- <%= comment_created_at(comment) %></p>
-                <p><%= link_to_comment(comment, 100) %></p>
-                <small><%= link_to_comment_user(comment) %></small>
-              </blockquote>
-            </li>
-          <% end %>
-        </ul>
+      </div>
+    <!-- Comments List-->
+      <div class="col-sm-8">
+        <div class="chart-wrapper">
+          <div class="chart-title background-gray">
+            Recent Comments
+          </div>
+          <ul class="scroller">
+            <% Comment.order(created_at: :desc).each do |comment| %>
+              <li>
+                <blockquote class="blockquote">
+                  <p><%= link_to truncate(Case.find(comment.commentable_id).title, length: 30), case_path(Case.find(comment.commentable_id)) %> -- <%= comment.created_at.strftime("%B %d, %Y") %></p>
+                  <p><%= link_to truncate(comment.content, length: 100), case_path(Case.find(comment.commentable_id)) %></p>
+                  <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
+                </blockquote>
+              </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
   <p>* mom refers to a comparison of the most recent adjacent 30 day periods, not specific months</p>
 </div>
