@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.8
--- Dumped by pg_dump version 9.6.10
+-- Dumped from database version 11.1
+-- Dumped by pg_dump version 11.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -14,20 +14,6 @@ SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 
 --
 -- Name: jurisdiction; Type: TYPE; Schema: public; Owner: -
@@ -78,6 +64,7 @@ CREATE TABLE public.agencies (
 --
 
 CREATE SEQUENCE public.agencies_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -107,38 +94,6 @@ CREATE TABLE public.ahoy_events (
 
 
 --
--- Name: article_documents; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.article_documents (
-    id integer NOT NULL,
-    article_id integer,
-    document_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: article_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.article_documents_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: article_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.article_documents_id_seq OWNED BY public.article_documents.id;
-
-
---
 -- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -158,6 +113,7 @@ CREATE TABLE public.calendar_events (
 --
 
 CREATE SEQUENCE public.calendar_events_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -190,6 +146,7 @@ CREATE TABLE public.case_agencies (
 --
 
 CREATE SEQUENCE public.case_agencies_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -222,6 +179,7 @@ CREATE TABLE public.case_officers (
 --
 
 CREATE SEQUENCE public.case_officers_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -276,6 +234,7 @@ CREATE TABLE public.cases (
 --
 
 CREATE SEQUENCE public.cases_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -307,6 +266,7 @@ CREATE TABLE public.categories (
 --
 
 CREATE SEQUENCE public.categories_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -341,6 +301,7 @@ CREATE TABLE public.comments (
 --
 
 CREATE SEQUENCE public.comments_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -353,38 +314,6 @@ CREATE SEQUENCE public.comments_id_seq
 --
 
 ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
-
-
---
--- Name: documents; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.documents (
-    id integer NOT NULL,
-    title character varying,
-    attachment character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.documents_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
 
 
 --
@@ -405,6 +334,7 @@ CREATE TABLE public.ethnicities (
 --
 
 CREATE SEQUENCE public.ethnicities_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -436,6 +366,7 @@ CREATE TABLE public.event_statuses (
 --
 
 CREATE SEQUENCE public.event_statuses_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -471,6 +402,7 @@ CREATE TABLE public.follows (
 --
 
 CREATE SEQUENCE public.follows_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -504,6 +436,7 @@ CREATE TABLE public.friendly_id_slugs (
 --
 
 CREATE SEQUENCE public.friendly_id_slugs_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -536,6 +469,7 @@ CREATE TABLE public.genders (
 --
 
 CREATE SEQUENCE public.genders_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -570,6 +504,7 @@ CREATE TABLE public.links (
 --
 
 CREATE SEQUENCE public.links_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -601,6 +536,7 @@ CREATE TABLE public.mailboxer_conversation_opt_outs (
 --
 
 CREATE SEQUENCE public.mailboxer_conversation_opt_outs_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -632,6 +568,7 @@ CREATE TABLE public.mailboxer_conversations (
 --
 
 CREATE SEQUENCE public.mailboxer_conversations_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -675,6 +612,7 @@ CREATE TABLE public.mailboxer_notifications (
 --
 
 CREATE SEQUENCE public.mailboxer_notifications_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -712,6 +650,7 @@ CREATE TABLE public.mailboxer_receipts (
 --
 
 CREATE SEQUENCE public.mailboxer_receipts_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -747,6 +686,7 @@ CREATE TABLE public.organizations (
 --
 
 CREATE SEQUENCE public.organizations_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -788,6 +728,7 @@ CREATE TABLE public.sessions (
 --
 
 CREATE SEQUENCE public.sessions_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -822,6 +763,7 @@ CREATE TABLE public.states (
 --
 
 CREATE SEQUENCE public.states_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -861,6 +803,7 @@ CREATE TABLE public.subjects (
 --
 
 CREATE SEQUENCE public.subjects_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -896,7 +839,6 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false,
     latitude double precision,
     longitude double precision,
-    storytime_name character varying,
     name character varying NOT NULL,
     description text,
     state_id integer,
@@ -919,6 +861,7 @@ CREATE TABLE public.users (
 --
 
 CREATE SEQUENCE public.users_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -950,6 +893,7 @@ CREATE TABLE public.version_associations (
 --
 
 CREATE SEQUENCE public.version_associations_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -989,6 +933,7 @@ CREATE TABLE public.versions (
 --
 
 CREATE SEQUENCE public.versions_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1042,13 +987,6 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 
 
 --
--- Name: article_documents id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.article_documents ALTER COLUMN id SET DEFAULT nextval('public.article_documents_id_seq'::regclass);
-
-
---
 -- Name: calendar_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1088,13 +1026,6 @@ ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.c
 --
 
 ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
-
-
---
--- Name: documents id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.documents_id_seq'::regclass);
 
 
 --
@@ -1233,14 +1164,6 @@ ALTER TABLE ONLY public.ahoy_events
 
 
 --
--- Name: article_documents article_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.article_documents
-    ADD CONSTRAINT article_documents_pkey PRIMARY KEY (id);
-
-
---
 -- Name: calendar_events calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1286,14 +1209,6 @@ ALTER TABLE ONLY public.categories
 
 ALTER TABLE ONLY public.comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
-
-
---
--- Name: documents documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.documents
-    ADD CONSTRAINT documents_pkey PRIMARY KEY (id);
 
 
 --
@@ -1630,6 +1545,13 @@ CREATE INDEX index_sessions_on_updated_at ON public.sessions USING btree (update
 
 
 --
+-- Name: index_states_on_ansi_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_states_on_ansi_code ON public.states USING btree (ansi_code);
+
+
+--
 -- Name: index_states_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1772,270 +1694,6 @@ ALTER TABLE ONLY public.mailboxer_receipts
 --
 
 SET search_path TO "$user", public;
-
-INSERT INTO schema_migrations (version) VALUES ('20150411045119');
-
-INSERT INTO schema_migrations (version) VALUES ('20150411054020');
-
-INSERT INTO schema_migrations (version) VALUES ('20150411054517');
-
-INSERT INTO schema_migrations (version) VALUES ('20150411060853');
-
-INSERT INTO schema_migrations (version) VALUES ('20150411060938');
-
-INSERT INTO schema_migrations (version) VALUES ('20150411122751');
-
-INSERT INTO schema_migrations (version) VALUES ('20150411124715');
-
-INSERT INTO schema_migrations (version) VALUES ('20150411130113');
-
-INSERT INTO schema_migrations (version) VALUES ('20150412010636');
-
-INSERT INTO schema_migrations (version) VALUES ('20150412011843');
-
-INSERT INTO schema_migrations (version) VALUES ('20150412014130');
-
-INSERT INTO schema_migrations (version) VALUES ('20150413164803');
-
-INSERT INTO schema_migrations (version) VALUES ('20150413164945');
-
-INSERT INTO schema_migrations (version) VALUES ('20150415032541');
-
-INSERT INTO schema_migrations (version) VALUES ('20150415044450');
-
-INSERT INTO schema_migrations (version) VALUES ('20150415044451');
-
-INSERT INTO schema_migrations (version) VALUES ('20150415144255');
-
-INSERT INTO schema_migrations (version) VALUES ('20150415171903');
-
-INSERT INTO schema_migrations (version) VALUES ('20150415173749');
-
-INSERT INTO schema_migrations (version) VALUES ('20150415182911');
-
-INSERT INTO schema_migrations (version) VALUES ('20150415183753');
-
-INSERT INTO schema_migrations (version) VALUES ('20150416173320');
-
-INSERT INTO schema_migrations (version) VALUES ('20150419221553');
-
-INSERT INTO schema_migrations (version) VALUES ('20150420183623');
-
-INSERT INTO schema_migrations (version) VALUES ('20150427111411');
-
-INSERT INTO schema_migrations (version) VALUES ('20150430114813');
-
-INSERT INTO schema_migrations (version) VALUES ('20150430115058');
-
-INSERT INTO schema_migrations (version) VALUES ('20150430115608');
-
-INSERT INTO schema_migrations (version) VALUES ('20150501015011');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015757');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015758');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015759');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015760');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015761');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015762');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015763');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015764');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015765');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015766');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015767');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015768');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015769');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015770');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015771');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015772');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015773');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015774');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015775');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015776');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015777');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015778');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015779');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015780');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015781');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015782');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015783');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015784');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015785');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015786');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015787');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015788');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015789');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015790');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015791');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015792');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015793');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015794');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015795');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015796');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015797');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015798');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015799');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015800');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015801');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015802');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015803');
-
-INSERT INTO schema_migrations (version) VALUES ('20150516015804');
-
-INSERT INTO schema_migrations (version) VALUES ('20150610134530');
-
-INSERT INTO schema_migrations (version) VALUES ('20150610145558');
-
-INSERT INTO schema_migrations (version) VALUES ('20150610152921');
-
-INSERT INTO schema_migrations (version) VALUES ('20150610153742');
-
-INSERT INTO schema_migrations (version) VALUES ('20150610155451');
-
-INSERT INTO schema_migrations (version) VALUES ('20150613024616');
-
-INSERT INTO schema_migrations (version) VALUES ('20150613024617');
-
-INSERT INTO schema_migrations (version) VALUES ('20150616144746');
-
-INSERT INTO schema_migrations (version) VALUES ('20150616145710');
-
-INSERT INTO schema_migrations (version) VALUES ('20150620052647');
-
-INSERT INTO schema_migrations (version) VALUES ('20150621123958');
-
-INSERT INTO schema_migrations (version) VALUES ('20150627182101');
-
-INSERT INTO schema_migrations (version) VALUES ('20150627214620');
-
-INSERT INTO schema_migrations (version) VALUES ('20150627214621');
-
-INSERT INTO schema_migrations (version) VALUES ('20150627214622');
-
-INSERT INTO schema_migrations (version) VALUES ('20150628111851');
-
-INSERT INTO schema_migrations (version) VALUES ('20150703173803');
-
-INSERT INTO schema_migrations (version) VALUES ('20150704214350');
-
-INSERT INTO schema_migrations (version) VALUES ('20150711165418');
-
-INSERT INTO schema_migrations (version) VALUES ('20150711171226');
-
-INSERT INTO schema_migrations (version) VALUES ('20150711220852');
-
-INSERT INTO schema_migrations (version) VALUES ('20150711223508');
-
-INSERT INTO schema_migrations (version) VALUES ('20150716081959');
-
-INSERT INTO schema_migrations (version) VALUES ('20150721210914');
-
-INSERT INTO schema_migrations (version) VALUES ('20150724221034');
-
-INSERT INTO schema_migrations (version) VALUES ('20150728144434');
-
-INSERT INTO schema_migrations (version) VALUES ('20150728144741');
-
-INSERT INTO schema_migrations (version) VALUES ('20150728160532');
-
-INSERT INTO schema_migrations (version) VALUES ('20150728160732');
-
-INSERT INTO schema_migrations (version) VALUES ('20150728161406');
-
-INSERT INTO schema_migrations (version) VALUES ('20150730023101');
-
-INSERT INTO schema_migrations (version) VALUES ('20150731024304');
-
-INSERT INTO schema_migrations (version) VALUES ('20150806203252');
-
-INSERT INTO schema_migrations (version) VALUES ('20150806203403');
-
-INSERT INTO schema_migrations (version) VALUES ('20150905173353');
-
-INSERT INTO schema_migrations (version) VALUES ('20150906203304');
-
-INSERT INTO schema_migrations (version) VALUES ('20160130190718');
-
-INSERT INTO schema_migrations (version) VALUES ('20160130193631');
-
-INSERT INTO schema_migrations (version) VALUES ('20160130200139');
-
-INSERT INTO schema_migrations (version) VALUES ('20160316002607');
-
-INSERT INTO schema_migrations (version) VALUES ('20160316005234');
-
-INSERT INTO schema_migrations (version) VALUES ('20160316010947');
-
-INSERT INTO schema_migrations (version) VALUES ('20160323064052');
-
-INSERT INTO schema_migrations (version) VALUES ('20160515184220');
-
-INSERT INTO schema_migrations (version) VALUES ('20160517083501');
-
-INSERT INTO schema_migrations (version) VALUES ('20160517095316');
-
-INSERT INTO schema_migrations (version) VALUES ('20160613161246');
-
-INSERT INTO schema_migrations (version) VALUES ('20160627185018');
-
-INSERT INTO schema_migrations (version) VALUES ('20160629194154');
-
-INSERT INTO schema_migrations (version) VALUES ('20160629195510');
-
-INSERT INTO schema_migrations (version) VALUES ('20160630162855');
-
-INSERT INTO schema_migrations (version) VALUES ('20160708194753');
-
-INSERT INTO schema_migrations (version) VALUES ('20160802133753');
-
-INSERT INTO schema_migrations (version) VALUES ('20160802145517');
-
-INSERT INTO schema_migrations (version) VALUES ('20170519002221');
 
 INSERT INTO schema_migrations (version) VALUES ('20170520020651');
 

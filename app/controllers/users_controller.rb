@@ -2,8 +2,11 @@
 
 # EBWiki Users controller
 class UsersController < ApplicationController
+  around_action :skip_bullet, only: :show
+
   def show
     @user = User.find(params[:id])
+    @cases = @user.all_following
   end
 
   def edit
@@ -52,5 +55,13 @@ class UsersController < ApplicationController
 
   def mailbox
     @mailbox ||= current_user.mailbox
- end
+  end
+
+  def skip_bullet
+    previous_value = Bullet.enable?
+    Bullet.enable = false
+    yield
+  ensure
+    Bullet.enable = previous_value
+  end
 end

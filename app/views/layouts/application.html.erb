@@ -46,7 +46,7 @@
 		  <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
       <div class="alert alert-<%= key %>">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <%= value.html_safe %>
+        <%= (value.is_a?(Array)) ? ""  : value.html_safe %>
     </div>
   <% end %>
 		</div>

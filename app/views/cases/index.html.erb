@@ -1,76 +1,45 @@
 <!-- Since this is the homepage,the meta tag information for this page is set as the default values. -->
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-9">
-            <h2 class="page-header">These <%= Case.count %> people were killed by police.<br>We track their cases here.</h2>
-
-            <div class="text-center">
-              <h3>
-
-                <% if current_user.present? %>
-                  <% unless current_user.mailchimp_status == "subscribed" %>
-                    <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
-                  <% end %>
-                <% else %>
-                  <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
-                <% end %>
-              </h3>
-            </div>
-            <h4 class="page-subheader">
-          <%= link_to "What next?", "https://www.surveymonkey.com/r/5RSWFNY", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "What's next for EBWiki?",:content => "Click here to help us decide on a few features we are thinking of adding to EBWiki!"} %>
-         -- <%= link_to 'More about us...',about_path %></h4>
-
-
-    <!-- Gallery of cases -->
-
-        <div id='front-gallery'>
-          <% @cases.each do | this_case | %>
-            <div class="col-lg-3 col-md-4 col-xs-2">
-              <div class="">
-                <div class="view view-first">
-                  <% if this_case.avatar? %>
-                    <%= link_to image_tag(this_case.avatar.large_avatar, :class => "img-responsive"), this_case %>
-                  <% else %>
-                    <div class="thumbnail text-center">
-                      <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), this_case %>
-                      <div class="caption">
-                        <h4><%= this_case.subjects.first.name %></h4>
-                      </div>
-                    </div>
-                  <% end %>
-                  <div class="mask">
-                    <h2><%= link_to this_case.title, this_case, :class => "info2" %></h2>
-                    <h5><%= this_case.date.strftime("%B %d, %Y") %> - <%= this_case.city %>, <%= this_case.state.ansi_code %></h5>
-                    <p><%= raw link_to strip_tags(this_case.overview.truncate(140)), this_case, :class => "info2" %></p>
-                    <%= link_to 'Read More', this_case, :class => "info" %>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <div class="row">
+    <div class="col-lg-9">
+      <h2 class="page-header">These <%= @cases.size %> people were killed by police.<br>We track their cases here.</h2>
+      <div class="text-center">
+        <h3>
+          <% if current_user.present? %>
+            <% unless current_user.mailchimp_status == "subscribed" %>
+              <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
+            <% end %>
+          <% else %>
+            <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
           <% end %>
-        </div>
-        <%= paginate @cases %>
-        <p><%= page_entries_info @cases %></p>
+        </h3>
       </div>
-      <div class="col-md-3">
-        <div id='front-sidebar'>
-          <h4 class='side-leader'>Recently Updated</h4>
-           <table class='table leader-list'>
-             <tr>
-              <th>Case</th>
-              <th>Updated</th>
-             </tr>
+      <h4 class="page-subheader">
+        <%= link_to "What next?", "https://www.surveymonkey.com/r/5RSWFNY", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "What's next for EBWiki?",:content => "Click here to help us decide on a few features we are thinking of adding to EBWiki!"} %>-- <%= link_to 'More about us...',about_path %></h4>
+      <div id='front-gallery'>
+        <%= render partial: 'thumbnail', layout: "index_thumbnail", collection: @cases, as: :this_case %>
+      </div>
+      <%= paginate @cases %>
+      <p><%= page_entries_info @cases %></p>
+    </div>
+    <div class="col-md-3">
+      <div id='front-sidebar'>
+        <h4 class='side-leader'>Recently Updated</h4>
+        <table class='table leader-list'>
+          <tr>
+            <th>Case</th>
+            <th>Updated</th>
+          </tr>
 
-             <% @recently_updated_cases.each do |this_case| %>
-               <tr>
-                 <td><%= link_to_case_title(this_case, 25) %></td>
-                 <td><small><%= display_updated_at(this_case) %></small></td>
-               </tr>
-             <% end %>
-           </table>
-        </div>
+          <% @recently_updated_cases.each do |this_case| %>
+            <tr>
+              <td><%= link_to_case_title(this_case, 25) %></td>
+              <td><small><%= display_updated_at(this_case) %></small></td>
+            </tr>
+          <% end %>
+        </table>
       </div>
     </div>
-    <!-- End Gallery -->
+  </div>
 </div>

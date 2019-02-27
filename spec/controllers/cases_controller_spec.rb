@@ -106,6 +106,7 @@ RSpec.describe CasesController, type: :controller do
         expect(assigns(:agencies)).to match_array([])
         expect(assigns(:states)).to match_array([])
         expect(assigns(:genders)).to match_array([])
+        expect(assigns(:ethnicities)).to match_array([])
         expect(response).to render_template(:new)
       end
     end

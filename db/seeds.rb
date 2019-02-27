@@ -189,10 +189,8 @@ if User.count.zero?
       User.create(user)
     end
 end
-
 if Case.count.zero?
   puts 'Creating Cases...'
-
   cases = [
     { title: 'Sven Svensson',
       date: '01/10/2017',
@@ -237,7 +235,7 @@ if Case.count.zero?
                                     }
                            },
       city: 'Pensacola',
-      state_id: State.find_by(name: 'Florida').firs,
+      state_id: State.find_by(name: 'Florida'),
       overview: 'a',
       blurb: 'Kari Holm',
       summary: 'Added a case' },

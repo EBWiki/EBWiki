@@ -4,15 +4,12 @@
 # Refactoring love.
 class CasesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show history followers]
+  before_action :set_instance_vars, only: %i[edit new create]
 
   def new
     @this_case = current_user.cases.build
     @this_case.agencies.build
     @this_case.links.build
-    @agencies = SortCollectionOrdinally.call(collection: Agency.all)
-    @categories = SortCollectionOrdinally.call(collection: Category.all)
-    @states = SortCollectionOrdinally.call(collection: State.all)
-    @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
   end
 
   def index
@@ -59,10 +56,6 @@ class CasesController < ApplicationController
   def edit
     @this_case = Case.friendly.find(params[:id])
     @this_case.links.build
-    @agencies = SortCollectionOrdinally.call(collection: Agency.all)
-    @categories = SortCollectionOrdinally.call(collection: Category.all)
-    @states = SortCollectionOrdinally.call(collection: State.all)
-    @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
   end
 
   def followers
@@ -168,5 +161,13 @@ class CasesController < ApplicationController
   # why did they set commentable here?
   def set_commentable
     @commentable = Case.friendly.find(params[:id])
+  end
+
+  def set_instance_vars
+    @agencies = SortCollectionOrdinally.call(collection: Agency.all)
+    @categories = SortCollectionOrdinally.call(collection: Category.all)
+    @states = SortCollectionOrdinally.call(collection: State.all)
+    @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
+    @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')
   end
 end
