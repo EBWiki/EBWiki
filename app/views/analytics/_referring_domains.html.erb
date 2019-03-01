@@ -1,0 +1,11 @@
+<div class="chart-wrapper">
+  <div class="chart-title background-orange">
+    Referring Domains - last 24 hours
+  </div>
+  <div class="chart-stage">
+    <div id=""><%= pie_chart metric_grouped_by_category(@visits_today, :referring_domain).count %></div>
+  </div>
+  <div class="chart-notes">
+    These domains are where traffic has originated
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="chart-wrapper">
+  <div class="chart-title background-orange">
+    Most Followed Cases
+  </div>
+  <div class="chart-stage">
+   <table class='table leader-list'>
+     <tr>
+      <th>Case</th>
+      <th>Followers</th>
+     </tr>
+
+     <% @cases_sorted_by_followers.each do |this_case| %>
+       <tr>
+         <td><%= link_to_case_title(this_case, 25) %></td>
+         <td><%= link_to_case_followers(this_case) %></td>
+       </tr>
+     <% end %>
+   </table>
+  </div>
+  <div class="chart-notes">
+    These are the cases with the most followers
+  </div>
+</div>

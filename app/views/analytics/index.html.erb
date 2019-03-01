@@ -2,204 +2,51 @@
   <div class="row space-below">
     <%= render 'top_metrics' %>
   </div>
+
   <div class="row">
     <div class="col-sm-7">
-      <div class="chart-wrapper">
-        <div class="chart-title background-orange">
-          Visits by Day - Last <%= @last_days %> days
-        </div>
-        <div class="chart-stage">
-          <%= column_chart metric_grouped_by_day(@visits_this_month, :started_at).count %>
-        </div>
-        <div class="chart-notes">
-          Column heights represent the number of visitors on a specific day.
-        </div>
-      </div>
+      <%= render 'visits_by_day' %>
     </div>
 
     <div class="col-sm-5">
-      <div class="chart-wrapper">
-        <div class="chart-title background-gray">
-          Visits by browser - last 24 hours
-        </div>
-        <div class="chart-stage">
-          <div id=""><%= pie_chart metric_grouped_by_category(@visits_today, :browser).count %></div>
-        </div>
-        <div class="chart-notes">
-          Notes go down here
-        </div>
-      </div>
+      <%= render 'visits_by_browser' %>
     </div>
-
   </div>
 
   <div class="row">
     <div class="col-sm-7">
-      <div class="chart-wrapper">
-        <div class="chart-title background-gray">
-          New Users by Day - Last <%= @last_days %> days (<%= @users.count %>)
-        </div>
-        <div class="chart-stage">
-          <%= column_chart metric_grouped_by_day(@users, :created_at).count %>
-        </div>
-        <div class="chart-notes">
-          Column heights represent the number of users added each day.
-        </div>
-      </div>
+      <%= render 'new_users_by_day' %>
     </div>
 
     <div class="col-sm-5">
-      <div class="chart-wrapper">
-        <div class="chart-title background-orange">
-          Referring Domains - last 24 hours
-        </div>
-        <div class="chart-stage">
-          <div id=""><%= pie_chart metric_grouped_by_category(@visits_today, :referring_domain).count %></div>
-        </div>
-        <div class="chart-notes">
-          These domains are where traffic has originated
-        </div>
-      </div>
+      <%= render 'referring_domains' %>
     </div>
   </div>
 
   <div class="row">
   <!-- Recently Updated cases -->
     <div class="col-sm-4">
-      <div class="chart-wrapper">
-        <div class="chart-title background-gray">
-          Recently Updated Cases
-        </div>
-        <div class="chart-stage">
-         <table class='table leader-list'>
-           <tr>
-            <th>Case</th>
-            <th>Updated</th>
-           </tr>
-
-           <% @cases_sorted_by_update.each do |this_case| %>
-             <tr>
-               <td><%= link_to_case_title(this_case, 25) %></td>
-               <td><small><%= display_updated_at(this_case) %></small></td>
-             </tr>
-           <% end %>
-         </table>
-        </div>
-        <div class="chart-notes">
-          These are the last ten updated cases
-        </div>
-      </div>
+      <%= render 'recently_updated_cases' %>
     </div>
 
   <!-- Most Followed cases -->
     <div class="col-sm-4">
-      <div class="chart-wrapper">
-        <div class="chart-title background-orange">
-          Most Followed Cases
-        </div>
-        <div class="chart-stage">
-         <table class='table leader-list'>
-           <tr>
-            <th>Case</th>
-            <th>Followers</th>
-           </tr>
-
-           <% @cases_sorted_by_followers.each do |this_case| %>
-             <tr>
-               <td><%= link_to_case_title(this_case, 25) %></td>
-               <td><%= link_to_case_followers(this_case) %></td>
-             </tr>
-           <% end %>
-         </table>
-        </div>
-        <div class="chart-notes">
-          These are the cases with the most followers
-        </div>
-      </div>
+      <%= render 'most_followed_cases' %>
     </div>
     <div class="col-sm-4">
-      <div class="chart-wrapper">
-        <div class="chart-title background-gray">
-          Most Viewed by New Visitors - Last 7 days <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Cases Viewed By New Visitors", :content => "This metric shows the number of new visitors landing on specific EBWiki cases."})%>
-        </div>
-        <div class="chart-stage">
-         <table class='table leader-list'>
-           <tr>
-            <th>Page</th>
-            <th>Views</th>
-           </tr>
-
-           <% @most_visited_cases.each do |case_info| %>
-            <% this_case = case_info[0] %>
-            <% views = case_info[1] %>
-            <tr>
-              <td><%= link_to_case_title(this_case, 25) %></td>
-              <td><%= views %></td>
-            </tr>
-           <% end %>
-         </table>
-        </div>
-        <div class="chart-notes">
-          The top cases viewed in the past 7 days.
-        </div>
-      </div>
-
+      <%= render 'recently_updated_cases' %>
     </div>
   </div><!-- row   -->
 
   <div class="row">
-    <!-- Editors List-->
-      <div class="col-sm-4">
-        <div class="chart-wrapper">
-          <div class="chart-title background-orange">
-            Most Recent Editors - Last 30 days <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Active Editors", :content => "This metric shows the number of cases added or updated by editors in the past 30 days."})%>
-          </div>
-          <div class="chart-stage">
-           <table class='table leader-list'>
-             <tr>
-              <th>Editor</th>
-              <th>Updates</th>
-             </tr>
-
-             <% @case_updaters_count_10.each do |who| %>
-               <% user_id = who[0].to_i %>
-               <% user_object = who[1] %>
-               <tr>
-                 <% unless user_id == 0 %>
-                   <td><%= @user = User.find(user_id).name %></td>
-                   <td><%= link_to user_object, @user %></td>
-                 <% else %>
-                   <td> Anonymous </td>
-                   <td><%= user_object %></td>
-                 <% end %>
-               </tr>
-             <% end %>
-           </table>
-          </div>
-          <div class="chart-notes">
-            The ten most active editors over the last 30 days.
-          </div>
-        </div>
-      </div>
-    <!-- Comments List-->
-      <div class="col-sm-8">
-        <div class="chart-wrapper">
-          <div class="chart-title background-gray">
-            Recent Comments
-          </div>
-          <ul class="scroller">
-            <% Comment.order(created_at: :desc).each do |comment| %>
-              <li>
-                <blockquote class="blockquote">
-                  <p><%= link_to truncate(Case.find(comment.commentable_id).title, length: 30), case_path(Case.find(comment.commentable_id)) %> -- <%= comment.created_at.strftime("%B %d, %Y") %></p>
-                  <p><%= link_to truncate(comment.content, length: 100), case_path(Case.find(comment.commentable_id)) %></p>
-                  <small><%= link_to User.find(comment.user_id).name, user_path(User.find(comment.user_id)) %></small>
-                </blockquote>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
+  <!-- Editors List-->
+    <div class="col-sm-4">
+      <%= render 'editors_list' %>
     </div>
+  <!-- Comments List-->
+    <div class="col-sm-8">
+      <%= render 'comments' %>
+    </div>
+  </div>
   <p>* mom refers to a comparison of the most recent adjacent 30 day periods, not specific months</p>
 </div>

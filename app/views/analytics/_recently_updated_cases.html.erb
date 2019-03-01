@@ -1,0 +1,23 @@
+<div class="chart-wrapper">
+  <div class="chart-title background-gray">
+    Recently Updated Cases
+  </div>
+  <div class="chart-stage">
+   <table class='table leader-list'>
+     <tr>
+      <th>Case</th>
+      <th>Updated</th>
+     </tr>
+
+     <% @cases_sorted_by_update.each do |this_case| %>
+       <tr>
+         <td><%= link_to_case_title(this_case, 25) %></td>
+         <td><small><%= display_updated_at(this_case) %></small></td>
+       </tr>
+     <% end %>
+   </table>
+  </div>
+  <div class="chart-notes">
+    These are the last ten updated cases
+  </div>
+</div>

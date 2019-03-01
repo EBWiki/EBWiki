@@ -1,0 +1,25 @@
+<div class="chart-wrapper">
+  <div class="chart-title background-gray">
+    Most Viewed by New Visitors - Last 7 days <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Cases Viewed By New Visitors", :content => "This metric shows the number of new visitors landing on specific EBWiki cases."})%>
+  </div>
+  <div class="chart-stage">
+   <table class='table leader-list'>
+     <tr>
+      <th>Page</th>
+      <th>Views</th>
+     </tr>
+
+     <% @most_visited_cases.each do |case_info| %>
+      <% this_case = case_info[0] %>
+      <% views = case_info[1] %>
+      <tr>
+        <td><%= link_to_case_title(this_case, 25) %></td>
+        <td><%= views %></td>
+      </tr>
+     <% end %>
+   </table>
+  </div>
+  <div class="chart-notes">
+    The top cases viewed in the past 7 days.
+  </div>
+</div>

@@ -18,6 +18,10 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
 
+  scope :recent_editors, -> {
+    where(recent_editor: true )
+  }
+
   def mailboxer_name
     name
   end
@@ -39,6 +43,18 @@ class User < ActiveRecord::Base
     elsif mailchimp_user.is_a?(Hash)
       mailchimp_user['status']
     end
+  end
+
+  def versions
+    PaperTrail::Version.where(whodunnit: id)
+  end
+
+  def recent_edits(period)
+    versions.where('created_at > ?', period.days.ago)
+  end
+
+  def recent_editor
+    versions.where('created_at > ?', 30.days.ago).count >=1
   end
 
   private

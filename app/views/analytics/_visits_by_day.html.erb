@@ -1,0 +1,11 @@
+<div class="chart-wrapper">
+  <div class="chart-title background-orange">
+    Visits by Day - Last <%= @last_days %> days
+  </div>
+  <div class="chart-stage">
+    <%= column_chart metric_grouped_by_day(@visits_this_month, :started_at).count %>
+  </div>
+  <div class="chart-notes">
+    Column heights represent the number of visitors on a specific day.
+  </div>
+</div>

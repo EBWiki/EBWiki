@@ -1,0 +1,11 @@
+<div class="chart-wrapper">
+  <div class="chart-title background-gray">
+    New Users by Day - Last <%= @last_days %> days (<%= @users.count %>)
+  </div>
+  <div class="chart-stage">
+    <%= column_chart metric_grouped_by_day(@users, :created_at).count %>
+  </div>
+  <div class="chart-notes">
+    Column heights represent the number of users added each day.
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="chart-wrapper">
+  <div class="chart-title background-gray">
+    Visits by browser - last 24 hours
+  </div>
+  <div class="chart-stage">
+    <div id=""><%= pie_chart metric_grouped_by_category(@visits_today, :browser).count %></div>
+  </div>
+  <div class="chart-notes">
+    Notes go down here
+  </div>
+</div>
