@@ -10,7 +10,9 @@ class Ahoy::Visit < ActiveRecord::Base
   scope :this_week, -> { where(started_at: 7.days.ago.beginning_of_day..Time.current) }
   scope :today, -> { where(started_at: 1.days.ago.beginning_of_day..Time.current) }
   scope :most_recent, ->(duration) { where(started_at: duration.beginning_of_day..Time.current) }
-  scope :sorted_by_hits, ->(limit) { group(:landing_page).order('count_id DESC').limit(limit).count(:id) }
+  scope :sorted_by_hits, ->(limit) {
+    group(:landing_page).order('count_id DESC').limit(limit).count(:id)
+  }
 
   def mom_visits_growth
     last_month_visits = Ahoy::Visit.this_month.count
