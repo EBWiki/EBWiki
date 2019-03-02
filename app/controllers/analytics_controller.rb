@@ -8,9 +8,9 @@ class AnalyticsController < ApplicationController
   def index
     @last_days = 30
     @full_width_content = true
-    @visits_this_month = Visit.this_month
-    @visits_today = Visit.today
-    @visits_this_week = Visit.this_week
+    @visits_this_month = Ahoy::Visit.this_month
+    @visits_today = Ahoy::Visit.today
+    @visits_this_week = Ahoy::Visit.this_week
     @users = User.where(created_at: @last_days.days.ago..Time.current)
     @views = Ahoy::Event.where(name: '$view')
     @cases_occurring_this_month = Case.most_recent_occurrences 30.days.ago
