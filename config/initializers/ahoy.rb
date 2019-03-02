@@ -9,4 +9,8 @@ class Ahoy::Store < Ahoy::DatabaseStore
   def exclude?
     bot? || request.ip == '192.168.1.1'
   end
+
+  def visit_model
+    Visit
+  end
 end
