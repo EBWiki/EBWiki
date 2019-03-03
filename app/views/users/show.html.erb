@@ -31,32 +31,14 @@
           <h3 class="page-header">Cases <%= @user.name %> follows:</h3>
         <% else %>
           <h3 class="page-header">
-            <% if @user.all_following.count == 0 %>
+            <% if @cases.size.zero? %>
               Please take 30 seconds and <%= link_to 'pick a case', root_path %> that you want to track and click the follow button. We'll take it from there to keep you informed.
             <% else %>
               <h3 class="page-header">Cases we are tracking for you:</h3>
             <% end %>
           </h3>
         <% end %>
-        <% @user.all_following.each do |following_case| %>
-          <div class="col-lg-2 col-md-4 col-xs-12">
-              <div class="view view-first">
-                <% if following_case.avatar? %>
-                  <%= link_to image_tag(following_case.avatar.large_avatar, :class => "img-responsive"), following_case %>
-                <% else %>
-                  <div class="thumbnail text-center">
-                    <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), following_case %>
-                    <div class="caption">
-                      <h4><%= following_case.subjects.first.name %></h4>
-                    </div>
-                  </div>
-                <% end %>
-                <div class="mask">
-                  <h2><%= link_to following_case.title, following_case, :class => "info2" %></h2>
-                </div>
-              </div>
-          </div>
-        <% end %>
+        <%= render partial: 'cases/thumbnail', layout: 'cases/show_thumbnail', collection: @cases, as: :this_case %>
       </div>
     </div>
 <!-- ROW END -->

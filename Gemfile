@@ -92,7 +92,7 @@ group :test do
   gem 'webmock'
 end
 
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '4.4.3'
 gem 'rails_12factor', groups: %i[production staging]
@@ -103,7 +103,7 @@ gem 'fog', '2.0'
 # photo resizing
 gem 'mini_magick'
 # file upload solution
-gem 'carrierwave', '~> 1.2'
+gem 'carrierwave', '~> 1.3'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
