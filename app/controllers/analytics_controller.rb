@@ -4,10 +4,10 @@
 # TODO: Some of these reports may need to be asynchronous as the data grows
 class AnalyticsController < ApplicationController
 
-  before_action :check_for_admin_or_analyst, only: %i[show index]
-
   # rubocop:disable Metrics/MethodLength
   def index
+    authenticate_user!
+    authorize :analytic, :index?
     @last_days = 30
     @full_width_content = true
     @visits_this_month = Visit.this_month
@@ -31,11 +31,4 @@ class AnalyticsController < ApplicationController
   end
   # rubocop:enable Metrics/MethodLength
 
-  private
-
-  def check_for_admin_or_analyst
-    authenticate_user!
-    return if current_user.admin? || current_user.analyst?
-    redirect_to root_url # or whatever
-  end
 end
