@@ -3,8 +3,8 @@
 # Controller for analytics page. A lot of reporting going on.
 # TODO: Some of these reports may need to be asynchronous as the data grows
 class AnalyticsController < ApplicationController
-
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/LineLength
   def index
     authenticate_user!
     authorize :analytic, :index?
@@ -30,5 +30,5 @@ class AnalyticsController < ApplicationController
     @total_number_of_cases = Case.all.size
   end
   # rubocop:enable Metrics/MethodLength
-
+  # rubocop:enable Metrics/LineLength
 end
