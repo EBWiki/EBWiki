@@ -37,4 +37,11 @@ FactoryBot.define do
     f.ansi_code { 'LA' }
     f.iso { 'US-LA' }
   end
+  
+  factory :state_ny, class: State do |f|
+    f.id
+    f.name { Faker::Name.name }
+    f.ansi_code { 'NY' }
+    f.iso { 'US-NY' }
+  end
 end
