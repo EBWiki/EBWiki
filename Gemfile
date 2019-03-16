@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.5.1'
+ruby '2.5.4'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
