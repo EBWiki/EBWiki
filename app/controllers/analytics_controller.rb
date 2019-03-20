@@ -3,6 +3,8 @@
 # Controller for analytics page. A lot of reporting going on.
 # TODO: Some of these reports may need to be asynchronous as the data grows
 class AnalyticsController < ApplicationController
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/LineLength
   def index
     authenticate_user!
     authorize :analytic, :index?
@@ -18,5 +20,15 @@ class AnalyticsController < ApplicationController
     @cases_sorted_by_followers = Case.sorted_by_followers 10
     @most_visited_cases = DetermineVisitsToCases.call(@visits_this_week.sorted_by_hits(13))
     @most_recent_comments = Comment.sorted_by_creation 15
+    @mom_new_cases_growth = Statistics.mom_changed_cases_growth(cases_at_start: Case.most_recent_occurrences(60.days.ago),
+                                                                cases_at_end: Case.most_recent_occurrences(30.days.ago))
+    @mom_cases_growth = Statistics.mom_cases_growth(cases_at_start: Case.all,
+                                                    cases_at_end: Case.created_this_month)
+    @cases_updated_last_30_days = Case.recently_updated(30.days.ago).size
+    @mom_updated_cases_growth = Statistics.mom_changed_cases_growth(cases_at_start: Case.recently_updated(60.days.ago),
+                                                                    cases_at_end: Case.recently_updated(30.days.ago))
+    @total_number_of_cases = Case.all.size
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/LineLength
 end
