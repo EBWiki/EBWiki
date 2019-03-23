@@ -2,7 +2,6 @@
 
 # Query objects for follows
 class FollowQuery
-
   def initialize(scope = Follow.all)
     @scope = scope
   end

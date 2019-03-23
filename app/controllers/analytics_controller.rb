@@ -5,6 +5,7 @@
 class AnalyticsController < ApplicationController
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/LineLength
+  # rubocop:disable Metrics/AbcSize
   def index
     authenticate_user!
     authorize :analytic, :index?
@@ -29,7 +30,7 @@ class AnalyticsController < ApplicationController
                                                                      metric_at_end: Case.recently_updated(30.days.ago))
     @total_number_of_cases = Case.all.size
     @mom_new_visits_growth = Statistics.mom_changed_metric_growth(metric_at_start: Ahoy::Visit.most_recent(60.days.ago),
-                                                                                   Ahoy::Visit.this_month))
+                                                                  metric_at_end: Ahoy::Visit.this_month)
     @total_number_of_follows = Follow.all.size
     @mom_follows_growth = Statistics.mom_total_metric_growth(metric_at_start: Follow.all,
                                                              metric_at_end: Follow.this_month)
@@ -39,4 +40,5 @@ class AnalyticsController < ApplicationController
   end
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/LineLength
+  # rubocop:enable Metrics/AbcSize
 end
