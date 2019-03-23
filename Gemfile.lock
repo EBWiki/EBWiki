@@ -75,7 +75,7 @@ GEM
       user_agent_parser
     arel (6.0.4)
     ast (2.4.0)
-    autoprefixer-rails (9.4.10.2)
+    autoprefixer-rails (9.5.0)
       execjs
     backports (3.12.0)
     bcrypt (3.1.12)
@@ -84,14 +84,14 @@ GEM
       sassc (>= 2.0.0)
     bootstrap3-datetimepicker-rails (4.17.47)
       momentjs-rails (>= 2.8.1)
-    brakeman (4.4.0)
+    brakeman (4.5.0)
     browser (2.5.3)
     builder (3.2.3)
     bullet (5.9.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
-    byebug (11.0.0)
-    capybara (3.14.0)
+    byebug (11.0.1)
+    capybara (3.15.0)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -149,7 +149,7 @@ GEM
     database_cleaner (1.3.0)
     debug_inspector (0.0.3)
     device_detector (1.0.1)
-    devise (4.4.3)
+    devise (4.6.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 6.0)
@@ -482,11 +482,10 @@ GEM
       request_store (~> 1.1)
     paper_trail-association_tracking (1.1.1)
     parallel (1.14.0)
-    parser (2.6.0.0)
+    parser (2.6.2.0)
       ast (~> 2.4.0)
     pg (0.20.0)
     pluginator (1.5.0)
-    powerpack (0.1.2)
     pre-commit (0.39.0)
       pluginator (~> 1.5)
     pry (0.12.2)
@@ -497,7 +496,7 @@ GEM
       pry (~> 0.10)
     psych (3.1.0)
     public_suffix (3.0.3)
-    puma (3.12.0)
+    puma (3.12.1)
     pundit (2.0.1)
       activesupport (>= 3.0.0)
     rack (1.6.11)
@@ -598,7 +597,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rollbar (2.19.2)
+    rollbar (2.19.3)
       multi_json
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
@@ -621,15 +620,14 @@ GEM
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    rubocop (0.65.0)
+    rubocop (0.66.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5, != 2.5.1.1)
-      powerpack (~> 0.1)
       psych (>= 3.1.0)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (~> 1.4.0)
+      unicode-display_width (>= 1.4.0, < 1.6)
     ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
@@ -713,7 +711,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
-    unicode-display_width (1.4.1)
+    unicode-display_width (1.5.0)
     uniform_notifier (1.12.1)
     user_agent_parser (2.5.1)
     warden (1.2.7)
@@ -753,7 +751,7 @@ DEPENDENCIES
   cocoon
   cucumber-rails (~> 1.6)
   database_cleaner (~> 1.3.0)
-  devise (= 4.4.3)
+  devise (= 4.6.1)
   dotenv-rails
   enumerated_type (~> 0.5)
   factory_bot_rails (~> 4.10)
@@ -819,7 +817,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 2.5.4p155
+   ruby 2.5.5p157
 
 BUNDLED WITH
-   1.16.2
+   1.17.3
