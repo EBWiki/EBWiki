@@ -50,23 +50,3 @@ RSpec.describe Ahoy::Visit, type: :model do
     end
   end
 end
-
-RSpec.describe Ahoy::Visit, type: :model do
-  describe 'growth rate' do
-    it 'returns the correct percentage' do
-      FactoryBot.create(:visit, started_at: 31.days.ago)
-      FactoryBot.create(:visit)
-      expect(Ahoy::Visit.first.mom_visits_growth).to eq(0)
-    end
-
-    it 'returns 0 if no new visits' do
-      FactoryBot.create(:visit, started_at: 31.days.ago)
-      expect(Ahoy::Visit.first.mom_visits_growth).to eq(0)
-    end
-
-    it 'returns the correct percentage if previous 30 days period saw no visits' do
-      FactoryBot.create(:visit)
-      expect(Ahoy::Visit.first.mom_visits_growth).to eq(100)
-    end
-  end
-end
