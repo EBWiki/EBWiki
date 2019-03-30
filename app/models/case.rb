@@ -101,7 +101,7 @@ class Case < ActiveRecord::Base
 
   def case_date_validator
     errors.add(:date, 'must be present') && return unless date.present?
-    errors.add(:date, 'must be in the past') if date > Date.current
+    errors.add(:date, 'must be in the past') if !date.past?
   end
 
   def edit_summary
