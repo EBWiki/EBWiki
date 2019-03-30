@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
+# Class responsible for sending emails about admins
 class AdminMailer < ApplicationMailer
-
-  # send a signup email to the user, pass in the user object that contains the user's email address
   def new_admin_email(new_admin:, recipient:)
     @new_admin = new_admin
     @recipient = recipient
