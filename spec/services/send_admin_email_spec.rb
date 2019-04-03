@@ -7,6 +7,7 @@ describe SendAdminEmail do
   let(:admin) { FactoryBot.create(:admin) }
 
   it 'should send a new admin email when a new admin is added' do
+    admin
     user.update_attributes({ admin: true })
     SendAdminEmail.call(user: user)
     mail = ActionMailer::Base.deliveries.last
