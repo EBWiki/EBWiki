@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe SendAdminEmail do
   let(:user) { FactoryBot.create(:user) }
-  let(:admin) { FactoryBot.create(:user, admin: true) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   it 'should send a new admin email when a new admin is added' do
     user.update_attributes({ admin: true })
