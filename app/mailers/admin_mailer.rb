@@ -2,9 +2,8 @@
 
 # Class responsible for sending emails about admins
 class AdminMailer < ApplicationMailer
-  def new_admin_email(new_admin:, recipient:)
+  def new_admin_email(new_admin:, recipients:)
     @new_admin = new_admin
-    @recipient = recipient
-    mail(to: @recipient[1], subject: "A new admin has been added.")
+    mail(to: recipients, subject: "A new admin has been added.")
   end
 end

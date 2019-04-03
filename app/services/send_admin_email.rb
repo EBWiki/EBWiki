@@ -12,9 +12,7 @@ class SendAdminEmail
   private
 
   def send_new_admin_email(user:)
-    admins = User.where.not(email: user.email).where(admin: true).pluck(:name, :email)
-    admins.map do |admin|
-      AdminMailer.new_admin_email(new_admin: user, recipient: admin).deliver_now
-    end
+    admin_emails = User.where.not(email: user.email).where(admin: true).pluck(:email)
+    AdminMailer.new_admin_email(new_admin: user, recipients: admin_emails).deliver_now
   end
 end
