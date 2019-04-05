@@ -13,4 +13,5 @@ class Ahoy::Visit < ActiveRecord::Base
   scope :sorted_by_hits, ->(limit) {
     group(:landing_page).order('count_id DESC').limit(limit).count(:id)
   }
+  scope :occurring_by, ->(date) { where("started_at < ?", date.end_of_day) }
 end

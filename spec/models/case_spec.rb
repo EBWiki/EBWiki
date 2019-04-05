@@ -227,32 +227,6 @@ describe 'scopes', versioning: true do
     expect(sorted_cases.to_a).not_to include louisiana_case
   end
 
-  it 'returns cases created in the past month' do
-    dc = FactoryBot.create(:state_dc)
-    louisiana = FactoryBot.create(:state_louisiana)
-    texas = FactoryBot.create(:state_texas)
-
-    FactoryBot.create(:case,
-                      city: 'Houston',
-                      state_id: texas.id,
-                      created_at: Time.current)
-
-    louisiana_case = FactoryBot.create(:case,
-                                       city: 'Baton Rouge',
-                                       state_id: louisiana.id,
-                                       created_at: 5.weeks.ago)
-
-    dc_case = FactoryBot.create(:case,
-                                city: 'Washington',
-                                state_id: dc.id,
-                                created_at: 1.year.ago)
-
-    recent_case = Case.created_this_month
-    expect(recent_case.count).to eq 1
-    expect(recent_case.to_a).not_to include(louisiana_case)
-    expect(recent_case.to_a).not_to include(dc_case)
-  end
-
   it 'returns the most recently occurring cases' do
     dc = FactoryBot.create(:state_dc)
     louisiana = FactoryBot.create(:state_louisiana)

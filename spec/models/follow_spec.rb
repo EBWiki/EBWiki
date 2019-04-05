@@ -4,11 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Follow, type: :model do
   describe 'scopes' do
-    it 'returns follows from the past month' do
-      follow_one = FactoryBot.create(:follow, created_at: 40.days.ago)
-      FactoryBot.create(:follow, created_at: 15.days.ago)
-      expect(Follow.this_month.count).to eq(1)
-      expect(Follow.this_month.to_a).not_to include(follow_one)
+    it 'returns follows occurring by a given date' do
+      follow = FactoryBot.create(:follow)
+      follow.update({ created_at: 17.days.ago })
+      expect(Follow.occurring_by(15.days.ago).to_a).to include(follow)
     end
   end
 end
