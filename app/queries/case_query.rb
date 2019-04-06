@@ -11,7 +11,7 @@ class CaseQuery
   def most_recent_as_of(date:)
     period_begin = date - 30.days
     created_by(date: date)
-    .where(date: period_begin.beginning_of_day..date.end_of_day)
+      .where(date: period_begin.beginning_of_day..date.end_of_day)
   end
 
   def created_by(date:)
@@ -23,6 +23,6 @@ class CaseQuery
   def recently_updated_as_of(date:)
     period_begin = date - 30.days
     created_by(date: date)
-    .where(updated_at: period_begin.beginning_of_day..date.end_of_day)
+      .where(updated_at: period_begin.beginning_of_day..date.end_of_day)
   end
 end
