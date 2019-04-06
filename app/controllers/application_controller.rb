@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   if Rails.env.staging?
     http_basic_authenticate_with name: ENV['STAGING_USERNAME'], password: ENV['STAGING_PASSWORD']
@@ -55,6 +56,11 @@ class ApplicationController < ActionController::Base
 
   def store_user_location!
     store_location_for(:user, request.fullpath)
+  end
+
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
   end
 
   protected
