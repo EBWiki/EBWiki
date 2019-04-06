@@ -46,6 +46,7 @@ RSpec.configure do |config|
   # Include Devise test helpers
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :feature
+  config.include Devise::Test::IntegrationHelpers, type: :request
   config.extend ControllerMacros, type: :controller
   config.extend ControllerMacros, type: :feature
 
@@ -89,6 +90,10 @@ RSpec.configure do |config|
 
   config.before(:each, type: :controller) do
     @request.host = "localhost:3000"
+  end
+
+  config.before(:each, type: :request) do
+    host!("localhost:3000")
   end
 
   config.before(:each, type: :feature) do
@@ -138,6 +143,16 @@ RSpec.configure do |config|
   if Bullet.enable?
     config.before(:each) { Bullet.start_request }
     config.after(:each)  { Bullet.end_request }
+  end
+
+  # Settings for testing mailers
+  config.before(:each, type: :mailer) do
+    ActionMailer::Base.perform_deliveries = true
+    ActionMailer::Base.deliveries = []
+  end
+
+  config.after(:each, type: :mailer) do
+    ActionMailer::Base.deliveries.clear
   end
 end
 
