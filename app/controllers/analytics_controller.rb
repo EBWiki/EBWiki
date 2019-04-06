@@ -5,6 +5,7 @@
 class AnalyticsController < ApplicationController
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/LineLength
+  # rubocop:disable Metrics/AbcSize
   def index
     authenticate_user!
     authorize :analytic, :index?
@@ -20,15 +21,24 @@ class AnalyticsController < ApplicationController
     @cases_sorted_by_followers = Case.sorted_by_followers 10
     @most_visited_cases = DetermineVisitsToCases.call(@visits_this_week.sorted_by_hits(13))
     @most_recent_comments = Comment.sorted_by_creation 15
-    @mom_new_cases_growth = Statistics.mom_changed_cases_growth(cases_at_start: Case.most_recent_occurrences(60.days.ago),
-                                                                cases_at_end: Case.most_recent_occurrences(30.days.ago))
-    @mom_cases_growth = Statistics.mom_cases_growth(cases_at_start: Case.all,
-                                                    cases_at_end: Case.created_this_month)
+    @mom_new_cases_growth = Statistics.mom_metric_growth(metric_at_start: CaseQuery.new.most_recent_as_of(date: 30.days.ago),
+                                                         metric_at_end: CaseQuery.new.most_recent_as_of(date: Date.current))
+    @mom_cases_growth = Statistics.mom_metric_growth(metric_at_start: CaseQuery.new.created_by(date: 30.days.ago),
+                                                     metric_at_end: CaseQuery.new.created_by(date: Date.current))
     @cases_updated_last_30_days = Case.recently_updated(30.days.ago).size
-    @mom_updated_cases_growth = Statistics.mom_changed_cases_growth(cases_at_start: Case.recently_updated(60.days.ago),
-                                                                    cases_at_end: Case.recently_updated(30.days.ago))
+    @mom_updated_cases_growth = Statistics.mom_metric_growth(metric_at_start: CaseQuery.new.recently_updated_as_of(date: 30.days.ago),
+                                                             metric_at_end: CaseQuery.new.recently_updated_as_of(date: Date.current))
     @total_number_of_cases = Case.all.size
+    @mom_new_visits_growth = Statistics.mom_metric_growth(metric_at_start: Ahoy::Visit.occurring_by(30.days.ago),
+                                                          metric_at_end: Ahoy::Visit.occurring_by(Date.current))
+    @total_number_of_follows = Follow.all.size
+    @mom_follows_growth = Statistics.mom_metric_growth(metric_at_start: Follow.occurring_by(30.days.ago),
+                                                       metric_at_end: Follow.occurring_by(Date.current))
+    @total_distinct_follows = FollowQuery.new.distinct_count
+    @mom_unique_followers_growth = Statistics.mom_unique_followers_growth(metric_at_start: Follow.occurring_by(30.days.ago),
+                                                                          metric_at_end: Follow.occurring_by(Date.current))
   end
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/LineLength
+  # rubocop:enable Metrics/AbcSize
 end

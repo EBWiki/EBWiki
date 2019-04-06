@@ -67,9 +67,6 @@ class Case < ActiveRecord::Base
 
   # Scopes
   scope :by_state, ->(state_id) { where(state_id: state_id) }
-  scope :created_this_month, -> {
-    where(created_at: 30.days.ago.beginning_of_day..Time.current)
-  }
   scope :most_recent_occurrences, ->(duration) {
     where(date: duration.beginning_of_day..Time.current)
   }
