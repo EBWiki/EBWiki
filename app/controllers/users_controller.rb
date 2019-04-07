@@ -11,6 +11,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    authorize @user
   end
 
   def update
@@ -47,7 +48,11 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :description, :subscribed)
+    if current_user.admin?
+      params.require(:user).permit(:admin)
+    else
+      params.require(:user).permit(:name, :email, :description, :subscribed)
+    end
   end
 
   def user_param
@@ -64,5 +69,10 @@ class UsersController < ApplicationController
     yield
   ensure
     Bullet.enable = previous_value
+  end
+
+  def user_not_authorized
+    flash[:alert] = 'You are not authorized to perform this action.'
+    redirect_to @user
   end
 end

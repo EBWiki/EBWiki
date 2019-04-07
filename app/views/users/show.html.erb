@@ -8,8 +8,10 @@
         Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
         <br>
         <br>
+        <%= render partial: 'edit_button' if policy(@user).edit? %>
+        <br>
+        <br>
         <% if @user == current_user %>
-          <%= link_to 'Edit Profile', edit_user_path(current_user), :class => "btn btn-success" %></a>
           <div class="panel panel-default mailFoldershort">
             <div class="panel-body">
               Your Mailboxes:
@@ -19,7 +21,7 @@
         <% else %>
           <%= link_to "Send a Message", new_conversation_path, class: "btn btn-success" %>
         <% end %>
-        <br /><br/>
+        <br>
       </div>
       <div class="col-md-10">
         <div class="alert alert-info">
