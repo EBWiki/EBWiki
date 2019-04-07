@@ -3,7 +3,7 @@
 # User Policy
 class UserPolicy < ApplicationPolicy
   def edit?
-    return false if !user
+    return false unless user
     user == record || user.admin?
   end
 
