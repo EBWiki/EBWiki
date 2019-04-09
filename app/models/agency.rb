@@ -15,6 +15,19 @@ class Agency < ActiveRecord::Base
     declare :private
   end
 
+  STRIPPED_ATTRIBUTES = %w[
+    name
+    city
+    street_address
+    zipcode description
+    telephone
+    email
+    website
+    lead_officer
+  ].freeze
+
+  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
+
   has_paper_trail
   has_many :case_agencies
   has_many :cases, through: :case_agencies

@@ -18,6 +18,17 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
 
+  STRIPPED_ATTRIBUTES = %w[
+    email
+    storytime_name
+    description city
+    facebook_url
+    twitter_url
+    linkedin
+  ].freeze
+
+  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
+
   def mailboxer_name
     name
   end

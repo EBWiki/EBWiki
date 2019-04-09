@@ -173,3 +173,5 @@ gem 'rubocop', '~> 0.58', require: false
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
+
+gem 'auto_strip_attributes', '~> 2.5'
