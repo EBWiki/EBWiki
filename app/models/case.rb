@@ -4,6 +4,7 @@
 # TODO: Lots & lots of refactoring
 class Case < ActiveRecord::Base
   # TODO: Clean up relationship section
+
   belongs_to :user
   belongs_to :category
   belongs_to :state
@@ -51,6 +52,23 @@ class Case < ActiveRecord::Base
 
   validates :blurb, length: { maximum: 500 }
   validates_presence_of :blurb, message: 'A blurb about the case is required.'
+
+  STRIPPED_ATTRIBUTES = %w[
+    title
+    city
+    address
+    zipcode
+    overview
+    community_action
+    country
+    state
+    overview
+    litigation
+    summary
+    blurb
+  ].freeze
+
+  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader

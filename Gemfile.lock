@@ -67,6 +67,8 @@ GEM
       user_agent_parser
     arel (6.0.4)
     ast (2.4.0)
+    auto_strip_attributes (2.5.0)
+      activerecord (>= 4.0)
     autoprefixer-rails (9.5.0)
       execjs
     backports (3.12.0)
@@ -734,6 +736,7 @@ DEPENDENCIES
   activerecord-session_store
   acts_as_follower
   ahoy_matey (= 2.1)
+  auto_strip_attributes (~> 2.5)
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails
   brakeman (~> 4.3)
