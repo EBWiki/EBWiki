@@ -4,6 +4,7 @@
 # TODO: Lots & lots of refactoring
 class Case < ActiveRecord::Base
   # TODO: Clean up relationship section
+
   belongs_to :user
   belongs_to :category
   belongs_to :state
@@ -52,6 +53,23 @@ class Case < ActiveRecord::Base
   validates :blurb, length: { maximum: 500 }
   validates_presence_of :blurb, message: 'A blurb about the case is required.'
 
+  STRIPPED_ATTRIBUTES = %w[
+    title
+    city
+    address
+    zipcode
+    overview
+    community_action
+    country
+    state
+    overview
+    litigation
+    summary
+    blurb
+  ].freeze
+
+  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
+
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
@@ -67,9 +85,6 @@ class Case < ActiveRecord::Base
 
   # Scopes
   scope :by_state, ->(state_id) { where(state_id: state_id) }
-  scope :created_this_month, -> {
-    where(created_at: 30.days.ago.beginning_of_day..Time.current)
-  }
   scope :most_recent_occurrences, ->(duration) {
     where(date: duration.beginning_of_day..Time.current)
   }
