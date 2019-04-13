@@ -13,7 +13,9 @@ class DateRange
     "from #{start_date.strftime('%b %d, %Y')} to #{end_date.strftime('%b %d, %Y')}"
   end
 
+  # rubocop:disable Style/RedundantSelf
   def ==(other)
     self.class == other.class && self.to_s == other.to_s
   end
+  # rubocop:enable Style/RedundantSelf
 end
