@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 
   STRIPPED_ATTRIBUTES = %w[
     email
-    storytime_name
+    name
     description city
     facebook_url
     twitter_url
