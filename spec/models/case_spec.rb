@@ -2,10 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Case, type: :model do
+RSpec.describe Case do
   describe 'validity' do
     it { should validate_presence_of(:city).with_message('Please add a city.') }
     it { should validate_presence_of(:subjects).with_message('at least one subject is required') }
+
+    it_behaves_like 'a sanatized_record'
 
     it do
       should validate_presence_of(:overview)

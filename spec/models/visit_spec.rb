@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Ahoy::Visit, type: :model do
+RSpec.describe Ahoy::Visit do
   describe 'scopes' do
     it 'returns visits in the past month' do
       visit_one = FactoryBot.create(:visit, started_at: 31.days.ago)
@@ -33,12 +33,8 @@ RSpec.describe Ahoy::Visit, type: :model do
     end
 
     it 'returns visits sorted by landing page' do
-      visit_one = FactoryBot.create(:visit,
-                                    landing_page: 'https://blackopswiki.herokuapp.com/about')
-      FactoryBot.create(:visit,
-                        landing_page: 'https://blackopswiki.herokuapp.com/about')
-      FactoryBot.create(:visit)
-      FactoryBot.create(:visit)
+      create_list(:visit, 2, landing_page: 'https://blackopswiki.herokuapp.com/about')
+      create_list(:visit, 2)
       visit_five = FactoryBot.create(:visit,
                                      landing_page: 'https://blackopswiki.herokuapp.com/analytics')
 
@@ -48,7 +44,7 @@ RSpec.describe Ahoy::Visit, type: :model do
     end
 
     it 'returns visits by occurrence date' do
-      visit = FactoryBot.create(:visit, started_at: 17.days.ago)
+      FactoryBot.create(:visit, started_at: 17.days.ago)
       expect(Ahoy::Visit.occurring_by(15.days.ago).size).to eq 1
     end
   end
