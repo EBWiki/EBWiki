@@ -13,5 +13,10 @@ describe UserPolicy do
     it 'permits access if  current user updating self account' do
       expect(subject).to permit(user, user)
     end
+
+    it 'permits access if current user is an admin' do
+      admin = FactoryBot.create(:user, admin: true)
+      expect(subject).to permit(admin, user)
+    end
   end
 end

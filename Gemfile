@@ -158,7 +158,7 @@ gem 'gibbon'
 # Google News API help
 gem 'galerts', '~> 1.1'
 
-gem 'ckeditor', '~> 4.2', git: 'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', '~> 4.2'
 
 # New Relic performance monitor
 gem 'newrelic_rpm', '~> 5.2.0'
@@ -173,3 +173,5 @@ gem 'rubocop', '~> 0.58', require: false
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
+
+gem 'auto_strip_attributes', '~> 2.5'
