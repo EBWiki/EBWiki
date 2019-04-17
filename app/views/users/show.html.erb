@@ -24,7 +24,7 @@
       <div class="col-md-10">
         <div class="alert alert-info">
           <h2></h2>
-          <h4><%= @user.name %>'s bio:</h4>
+          <h4><%= "#{@user.name}'s bio:" %></h4>
           <p><%= @user.description %></p>
         </div>
         <% if @user != current_user %>
