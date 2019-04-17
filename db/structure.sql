@@ -29,6 +29,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: jurisdiction; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.jurisdiction AS ENUM (
+    'unknown',
+    'local',
+    'state',
+    'federal',
+    'university',
+    'commercial'
+);
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -54,7 +68,8 @@ CREATE TABLE public.agencies (
     slug character varying,
     longitude double precision,
     latitude double precision,
-    jurisdiction_type character varying
+    jurisdiction_type character varying,
+    jurisdiction public.jurisdiction DEFAULT 'unknown'::public.jurisdiction
 );
 
 
@@ -2091,4 +2106,6 @@ INSERT INTO schema_migrations (version) VALUES ('20190112224451');
 INSERT INTO schema_migrations (version) VALUES ('20190112224801');
 
 INSERT INTO schema_migrations (version) VALUES ('20190323221344');
+
+INSERT INTO schema_migrations (version) VALUES ('20190406032344');
 
