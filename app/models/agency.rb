@@ -3,7 +3,15 @@
 # This model refers to law enforcement agencies involved in the cases
 class Agency < ActiveRecord::Base
   # This is the jurisdiction of the agency
-  # TODO: Determine a better way to do these enums
+  enum jurisdiction: {
+    unknown: 'unknown',
+    local: 'local',
+    state: 'state',
+    federal: 'federal',
+    university: 'university',
+    commercial: 'commercial'
+  }
+
   class JurisdictionType
     include EnumeratedType
 
@@ -45,9 +53,7 @@ class Agency < ActiveRecord::Base
   validates :state_id, presence: {
     message: 'You must specify the state in which the agency is located.'
   }
-  validates :jurisdiction_type, inclusion: {
-    in: %w[none state local federal university private]
-  }, allow_nil: true
+
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 

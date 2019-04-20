@@ -10,7 +10,7 @@
 </span>
 
 <p>
-  <%= show_non_blank_fields("Type", @agency.jurisdiction_type) %>
+  <%= "Type: #{@agency.jurisdiction.capitalize}" %>
 </p>
 <p>
   <%= show_non_blank_fields "Department Head", @agency.lead_officer %>
