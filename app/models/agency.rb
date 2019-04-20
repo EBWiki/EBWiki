@@ -27,7 +27,8 @@ class Agency < ActiveRecord::Base
     name
     city
     street_address
-    zipcode description
+    zipcode
+    description
     telephone
     email
     website
@@ -40,10 +41,6 @@ class Agency < ActiveRecord::Base
   has_many :case_agencies
   has_many :cases, through: :case_agencies
   belongs_to :state
-
-  before_save do
-    self.name = name.lstrip
-  end
 
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
