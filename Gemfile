@@ -16,7 +16,6 @@ gem 'uglifier', '4.1'
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
 
-
 # Use gem pundit for authorization
 gem 'pundit', '~> 2.0.0'
 # Use jquery as the JavaScript library
