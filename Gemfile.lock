@@ -169,7 +169,6 @@ GEM
     elasticsearch-transport (6.2.0)
       faraday
       multi_json
-    enumerated_type (0.5.0)
     errbase (0.1.1)
     erubis (2.7.0)
     excon (0.62.0)
@@ -751,7 +750,6 @@ DEPENDENCIES
   database_cleaner (~> 1.3.0)
   devise (= 4.6.1)
   dotenv-rails
-  enumerated_type (~> 0.5)
   factory_bot_rails (~> 4.10)
   faker (~> 1.9)
   fog (= 2.0)

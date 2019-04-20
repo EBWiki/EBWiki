@@ -12,17 +12,6 @@ class Agency < ActiveRecord::Base
     commercial: 'commercial'
   }
 
-  class JurisdictionType
-    include EnumeratedType
-
-    declare :none
-    declare :state
-    declare :local
-    declare :federal
-    declare :university
-    declare :private
-  end
-
   STRIPPED_ATTRIBUTES = %w[
     name
     city

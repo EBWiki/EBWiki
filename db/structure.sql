@@ -68,7 +68,6 @@ CREATE TABLE public.agencies (
     slug character varying,
     longitude double precision,
     latitude double precision,
-    jurisdiction_type character varying,
     jurisdiction public.jurisdiction DEFAULT 'unknown'::public.jurisdiction
 );
 
@@ -2108,4 +2107,6 @@ INSERT INTO schema_migrations (version) VALUES ('20190112224801');
 INSERT INTO schema_migrations (version) VALUES ('20190323221344');
 
 INSERT INTO schema_migrations (version) VALUES ('20190406032344');
+
+INSERT INTO schema_migrations (version) VALUES ('20190420191754');
 

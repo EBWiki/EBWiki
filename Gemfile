@@ -15,8 +15,7 @@ gem 'uglifier', '4.1'
 
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
-# Syntax
-gem 'enumerated_type', '~> 0.5'
+
 
 # Use gem pundit for authorization
 gem 'pundit', '~> 2.0.0'
