@@ -6,7 +6,7 @@ class Case < ActiveRecord::Base
   # TODO: Clean up relationship section
 
   belongs_to :user
-  belongs_to :cause_of_death
+  belongs_to :category
   belongs_to :state
   has_many :links, dependent: :destroy
   has_many :links, as: :linkable
