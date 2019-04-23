@@ -13,15 +13,5 @@ class Ahoy::Visit < ActiveRecord::Base
   scope :sorted_by_hits, ->(limit) {
     group(:landing_page).order('count_id DESC').limit(limit).count(:id)
   }
-
-  def mom_visits_growth
-    last_month_visits = Ahoy::Visit.this_month.count
-    return 0 if last_month_visits.zero?
-
-    last_60_days_visits = Ahoy::Visit.most_recent(60.days.ago).count
-    prior_30_days_visits = last_60_days_visits - last_month_visits
-    return (last_month_visits * 100) if prior_30_days_visits.zero?
-
-    (((last_month_visits.to_f / prior_30_days_visits) - 1) * 100).round(2)
-  end
+  scope :occurring_by, ->(date) { where("started_at < ?", date.end_of_day) }
 end

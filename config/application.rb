@@ -48,5 +48,7 @@ module EBWiki
     end
 
     config.active_record.schema_format = :sql
+
+    config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
   end
 end

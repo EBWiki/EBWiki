@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Ahoy::Visit, type: :model do
+RSpec.describe Ahoy::Visit do
   describe 'scopes' do
     it 'returns visits in the past month' do
       visit_one = FactoryBot.create(:visit, started_at: 31.days.ago)
@@ -10,9 +10,7 @@ RSpec.describe Ahoy::Visit, type: :model do
       expect(Ahoy::Visit.this_month.count).to eq(1)
       expect(Ahoy::Visit.this_month.to_a).not_to include(visit_one)
     end
-  end
 
-  describe 'scopes' do
     it 'returns visits in the past week' do
       visit_one = FactoryBot.create(:visit, started_at: 31.days.ago)
       FactoryBot.create(:visit, started_at: 4.days.ago)
@@ -35,38 +33,19 @@ RSpec.describe Ahoy::Visit, type: :model do
     end
 
     it 'returns visits sorted by landing page' do
-      visit_one = FactoryBot.create(:visit,
-                                    landing_page: 'https://blackopswiki.herokuapp.com/about')
-      FactoryBot.create(:visit,
-                        landing_page: 'https://blackopswiki.herokuapp.com/about')
-      FactoryBot.create(:visit)
-      FactoryBot.create(:visit)
+      create_list(:visit, 2, landing_page: 'https://blackopswiki.herokuapp.com/about')
+      create_list(:visit, 2)
       visit_five = FactoryBot.create(:visit,
-                                     landing_page: 'https://blackopswiki.herokuapp.com/analytics/index')
+                                     landing_page: 'https://blackopswiki.herokuapp.com/analytics')
 
       visits = Ahoy::Visit.sorted_by_hits 2
       expect(visits.count).to eq(2)
       expect(visits.to_a).not_to include [visit_five.landing_page, 1]
     end
-  end
-end
 
-RSpec.describe Ahoy::Visit, type: :model do
-  describe 'growth rate' do
-    it 'returns the correct percentage' do
-      FactoryBot.create(:visit, started_at: 31.days.ago)
-      FactoryBot.create(:visit)
-      expect(Ahoy::Visit.first.mom_visits_growth).to eq(0)
-    end
-
-    it 'returns 0 if no new visits' do
-      FactoryBot.create(:visit, started_at: 31.days.ago)
-      expect(Ahoy::Visit.first.mom_visits_growth).to eq(0)
-    end
-
-    it 'returns the correct percentage if previous 30 days period saw no visits' do
-      FactoryBot.create(:visit)
-      expect(Ahoy::Visit.first.mom_visits_growth).to eq(100)
+    it 'returns visits by occurrence date' do
+      FactoryBot.create(:visit, started_at: 17.days.ago)
+      expect(Ahoy::Visit.occurring_by(15.days.ago).size).to eq 1
     end
   end
 end

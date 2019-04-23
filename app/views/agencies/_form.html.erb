@@ -16,10 +16,10 @@
     <%= f.input :name %>
     <%= f.input :street_address %>
     <%= f.input :city %>
-    <%= f.collection_select :state_id, SortCollectionOrdinally.call(collection: State.all), :id, :name, {prompt: "State"}, label:"State" %>
+    <%= f.input :state_id, collection: @states, prompt: "State"%>
     <%= f.input :zipcode %>
     <%= f.input :description %>
-    <%= f.input :jurisdiction_type, collection: @jurisdiction_types %>
+    <%= f.input :jurisdiction, collection: [:unknown, :local, :state, :federal, :university, :commercial] %>
     <%= f.input :telephone %>
     <%= f.input :email %>
     <%= f.input :website %>

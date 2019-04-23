@@ -15,8 +15,6 @@ gem 'uglifier', '4.1'
 
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
-# Syntax
-gem 'enumerated_type', '~> 0.5'
 
 # Use gem pundit for authorization
 gem 'pundit', '~> 2.0.0'
@@ -158,7 +156,7 @@ gem 'gibbon'
 # Google News API help
 gem 'galerts', '~> 1.1'
 
-gem 'ckeditor', '~> 4.2', git: 'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', '~> 4.2'
 
 # New Relic performance monitor
 gem 'newrelic_rpm', '~> 5.2.0'
@@ -173,3 +171,5 @@ gem 'rubocop', '~> 0.58', require: false
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
+
+gem 'auto_strip_attributes', '~> 2.5'
