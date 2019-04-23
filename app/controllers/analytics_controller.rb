@@ -21,21 +21,21 @@ class AnalyticsController < ApplicationController
     @cases_sorted_by_followers = Case.sorted_by_followers 10
     @most_visited_cases = DetermineVisitsToCases.call(@visits_this_week.sorted_by_hits(13))
     @most_recent_comments = Comment.sorted_by_creation 15
-    @mom_new_cases_growth = Statistics.mom_metric_growth(start_metric: CaseQuery.new.most_recent_as_of(date: date_range.start_date),
+    @mom_new_cases_growth = Statistics.metric_growth(start_metric: CaseQuery.new.most_recent_as_of(date: date_range.start_date),
                                                          end_metric: CaseQuery.new.most_recent_as_of(date: date_range.end_date))
-    @mom_cases_growth = Statistics.mom_metric_growth(start_metric: CaseQuery.new.created_by(date: date_range.start_date),
+    @mom_cases_growth = Statistics.metric_growth(start_metric: CaseQuery.new.created_by(date: date_range.start_date),
                                                      end_metric: CaseQuery.new.created_by(date: date_range.end_date))
     @cases_updated_last_30_days = Case.recently_updated(30.days.ago).size
-    @mom_updated_cases_growth = Statistics.mom_metric_growth(start_metric: CaseQuery.new.recently_updated_as_of(date: date_range.start_date),
+    @mom_updated_cases_growth = Statistics.metric_growth(start_metric: CaseQuery.new.recently_updated_as_of(date: date_range.start_date),
                                                              end_metric: CaseQuery.new.recently_updated_as_of(date: date_range.end_date))
     @total_number_of_cases = Case.all.size
-    @mom_new_visits_growth = Statistics.mom_metric_growth(start_metric: Ahoy::Visit.occurring_by(date_range.start_date),
+    @mom_new_visits_growth = Statistics.metric_growth(start_metric: Ahoy::Visit.occurring_by(date_range.start_date),
                                                           end_metric: Ahoy::Visit.occurring_by(date_range.end_date))
     @total_number_of_follows = Follow.all.size
-    @mom_follows_growth = Statistics.mom_metric_growth(start_metric: Follow.occurring_by(date_range.start_date),
+    @mom_follows_growth = Statistics.metric_growth(start_metric: Follow.occurring_by(date_range.start_date),
                                                        end_metric: Follow.occurring_by(date_range.end_date))
     @total_distinct_follows = FollowQuery.new.distinct_count
-    @mom_unique_followers_growth = Statistics.mom_unique_followers_growth(start_metric: Follow.occurring_by(date_range.start_date),
+    @unique_followers_growth = Statistics.unique_followers_growth(start_metric: Follow.occurring_by(date_range.start_date),
                                                                           end_metric: Follow.occurring_by(date_range.end_date))
   end
   # rubocop:enable Metrics/MethodLength
