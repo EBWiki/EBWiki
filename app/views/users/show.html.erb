@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-2">
         <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
-        <%= @user.name, length:16 %>
+        <%= @user.name %>
         <br>
         Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
         <br>
