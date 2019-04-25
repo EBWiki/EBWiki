@@ -5,7 +5,8 @@
 # are locale specific, and you may define rules for as many different
 # locales as you wish. All of these examples are active by default:
 ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.irregular 'cause of death', 'causes of death'
+  inflect.plural 'cause of death', 'causes of death'
+  inflect.plural 'cause_of_death', 'causes_of_death'
 end
 
 # These inflection rules are supported but not enabled by default:
