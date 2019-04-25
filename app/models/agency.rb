@@ -3,23 +3,21 @@
 # This model refers to law enforcement agencies involved in the cases
 class Agency < ActiveRecord::Base
   # This is the jurisdiction of the agency
-  # TODO: Determine a better way to do these enums
-  class JurisdictionType
-    include EnumeratedType
-
-    declare :none
-    declare :state
-    declare :local
-    declare :federal
-    declare :university
-    declare :private
-  end
+  enum jurisdiction: {
+    unknown: 'unknown',
+    local: 'local',
+    state: 'state',
+    federal: 'federal',
+    university: 'university',
+    commercial: 'commercial'
+  }
 
   STRIPPED_ATTRIBUTES = %w[
     name
     city
     street_address
-    zipcode description
+    zipcode
+    description
     telephone
     email
     website
@@ -33,10 +31,6 @@ class Agency < ActiveRecord::Base
   has_many :cases, through: :case_agencies
   belongs_to :state
 
-  before_save do
-    self.name = name.lstrip
-  end
-
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
     message: 'An agency with this name already exists and can be found. If you'\
@@ -45,9 +39,7 @@ class Agency < ActiveRecord::Base
   validates :state_id, presence: {
     message: 'You must specify the state in which the agency is located.'
   }
-  validates :jurisdiction_type, inclusion: {
-    in: %w[none state local federal university private]
-  }, allow_nil: true
+
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 

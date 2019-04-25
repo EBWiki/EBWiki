@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-2">
         <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
-        <%= truncate(@user.name, length:16) %>
+        <%= @user.name %>
         <br>
         Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
         <br>
@@ -26,7 +26,7 @@
       <div class="col-md-10">
         <div class="alert alert-info">
           <h2></h2>
-          <h4><%= @user.name %>'s bio:</h4>
+          <h4><%= "#{@user.name}'s bio:" %></h4>
           <p><%= @user.description %></p>
         </div>
         <% if @user != current_user %>
