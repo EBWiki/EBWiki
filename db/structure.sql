@@ -245,7 +245,7 @@ CREATE TABLE public.cases (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id integer,
-    category_id integer,
+    cause_of_death_id integer,
     date date,
     state_id integer,
     city character varying NOT NULL,
@@ -290,10 +290,10 @@ ALTER SEQUENCE public.cases_id_seq OWNED BY public.cases.id;
 
 
 --
--- Name: categories; Type: TABLE; Schema: public; Owner: -
+-- Name: causes_of_death; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.categories (
+CREATE TABLE public.causes_of_death (
     id integer NOT NULL,
     name character varying,
     created_at timestamp without time zone NOT NULL,
@@ -302,10 +302,10 @@ CREATE TABLE public.categories (
 
 
 --
--- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: causes_of_death_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.categories_id_seq
+CREATE SEQUENCE public.causes_of_death_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -314,10 +314,10 @@ CREATE SEQUENCE public.categories_id_seq
 
 
 --
--- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: causes_of_death_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
+ALTER SEQUENCE public.causes_of_death_id_seq OWNED BY public.causes_of_death.id;
 
 
 --
@@ -1076,10 +1076,10 @@ ALTER TABLE ONLY public.cases ALTER COLUMN id SET DEFAULT nextval('public.cases_
 
 
 --
--- Name: categories id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: causes_of_death id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+ALTER TABLE ONLY public.causes_of_death ALTER COLUMN id SET DEFAULT nextval('public.causes_of_death_id_seq'::regclass);
 
 
 --
@@ -1272,11 +1272,11 @@ ALTER TABLE ONLY public.cases
 
 
 --
--- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: causes_of_death causes_of_death_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.categories
-    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.causes_of_death
+    ADD CONSTRAINT causes_of_death_pkey PRIMARY KEY (id);
 
 
 --
@@ -2110,3 +2110,8 @@ INSERT INTO schema_migrations (version) VALUES ('20190406032344');
 
 INSERT INTO schema_migrations (version) VALUES ('20190420191754');
 
+<<<<<<< Updated upstream
+=======
+INSERT INTO schema_migrations (version) VALUES ('20190422003442');
+
+>>>>>>> Stashed changes

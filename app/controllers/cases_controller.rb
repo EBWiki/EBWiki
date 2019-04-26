@@ -46,10 +46,7 @@ class CasesController < ApplicationController
       flash[:undo] = @this_case.versions
       redirect_to @this_case
     else
-      @agencies = SortCollectionOrdinally.call(collection: Agency.all)
-      @categories = SortCollectionOrdinally.call(collection: Category.all)
-      @states = SortCollectionOrdinally.call(collection: State.all)
-      @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
+      set_instance_vars
       render 'new'
     end
   end
@@ -74,7 +71,7 @@ class CasesController < ApplicationController
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
-      @categories = SortCollectionOrdinally.call(collection: Category.all)
+      @causes_of_death = SortCollectionOrdinally.call(collection: CauseOfDeath.all)
       @states = SortCollectionOrdinally.call(collection: State.all)
       render 'edit'
     end
@@ -136,7 +133,7 @@ class CasesController < ApplicationController
                                   :litigation,
                                   :community_action,
                                   :agency_id,
-                                  :category_id,
+                                  :cause_of_death_id,
                                   :date,
                                   :state_id,
                                   :city,
@@ -166,7 +163,7 @@ class CasesController < ApplicationController
 
   def set_instance_vars
     @agencies = SortCollectionOrdinally.call(collection: Agency.all)
-    @categories = SortCollectionOrdinally.call(collection: Category.all)
+    @causes_of_death = SortCollectionOrdinally.call(collection: CauseOfDeath.all)
     @states = SortCollectionOrdinally.call(collection: State.all)
     @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
     @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')

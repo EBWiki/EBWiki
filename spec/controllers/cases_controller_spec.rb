@@ -102,7 +102,7 @@ RSpec.describe CasesController, type: :controller do
       it 'fails' do
         allow_any_instance_of(Case).to receive(:full_address).and_return(' Albany NY ')
         post :create, 'case': case_attrs
-        expect(assigns(:categories)).to match_array([])
+        expect(assigns(:causes_of_death)).to match_array([])
         expect(assigns(:agencies)).to match_array([])
         expect(assigns(:states)).to match_array([])
         expect(assigns(:genders)).to match_array([])
@@ -152,8 +152,8 @@ RSpec.describe CasesController, type: :controller do
       it 'redirects to the edit page' do
         expect(response).to render_template(:edit)
       end
-      it 'has a non-empty set of categories' do
-        expect(assigns['categories']).to_not be_nil
+      it 'has a non-empty set for cause of death' do
+        expect(assigns['causes_of_death']).to_not be_nil
       end
       it 'has a non-empty set of states' do
         expect(assigns['states']).to_not be_nil
