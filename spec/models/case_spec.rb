@@ -213,22 +213,6 @@ describe '#default_avatar_url', versioning: true do
   end
 end
 describe 'scopes', versioning: true do
-  it 'returns cases based on case' do
-    louisiana = FactoryBot.create(:state_louisiana)
-    texas = FactoryBot.create(:state_texas)
-
-    FactoryBot.create(:case,
-                      city: 'Houston',
-                      state_id: texas.id)
-    louisiana_case = FactoryBot.create(:case,
-                                       city: 'Baton Rouge',
-                                       state_id: louisiana.id)
-
-    sorted_cases = Case.by_state texas.id
-    expect(sorted_cases.count).to eq 1
-    expect(sorted_cases.to_a).not_to include louisiana_case
-  end
-
   it 'returns the most recently occurring cases' do
     dc = FactoryBot.create(:state_dc)
     louisiana = FactoryBot.create(:state_louisiana)

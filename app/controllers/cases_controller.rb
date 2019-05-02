@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Cases controller. Containing really complex index method that needs some
-# Refactoring love.
+# Cases controller
 class CasesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show history followers]
   before_action :set_instance_vars, only: %i[edit new create]

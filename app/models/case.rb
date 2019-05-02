@@ -84,7 +84,6 @@ class Case < ActiveRecord::Base
   end
 
   # Scopes
-  scope :by_state, ->(state_id) { where(state_id: state_id) }
   scope :most_recent_occurrences, ->(duration) {
     where(date: duration.beginning_of_day..Time.current)
   }
