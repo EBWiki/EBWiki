@@ -7,11 +7,7 @@ class SearchPresenter
     @count = count
     @view = view
 
-    @state = if state_id.present?
-      State.where(id: state_id).pluck(:name).first
-    else
-      nil
-    end
+    @state = state_id.present? State.where(id: state_id).pluck(:name).first : nil
   end
 
   def search_results_text

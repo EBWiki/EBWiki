@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# search controller
 class SearchController < ApplicationController
   def show
     @cases = CaseSearch.new(query: params[:query], options: search_params).call
