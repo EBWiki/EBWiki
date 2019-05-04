@@ -12,14 +12,14 @@ class SearchPresenter
 
   def search_results_text
     if @query.present?
-      "Your search for \"#{@query}\" #{state_text} has returned #{h.pluralize(@count, 'result')}."
+      "Your search for \"#{@query}\"#{state_text} has returned #{h.pluralize(@count, 'result')}."
     else
-      "Your search for cases #{state_text} has returned #{h.pluralize(@count, 'result')}."
+      "Your search for cases#{state_text} has returned #{h.pluralize(@count, 'result')}."
     end
   end
 
   def state_text
-    @state.present? ? "in #{@state}" : ''
+    @state.present? ? " in #{@state}" : ''
   end
 
   def h
