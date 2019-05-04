@@ -9,7 +9,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define 'ebwiki-server' do |host|
     host.vm.hostname = 'ebwiki-server.local'
-    host.vm.provision 'shell', path: 'provision.sh'
+    host.vm.provision 'shell',
+        name: 'sys',
+        path: 'dev_provisions/provision_system.sh'
+    host.vm.provision 'shell',
+        name: 'app',
+        path: 'dev_provision/provision_application.sh',
+        privileged: false
     host.vm.network 'private_network', ip: "#{guest_ip}"
     host.vm.network 'forwarded_port', guest: '80', host: '3000'
 
