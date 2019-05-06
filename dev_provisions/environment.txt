@@ -1,0 +1,15 @@
+EBWIKI_SITEMAP_URL=http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz
+PROJECT_URL='http://192.168.68.68'
+INSTALL_LOG='/tmp/install.log'
+DEBIAN_FRONTEND=noninteractive
+BLACKOPS_DATABASE_PASSWORD='ebwiki'
+DATABASE_DUMP_FILE='latest.dump'
+NVM_VERSION='v0.33.11'
+MAILCHIMP_API_KEY=''
+MAILCHIMP_LINK=''
+MAILCHIMP_LIST_ID=''
+SEARCHBOX_URL=''
+CODECLIMATE_REPO_TOKEN=''
+AUTOBUS_SNAPSHOT_URL=''
+AWS_ACCESS_KEY_ID='accessKey1'
+AWS_SECRET_KEY_ID='verySecretKey1'
