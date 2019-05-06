@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         path: 'dev_provisions/provision_system.sh'
     host.vm.provision 'shell',
         name: 'app',
-        path: 'dev_provision/provision_application.sh',
+        path: 'dev_provisions/provision_application.sh',
         privileged: false
     host.vm.network 'private_network', ip: "#{guest_ip}"
     host.vm.network 'forwarded_port', guest: '80', host: '3000'
