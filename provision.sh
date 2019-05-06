@@ -40,6 +40,7 @@ service nginx restart
 
 echo '##  Installing PostgreSQL'
 apt-get install -qq postgresql
+cp ./dev_provisions/database.yml ./config
 service postgresql restart
 chown postgres ./db/structure.sql
 /sbin/runuser -l postgres -c "psql -c \"CREATE USER blackops WITH PASSWORD '${BLACKOPS_DATABASE_PASSWORD}';\""
@@ -48,21 +49,6 @@ chown postgres ./db/structure.sql
 echo '##  Installing Fake S3'
 gem install fakes3
 fakes3 -r ${FAKE_S3_HOME} -p ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
-
-#echo '##  Running rake commands...'
-#for env in development;
-#do
-#    /etc/init.d/elasticsearch start
-
-#    for rake_step in create structure:load seed;
-#    do
-#        echo "## DATABASE_URL=postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost/blackops_${env} rake db:${rake_step}"
-#        DATABASE_URL=postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost/blackops_${env} rake db:${rake_step}
-#    done
-#done
-
-#echo '## Restoring production database dump...'
-#pg_restore --verbose --clean --no-acl --no-owner --no-password --dbname="postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost:5432/blackops_development" "./${DATABASE_DUMP_FILE}"
 
 echo
 echo
