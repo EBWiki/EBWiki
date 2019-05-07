@@ -25,4 +25,4 @@ RUN bundle install && \
 
 WORKDIR /usr/src/ebwiki
 
-ENTRYPOINT ./dev_provisions/bootstrap.sh
+ENTRYPOINT ./dev_provisions/entrypoint.sh
