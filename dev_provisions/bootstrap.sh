@@ -31,10 +31,13 @@ done
 
 echo "## Starting fakes3"
 fakes3 --root ${FAKE_S3_HOME} --port ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
+sleep 2
 
-#echo '## Provisioning database ...'
-#sleep 2
-#pg_restore --verbose --clean --no-acl --no-owner --no-password --dbname="postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost:5432/blackops_development" "./${DATABASE_DUMP_FILE}"
+echo '## Provisioning database ...'
+pg_restore --clean --no-acl --no-owner --no-password \
+    --dbname="postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost:5432/blackops_development" \
+    "./${DATABASE_DUMP_FILE}"
+sleep 2
 
 echo '#########################################################'
 echo '##  Environment Summary'
