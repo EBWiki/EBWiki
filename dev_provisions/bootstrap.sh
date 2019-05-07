@@ -2,12 +2,11 @@
 source ./dev_provisions/environment.sh
 
 chown postgres ./db/structure.sql
-cp ./dev_provisions/database.yml ./config
+cp -v ./dev_provisions/database.yml ./config
 
-echo "## Installing nodejs"
-wget -qO- "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | bash
-. /root/.nvm/nvm.sh
-nvm install --lts
+echo "## Loading nodejs"
+source /root/.nvm/nvm.sh
+nvm use --lts
 
 for i in postgresql redis-server elasticsearch;
 do
