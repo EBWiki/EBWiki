@@ -1,5 +1,5 @@
 run: build
-	docker run --rm -it --publish 3000:3000 --name ebwiki ebwiki/ebwiki
+	docker run --rm -it --volume $(PWD):/usr/src/ebwiki --publish 3000:3000 --name ebwiki ebwiki/ebwiki
 
 build:
 	docker build --tag ebwiki/ebwiki .
