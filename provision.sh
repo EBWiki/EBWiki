@@ -28,15 +28,10 @@ apt-get install -qq openjdk-8-jre
 echo '##  Installing Elasticsearch'
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 apt-get install -qq apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-7.x.list
+echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
 apt-get update &&  apt-get install -qq elasticsearch
 /etc/init.d/elasticsearch start
 until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:9200) -eq 200 ]; do sleep 1; done
-
-echo '##  Installing NGINX'
-apt-get install -qq nginx
-cp ./dev_provisions/nginx.conf /etc/nginx/sites-available/default
-service nginx restart
 
 echo '##  Installing PostgreSQL'
 apt-get install -qq postgresql
