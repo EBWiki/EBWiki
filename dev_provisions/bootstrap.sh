@@ -17,7 +17,11 @@ done
 
 
 echo "## Waiting for elasticsearch..."
-until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:9200) -eq 200 ]; do sleep 1; done
+until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:9200) -eq 200 ];
+do
+    echo -n ".";
+    sleep 1;
+done
 
 echo "## Create DB user"
 runuser -l postgres -c "psql -c \"CREATE USER blackops WITH PASSWORD '${BLACKOPS_DATABASE_PASSWORD}';\""
@@ -34,7 +38,7 @@ fakes3 --root ${FAKE_S3_HOME} --port ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
 sleep 2
 
 echo '## Provisioning database ...'
-pg_restore --clean --no-acl --no-owner --no-password \
+pg_restore --verbose --clean --no-acl --no-owner --no-password \
     --dbname="postgres://blackops:${BLACKOPS_DATABASE_PASSWORD}@localhost:5432/blackops_development" \
     "./${DATABASE_DUMP_FILE}"
 sleep 2
