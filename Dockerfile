@@ -1,7 +1,5 @@
 FROM ruby:2.5.5
 
-ENV NVM_VERSION='v0.33.11'
-
 COPY Gemfile Gemfile.lock /
 
 RUN bundle install && \
