@@ -13,4 +13,6 @@ stop:
 clean:
 	docker image rm ebwiki/ebwiki:latest || echo "clean"
 
-.PHONY: run build exec stop clean
+all: clean build run
+
+.PHONY: run build exec stop clean all
