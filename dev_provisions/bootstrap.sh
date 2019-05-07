@@ -23,20 +23,14 @@ echo "## Create DB user"
 runuser -l postgres -c "psql -c \"CREATE USER blackops WITH PASSWORD '${BLACKOPS_DATABASE_PASSWORD}';\""
 runuser -l postgres -c "psql -c \"ALTER USER blackops WITH SUPERUSER;\""
 
-#echo "## Running rake db:create"
-#DATABASE_URL=postgres://blackops:ebwiki@localhost/blackops_development rake db:create
-#sleep 2
-
-#echo "## Running rake db:structure:load"
-#DATABASE_URL=postgres://blackops:ebwiki@localhost/blackops_development rake db:structure:load
-#sleep 2
-
-#echo "## Running rake db:seed"
-#DATABASE_URL=postgres://blackops:ebwiki@localhost/blackops_development rake db:seed
-#sleep 2
+for i in create structure:load seed;
+do
+    echo "## Running rake db:${i}"
+    rake db:${i}
+done
 
 echo "## Starting fakes3"
-fakes3 -r ${FAKE_S3_HOME} -p ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
+fakes3 --root ${FAKE_S3_HOME} --port ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
 
 #echo '## Provisioning database ...'
 #sleep 2
