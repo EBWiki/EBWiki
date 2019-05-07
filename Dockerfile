@@ -22,7 +22,4 @@ RUN bundle install && \
 
 WORKDIR /usr/src/ebwiki
 
-COPY . /usr/src/ebwiki
-
-
 ENTRYPOINT ./dev_provisions/bootstrap.sh
