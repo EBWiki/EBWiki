@@ -4,10 +4,6 @@ source ./dev_provisions/environment.sh
 chown postgres ./db/structure.sql
 cp -v ./dev_provisions/database.yml ./config
 
-echo "## Loading nodejs"
-source /root/.nvm/nvm.sh
-nvm use --lts
-
 for i in postgresql redis-server elasticsearch;
 do
     echo "## Starting $i"
@@ -51,4 +47,5 @@ echo "elastic = $(curl -sX GET 'http://localhost:9200')"
 echo '#########################################################'
 
 echo "## Starting the server..."
-bundle exec puma -t 1:1 -p ${PORT:-3000} -e ${RACK_ENV:-development}
+#bundle exec puma -t 1:1 -p ${PORT:-3000} -e ${RACK_ENV:-development}
+bundle exec rails server -b 0.0.0.0 -e development
