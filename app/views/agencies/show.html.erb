@@ -1,7 +1,7 @@
-<% meta title: "EBWiki is tracking the #{@agency.name}",
-     description: "EBWiki is following the involvement of the #{@agency.name} in killings of people of color.",
-     keywords: %w("@agency.name police violence people color African-American Latino")
-%>
+<!-- Meta Tag Information -->
+<% content_for :meta_title, "EBWiki is tracking the #{@agency.name}" %>
+<% content_for :meta_description, "EBWiki is following the involvement of the #{@agency.name} in killings of people of color." %>
+<% content_for :meta_keywords, "#{@agency.name} police violence people color" %>
 
 <span  class="page-header caseTitle">
   <h1 class="page-header caseTitle"><%= @agency.name %></h1>
@@ -10,7 +10,7 @@
 </span>
 
 <p>
-  <%= show_non_blank_fields("Type", @agency.jurisdiction_type) %>
+  <%= "Jurisdiction: #{@agency.jurisdiction.capitalize}" %>
 </p>
 <p>
   <%= show_non_blank_fields "Department Head", @agency.lead_officer %>
@@ -35,33 +35,15 @@
 <%= link_to 'Back', session[:previous_url], :class => "btn-default" %>
 <%= link_to 'Edit', edit_agency_path(@agency), :class => "btn-warning" %>
 
-<!-- Related Projects Row -->
+<!-- Related Cases Row -->
 <div class="row">
   <div class="col-lg-12">
-    <h3 class="page-header">EBWiki is tracking <%= pluralize(@agency.cases.count, "case")%> involving the <%= @agency.name %>:</h3>
+    <h3 class="page-header">EBWiki is tracking <%= pluralize(@cases.size, "case")%> involving the <%= @agency.name %>:</h3>
   </div>
 </div>
 <div class="row">
   <div class="col-lg-12">
-    <% @agency.cases.each do |this_case| %>
-      <div class="col-lg-2 col-md-4 col-xs-12">
-        <div class="view view-first">
-          <% if this_case.avatar? %>
-            <%= link_to image_tag(this_case.avatar.large_avatar, :class => "img-responsive"), this_case %>
-          <% else %>
-            <div class="thumbnail text-center">
-              <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), this_case %>
-              <div class="caption">
-                <h4><%= this_case.title %></h4>
-              </div>
-            </div>
-          <% end %>
-          <div class="mask">
-            <h2><%= link_to this_case.title, this_case, :class => "info2" %></h2>
-          </div>
-        </div>
-      </div>
-    <% end %>
+    <%= render partial: 'cases/thumbnail', layout: 'cases/show_thumbnail', collection: @cases, as: :this_case %>
   </div>
 </div>
 

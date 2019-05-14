@@ -22,21 +22,18 @@ class AgenciesController < ApplicationController
   def new
     @agency = Agency.new
     @states = SortCollectionOrdinally.call(collection: State.all)
-    @jurisdiction_types = Agency::JurisdictionType.map(&:name)
   end
 
   # GET /agencies/1/edit
   def edit
     @agency = Agency.friendly.find(params[:id])
     @states = SortCollectionOrdinally.call(collection: State.all)
-    @jurisdiction_types = Agency::JurisdictionType.map(&:name)
   end
 
   # POST /agencies
   def create
     @back_url = session[:previous_url]
-    @agency = Agency.new(agency_params.except(:jurisdiction))
-    @agency.jurisdiction_type = agency_params[:jurisdiction]
+    @agency = Agency.new(agency_params)
     if @agency.save
       flash[:success] = 'Agency was successfully created.'
       redirect_to @back_url, status: :created
@@ -48,8 +45,7 @@ class AgenciesController < ApplicationController
   # PATCH/PUT /agencies/1
   def update
     @agency = Agency.friendly.find(params[:id])
-    if @agency.update(agency_params.except(:jurisdiction))
-      @agency.jurisdiction_type = agency_params[:jurisdiction]
+    if @agency.update(agency_params)
       flash[:success] = 'Agency was successfully updated.'
       redirect_to @agency
     else
@@ -82,6 +78,8 @@ class AgenciesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def agency_params
-    params.require(:agency).permit(I18n.t('agencies_controller.agency_params').map(&:to_sym))
+    params.require(:agency).permit(:name, :street_address, :city, :state_id,
+                                   :zipcode, :description, :telephone, :email,
+                                   :website, :jurisdiction, :lead_officer)
   end
 end

@@ -10,15 +10,18 @@ en:
       # html: '<abbr title="required">*</abbr>'
     error_notification:
       default_message: "Please review the problems below:"
-    # Examples
-    # labels:
-    #   defaults:
-    #     password: 'Password'
-    #   user:
-    #     new:
-    #       email: 'E-mail to sign in.'
-    #     edit:
-    #       email: 'E-mail.'
+    options:
+      agency:
+        jurisdiction:
+          unknown: 'Unknown'
+          local: 'Local'
+          state: 'State'
+          federal: 'Federal'
+          university: 'University'
+          commercial: 'Commercial'
+    labels:
+      agency:
+        state: 'State'
     # hints:
     #   defaults:
     #     username: 'User name to sign in.'

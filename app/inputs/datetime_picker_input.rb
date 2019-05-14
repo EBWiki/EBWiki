@@ -10,7 +10,7 @@ class DatetimePickerInput < DatePickerInput
   end
 
   def picker_pattern
-    I18n.t('datepicker.pformat', default: 'DD/MM/YYYY') + ' ' +
+    I18n.t('datepicker.pformat', default: 'MM/DD/YYYY') + ' ' +
       I18n.t('timepicker.pformat', default: 'HH:mm')
   end
 end

@@ -70,3 +70,11 @@ $color-dark-gray: #4D4D4D;
 .btn-group.submit .btn-success{
 	border-color: $color-orange !important;
 }
+
+label{
+	font-size: 16px;
+}
+
+.hidden-label{
+	display:none;
+}

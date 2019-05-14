@@ -13,40 +13,28 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <%= form_tag cases_path, method: :get do %>
-        <div class="navbar-form navbar-left">
-          <%= select_tag(:state_id,
-            options_from_collection_for_select(@state_objects, :id, :name),
-            include_blank: "Filter By State",
-            class: 'form-control select2') %>
-        </div>
-        <div class="navbar-form navbar-left">
-          <%= text_field_tag :query, params[:query], class: 'form-control', data: { list:State.all.map(&:name) } , placeholder: 'Name, City or Keywords...' %>
-        <%= submit_tag "Search", class: "btn btn-primary search-btn" %>
-        </div>
-      <% end %>
+      <%= render "search/bar" %>
       <ul class="nav navbar-nav navbar-right">
         <li>
           <% if user_signed_in? %>
-	        <%= link_to "Add a New Case", new_case_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
-	      <% end %>
-	    </li>
+            <%= link_to "Add a New Case", new_case_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
+          <% end %>
+        </li>
         <li class="dropdown">
-			<% if user_signed_in? %>
-           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{current_user.email}" %><span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-          <%if signed_in? && current_user.admin? %>
-			      <li><%= link_to "Admin", rails_admin.dashboard_path %></li>
-		      <% end %>
-          <li> <%= link_to "Profile", user_path(current_user) %></li>
-          <li> <%= link_to "View Inbox", mailbox_inbox_path %></li>
-          <li> <%= link_to "Log Out", destroy_user_session_path, :method => :delete %>
-          
-        </ul>
-			<% else %>
-			  <li> <%= link_to "Login", new_user_session_path %></li>
-			  <li><%= link_to "Sign Up", new_user_registration_path %></li>
-			<% end %>
+          <% if user_signed_in? %>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{current_user.email}" %><span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <%if signed_in? && current_user.admin? %>
+                <li><%= link_to "Admin", rails_admin.dashboard_path %></li>
+              <% end %>
+              <li> <%= link_to "Profile", user_path(current_user) %></li>
+              <li> <%= link_to "View Inbox", mailbox_inbox_path %></li>
+              <li> <%= link_to "Log Out", destroy_user_session_path, :method => :delete %>
+            </ul>
+          <% else %>
+            <li> <%= link_to "Login", new_user_session_path %></li>
+            <li><%= link_to "Sign Up", new_user_registration_path %></li>
+          <% end %>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->

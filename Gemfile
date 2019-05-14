@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.6.0'
+ruby '2.6.3'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
@@ -15,8 +15,6 @@ gem 'uglifier', '4.1'
 
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
-# Syntax
-gem 'enumerated_type', '~> 0.5'
 
 # Use gem pundit for authorization
 gem 'pundit', '~> 2.0.0'
@@ -68,6 +66,7 @@ group :development, :test do
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
+  gem 'mock_redis'
   gem 'pre-commit', '~> 0.38'
   gem 'rspec-rails', '~> 3.8'
 end
@@ -91,9 +90,9 @@ group :test do
   gem 'webmock'
 end
 
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '4.4.3'
+gem 'devise', '4.6.1'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form'
 
@@ -102,7 +101,7 @@ gem 'fog', '2.0'
 # photo resizing
 gem 'mini_magick'
 # file upload solution
-gem 'carrierwave', '~> 1.2'
+gem 'carrierwave', '~> 1.3'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
@@ -146,18 +145,18 @@ gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 # pagination
 gem 'kaminari'
 
+gem 'redis'
 gem 'redis-namespace', '~> 1.6'
+gem 'redis-rails'
+gem 'redis-store'
 
 # access mailchimp api
 gem 'gibbon'
 
-# metatag helper
-gem 'metamagic'
-
 # Google News API help
 gem 'galerts', '~> 1.1'
 
-gem 'ckeditor', '~> 4.2', git: 'https://github.com/galetahub/ckeditor.git'
+gem 'ckeditor', '~> 4.2'
 
 # New Relic performance monitor
 gem 'newrelic_rpm', '~> 5.2.0'
@@ -172,3 +171,5 @@ gem 'rubocop', '~> 0.58', require: false
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
+
+gem 'auto_strip_attributes', '~> 2.5'

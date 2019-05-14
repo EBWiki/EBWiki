@@ -1,56 +1,64 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<!-- Sets default title & meta tags throughout the site. Can be overridden with
-		     meta tag values in individual templates. -->
-	  <meta name=viewport content="width=device-width, initial-scale=1">
-    <meta name="google-site-verification" content="iwi5tloB23ci2pitnPbdAtLzceG4NW8Gps7H1unD504" />
-	  <%= metamagic title: "EBWiki - Ending Violence Against People of Color", description: "EBWiki is a new web application working to harness the power of community to end bias in law enforcement that has led to disparate treatment of people of color with tragic results.",	keywords: %w("police killing abuse") %>
-	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag 'application',  'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag 'markerclusterer' %>
+  <head>
+    <title><%= meta_title %></title>
+    <meta name="description" content="<%= meta_description %>">
+    <meta name="keywords" content="<%= meta_keywords %>">
+
+    <!-- Facebook Open Graph data -->
+    <meta property="og:title" content="<%= meta_title %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= request.original_url %>" />
+    <meta property="og:image" content="<%= meta_image %>" />
+    <meta property="og:description" content="<%= meta_description %>" />
+    <meta property="og:site_name" content="<%= meta_title %>" />
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="<%= DEFAULT_META["twitter_account"] %>">
+    <meta name="twitter:title" content="<%= meta_title %>">
+    <meta name="twitter:description" content="<%= meta_description %>">
+    <meta name="twitter:creator" content="<%= DEFAULT_META["twitter_account"] %>">
+    <meta name="twitter:image:src" content="<%= meta_image %>">
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application',  'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'markerclusterer' %>
     <%= javascript_include_tag "https://www.google.com/jsapi", "chartkick" %>
-	  <%= csrf_meta_tags %>
-  	  <!--  google maps -->
-  	  <script src="//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry" type="text/javascript"></script>
+    <%= csrf_meta_tags %>
+    <!--  google maps -->
+    <script src="//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry" type="text/javascript"></script>
 
- 	  <!-- Google Analytics -->
-  	  <script>
-  	          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  	          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  	          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  	          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  	          ga('create', 'UA-32848364-7', 'auto');
-  	          ga('send', 'pageview');
-  	  </script>
-
-	</head>
-	<body>
-		<div class="container">
-		  <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
-      <div class="alert alert-<%= key %>">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <% if flash[:redo] %>
-          <%= value link_to("Redo changes", revert_path(flash[:redo]), method: :post, class: '.alert-link') %>
-        <% elsif flash[:undo] %>
-          <%= value link_to("Undo changes", revert_path(flash[:undo]), method: :post, class: '.alert-link') %>
-        <% else %>
-        <%= value.html_safe %>
+      ga('create', 'UA-32848364-7', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
+        <div class="alert alert-<%= key %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <%= (value.is_a?(Array)) ? ""  : value %>
+        </div>
       <% end %>
     </div>
-  <% end %>
-		</div>
-		<div class="container fixed">
-			<%= render 'layouts/header' %>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8">
-					<%= yield %>
-				</div>
-			</div>
-		</div>
-		<%= render 'layouts/footer' %>
-	</body>
+    <div class="container fixed">
+      <%= render 'layouts/header' %>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+    <%= render 'layouts/footer' %>
+  </body>
 </html>

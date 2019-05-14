@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 # User Policy
-class UserPolicy
-  attr_reader :user, :record
-
-  def initialize(user, record)
-    @user = user
-    @record = record
+class UserPolicy < ApplicationPolicy
+  def edit?
+    return false unless user
+    user == record || user.admin?
   end
 
   def update?
-    user == record
+    user == record || user.admin?
   end
 end

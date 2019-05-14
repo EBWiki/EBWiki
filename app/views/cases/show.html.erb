@@ -1,11 +1,8 @@
-<!-- the meta tag is for use with metamagic gem which generates
-     title and meta tags in conjunction with the metamagic
-     method in app/views/layouts/application.html.erb
-     TODO: Create a view helper that works for all pages -->
-<% meta title: "#{@this_case.title} - #{@this_case.city} on EBWiki",
-     description: "#{@this_case.blurb}",
-     keywords: %w("#{@this_case.subjects.first.name} police violence people color")
-%>
+<!-- Meta Tag Information -->
+<% content_for :meta_title, "#{@this_case.title} - #{@this_case.city} on EBWiki" %>
+<% content_for :meta_description, "#{@this_case.blurb}" %>
+<% content_for :meta_keywords, "#{@this_case.subjects.first.name} police violence people color" %>
+
 <!-- Page Content -->
 <div class="container">
 
@@ -94,44 +91,6 @@
           <% end %>
         </div>
       </div>
-      <% if @this_case.nearby_cases.present? %>
-      <!-- Related Projects Row -->
-        <div class="row">
-          <div class="col-lg-12">
-            <h3 class="page-header">EBWiki is tracking <%= pluralize(@this_case.nearby_cases.size, "case")%> near <%= @this_case.city %>, <%= @this_case.state.name %>:</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <% @this_case.nearby_cases.each do |this_case| %>
-            <div class="col-lg-2 col-md-4 col-xs-12">
-              <div class="view view-first">
-                <% if this_case.avatar? %>
-                  <%= link_to image_tag(this_case.avatar.large_avatar, :class => "img-responsive"), this_case %>
-                <% else %>
-
-                  <div class="thumbnail text-center">
-                    <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), this_case %>
-                    <div class="caption">
-                      <h4><%= this_case.title %></h4>
-                    </div>
-                  </div>
-                <% end %>
-                <div class="mask">
-                  <h2><%= link_to this_case.title, this_case, :class => "info2" %></h2>
-                </div>
-              </div>
-            </div>
-            <% end %>
-          </div>
-        </div>
-
-        <!-- Map -->
-        <div class="row">
-          <div class="col-lg-12 articleMap">
-          <div id='map'></div>
-        </div>
-      <% end %>
     </div>
   </div>
 </div>
@@ -144,20 +103,6 @@
       $('[data-toggle="popover"]').popover();
   });
 </script>
-<script type="">
-  handler = Gmaps.build('Google');
-  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-    markers = handler.addMarkers(<%= raw marker_locations_for(
-      @this_case.nearby_cases.map { |that_case|
-        [that_case.id, that_case.latitude, that_case.longitude,
-        that_case.default_avatar_url, that_case.title, that_case.blurb]
-      }
-    ).to_json %>);
-    handler.bounds.extendWith(markers);
-    handler.fitMapToBounds();
-  });
-</script>
-
 <script type="text/javascript">
   if($('ul#link-list').children().length > 10) {
     $(document).ready(function(){

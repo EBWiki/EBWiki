@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe AgenciesHelper, type: :helper do
-
   before(:each) do
     @texas = FactoryBot.create(:state_texas)
   end
