@@ -3,6 +3,8 @@
 SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 
 Rails.application.routes.draw do
+  root 'cases#index'
+
   get '/analytics', to: 'analytics#index'
 
   get '/maps', to: 'maps#index'
@@ -41,7 +43,6 @@ Rails.application.routes.draw do
     end
   end
 
-  root 'cases#index'
   resources :users do
     member do
       patch 'update_email'
@@ -73,4 +74,6 @@ Rails.application.routes.draw do
 
   # CKEditor
   mount Ckeditor::Engine, at: '/ckeditor'
+
+  resource :search, controller: 'search'
 end

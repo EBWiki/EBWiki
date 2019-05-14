@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Cases controller. Containing really complex index method that needs some
-# Refactoring love.
+# Cases controller
 class CasesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show history followers]
   before_action :set_instance_vars, only: %i[edit new create]
@@ -16,10 +15,7 @@ class CasesController < ApplicationController
     page_size = 12
     @total_cases = Case.count
     @recently_updated_cases = Case.sorted_by_update 10
-    @cases = Case.includes(:state).by_state(params[:state_id]).search(params[:query], page: params[:page], per_page: page_size) if params[:query].present? && params[:state_id].present?
-    @cases = Case.includes(:state).by_state(params[:state_id]).order('date DESC').page(params[:page]).per(page_size) if !params[:query].present? && params[:state_id].present?
-    @cases = Case.search(params[:query], fields: ['*'], page: params[:page], per_page: page_size) if params[:query].present? && !params[:state_id].present?
-    @cases = Case.all.order('date DESC').includes(:state).page(params[:page]).per(page_size) if !params[:query].present? && !params[:state_id].present?
+    @cases = Case.order('date DESC').includes(:state).page(params[:page]).per(page_size)
   end
 
   # rubocop:disable Metrics/AbcSize
