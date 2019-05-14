@@ -23,5 +23,5 @@ RUN bundle install && \
     mkdir /usr/src/ebwiki
 
 WORKDIR /usr/src/ebwiki
-
+EXPOSE 3000
 ENTRYPOINT ./dev_provisions/entrypoint.sh
