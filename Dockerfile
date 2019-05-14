@@ -15,12 +15,11 @@ RUN bundle install && \
         apt-utils \
         build-essential \
         libpq-dev \
+        nodejs \
         openjdk-8-jre \
         postgresql  \
         redis-server && \
     apt-get install -qq --no-install-recommends elasticsearch && \
-    wget -qO- "https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh" | bash && \
-        bash -c "source /root/.nvm/nvm.sh; nvm install --lts" && \
     mkdir /usr/src/ebwiki
 
 WORKDIR /usr/src/ebwiki
