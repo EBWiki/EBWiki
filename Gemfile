@@ -167,7 +167,8 @@ gem 'httparty', '~> 0.16'
 # for setting middleware redirects
 gem 'rack-host-redirect', '~> 1.3'
 
-gem 'rubocop', '~> 0.58', require: false
+gem 'rubocop', '~> 0.69', require: false
+gem 'rubocop-performance'
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
