@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require_self
 //= require gmaps/google
 //= require jquery
 //= require ahoy
@@ -24,8 +25,8 @@
 //= require social-share-button
 //= require underscore
 //= require select2
-//= require_tree .
 //= require ckeditor/init
 //= require fullcalendar
+//= require_tree .
 
 $('#calendar').fullCalendar({});
