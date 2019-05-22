@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-9">
+    <div class="col-lg-12">
       <h2 class="page-header"><%= @presenter.search_results_text %></h2>
       <div id='front-gallery'>
         <%= render partial: 'cases/thumbnail', layout: "cases/index_thumbnail", collection: @cases, as: :this_case %>
