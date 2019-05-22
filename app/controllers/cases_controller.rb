@@ -67,8 +67,7 @@ class CasesController < ApplicationController
       UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
       redirect_to @this_case
     else
-      @causes_of_death = SortCollectionOrdinally.call(collection: CauseOfDeath.all)
-      @states = SortCollectionOrdinally.call(collection: State.all)
+      set_instance_vars
       render 'edit'
     end
   end
