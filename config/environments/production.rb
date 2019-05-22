@@ -49,7 +49,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  # config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -75,8 +75,6 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
@@ -92,4 +90,17 @@ Rails.application.configure do
   }
 
   config.middleware.use Rack::HostRedirect, 'ebwiki.herokuapp.com' => 'ebwiki.org'
+
+  # Settings for logging in production
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    { time: Time.now }
+  end
+
+  config.lograge.custom_payload do |controller|
+    {
+      host: controller.request.host,
+      user_id: controller.current_user.try(:id)
+    }
+  end
 end

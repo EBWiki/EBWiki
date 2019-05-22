@@ -173,3 +173,5 @@ gem 'rubocop', '~> 0.58', require: false
 gem 'activerecord-session_store'
 
 gem 'auto_strip_attributes', '~> 2.5'
+
+gem 'lograge'
