@@ -33,7 +33,6 @@ Rails.application.routes.draw do
       get action, action: action
     end
   end
-  match '/articles/*action', to: redirect { |p, _| "/cases/#{p[:action]}" }, via: :all
 
   resources :cases do
     resources :follows, only: %i[create destroy]
