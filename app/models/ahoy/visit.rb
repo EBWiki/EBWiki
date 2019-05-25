@@ -2,7 +2,7 @@
 
 # Visit capturing user activity for Ahoy:
 # https://github.com/ankane/ahoy
-class Ahoy::Visit < ActiveRecord::Base
+class Ahoy::Visit < ApplicationRecord
   has_many :ahoy_events, class_name: 'Ahoy::Event'
   belongs_to :user
 
