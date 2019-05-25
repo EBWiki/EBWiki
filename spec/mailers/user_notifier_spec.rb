@@ -76,23 +76,8 @@ RSpec.describe UserNotifier, type: :mailer do
 
     it 'renders the proper message when user has followed 1 or more cases' do
       user.follow(this_case)
-      expect(mail.body.encoded).to include('You have already taken the first step by following 1 case on EBWiki and allowing us to keep you up to date.')
-      expect(mail.body.encoded).not_to include('It is very important that you click to follow one or more cases and allow us to keep you up to date. The more people paying attention, the easier it will be effect change.')
-    end
-  end
-
-  describe 'admin mailer' do
-    let(:admin) { FactoryBot.create(:user, name: 'A Follower', email: 'admin@ebwiki.org', admin: true) }
-    let(:non_admin) { FactoryBot.create(:user, name: 'A Follower', email: 'non_admin@ebwiki.org', admin: false) }
-    let!(:mail)     { AdminNotifier.new_user_email(admin) }
-
-    it 'renders the subject and receiver email' do
-      expect(mail.subject).to eql("A new user #{admin.email} has been added.")
-      expect(mail.to).to eq([admin.email])
-    end
-
-    it 'renders the sender email' do
-      expect(mail.from).to eql(['EndBiasWiki@gmail.com'])
+      expect(mail.body.encoded.gsub(/\s+/, '')).to include('You have already taken the first step by following 1 case on EBWiki and allowing us to keep you up to date.'.gsub(/\s+/, ''))
+      expect(mail.body.encoded.gsub(/\s+/, '')).not_to include("It is very important that you click to follow one or more cases and allow us to keep\nyou up to date. The more people paying attention, the easier it will be effect change.".gsub(/\s+/, ''))
     end
   end
 end

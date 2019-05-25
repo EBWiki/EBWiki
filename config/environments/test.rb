@@ -40,6 +40,8 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  config.cache_store = :redis_store, 'redis://localhost:6379', { expires_in: 90.minutes }
+
   # Enable bullet gem during testing
   config.after_initialize do
     Bullet.enable = true

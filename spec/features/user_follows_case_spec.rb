@@ -32,4 +32,3 @@ feature 'Non-logged in user attempts to follow an case from show' do
     expect(current_path).to eq('/users/sign_in')
   end
 end
-

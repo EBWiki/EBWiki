@@ -144,6 +144,16 @@ RSpec.configure do |config|
     config.before(:each) { Bullet.start_request }
     config.after(:each)  { Bullet.end_request }
   end
+
+  # Settings for testing mailers
+  config.before(:each, type: :mailer) do
+    ActionMailer::Base.perform_deliveries = true
+    ActionMailer::Base.deliveries = []
+  end
+
+  config.after(:each, type: :mailer) do
+    ActionMailer::Base.deliveries.clear
+  end
 end
 
 # Config settings Shoulda Matchers gem

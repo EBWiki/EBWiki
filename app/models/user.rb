@@ -19,6 +19,17 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
 
+  STRIPPED_ATTRIBUTES = %w[
+    email
+    name
+    description city
+    facebook_url
+    twitter_url
+    linkedin
+  ].freeze
+
+  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
+
   def mailboxer_name
     name
   end
@@ -48,6 +59,6 @@ class User < ApplicationRecord
     gb = Gibbon::Request.new
     gb.lists(ENV['MAILCHIMP_LIST_ID']).members(Digest::MD5.hexdigest(email.downcase.to_s)).retrieve
   rescue Gibbon::MailChimpError => e
-    return nil, flash: { error: e.message }
+    [nil, flash: { error: e.message }]
   end
 end

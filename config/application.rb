@@ -1,4 +1,6 @@
-require_relative 'boot'
+# frozen_string_literal: true
+
+require File.expand_path('boot', __dir__)
 
 require 'rails/all'
 
@@ -7,6 +9,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module EBWiki
+  # Main EBWiki app
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -42,5 +45,6 @@ module EBWiki
 
     config.active_record.schema_format = :sql
 
+    config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
   end
 end

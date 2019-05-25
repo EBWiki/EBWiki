@@ -2,7 +2,7 @@
 
 # EBWiki
 
-[EBWiki.org](http://ebwiki.org)is a site dedicated to documenting instances where people of color are killed by law enforcement officers during routine interactions.  
+[EBWiki.org](http://ebwiki.org) is a site dedicated to documenting instances where people of color are killed by law enforcement officers during routine interactions.  
 
 ## Motivation
 
@@ -28,7 +28,7 @@ Instructions on setting up a local development environment can be found [here](d
 
 In general, contributors will use the following languages, frameworks, and technologies:
 
-* [Ruby 2.5.1](https://www.ruby-lang.org/en/downloads/)
+* [Ruby 2.5.5](https://www.ruby-lang.org/en/downloads/)
 * [Rails 5.0.7](http://rubyonrails.org/)
 * [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 * [Postgres 9.4](https://www.postgresql.org/) or higher

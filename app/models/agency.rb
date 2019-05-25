@@ -3,26 +3,33 @@
 # This model refers to law enforcement agencies involved in the cases
 class Agency < ApplicationRecord
   # This is the jurisdiction of the agency
-  # TODO: Determine a better way to do these enums
-  class JurisdictionType
-    include EnumeratedType
+  enum jurisdiction: {
+    unknown: 'unknown',
+    local: 'local',
+    state: 'state',
+    federal: 'federal',
+    university: 'university',
+    commercial: 'commercial'
+  }
 
-    declare :none
-    declare :state
-    declare :local
-    declare :federal
-    declare :university
-    declare :private
-  end
+  STRIPPED_ATTRIBUTES = %w[
+    name
+    city
+    street_address
+    zipcode
+    description
+    telephone
+    email
+    website
+    lead_officer
+  ].freeze
+
+  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
 
   has_paper_trail
   has_many :case_agencies
   has_many :cases, through: :case_agencies
   belongs_to :state
-
-  before_save do
-    self.name = name.lstrip
-  end
 
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
@@ -32,9 +39,7 @@ class Agency < ApplicationRecord
   validates :state_id, presence: {
     message: 'You must specify the state in which the agency is located.'
   }
-  validates :jurisdiction_type, inclusion: {
-    in: %w[none state local federal university private]
-  }, allow_nil: true
+
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 

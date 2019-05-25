@@ -44,7 +44,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  # config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -68,8 +68,6 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
@@ -83,4 +81,29 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.sendgrid.net',
+    port: '587',
+    authentication: :plain,
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD'],
+    domain: 'ebwiki.herokuapp.com',
+    enable_starttls_auto: true
+  }
+
+  config.middleware.use Rack::HostRedirect, 'ebwiki.herokuapp.com' => 'ebwiki.org'
+
+  # Settings for logging in production
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    { time: Time.now }
+  end
+
+  config.lograge.custom_payload do |controller|
+    {
+      host: controller.request.host,
+      user_id: controller.current_user.try(:id)
+    }
+  end
 end

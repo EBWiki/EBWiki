@@ -1,4 +1,4 @@
-// Place all the styles related to the Articles controller here.
+// Place all the styles related to cases here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
@@ -30,10 +30,8 @@ $color-dark-gray: #4D4D4D;
   margin-bottom:0px!important;
 }
 
-
-#ffront-gallery {
+#front-gallery {
     max-height:500px;
-    overflow-y:scroll;
     margin-bottom: 30px;
 }
 
