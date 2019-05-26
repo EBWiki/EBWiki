@@ -2,10 +2,11 @@
 
 require 'rails_helper'
 
-feature 'User follows an case from show' do
-  scenario 'User arrives at the case show page and clicks to follow' do
-    user = FactoryBot.create(:user)
-    this_case = FactoryBot.create(:case)
+RSpec.describe 'the follow process', type: :feature do
+  let(:this_case) { FactoryBot.create(:case) }
+  let(:user) { FactoryBot.create(:user) }
+
+  it 'shows the follow link when user visits case page' do
     login_as(user, scope: :user)
     visit case_path(this_case)
     click_link 'Follow'
@@ -13,20 +14,15 @@ feature 'User follows an case from show' do
     expect(page).to have_link('Unfollow')
   end
 
-  scenario 'User arrives at the case show page and clicks to unfollow' do
-    user = FactoryBot.create(:user)
-    this_case = FactoryBot.create(:case)
-    user.follow(this_case)
+  it 'shows the unfollow link if user is already following case' do
     login_as(user, scope: :user)
+    user.follow(this_case)
     visit case_path(this_case)
     click_link 'Unfollow'
     expect(page).to have_link('Follow')
   end
-end
 
-feature 'Non-logged in user attempts to follow an case from show' do
-  let(:this_case) { FactoryBot.create(:case) }
-  scenario 'User arrives at the case show page and clicks to follow' do
+  it 'shows redirects to sign in page when visitor clicks follow' do
     visit case_path(this_case)
     click_link 'Follow'
     expect(current_path).to eq('/users/sign_in')
