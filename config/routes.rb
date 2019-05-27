@@ -27,13 +27,6 @@ Rails.application.routes.draw do
   get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
   post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
 
-  get '/articles', to: redirect('/cases', status: 301)
-  namespace 'articles' do
-    %w[index edit show destroy update history new create followers undo].each do |action|
-      get action, action: action
-    end
-  end
-
   resources :cases do
     resources :follows, only: %i[create destroy]
     resources :comments
@@ -41,6 +34,12 @@ Rails.application.routes.draw do
       post 'versions/:id/revert', to: 'versions#revert', as: :revert
     end
   end
+
+  #redirect logic
+  get '/articles', to: redirect('/cases')
+  get '/articles/:slug', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}" }
+  get '/articles/:slug/history', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/history" }
+  get '/articles/:slug/followers', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/followers" }
 
   resources :users do
     member do
