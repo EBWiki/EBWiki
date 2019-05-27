@@ -87,9 +87,6 @@ class Case < ApplicationRecord
   scope :most_recent_occurrences, ->(duration) {
     where(date: duration.beginning_of_day..Time.current)
   }
-  scope :recently_updated, ->(duration) {
-    where(updated_at: duration.beginning_of_day..Time.current)
-  }
   scope :sorted_by_update, ->(limit) {
     order('updated_at desc').limit(limit)
   }
