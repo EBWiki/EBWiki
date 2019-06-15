@@ -2110,8 +2110,4 @@ INSERT INTO schema_migrations (version) VALUES ('20190406032344');
 
 INSERT INTO schema_migrations (version) VALUES ('20190420191754');
 
-<<<<<<< Updated upstream
-=======
 INSERT INTO schema_migrations (version) VALUES ('20190422003442');
-
->>>>>>> Stashed changes

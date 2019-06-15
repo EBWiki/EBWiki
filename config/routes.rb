@@ -5,13 +5,13 @@ SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 Rails.application.routes.draw do
   root 'cases#index'
 
-   get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
+  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
   get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
   post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
 
   resources :cases do
     resources :follows, only: %i[create destroy]
-    resources :comments
+    resources :comments, only: %i[index create]
     scope module: 'cases' do
       post 'versions/:id/revert', to: 'versions#revert', as: :revert
     end

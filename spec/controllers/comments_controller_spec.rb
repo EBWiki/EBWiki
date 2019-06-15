@@ -6,14 +6,14 @@ RSpec.describe CommentsController, type: :controller do
   let(:this_case) { FactoryBot.create(:case) }
   describe 'GET #index' do
     it 'returns http success' do
-      get :index, case_id: this_case.id
+      get :index, params: { case_id: this_case.id }
       expect(response).to have_http_status(:success)
     end
   end
 
   describe 'GET #new' do
     it 'returns http success' do
-      get :new, case_id: this_case.id
+      get :new, params: { case_id: this_case.id }
       expect(response).to have_http_status(:success)
     end
   end
@@ -36,7 +36,7 @@ RSpec.describe CommentsController, type: :controller do
       this_case = Case.last || create(:case)
 
       expect do
-        post :create, comment: comment_attr, case_id: this_case.id
+        post :create, params: { comment: comment_attr, case_id: this_case.id }
       end.to change(Comment, :count).by(1)
     end
 

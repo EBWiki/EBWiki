@@ -9,11 +9,6 @@ class CommentsController < ApplicationController
     @comments = @commentable.comments
   end
 
-  def new
-    @commentable = load_commentable
-    @comment = @commentable.comments.new
-  end
-
   def create
     @commentable = load_commentable
     @comment = @commentable.comments.new comment_params
