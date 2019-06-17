@@ -10,12 +10,14 @@ Rails.application.routes.draw do
   post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
 
   resources :cases do
-    resources :follows, only: %i[create destroy]
     resources :comments, only: %i[index create]
     scope module: 'cases' do
       post 'versions/:id/revert', to: 'versions#revert', as: :revert
     end
   end
+
+  post '/cases/:case_slug/follows', to: 'follows#create'
+  delete '/cases/:case_slug/follows', to: 'follows#destroy'
 
   get '/analytics', to: 'analytics#index'
 

@@ -44,13 +44,12 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   # Include Devise test helpers
-  config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.extend ControllerMacros, type: :controller
   config.extend ControllerMacros, type: :feature
 
-  config.include Devise::Test::ControllerHelpers, type: :view
+  config.include Devise::Test::IntegrationHelpers, type: :view
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -94,6 +93,10 @@ RSpec.configure do |config|
 
   config.before(:each, type: :request) do
     host!("localhost:3000")
+  end
+
+  config.after(:each, type: :request) do
+    Warden.test_reset!
   end
 
   config.before(:each, type: :feature) do
