@@ -5,19 +5,28 @@ SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 Rails.application.routes.draw do
   root 'cases#index'
 
-  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
-  get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
-  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
-
   resources :cases do
+    member do
+      post 'follows', to: 'follows#create'
+      delete 'follows', to: 'follows#destroy'
+    end
     resources :comments, only: %i[index create]
     scope module: 'cases' do
       post 'versions/:id/revert', to: 'versions#revert', as: :revert
     end
   end
 
-  post '/cases/:case_slug/follows', to: 'follows#create'
-  delete '/cases/:case_slug/follows', to: 'follows#destroy'
+  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
+  get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
+  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
+
+  #redirect logic
+  get '/articles', to: redirect('/cases')
+  get '/articles/:slug', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}" }
+  get '/articles/:slug/history', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/history" }
+  get '/articles/:slug/followers', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/followers" }
+
+  resources :agencies
 
   get '/analytics', to: 'analytics#index'
 
@@ -35,13 +44,6 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
   resources :users, only: %i[show edit]
-  resources :agencies
-
-  #redirect logic
-  get '/articles', to: redirect('/cases')
-  get '/articles/:slug', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}" }
-  get '/articles/:slug/history', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/history" }
-  get '/articles/:slug/followers', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/followers" }
 
   resources :users do
     member do
