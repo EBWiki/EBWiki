@@ -63,7 +63,7 @@
           <p>
             <%= link_to 'People tracking this case', cases_followers_path(@this_case) %>: <span class="timeAgo"><%= @this_case.followers.count %></span>
               <% unless @this_case.followers.include?(current_user) %>
-                -- Click here to <%= button_to 'track this', follows_case_path(@this_case) %>.
+                -- Click here to <%= link_to 'Track this', follows_case_path(@this_case), :method => :post %>.
               <% end %>
           </p>
         <% end %>

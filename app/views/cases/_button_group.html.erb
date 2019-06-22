@@ -1,13 +1,13 @@
 <div class = "btn-group btn-group-justified">
 	<% if user_signed_in? %>
 		<% if current_user.following?(@this_case) %>
-		  <%= button_to 'Unfollow', follows_case_path(@this_case), method: 'delete', data: { confirm: "Are you sure you want to unfollow this case?" }, form_class: "btn btn-primary.outline", id: "unfollow-button" %>
+		  <%= button_to 'Unfollow', follows_case_path(@this_case), method: :delete, data: { confirm: "Are you sure you want to unfollow this case?" }, form_class: "btn btn-primary btn-lg", id: "unfollow-button" %>
     <% else %>
-    	<%= button_to 'Follow', follows_case_path(@this_case), form_class: "btn btn-primary", id: "follow-btn-small" %>
+    	<%= button_to 'Follow', follows_case_path(@this_case), form_class: "btn btn-primary btn-lg", id: "follow-button" %>
     <% end %>
 		<%= link_to "Edit", edit_case_path(@this_case), class: "btn btn-success", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Something not right?",:content => "Click here to make changes to this case.  We're relying on folks like you to help us stay accurate!"}, id: "edit-btn" %>
 	<% else %>
-		<%= button_to 'Follow', follows_case_path(@this_case), form_class: "btn btn-primary", id: "follow-btn-small" %>
+		<%= button_to 'Follow', follows_case_path(@this_case), form_class: "btn btn-primary btn-lg", id: "follow-button" %>
 	<% end %>
 	<%= link_to "History", cases_history_path(@this_case), class: "btn btn-info", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track Changes",:content => "Click here to see all the past edits to this case."}, id: "history-btn" %>
 </div>

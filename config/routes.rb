@@ -15,7 +15,6 @@ Rails.application.routes.draw do
       post 'versions/:id/revert', to: 'versions#revert', as: :revert
     end
   end
-
   get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
   get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
   post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
@@ -28,6 +27,10 @@ Rails.application.routes.draw do
 
   resources :agencies
 
+  devise_for :users, controllers: { registrations: 'users/registrations' }
+  resources :users, only: %i[show edit]
+  mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
+
   get '/analytics', to: 'analytics#index'
 
   get '/maps', to: 'maps#index'
@@ -38,19 +41,6 @@ Rails.application.routes.draw do
   get '/instructions', to: 'static#instructions'
 
   get '/sitemap', to: redirect(SITEMAP_URL, status: 301)
-
-  mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
-  devise_for :users, controllers: {
-    registrations: 'users/registrations'
-  }
-  resources :users, only: %i[show edit]
-
-  resources :users do
-    member do
-      patch 'update_email'
-    end
-    resources :registrations
-  end
 
   mount Split::Dashboard, at: 'split', anchor: false, constraints: lambda { |request|
     request.env['warden'].authenticated? # are we authenticated?
