@@ -27,5 +27,6 @@
 //= require_tree .
 //= require ckeditor/init
 //= require fullcalendar
+//= require chartkick
 
 $('#calendar').fullCalendar({});
