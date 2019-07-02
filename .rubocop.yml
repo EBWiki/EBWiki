@@ -22,7 +22,7 @@ Style/Lambda:
 Style/UnneededInterpolation:
   Enabled: false
 
-Layout/FirstParameterIndentation:
+Layout/IndentFirstArgument:
   Enabled: false
 
 Style/ClassAndModuleChildren:

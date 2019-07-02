@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'Agencies', type: :request do
   describe 'GET /agencies' do
-
     context 'will get list of agencies' do
       before { get '/agencies', params: {}, headers: {} }
 
@@ -19,7 +18,7 @@ RSpec.describe 'Agencies', type: :request do
   end
 
   describe 'GET /agencies/:id' do
-    let(:agency) { create(:agency, name: "My Agency") }
+    let(:agency) { create(:agency, name: 'My Agency') }
 
     context 'will get agency page' do
       before { get "/agencies/#{agency.id}", params: {}, headers: {} }

@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 describe DateRange do
-
   it 'should return a string representing the date object' do
     start_date = 5.days.ago
     end_date = 2.days.ago

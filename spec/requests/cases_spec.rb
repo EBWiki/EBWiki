@@ -75,7 +75,7 @@ RSpec.describe 'Cases', type: :request do
       end
 
       it 'will return the case form' do
-        expect(response.body).to include ('Summary')
+        expect(response.body).to include 'Summary'
       end
     end
 

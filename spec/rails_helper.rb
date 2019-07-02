@@ -80,6 +80,7 @@ RSpec.configure do |config|
         uncommitted transaction data setup over the spec's database connection.
       MSG
     end
+
     DatabaseCleaner.clean_with(:truncation)
   end
 
@@ -88,11 +89,11 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :controller) do
-    @request.host = "localhost:3000"
+    @request.host = 'localhost:3000'
   end
 
   config.before(:each, type: :request) do
-    host!("localhost:3000")
+    host!('localhost:3000')
   end
 
   config.after(:each, type: :request) do

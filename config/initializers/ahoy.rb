@@ -11,6 +11,7 @@ class Ahoy::Store < Ahoy::DatabaseStore
   end
 
   protected
+
   def visit_model
     Visit
   end
