@@ -35,7 +35,7 @@ gem 'rack-cors', '~> 1.0', require: 'rack/cors'
 
 # help with charts and graphs
 gem 'active_median', '~> 0.1'
-gem 'chartkick', '~> 2.3'
+gem 'chartkick', '~> 3.2'
 gem 'groupdate', '~> 4.0'
 gem 'hightop', '~> 0.2'
 
