@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get '/articles/:slug/followers', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/followers" }
 
   resources :agencies
+  resources :organizations
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
   resources :users, only: %i[show edit]
