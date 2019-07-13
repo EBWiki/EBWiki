@@ -7,6 +7,7 @@ module Statistics
 
     (((end_metric.size - start_metric.size) / start_metric.size) * 100).round(2)
   end
+
   def self.unique_followers_growth(start_metric:, end_metric:)
     return 0 if start_metric.size.zero?
 
@@ -15,6 +16,4 @@ module Statistics
 
     (((end_metric_count - start_metric_count) / start_metric_count) * 100).round(2)
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/LineLength
 end
