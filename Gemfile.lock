@@ -382,10 +382,6 @@ GEM
       tilt
     hashdiff (0.3.9)
     hashie (3.6.0)
-    heroku_rails_deflate (1.0.3)
-      actionpack (>= 3.2.13)
-      activesupport (>= 3.2.13)
-      rack (>= 1.4.5)
     hightop (0.2.0)
       activerecord
     http-cookie (1.0.3)
@@ -774,7 +770,6 @@ DEPENDENCIES
   gotcha (= 0.0.6)
   groupdate (~> 4.0)
   guard-rspec (~> 4.7)
-  heroku_rails_deflate
   hightop (~> 0.2)
   httparty (~> 0.16)
   jb (~> 0.5.0)
