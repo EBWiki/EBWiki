@@ -5,6 +5,33 @@ SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 Rails.application.routes.draw do
   root 'cases#index'
 
+  resources :cases do
+    member do
+      post 'follows', to: 'follows#create'
+      delete 'follows', to: 'follows#destroy'
+    end
+    resources :comments, only: %i[index create]
+    scope module: 'cases' do
+      post 'versions/:id/revert', to: 'versions#revert', as: :revert
+    end
+  end
+  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
+  get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
+  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
+
+  #redirect logic
+  get '/articles', to: redirect('/cases')
+  get '/articles/:slug', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}" }
+  get '/articles/:slug/history', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/history" }
+  get '/articles/:slug/followers', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/followers" }
+
+  resources :agencies
+  resources :organizations
+
+  devise_for :users, controllers: { registrations: 'users/registrations' }
+  resources :users, only: %i[show edit]
+  mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
+
   get '/analytics', to: 'analytics#index'
 
   get '/maps', to: 'maps#index'
@@ -15,40 +42,6 @@ Rails.application.routes.draw do
   get '/instructions', to: 'static#instructions'
 
   get '/sitemap', to: redirect(SITEMAP_URL, status: 301)
-
-  mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
-  devise_for :users, controllers: {
-    registrations: 'users/registrations'
-  }
-  resources :users, only: %i[show edit]
-  resources :agencies
-
-  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
-  get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
-  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
-
-  get '/articles', to: redirect('/cases', status: 301)
-  namespace 'articles' do
-    %w[index edit show destroy update history new create followers undo].each do |action|
-      get action, action: action
-    end
-  end
-  match '/articles/*action', to: redirect { |p, _| "/cases/#{p[:action]}" }, via: :all
-
-  resources :cases do
-    resources :follows, only: %i[create destroy]
-    resources :comments
-    scope module: 'cases' do
-      post 'versions/:id/revert', to: 'versions#revert', as: :revert
-    end
-  end
-
-  resources :users do
-    member do
-      patch 'update_email'
-    end
-    resources :registrations
-  end
 
   mount Split::Dashboard, at: 'split', anchor: false, constraints: lambda { |request|
     request.env['warden'].authenticated? # are we authenticated?

@@ -5,7 +5,7 @@ ruby '2.5.5'
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'fullcalendar-rails', '~> 3.9'
-gem 'rails', '~> 4.2.11'
+gem 'rails', '~> 5.0.7'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20.0'
 # Use SCSS for stylesheets
@@ -85,8 +85,6 @@ group :test do
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
-  # Confirmation emails sent after commit
-  gem 'test_after_commit', '~> 1.1'
   gem 'webmock'
 end
 
@@ -128,10 +126,10 @@ gem 'social-share-button'
 gem 'select2-rails', '~> 4.0'
 
 # follower functionality
-gem 'acts_as_follower'
+gem 'acts_as_follower', github: 'tcocca/acts_as_follower'
 
 # messaging
-gem 'mailboxer', '~> 0.12', git: 'https://github.com/lacco/mailboxer.git'
+gem 'mailboxer', '~> 0.15'
 
 # track changes in model objects
 gem 'paper_trail', '~> 9.2.0'
@@ -167,7 +165,8 @@ gem 'httparty', '~> 0.16'
 # for setting middleware redirects
 gem 'rack-host-redirect', '~> 1.3'
 
-gem 'rubocop', '~> 0.58', require: false
+gem 'rubocop', '~> 0.67', require: false
+# gem 'rubocop-performance'
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'

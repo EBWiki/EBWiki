@@ -44,7 +44,6 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   # Include Devise test helpers
-  config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.extend ControllerMacros, type: :controller
@@ -81,6 +80,7 @@ RSpec.configure do |config|
         uncommitted transaction data setup over the spec's database connection.
       MSG
     end
+
     DatabaseCleaner.clean_with(:truncation)
   end
 
@@ -89,24 +89,22 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :controller) do
-    @request.host = "localhost:3000"
+    @request.host = 'localhost:3000'
   end
 
   config.before(:each, type: :request) do
-    host!("localhost:3000")
+    host!('localhost:3000')
+  end
+
+  config.after(:each, type: :request) do
+    Warden.test_reset!
   end
 
   config.before(:each, type: :feature) do
     # :rack_test driver's Rack app under test shares database connection
     # with the specs, so continue to use transaction strategy for speed.
     driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
-
-    unless driver_shares_db_connection_with_specs
-      # Driver is probably for an external browser with an app
-      # under test that does *not* share a database connection with the
-      # specs, so use truncation strategy.
-      DatabaseCleaner.strategy = :truncation
-    end
+    DatabaseCleaner.strategy = :truncation
   end
 
   config.before(:each) do

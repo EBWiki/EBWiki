@@ -25,7 +25,7 @@ class AnalyticsController < ApplicationController
                                                      end_metric: CaseQuery.new.most_recent_as_of(date: date_range.end_date))
     @mom_cases_growth = Statistics.metric_growth(start_metric: CaseQuery.new.created_by(date: date_range.start_date),
                                                  end_metric: CaseQuery.new.created_by(date: date_range.end_date))
-    @cases_updated_last_30_days = Case.recently_updated(30.days.ago).size
+    @cases_updated_last_30_days = CaseQuery.new.most_recent_as_of(date: date_range.end_date)
     @mom_updated_cases_growth = Statistics.metric_growth(start_metric: CaseQuery.new.recently_updated_as_of(date: date_range.start_date),
                                                          end_metric: CaseQuery.new.recently_updated_as_of(date: date_range.end_date))
     @total_number_of_cases = Case.all.size

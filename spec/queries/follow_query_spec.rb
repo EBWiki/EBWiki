@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe FollowQuery do
   describe '#distinct_count' do
-    subject(:distinct_count) { described_class.new.distinct_count}
+    subject(:distinct_count) { described_class.new.distinct_count }
 
     it 'returns the number of distinct followers' do
       FactoryBot.create(:follow, follower_id: 1, created_at: 31.days.ago)
