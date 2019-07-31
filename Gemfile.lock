@@ -451,7 +451,7 @@ GEM
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
-    mini_magick (4.9.3)
+    mini_magick (4.9.5)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
@@ -779,7 +779,7 @@ DEPENDENCIES
   launchy (~> 2.4)
   lograge
   mailboxer (~> 0.15)
-  mini_magick
+  mini_magick (~> 4.9)
   mock_redis
   momentjs-rails
   newrelic_rpm (~> 5.2.0)
