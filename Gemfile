@@ -5,7 +5,7 @@ ruby '2.5.5'
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'fullcalendar-rails', '~> 3.9'
-gem 'rails', '~> 5.0.7'
+gem 'rails', '~> 5.0.7.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20.0'
 # Use SCSS for stylesheets
