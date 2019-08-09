@@ -170,4 +170,4 @@ gem 'activerecord-session_store'
 
 gem 'auto_strip_attributes', '~> 2.5'
 
-gem 'lograge'
+gem 'lograge', '~> 0.11'
