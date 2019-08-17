@@ -5,6 +5,10 @@ SITEMAP_URL = ENV.fetch('EBWIKI_SITEMAP_URL').freeze
 Rails.application.routes.draw do
   root 'cases#index'
 
+  get '/analytics/users_by_day', to: 'analytics#users_by_day'
+  get '/analytics/visits_by_browser', to: 'analytics#visits_by_browser'
+  get '/analytics/visits_by_day', to: 'analytics#visits_by_day'
+  get '/analytics/visits_by_referring_domain', to: 'analytics#visits_by_referring_domain'
   get '/analytics', to: 'analytics#index'
 
   get '/maps', to: 'maps#index'

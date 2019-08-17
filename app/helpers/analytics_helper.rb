@@ -2,14 +2,6 @@
 
 # Helper for analytics section of the site.
 module AnalyticsHelper
-  def metric_grouped_by_day(data, metric)
-    data.group_by_day(metric)
-  end
-
-  def metric_grouped_by_category(data, category)
-    data.group(category)
-  end
-
   def link_to_case_followers(this_case)
     link_to this_case.follows_count, cases_followers_path(this_case)
   end
