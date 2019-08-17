@@ -15,7 +15,7 @@ class CaseQuery
   end
 
   def created_by(date:)
-    @scope.where("created_at < ?", date.end_of_day)
+    @scope.where('created_at < ?', date.end_of_day)
   end
 
   # Get the most recently updated cases of a date, where most recent is

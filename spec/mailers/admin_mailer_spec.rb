@@ -9,7 +9,7 @@ RSpec.describe AdminMailer, type: :mailer do
     let!(:mail) { AdminMailer.new_admin_email(new_admin: user, recipients: [admin.email]) }
 
     it 'renders the subject and receiver email' do
-      expect(mail.subject).to eql("A new admin has been added.")
+      expect(mail.subject).to eql('A new admin has been added.')
       expect(mail.to).to eq([admin.email])
     end
 

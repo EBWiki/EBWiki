@@ -13,7 +13,7 @@ task agencies_add: :environment do
       # phone: agency_hash['Phone'],
       # address: agency_hash['Address'],
       # city: agency_hash['City'],
-      state_id: agency_hash['State_id'],
+      state_id: agency_hash['State_id']
       # zipcode: agency_hash['Zip'],
     )
     agency.save

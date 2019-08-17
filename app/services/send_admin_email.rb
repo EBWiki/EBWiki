@@ -5,7 +5,7 @@ class SendAdminEmail
   include Service
 
   def call(user:)
-    previous_admin_status = user.previous_changes["admin"]
+    previous_admin_status = user.previous_changes['admin']
     send_new_admin_email(user: user) if previous_admin_status[1]
   end
 

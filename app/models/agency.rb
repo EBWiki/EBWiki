@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This model refers to law enforcement agencies involved in the cases
-class Agency < ActiveRecord::Base
+class Agency < ApplicationRecord
   # This is the jurisdiction of the agency
   enum jurisdiction: {
     unknown: 'unknown',
