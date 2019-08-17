@@ -49,10 +49,12 @@ class AnalyticsController < ApplicationController
     render json: Ahoy::Visit.today.group(:browser).count
   end
 
+  # rubocop:disable Metrics/LineLength
   def users_by_day
     date_range = ThirtyDayPeriod.new(end_date: Date.current)
     render json: User.where(created_at: date_range.start_date..date_range.end_date).group_by_day(:created_at).count
   end
+  # rubocop:enable Metrics/LineLength
 
   def visits_by_referring_domain
     render json: Ahoy::Visit.today.group(:referring_domain).count
