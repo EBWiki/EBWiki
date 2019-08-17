@@ -28,5 +28,6 @@
 //= require ckeditor/init
 //= require fullcalendar
 //= require chartkick
+//= require Chart.bundle
 
 $('#calendar').fullCalendar({});

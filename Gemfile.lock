@@ -100,7 +100,7 @@ GEM
     carrierwave-imageoptimizer (1.4.0)
       carrierwave (>= 0.8, < 2.0)
       image_optimizer (~> 1.6)
-    chartkick (3.2.0)
+    chartkick (3.2.1)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     ckeditor (4.3.0)
