@@ -9,6 +9,7 @@ namespace :geocode_data do
     class_name = ENV['CLASS'] || ENV['class']
     sleep_timer = ENV['SLEEP'] || ENV['sleep']
     raise 'Please specify a CLASS (model)' unless class_name
+
     klass = class_from_string(class_name)
 
     klass.not_geocoded.find_each(batch_size: 100) do |obj|

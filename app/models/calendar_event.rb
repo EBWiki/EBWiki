@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class CalendarEvent < ActiveRecord::Base
+class CalendarEvent < ApplicationRecord
 end

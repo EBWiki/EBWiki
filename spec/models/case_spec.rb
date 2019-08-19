@@ -38,66 +38,65 @@ RSpec.describe Case do
 end
 
 describe 'versioning', versioning: true do
-  it 'starts versioning when a new this_case is created' do
+  it 'starts versioning when a new case is created' do
     this_case = FactoryBot.create(:case)
-    expect(this_case.versions.size).to eq 2
-    expect(this_case.versions.map(&:event)).to eq %w[create update]
-    expect(this_case.versions[0].event).to eq 'create'
+    expect(this_case.versions.size).to eq 1
+    expect(this_case.versions.map(&:event)).to eq %w[create]
   end
 
   it 'adds a version when the title is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:title, 'A New Title')
-    expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq %w[create update update]
+    expect(this_case.versions.size).to eq 2
+    expect(this_case.versions.map(&:event)).to eq %w[create update]
   end
 
   it 'adds a version when the overview is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:overview, 'An Old Case')
-    expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq %w[create update update]
+    expect(this_case.versions.size).to eq 2
+    expect(this_case.versions.map(&:event)).to eq %w[create update]
   end
 
   it 'adds a version when the date is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:date, (Time.current - 1.day))
-    expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq %w[create update update]
+    expect(this_case.versions.size).to eq 2
+    expect(this_case.versions.map(&:event)).to eq %w[create update]
   end
 
   it 'adds a version when the city is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:city, 'Buffalo')
-    expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq %w[create update update]
+    expect(this_case.versions.size).to eq 2
+    expect(this_case.versions.map(&:event)).to eq %w[create update]
   end
 
   it 'adds a version when the avatar is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:avatar, 'new_avatar')
-    expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq %w[create update update]
+    expect(this_case.versions.size).to eq 2
+    expect(this_case.versions.map(&:event)).to eq %w[create update]
   end
 
   it 'adds a version when the video url is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:video_url, 'new_video.com')
-    expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq %w[create update update]
+    expect(this_case.versions.size).to eq 2
+    expect(this_case.versions.map(&:event)).to eq %w[create update]
   end
 
   it 'adds a version when the slug is changed' do
     this_case = FactoryBot.create(:case)
     this_case.update_attribute(:slug, 'joel-osteen')
-    expect(this_case.versions.size).to eq 3
-    expect(this_case.versions.map(&:event)).to eq %w[create update update]
+    expect(this_case.versions.size).to eq 2
+    expect(this_case.versions.map(&:event)).to eq %w[create update]
   end
 
   it 'does not add a version when the attribute is the same' do
     this_case = FactoryBot.create(:case, title: 'The Title')
     this_case.update_attribute(:title, 'The Title')
-    expect(this_case.versions.size).to eq 2
+    expect(this_case.versions.size).to eq 1
   end
 
   it 'copies the this_case.summary attribute to version.comment' do
@@ -212,12 +211,13 @@ describe '#default_avatar_url', versioning: true do
     expect(this_case.default_avatar_url).to_not be_nil
   end
 end
-describe 'scopes', versioning: true do
-  it 'returns the most recently occurring cases' do
-    dc = FactoryBot.create(:state_dc)
-    louisiana = FactoryBot.create(:state_louisiana)
-    texas = FactoryBot.create(:state_texas)
 
+describe 'scopes', versioning: true do
+  let(:dc) { FactoryBot.create(:state_dc) }
+  let(:louisiana) { FactoryBot.create(:state_louisiana) }
+  let(:texas) { FactoryBot.create(:state_texas) }
+
+  it 'returns the most recently occurring cases' do
     FactoryBot.create(
       :case,
       city: 'Houston',
@@ -238,33 +238,7 @@ describe 'scopes', versioning: true do
     expect(recent_cases.to_a).not_to include(dc_case)
   end
 
-  it 'returns the most recently updated cases' do
-    dc = FactoryBot.create(:state_dc)
-    louisiana = FactoryBot.create(:state_louisiana)
-    texas = FactoryBot.create(:state_texas)
-
-    FactoryBot.create(:case,
-                      city: 'Houston',
-                      state_id: texas.id,
-                      updated_at: Time.current)
-    FactoryBot.create(:case,
-                      city: 'Baton Rouge',
-                      state_id: louisiana.id,
-                      updated_at: 2.weeks.ago)
-    dc_case = FactoryBot.create(:case,
-                                city: 'Washington',
-                                state_id: dc.id,
-                                updated_at: 1.year.ago)
-    recent_cases = Case.recently_updated 1.month.ago
-    expect(recent_cases.count).to eq 3
-    expect(recent_cases.to_a).to include(dc_case)
-  end
-
   it 'returns cases sorted by update date' do
-    dc = FactoryBot.create(:state_dc)
-    louisiana = FactoryBot.create(:state_louisiana)
-    texas = FactoryBot.create(:state_texas)
-
     FactoryBot.create(:case,
                       city: 'Houston',
                       state_id: texas.id,
@@ -279,15 +253,10 @@ describe 'scopes', versioning: true do
                                 updated_at: 1.year.ago)
 
     sorted_cases = Case.sorted_by_update 2
-    expect(sorted_cases.count).to eq 2
-    expect(sorted_cases.to_a).to include(dc_case)
+    expect(sorted_cases.to_a).not_to include(dc_case)
   end
 
   it 'returns cases sorted by number of followers' do
-    dc = FactoryBot.create(:state_dc)
-    louisiana = FactoryBot.create(:state_louisiana)
-    texas = FactoryBot.create(:state_texas)
-
     texas_case = FactoryBot.create(:case,
                                    city: 'Houston',
                                    state_id: texas.id,

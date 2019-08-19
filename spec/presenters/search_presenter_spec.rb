@@ -22,6 +22,6 @@ describe SearchPresenter do
                                     state_id: state.id,
                                     count: count,
                                     view: view)
-    expect(presenter.search_results_text).to eq  "Your search for cases in #{state.name} has returned 1 result."
+    expect(presenter.search_results_text).to eq "Your search for cases in #{state.name} has returned 1 result."
   end
 end

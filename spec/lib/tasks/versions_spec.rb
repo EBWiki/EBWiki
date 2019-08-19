@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe 'versions:set_nil_comment' do
   include_context 'rake'
 
@@ -12,7 +14,7 @@ describe 'versions:set_nil_comment' do
 
   it 'should update the table' do
     sql_query = <<-END_SQL
-      SELECT * 
+      SELECT *
       FROM versions
       WHERE comment IS NULL
     END_SQL
