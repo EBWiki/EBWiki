@@ -18,12 +18,10 @@
     <%= f.input :city %>
     <%= f.input :state_id, collection: @states, prompt: "State"%>
     <%= f.input :zipcode %>
-    <%= f.input :description %>
     <%= f.input :jurisdiction, collection: [:unknown, :local, :state, :federal, :university, :commercial] %>
     <%= f.input :telephone %>
     <%= f.input :email %>
     <%= f.input :website %>
-    <%= f.input :lead_officer %>
   </div>
 
   <div class="form-actions">
