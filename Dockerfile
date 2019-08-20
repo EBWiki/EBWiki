@@ -16,7 +16,7 @@ RUN bundle install && \
         build-essential \
         libpq-dev \
         nodejs \
-        openjdk-8-jre \
+        default-jre \
         postgresql  \
         redis-server && \
     apt-get install -qq --no-install-recommends elasticsearch && \
