@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize @user
     if @user.update_attributes(user_params)
-      SendAdminEmail.call(user: @user) if @user.previous_changes.include?("admin")
+      SendAdminEmail.call(user: @user) if @user.previous_changes.include?('admin')
       flash[:success] = 'Your profile was updated!'
       redirect_to @user
     else

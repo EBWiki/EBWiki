@@ -34,6 +34,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
 
   def set_value_html_option
     return unless value.present?
+
     input_html_options[:value] ||= I18n.localize(value, format: display_pattern)
   end
 
@@ -42,11 +43,11 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
   end
 
   def display_pattern
-    I18n.t('datepicker.dformat', default: '%m/%d/%Y')
+    I18n.t('datepicker.dformat', default: '%d/%m/%Y')
   end
 
   def picker_pattern
-    I18n.t('datepicker.pformat', default: 'MM/DD/YYYY')
+    I18n.t('datepicker.pformat', default: 'DD/MM/YYYY')
   end
 
   def date_view_header_format

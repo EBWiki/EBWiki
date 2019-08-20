@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # A model for acts_as_follower
-class Follow < ActiveRecord::Base
+class Follow < ApplicationRecord
   extend ActsAsFollower::FollowerLib
   extend ActsAsFollower::FollowScopes
 

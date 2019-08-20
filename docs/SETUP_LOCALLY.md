@@ -15,7 +15,7 @@ This guide will explain the process of setting up a local development environmen
 Before beginning the installation and configuration of your environment, ensure that you have a copy of git, Ruby, and Rails on your computer.  You can find installation instructions at the links below:
 * [Git](https://git-scm.com/downloads)
 * [Ruby v2.5.1](https://www.ruby-lang.org/en/downloads/)
-* [Rails v4.2.10](http://rubyonrails.org/)
+* [Rails v5.0.7](http://rubyonrails.org/)
 
 ## Installation
 To work on EBWiki locally you will need to have PostgreSQL and Elasticsearch running on your local environment.  You will also need to have an Amazon Web Services (AWS) account to use S3 for storage.  Information on how to install and configure these programs and services is listed below:
