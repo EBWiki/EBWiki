@@ -7,7 +7,7 @@ describe DateRange do
     start_date = 5.days.ago
     end_date = 2.days.ago
     date = DateRange.new(start_date: start_date, end_date: end_date)
-    expect(date.to_s).to eq "from #{start_date.strftime('%b %d, %Y')} to #{end_date.strftime('%b %d, %Y')}"
+    expect(date.to_s).to eq "from #{start_date.to_s(:short_date)} to #{end_date.to_s(:short_date)}"
   end
 
   it 'should mark date ranges with the same dates as equal' do
