@@ -30,6 +30,22 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
+-- Name: cause_of_death; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.cause_of_death AS ENUM (
+    'choking',
+    'shooting',
+    'beating',
+    'taser',
+    'vehicular',
+    'medical neglect',
+    'response to medical emergency',
+    'suicide'
+);
+
+
+--
 -- Name: jurisdiction; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -276,7 +292,8 @@ CREATE TABLE public.cases (
     summary text NOT NULL,
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
-    blurb text
+    blurb text,
+    cause_of_death_name public.cause_of_death
 );
 
 
@@ -1961,6 +1978,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190406032344'),
 ('20190420191754'),
 ('20190422003442'),
-('20190815012327');
+('20190815012327'),
+('20190824175709'),
+('20190825000337');
 
 
