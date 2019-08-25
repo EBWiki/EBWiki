@@ -2,6 +2,7 @@
 
 # This is the main model of the application. Each death is a case.
 # TODO: Lots & lots of refactoring
+# rubocop:disable Metrics/ClassLength
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
 
@@ -140,3 +141,4 @@ class Case < ApplicationRecord
     ]
   end
 end
+# rubocop:enable Metrics/ClassLength
