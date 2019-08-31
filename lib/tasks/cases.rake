@@ -15,4 +15,16 @@ namespace :cases do
     end
     # rubocop:enable LineLength
   end
+
+  desc 'Convert cause of death to enum'
+  task convert_cause_of_death: :environment do
+    causes_of_death = CauseOfDeath.where.not(name: 'Unknown').pluck(:id, :name).to_h
+    lookup = causes_of_death.map { |k, v| [k, v.downcase.parameterize(separator: '_').to_sym] }.to_h
+
+    lookup.each do |k, v|
+      Case.where(cause_of_death_id: k).in_batches do |group|
+        group.update_all(cause_of_death_name: v)
+      end
+    end
+  end
 end

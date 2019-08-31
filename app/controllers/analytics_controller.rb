@@ -19,13 +19,13 @@ class AnalyticsController < ApplicationController
     @cases_occurring_this_month = Case.most_recent_occurrences 30.days.ago
     @cases_sorted_by_update = Case.sorted_by_update 10
     @cases_sorted_by_followers = Case.sorted_by_followers 10
-    @most_visited_cases = DetermineVisitsToCases.call(@visits_this_week.sorted_by_hits(13))
+    @most_visited_cases = DetermineVisitsToCases.call(VisitQuery.new(@visits_this_week).sorted_by_hits(limit: 13))
     @most_recent_comments = Comment.sorted_by_creation 15
     @mom_new_cases_growth = Statistics.metric_growth(start_metric: CaseQuery.new.most_recent_as_of(date: date_range.start_date),
                                                      end_metric: CaseQuery.new.most_recent_as_of(date: date_range.end_date))
     @mom_cases_growth = Statistics.metric_growth(start_metric: CaseQuery.new.created_by(date: date_range.start_date),
                                                  end_metric: CaseQuery.new.created_by(date: date_range.end_date))
-    @cases_updated_last_30_days = Case.recently_updated(30.days.ago).size
+    @cases_updated_last_30_days = CaseQuery.new.most_recent_as_of(date: date_range.end_date).count
     @mom_updated_cases_growth = Statistics.metric_growth(start_metric: CaseQuery.new.recently_updated_as_of(date: date_range.start_date),
                                                          end_metric: CaseQuery.new.recently_updated_as_of(date: date_range.end_date))
     @total_number_of_cases = Case.all.size

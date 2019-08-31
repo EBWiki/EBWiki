@@ -8,7 +8,7 @@ describe SendAdminEmail do
 
   it 'should send a new admin email when a new admin is added' do
     admin
-    user.update_attributes({ admin: true })
+    user.update_attributes(admin: true)
     SendAdminEmail.call(user: user)
     mail = ActionMailer::Base.deliveries.last
     expect(mail[:subject].to_s).to eq 'A new admin has been added.'

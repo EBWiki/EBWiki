@@ -36,7 +36,7 @@
       <h1 class="page-header case-title"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
           <small><%= @this_case.city %>, <%= @this_case.state.name %></small>
-      <br/><small><%= @this_case.date.strftime("%B %d, %Y") %></small>
+      <br/><small><%= @this_case.date.to_s(:long) %></small>
           <% if @this_case.agencies.present? %>
             <p>Agencies:
               <% @this_case.agencies.each_with_index do |agency, index| %>
@@ -51,10 +51,10 @@
             <% if current_user %>
               <% if current_user.following?(@this_case) %>
               <% else %>
-                <%= link_to 'Follow This Case', case_follows_path(@this_case), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:content => "Click here to receive an email whenever this case is updated."} %>
+                <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Click here to receive an email whenever this case is updated.' } %>
               <% end %>
             <% else %>
-              <%= link_to 'Follow This Case', case_follows_path(@this_case), :method => :post, class: "btn-lg btn-primary text-center", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Login to Follow this case!",:content => "Click here to receive an email whenever this case is updated."} %>
+              <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Login to Follow this case!', content: 'Click here to receive an email whenever this case is updated.' } %>
             <% end %>
           </div>
       </h1>
@@ -63,7 +63,7 @@
           <p>
             <%= link_to 'People tracking this case', cases_followers_path(@this_case) %>: <span class="timeAgo"><%= @this_case.followers.count %></span>
               <% unless @this_case.followers.include?(current_user) %>
-                -- Click here to <%= link_to 'Track this', case_follows_path(@this_case), :method => :post %>.
+                -- Click here to <%= link_to 'Track this', follows_case_path(@this_case), :method => :post %>.
               <% end %>
           </p>
         <% end %>
@@ -84,7 +84,7 @@
             <ul class="background-links" id="link-list">
               <% @this_case.links.each do |link| %>
                 <li>
-                  <%= link_to link.url, "#{link.url}", target: '_blank' %> <span class="timeAgo">added <%= link.created_at.strftime("%b %d, %Y") %></span>
+                  <%= link_to link.url, "#{link.url}", target: '_blank' %> <span class="timeAgo">added <%= link.created_at.to_s(:long) %></span>
                 </li>
               <% end %>
             </ul>

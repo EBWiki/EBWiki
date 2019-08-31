@@ -10,7 +10,7 @@ class DateRange
   end
 
   def to_s
-    "from #{start_date.strftime('%b %d, %Y')} to #{end_date.strftime('%b %d, %Y')}"
+    "from #{start_date.to_s(:short_date)} to #{end_date.to_s(:short_date)}"
   end
 
   # rubocop:disable Style/RedundantSelf

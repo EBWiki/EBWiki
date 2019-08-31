@@ -24,6 +24,7 @@ module UserNotifierHelper
 
   def follow_cases_message(followed_cases)
     return FOLLOW_CALL_TO_ACTION if followed_cases.zero?
+
     "You have already taken the first step by following \
       #{pluralize(followed_cases, 'case')} \
       on EBWiki and allowing us to keep you up to date."
@@ -31,6 +32,7 @@ module UserNotifierHelper
 
   def subscribe_message(is_subscribed)
     return SUBSCRIBER_MESSAGE if is_subscribed
+
     SUBSCRIBER_CALL_TO_ACTION
   end
 end
