@@ -1,0 +1,6 @@
+latest.dump
+codeclimate-test-reporter
+./.git
+./tmp
+./log
+./docs
