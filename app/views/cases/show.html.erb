@@ -36,7 +36,7 @@
       <h1 class="page-header case-title"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
       <br>
           <small><%= @this_case.city %>, <%= @this_case.state.name %></small>
-      <br/><small><%= @this_case.date.strftime("%B %d, %Y") %></small>
+      <br/><small><%= @this_case.date.to_s(:long) %></small>
           <% if @this_case.agencies.present? %>
             <p>Agencies:
               <% @this_case.agencies.each_with_index do |agency, index| %>
@@ -84,7 +84,7 @@
             <ul class="background-links" id="link-list">
               <% @this_case.links.each do |link| %>
                 <li>
-                  <%= link_to link.url, "#{link.url}", target: '_blank' %> <span class="timeAgo">added <%= link.created_at.strftime("%b %d, %Y") %></span>
+                  <%= link_to link.url, "#{link.url}", target: '_blank' %> <span class="timeAgo">added <%= link.created_at.to_s(:long) %></span>
                 </li>
               <% end %>
             </ul>
