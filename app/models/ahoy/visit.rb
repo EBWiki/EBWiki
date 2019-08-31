@@ -10,8 +10,5 @@ class Ahoy::Visit < ApplicationRecord
   scope :this_week, -> { where(started_at: 7.days.ago.beginning_of_day..Time.current) }
   scope :today, -> { where(started_at: 1.days.ago.beginning_of_day..Time.current) }
   scope :most_recent, ->(duration) { where(started_at: duration.beginning_of_day..Time.current) }
-  scope :sorted_by_hits, ->(limit) {
-    group(:landing_page).order('count_id DESC').limit(limit).count(:id)
-  }
-  scope :occurring_by, ->(date) { where('started_at < ?', date.end_of_day) }
+  scope :occurring_by, ->(date) { where("started_at < ?", date.end_of_day) }
 end

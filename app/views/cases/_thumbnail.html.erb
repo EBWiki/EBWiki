@@ -11,6 +11,6 @@
   </div>
   <div class="mask">
     <h2><%= link_to this_case.title, this_case, :class => "info2" %></h2>
-    <h5><%= this_case.date.strftime("%B %d, %Y") %> - <%= this_case.city %>, <%= this_case.state.ansi_code %></h5>
+    <h5><%= this_case.date.to_s(:long) %> - <%= this_case.city %>, <%= this_case.state.ansi_code %></h5>
   </div>
 </div>

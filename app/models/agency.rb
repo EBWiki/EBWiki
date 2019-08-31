@@ -17,11 +17,9 @@ class Agency < ApplicationRecord
     city
     street_address
     zipcode
-    description
     telephone
     email
     website
-    lead_officer
   ].freeze
 
   auto_strip_attributes(*STRIPPED_ATTRIBUTES)

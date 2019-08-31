@@ -12,3 +12,18 @@ describe 'cases:add_blurb' do
     end
   end
 end
+
+describe 'cases:convert_cause_of_death' do
+  include_context 'rake'
+
+  let(:_case) { create(:case) }
+  let(:cod) {  CauseOfDeath.create(name: 'Shooting') }
+
+  it 'converts cause of death from reference to enum' do
+    _case.update_attribute :cause_of_death_id, cod.id
+    subject.invoke
+    _case.reload
+    name = cod.name.downcase.parameterize(separator: '_')
+    expect(_case.cause_of_death_name).to eq name
+  end
+end

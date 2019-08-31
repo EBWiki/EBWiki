@@ -2,8 +2,20 @@
 
 # This is the main model of the application. Each death is a case.
 # TODO: Lots & lots of refactoring
+# rubocop:disable Metrics/ClassLength
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
+
+  enum cause_of_death_name: {
+    choking: 'choking',
+    shooting: 'shooting',
+    beating: 'beating',
+    taser: 'taser',
+    vehicular: 'vehicular',
+    medical_neglect: 'medical neglect',
+    response_to_medical_emergency: 'response to medical emergency',
+    suicide: 'suicide'
+  }
 
   belongs_to :user
   belongs_to :cause_of_death
@@ -129,3 +141,4 @@ class Case < ApplicationRecord
     ]
   end
 end
+# rubocop:enable Metrics/ClassLength

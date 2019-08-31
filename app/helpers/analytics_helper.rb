@@ -7,7 +7,7 @@ module AnalyticsHelper
   end
 
   def comment_created_at(comment)
-    comment.created_at.strftime('%B %d, %Y')
+    comment.created_at.to_s(:long)
   end
 
   def link_to_comment(comment, length)
