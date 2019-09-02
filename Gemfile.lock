@@ -103,7 +103,7 @@ GEM
     carrierwave-imageoptimizer (1.4.0)
       carrierwave (>= 0.8, < 2.0)
       image_optimizer (~> 1.6)
-    chartkick (2.3.5)
+    chartkick (3.2.1)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     ckeditor (4.3.0)
@@ -757,7 +757,7 @@ DEPENDENCIES
   capybara (~> 3.4)
   carrierwave (~> 1.3)
   carrierwave-imageoptimizer
-  chartkick (~> 2.3)
+  chartkick (~> 3.2)
   ckeditor (~> 4.2)
   cocoon
   cucumber-rails (~> 1.6)
