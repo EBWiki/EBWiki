@@ -27,6 +27,8 @@
 //= require select2
 //= require ckeditor/init
 //= require fullcalendar
+//= require chartkick
+//= require Chart.bundle
 //= require_tree .
 
 $('#calendar').fullCalendar({});

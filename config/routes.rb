@@ -32,6 +32,10 @@ Rails.application.routes.draw do
   resources :users, only: %i[show edit]
   mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
 
+  get '/analytics/users_by_day', to: 'analytics#users_by_day'
+  get '/analytics/visits_by_browser', to: 'analytics#visits_by_browser'
+  get '/analytics/visits_by_day', to: 'analytics#visits_by_day'
+  get '/analytics/visits_by_referring_domain', to: 'analytics#visits_by_referring_domain'
   get '/analytics', to: 'analytics#index'
 
   get '/maps', to: 'maps#index'
