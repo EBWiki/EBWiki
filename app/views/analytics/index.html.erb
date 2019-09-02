@@ -9,7 +9,7 @@
           Visits by Day - Last <%= @last_days %> days
         </div>
         <div class="chart-stage">
-          <%= column_chart metric_grouped_by_day(@visits_this_month, :started_at).count %>
+          <%= column_chart analytics_visits_by_day_path %>
         </div>
         <div class="chart-notes">
           Column heights represent the number of visitors on a specific day.
@@ -23,7 +23,7 @@
           Visits by browser - last 24 hours
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart metric_grouped_by_category(@visits_today, :browser).count %></div>
+          <%= pie_chart analytics_visits_by_browser_path %>
         </div>
         <div class="chart-notes">
           Notes go down here
@@ -40,7 +40,7 @@
           New Users by Day - Last <%= @last_days %> days (<%= @users.count %>)
         </div>
         <div class="chart-stage">
-          <%= column_chart metric_grouped_by_day(@users, :created_at).count %>
+          <%= column_chart analytics_users_by_day_path %>
         </div>
         <div class="chart-notes">
           Column heights represent the number of users added each day.
@@ -54,7 +54,7 @@
           Referring Domains - last 24 hours
         </div>
         <div class="chart-stage">
-          <div id=""><%= pie_chart metric_grouped_by_category(@visits_today, :referring_domain).count %></div>
+          <%= pie_chart analytics_visits_by_referring_domain_path %>
         </div>
         <div class="chart-notes">
           These domains are where traffic has originated

@@ -12,7 +12,6 @@ class AnalyticsController < ApplicationController
     date_range = ThirtyDayPeriod.new(end_date: Date.current)
     @full_width_content = true
     @visits_this_month = Ahoy::Visit.this_month
-    @visits_today = Ahoy::Visit.today
     @visits_this_week = Ahoy::Visit.this_week
     @users = User.where(created_at: date_range.start_date..date_range.end_date)
     @views = Ahoy::Event.where(name: '$view')
@@ -41,4 +40,23 @@ class AnalyticsController < ApplicationController
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/LineLength
   # rubocop:enable Metrics/AbcSize
+
+  def visits_by_day
+    render json: Ahoy::Visit.this_month.group_by_day(:started_at).count
+  end
+
+  def visits_by_browser
+    render json: Ahoy::Visit.today.group(:browser).count
+  end
+
+  # rubocop:disable Metrics/LineLength
+  def users_by_day
+    date_range = ThirtyDayPeriod.new(end_date: Date.current)
+    render json: User.where(created_at: date_range.start_date..date_range.end_date).group_by_day(:created_at).count
+  end
+  # rubocop:enable Metrics/LineLength
+
+  def visits_by_referring_domain
+    render json: Ahoy::Visit.today.group(:referring_domain).count
+  end
 end
