@@ -20,7 +20,7 @@ class CasesController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize
   def show
-    @this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
+    @this_case = find_case
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
@@ -162,5 +162,14 @@ class CasesController < ApplicationController
     @states = SortCollectionOrdinally.call(collection: State.all)
     @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
     @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')
+  end
+  
+   def find_case
+    this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
+    # If an old id or a numeric id was used to find the record, then
+    # the request path will not match the post_path, and we should do
+    # a 301 redirect that uses the current friendly id.
+    return redirect_to this_case, status: :moved_permanently if
+    request.path != case_path(this_case)
   end
 end
