@@ -360,7 +360,6 @@ GEM
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     gmaps4rails (2.1.2)
-    gotcha (0.0.6)
     groupdate (4.1.1)
       activesupport (>= 4.2)
     guard (2.15.0)
@@ -773,7 +772,6 @@ DEPENDENCIES
   geocoder
   gibbon
   gmaps4rails (~> 2.1)
-  gotcha (= 0.0.6)
   groupdate (~> 4.0)
   guard-rspec (~> 4.7)
   hightop (~> 0.2)
