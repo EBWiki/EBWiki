@@ -66,6 +66,7 @@ group :development, :test do
   gem 'mock_redis'
   gem 'pre-commit', '~> 0.38'
   gem 'rspec-rails', '~> 3.8'
+  gem 'rails-controller-testing'
 end
 
 group :development do
