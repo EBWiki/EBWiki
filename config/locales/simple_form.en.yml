@@ -19,6 +19,16 @@ en:
           federal: 'Federal'
           university: 'University'
           commercial: 'Commercial'
+      case:
+        cause_of_death_name:
+          choking: 'Choking'
+          shooting: 'Shooting'
+          beating: 'Beating'
+          taser: 'Taser'
+          vehicular: 'Vehicular'
+          medical_neglect: 'Medical Neglect'
+          response_to_medical_emergency: 'Response to Medical Emergency'
+          suicide: 'Suicide'
     labels:
       agency:
         state: 'State'

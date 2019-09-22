@@ -128,7 +128,7 @@ class CasesController < ApplicationController
                                   :litigation,
                                   :community_action,
                                   :agency_id,
-                                  :cause_of_death_id,
+                                  :cause_of_death_name,
                                   :date,
                                   :state_id,
                                   :city,
