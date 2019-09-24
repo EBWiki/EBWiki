@@ -73,7 +73,7 @@ GEM
     autoprefixer-rails (9.5.1.1)
       execjs
     backports (3.14.0)
-    bcrypt (3.1.12)
+    bcrypt (3.1.13)
     bindex (0.5.0)
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
@@ -148,10 +148,10 @@ GEM
     cucumber-wire (0.0.1)
     database_cleaner (1.3.0)
     device_detector (1.0.1)
-    devise (4.6.1)
+    devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0, < 6.0)
+      railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
     diff-lcs (1.3)
@@ -593,9 +593,9 @@ GEM
     remotipart (1.4.2)
     request_store (1.4.1)
       rack (>= 1.4)
-    responders (2.4.1)
-      actionpack (>= 4.2.0, < 6.0)
-      railties (>= 4.2.0, < 6.0)
+    responders (3.0.0)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -762,7 +762,7 @@ DEPENDENCIES
   cocoon
   cucumber-rails (~> 1.6)
   database_cleaner (~> 1.3.0)
-  devise (= 4.6.1)
+  devise (= 4.7.1)
   dotenv-rails
   factory_bot_rails (~> 4.10)
   faker (~> 1.9)
