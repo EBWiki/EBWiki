@@ -4,15 +4,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
-    if gotcha_valid?
-      super
-      OnboardUser.call(resource)
-    else
-      clean_up_passwords resource
-      @minimum_password_length = resource_class.password_length.min if devise_mapping.validatable?
-      flash[:notice] = 'Invalid Captcha'
-      redirect_to '/users/sign_up'
-    end
+    super
+    OnboardUser.call(resource)
   end
 
   # The path used after sign up.

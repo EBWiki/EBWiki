@@ -39,9 +39,6 @@ gem 'chartkick', '~> 3.2'
 gem 'groupdate', '~> 4.0'
 gem 'hightop', '~> 0.2'
 
-# Simple Captcha for signing up
-gem 'gotcha', '0.0.6'
-
 # xml sitemap
 gem 'sitemap_generator', '~> 6.0'
 
