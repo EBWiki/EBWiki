@@ -127,7 +127,7 @@
           <div class="method-source-code" id="after_create-source">
             <pre><span class="ruby-comment"># File app/models/user_observer.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">after_create</span>(<span class="ruby-identifier">user</span>)
-  <span class="ruby-constant">UserNotifier</span>.<span class="ruby-identifier">welcome_email</span>(<span class="ruby-identifier">user</span>).<span class="ruby-identifier">deliver_now</span>
+  <span class="ruby-constant">UserMailer</span>.<span class="ruby-identifier">welcome_email</span>(<span class="ruby-identifier">user</span>).<span class="ruby-identifier">deliver_now</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
