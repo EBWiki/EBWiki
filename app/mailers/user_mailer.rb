@@ -5,7 +5,7 @@ class UserMailer < ApplicationMailer
 
   default from: 'EndBiasWiki@gmail.com'
 
-  def send_followers_email(users, this_case)
+  def send_followers_email(users:, this_case:)
     @this_case = this_case
     users.each do |user|
       Rails.logger.info("UserMailer#send_followers_email: Sending notification to #{user.email} about case #{this_case.title}")
@@ -13,7 +13,7 @@ class UserMailer < ApplicationMailer
     end
   end
 
-  def send_deletion_email(users, this_case)
+  def send_deletion_email(users:, this_case:)
     @this_case = this_case
     users.each do |user|
       Rails.logger.info("UserMailer#send_deletion_email: Sending notification to #{user.email} about case #{this_case.title}")
@@ -21,7 +21,7 @@ class UserMailer < ApplicationMailer
     end
   end
 
-  def welcome_email(user)
+  def welcome_email(user:)
     @user = user
     mail(to: @user.email, subject: 'Welcome to EndBiasWiki')
   end
