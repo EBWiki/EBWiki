@@ -82,11 +82,7 @@
           <% if @this_case.links.count > 0 %>
             <h4 class="article_subheader">Additional Resources:</h4>
             <ul class="background-links" id="link-list">
-              <% @this_case.links.each do |link| %>
-                <li>
-                  <%= link_to link.url, "#{link.url}", target: '_blank' %> <span class="timeAgo">added <%= link.created_at.to_s(:long) %></span>
-                </li>
-              <% end %>
+              <%= render partial: 'case_link', collection: @this_case.links.order('created_at desc'), as: :link %>
             </ul>
           <% end %>
         </div>
