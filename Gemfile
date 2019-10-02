@@ -7,7 +7,7 @@ gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/ra
 gem 'fullcalendar-rails', '~> 3.9'
 gem 'rails', '~> 5.0.7.2'
 # Use postgresql as the database for Active Record
-gem 'pg', '0.20.0'
+gem 'pg', '1.1.4'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
 # Use Uglifier as compressor for JavaScript assets
