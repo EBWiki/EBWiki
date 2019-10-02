@@ -13,12 +13,10 @@ namespace :geocode_data do
     klass = class_from_string(class_name)
 
     klass.not_geocoded.find_each(batch_size: 100) do |obj|
-      if obj.respond_to?(:summary) && obj.summary.blank?
-        obj.summary = 'Geocoded cases for map display'
-      end
-
+      obj.summary = 'Geocoded cases for map display'
       obj.geocode
       obj.save
+
       sleep(sleep_timer.to_f) unless sleep_timer.nil?
     end
   end
