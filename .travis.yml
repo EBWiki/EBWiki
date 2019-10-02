@@ -16,7 +16,7 @@ before_install:
 before_script:
 - psql -c 'create database travis_ci_test;' -U postgres
 - cp config/database.ci.yml config/database.yml
-- bundle exec rake db:create db:migrate db:structure:load
+- bundle exec rake db:migrate db:structure:load
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
   > ./bin/cc-test-reporter
 - chmod +x ./bin/cc-test-reporter
