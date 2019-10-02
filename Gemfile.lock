@@ -488,7 +488,7 @@ GEM
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
-    pg (0.20.0)
+    pg (1.1.4)
     pluginator (1.5.0)
     pre-commit (0.39.0)
       pluginator (~> 1.5)
@@ -789,7 +789,7 @@ DEPENDENCIES
   newrelic_rpm (~> 5.2.0)
   paper_trail (~> 9.2.0)
   paper_trail-association_tracking
-  pg (= 0.20.0)
+  pg (= 1.1.4)
   pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
   puma
