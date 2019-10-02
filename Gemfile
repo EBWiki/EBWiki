@@ -89,7 +89,7 @@ gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '4.7.1'
 gem 'rails_12factor', groups: %i[production staging]
-gem 'simple_form'
+gem 'simple_form', '5.0.0'
 
 # for aws cloud storage
 gem 'fog', '2.0'
