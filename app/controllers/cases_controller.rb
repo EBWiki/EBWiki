@@ -87,8 +87,7 @@ class CasesController < ApplicationController
 
   def history
     @this_case = Case.friendly.find(params[:case_slug])
-    @case_history = @this_case.try(:versions).order(created_at: :desc) unless
-    @this_case.versions.blank?
+    @case_history = @this_case&.versions&.order(created_at: :desc)
   rescue ActiveRecord::RecordNotFound
   end
 
