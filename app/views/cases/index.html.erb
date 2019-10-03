@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-9">
-      <h2 class="page-header">These <%= @total_cases %> people were killed by police.<br>We track their cases here.</h2>
+      <h2 class="page-header">These <span style="background:#de651b;"><%= @total_cases %></span> people were killed by police.<br>We track their cases here.</h2>
       <div class="text-center">
         <h3>
           <% if current_user.present? %>
