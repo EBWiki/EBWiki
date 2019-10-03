@@ -9,7 +9,7 @@
      will create a new version of the case.</h4>
 
   <ul>
-    <% if @case_history %>
+    <% if @case_history.present? %>
       <% @case_history.each_with_index do |version, i| %>
         <li>
           <b>Date:</b> <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
