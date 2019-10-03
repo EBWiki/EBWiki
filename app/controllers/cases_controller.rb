@@ -88,7 +88,7 @@ class CasesController < ApplicationController
   def history
     @this_case = Case.friendly.find(params[:case_slug])
     @case_history = @this_case.versions.order(created_at: :desc) rescue []
-    rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound
   end
 
   def undo
