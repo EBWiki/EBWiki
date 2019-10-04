@@ -159,7 +159,7 @@ class CasesController < ApplicationController
   def set_instance_vars
     @agencies = SortCollectionOrdinally.call(collection: Agency.all)
     @states = SortCollectionOrdinally.call(collection: State.all)
-    @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
+    @genders = Gender.all
     @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')
   end
 end
