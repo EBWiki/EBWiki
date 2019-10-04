@@ -29,6 +29,10 @@
 //= require fullcalendar
 //= require chartkick
 //= require Chart.bundle
+//= require timeago.min
+//= require timeago.locales.min
+//= require Chart.bundle
+//= require time-ago
 //= require_tree .
 
 $('#calendar').fullCalendar({});
