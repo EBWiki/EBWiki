@@ -20,7 +20,7 @@ class CasesController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize
   def show
-    @this_case = Case.includes(:comments, :subjects).friendly.find(params[:id])
+    @this_case = Case.includes(:comments, :subjects, :links).friendly.find(params[:id])
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
