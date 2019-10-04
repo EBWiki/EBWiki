@@ -1,3 +1,3 @@
 document.addEventListener("DOMContentLoaded", function () {
-  timeago().render(document.querySelectorAll('.timeAgo'));
+  timeago().render(document.querySelectorAll('.time-ago-label'));
 });

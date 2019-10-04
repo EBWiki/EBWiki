@@ -4,7 +4,7 @@
   <ul class="col-md-12">
     <% @comments.each do |comment| %>
       <li class="col-md-12">
-        <small class="timeAgo"><%= time_ago_in_words(comment.created_at) %> ago <%= link_to comment.user.name, user_path(comment.user) %></small>
+        <small class="timeAgo"><span class="time-ago-label" datetime="<%= comment.created_at %>"></span> <%= link_to comment.user.name, user_path(comment.user) %></small>
         <p><%= simple_format comment.content %></p>
       </li>
     <% end %>

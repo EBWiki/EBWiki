@@ -58,7 +58,7 @@
             <% end %>
           </div>
       </h1>
-      <p class="timeAgo">Last updated: <%= time_ago_in_words(@this_case.updated_at) %> ago</p>
+      <p class="timeAgo">Last updated: <span class="time-ago-label" datetime="<%= @this_case.updated_at %>"></span></p>
         <% if @this_case.followers.present? %>
           <p>
             <%= link_to 'People tracking this case', cases_followers_path(@this_case) %>: <span class="timeAgo"><%= @this_case.followers.count %></span>
