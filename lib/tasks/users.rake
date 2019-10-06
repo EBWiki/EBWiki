@@ -8,5 +8,5 @@ namespace :users do
       group.update_all(confirmed_at: Time.now)
     end
     p 'All users are confirmed'
-  end 
+  end
 end
