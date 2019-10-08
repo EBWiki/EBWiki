@@ -4,9 +4,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
-    if User.where(:email => params[:user][:email]).any?
+    if User.where(email: params[:user][:email]).any?
       flash[:warning] = "Looks like that email is already taken you can login here or <a href=#{new_user_registration_path}>go back to sign up</a>".html_safe
-      redirect_to new_user_session_path(user: {email: params[:user][:email]}) and return
+      redirect_to new_user_session_path(user: { email: params[:user][:email] }) and return
     end
 
     super
