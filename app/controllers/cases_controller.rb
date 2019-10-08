@@ -92,9 +92,9 @@ class CasesController < ApplicationController
   end
 
   def history
-    @this_case = Case.friendly.find_by_slug(params[:case_slug])
+    @this_case = Case.friendly.find(params[:case_slug])
     @case_history = @this_case.try(:versions).order(created_at: :desc) unless
-    @this_case.blank? || @this_case.versions.blank?
+    @this_case.versions.blank?
   rescue ActiveRecord::RecordNotFound
   end
 
@@ -164,7 +164,6 @@ class CasesController < ApplicationController
 
   def set_instance_vars
     @agencies = SortCollectionOrdinally.call(collection: Agency.all)
-    @causes_of_death = SortCollectionOrdinally.call(collection: CauseOfDeath.all)
     @states = SortCollectionOrdinally.call(collection: State.all)
     @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
     @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')
