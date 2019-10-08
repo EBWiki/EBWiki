@@ -54,7 +54,7 @@ class CasesController < ApplicationController
 
   def followers
     @this_case = Case.friendly.find(params[:case_slug])
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     render 'cases/case_not_found'
   end
 
@@ -92,7 +92,7 @@ class CasesController < ApplicationController
     @this_case = Case.friendly.find_by_slug(params[:case_slug])
     @case_history = @this_case.try(:versions).order(created_at: :desc) unless
     @this_case.blank? || @this_case.versions.blank?
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     render 'cases/case_not_found'
   end
 
