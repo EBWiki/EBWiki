@@ -84,7 +84,7 @@ RSpec.describe UserMailer, type: :mailer do
   describe 'send_confirmation_email' do
     let(:user)      { FactoryBot.create(:user) }
     let(:this_case) { FactoryBot.create(:case) }
-    let!(:mail)     { UserNotifier.welcome_email(user) }
+    let!(:mail)     { UserMailer.welcome_email(user: user) }
 
     it 'renders the subject and receiver email' do
       expect(mail.subject).to eql('Confirm your email address')
