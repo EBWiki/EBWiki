@@ -204,7 +204,7 @@ describe '#nearby_cases', versioning: true do
 end
 
 describe '#default_avatar_url', versioning: true do
-  it 'takes the avatar''s default URL and turns this into a column' do
+  it 'takes the avatars default URL and turns this into a column' do
     this_case = FactoryBot.create(:case)
     avatar_mock = double('Avatar', url: 'https://avatar.com')
     allow(this_case).to receive(:default_avatar_url).and_return(avatar_mock.url)
