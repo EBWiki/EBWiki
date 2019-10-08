@@ -5,7 +5,7 @@ namespace :users do
   task confirm_all: :environment do
     p 'Start confirming users'
     User.all.in_batches do |group|
-      group.update_all(confirmed_at: Time.now)
+      group.update_all(confirmed_at: Time.current)
     end
     p 'All users are confirmed'
   end
