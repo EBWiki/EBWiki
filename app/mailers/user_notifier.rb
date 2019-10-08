@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Manages email notifications for users
 class UserNotifier < ApplicationMailer
   helper UserNotifierHelper
 
