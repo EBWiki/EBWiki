@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Set of helper methods for composing email messages
-module UserNotifierHelper
+module UserMailerHelper
   FOLLOW_CALL_TO_ACTION = <<~"FCTA"
     It is very important that you click to follow one or more cases and allow us to keep
     you up to date. The more people paying attention, the easier it will be to affect change.

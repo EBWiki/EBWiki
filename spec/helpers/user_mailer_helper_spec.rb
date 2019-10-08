@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe UserNotifierHelper, type: :helper do
+RSpec.describe UserMailerHelper, type: :helper do
   let(:user)                      { FactoryBot.create(:user) }
   let(:this_case)                 { FactoryBot.create(:case) }
   let(:follow_call_to_action)     { "It is very important that you click to follow one or more cases and allow us to keep\nyou up to date. The more people paying attention, the easier it will be to affect change.\n" }
