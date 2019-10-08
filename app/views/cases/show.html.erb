@@ -82,7 +82,7 @@
           <% if @this_case.links.count > 0 %>
             <h4 class="article_subheader">Additional Resources:</h4>
             <ul class="background-links" id="link-list">
-              <%= render partial: 'case_link', collection: @this_case, as: :link %>
+              <%= render partial: 'case_link', collection: @this_case.links, as: :link %>
             </ul>
           <% end %>
         </div>
