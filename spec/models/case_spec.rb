@@ -15,8 +15,8 @@ RSpec.describe Case do
     end
 
     it do
-      should validate_presence_of(:summary).with_message('Please use the last field at the bottom of this form ' \
-             'to summarize your edits to the case.')
+      should validate_presence_of(:summary).with_message('Please use the last field at the ' \
+             'bottom of this form to summarize your edits to the case.')
     end
 
     it do
