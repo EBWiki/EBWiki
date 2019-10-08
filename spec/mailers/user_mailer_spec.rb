@@ -80,4 +80,20 @@ RSpec.describe UserMailer, type: :mailer do
       expect(mail.body.encoded.gsub(/\s+/, '')).not_to include("It is very important that you click to follow one or more cases and allow us to keep\nyou up to date. The more people paying attention, the easier it will be effect change.".gsub(/\s+/, ''))
     end
   end
+
+  describe 'send_confirmation_email' do
+    let(:user)      { FactoryBot.create(:user) }
+    let(:this_case) { FactoryBot.create(:case) }
+    let!(:mail)     { UserNotifier.welcome_email(user) }
+
+    it 'renders the subject and receiver email' do
+      expect(mail.subject).to eql('Confirm your email address')
+      expect(mail.to).to eq([user.email])
+    end
+
+    it 'renders the proper message' do
+      user.follow(this_case)
+      expect(mail.body.encoded.gsub(/\s+/, '')).to include('Thanks for signing up for EBWiki, click here to confirm your account.'.gsub(/\s+/, ''))
+    end
+  end
 end
