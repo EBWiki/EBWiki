@@ -2,6 +2,25 @@
 
 RSpec.describe 'Registrations', type: :request do
   describe 'POST /registrations' do
+    context 'with a duplicate email' do
+      before do
+        allow_any_instance_of(User::ActiveRecord_Relation).to receive(:any?) {true}
+        post user_registration_path, params: {
+          user: {
+            name: 'Mark Nyon',
+            email: 'here@there.com',
+            password: '12344321',
+            password_confirmation: '12344321',
+            subscribed: 0
+          }
+        }
+      end
+
+      it 'redirects to the login page' do
+        expect(response).to redirect_to(new_user_session_path(user: {email: 'here@there.com'}))
+      end
+    end
+
     context 'on success' do
       before do
         post user_registration_path, params: {
