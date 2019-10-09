@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe UserNotifierHelper, type: :helper do
-  let(:user)                     { FactoryBot.create(:user) }
-  let(:this_case)                { FactoryBot.create(:case) }
+RSpec.describe UserMailerHelper, type: :helper do
+  let(:user)                      { FactoryBot.create(:user) }
+  let(:this_case)                 { FactoryBot.create(:case) }
   let(:follow_call_to_action)    { I18n.t 'notifier.follow_cases' }
   let(:follow_message)           { I18n.t 'notifier.mail_body' }
   let(:subscriber_message)       { I18n.t 'notifier.subscribe_message' }
