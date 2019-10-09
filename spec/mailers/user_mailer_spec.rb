@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 PaperTrail.request.disable_model(Case)
-RSpec.describe UserNotifier, type: :mailer do
+RSpec.describe UserMailer, type: :mailer do
   before(:each) do
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
@@ -18,7 +18,7 @@ RSpec.describe UserNotifier, type: :mailer do
     let(:user) { FactoryBot.create(:user) }
     let(:state) { FactoryBot.create(:state, id: 33) }
     let(:this_case) { user.cases.create! attributes_for(:case, state_id: state.id) }
-    let(:mail) { UserNotifier.send_followers_email([follower], this_case) }
+    let(:mail) { UserMailer.send_followers_email(users: [follower], this_case: this_case) }
 
     before do
       allow(this_case).to receive_message_chain('versions.last.whodunnit').and_return(User.last)
@@ -45,11 +45,11 @@ RSpec.describe UserNotifier, type: :mailer do
   end
 end
 
-RSpec.describe UserNotifier, type: :mailer do
+RSpec.describe UserMailer, type: :mailer do
   describe 'notify_of_removal' do
     let(:follower) { FactoryBot.create(:user, name: 'A Follower', email: 'follower@ebwiki.org') }
     let(:this_case) { FactoryBot.create(:case) }
-    let(:mail) { UserNotifier.send_deletion_email([follower], this_case) }
+    let(:mail) { UserMailer.send_deletion_email(users: [follower], this_case: this_case) }
 
     it 'renders the subject' do
       expect(mail.subject).to eql("The #{this_case.title} case has been removed from EBWiki")
@@ -67,7 +67,7 @@ RSpec.describe UserNotifier, type: :mailer do
   describe 'welcome_email' do
     let(:user)      { FactoryBot.create(:user) }
     let(:this_case) { FactoryBot.create(:case) }
-    let!(:mail)     { UserNotifier.welcome_email(user) }
+    let!(:mail)     { UserMailer.welcome_email(user: user) }
 
     it 'renders the subject and receiver email' do
       expect(mail.subject).to eql('Welcome to EndBiasWiki')
@@ -86,7 +86,7 @@ RSpec.describe UserNotifier, type: :mailer do
   describe 'send_confirmation_email' do
     let(:user)      { FactoryBot.create(:user) }
     let(:this_case) { FactoryBot.create(:case) }
-    let!(:mail)     { UserNotifier.welcome_email(user) }
+    let!(:mail)     { UserMailer.welcome_email(user: user) }
 
     it 'renders the subject and receiver email' do
       expect(mail.subject).to eql('Confirm your email address')

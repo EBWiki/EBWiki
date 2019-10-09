@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Set of helper methods for composing email messages
-module UserNotifierHelper
+module UserMailerHelper
   FOLLOW_CALL_TO_ACTION = I18n.t 'notifier.follow_cases'
 
   SUBSCRIBER_MESSAGE = I18n.t 'notifier.subscribe_message'

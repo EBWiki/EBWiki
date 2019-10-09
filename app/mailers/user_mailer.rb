@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-# Manages email notifications for users
-class UserNotifier < ApplicationMailer
-  helper UserNotifierHelper
+class UserMailer < ApplicationMailer
+  helper UserMailerHelper
 
   default from: 'EndBiasWiki@gmail.com'
 
-  def send_followers_email(users, this_case)
+  def send_followers_email(users:, this_case:)
     @this_case = this_case
     users.each do |user|
       Rails.logger.info(I18n.t('notifier.followers_email_text', user.email, this_case.title))
@@ -14,7 +13,7 @@ class UserNotifier < ApplicationMailer
     end
   end
 
-  def send_deletion_email(users, this_case)
+  def send_deletion_email(users:, this_case:)
     @this_case = this_case
     users.each do |user|
       Rails.logger.info(I18n.t('notifier.deletion_email_text', user.email, this_case.title))
@@ -22,7 +21,7 @@ class UserNotifier < ApplicationMailer
     end
   end
 
-  def welcome_email(user)
+  def welcome_email(user:)
     @user = user
     mail(to: @user.email, subject: 'Welcome to EndBiasWiki')
   end
