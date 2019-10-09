@@ -12,6 +12,7 @@ RSpec.describe UserMailerHelper, type: :helper do
     I18n.t('notifier.call_to_action',
            link: ActionController::Base.helpers.link_to(I18n.t('notifier.subscribe'),
                                                         ENV['MAILCHIMP_LINK']))
+  end
 
   describe 'create_welcome_email_message' do
     it 'generates the message for an unsubscribed user with no followed cases' do
