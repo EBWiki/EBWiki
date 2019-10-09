@@ -14,7 +14,7 @@ describe SearchPresenter do
                                     state_id: nil,
                                     count: count,
                                     view: view)
-    expect(presenter.search_results_text).to eq "Your search for \"#{query}\" has returned 1 result."
+    expect(presenter.search_results_text).to eq I18n.t('presenter.test_query', query: query)
   end
 
   it 'should create the right text with just a state' do
@@ -22,6 +22,6 @@ describe SearchPresenter do
                                     state_id: state.id,
                                     count: count,
                                     view: view)
-    expect(presenter.search_results_text).to eq "Your search for cases in #{state.name} has returned 1 result."
+    expect(presenter.search_results_text).to eq I18n.t('presenter.test_state', state: state.name)
   end
 end

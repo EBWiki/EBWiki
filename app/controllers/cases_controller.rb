@@ -66,7 +66,10 @@ class CasesController < ApplicationController
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!'
       flash[:undo] = @this_case.versions
-      UserNotifier.send_followers_email(@this_case.followers, @this_case).deliver_now
+      UserMailer.send_followers_email(
+        users: @this_case.followers,
+        this_case: @this_case
+      ).deliver_now
       redirect_to @this_case
     else
       set_instance_vars
@@ -80,7 +83,10 @@ class CasesController < ApplicationController
       @this_case.destroy
       flash[:success] = 'Case was removed!'
       flash[:undo] = @this_case.versions
-      UserNotifier.send_deletion_email(@this_case.followers, @this_case).deliver_now
+      UserMailer.send_deletion_email(
+        users: @this_case.followers,
+        this_case: @this_case
+      ).deliver_now
     rescue ActiveRecord::RecordNotFound
       flash[:notice] = I18n.t('cases_controller.case_not_found_message')
       render 'cases/case_not_found'
@@ -89,9 +95,9 @@ class CasesController < ApplicationController
   end
 
   def history
-    @this_case = Case.friendly.find_by_slug(params[:case_slug])
+    @this_case = Case.friendly.find(params[:case_slug])
     @case_history = @this_case.try(:versions).order(created_at: :desc) unless
-    @this_case.blank? || @this_case.versions.blank?
+    @this_case.versions.blank?
   rescue ActiveRecord::RecordNotFound
     render 'cases/case_not_found'
   end
@@ -162,7 +168,6 @@ class CasesController < ApplicationController
 
   def set_instance_vars
     @agencies = SortCollectionOrdinally.call(collection: Agency.all)
-    @causes_of_death = SortCollectionOrdinally.call(collection: CauseOfDeath.all)
     @states = SortCollectionOrdinally.call(collection: State.all)
     @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
     @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')

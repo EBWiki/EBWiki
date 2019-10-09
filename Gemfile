@@ -7,7 +7,7 @@ gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/ra
 gem 'fullcalendar-rails', '~> 3.9'
 gem 'rails', '~> 5.0.7.2'
 # Use postgresql as the database for Active Record
-gem 'pg', '0.20.0'
+gem 'pg', '1.1.4'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
 # Use Uglifier as compressor for JavaScript assets
@@ -89,7 +89,7 @@ gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'devise', '4.7.1'
 gem 'rails_12factor', groups: %i[production staging]
-gem 'simple_form'
+gem 'simple_form', '5.0'
 
 # for aws cloud storage
 gem 'fog', '2.0'
