@@ -84,6 +84,7 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   describe 'send_confirmation_email' do
+    pending
     let(:user)      { FactoryBot.create(:user) }
     let(:this_case) { FactoryBot.create(:case) }
     let!(:mail)     { UserMailer.welcome_email(user: user) }
@@ -96,7 +97,7 @@ RSpec.describe UserMailer, type: :mailer do
     it 'renders the proper message' do
       user.follow(this_case)
       expect(mail.body.encoded.gsub(/\s+/, '')).to include(I18n.t('notifier.confirmation_message')
-                                                               .gsub(/\s+/, ''))
+                                                              .gsub(/\s+/, ''))
     end
   end
 end
