@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 SimpleForm.setup do |config|
-  config.wrappers :ranged_datetime, tag: 'div', class: 'form-group col-md-6', error_class: 'has-error' do |b|
+  config.wrappers :ranged_datetime,
+                  tag: 'div',
+                  class: 'form-group col-md-6',
+                  error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
     b.optional :readonly
