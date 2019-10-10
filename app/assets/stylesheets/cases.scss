@@ -1,11 +1,12 @@
-// Place all the styles related to cases here.
+/* // Place all the styles related to cases here.
 // They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// You can use Sass (SCSS) here: http://sass-lang.com/ */
 
 $color-orange: #F65732;
 $color-gray: #666666;
 $color-black: #000000;
 $color-dark-gray: #4D4D4D;
+$color-light-gray: #eeeeee;
 
 .background-links{
   font-size: 1em;
@@ -19,6 +20,7 @@ $color-dark-gray: #4D4D4D;
 
 .page-header{
   text-align: center;
+  border-bottom: none !important;
 }
 
 .side-leader{
@@ -86,10 +88,10 @@ $color-dark-gray: #4D4D4D;
     margin: 15px 0 15px 15px;
 }
 
-// modifying gallery inmages for hover effects
+/* // modifying gallery inmages for hover effects
 // http://tympanus.net/codrops/2011/11/02/original-hover-effects-with-css3/
 
-//sets size and borders of gallery image
+//sets size and borders of gallery image */
 .view {
     float: left;
     overflow: hidden;
@@ -98,7 +100,7 @@ $color-dark-gray: #4D4D4D;
     cursor: default;
 }
 
-// superimposes "mask" class on image
+/* // superimposes "mask" class on image */
 .view .mask, .view .content {
     width: 100%;
     position: absolute;
@@ -109,13 +111,13 @@ $color-dark-gray: #4D4D4D;
     bottom: 0
 }
 
-// evenly spaces images
+/* // evenly spaces images */
 .view img {
     display: block;
     position: relative
 }
 
-// adds styling to header superimposed on image
+/* // adds styling to header superimposed on image */
 .view h2 {
     text-transform: uppercase;
     color: #fff;
@@ -127,7 +129,7 @@ $color-dark-gray: #4D4D4D;
     margin: 20px 0 0 0
 }
 
-// styling paragraph text superimposed on image
+/* // styling paragraph text superimposed on image */
 .view p {
     font-family: Georgia, serif;
     font-style: italic;
@@ -142,7 +144,7 @@ $color-dark-gray: #4D4D4D;
     color: #fff;
 }
 
-// adds button style to "more info" link
+/* // adds button style to "more info" link */
 .view a.info {
     display: inline-block;
     text-decoration: none;
@@ -159,14 +161,14 @@ $color-dark-gray: #4D4D4D;
 
 
 
-// adds shadow when hovering over "more info" link
+/* // adds shadow when hovering over "more info" link */
 .view a.info:hover {
     box-shadow: 0 0 5px #000
 }
 
-//transition-hover effects
-
-//Example 1
+/* //transition-hover effects */
+/* 
+//Example 1 */
 .view-first img {
     transition: all 0.2s linear;
 }
@@ -212,7 +214,7 @@ $color-dark-gray: #4D4D4D;
   display: none;
 }
 
-// Example 10
+/* // Example 10 */
 
 .view-tenth img {
   transform: scaleY(1);
@@ -224,7 +226,6 @@ $color-dark-gray: #4D4D4D;
     opacity: 0;
 }
 .view-tenth h2{
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     background: transparent;
     margin: 20px 40px 0px 40px;
     transform: scale(0);
@@ -314,4 +315,20 @@ $color-dark-gray: #4D4D4D;
   border: 0px;
   box-sizing: none;
   background-color: transparent;
+}
+
+.delete-case-button {
+  color: white;
+  background-color: $color-orange;
+  border-radius: 10px;
+  text-transform: uppercase;
+}
+
+.page-summary {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid $color-light-gray;
+  margin-bottom: 20px;
 }

@@ -33,31 +33,38 @@
     </div>
 
     <div class="col-md-9">
-      <h1 class="page-header case-title"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
-      <br>
-          <small><%= @this_case.city %>, <%= @this_case.state.name %></small>
-      <br/><small><%= @this_case.date.to_s(:long) %></small>
-          <% if @this_case.agencies.present? %>
-            <p>Agencies:
-              <% @this_case.agencies.each_with_index do |agency, index| %>
-                <%= link_to agency.name, agency_path(agency) %>
-                <% unless index == @this_case.agencies.size - 1 %>
-                  <%= "|" %>
+      <span class="page-summary">
+        <h1 class="page-header case-title"><%= @subjects.first.name %>, <%= @subjects.first.age ? "#{@subjects.first.age}" : "" %>
+        <br>
+            <small><%= @this_case.city %>, <%= @this_case.state.name %></small>
+        <br/><small><%= @this_case.date.to_s(:long) %></small>
+            <% if @this_case.agencies.present? %>
+              <p>Agencies:
+                <% @this_case.agencies.each_with_index do |agency, index| %>
+                  <%= link_to agency.name, agency_path(agency) %>
+                  <% unless index == @this_case.agencies.size - 1 %>
+                    <%= "|" %>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </p>
-          <% end %>
-          <div>
-            <% if current_user %>
-              <% if current_user.following?(@this_case) %>
-              <% else %>
-                <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Click here to receive an email whenever this case is updated.' } %>
-              <% end %>
-            <% else %>
-              <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Login to Follow this case!', content: 'Click here to receive an email whenever this case is updated.' } %>
+              </p>
             <% end %>
-          </div>
-      </h1>
+            <div>
+              <% if current_user %>
+                <% unless current_user.following?(@this_case) %>
+                  <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Click here to receive an email whenever this case is updated.' } %>
+                <% end %>
+              <% else %>
+                <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Login to Follow this case!', content: 'Click here to receive an email whenever this case is updated.' } %>
+              <% end %>
+            </div>
+            
+        </h1>
+        <% if current_user && current_user.admin? %>
+          <span class="delete-case-button">
+            <%= button_to 'Delete', case_path(@this_case), method: :delete, data: { confirm: "Are you sure you want to delete this case?" }, class: "btn btn-primary btn-lg" %>
+          </span>
+        <% end %>
+      </span>
       <p class="timeAgo">Last updated: <%= time_ago_in_words(@this_case.updated_at) %> ago</p>
         <% if @this_case.followers.present? %>
           <p>
