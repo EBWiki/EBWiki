@@ -5,7 +5,7 @@ describe Location do
     it "should return address" do
       location = Location.new(city: "Bangalore", state: "Karnataka", street_location: "21st, MG road", zipcode: "560078")
 
-      expect(location.to_s).to eq("21st, MG road, Bangalore, Karnataka, Zipcode: 560078")
+      expect(location.to_s).to eq("21st, MG road, Bangalore, Karnataka, 560078")
     end
   end
 

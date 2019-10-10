@@ -12,7 +12,7 @@ class Location
   end
 
   def to_s
-    [street_location, city, state, ("Zipcode: #{zipcode}" if zipcode)].compact.join(", ")
+    [street_location, city, state, zipcode].compact.join(", ")
   end
 
   def ==(object)
