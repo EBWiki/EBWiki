@@ -6,7 +6,9 @@ class SortCollectionOrdinally
   include Service
 
   def call(collection:, column_name: 'name')
-    first_sort = collection.sort_by { |e| ActiveSupport::Inflector.transliterate(e.send(column_name).downcase) }
+    first_sort = collection.sort_by do |e|
+      ActiveSupport::Inflector.transliterate(e.send(column_name).downcase)
+    end
     names_with_numbers = first_sort.select { |element| element.send(column_name).match(/(\d+)/) }
     return first_sort if names_with_numbers.empty?
 
