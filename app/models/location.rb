@@ -11,11 +11,17 @@ class Location
     @zipcode = zipcode
   end
 
-  def to_s
-    [street_location, city, state, zipcode].compact.join(", ")
+  def to_s(letter_style: false)
+    if letter_style
+      "#{street_location}\n#{city}, #{state} #{zipcode}"
+    else
+      [street_location, city, state, zipcode].compact.join(", ")
+    end
   end
 
-  def ==(object)
-    object.class.eql?(self.class) && self.to_s.eql?(object.to_s)
+  # rubocop:disable Style/RedundantSelf
+  def ==(other)
+    other.class.eql?(self.class) && self.to_s.eql?(other.to_s)
   end
+  # rubocop:enable Style/RedundantSelf
 end
