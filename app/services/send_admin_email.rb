@@ -8,7 +8,7 @@ class SendAdminEmail
     # returns an array [false, true] or [true, false]
     previous_admin_status = user.previous_changes['admin']
     send_new_admin_email(user: user)
-    
+
     if previous_admin_status[1]
       send_new_admin_email(user: user)
     elsif previous_admin_status[1] == false
@@ -19,11 +19,13 @@ class SendAdminEmail
   private
 
   def send_new_admin_email(user:)
-    AdminMailer.new_admin_email(new_admin: user, recipients: admin_emails(user: user)).deliver_now
+    admin_emails = admin_emails(user: user)
+    AdminMailer.new_admin_email(new_admin: user, recipients: admin_emails).deliver_now
   end
-  
+
   def send_removed_admin_email(user:)
-    AdminMailer.remove_admin_email(removed_admin: user, recipients: admin_emails(user: user)).deliver_now
+    admin_emails = admin_emails(user: user)
+    AdminMailer.remove_admin_email(removed_admin: user, recipients: admin_emails).deliver_now
   end
   
   def admin_emails(user:)

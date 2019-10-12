@@ -6,7 +6,7 @@ class AdminMailer < ApplicationMailer
     @new_admin = new_admin
     mail(to: recipients, subject: 'A new admin has been added.')
   end
-  
+
   def remove_admin_email(removed_admin:, recipients:)
     @removed_admin = removed_admin
     mail(to: recipients, subject: "#{@removed_admin.name} is no longer an admin.")
