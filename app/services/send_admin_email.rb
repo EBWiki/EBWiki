@@ -27,7 +27,7 @@ class SendAdminEmail
     admin_emails = admin_emails(user: user)
     AdminMailer.remove_admin_email(removed_admin: user, recipients: admin_emails).deliver_now
   end
-  
+
   def admin_emails(user:)
     User.where.not(email: user.email).where(admin: true).pluck(:email)
   end
