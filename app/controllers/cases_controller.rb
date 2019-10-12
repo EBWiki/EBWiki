@@ -21,7 +21,7 @@ class CasesController < ApplicationController
   # rubocop:disable Metrics/AbcSize
   def show
     eager_load_case = Case.includes(:comments, :subjects, :links)
-    @this_case = eager_load_case.order("links.created_at DESC").friendly.find(params[:id])
+    @this_case = eager_load_case.order('links.created_at DESC').friendly.find(params[:id])
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects

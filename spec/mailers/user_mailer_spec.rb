@@ -82,7 +82,7 @@ RSpec.describe UserMailer, type: :mailer do
                                                                    .gsub(/\s+/, ''))
     end
   end
-  
+
   describe 'send_confirmation_email' do
     pending
     let(:user)      { FactoryBot.create(:user) }
