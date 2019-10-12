@@ -936,8 +936,7 @@ CREATE TABLE public.users (
     analyst boolean DEFAULT false,
     confirmation_token character varying,
     confirmed_at timestamp without time zone,
-    confirmation_sent_at timestamp without time zone,
-    unconfirmed_email character varying
+    confirmation_sent_at timestamp without time zone
 );
 
 
@@ -1981,6 +1980,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190422003442'),
 ('20190815012327'),
 ('20190824175709'),
-('20190825000337'),
-('20190422003442'),
-('20191012043517');
+('20190825000337');
