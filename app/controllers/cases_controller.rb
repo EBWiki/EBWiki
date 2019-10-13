@@ -77,7 +77,6 @@ class CasesController < ApplicationController
   end
 
   def destroy
-
     begin
       @this_case = Case.friendly.find(params[:id])
       @this_case.destroy

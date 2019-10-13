@@ -55,3 +55,4 @@ environment.sh
 
 # Ignore database.yml from version control...
 config/database.yml
+play.*
