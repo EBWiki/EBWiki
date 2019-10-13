@@ -7,11 +7,10 @@ class SendAdminEmail
   def call(user:)
     # returns an array [false, true] or [true, false]
     previous_admin_status = user.previous_changes['admin']
-    send_new_admin_email(user: user)
 
     if previous_admin_status[1]
       send_new_admin_email(user: user)
-    elsif previous_admin_status[1] == false
+    elsif !previous_admin_status[1]
       send_removed_admin_email(user: user)
     end
   end
