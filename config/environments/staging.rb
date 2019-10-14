@@ -46,6 +46,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  # This should remain disabled as Cloudflare handles the SSL Configuration [https://github.com/EBWiki/EBWiki/issues/1268]
   config.force_ssl = false
 
   # Use the lowest log level to ensure availability of diagnostic information
