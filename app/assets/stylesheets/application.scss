@@ -33,6 +33,16 @@ html {
   font-family: verdana, arial, helvetica, sans-serif;
 }
 
+.btn-reply {
+  // @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  @include button-variant(white, $color-gray, $color-gray);
+}
+
+.btn-delete {
+  // @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  @include button-variant(white, $color-orange, $color-orange);
+}
+
 *,
 *:before,
 *:after {
@@ -49,6 +59,10 @@ body {
 ul {
   list-style: none;
   padding: 0;
+}
+
+.top-buffer { 
+  margin-top:20px; 
 }
 
 .panel-footer {
