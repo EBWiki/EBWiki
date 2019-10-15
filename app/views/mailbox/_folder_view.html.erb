@@ -17,6 +17,8 @@
       <div class="panel-body">
         <% if is_conversation %>
           <%= render 'conversations/form' %>
+        <% elsif messages.empty? %>
+          You have no messages.
         <% else %>
           <%= render partial: 'conversations/conversation', collection: messages %>
         <% end %>
