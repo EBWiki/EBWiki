@@ -15,11 +15,14 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <%= render "search/bar" %>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <% if user_signed_in? %>
+        <% if user_signed_in? %>
+          <li>
             <%= link_to "Add a New Case", new_case_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
-          <% end %>
-        </li>
+          </li>
+          <li>
+            <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'] %>
+          </li>
+        <% end %>
         <li class="dropdown">
           <% if user_signed_in? %>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{current_user.email}" %><span class="caret"></span></a>
