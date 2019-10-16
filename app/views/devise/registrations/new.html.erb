@@ -2,7 +2,8 @@
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= f.error_notification %>
-
+  <%= flash[:recaptcha_error] %>
+ 
   <div class="form-inputs">
     <%= f.input :name, required: true, class: "form-control" %>
     <%= f.input :email, required: true, autofocus: true %>
@@ -10,6 +11,7 @@
     <%= f.input :password_confirmation, required: true %>
     <h5>Check this box to receive our weekly newsletter with updates on these cases and other news:</h5>
     <%= f.input :subscribed, :label => false %>
+    <%= recaptcha_tags %>
   </div>
 
   <div class="form-actions">
