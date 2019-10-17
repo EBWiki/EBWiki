@@ -84,8 +84,8 @@ group :test do
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
-  gem 'webmock'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
+  gem 'webmock'
 end
 
 gem 'bootstrap-sass', '>= 3.4.1'
