@@ -26,6 +26,7 @@ gem 'turbolinks', '~> 5.1'
 gem 'jquery-turbolinks', '~> 2.1'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 1.0', group: :doc
+gem 'twitter', '~> 6.2'
 
 gem 'momentjs-rails'
 gem 'rack'
@@ -38,7 +39,6 @@ gem 'active_median', '~> 0.1'
 gem 'chartkick', '~> 3.2'
 gem 'groupdate', '~> 4.0'
 gem 'hightop', '~> 0.2'
-
 # xml sitemap
 gem 'sitemap_generator', '~> 6.0'
 
@@ -82,6 +82,7 @@ group :test do
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
+  gem 'vcr', '~> 3.0', '>= 3.0.1'
   gem 'webmock'
 end
 
