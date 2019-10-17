@@ -52,6 +52,8 @@ gem 'rollbar', '~> 2.16'
 
 gem 'simplecov', '~> 0.16.1'
 
+gem 'twitter', '~> 6.2'
+
 # JSON renderer for Rails
 gem 'jb', '~> 0.5.0'
 group :development, :test do
@@ -83,6 +85,7 @@ group :test do
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
   gem 'webmock'
+  gem 'vcr', '~> 3.0', '>= 3.0.3'
 end
 
 gem 'bootstrap-sass', '>= 3.4.1'
