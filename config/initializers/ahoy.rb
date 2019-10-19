@@ -13,6 +13,10 @@ class Ahoy::Store < Ahoy::DatabaseStore
   protected
 
   def visit_model
-    Ahoy::Visit
+    EbwikiVisit
+  end
+
+  def event_model
+    EbwikiEvent
   end
 end
