@@ -20,6 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  greetings:
+    welcome: "Welcome"
   mailboxer:
     message_mailer:
       subject_new: 'You received a new EBWiki message about %{subject}'
@@ -39,7 +41,8 @@ en:
     follow_cases: "It is very important that you click to follow one or more cases and allow us to keep you up to date. The more people paying attention, the easier it will be to affect change."
     subscribe_message: "As a newsletter subscriber, you'll receive our general updates periodically."
     mail_body: "You have already taken the first step by following 1 case on EBWiki and allowing us to keep you up to date."
-    confirmation_message: "Thanks for signing up for EBWiki, click here to confirm your account."
+    confirmation_message: "Thanks for signing up for EBWiki."
+    confirmation_cta: "Click here to confirm your account"
     followers_email_text: 'UserNotifier#send_followers_email: Sending notification to %{email} about case %{title}'
     deletion_email_text: 'UserNotifier#send_deletion_email: Sending notification to %{email} about case %{title}'
     call_to_action: '%{link} for periodic general updates and commentaries on this issue.'
