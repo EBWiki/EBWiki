@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   get '/guidelines', to: 'static#guidelines'
   get '/javascript_lab', to: 'static#javascript_lab'
   get '/instructions', to: 'static#instructions'
+  get '/get-involved', to: 'static#further_actions'
 
   get '/sitemap', to: redirect(SITEMAP_URL, status: 301)
 
