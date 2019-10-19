@@ -25,9 +25,4 @@ class UserMailer < ApplicationMailer
     @user = user
     mail(to: @user.email, subject: 'Welcome to EndBiasWiki')
   end
-
-  def send_confirmation_email(user)
-    @user = user
-    mail(to: @user.email, subject: 'Confirm your email address')
-  end
 end
