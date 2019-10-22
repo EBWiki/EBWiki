@@ -121,9 +121,17 @@
 <div class="btn-group submit">
   <%= f.button :submit, :class => 'btn btn-success' %>
 </div>
-<div class="btn-group back">
-  <%= link_to 'Back to Case', case_path, class: 'btn btn-primary' %>
-</div>
+
+<% if params[:action] == "edit" %>
+  <div class="btn-group back">
+    <%= link_to 'Back to Case', case_path(@this_case), class: 'btn btn-primary' %>
+  </div>
+<% else %>
+  <div class="btn-group back">
+    <%= link_to 'Back to Home', root_path, class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
 <% end %>
 
 <script type="text/javascript">
