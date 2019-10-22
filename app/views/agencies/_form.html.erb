@@ -29,8 +29,14 @@
       <%= f.button :submit, class: "btn btn-success" %>
     </div>
 
-    <div class="btn-group back">
-      <%= link_to 'Back to Agency', agency_path, class: 'btn btn-primary' %>
-    </div>
+    <% if params[:action] == "edit" %>
+      <div class="btn-group back">
+        <%= link_to 'Back to Agency', agency_path(@agency), class: 'btn btn-primary' %>
+      </div>
+    <% else %>
+        <div class="btn-group back">
+          <%= link_to 'Back to Agencies', agencies_path, class: 'btn btn-primary' %>
+        </div>
+    <% end %>
   </div>
 <% end %>
