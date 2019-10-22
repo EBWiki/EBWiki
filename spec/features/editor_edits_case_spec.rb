@@ -17,8 +17,8 @@ feature 'Editor edits a case' do
     login_as(user, scope: :user)
     visit "/cases/#{this_case.id}/edit"
     expect(page).to have_content('Back to Case')
-    click_button('Back to Case')
-    expect(page).to eq "/cases/#{this_case.id}"
+    click_link('Back to Case')
+    expect(page.driver.status_code).to eq(200)
   end
 
 
