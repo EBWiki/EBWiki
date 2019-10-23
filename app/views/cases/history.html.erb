@@ -21,7 +21,7 @@
             <% if version.whodunnit && version.whodunnit != 'Guest' %>
               <% user = User.find_by_id(version.whodunnit) %>
               <% if user %>
-                <%= user.name %>
+                <%= link_to user.name, user_path(user) %>
               <% end %>
             <% else %>
               Guest
