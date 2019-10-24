@@ -4,8 +4,12 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
-    super
-    OnboardUser.call(resource)
+    if verify_recaptcha
+      super
+      OnboardUser.call(resource)
+    else
+      redirect_to '/users/sign_up'
+    end
   end
 
   # The path used after sign up.

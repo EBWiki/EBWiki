@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
 # Set of helper methods for composing email messages
-module UserNotifierHelper
-  FOLLOW_CALL_TO_ACTION = <<~"FCTA"
-    It is very important that you click to follow one or more cases and allow us to keep
-    you up to date. The more people paying attention, the easier it will be to affect change.
-  FCTA
+module UserMailerHelper
+  FOLLOW_CALL_TO_ACTION = I18n.t 'notifier.follow_cases'
 
-  SUBSCRIBER_MESSAGE = "As a newsletter subscriber, you'll \
-    receive our general updates periodically."
+  SUBSCRIBER_MESSAGE = I18n.t 'notifier.subscribe_message'
 
   subscriber_link_copy = 'Subscribe to our newsletter as well'
   subscriber_link = ActionController::Base.helpers.link_to(
