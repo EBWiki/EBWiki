@@ -1981,9 +1981,3 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190815012327'),
 ('20190824175709'),
 ('20190825000337');
-
-<<<<<<< HEAD
-
-=======
-INSERT INTO schema_migrations (version) VALUES ('20190422003442');
->>>>>>> Update for dev provisions
