@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :visit, class: 'Ahoy::Visit' do |f|
+  factory :visit, class: 'EbwikiVisit' do |f|
     f.sequence (:id) { SecureRandom.uuid }
     f.visitor_id { SecureRandom.uuid }
     f.ip { Faker::Internet.ip_v4_address }
