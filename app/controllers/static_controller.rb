@@ -13,4 +13,6 @@ class StaticController < ApplicationController
   def contribution_guidelines; end
 
   def further_actions; end
+
+  def how_to_help; end
 end
