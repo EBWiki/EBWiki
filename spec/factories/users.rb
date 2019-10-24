@@ -12,5 +12,6 @@ FactoryBot.define do
     factory :admin do
       admin { true }
     end
+    confirmed_at { Date.current }
   end
 end
