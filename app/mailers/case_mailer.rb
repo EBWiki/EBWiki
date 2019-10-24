@@ -4,7 +4,7 @@
 class CaseMailer < ApplicationMailer
   default from: 'EndBiasWiki@gmail.com'
 
-  def send_followers_email(users, this_case)
+  def send_followers_email(users:, this_case:)
     @this_case = this_case
     users.each do |user|
       # rubocop:disable Metrics/LineLength
@@ -15,7 +15,7 @@ class CaseMailer < ApplicationMailer
     end
   end
 
-  def send_deletion_email(users, this_case)
+  def send_deletion_email(users:, this_case:)
     @this_case = this_case
     users.each do |user|
       # rubocop:disable Metrics/LineLength
