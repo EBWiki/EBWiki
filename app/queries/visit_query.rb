@@ -2,7 +2,7 @@
 
 # Query objects for visits
 class VisitQuery
-  def initialize(scope = Ahoy::Visit.all)
+  def initialize(scope = EbwikiVisit.all)
     @scope = scope
   end
 
