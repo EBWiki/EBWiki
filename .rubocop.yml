@@ -33,3 +33,6 @@ Style/GlobalVars:
 
 Security/JSONLoad:
   Enabled: false
+
+Style/AndOr:
+  EnforcedStyle: conditionals
