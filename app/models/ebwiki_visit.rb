@@ -2,8 +2,9 @@
 
 # Visit capturing user activity for Ahoy:
 # https://github.com/ankane/ahoy
-class Ahoy::Visit < ApplicationRecord
-  has_many :ahoy_events, class_name: 'Ahoy::Event'
+class EbwikiVisit < ApplicationRecord
+  self.table_name = 'visits'
+  has_many :ahoy_events, class_name: 'EbwikiEvent'
   belongs_to :user
 
   scope :this_month, -> { where(started_at: 30.days.ago.beginning_of_day..Time.current) }

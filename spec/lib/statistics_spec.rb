@@ -13,18 +13,18 @@ RSpec.describe Statistics do
 
   describe 'new visit growth rate' do
     it 'returns the correct percentage increase' do
-      visit = FactoryBot.create(:visit)
-      visit.update(started_at: 41.days.ago)
       FactoryBot.create(:visit)
-      expect(metric_growth(start_metric: Ahoy::Visit.occurring_by(30.days.ago),
-                           end_metric: Ahoy::Visit.occurring_by(Date.current))).to eq(100)
+      EbwikiVisit.update(started_at: 41.days.ago)
+      FactoryBot.create(:visit)
+      expect(metric_growth(start_metric: EbwikiVisit.occurring_by(30.days.ago),
+                           end_metric: EbwikiVisit.occurring_by(Date.current))).to eq(100)
     end
 
     it 'returns the correct percentage decrease' do
-      visit = FactoryBot.create(:visit)
-      visit.update(started_at: 41.days.ago)
-      expect(metric_growth(start_metric: Ahoy::Visit.occurring_by(30.days.ago),
-                           end_metric: Ahoy::Visit.occurring_by(Date.current))).to eq(0)
+      FactoryBot.create(:visit)
+      EbwikiVisit.update(started_at: 41.days.ago)
+      expect(metric_growth(start_metric: EbwikiVisit.occurring_by(30.days.ago),
+                           end_metric: EbwikiVisit.occurring_by(Date.current))).to eq(0)
     end
   end
 

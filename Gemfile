@@ -52,6 +52,8 @@ gem 'rollbar', '~> 2.16'
 
 gem 'simplecov', '~> 0.16.1'
 
+gem 'twitter', '~> 6.2'
+
 # JSON renderer for Rails
 gem 'jb', '~> 0.5.0'
 group :development, :test do
@@ -71,6 +73,7 @@ end
 group :development do
   gem 'brakeman', '~> 4.3', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'rails_real_favicon'
   gem 'web-console', '~> 3.3'
 end
 
@@ -82,6 +85,7 @@ group :test do
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
+  gem 'vcr', '~> 3.0', '>= 3.0.3'
   gem 'webmock'
 end
 
