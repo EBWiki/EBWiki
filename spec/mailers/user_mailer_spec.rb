@@ -30,24 +30,4 @@ RSpec.describe UserMailer, type: :mailer do
                                                                    .gsub(/\s+/, ''))
     end
   end
-
-  describe 'send_confirmation_email' do
-    pending
-    let(:user)      { FactoryBot.create(:user) }
-    let(:this_case) { FactoryBot.create(:case) }
-    let!(:mail)     { UserMailer.welcome_email(user: user) }
-
-    it 'renders the subject and receiver email' do
-      pending
-      expect(mail.subject).to eql('Confirm your email address')
-      expect(mail.to).to eq([user.email])
-    end
-
-    it 'renders the proper message' do
-      pending
-      user.follow(this_case)
-      expect(mail.body.encoded.gsub(/\s+/, '')).to include(I18n.t('notifier.confirmation_message')
-                                                              .gsub(/\s+/, ''))
-    end
-  end
 end
