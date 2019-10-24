@@ -4,17 +4,6 @@
   <div class="row">
     <div class="col-lg-9">
       <h2 class="page-header">These <span class="orange-font"><%= @total_cases %></span> people were killed by police.<br>We track their cases here.</h2>
-      <div class="text-center">
-        <h3>
-          <% if current_user.present? %>
-            <% unless current_user.mailchimp_status == "subscribed" %>
-              <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
-            <% end %>
-          <% else %>
-            <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "btn btn-default" %>
-          <% end %>
-        </h3>
-      </div>
       <h4 class="page-subheader">
         <%= link_to "What next?", "https://www.surveymonkey.com/r/5RSWFNY", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "What's next for EBWiki?",:content => "Click here to help us decide on a few features we are thinking of adding to EBWiki!"} %>-- <%= link_to 'More about us...',about_path %></h4>
       <div id='front-gallery'>

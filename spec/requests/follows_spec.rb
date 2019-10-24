@@ -10,7 +10,7 @@ RSpec.describe 'Follows', type: :request do
     context 'will make the user a follower of a case' do
       before do
         sign_in user
-        post "/cases/#{_case.slug}/follows", params: {}, headers: {}
+        post "/cases/#{_case.id}/follows", params: {}, headers: {}
       end
 
       it 'will redirect to the case page' do
