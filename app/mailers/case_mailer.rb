@@ -7,10 +7,7 @@ class CaseMailer < ApplicationMailer
   def send_followers_email(users:, this_case:)
     @this_case = this_case
     users.each do |user|
-      # rubocop:disable Metrics/LineLength
-      Rails.logger.info("CaseMailer#send_followers_email: Sending notification to #{user.email} about case #{this_case.title}")
-      # rubocop:enable Metrics/LineLength
-
+      log_info
       mail(to: user.email, subject: "The #{@this_case.title} case has been updated on EBWiki.")
     end
   end
@@ -18,11 +15,16 @@ class CaseMailer < ApplicationMailer
   def send_deletion_email(users:, this_case:)
     @this_case = this_case
     users.each do |user|
-      # rubocop:disable Metrics/LineLength
-
-      Rails.logger.info("CaseMailer#send_deletion_email: Sending notification to #{user.email} about case #{this_case.title}")
-      # rubocop:enable Metrics/LineLength
+      log_info
       mail(to: user.email, subject: "The #{@this_case.title} case has been removed from EBWiki")
     end
+  end
+
+  private
+
+  def log_info
+    # rubocop:disable Metrics/LineLength
+    Rails.logger.info("CaseMailer#send_followers_email: Sending notification to #{user.email} about case #{this_case.title}")
+    # rubocop:enable Metrics/LineLength
   end
 end

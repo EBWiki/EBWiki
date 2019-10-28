@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# User Welcome Email
 class UserNotifier < ApplicationMailer
   helper UserNotifierHelper
 
