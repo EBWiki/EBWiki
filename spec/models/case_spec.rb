@@ -15,8 +15,8 @@ RSpec.describe Case do
     end
 
     it do
-      should validate_presence_of(:summary).with_message('Please use the last field at the bottom of this form ' \
-             'to summarize your edits to the case.')
+      should validate_presence_of(:summary).with_message('Please use the last field at the ' \
+             'bottom of this form to summarize your edits to the case.')
     end
 
     it do
@@ -204,7 +204,7 @@ describe '#nearby_cases', versioning: true do
 end
 
 describe '#default_avatar_url', versioning: true do
-  it 'takes the avatar''s default URL and turns this into a column' do
+  it 'takes the avatars default URL and turns this into a column' do
     this_case = FactoryBot.create(:case)
     avatar_mock = double('Avatar', url: 'https://avatar.com')
     allow(this_case).to receive(:default_avatar_url).and_return(avatar_mock.url)
