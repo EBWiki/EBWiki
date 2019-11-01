@@ -65,10 +65,8 @@ class CasesController < ApplicationController
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!'
       flash[:undo] = @this_case.versions
-      UserMailer.send_followers_email(
-        users: @this_case.followers,
-        this_case: @this_case
-      ).deliver_now
+      CaseMailer.send_followers_email(users: @this_case.followers,
+                                      this_case: @this_case).deliver_now
       redirect_to @this_case
     else
       set_instance_vars
@@ -82,10 +80,8 @@ class CasesController < ApplicationController
       @this_case.destroy
       flash[:success] = 'Case was removed!'
       flash[:undo] = @this_case.versions
-      UserMailer.send_deletion_email(
-        users: @this_case.followers,
-        this_case: @this_case
-      ).deliver_now
+      CaseMailer.send_deletion_email(users: @this_case.followers,
+                                     this_case: @this_case).deliver_now
     rescue ActiveRecord::RecordNotFound
       flash[:notice] = I18n.t('cases_controller.case_not_found_message')
     end
