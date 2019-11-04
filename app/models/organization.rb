@@ -6,9 +6,9 @@ class Organization < ApplicationRecord
   end
 
   def location=(_location)
-    location_state = state
-    location_street_location = street_location
-    location_city = city
-    location_zipcode = zipcode
+    location_state = self.state
+    location_street_location = self.street_location
+    location_city = self.city
+    location_zipcode = self.zipcode
   end
 end
