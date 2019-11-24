@@ -87,6 +87,17 @@ Exit the console using the following command:
 
  `\q`
  
+## Recaptcha & Local Development
+
+While in production we use [reCAPTCHA](https://www.google.com/recaptcha) to 
+prevent bots from sigining up for this service, in order to simplify 
+development, reCAPTCHA is disabled in development by default.  In order 
+to re-enable reCAPTCHA in development, remove the `config/initializers/recaptcha.rb`
+file or comment out the following line:
+```
+config.skip_verify_env.push('development')
+```
+ 
 ### Environmental Variables
 
 EBWiki uses environmental variables to run with different configurations in 
