@@ -29,6 +29,7 @@ en:
           medical_neglect: 'Medical Neglect'
           response_to_medical_emergency: 'Response to Medical Emergency'
           suicide: 'Suicide'
+          chemical_agents_or_weapons: 'Chemical Agents or Weapons'
     labels:
       agency:
         state: 'State'
