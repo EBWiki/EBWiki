@@ -7,6 +7,10 @@ RSpec.describe Devise::Mailer, type: :mailer do
     let!(:user) { FactoryBot.create(:user) }
     let(:mail)  { Devise.mailer.deliveries.last }
 
+    before do
+      user.send_confirmation_instructions
+    end
+
     it 'renders the receiver email' do
       expect(mail.to).to eq([user.email])
     end

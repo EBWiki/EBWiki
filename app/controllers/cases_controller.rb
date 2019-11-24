@@ -60,15 +60,13 @@ class CasesController < ApplicationController
   def update
     @this_case = Case.friendly.find(params[:id])
     @this_case.slug = nil
-    @this_case.remove_avatar! if @this_case.remove_avatar?
+    @this_case.remove_avatar!
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!'
       flash[:undo] = @this_case.versions
-      UserMailer.send_followers_email(
-        users: @this_case.followers,
-        this_case: @this_case
-      ).deliver_now
+      CaseMailer.send_followers_email(users: @this_case.followers,
+                                      this_case: @this_case).deliver_now
       redirect_to @this_case
     else
       set_instance_vars
@@ -82,10 +80,8 @@ class CasesController < ApplicationController
       @this_case.destroy
       flash[:success] = 'Case was removed!'
       flash[:undo] = @this_case.versions
-      UserMailer.send_deletion_email(
-        users: @this_case.followers,
-        this_case: @this_case
-      ).deliver_now
+      CaseMailer.send_deletion_email(users: @this_case.followers,
+                                     this_case: @this_case).deliver_now
     rescue ActiveRecord::RecordNotFound
       flash[:notice] = I18n.t('cases_controller.case_not_found_message')
     end
@@ -128,6 +124,7 @@ class CasesController < ApplicationController
   private
 
   def case_params
+    params[:case][:date] ||= []
     params.require(:case).permit(
                                   :title,
                                   :age,
@@ -145,7 +142,6 @@ class CasesController < ApplicationController
                                   :latitude,
                                   :avatar,
                                   :video_url,
-                                  :remove_avatar,
                                   :summary,
                                   :blurb,
                                   links_attributes: %i[id url title _destroy],
