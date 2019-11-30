@@ -39,10 +39,10 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def log_invalid_token_attempt
+  def log_invalid_token_attempt(exception)
     warning_message = 'Invalid Auth Token error'
     Rails.logger.warn warning_message
-    Rollbar.warning warning_message
+    Rollbar.error(exception)
     redirect_to '/'
   end
 
