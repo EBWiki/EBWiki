@@ -13,13 +13,4 @@ feature 'User visits case history page' do
     visit cases_history_path(this_case)
     expect(page).to have_text('Edited by')
   end
-
-  let(:case_without_history) { FactoryBot.create(:case) }
-  scenario 'User arrives at the case history of a null case' do
-    user = FactoryBot.create(:user)
-    allow(case_without_history).to receive(:versions).and_return(nil)
-    login_as(user, scope: :user)
-    visit cases_history_path(case_without_history)
-    expect(page).to have_text('There is no history for this case.')
-  end
 end
