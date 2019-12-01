@@ -1,9 +1,6 @@
 ---
+version: "2"
 plugins:
-  rubocop:
-    enabled: true
-    channel: rubocop-0-67
-engines:
   brakeman:
     enabled: true
   bundler-audit:
@@ -16,32 +13,18 @@ engines:
     enabled: true
     config:
       languages:
-      - ruby
-      - javascript
-      - python
-      - php
+      - ruby:
+      - javascript:
+      - python:
+      - php:
   eslint:
     enabled: true
   fixme:
     enabled: true
-ratings:
-  paths:
-  - Gemfile.lock
-  - "**.erb"
-  - "**.haml"
-  - "**.rb"
-  - "**.rhtml"
-  - "**.slim"
-  - "**.css"
-  - "**.coffee"
-  - "**.inc"
-  - "**.js"
-  - "**.jsx"
-  - "**.module"
-  - "**.php"
-  - "**.py"
-exclude_paths:
-- app/assets/javascripts/markerclusterer.js
+  rubocop:
+    enabled: true
+    channel: rubocop-0-67
+exclude_patterns:
 - vendor/assets/javascripts/*.js
 - db/
 - spec/
