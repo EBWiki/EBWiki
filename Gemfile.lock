@@ -149,7 +149,6 @@ GEM
       rake (> 10, < 14)
       ruby-statistics (>= 2.1)
       thor (~> 0.19)
-    device_detector (1.0.1)
     devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -861,7 +860,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 2.5.5p157
+   ruby 2.6.5p114
 
 BUNDLED WITH
    1.17.3
