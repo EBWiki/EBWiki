@@ -108,7 +108,6 @@ gem 'carrierwave-imageoptimizer'
 gem 'rails_admin', '~> 1.3.0'
 
 gem 'geocoder'
-gem 'gmaps4rails', '~> 2.1'
 gem 'puma'
 
 # implement elasticsearch
