@@ -1,4 +1,8 @@
 ---
+plugins:
+  rubocop:
+    enabled: true
+    channel: rubocop-0-67
 engines:
   brakeman:
     enabled: true
@@ -20,15 +24,6 @@ engines:
     enabled: true
   fixme:
     enabled: true
-  rubocop:
-    enabled: true
-    checks:
-      Rubocop%2FLayout%2FMultilineOperationIndentation:
-        enabled: false
-      Rubocop/Style/LineEndConcatenation:
-        enabled: false
-      Rubocop/Style/StringLiterals:
-        enabled: false
 ratings:
   paths:
   - Gemfile.lock
