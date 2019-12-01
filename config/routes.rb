@@ -38,8 +38,6 @@ Rails.application.routes.draw do
   get '/analytics/visits_by_referring_domain', to: 'analytics#visits_by_referring_domain'
   get '/analytics', to: 'analytics#index'
 
-  get '/maps', to: 'maps#index'
-
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
   get '/javascript_lab', to: 'static#javascript_lab'

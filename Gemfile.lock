@@ -363,7 +363,6 @@ GEM
       multi_json (>= 1.11.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    gmaps4rails (2.1.2)
     groupdate (4.1.1)
       activesupport (>= 4.2)
     guard (2.15.0)
@@ -804,7 +803,6 @@ DEPENDENCIES
   galerts (~> 1.1)
   geocoder
   gibbon
-  gmaps4rails (~> 2.1)
   groupdate (~> 4.0)
   guard-rspec (~> 4.7)
   hightop (~> 0.2)
