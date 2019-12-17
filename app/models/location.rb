@@ -15,7 +15,7 @@ class Location
     if letter_style
       "#{street_location}\n#{city}, #{state} #{zipcode}"
     else
-      [street_location, city, state, zipcode].compact.join(", ")
+      [street_location, city, state, zipcode].compact.join(', ')
     end
   end
 
