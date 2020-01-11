@@ -171,3 +171,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'lograge', '~> 0.11'
 
 gem 'recaptcha'
+
+group :production do
+  gem 'cloudflare-rails', '~> 0.6'
+end
