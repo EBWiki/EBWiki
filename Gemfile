@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.5.5'
+ruby '2.6.5'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
@@ -35,7 +35,7 @@ gem 'rack-cors', '~> 1.0', require: 'rack/cors'
 
 # help with charts and graphs
 gem 'active_median', '~> 0.1'
-gem 'chartkick', '~> 3.2'
+gem 'chartkick', '~> 3.3'
 gem 'groupdate', '~> 4.0'
 gem 'hightop', '~> 0.2'
 
@@ -106,7 +106,6 @@ gem 'carrierwave-imageoptimizer'
 gem 'rails_admin', '~> 1.3.0'
 
 gem 'geocoder'
-gem 'gmaps4rails', '~> 2.1'
 gem 'puma'
 
 # implement elasticsearch
@@ -172,3 +171,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'lograge', '~> 0.11'
 
 gem 'recaptcha'
+
+group :production do
+  gem 'cloudflare-rails', '~> 0.6'
+end
