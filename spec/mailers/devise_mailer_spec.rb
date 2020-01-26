@@ -20,7 +20,7 @@ RSpec.describe Devise::Mailer, type: :mailer do
     end
 
     it 'addresses the user' do
-      expect(mail.body.encoded).to include(user.name)
+      expect(mail.body).to include(CGI.escapeHTML(user.name))
     end
 
     it 'is polite' do
