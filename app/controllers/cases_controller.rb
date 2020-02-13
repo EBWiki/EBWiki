@@ -60,7 +60,7 @@ class CasesController < ApplicationController
   def update
     @this_case = Case.friendly.find(params[:id])
     @this_case.slug = nil
-    @this_case.remove_avatar! if @this_case.remove_avatar?
+    @this_case.remove_avatar!
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!'
@@ -90,8 +90,7 @@ class CasesController < ApplicationController
 
   def history
     @this_case = Case.friendly.find(params[:case_slug])
-    @case_history = @this_case.try(:versions).order(created_at: :desc) unless
-    @this_case.versions.blank?
+    @case_history = @this_case.versions.order(created_at: :desc)
   rescue ActiveRecord::RecordNotFound
   end
 
@@ -124,6 +123,7 @@ class CasesController < ApplicationController
   private
 
   def case_params
+    params[:case][:date] ||= []
     params.require(:case).permit(
                                   :title,
                                   :age,
@@ -141,7 +141,6 @@ class CasesController < ApplicationController
                                   :latitude,
                                   :avatar,
                                   :video_url,
-                                  :remove_avatar,
                                   :summary,
                                   :blurb,
                                   links_attributes: %i[id url title _destroy],
