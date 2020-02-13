@@ -21,7 +21,7 @@ class Location
 
   # rubocop:disable Style/RedundantSelf
   def ==(other)
-    other.class.eql?(self.class) && self.to_s.eql?(other.to_s)
+    state == other.state && street_location == other.street_location && city == other.city && zipcode == other.zipcode
   end
   # rubocop:enable Style/RedundantSelf
 end
