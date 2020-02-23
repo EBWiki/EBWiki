@@ -127,7 +127,7 @@ gem 'acts_as_follower', github: 'tcocca/acts_as_follower'
 gem 'mailboxer', '~> 0.15'
 
 # track changes in model objects
-gem 'paper_trail', '~> 9.2.0'
+gem 'paper_trail', '~> 10.3'
 
 # needed for paper_trail to track changes done via rails_admin views
 gem 'paper_trail-association_tracking'
