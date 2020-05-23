@@ -2,7 +2,10 @@ build:
 	docker build --tag ebwiki/ebwiki .
 
 run:
-	docker run --rm -it --volume $(PWD):/usr/src/ebwiki --publish 3000:3000 --name ebwiki ebwiki/ebwiki
+	docker run --detach --rm --volume $(PWD):/usr/src/ebwiki --publish 3000:3000 --name ebwiki ebwiki/ebwiki
+
+logs:
+	docker logs --timestamps --follow ebwiki
 
 exec:
 	docker exec -it ebwiki bash
