@@ -147,6 +147,7 @@ class CasesController < ApplicationController
                                   :longitude,
                                   :latitude,
                                   :avatar,
+                                  :remove_avatar,
                                   :video_url,
                                   :summary,
                                   :blurb,
