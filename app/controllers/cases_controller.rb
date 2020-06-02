@@ -62,8 +62,6 @@ class CasesController < ApplicationController
     p "UPDATE: after case find"
     @this_case.slug = nil
     p "UPDATE: after case find"
-    @this_case.remove_avatar!
-    p "UPDATE: after avatar removed!"
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     p "UPDATE: after blurb updated"
     if @this_case.update_attributes(case_params)
