@@ -59,9 +59,13 @@ class CasesController < ApplicationController
 
   def update
     @this_case = Case.friendly.find(params[:id])
+    p "UPDATE: after case find"
     @this_case.slug = nil
+    p "UPDATE: after case find"
     @this_case.remove_avatar!
+    p "UPDATE: after avatar removed!"
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
+    p "UPDATE: after blurb updated"
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!'
       flash[:undo] = @this_case.versions
@@ -69,9 +73,14 @@ class CasesController < ApplicationController
                                       this_case: @this_case).deliver_now
       redirect_to @this_case
     else
+      p "UPDATE: not successful"
       set_instance_vars
       render 'edit'
     end
+    
+  rescue StandardError => e 
+    p "UPDATE: Error #{e}"
+    Rollbar.exception(e)
   end
 
   def destroy
@@ -93,7 +102,7 @@ class CasesController < ApplicationController
     @case_history = @this_case.versions.order(created_at: :desc)
   rescue ActiveRecord::RecordNotFound
   end
-
+  
   def undo
     @case_version = PaperTrail::Version.find(params[:case_slug])
     begin
