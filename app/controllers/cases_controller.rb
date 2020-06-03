@@ -59,24 +59,19 @@ class CasesController < ApplicationController
 
   def update
     @this_case = Case.friendly.find(params[:id])
-    p "UPDATE: after case find"
     @this_case.slug = nil
-    p "UPDATE: after case find"
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
-    p "UPDATE: after blurb updated"
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!'
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
       redirect_to @this_case
     else
-      p "UPDATE: not successful"
       set_instance_vars
       render 'edit'
     end
     
   rescue StandardError => e 
-    p "UPDATE: Error #{e}"
     Rollbar.exception(e)
   end
 
@@ -117,10 +112,6 @@ class CasesController < ApplicationController
   end
 
   def after_sign_up_path_for(resource)
-    stored_location_for(resource) || super
-  end
-
-  def after_sign_in_path_for(resource)
     stored_location_for(resource) || super
   end
 
