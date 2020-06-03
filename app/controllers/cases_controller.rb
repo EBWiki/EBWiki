@@ -66,7 +66,6 @@ class CasesController < ApplicationController
     p "UPDATE: after blurb updated"
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!'
-      flash[:undo] = @this_case.versions
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
       redirect_to @this_case
@@ -86,7 +85,6 @@ class CasesController < ApplicationController
       @this_case = Case.friendly.find(params[:id])
       @this_case.destroy
       flash[:success] = 'Case was removed!'
-      flash[:undo] = @this_case.versions
       CaseMailer.send_deletion_email(users: @this_case.followers,
                                      this_case: @this_case).deliver_now
     rescue ActiveRecord::RecordNotFound
@@ -111,7 +109,6 @@ class CasesController < ApplicationController
         @case_version.item.destroy
       end
       flash[:success] = 'Undid that!'
-      flash[:undo] = @this_case.versions
     rescue StandardError
       flash[:alert] = 'Failed undoing the action...'
     ensure
