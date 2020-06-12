@@ -15,7 +15,7 @@ Here's a general overview of the process for contributing to EBWiki, outlining s
 1. **You: Choose an issue to work on**  
 You're welcome to any issue that isn't assigned to someone else.  Be sure to check if the issue is part of a milestone or project - if that's the case, then this might be one of multiple issues that need to be performed in a certain order.  
 2. **You: Start working**
-Once you've selected an issue, assign it to yourself and get started!  Be sure to start your work on a different branch - you won't be able to push to the master branch.
+Once you've selected an issue, assign it to yourself and get started!  Be sure to start your work on a different branch - you won't be able to push to the main branch.
 3. **You: Submit a pull request**  
 Once you're finished with your work, push it up and open a pull request (PR).  Note that in each PR, there's a checklist of things you need to do before submitting.  Not all of them will be applicable every time, but you should be able to check off at least the first two each time. (Hint: put an "X" in the brackets to check off an item).
 4. **You: Pass automated testing and linting**  
@@ -25,7 +25,7 @@ Within two weeks, one of the maintainers of repo will review your PR themselves.
 6.  **We: Merge the pull request**  
 Once the code is ready to go, one of the maintainers will merge your PR and delete the branch.  And that's it!  Your portion of the work is done, and if one of the maintainers hasn't closed your issue you can go ahead and do so.  
 7. **We: Check the changes on staging**  
-Whenever the master branch of the repo is updated, the latest changes are deployed to the staging version of the website.  We'll use staging to do one last check to make sure everything is still working.  If we don't like the changes shown on staging, or there's some weird unanticipated side effect, we'll create a new issue and assign it to you so you can get a first crack at it.
+Whenever the main branch of the repo is updated, the latest changes are deployed to the staging version of the website.  We'll use staging to do one last check to make sure everything is still working.  If we don't like the changes shown on staging, or there's some weird unanticipated side effect, we'll create a new issue and assign it to you so you can get a first crack at it.
 8. **We: deploy to production**  
 If everything looks great on staging, then we'll push the code to production within two weeks.  And with that, your code is be running live on [EBWiki](ebwiki.org)!
 
