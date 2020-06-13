@@ -15,7 +15,7 @@
 			<legend class="legendStyle">Basic Case Information, Media <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Basic Information and Media", :content => "This fieldset includes the incident date, a photo of the subject or the event as well as a link to a youtube video of the event. Editors should seek out images beyond mug shots where possible. Likewise, our preference is for videos of the actual events as recorded as they occurred vs news reports or other secondary sources, though we have included secondary sources in a few cases."})%></legend>
 			<div>
 				<%= f.input :title %>
-				<%= f.input :date, as: :date_picker, :label => 'Date of Incident', class: "datetimepicker" %>
+				<%= f.input :date, as: :date_picker, :label => 'Date of Death', class: "datetimepicker" %>
 				<% if params[:action] == "new" %>
 				  <%= image_tag('default-user-icon.png', :size => "150x150", :class => "img-responsive") %>
 					<h4>Upload a new image to replace the placeholder:</h4>
