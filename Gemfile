@@ -17,7 +17,7 @@ gem 'uglifier', '4.2'
 gem 'bullet', '~> 6.1'
 
 # Use gem pundit for authorization
-gem 'pundit', '~> 2.0.0'
+gem 'pundit', '~> 2.1'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

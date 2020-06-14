@@ -517,7 +517,7 @@ GEM
     public_suffix (3.0.3)
     puma (4.3.5)
       nio4r (~> 2.0)
-    pundit (2.0.1)
+    pundit (2.1.0)
       activesupport (>= 3.0.0)
     rack (2.2.2)
     rack-cors (1.0.6)
@@ -826,7 +826,7 @@ DEPENDENCIES
   pre-commit (~> 0.38)
   pry-byebug (~> 3.6)
   puma
-  pundit (~> 2.0.0)
+  pundit (~> 2.1)
   rack
   rack-cors (~> 1.0)
   rack-host-redirect (~> 1.3)
