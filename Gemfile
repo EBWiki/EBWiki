@@ -14,7 +14,7 @@ gem 'sassc-rails', '~> 2.1'
 gem 'uglifier', '4.2'
 
 # Reduce N+1 queries
-gem 'bullet', '~> 5.7'
+gem 'bullet', '~> 6.1'
 
 # Use gem pundit for authorization
 gem 'pundit', '~> 2.0.0'
