@@ -11,7 +11,7 @@ gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '4.1'
+gem 'uglifier', '4.2'
 
 # Reduce N+1 queries
 gem 'bullet', '~> 5.7'
