@@ -21,7 +21,7 @@ gem 'pundit', '~> 2.1'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.4'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '~> 5.1'
+gem 'turbolinks', '~> 5.2'
 # Jquery.turbolinks fixes binded event problems cause by Turbolinks
 gem 'jquery-turbolinks', '~> 2.1'
 # bundle exec rake doc:rails generates the API under doc/api.

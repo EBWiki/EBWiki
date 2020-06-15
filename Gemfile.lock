@@ -728,7 +728,7 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.10)
-    turbolinks (5.2.0)
+    turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
     twitter (6.2.0)
@@ -853,7 +853,7 @@ DEPENDENCIES
   sitemap_generator (~> 6.0)
   social-share-button
   split (= 3.2)
-  turbolinks (~> 5.1)
+  turbolinks (~> 5.2)
   twitter (~> 6.2)
   uglifier (= 4.2)
   vcr (~> 3.0, >= 3.0.3)
