@@ -19,7 +19,7 @@ gem 'bullet', '~> 6.1'
 # Use gem pundit for authorization
 gem 'pundit', '~> 2.1'
 # Use jquery as the JavaScript library
-gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
+gem 'jquery-rails', '~> 4.4'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks', '~> 5.1'
 # Jquery.turbolinks fixes binded event problems cause by Turbolinks
