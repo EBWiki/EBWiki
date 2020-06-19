@@ -11,19 +11,17 @@ gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '4.1'
+gem 'uglifier', '4.2'
 
 # Reduce N+1 queries
-gem 'bullet', '~> 5.7'
+gem 'bullet', '~> 6.1'
 
 # Use gem pundit for authorization
-gem 'pundit', '~> 2.0.0'
+gem 'pundit', '~> 2.1'
 # Use jquery as the JavaScript library
-gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
+gem 'jquery-rails', '~> 4.4'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '~> 5.1'
-# Jquery.turbolinks fixes binded event problems cause by Turbolinks
-gem 'jquery-turbolinks', '~> 2.1'
+gem 'turbolinks', '~> 5.2'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 1.0', group: :doc
 
