@@ -4,7 +4,9 @@
   <div class="row">
     <div class="col-lg-9">
       <h2 class="page-header">These <span class="orange-font"><%= @total_cases %></span> people were killed by police.<br>We track their cases here.</h2>
-      <h5 class='sub-pageheader'>EBWiki users are tracking 3611 cases of people killed by police. <%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %>  to follow a case or to add or update cases.</h5>
+      <h5 class='sub-pageheader'>
+        EBWiki users are tracking cases of people killed by police. <%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %>  to follow a case or to add or update cases.
+      </h5>
       <div id='front-gallery'>
         <%= render partial: 'thumbnail', layout: "index_thumbnail", collection: @cases, as: :this_case %>
       </div>
