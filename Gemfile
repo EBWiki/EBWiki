@@ -22,8 +22,6 @@ gem 'pundit', '~> 2.1'
 gem 'jquery-rails', '~> 4.4'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks', '~> 5.2'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 1.0', group: :doc
 
 gem 'momentjs-rails'
 gem 'rack'
