@@ -36,7 +36,7 @@ gem 'groupdate', '~> 5.0'
 gem 'hightop', '~> 0.2'
 
 # xml sitemap
-gem 'sitemap_generator', '~> 6.0'
+gem 'sitemap_generator', '~> 6.1'
 
 # use split gem for a/b testing
 gem 'split', '3.2', require: 'split/dashboard'
