@@ -18,4 +18,4 @@ Whereas running `heroku logs` on an instance would only return info level loggin
 investigating debug output on staging possible.
 
 This also provides one interface for looking into logs over long periods of time.
-![Sumo Logic Search Log](<images/sumo_last_month.png> "Sumo Logic Log Search Over Past Month")
+![Sumo Logic Search Log](<images/sumo_logic_last_month.png> "Sumo Logic Log Search Over Past Month")
