@@ -9,8 +9,7 @@ Sumo Logic was set up using guidance from a [Heroku DevCenter](<https://devcente
 the Sumo Logic admin is available through the Heroku admin interface. Select the specific dynamo, then "Sumo Logic" under resources.
 
 ## Viewing Heroku Logs in Sumo Logic
-In order to view server logs, open a new Log Search and use `_sourceCategory=heroku` as the query parameter. Currently only the staging environment
-has Sumo Logic installed, but this will be expanded to production soon.
+In order to view server logs, open a new Log Search and use `_sourceCategory=heroku` as the query parameter. This is available for staging & production.
 
 ![Sumo Logic Search Log](<images/sumo_logic_staging.png> "Sumo Logic Log Search")
 
@@ -18,4 +17,4 @@ Whereas running `heroku logs` on an instance would only return info level loggin
 investigating debug output on staging possible.
 
 This also provides one interface for looking into logs over long periods of time.
-![Sumo Logic Search Log](<images/sumo_logic_last_month.png> "Sumo Logic Log Search Over Past Month")
+![Sumo Logic Search Log](<images/sumo_logic_ga last_month.png> "Sumo Logic Log Search Over Past Month")
