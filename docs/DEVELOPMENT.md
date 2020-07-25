@@ -47,3 +47,4 @@ pg_restore --verbose --clean --no-acl --no-owner -p 5432 -h localhost -U blackop
 * Elasticsearch for searching cases
 * Postgres 9.4 or higher
 * Redis 
+* Sumologic
