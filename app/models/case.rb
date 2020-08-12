@@ -15,7 +15,8 @@ class Case < ApplicationRecord
     medical_neglect: 'medical neglect',
     response_to_medical_emergency: 'response to medical emergency',
     suicide: 'suicide',
-    chemical_agents_or_weapons: 'chemical_agents_or_weapons'
+    chemical_agents_or_weapons: 'chemical_agents_or_weapons',
+    drowning: 'drowning'
   }
 
   belongs_to :user
