@@ -32,8 +32,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_median (0.2.2)
-      activerecord (>= 4.2)
+    active_median (0.2.4)
+      activesupport (>= 5)
     activejob (5.0.7.2)
       activesupport (= 5.0.7.2)
       globalid (>= 0.3.6)
@@ -94,7 +94,7 @@ GEM
     carrierwave-imageoptimizer (1.4.0)
       carrierwave (>= 0.8, < 2.0)
       image_optimizer (~> 1.6)
-    chartkick (3.3.0)
+    chartkick (3.4.0)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     ckeditor (4.3.0)
@@ -365,8 +365,8 @@ GEM
       multi_json (>= 1.11.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    groupdate (4.1.1)
-      activesupport (>= 4.2)
+    groupdate (5.0.0)
+      activesupport (>= 5)
     guard (2.15.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -387,8 +387,8 @@ GEM
     hashdiff (0.3.9)
     hashie (3.6.0)
     heapy (0.1.4)
-    hightop (0.2.0)
-      activerecord
+    hightop (0.2.3)
+      activesupport (>= 5)
     http (3.3.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -414,7 +414,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (2.2.0)
+    json (2.3.1)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -438,7 +438,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.5.0)
+    loofah (2.6.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.13)
@@ -517,8 +517,8 @@ GEM
     pundit (2.1.0)
       activesupport (>= 3.0.0)
     rack (2.2.3)
-    rack-cors (1.0.6)
-      rack (>= 1.6.0)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-host-redirect (1.3.0)
       rack
     rack-pjax (1.1.0)
@@ -586,7 +586,6 @@ GEM
       json (>= 1.8)
       nokogiri (~> 1.5)
       optimist (~> 3.0)
-    rdoc (6.1.1)
     recaptcha (5.2.1)
       json
     redis (4.1.1)
@@ -673,8 +672,6 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    sdoc (1.0.0)
-      rdoc (>= 5.0)
     searchkick (3.1.3)
       activemodel (>= 4.2)
       elasticsearch (>= 5)
@@ -704,7 +701,7 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.5)
       tilt (~> 2.0)
-    sitemap_generator (6.0.2)
+    sitemap_generator (6.1.2)
       builder (~> 3.0)
     social-share-button (1.2.0)
       coffee-rails
@@ -774,7 +771,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_median (~> 0.1)
+  active_median (~> 0.2)
   activerecord-session_store
   acts_as_follower!
   auto_strip_attributes (~> 2.5)
@@ -785,7 +782,7 @@ DEPENDENCIES
   capybara (~> 3.4)
   carrierwave (~> 1.3)
   carrierwave-imageoptimizer
-  chartkick (~> 3.3)
+  chartkick (~> 3.4)
   ckeditor (~> 4.2)
   cloudflare-rails (~> 0.6)
   cocoon
@@ -802,7 +799,7 @@ DEPENDENCIES
   galerts (~> 1.1)
   geocoder
   gibbon
-  groupdate (~> 4.0)
+  groupdate (~> 5.0)
   guard-rspec (~> 4.7)
   hightop (~> 0.2)
   httparty (~> 0.16)
@@ -824,7 +821,7 @@ DEPENDENCIES
   puma
   pundit (~> 2.1)
   rack
-  rack-cors (~> 1.0)
+  rack-cors (~> 1.1)
   rack-host-redirect (~> 1.3)
   rails (~> 5.0.7.2)
   rails_12factor
@@ -839,14 +836,13 @@ DEPENDENCIES
   rspec-rails (~> 3.8)
   rubocop (~> 0.67)
   sassc-rails (~> 2.1)
-  sdoc (~> 1.0)
   searchkick (~> 3.1)
   select2-rails (~> 4.0)
   selenium-webdriver (~> 2.43.0)
   shoulda-matchers (~> 3.1.1)
   simple_form (= 5.0)
   simplecov (~> 0.16.1)
-  sitemap_generator (~> 6.0)
+  sitemap_generator (~> 6.1)
   social-share-button
   split (= 3.2)
   turbolinks (~> 5.2)
