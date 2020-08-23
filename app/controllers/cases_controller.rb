@@ -40,7 +40,6 @@ class CasesController < ApplicationController
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
       flash[:success] = 'Case was created!'
-      flash[:undo] = @this_case.versions
       redirect_to @this_case
     else
       set_instance_vars
@@ -70,8 +69,7 @@ class CasesController < ApplicationController
       set_instance_vars
       render 'edit'
     end
-    
-  rescue StandardError => e 
+  rescue StandardError => e
     Rollbar.exception(e)
   end
 
@@ -92,23 +90,6 @@ class CasesController < ApplicationController
     @this_case = Case.friendly.find(params[:case_slug])
     @case_history = @this_case.versions.order(created_at: :desc)
   rescue ActiveRecord::RecordNotFound
-  end
-  
-  def undo
-    @case_version = PaperTrail::Version.find(params[:case_slug])
-    begin
-      if @case_version.reify
-        @case_version.reify.save
-      else
-        # For undoing the create action
-        @case_version.item.destroy
-      end
-      flash[:success] = 'Undid that!'
-    rescue StandardError
-      flash[:alert] = 'Failed undoing the action...'
-    ensure
-      redirect_to root_path
-    end
   end
 
   def after_sign_up_path_for(resource)
