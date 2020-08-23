@@ -94,7 +94,7 @@ GEM
     carrierwave-imageoptimizer (1.4.0)
       carrierwave (>= 0.8, < 2.0)
       image_optimizer (~> 1.6)
-    chartkick (3.3.1)
+    chartkick (3.4.0)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     ckeditor (4.3.0)
@@ -414,7 +414,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (2.2.0)
+    json (2.3.1)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -782,7 +782,7 @@ DEPENDENCIES
   capybara (~> 3.4)
   carrierwave (~> 1.3)
   carrierwave-imageoptimizer
-  chartkick (~> 3.3)
+  chartkick (~> 3.4)
   ckeditor (~> 4.2)
   cloudflare-rails (~> 0.6)
   cocoon
