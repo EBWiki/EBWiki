@@ -30,6 +30,8 @@ en:
           response_to_medical_emergency: 'Response to Medical Emergency'
           suicide: 'Suicide'
           chemical_agents_or_weapons: 'Chemical Agents or Weapons'
+          stabbing: 'Stabbing'
+
     labels:
       agency:
         state: 'State'
