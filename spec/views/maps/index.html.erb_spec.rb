@@ -18,7 +18,6 @@ RSpec.describe 'maps/index.html.erb', type: :view do
       ).page(1))
     render
 
-    expect(rendered).to match(/John Doe/m)
-    expect(rendered).to match(/Jimmy Doe/m)
+    expect(rendered).to match(/Map at a specified location/m)
   end
 end
