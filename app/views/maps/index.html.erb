@@ -1,51 +1,50 @@
 <div class="container">
-  <% ab_finished('viewed_maps', reset: false) %>
     <div class="row">
     	<div class="col-lg-12">
-     	<h2 class="page-header underline">EBWiki below maps <%= @cases.count %> cases of violence against people of color. Read more <%= link_to 'about us',about_path %></h2>
-        <% if user_signed_in? %>
-	     	Click the follow button below the image on any case on the map. We will keep you updated as these cases proceed.</p>
-		<% else %>
-	    	<%= link_to 'Login', new_user_registration_path %> and follow specific cases and we will update you as they proceed.
-		<% end %>
-		<div class="text-center">
-			<h3>
-				<%= link_to 'Back to the Main Page', root_path, class: "btn btn-warning" %>
-				<%= link_to 'Get our newsletter', "http://eepurl.com/bt5QCz", class: "btn btn-default" %>
-			</h3>
+	     	<h2 class="page-header underline">EBWiki below maps <%= @cases.count %> cases of violence against people of color. Read more <%= link_to 'about us',about_path %></h2>
+	        <% if user_signed_in? %>
+		     	Click the follow button below the image on any case on the map. We will keep you updated as these cases proceed.</p>
+			<% else %>
+		    	<%= link_to 'Login', new_user_registration_path %> and follow specific cases and we will update you as they proceed.
+			<% end %>
+				<div class="text-center">
+					<h3>
+						<%= link_to 'Back to the Main Page', root_path, class: "btn btn-warning" %>
+						<%= link_to 'Get our newsletter', "http://eepurl.com/bt5QCz", class: "btn btn-default" %>
+					</h3>
+				</div>
+				<h2 class="page-subheader">Click on the map pins below to learn more.</h2>
+				<div id="markers-on-the-map">
+		    		<p>This example displays a movable map initially centered on the <b>United States</b> in the centre of Berlin <i>(52.5159°N, 13.3777°E)</i></p>
+		    		<div id="map page-header">
+			    		<div style="width: 640px; height: 480px; margin: auto" id="mapContainer"></div>
+						<!-- HERE Maps -->
+						<script>
+							var platform = new H.service.Platform({
+								'apikey': '<%= ENV['HERE_MAPS_API_KEY'] %>'
+							});
+										      
+							// Obtain the default map types from the platform object:
+							var defaultLayers = platform.createDefaultLayers();
+						      
+							// Instantiate (and display) a map object:
+						    var map = new H.Map(
+						    	document.getElementById('mapContainer'),
+								defaultLayers.vector.normal.map,
+					        	{
+					            	zoom: 4,
+					            	center: { lat: 39.83333, lng: -98.58333 }
+					       		}
+						    );
+						</script>
+		    		</div>
+		    	</div>
+				<h3>Code</h3>
+				    <p>
+				        The <code>map.setCenter()</code> method and <code>map.setZoom() </code>method are able to control the location of the map.<br>
+					</p>
+				</div>
+			</div>
 		</div>
-		<h2 class="page-subheader">Click on the map pins below to learn more.</h2>
-		<div id="markers-on-the-map">
-    		<p>This example displays a movable map initially centered on the <b>United States</b> in the centre of Berlin <i>(52.5159°N, 13.3777°E)</i></p>
-    		<div id="map page-header">
-    		<div style="width: 640px; height: 480px" id="mapContainer"></div>
-			<!-- HERE Maps -->
-			<script>
-				var platform = new H.service.Platform({
-					'apikey': '<%= ENV['HERE_MAPS_API_KEY'] %>'
-				});
-							      
-				// Obtain the default map types from the platform object:
-				var defaultLayers = platform.createDefaultLayers();
-			      
-				// Instantiate (and display) a map object:
-			    var map = new H.Map(
-			    	document.getElementById('mapContainer'),
-					defaultLayers.vector.normal.map,
-		        	{
-		            	zoom: 4,
-		            	center: { lat: 39.83333, lng: -98.58333 }
-		       		}
-			    );
-			</script>
-    						</div>
-    					</div>
-    					<h3>Code</h3>
-					    <p>
-					        The <code>map.setCenter()</code> method and <code>map.setZoom() </code>method are able to control the location of the map.<br>
-					    </p>
-			  		</div>
-		  		</div>
-        	</div>
-    	</div>
 	</div>
+</div>
