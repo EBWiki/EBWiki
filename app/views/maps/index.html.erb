@@ -15,20 +15,19 @@
 			</div>
 			<h2 class="page-subheader">Click on the map pins below to learn more.</h2>
 			<div id="markers-on-the-map">
-			    <p>This example displays a movable map initially centered on the <b>United States</b> in the centre of Berlin <i>(52.5159°N, 13.3777°E)</i></p>
 	    		<div id="map page-header">
 		    		<div style="width: 640px; height: 480px; margin: auto" id="mapContainer"></div>
 					<!-- HERE Maps -->
 					<script>
-						var platform = new H.service.Platform({
+						let platform = new H.service.Platform({
 							'apikey': '<%= ENV['HERE_MAPS_API_KEY'] %>'
 						});
 									      
 						// Obtain the default map types from the platform object:
-						var defaultLayers = platform.createDefaultLayers();
+						let defaultLayers = platform.createDefaultLayers();
 					      
 						// Instantiate (and display) a map object:
-					    var map = new H.Map(
+					    let map = new H.Map(
 					    	document.getElementById('mapContainer'),
 							defaultLayers.vector.normal.map,
 				        	{
@@ -36,6 +35,16 @@
 				            	center: { lat: 39.83333, lng: -98.58333 }
 				       		}
 					    );
+					    let svgMarkup = '<svg width="24" height="24" ' +
+						    'xmlns="http://www.w3.org/2000/svg">' +
+						    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+						    'height="22" /><text x="12" y="18" font-size="12pt" ' +
+						    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+						    'fill="white">H</text></svg>';
+						let icon = new H.map.Icon(svgMarkup);
+						let coordinates = [[47.6084921, -122.336407], [37.8249384, -122.2661749], [33.7490987, -84.3901849], [35.6877859, -80.8654534], [28.6553497, -81.3426916], [31.7660338, -102.6675575], [31.7660338, -108.6675575], [41.7488718, -87.640318], [40.6734692, -73.7591312], [38.8960553, -76.926679335]];
+						let createdObjects = coordinates.map(coord => new H.map.Marker({lat: coord[0], lng: coord[1]}, {icon: icon}));
+						createdObjects.forEach(element => map.addObject(element));
 					</script>
 	    		</div>
 		   	</div>
