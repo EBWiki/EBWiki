@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.8
--- Dumped by pg_dump version 9.6.10
+-- Dumped from database version 11.5 (Ubuntu 11.5-1.pgdg19.04+1)
+-- Dumped by pg_dump version 11.5 (Ubuntu 11.5-1.pgdg19.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,22 +12,9 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 
 --
 -- Name: cause_of_death; Type: TYPE; Schema: public; Owner: -
@@ -42,7 +29,8 @@ CREATE TYPE public.cause_of_death AS ENUM (
     'medical neglect',
     'response to medical emergency',
     'suicide',
-    'chemical_agents_or_weapons'
+    'chemical_agents_or_weapons',
+    'drowning'
 );
 
 
@@ -1665,6 +1653,13 @@ CREATE INDEX index_sessions_on_updated_at ON public.sessions USING btree (update
 
 
 --
+-- Name: index_states_on_ansi_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_states_on_ansi_code ON public.states USING btree (ansi_code);
+
+
+--
 -- Name: index_states_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1982,6 +1977,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190815012327'),
 ('20190824175709'),
 ('20190825000337'),
-('20191114063555');
+('20191114063555'),
+('20200812015951');
 
 
