@@ -20,18 +20,22 @@
 
     <!-- Map -->
     <div class="row">
-	    <div class="col-lg-12 articleMap">
-		  <div id='map'></div>
+		<div class="col-lg-12 articleMap">
+		   	<div id="markers-on-the-map">
+				<div class="page-header">
+			      	<h1>Map at a specified location</h1>
+			        <p>Display a map at a specified location and zoom level</p>
+			    </div>
+    			<p>This example displays a movable map initially centered on the <b>Brandenburg Gate</b> in the centre of Berlin <i>(52.5159°N, 13.3777°E)</i></p>
+    			<div id="map"></div>
+    			<h3>Code</h3>
+			    <p>
+			        The <code>map.setCenter()</code> method and <code>map.setZoom() </code>method are able to control the location of the map.<br>
+			    </p>
+			   
+			  </div>
+		  </div>
 	    </div>
 	</div>
     <!-- End Map -->
 </div>
-<% marker_locations_for(@cases) %>
-<script type="">
-	handler = Gmaps.build('Google');
-	handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-	  markers = handler.addMarkers(<%= raw @hash.to_json %>);
-	  handler.bounds.extendWith(markers);
-	  handler.fitMapToBounds();
-	});
-</script>

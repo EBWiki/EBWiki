@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   end
   get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
   get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
-  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
 
   #redirect logic
   get '/articles', to: redirect('/cases')
@@ -27,6 +26,7 @@ Rails.application.routes.draw do
 
   resources :agencies
   resources :organizations
+  resources :maps
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
   resources :users, only: %i[show edit]

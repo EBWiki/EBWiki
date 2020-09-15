@@ -22,23 +22,22 @@ gem 'pundit', '~> 2.1'
 gem 'jquery-rails', '~> 4.4'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks', '~> 5.2'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 1.0', group: :doc
 
 gem 'momentjs-rails'
 gem 'rack'
 
 # For configurable CORS domain settings
-gem 'rack-cors', '~> 1.0', require: 'rack/cors'
+gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 
 # help with charts and graphs
-gem 'active_median', '~> 0.1'
-gem 'chartkick', '~> 3.3'
-gem 'groupdate', '~> 4.0'
+
+gem 'active_median', '~> 0.2'
+gem 'chartkick', '~> 3.4'
+gem 'groupdate', '~> 5.0'
 gem 'hightop', '~> 0.2'
 
 # xml sitemap
-gem 'sitemap_generator', '~> 6.0'
+gem 'sitemap_generator', '~> 6.1'
 
 # use split gem for a/b testing
 gem 'split', '3.2', require: 'split/dashboard'
