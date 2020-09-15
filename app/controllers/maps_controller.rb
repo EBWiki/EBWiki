@@ -11,9 +11,7 @@ class MapsController < ApplicationController
       next if this_case.empty?
 
       [
-        this_case['id'], this_case['latitude'],
-        this_case['longitude'], this_case['avatar'],
-        this_case['title'], this_case['overview']
+        this_case['latitude'], this_case['longitude']
       ]
     end
   end

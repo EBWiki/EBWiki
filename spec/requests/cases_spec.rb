@@ -35,13 +35,11 @@ RSpec.describe 'Cases', type: :request do
 
   describe 'GET /cases/new' do
     let(:user) { create(:user) }
-    let(:this_case) { create(:case) }
     let(:redis) { MockRedis.new }
 
     context 'when authenticated' do
       before do
         sign_in user
-        redis.set('cases', [this_case])
         get '/cases/new', params: {}, headers: {}
       end
 
