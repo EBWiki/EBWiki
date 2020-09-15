@@ -4,7 +4,7 @@
 class MapsController < ApplicationController
   include MapsHelper
   before_action :authenticate_user!, except: %i[index show history followers]
-  before_action :set_instance_vars, only: %i[edit new create]
+
   def index
     @cases = fetch_cases
     @cases = @cases.map do |this_case|
