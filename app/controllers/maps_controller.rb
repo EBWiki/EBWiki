@@ -8,6 +8,8 @@ class MapsController < ApplicationController
   def index
     @cases = fetch_cases
     @cases = @cases.map do |this_case|
+      next if this_case.empty?
+
       [
         this_case['id'], this_case['latitude'],
         this_case['longitude'], this_case['avatar'],

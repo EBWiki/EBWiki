@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-
+# rubocop:disable Metrics/BlockLength.
 RSpec.describe 'Cases', type: :request do
   describe 'GET /cases' do
     context 'will get list of cases' do
@@ -35,10 +35,13 @@ RSpec.describe 'Cases', type: :request do
 
   describe 'GET /cases/new' do
     let(:user) { create(:user) }
+    let(:this_case) { create(:case) }
+    let(:redis) { MockRedis.new }
 
     context 'when authenticated' do
       before do
         sign_in user
+        redis.set('cases', [this_case])
         get '/cases/new', params: {}, headers: {}
       end
 
@@ -209,3 +212,4 @@ RSpec.describe 'Cases', type: :request do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength.
