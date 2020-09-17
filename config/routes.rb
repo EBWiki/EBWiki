@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
   resources :agencies
   resources :organizations
+  resources :maps
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
   resources :users, only: %i[show edit]

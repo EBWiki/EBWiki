@@ -31,7 +31,7 @@ en:
           suicide: 'Suicide'
           chemical_agents_or_weapons: 'Chemical Agents or Weapons'
           stabbing: 'Stabbing'
-
+          drowning: 'Drowning'
     labels:
       agency:
         state: 'State'

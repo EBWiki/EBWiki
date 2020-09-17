@@ -16,7 +16,8 @@ class Case < ApplicationRecord
     response_to_medical_emergency: 'response to medical emergency',
     suicide: 'suicide',
     chemical_agents_or_weapons: 'chemical_agents_or_weapons',
-    stabbing: 'stabbing'
+    stabbing: 'stabbing',
+    drowning: 'drowning'
   }
 
   belongs_to :user
