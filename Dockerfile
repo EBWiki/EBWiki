@@ -16,6 +16,7 @@ RUN bundle install && \
         build-essential \
         libpq-dev \
         nodejs \
+        npm \
         default-jre \
         postgresql  \
         redis-server && \
