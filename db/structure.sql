@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.5 (Ubuntu 11.5-1.pgdg19.04+1)
--- Dumped by pg_dump version 11.5 (Ubuntu 11.5-1.pgdg19.04+1)
+-- Dumped from database version 11.7 (Debian 11.7-0+deb10u1)
+-- Dumped by pg_dump version 11.7 (Debian 11.7-0+deb10u1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -30,7 +30,8 @@ CREATE TYPE public.cause_of_death AS ENUM (
     'response to medical emergency',
     'suicide',
     'chemical_agents_or_weapons',
-    'drowning'
+    'drowning',
+    'stabbing'
 );
 
 
@@ -1978,6 +1979,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190824175709'),
 ('20190825000337'),
 ('20191114063555'),
-('20200812015951');
+('20200812015951'),
+('20200901014746');
 
 
