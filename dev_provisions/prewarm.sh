@@ -14,4 +14,4 @@ do
     fi
 done
 echo
-echo "## Warm up is complete!"
+echo "## Warm up is complete! Start browsing here: http://localhost:3000"
