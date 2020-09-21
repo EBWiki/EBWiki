@@ -9,11 +9,11 @@ This guide will explain the process of setting up a local development environmen
 ## Prerequisites
 Before setting up your local development environment, make sure you have the following tools installed:
 * Bash
- - Windows: [Install Windows Subsystem for Linux](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10)
- - MacOS: [Install homebrew](https://brew.sh/) and then `brew install bash`
+  * Windows: [Install Windows Subsystem for Linux](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10)
+  * MacOS: [Install homebrew](https://brew.sh/) and then `brew install bash`
 * Git
- - Windows: [Download and install git](https://git-scm.com/downloads)
- - MacOS: [Install homebrew](https://brew.sh/) and then `brew install make`
+  * Windows: [Download and install git](https://git-scm.com/downloads)
+  * MacOS: [Install homebrew](https://brew.sh/) and then `brew install make`
 * [Docker Desktop](https://docs.docker.com/engine/install/)
 * [Make](https://www.gnu.org/software/make/)
 
