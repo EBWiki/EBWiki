@@ -8,15 +8,19 @@ This guide will explain the process of setting up a local development environmen
 
 ## Prerequisites
 Before setting up your local development environment, make sure you have the following tools installed:
-* [Bash]
-** Windows: [Install Windows Subsystem for Linux](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10)
-** MacOS: [Install homebrew](https://brew.sh/) and then `brew install bash`
-* [Git](https://git-scm.com/downloads)
+* Bash
+ - Windows: [Install Windows Subsystem for Linux](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10)
+ - MacOS: [Install homebrew](https://brew.sh/) and then `brew install bash`
+* Git
+ - Windows: [Download and install git](https://git-scm.com/downloads)
+ - MacOS: [Install homebrew](https://brew.sh/) and then `brew install make`
 * [Docker Desktop](https://docs.docker.com/engine/install/)
 * [Make](https://www.gnu.org/software/make/)
 
 Open a terminal and validate your environment with the following commands:
 ```
+which bash
+bash --version
 which git
 git --version
 which docker
@@ -25,8 +29,15 @@ which make
 make --version
 ```
 
-Output from the commands should be error free and similar to the following:
+Output from the commands will vary based on your operating system but should be error free and similar to the following:
 ```
+$ which bash
+/usr/local/bin/bash
+
+$ bash --version
+GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin18.7.0)
+...
+
 $ which git
 /usr/local/bin/git
 
@@ -70,7 +81,7 @@ Note that it will take about 3-5 minutes for the server to boot up.  This is nor
 Once you see output similar to the following, the application is running successfully:
 ```
 ## Warming up the server...
-## Warm up is complete!
+## Warm up is complete! Start browsing here: http://localhost:3000
 ```
 
 ## Browse the Local Site
