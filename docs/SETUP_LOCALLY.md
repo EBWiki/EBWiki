@@ -62,20 +62,19 @@ GNU Make 4.3
 Once your tools are in place, follow these steps to download and run the EBWiki application on your local system:
 
 1. Clone the EBWiki repository and `cd` into the directory.
-```
-git clone git@github.com:EBWiki/EBWiki.git
-cd EBWiki
-```
-
+    ```
+    git clone git@github.com:EBWiki/EBWiki.git
+    cd EBWiki
+    ```
 1. Download the latest `ebwiki` docker image:
-```
-docker pull ebwiki/ebwiki
-```
-
+    ```
+    docker pull ebwiki/ebwiki
+    ```
 1. Start a locally running application with the following command:
-```
-make run
-```
+    ```
+    make run
+    ```
+
 Note that it will take about 3-5 minutes for the server to boot up.  This is normal.
 
 Once you see output similar to the following, the application is running successfully:
