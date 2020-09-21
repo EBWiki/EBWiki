@@ -8,6 +8,9 @@ This guide will explain the process of setting up a local development environmen
 
 ## Prerequisites
 Before setting up your local development environment, make sure you have the following tools installed:
+* [Bash]
+** Windows: [Install Windows Subsystem for Linux](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10)
+** MacOS: [Install homebrew](https://brew.sh/) and then `brew install bash`
 * [Git](https://git-scm.com/downloads)
 * [Docker Desktop](https://docs.docker.com/engine/install/)
 * [Make](https://www.gnu.org/software/make/)
@@ -60,39 +63,14 @@ docker pull ebwiki/ebwiki
 
 1. Start a locally running application with the following command:
 ```
-make run logs
+make run
 ```
-This starts EBWiki and follows the logs of the server running the process.  Once you see output similar to the following, the application is running successfully:
+Note that it will take about 3-5 minutes for the server to boot up.  This is normal.
+
+Once you see output similar to the following, the application is running successfully:
 ```
-#########################################################
-##  Environment Summary
-#########################################################
-rails   = Rails 5.0.7.2
-ruby    = ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-linux]
-node    = v10.21.0
-npm     = 5.8.0
-java    = openjdk version "11.0.8" 2020-07-14
-psql    = psql (PostgreSQL) 11.7 (Debian 11.7-0+deb10u1)
-redis   = v=5.0.3
-elastic = {
-  "name" : "B7V3I3w",
-  "cluster_name" : "elasticsearch",
-  "cluster_uuid" : "YNzzm9I7QIyeR8pBRadlAw",
-  "version" : {
-    "number" : "6.8.12",
-    "build_flavor" : "default",
-    "build_type" : "deb",
-    "build_hash" : "7a15d2a",
-    "build_date" : "2020-08-12T07:27:20.804867Z",
-    "build_snapshot" : false,
-    "lucene_version" : "7.7.3",
-    "minimum_wire_compatibility_version" : "5.6.0",
-    "minimum_index_compatibility_version" : "5.0.0"
-  },
-  "tagline" : "You Know, for Search"
-}
-#########################################################
-## Starting the server...
+## Warming up the server...
+## Warm up is complete!
 ```
 
 ## Browse the Local Site
