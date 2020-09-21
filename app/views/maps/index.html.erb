@@ -18,25 +18,7 @@
 			    <p>This example displays a movable map initially centered on the <b>United States</b> in the centre of Berlin <i>(52.5159°N, 13.3777°E)</i></p>
 	    		<div id="map page-header">
 		    		<div style="width: 640px; height: 480px; margin: auto" id="mapContainer"></div>
-					<!-- HERE Maps -->
-					<script>
-						var platform = new H.service.Platform({
-							'apikey': '<%= ENV['HERE_MAPS_API_KEY'] %>'
-						});
-									      
-						// Obtain the default map types from the platform object:
-						var defaultLayers = platform.createDefaultLayers();
-					      
-						// Instantiate (and display) a map object:
-					    var map = new H.Map(
-					    	document.getElementById('mapContainer'),
-							defaultLayers.vector.normal.map,
-				        	{
-				            	zoom: 4,
-				            	center: { lat: 39.83333, lng: -98.58333 }
-				       		}
-					    );
-					</script>
+
 	    		</div>
 		   	</div>
 		</div>

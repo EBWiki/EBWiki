@@ -36,12 +36,12 @@
       ga('send', 'pageview');
     </script>
    
-     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
-  <script type="text/javascript" >window.ENV_VARIABLE = 'https://developer.here.com'</script><script src='https://developer.here.com/javascript/src/iframeheight.js'></script></head>
- 
+    <script type="text/javascript" >window.ENV_VARIABLE = 'https://<%= request.host %>'</script><script src='https://developer.here.com/javascript/src/iframeheight.js'></script></head>
+    <script type="text/javascript" >window.API_KEY="<%= ENV['HERE_MAPS_API_KEY'] %>"</script>
     <%= render 'application/favicon' %>
   </head>
   <body>
