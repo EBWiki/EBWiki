@@ -89,7 +89,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :request) do
-    host!(ENV.fetch('HOST', 'localhost') + ":8080")
+    host!('localhost:3000')
   end
 
   config.after(:each, type: :request) do
