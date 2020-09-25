@@ -14,8 +14,8 @@ information and gotchas are reviewed.
 EBWiki once used Google Maps for a mapping solution, but the Gmaps4Rails plugin
 we had been using was no longer being maintained. While looking at mapping
 solutions, we decided to try [HERE Maps](https://developer.here.com) as a
-provider of mapping services. We also wanted to remove the reliance on a gem
-as an interface to mapping solutions, having been affected by the lack of 
+provider of mapping services. We also wanted to remove the reliance on a gem as 
+an interface to mapping solutions, having been affected by the lack of 
 maintenance on the [Gmaps4Rails](https://github.com/apneadiving/Google-Maps-for-Rails).
 While there does exist a viable alternative in [google-maps-services-ruby](https://github.com/edwardsamuel/google-maps-services-ruby) for those who want to use Google Maps, the exploration of 
 alternate mapping providers does fulfill other reqirements.
@@ -32,7 +32,7 @@ mapping and geo services available that we can use if needed.
 
 The Cases cache is a JSON of latitude & longitude for all cases that had
 coordinate information. Cases without that data won't be included in the JSON
-document, with a 2 hour TTL. 
+document, with a 2 hour [Time To Live (TTL)](https://en.wikipedia.org/wiki/Time_to_live). 
 
 #### Maps Controller
 
