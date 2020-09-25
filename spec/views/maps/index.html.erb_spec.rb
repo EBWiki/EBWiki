@@ -18,6 +18,6 @@ RSpec.describe 'maps/index.html.erb', type: :view do
       ).page(1))
     render
 
-    expect(rendered).to match(/Map at a specified location/m)
+    expect(rendered).to match(/This example displays a movable map initially/m)
   end
 end
