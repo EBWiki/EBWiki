@@ -42,7 +42,7 @@ gem 'sitemap_generator', '~> 6.1'
 # use split gem for a/b testing
 gem 'split', '3.2', require: 'split/dashboard'
 
-gem 'rollbar', '~> 2.16'
+gem 'rollbar', '~> 3.0'
 
 gem 'simplecov', '~> 0.16.1'
 
