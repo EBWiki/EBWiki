@@ -70,6 +70,24 @@ If you prefer, you can add these files to `.gitignore` so that your personal cha
 
 ![Screenshot](https://i.imgur.com/89XU1nF.jpg)
 
+## Elasticsearch Setup
+
+Using Homebrew, install and run elasticsearch:
+
+If you have never used elasticsearch before start with installing it using [Homebrew](https://brew.sh/):
+```
+brew install elasticsearch
+```
+
+If you have used homebrew before, try upgrading it:
+```
+brew upgrade elasticsearch
+```
+
+Then start Elasticsearch:
+```
+brew services start elasticsearch
+```
 
 ## Postgres Setup
 Choose the appropriate instruction set based on the operating system of your local environment.
@@ -86,28 +104,28 @@ Next, create a user `blackops` with the password `ebwiki` or whatever password y
 Exit the console using the following command:
 
  `\q`
- 
+
 ## Recaptcha & Local Development
 
-While in production we use [reCAPTCHA](https://www.google.com/recaptcha) to 
-prevent bots from sigining up for this service, in order to simplify 
-development, reCAPTCHA is disabled in development by default.  In order 
+While in production we use [reCAPTCHA](https://www.google.com/recaptcha) to
+prevent bots from sigining up for this service, in order to simplify
+development, reCAPTCHA is disabled in development by default.  In order
 to re-enable reCAPTCHA in development, remove the `config/initializers/recaptcha.rb`
 file or comment out the following line:
 ```
 config.skip_verify_env.push('development')
 ```
- 
+
 ### Environmental Variables
 
-EBWiki uses environmental variables to run with different configurations in 
-different environments through the [dotenv](https://github.com/bkeepers/dotenv) 
+EBWiki uses environmental variables to run with different configurations in
+different environments through the [dotenv](https://github.com/bkeepers/dotenv)
 gem. For more information, consult the dotenv documentation, but in the meantime,
-to set the variables, create a file named 
+to set the variables, create a file named
 `.env` at the top level of the project and fill in data for the following:
 In order to fill in this credentials, you'll have to get:
 * AWs Credentials from Amazon.com
-* Mailchimp Credentials from Mailchimp.com. Failing that, get the configuration 
+* Mailchimp Credentials from Mailchimp.com. Failing that, get the configuration
 from an EBWiki team member
 
 
@@ -182,4 +200,3 @@ Now, everything should be completely set up!  Run the app locally on your comput
 `rails s`
 
 You should be to view and interact with the site on http://localhost:3000.  Now you're ready to get start contributing!
-
