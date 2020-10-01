@@ -1,6 +1,6 @@
 ```diff
 - NOTE: This document contains steps for the legacy method for setting up a local development environment.
-- Please refer to [the latest documentation](docs/SETUP_LOCALLY.md) for the current method using Docker.
+- Please refer to [the latest documentation](SETUP_LOCALLY.md) for the current method using Docker.
 ```
 
 This guide will explain the process of setting up a local development environment for EBWiki.  The guide assumes that you are using a Linux based command line prompt and either a Linux or Windows Operating System.  If you are using a different command line prompt and/or operating system, note that the order and exact nature of the installation and configuration may vary.
