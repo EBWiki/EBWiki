@@ -31,7 +31,7 @@ To work on EBWiki locally you will need to have PostgreSQL and Elasticsearch run
 * [Redis](https://redis.io/)
 
 
-It is generally recommended that you have PostGreSQL and Elasticsearch start at bootup.
+It is generally recommended that you have PostGreSQL and Elasticsearch start on boot.
 
 ## App Configuration
 Using your command line, navigate to the location where you will store your local copy of the codebase.  Use the following command to clone a copy of the repo to your local environment:
@@ -95,7 +95,7 @@ Exit the console using the following command:
 ## Recaptcha & Local Development
 
 While in production we use [reCAPTCHA](https://www.google.com/recaptcha) to
-prevent bots from sigining up for this service, in order to simplify
+prevent bots from signing up for this service, in order to simplify
 development, reCAPTCHA is disabled in development by default.  In order
 to re-enable reCAPTCHA in development, remove the `config/initializers/recaptcha.rb`
 file or comment out the following line:
