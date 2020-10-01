@@ -27,7 +27,7 @@ Once the code is ready to go, one of the maintainers will merge your PR and dele
 7. **We: Check the changes on staging**
 Whenever the main branch of the repo is updated, the latest changes are deployed to the staging version of the website.  We'll use staging to do one last check to make sure everything is still working.  If we don't like the changes shown on staging, or there's some weird unanticipated side effect, we'll create a new issue and assign it to you so you can get a first crack at it.
 8. **We: deploy to production**
-If everything looks great on staging, then we'll push the code to production within two weeks.  And with that, your code is be running live on [EBWiki](ebwiki.org)!
+If everything looks great on staging, then we'll push the code to production within two weeks.  And with that, your code is be running live on [EBWiki](https://ebwiki.org)!
 
 ## Getting EBWiki Up and Running Locally
 
