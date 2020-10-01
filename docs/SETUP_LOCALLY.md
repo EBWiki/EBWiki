@@ -91,4 +91,4 @@ Open the following link in your browser:  http://localhost:3000
 ## Finish
 Now you're ready to start contributing!
 
-Next: [Development Documentation](docs/DEVELOPMENT.md).
+Next: [Development Documentation](DEVELOPMENT.md).
