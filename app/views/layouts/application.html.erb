@@ -13,7 +13,7 @@
     <meta property="og:description" content="<%= meta_description %>" />
     <meta property="og:site_name" content="<%= meta_title %>" />
 
-  
+
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="<%= DEFAULT_META["twitter_account"] %>">
@@ -35,14 +35,17 @@
       ga('create', 'UA-32848364-7', 'auto');
       ga('send', 'pageview');
     </script>
-   
+
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
-    <script type="text/javascript" >window.ENV_VARIABLE = 'https://<%= request.host %>'</script><script src='https://developer.here.com/javascript/src/iframeheight.js'></script></head>
+    <script type="text/javascript" >window.ENV_VARIABLE = 'https://<%= request.host %>'</script>
+    <script src='https://developer.here.com/javascript/src/iframeheight.js'></script
     <script type="text/javascript" >window.API_KEY="<%= ENV['HERE_MAPS_API_KEY'] %>"</script>
     <%= render 'application/favicon' %>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   </head>
   <body>
     <div class="container">
