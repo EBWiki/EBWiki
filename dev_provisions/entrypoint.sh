@@ -23,7 +23,7 @@ echo "## Create DB user"
 runuser -l postgres -c "psql -c \"CREATE USER blackops WITH PASSWORD '${BLACKOPS_DATABASE_PASSWORD}';\""
 runuser -l postgres -c "psql -c \"ALTER USER blackops WITH SUPERUSER;\""
 
-for i in create structure:load seed;
+for i in create structure:load seed migrate;
 do
     echo "## Running rake db:${i}"
     rake db:${i}
