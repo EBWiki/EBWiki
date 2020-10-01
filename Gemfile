@@ -44,7 +44,7 @@ gem 'split', '3.2', require: 'split/dashboard'
 
 gem 'rollbar', '~> 2.16'
 
-gem 'simplecov', '~> 0.16.1'
+gem 'simplecov', '~> 0.19.0'
 
 gem 'twitter', '~> 6.2'
 
