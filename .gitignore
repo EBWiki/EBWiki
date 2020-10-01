@@ -55,3 +55,9 @@ environment.sh
 
 # Ignore database.yml from version control...
 config/database.yml
+
+config/initializers/s3.rb
+config/sitemap.rb
+
+config/initializers/recaptcha.rb
+db/structure.sql
