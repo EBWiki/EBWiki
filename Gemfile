@@ -49,7 +49,7 @@ gem 'simplecov', '~> 0.16.1'
 gem 'twitter', '~> 6.2'
 
 # JSON renderer for Rails
-gem 'jb', '~> 0.5.0'
+gem 'jb', '~> 0.7.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 4.10'
