@@ -39,14 +39,14 @@ gem 'hightop', '~> 0.2'
 # xml sitemap
 gem 'sitemap_generator', '~> 6.1'
 
-gem 'rollbar', '~> 2.16'
+gem 'rollbar', '~> 3.0'
 
 gem 'simplecov', '~> 0.16.1'
 
-gem 'twitter', '~> 6.2'
+gem 'twitter', '~> 7.0'
 
 # JSON renderer for Rails
-gem 'jb', '~> 0.5.0'
+gem 'jb', '~> 0.7.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 6.1'
