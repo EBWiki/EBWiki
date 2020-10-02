@@ -39,14 +39,11 @@ gem 'hightop', '~> 0.2'
 # xml sitemap
 gem 'sitemap_generator', '~> 6.1'
 
-# use split gem for a/b testing
-gem 'split', '3.2', require: 'split/dashboard'
-
-gem 'rollbar', '~> 2.16'
+gem 'rollbar', '~> 3.0'
 
 gem 'simplecov', '~> 0.16.1'
 
-gem 'twitter', '~> 6.2'
+gem 'twitter', '~> 7.0'
 
 # JSON renderer for Rails
 gem 'jb', '~> 0.7.1'
