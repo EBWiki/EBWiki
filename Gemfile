@@ -43,7 +43,7 @@ gem 'rollbar', '~> 3.0'
 
 gem 'simplecov', '~> 0.16.1'
 
-gem 'twitter', '~> 6.2'
+gem 'twitter', '~> 7.0'
 
 # JSON renderer for Rails
 gem 'jb', '~> 0.5.0'
