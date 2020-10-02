@@ -1,6 +1,9 @@
 name: Docker
 
 on:
+  workflow_dispatch:
+    branches:
+      - main
   push:
     # Publish `main` as Docker `latest` image.
     branches:
@@ -31,7 +34,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ebwiki/ebwiki:latest
+          tags: |
+            ebwiki/ebwiki:latest
+            ebwiki/ebwiki:${GITHUB_SHA}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
