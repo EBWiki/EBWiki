@@ -39,7 +39,7 @@ gem 'hightop', '~> 0.2'
 # xml sitemap
 gem 'sitemap_generator', '~> 6.1'
 
-gem 'rollbar', '~> 2.16'
+gem 'rollbar', '~> 3.0'
 
 gem 'simplecov', '~> 0.16.1'
 
