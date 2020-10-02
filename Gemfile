@@ -39,20 +39,17 @@ gem 'hightop', '~> 0.2'
 # xml sitemap
 gem 'sitemap_generator', '~> 6.1'
 
-# use split gem for a/b testing
-gem 'split', '3.2', require: 'split/dashboard'
-
-gem 'rollbar', '~> 2.16'
+gem 'rollbar', '~> 3.0'
 
 gem 'simplecov', '~> 0.16.1'
 
-gem 'twitter', '~> 6.2'
+gem 'twitter', '~> 7.0'
 
 # JSON renderer for Rails
-gem 'jb', '~> 0.5.0'
+gem 'jb', '~> 0.7.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'factory_bot_rails', '~> 4.10'
+  gem 'factory_bot_rails', '~> 6.1'
   gem 'faker', '~> 1.9'
   gem 'guard-rspec', '~> 4.7'
   gem 'pry-byebug', '~> 3.6'
