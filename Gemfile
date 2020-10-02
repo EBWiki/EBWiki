@@ -52,7 +52,7 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 6.1'
   gem 'faker', '~> 1.9'
   gem 'guard-rspec', '~> 4.7'
-  gem 'pry-byebug', '~> 3.6'
+  gem 'pry-byebug', '~> 3.9'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
