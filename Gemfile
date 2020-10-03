@@ -41,7 +41,7 @@ gem 'sitemap_generator', '~> 6.1'
 
 gem 'rollbar', '~> 3.0'
 
-gem 'simplecov', '~> 0.16.1'
+gem 'simplecov', '~> 0.19.0'
 
 gem 'twitter', '~> 7.0'
 
