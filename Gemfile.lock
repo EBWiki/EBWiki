@@ -140,7 +140,10 @@ GEM
       railties (>= 4.2, < 7)
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
-    database_cleaner (1.3.0)
+    database_cleaner (1.8.5)
+    database_cleaner-active_record (1.8.0)
+      activerecord
+      database_cleaner (~> 1.8.0)
     derailed (0.1.0)
       derailed_benchmarks
     derailed_benchmarks (1.4.2)
@@ -472,7 +475,7 @@ GEM
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.14.1)
-    mock_redis (0.20.0)
+    mock_redis (0.26.0)
     momentjs-rails (2.20.1)
       railties (>= 3.1)
     multi_json (1.13.1)
@@ -695,11 +698,6 @@ GEM
       docile (~> 1.1)
       simplecov-html (~> 0.11)
     simplecov-html (0.12.3)
-    sinatra (2.0.5)
-      mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.5)
-      tilt (~> 2.0)
     sitemap_generator (6.1.2)
       builder (~> 3.0)
     social-share-button (1.2.0)
@@ -782,7 +780,7 @@ DEPENDENCIES
   cloudflare-rails (~> 0.6)
   cocoon
   cucumber-rails (~> 1.6)
-  database_cleaner (~> 1.3.0)
+  database_cleaner-active_record (~> 1.8.0)
   derailed
   devise (= 4.7.1)
   dotenv-rails (~> 2.7)
@@ -805,7 +803,7 @@ DEPENDENCIES
   lograge (~> 0.11)
   mailboxer (~> 0.15)
   mini_magick (~> 4.9)
-  mock_redis
+  mock_redis (~> 0.26)
   momentjs-rails
   newrelic_rpm (~> 5.2.0)
   paper_trail (~> 10.3)

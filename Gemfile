@@ -73,7 +73,7 @@ group :test do
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 3.4'
   gem 'cucumber-rails', '~> 1.6', require: false
-  gem 'database_cleaner', '~> 1.3.0'
+  gem 'database_cleaner-active_record', '~> 1.8.0'
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
