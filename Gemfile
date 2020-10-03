@@ -41,7 +41,7 @@ gem 'sitemap_generator', '~> 6.1'
 
 gem 'rollbar', '~> 3.0'
 
-gem 'simplecov', '~> 0.16.1'
+gem 'simplecov', '~> 0.19.0'
 
 gem 'twitter', '~> 7.0'
 
@@ -57,7 +57,7 @@ group :development, :test do
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
   gem 'mock_redis', '~> 0.26'
-  gem 'pre-commit', '~> 0.38'
+  gem 'pre-commit', '~> 0.39'
   gem 'rspec-rails', '~> 3.8'
 end
 
