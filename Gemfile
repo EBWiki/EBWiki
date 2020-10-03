@@ -57,7 +57,7 @@ group :development, :test do
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
   gem 'mock_redis'
-  gem 'pre-commit', '~> 0.38'
+  gem 'pre-commit', '~> 0.39'
   gem 'rspec-rails', '~> 3.8'
 end
 
