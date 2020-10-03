@@ -66,7 +66,7 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'derailed'
   gem 'rails_real_favicon'
-  gem 'web-console', '~> 3.3'
+  gem 'web-console', '~> 3.7'
 end
 
 group :test do
