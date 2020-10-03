@@ -47,6 +47,9 @@
               <% end %>
             </p>
           <% end %>
+          <% if @this_case.cause_of_death_name? %>
+            <p>Cause of death: <%= @this_case.cause_of_death_name %></p>
+          <% end %>
           <div>
             <% if current_user %>
               <% if current_user.following?(@this_case) %>
