@@ -1,6 +1,7 @@
 FROM ruby:2.6.5
 
 COPY Gemfile Gemfile.lock /
+COPY dev_provisions/environment.sh /etc/profile.d
 
 RUN gem install bundler && bundle install && gem install fakes3
 RUN apt-get update -qq && apt-get install -qq --no-install-recommends lsb-release apt-transport-https && \

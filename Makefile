@@ -14,6 +14,9 @@ updatedb:
 test:
 	./dev_provisions/run_tests.sh
 
+rspec:
+	docker exec -it ebwiki bash -c 'source dev_provisions/environment.sh && rspec spec/'
+
 logs:
 	docker logs --timestamps --follow ebwiki
 
