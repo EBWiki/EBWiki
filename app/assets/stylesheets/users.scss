@@ -44,24 +44,29 @@ $color-dark-gray: #4D4D4D;
 	height: 120px;
 }
 
-.btn-group {
+.edit_user {
+  padding: 10px 0;
+
+  .btn-group {
     position:relative;
-	float:left;
+  	float:left;
+  }
+
+  .btn-group.user-submit {
+    top: 10px;
+    left: 69%;
+  }
 }
 
-.btn-group.back{
-    left:70%;
-}
-
-.btn-group.submit{
-    left:69%;
-}
-
-.btn-success{
+.btn-success {
   background-color: $color-orange !important;
 }
 
-.btn-group.back .btn-primary{
+.btn-group.user-back {
+    left: 70%;
+}
+
+.btn-group.user-back .btn-primary {
 	background-color: $color-gray !important;
 	border-color: $color-gray !important;
 	color: white !important;
@@ -86,4 +91,8 @@ label{
 }
 .user-description {
   margin-top: 20px;
+}
+
+#user_avatar {
+  margin-bottom: 15px;
 }
