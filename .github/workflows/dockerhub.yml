@@ -36,7 +36,6 @@ jobs:
           push: true
           tags: |
             ebwiki/ebwiki:latest
-            ebwiki/ebwiki:${GITHUB_SHA}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
