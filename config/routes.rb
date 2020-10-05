@@ -47,13 +47,6 @@ Rails.application.routes.draw do
 
   get '/sitemap', to: redirect(SITEMAP_URL, status: 301)
 
-  mount Split::Dashboard, at: 'split', anchor: false, constraints: lambda { |request|
-    request.env['warden'].authenticated? # are we authenticated?
-    request.env['warden'].authenticate! # authenticate if not already
-    # or even check any other condition
-    request.env['warden'].user.admin?
-  }
-
   # mailbox folder routes
   get 'mailbox', to: redirect('mailbox/inbox')
   get 'mailbox/inbox', to: 'mailbox#inbox', as: :mailbox_inbox

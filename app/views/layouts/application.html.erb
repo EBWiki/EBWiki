@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title><%= meta_title %></title>
     <meta name="description" content="<%= meta_description %>">
@@ -13,7 +13,6 @@
     <meta property="og:description" content="<%= meta_description %>" />
     <meta property="og:site_name" content="<%= meta_title %>" />
 
-  
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="<%= DEFAULT_META["twitter_account"] %>">
@@ -25,7 +24,8 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application',  'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
-     <!-- Google Analytics -->
+
+    <!-- Google Analytics -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -35,14 +35,19 @@
       ga('create', 'UA-32848364-7', 'auto');
       ga('send', 'pageview');
     </script>
-   
+
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
-    <script type="text/javascript" >window.ENV_VARIABLE = 'https://<%= request.host %>'</script><script src='https://developer.here.com/javascript/src/iframeheight.js'></script></head>
+    <script type="text/javascript" >window.ENV_VARIABLE = 'https://<%= request.host %>'</script>
+    <script src='https://developer.here.com/javascript/src/iframeheight.js'></script>
     <script type="text/javascript" >window.API_KEY="<%= ENV['HERE_MAPS_API_KEY'] %>"</script>
     <%= render 'application/favicon' %>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="cf-2fa-verify" content="2y1jaIA9tjJ9xyHE">
   </head>
   <body>
     <div class="container">

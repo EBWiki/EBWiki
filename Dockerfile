@@ -2,7 +2,8 @@ FROM ruby:2.6.5
 
 COPY Gemfile Gemfile.lock /
 
-RUN bundle install && \
+RUN gem install bundler && \
+    bundle install && \
     gem install fakes3 && \
     apt-get update -qq && \
     apt-get install apt-transport-https && \
@@ -16,6 +17,7 @@ RUN bundle install && \
         build-essential \
         libpq-dev \
         nodejs \
+        npm \
         default-jre \
         postgresql  \
         redis-server && \

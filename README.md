@@ -24,7 +24,9 @@ All contributors are expected to adhere to our code of conduct, which can be fou
 
 ### Development
 
-Instructions on setting up a local development environment can be found [here](docs/SETUP_LOCALLY.md).
+Instructions on setting up a local development environment can be found in the following documents:
+* [Set Up Locally with Docker](docs/SETUP_LOCALLY.md).
+* [Set Up Locally with All Services (Full Stack)](docs/SETUP_LOCALLY_FULLSTACK.md).
 
 In general, contributors will use the following languages, frameworks, and technologies:
 
