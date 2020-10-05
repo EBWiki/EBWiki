@@ -79,6 +79,11 @@ label{
 	display:none;
 }
 
-#edit-button {
-	display: none;
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.user-description {
+  margin-top: 20px;
 }

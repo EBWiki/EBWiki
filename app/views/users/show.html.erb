@@ -7,11 +7,13 @@
         <br>
         Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
         <br>
-        <div id="edit-button" data-display="<%= policy(@user).edit? %>">
+        <!-- <div id="edit-button" data-display="<%= policy(@user).edit? %>"> -->
           <br>
-          <%= link_to 'Edit Profile', edit_user_path(@user), :class => "btn btn-success" %>
+          <% if policy(@user).edit? %>
+            <%= link_to 'Edit Profile', edit_user_path(@user), class: "btn btn-success" %>
+          <% end %>
           <br>
-        </div>
+        <!-- </div> -->
         <br>
         <% if @user == current_user %>
           <div class="panel panel-default mailFoldershort">
@@ -28,8 +30,13 @@
       <div class="col-md-10">
         <div class="alert alert-info">
           <h2></h2>
-          <h4><%= "#{@user.name}'s bio:" %></h4>
-          <p><%= @user.description %></p>
+          <div class="user-header">
+            <h4><%= "#{@user.name}'s bio:" %></h4>
+            <% if policy(@user).edit? %>
+              <%= link_to 'Edit Profile', edit_user_path(@user), class: "btn btn-success" %>
+            <% end %>
+          </div>
+          <p class="user-description"><%= @user.description %></p>
         </div>
         <% if @user != current_user %>
           <h3 class="page-header">Cases <%= @user.name %> follows:</h3>
