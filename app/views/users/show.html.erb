@@ -7,14 +7,6 @@
         <br>
         Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
         <br>
-        <!-- <div id="edit-button" data-display="<%= policy(@user).edit? %>"> -->
-          <br>
-          <% if policy(@user).edit? %>
-            <%= link_to 'Edit Profile', edit_user_path(@user), class: "btn btn-success" %>
-          <% end %>
-          <br>
-        <!-- </div> -->
-        <br>
         <% if @user == current_user %>
           <div class="panel panel-default mailFoldershort">
             <div class="panel-body">
