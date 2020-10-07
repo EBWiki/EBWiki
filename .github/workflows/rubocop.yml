@@ -10,9 +10,9 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
-        name: Run rspec
+        name: Run rubocop
         run: |
           PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
           echo $PATH
-          gem --user-install install rubocop
+          gem install --user-install rubocop
           rubocop
