@@ -75,7 +75,7 @@ group :test do
   gem 'cucumber-rails', '~> 1.6', require: false
   gem 'database_cleaner-active_record', '~> 1.8.0'
   gem 'launchy', '~> 2.4'
-  gem 'selenium-webdriver', '~> 2.43.0'
+  gem 'selenium-webdriver', '~> 2.53.0'
   gem 'shoulda-matchers', '~> 3.1.1'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
   gem 'webmock'
