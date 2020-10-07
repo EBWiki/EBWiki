@@ -16,3 +16,15 @@ jobs:
           echo $PATH
           gem install --user-install rubocop
           rubocop
+      -
+        name: Check for changes
+        run: |
+          modified=$(git status | grep modified | wc -l)
+          if [ $modified -gt 0 ];
+          then
+              git config --local user.email "$(git log --format='%ae' HEAD^!)"
+              git config --local user.name "$(git log --format='%an' HEAD^!)"
+              git add --all;
+              git commit -m "$1";
+              git push;
+          fi
