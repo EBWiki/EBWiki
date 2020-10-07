@@ -62,11 +62,11 @@ group :development, :test do
 end
 
 group :development do
-  gem 'brakeman', '~> 4.3', require: false
+  gem 'brakeman', '~> 4.10', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'derailed'
+  gem 'derailed_benchmarks', '~> 1.8'
   gem 'rails_real_favicon'
-  gem 'web-console', '~> 3.3'
+  gem 'web-console', '~> 3.7'
 end
 
 group :test do
