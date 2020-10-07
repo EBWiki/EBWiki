@@ -62,9 +62,9 @@ group :development, :test do
 end
 
 group :development do
-  gem 'brakeman', '~> 4.3', require: false
+  gem 'brakeman', '~> 4.10', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'derailed'
+  gem 'derailed_benchmarks', '~> 1.8'
   gem 'rails_real_favicon'
   gem 'web-console', '~> 3.7'
 end
@@ -73,7 +73,7 @@ group :test do
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 3.4'
   gem 'cucumber-rails', '~> 1.6', require: false
-  gem 'database_cleaner', '~> 1.3.0'
+  gem 'database_cleaner-active_record', '~> 1.8.0'
   gem 'launchy', '~> 2.4'
   gem 'selenium-webdriver', '~> 2.43.0'
   gem 'shoulda-matchers', '~> 3.1.1'
