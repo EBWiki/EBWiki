@@ -1,6 +1,6 @@
 name: Markdown
 
-on: [push, workflow_dispatch]
+on: [pull_request, push, workflow_dispatch]
 
 jobs:
   markdown-link-check:
