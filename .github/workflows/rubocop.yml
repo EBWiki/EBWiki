@@ -25,6 +25,6 @@ jobs:
               git config --local user.email "$(git log --format='%ae' HEAD^!)"
               git config --local user.name "$(git log --format='%an' HEAD^!)"
               git add --all;
-              git commit -m "$1";
+              git commit -m "Committing files modified by rubocop";
               git push;
           fi
