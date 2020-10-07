@@ -71,7 +71,7 @@ GEM
       sassc (>= 2.0.0)
     bootstrap3-datetimepicker-rails (4.17.47)
       momentjs-rails (>= 2.8.1)
-    brakeman (4.5.1)
+    brakeman (4.10.0)
     buftok (0.2.0)
     builder (3.2.4)
     bullet (6.1.0)
@@ -767,7 +767,7 @@ DEPENDENCIES
   auto_strip_attributes (~> 2.5)
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails
-  brakeman (~> 4.3)
+  brakeman (~> 4.10)
   bullet (~> 6.1)
   capybara (~> 3.4)
   carrierwave (~> 1.3)
