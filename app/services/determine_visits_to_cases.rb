@@ -10,7 +10,7 @@ class DetermineVisitsToCases
     visit_info.each do |(url, views)|
       this_case = Case.friendly.find(url.split('/').last)
       cases << [this_case, views]
-    rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound # rubocop:todo Lint/SuppressedException
     end
     cases
   end
