@@ -262,29 +262,16 @@ $color-dark-gray: #4D4D4D;
   width: 100%;
 }
 
-#unfollow-button {
-  color: white;
+form.case-btn {
   background-color: $color-orange;
-  letter-spacing: -1px;
-  border: none;
-  text-transform: uppercase;
-  font-size: 14px;
-  margin-left: -15px;
-  margin-bottom: 2.5px;
+  border: 1px solid white;
+  border-radius: 5px;
 }
 
-#follow-button {
-  color: white;
+input.case-btn {
   background-color: $color-orange;
-  letter-spacing: -1px;
+  color: white;
   border: none;
-}
-
-#history-btn, #follow-btn-small, #edit-btn{
-  background-color: $color-orange;
-  color: white;
-  border: 1px solid #000000;
-  border-radius: 4px;
 }
 .btn-group {
   position:relative;
