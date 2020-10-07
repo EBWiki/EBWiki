@@ -1,3 +1,4 @@
+---
 name: Rspec
 
 on: [pull_request, push, workflow_dispatch]
@@ -6,10 +7,9 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Run rspec
+
+      - name: Run rspec
         run: |
           make run rspec stop

@@ -1,3 +1,4 @@
+---
 name: Rubocop
 
 on: [pull_request, push, workflow_dispatch]
@@ -6,18 +7,15 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Run rubocop
+      - name: Run rubocop
         run: |
           PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
           echo $PATH
           gem install --user-install rubocop
           rubocop --auto-correct-all --disable-uncorrectable
-      -
-        name: Check for changes
+      - name: Check for changes
         run: |
           modified=$(git status | grep modified | wc -l)
           if [ $modified -gt 0 ];

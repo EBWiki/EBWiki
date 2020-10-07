@@ -1,3 +1,4 @@
+---
 name: Brakeman
 
 on: [pull_request, push, workflow_dispatch]
@@ -6,11 +7,9 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Run brakeman
+      - name: Run brakeman
         run: |
           PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
           echo $PATH
