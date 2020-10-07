@@ -11,6 +11,7 @@ jobs:
         uses: actions/checkout@v2
       -
         name: Run rspec
+        uses: ruby:2.6.5
         run: |
           gem install rubocop
           rubocop
