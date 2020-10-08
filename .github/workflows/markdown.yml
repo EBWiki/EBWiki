@@ -4,7 +4,7 @@ name: Markdown
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  markdown-link-check:
+  main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
