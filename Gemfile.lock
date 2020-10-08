@@ -435,8 +435,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
-    launchy (2.4.3)
-      addressable (~> 2.3)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -800,7 +800,7 @@ DEPENDENCIES
   jb (~> 0.7.1)
   jquery-rails (~> 4.4)
   kaminari
-  launchy (~> 2.4)
+  launchy (~> 2.5)
   lograge (~> 0.11)
   mailboxer (~> 0.15)
   mini_magick (~> 4.9)
