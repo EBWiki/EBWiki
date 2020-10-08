@@ -50,7 +50,7 @@ gem 'jb', '~> 0.7.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 6.1'
-  gem 'faker', '~> 1.9'
+  gem 'faker', '~> 2.0'
   gem 'guard-rspec', '~> 4.7'
   gem 'pry-byebug', '~> 3.9'
   # Reduce N+1 queries
@@ -74,8 +74,8 @@ group :test do
   gem 'capybara', '~> 3.4'
   gem 'cucumber-rails', '~> 1.6', require: false
   gem 'database_cleaner-active_record', '~> 1.8.0'
-  gem 'launchy', '~> 2.4'
-  gem 'selenium-webdriver', '~> 2.43.0'
+  gem 'launchy', '~> 2.5'
+  gem 'selenium-webdriver', '~> 2.53.0'
   gem 'shoulda-matchers', '~> 3.1.1'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
   gem 'webmock'
