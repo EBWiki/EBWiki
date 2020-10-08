@@ -785,7 +785,7 @@ DEPENDENCIES
   devise (= 4.7.1)
   dotenv-rails (~> 2.7)
   factory_bot_rails (~> 6.1)
-  faker (~> 2.0)
+  faker (~> 2.14.0)
   fog (= 2.0)
   friendly_id (~> 5.2)
   fullcalendar-rails (~> 3.9)
