@@ -21,10 +21,10 @@ AllCops:
 Style/Lambda:
   Enabled: false
 
-Style/UnneededInterpolation:
+Style/RedundantInterpolation:
   Enabled: false
 
-Layout/IndentFirstArgument:
+Layout/FirstArgumentIndentation:
   Enabled: false
 
 Style/ClassAndModuleChildren:
