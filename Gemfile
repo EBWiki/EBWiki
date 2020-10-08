@@ -39,46 +39,43 @@ gem 'hightop', '~> 0.2'
 # xml sitemap
 gem 'sitemap_generator', '~> 6.1'
 
-# use split gem for a/b testing
-gem 'split', '3.2', require: 'split/dashboard'
+gem 'rollbar', '~> 3.0'
 
-gem 'rollbar', '~> 2.16'
+gem 'simplecov', '~> 0.19.0'
 
-gem 'simplecov', '~> 0.16.1'
-
-gem 'twitter', '~> 6.2'
+gem 'twitter', '~> 7.0'
 
 # JSON renderer for Rails
-gem 'jb', '~> 0.5.0'
+gem 'jb', '~> 0.7.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'factory_bot_rails', '~> 4.10'
-  gem 'faker', '~> 1.9'
+  gem 'factory_bot_rails', '~> 6.1'
+  gem 'faker', '~> 2.0'
   gem 'guard-rspec', '~> 4.7'
-  gem 'pry-byebug', '~> 3.6'
+  gem 'pry-byebug', '~> 3.9'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
-  gem 'mock_redis'
-  gem 'pre-commit', '~> 0.38'
+  gem 'mock_redis', '~> 0.26'
+  gem 'pre-commit', '~> 0.39'
   gem 'rspec-rails', '~> 3.8'
 end
 
 group :development do
-  gem 'brakeman', '~> 4.3', require: false
+  gem 'brakeman', '~> 4.10', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'derailed'
+  gem 'derailed_benchmarks', '~> 1.8'
   gem 'rails_real_favicon'
-  gem 'web-console', '~> 3.3'
+  gem 'web-console', '~> 3.7'
 end
 
 group :test do
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 3.4'
   gem 'cucumber-rails', '~> 1.6', require: false
-  gem 'database_cleaner', '~> 1.3.0'
-  gem 'launchy', '~> 2.4'
-  gem 'selenium-webdriver', '~> 2.43.0'
+  gem 'database_cleaner-active_record', '~> 1.8.0'
+  gem 'launchy', '~> 2.5'
+  gem 'selenium-webdriver', '~> 2.53.0'
   gem 'shoulda-matchers', '~> 3.1.1'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
   gem 'webmock'
