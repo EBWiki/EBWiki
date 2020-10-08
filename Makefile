@@ -30,7 +30,7 @@ rspec:
 	docker exec ebwiki bash -c 'source dev_provisions/environment.sh && rspec spec/'
 
 codeclimate:
-	time docker run --rm --env CODECLIMATE_CODE="$(PWD)" --volume "$(PWD)":/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc --volume "$(PWD)/.codeclimate.yml.orig.lite":/code/.codeclimate.yml codeclimate/codeclimate analyze
+	time docker run --rm --env CODECLIMATE_CODE="$(PWD)" --volume "$(PWD)":/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc --volume "$(PWD)/.codeclimate.yml.lite":/code/.codeclimate.yml codeclimate/codeclimate analyze
 
 all: clean build run
 
