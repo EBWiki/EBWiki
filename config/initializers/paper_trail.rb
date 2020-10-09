@@ -4,7 +4,7 @@
 PaperTrail::Rails::Engine.eager_load!
 PaperTrail.config.track_associations = true
 module PaperTrail
-  class Version < ActiveRecord::Base
+  class Version < ActiveRecord::Base # rubocop:todo Style/Documentation
     PaperTrail.config.track_associations = true
   end
 end

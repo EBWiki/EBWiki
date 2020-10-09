@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Cases controller
-class CasesController < ApplicationController
+class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   before_action :authenticate_user!, except: %i[index show history followers]
   before_action :set_instance_vars, only: %i[edit new create]
 
@@ -27,7 +27,7 @@ class CasesController < ApplicationController
     @subjects = @this_case.subjects
     @follow_id = current_user.follows.find_by_followable_id(@this_case.id) if user_signed_in?
     # Check to make sure all required elements are here
-    unless @this_case.present?
+    unless @this_case.present? # rubocop:todo Style/GuardClause
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
@@ -56,7 +56,8 @@ class CasesController < ApplicationController
     @this_case = Case.friendly.find(params[:case_slug])
   end
 
-  def update
+  # rubocop:todo Metrics/MethodLength
+  def update # rubocop:todo Metrics/AbcSize
     @this_case = Case.friendly.find(params[:id])
     @this_case.slug = nil
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
@@ -72,6 +73,7 @@ class CasesController < ApplicationController
   rescue StandardError => e
     Rollbar.exception(e)
   end
+  # rubocop:enable Metrics/MethodLength
 
   def destroy
     begin
@@ -89,7 +91,7 @@ class CasesController < ApplicationController
   def history
     @this_case = Case.friendly.find(params[:case_slug])
     @case_history = @this_case.versions.order(created_at: :desc)
-  rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound # rubocop:todo Lint/SuppressedException
   end
 
   def after_sign_up_path_for(resource)
@@ -98,7 +100,7 @@ class CasesController < ApplicationController
 
   private
 
-  def case_params
+  def case_params # rubocop:todo Metrics/MethodLength
     params[:case][:date] ||= []
     params.require(:case).permit(
                                   :title,
