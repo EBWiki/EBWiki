@@ -78,7 +78,7 @@ group :test do
   gem 'selenium-webdriver', '~> 2.53.0'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
-  gem 'webmock'
+  gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
 gem 'bootstrap-sass', '>= 3.4.1'
