@@ -90,7 +90,7 @@ gem 'simple_form', '5.0'
 # for aws cloud storage
 gem 'fog', '2.0'
 # photo resizing
-gem 'mini_magick', '~> 4.10.1'
+gem 'mini_magick', '~> 4.10'
 # file upload solution
 gem 'carrierwave', '~> 1.3'
 # image optimizer that works with carrierwave
