@@ -62,6 +62,10 @@ $color-dark-gray: #4D4D4D;
   background-color: $color-orange !important;
 }
 
+.btn-capitalized {
+  text-transform: none !important;
+}
+
 .btn-group.user-back {
     left: 70%;
 }

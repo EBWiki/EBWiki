@@ -25,7 +25,7 @@
           <div class="user-header">
             <h4><%= "#{@user.name}'s bio:" %></h4>
             <% if policy(@user).edit? %>
-              <%= link_to 'Edit profile', edit_user_path(@user), class: "btn btn-success" %>
+              <%= link_to 'Edit profile', edit_user_path(@user), class: "btn btn-success btn-capitalized" %>
             <% end %>
           </div>
           <p class="user-description"><%= @user.description %></p>
