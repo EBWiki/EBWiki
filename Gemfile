@@ -76,7 +76,7 @@ group :test do
   gem 'database_cleaner-active_record', '~> 1.8.0'
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 2.53.0'
-  gem 'shoulda-matchers', '~> 3.1.1'
+  gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
   gem 'webmock'
 end
