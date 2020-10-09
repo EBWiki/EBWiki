@@ -50,7 +50,7 @@ gem 'jb', '~> 0.7.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 6.1'
-  gem 'faker', '~> 2.0'
+  gem 'faker', '~> 2.14.0'
   gem 'guard-rspec', '~> 4.7'
   gem 'pry-byebug', '~> 3.9'
   # Reduce N+1 queries
@@ -78,12 +78,12 @@ group :test do
   gem 'selenium-webdriver', '~> 2.53.0'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
-  gem 'webmock'
+  gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '4.7.1'
+gem 'bootstrap-sass', '>= 3.4.1'
+gem 'devise', '4.7.3'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form', '5.0'
 

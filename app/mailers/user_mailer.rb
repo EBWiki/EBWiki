@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserMailer < ApplicationMailer
+class UserMailer < ApplicationMailer # rubocop:todo Style/Documentation
   helper UserMailerHelper
 
   default from: 'EndBiasWiki@gmail.com'
