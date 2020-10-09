@@ -81,8 +81,8 @@ group :test do
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap3-datetimepicker-rails'
+gem 'bootstrap-sass', '>= 3.4.1'
 gem 'devise', '4.7.3'
 gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form', '5.0'

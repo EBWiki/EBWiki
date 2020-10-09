@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class AddUserToMailchimp
+class AddUserToMailchimp # rubocop:todo Style/Documentation
   include Service
   def call(user)
-    if user.subscribed
+    if user.subscribed # rubocop:todo Style/GuardClause
       gb = Gibbon::Request.new
       gb.lists.subscribe(id: ENV['MAILCHIMP_LIST_ID'],
                          email: { email: "#{user.email}" },
