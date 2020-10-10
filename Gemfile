@@ -94,7 +94,7 @@ gem 'mini_magick', '~> 4.9'
 # file upload solution
 gem 'carrierwave', '~> 1.3'
 # image optimizer that works with carrierwave
-gem 'carrierwave-imageoptimizer'
+gem 'carrierwave-imageoptimizer', '~> 1.5.0'
 
 # CMS panel for admin
 gem 'rails_admin', '~> 1.3.0'
