@@ -12,4 +12,4 @@ jobs:
 
       - name: Run rspec
         run: |
-          make run rspec stop
+          make build run rspec stop
