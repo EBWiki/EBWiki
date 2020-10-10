@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   resources :maps
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
-  resources :users, only: %i[show edit]
+  resources :users, only: %i[show edit update]
   mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
 
   get '/analytics/users_by_day', to: 'analytics#users_by_day'
