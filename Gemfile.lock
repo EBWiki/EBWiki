@@ -636,7 +636,7 @@ GEM
     rspec-mocks (3.8.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
-    rspec-rails (3.8.2)
+    rspec-rails (~> 4.0, >= 4.0.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
@@ -824,7 +824,7 @@ DEPENDENCIES
   redis-rails
   redis-store
   rollbar (~> 3.0)
-  rspec-rails (~> 3.8)
+  rspec-rails (~> 4.0, >= 4.0.1)
   rubocop (~> 0.67)
   sassc-rails (~> 2.1)
   searchkick (~> 3.1)
