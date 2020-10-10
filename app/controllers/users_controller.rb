@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(user_params)
       SendAdminEmail.call(user: @user) if @user.previous_changes.include?('admin')
       flash[:success] = 'Your profile was updated!'
-      redirect_to @user
+      redirect_to user_path(@user)
     else
       render 'edit'
     end
