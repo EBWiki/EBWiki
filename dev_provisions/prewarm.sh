@@ -25,4 +25,5 @@ do
     fi
 done
 echo
-echo "## Warm up is complete! Start browsing here: http://localhost:3000"
+echo "## Warm up is complete after ${count} seconds!"
+echo "## Start browsing here: http://localhost:3000"
