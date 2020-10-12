@@ -99,7 +99,7 @@ gem 'carrierwave-imageoptimizer'
 # CMS panel for admin
 gem 'rails_admin', '~> 1.3.0'
 
-gem 'geocoder'
+gem 'geocoder', '~> 1.6', '>= 1.6.4'
 gem 'puma'
 
 # implement elasticsearch
