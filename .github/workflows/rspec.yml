@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 name: Rspec
 
@@ -13,3 +14,20 @@ jobs:
       - name: Run rspec
         run: |
           make run rspec stop
+=======
+---
+name: Rspec
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run rspec
+        run: |
+          make all rspec stop
+>>>>>>> parent of 69159ce5... Resolve rspec actions error
