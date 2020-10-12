@@ -127,6 +127,7 @@ class Case < ApplicationRecord
 
   def case_date_validator
     errors.add(:date, 'must be present') && return unless date.present?
+
     errors.add(:date, 'must be in the past') if date > Date.current
   end
 

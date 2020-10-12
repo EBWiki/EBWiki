@@ -2,7 +2,7 @@
 version: "2"
 plugins:
   brakeman:
-    enabled: true
+    enabled: false
   bundler-audit:
     enabled: true
   csslint:
@@ -22,7 +22,7 @@ plugins:
   fixme:
     enabled: true
   rubocop:
-    enabled: true
+    enabled: false
     channel: rubocop-0-67
 exclude_patterns:
 - vendor/assets/javascripts/*.js
