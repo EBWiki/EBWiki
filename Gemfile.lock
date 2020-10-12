@@ -148,6 +148,8 @@ GEM
     database_cleaner-active_record (1.8.0)
       activerecord
       database_cleaner (~> 1.8.0)
+    declarative (0.0.20)
+    declarative-option (0.1.0)
     derailed_benchmarks (1.8.1)
       benchmark-ips (~> 2)
       get_process_mem (~> 0)
@@ -168,6 +170,7 @@ GEM
     docile (1.3.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+<<<<<<< HEAD
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
@@ -177,6 +180,17 @@ GEM
       elasticsearch-api (= 7.9.0)
       elasticsearch-transport (= 7.9.0)
     elasticsearch-api (7.9.0)
+=======
+    dotenv (2.7.5)
+    dotenv-rails (2.7.5)
+      dotenv (= 2.7.5)
+      railties (>= 3.2, < 6.1)
+    dry-inflector (0.2.0)
+    elasticsearch (7.0.0)
+      elasticsearch-api (= 7.0.0)
+      elasticsearch-transport (= 7.0.0)
+    elasticsearch-api (7.0.0)
+>>>>>>> 64e8b0d5ff77aa5b087488e1ad12e7cc1bb98316
       multi_json
     elasticsearch-transport (7.9.0)
       faraday (~> 1)
@@ -200,20 +214,20 @@ GEM
       rake
     fission (0.5.0)
       CFPropertyList (~> 2.2)
-    fog (2.0.0)
+    fog (2.2.0)
       fog-aliyun (>= 0.1.0)
       fog-atmos
       fog-aws (>= 0.6.0)
       fog-brightbox (~> 0.4)
-      fog-cloudatcost (~> 0.1.0)
-      fog-core (~> 1.45)
+      fog-cloudatcost (~> 0.4)
+      fog-cloudstack (~> 0.1.0)
+      fog-core (~> 2.1)
       fog-digitalocean (>= 0.3.0)
-      fog-dnsimple (~> 1.0)
+      fog-dnsimple (~> 2.1)
       fog-dynect (~> 0.0.2)
       fog-ecloud (~> 0.1)
-      fog-google (<= 0.1.0)
+      fog-google (~> 1.0)
       fog-internet-archive
-      fog-joyent
       fog-json
       fog-local
       fog-openstack
@@ -244,9 +258,9 @@ GEM
     fog-atmos (0.1.0)
       fog-core
       fog-xml
-    fog-aws (2.0.1)
-      fog-core (~> 1.38)
-      fog-json (~> 1.0)
+    fog-aws (3.6.7)
+      fog-core (~> 2.1)
+      fog-json (~> 1.1)
       fog-xml (~> 0.1)
       ipaddress (~> 0.8)
     fog-brightbox (0.16.1)
@@ -254,23 +268,27 @@ GEM
       fog-core
       fog-json
       mime-types
-    fog-cloudatcost (0.1.2)
-      fog-core (~> 1.36)
-      fog-json (~> 1.0)
+    fog-cloudatcost (0.4.0)
+      fog-core
+      fog-json
+      ipaddress
+    fog-cloudstack (0.1.0)
+      fog-core (~> 2.1)
+      fog-json (~> 1.1)
       fog-xml (~> 0.1)
-      ipaddress (~> 0.8)
-    fog-core (1.45.0)
+    fog-core (2.2.3)
       builder
-      excon (~> 0.58)
+      excon (~> 0.71)
       formatador (~> 0.2)
+      mime-types
     fog-digitalocean (0.4.0)
       fog-core
       fog-json
       fog-xml
       ipaddress (>= 0.5)
-    fog-dnsimple (1.0.0)
-      fog-core (~> 1.38)
-      fog-json (~> 1.0)
+    fog-dnsimple (2.1.0)
+      fog-core (>= 1.38, < 3)
+      fog-json
     fog-dynect (0.0.3)
       fog-core
       fog-json
@@ -278,24 +296,25 @@ GEM
     fog-ecloud (0.3.0)
       fog-core
       fog-xml
-    fog-google (0.1.0)
+    fog-google (1.7.1)
       fog-core
       fog-json
       fog-xml
+<<<<<<< HEAD
+=======
+      google-api-client (~> 0.23.0)
+>>>>>>> 64e8b0d5ff77aa5b087488e1ad12e7cc1bb98316
     fog-internet-archive (0.0.2)
       fog-core
       fog-json
       fog-xml
-    fog-joyent (0.0.1)
-      fog-core (~> 1.42)
-      fog-json (>= 1.0)
     fog-json (1.2.0)
       fog-core
       multi_json (~> 1.10)
     fog-local (0.6.0)
       fog-core (>= 1.27, < 3.0)
-    fog-openstack (0.3.10)
-      fog-core (>= 1.45, <= 2.1.0)
+    fog-openstack (1.0.11)
+      fog-core (~> 2.1)
       fog-json (>= 1.0)
       ipaddress (>= 0.8)
     fog-ovirt (1.2.5)
@@ -308,9 +327,10 @@ GEM
       fog-core
       fog-json
       fog-xml
-    fog-profitbricks (4.1.1)
-      fog-core (~> 1.42)
-      fog-json (~> 1.0)
+    fog-profitbricks (0.0.5)
+      fog-core
+      fog-xml
+      nokogiri
     fog-rackspace (0.1.6)
       fog-core (>= 1.35)
       fog-json (>= 1.0)
@@ -375,7 +395,26 @@ GEM
       multi_json (>= 1.11.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+<<<<<<< HEAD
     groupdate (5.2.1)
+=======
+    google-api-client (0.23.9)
+      addressable (~> 2.5, >= 2.5.1)
+      googleauth (>= 0.5, < 0.7.0)
+      httpclient (>= 2.8.1, < 3.0)
+      mime-types (~> 3.0)
+      representable (~> 3.0)
+      retriable (>= 2.0, < 4.0)
+      signet (~> 0.9)
+    googleauth (0.6.7)
+      faraday (~> 0.12)
+      jwt (>= 1.4, < 3.0)
+      memoist (~> 0.16)
+      multi_json (~> 1.11)
+      os (>= 0.9, < 2.0)
+      signet (~> 0.7)
+    groupdate (5.0.0)
+>>>>>>> 64e8b0d5ff77aa5b087488e1ad12e7cc1bb98316
       activesupport (>= 5)
     guard (2.16.2)
       formatador (>= 0.2.4)
@@ -415,7 +454,12 @@ GEM
     httparty (0.18.1)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
+<<<<<<< HEAD
     i18n (1.8.5)
+=======
+    httpclient (2.8.3)
+    i18n (1.8.3)
+>>>>>>> 64e8b0d5ff77aa5b087488e1ad12e7cc1bb98316
       concurrent-ruby (~> 1.0)
     image_optimizer (1.8.0)
     image_processing (1.12.0)
@@ -431,6 +475,7 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (2.3.1)
+    jwt (2.2.2)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -471,6 +516,7 @@ GEM
       nokogiri (~> 1.6)
       ntlm-http (~> 0.1, >= 0.1.1)
       webrobots (>= 0.0.9, < 0.2)
+    memoist (0.16.2)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     memory_profiler (0.9.14)
@@ -508,6 +554,10 @@ GEM
     ntlm-http (0.1.1)
     optimist (3.0.1)
     orm_adapter (0.5.0)
+<<<<<<< HEAD
+=======
+    os (1.1.1)
+>>>>>>> 64e8b0d5ff77aa5b087488e1ad12e7cc1bb98316
     ovirt-engine-sdk (4.4.0)
       json (>= 1, < 3)
     paper_trail (10.3.1)
@@ -614,10 +664,21 @@ GEM
       redis-actionpack (>= 5.0, < 6)
       redis-activesupport (>= 5.0, < 6)
       redis-store (>= 1.2, < 2)
+<<<<<<< HEAD
     redis-store (1.9.0)
       redis (>= 4, < 5)
     regexp_parser (1.8.2)
     remotipart (1.4.4)
+=======
+    redis-store (1.6.0)
+      redis (>= 2.2, < 5)
+    regexp_parser (1.4.0)
+    remotipart (1.4.2)
+    representable (3.0.4)
+      declarative (< 0.1.0)
+      declarative-option (< 0.2.0)
+      uber (< 0.2.0)
+>>>>>>> 64e8b0d5ff77aa5b087488e1ad12e7cc1bb98316
     request_store (1.5.0)
       rack (>= 1.4)
     responders (3.0.1)
@@ -628,7 +689,11 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+<<<<<<< HEAD
     rexml (3.2.4)
+=======
+    retriable (3.1.2)
+>>>>>>> 64e8b0d5ff77aa5b087488e1ad12e7cc1bb98316
     rollbar (3.0.0)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -689,6 +754,11 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (4.4.1)
       activesupport (>= 4.2.0)
+    signet (0.12.0)
+      addressable (~> 2.3)
+      faraday (~> 0.9)
+      jwt (>= 1.5, < 3.0)
+      multi_json (~> 1.10)
     simple_form (5.0.0)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -730,6 +800,7 @@ GEM
       simple_oauth (~> 0.3.0)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
+    uber (0.1.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
@@ -785,7 +856,7 @@ DEPENDENCIES
   dotenv-rails (~> 2.7)
   factory_bot_rails (~> 6.1)
   faker (~> 2.14.0)
-  fog (= 2.0)
+  fog (= 2.2)
   friendly_id (~> 5.2)
   fullcalendar-rails (~> 3.9)
   galerts (~> 1.1)
