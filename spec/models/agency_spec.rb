@@ -19,8 +19,8 @@ RSpec.describe Agency do
   it do
     FactoryBot.create(:agency)
     should validate_uniqueness_of(:name).ignoring_case_sensitivity
-                                        .with_message('An agency with this name already exists and can be found. If you'\
-                  ' want to create a new agency, it must have a unique name.')
+                                        .with_message('An agency with this name already exists '\
+              'and can be found. If you want to create a new agency, it must have a unique name.')
   end
 
   it 'updates slug if agency title is updated' do

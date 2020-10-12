@@ -85,15 +85,11 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:each, type: :controller) do
-    @request.host = 'localhost:3000'
+    DatabaseCleaner.strategy = :truncation
   end
 
   config.before(:each, type: :request) do
-    host!('localhost:3000')
+    host!('localhost:8080')
   end
 
   config.after(:each, type: :request) do

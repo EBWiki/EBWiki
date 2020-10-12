@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'Registrations', type: :request do
   describe 'POST /registrations' do
     context 'on success' do
@@ -15,8 +16,8 @@ RSpec.describe 'Registrations', type: :request do
         }
       end
 
-      it 'redirects to the users'' home page' do
-        expect(response).to redirect_to('/users/mark-nyon')
+      it "redirects to the users' home page" do
+        expect(response).to redirect_to('/')
       end
 
       it 'creates a new user' do
@@ -47,3 +48,4 @@ RSpec.describe 'Registrations', type: :request do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,0 +1,10 @@
+{
+	"ignorePatterns": [
+		{
+			"pattern": "*localhost*"
+		},
+		{
+			"pattern": "*redis.io*"
+		}
+	],
+}

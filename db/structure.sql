@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.8
--- Dumped by pg_dump version 9.6.10
+-- Dumped from database version 12.4
+-- Dumped by pg_dump version 12.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,22 +12,9 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 
 --
 -- Name: cause_of_death; Type: TYPE; Schema: public; Owner: -
@@ -41,7 +28,10 @@ CREATE TYPE public.cause_of_death AS ENUM (
     'vehicular',
     'medical neglect',
     'response to medical emergency',
-    'suicide'
+    'suicide',
+    'chemical_agents_or_weapons',
+    'drowning',
+    'stabbing'
 );
 
 
@@ -61,7 +51,7 @@ CREATE TYPE public.jurisdiction AS ENUM (
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: agencies; Type: TABLE; Schema: public; Owner: -
@@ -91,6 +81,7 @@ CREATE TABLE public.agencies (
 --
 
 CREATE SEQUENCE public.agencies_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -132,38 +123,6 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: article_documents; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.article_documents (
-    id integer NOT NULL,
-    article_id integer,
-    document_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: article_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.article_documents_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: article_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.article_documents_id_seq OWNED BY public.article_documents.id;
-
-
---
 -- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -183,6 +142,7 @@ CREATE TABLE public.calendar_events (
 --
 
 CREATE SEQUENCE public.calendar_events_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -215,6 +175,7 @@ CREATE TABLE public.case_agencies (
 --
 
 CREATE SEQUENCE public.case_agencies_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -247,6 +208,7 @@ CREATE TABLE public.case_officers (
 --
 
 CREATE SEQUENCE public.case_officers_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -302,6 +264,7 @@ CREATE TABLE public.cases (
 --
 
 CREATE SEQUENCE public.cases_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -333,6 +296,7 @@ CREATE TABLE public.causes_of_death (
 --
 
 CREATE SEQUENCE public.causes_of_death_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -367,6 +331,7 @@ CREATE TABLE public.comments (
 --
 
 CREATE SEQUENCE public.comments_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -379,38 +344,6 @@ CREATE SEQUENCE public.comments_id_seq
 --
 
 ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
-
-
---
--- Name: documents; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.documents (
-    id integer NOT NULL,
-    title character varying,
-    attachment character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.documents_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
 
 
 --
@@ -431,6 +364,7 @@ CREATE TABLE public.ethnicities (
 --
 
 CREATE SEQUENCE public.ethnicities_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -462,6 +396,7 @@ CREATE TABLE public.event_statuses (
 --
 
 CREATE SEQUENCE public.event_statuses_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -497,6 +432,7 @@ CREATE TABLE public.follows (
 --
 
 CREATE SEQUENCE public.follows_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -530,6 +466,7 @@ CREATE TABLE public.friendly_id_slugs (
 --
 
 CREATE SEQUENCE public.friendly_id_slugs_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -562,6 +499,7 @@ CREATE TABLE public.genders (
 --
 
 CREATE SEQUENCE public.genders_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -596,6 +534,7 @@ CREATE TABLE public.links (
 --
 
 CREATE SEQUENCE public.links_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -627,6 +566,7 @@ CREATE TABLE public.mailboxer_conversation_opt_outs (
 --
 
 CREATE SEQUENCE public.mailboxer_conversation_opt_outs_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -658,6 +598,7 @@ CREATE TABLE public.mailboxer_conversations (
 --
 
 CREATE SEQUENCE public.mailboxer_conversations_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -701,6 +642,7 @@ CREATE TABLE public.mailboxer_notifications (
 --
 
 CREATE SEQUENCE public.mailboxer_notifications_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -738,6 +680,7 @@ CREATE TABLE public.mailboxer_receipts (
 --
 
 CREATE SEQUENCE public.mailboxer_receipts_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -773,6 +716,7 @@ CREATE TABLE public.organizations (
 --
 
 CREATE SEQUENCE public.organizations_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -814,6 +758,7 @@ CREATE TABLE public.sessions (
 --
 
 CREATE SEQUENCE public.sessions_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -848,6 +793,7 @@ CREATE TABLE public.states (
 --
 
 CREATE SEQUENCE public.states_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -887,6 +833,7 @@ CREATE TABLE public.subjects (
 --
 
 CREATE SEQUENCE public.subjects_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -922,7 +869,6 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false,
     latitude double precision,
     longitude double precision,
-    storytime_name character varying,
     name character varying NOT NULL,
     description text,
     state_id integer,
@@ -945,6 +891,7 @@ CREATE TABLE public.users (
 --
 
 CREATE SEQUENCE public.users_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -976,6 +923,7 @@ CREATE TABLE public.version_associations (
 --
 
 CREATE SEQUENCE public.version_associations_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1015,6 +963,7 @@ CREATE TABLE public.versions (
 --
 
 CREATE SEQUENCE public.versions_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1068,13 +1017,6 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 
 
 --
--- Name: article_documents id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.article_documents ALTER COLUMN id SET DEFAULT nextval('public.article_documents_id_seq'::regclass);
-
-
---
 -- Name: calendar_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1114,13 +1056,6 @@ ALTER TABLE ONLY public.causes_of_death ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
-
-
---
--- Name: documents id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.documents_id_seq'::regclass);
 
 
 --
@@ -1267,14 +1202,6 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: article_documents article_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.article_documents
-    ADD CONSTRAINT article_documents_pkey PRIMARY KEY (id);
-
-
---
 -- Name: calendar_events calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1320,14 +1247,6 @@ ALTER TABLE ONLY public.causes_of_death
 
 ALTER TABLE ONLY public.comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
-
-
---
--- Name: documents documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.documents
-    ADD CONSTRAINT documents_pkey PRIMARY KEY (id);
 
 
 --
@@ -1416,6 +1335,14 @@ ALTER TABLE ONLY public.mailboxer_receipts
 
 ALTER TABLE ONLY public.organizations
     ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
 --
@@ -1664,6 +1591,13 @@ CREATE INDEX index_sessions_on_updated_at ON public.sessions USING btree (update
 
 
 --
+-- Name: index_states_on_ansi_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_states_on_ansi_code ON public.states USING btree (ansi_code);
+
+
+--
 -- Name: index_states_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1755,13 +1689,6 @@ CREATE INDEX index_visits_on_user_id ON public.visits USING btree (user_id);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
-
-
---
 -- Name: subjects fk_rails_94f26cc552; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1808,138 +1735,6 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20150411045119'),
-('20150411054020'),
-('20150411054517'),
-('20150411060853'),
-('20150411060938'),
-('20150411122751'),
-('20150411124715'),
-('20150411130113'),
-('20150412010636'),
-('20150412011843'),
-('20150412014130'),
-('20150413164803'),
-('20150413164945'),
-('20150415032541'),
-('20150415044450'),
-('20150415044451'),
-('20150415144255'),
-('20150415171903'),
-('20150415173749'),
-('20150415182911'),
-('20150415183753'),
-('20150416173320'),
-('20150419221553'),
-('20150420183623'),
-('20150427111411'),
-('20150430114813'),
-('20150430115058'),
-('20150430115608'),
-('20150501015011'),
-('20150516015757'),
-('20150516015758'),
-('20150516015759'),
-('20150516015760'),
-('20150516015761'),
-('20150516015762'),
-('20150516015763'),
-('20150516015764'),
-('20150516015765'),
-('20150516015766'),
-('20150516015767'),
-('20150516015768'),
-('20150516015769'),
-('20150516015770'),
-('20150516015771'),
-('20150516015772'),
-('20150516015773'),
-('20150516015774'),
-('20150516015775'),
-('20150516015776'),
-('20150516015777'),
-('20150516015778'),
-('20150516015779'),
-('20150516015780'),
-('20150516015781'),
-('20150516015782'),
-('20150516015783'),
-('20150516015784'),
-('20150516015785'),
-('20150516015786'),
-('20150516015787'),
-('20150516015788'),
-('20150516015789'),
-('20150516015790'),
-('20150516015791'),
-('20150516015792'),
-('20150516015793'),
-('20150516015794'),
-('20150516015795'),
-('20150516015796'),
-('20150516015797'),
-('20150516015798'),
-('20150516015799'),
-('20150516015800'),
-('20150516015801'),
-('20150516015802'),
-('20150516015803'),
-('20150516015804'),
-('20150610134530'),
-('20150610145558'),
-('20150610152921'),
-('20150610153742'),
-('20150610155451'),
-('20150613024616'),
-('20150613024617'),
-('20150616144746'),
-('20150616145710'),
-('20150620052647'),
-('20150621123958'),
-('20150627182101'),
-('20150627214620'),
-('20150627214621'),
-('20150627214622'),
-('20150628111851'),
-('20150703173803'),
-('20150704214350'),
-('20150711165418'),
-('20150711171226'),
-('20150711220852'),
-('20150711223508'),
-('20150716081959'),
-('20150721210914'),
-('20150724221034'),
-('20150728144434'),
-('20150728144741'),
-('20150728160532'),
-('20150728160732'),
-('20150728161406'),
-('20150730023101'),
-('20150731024304'),
-('20150806203252'),
-('20150806203403'),
-('20150905173353'),
-('20150906203304'),
-('20160130190718'),
-('20160130193631'),
-('20160130200139'),
-('20160316002607'),
-('20160316005234'),
-('20160316010947'),
-('20160323064052'),
-('20160515184220'),
-('20160517083501'),
-('20160517095316'),
-('20160613161246'),
-('20160627185018'),
-('20160629194154'),
-('20160629195510'),
-('20160630162855'),
-('20160708194753'),
-('20160802133753'),
-('20160802145517'),
-('20170519002221'),
 ('20170520020651'),
 ('20170919051847'),
 ('20180227022027'),
@@ -1980,10 +1775,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190422003442'),
 ('20190815012327'),
 ('20190824175709'),
-('20190825000337');
+('20190825000337'),
+('20191114063555'),
+('20200812015951'),
+('20200901014746');
 
-<<<<<<< HEAD
 
-=======
-INSERT INTO schema_migrations (version) VALUES ('20190422003442');
->>>>>>> Update for dev provisions

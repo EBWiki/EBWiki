@@ -10,11 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require_self
-//= require gmaps/google
 //= require jquery
-//= require ahoy
-//= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require moment
@@ -25,10 +21,8 @@
 //= require social-share-button
 //= require underscore
 //= require select2
+//= require_tree .
 //= require ckeditor/init
 //= require fullcalendar
-//= require chartkick
-//= require Chart.bundle
-//= require_tree .
 
 $('#calendar').fullCalendar({});

@@ -4,7 +4,8 @@
 module MapsHelper
   def fetch_cases
     cases = $redis.get('cases')
-    if cases.blank?
+
+    if cases.nil?
       cases = Case.all.to_json
       $redis.set('cases', cases)
       $redis.expire('cases', 2.hour.to_i)

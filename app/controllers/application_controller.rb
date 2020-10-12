@@ -9,13 +9,13 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  if Rails.env.staging?
+  if Rails.env.staging? || ENV['HOST'] == 'ebwiki-newstack.herokuapp.com'
     http_basic_authenticate_with name: ENV['STAGING_USERNAME'], password: ENV['STAGING_PASSWORD']
   end
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :exception, prepend: true
   before_action :set_paper_trail_whodunnit
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :state_objects
@@ -34,15 +34,18 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { host: ENV.fetch('HOST', 'localhost:3000') }
+    {
+      host: ENV.fetch('HOST', 'localhost'),
+      port: ENV.fetch('PORT', '8080')
+    }
   end
 
   private
 
-  def log_invalid_token_attempt
+  def log_invalid_token_attempt(exception)
     warning_message = 'Invalid Auth Token error'
     Rails.logger.warn warning_message
-    Rollbar.warning warning_message
+    Rollbar.error(exception)
     redirect_to '/'
   end
 
@@ -68,7 +71,11 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
     devise_parameter_sanitizer.permit(:account_update, keys: [:name])
-    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:name, :description, :subscribed, :email, :password, :password_confirmation) }
-    devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:name, :description, :subscribed, :email, :password, :password_confirmation) }
+    devise_parameter_sanitizer.permit(:sign_up) do |u|
+      u.permit(:name, :description, :subscribed, :email, :password, :password_confirmation)
+    end
+    devise_parameter_sanitizer.permit(:account_update) do |u|
+      u.permit(:name, :description, :subscribed, :email, :password, :password_confirmation)
+    end
   end
 end

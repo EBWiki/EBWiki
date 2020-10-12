@@ -10,6 +10,8 @@ FactoryBot.define do
     f.state # { FactoryBot.create(:state) }
     f.subjects { [create(:subject)] }
     f.links { [create(:link)] }
+    f.latitude { 50.00000 }
+    f.longitude { 113.000 }
     f.summary { 'A summary of changes' }
     f.blurb { 'Blurb about case' }
   end

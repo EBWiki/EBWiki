@@ -23,7 +23,7 @@ heroku login
 Enter the email and password associated with your Heroku account when prompted.  Next, either create a new ssh key or upload an existing one when prompted.
 
 ## Deploy to Heroku
-In your terminal, navigate to the EBWiki directory, and pull the latest version of the master branch.
+In your terminal, navigate to the EBWiki directory, and pull the latest version of the main branch.
 
 If you need to add a remote to your local repository , use the following command:
 
@@ -34,11 +34,11 @@ heroku git:remote -a ebwiki
 Deploy your app to Heroku using the following command:
 
 ```
-git push heroku master
+git push heroku main
 ```
 
 ## Handling the Database
-Now that you've successfully pushed your master branch to the remote, migrate the database:
+Now that you've successfully pushed your main branch to the remote, migrate the database:
 
 ```
 heroku run rake db:migrate

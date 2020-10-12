@@ -3,13 +3,15 @@
 # Handle map related actions
 class MapsController < ApplicationController
   include MapsHelper
+  before_action :authenticate_user!, except: %i[index show history followers]
+
   def index
     @cases = fetch_cases
     @cases = @cases.map do |this_case|
+      next if this_case.empty?
+
       [
-        this_case['id'], this_case['latitude'],
-        this_case['longitude'], this_case['avatar'],
-        this_case['title'], this_case['overview']
+        this_case['latitude'], this_case['longitude']
       ]
     end
   end

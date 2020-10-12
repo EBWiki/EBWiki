@@ -1,0 +1,35 @@
+---
+version: "2"
+plugins:
+  brakeman:
+    enabled: false
+  bundler-audit:
+    enabled: true
+  csslint:
+    enabled: true
+  coffeelint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby:
+      - javascript:
+      - python:
+      - php:
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  rubocop:
+    enabled: false
+    channel: rubocop-0-67
+exclude_patterns:
+- vendor/assets/javascripts/*.js
+- db/
+- spec/
+- "Gemfile.lock"
+- public/assets/**/*
+- doc/**/*
+- docs/**/*
+- config/

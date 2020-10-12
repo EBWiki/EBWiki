@@ -47,6 +47,9 @@
               <% end %>
             </p>
           <% end %>
+          <% if @this_case.cause_of_death_name? %>
+            <p>Cause of death: <%= @this_case.cause_of_death_name %></p>
+          <% end %>
           <div>
             <% if current_user %>
               <% if current_user.following?(@this_case) %>
@@ -82,11 +85,7 @@
           <% if @this_case.links.count > 0 %>
             <h4 class="article_subheader">Additional Resources:</h4>
             <ul class="background-links" id="link-list">
-              <% @this_case.links.each do |link| %>
-                <li>
-                  <%= link_to link.url, "#{link.url}", target: '_blank' %> <span class="timeAgo">added <%= link.created_at.to_s(:long) %></span>
-                </li>
-              <% end %>
+              <%= render partial: 'case_link', collection: @this_case.links, as: :link %>
             </ul>
           <% end %>
         </div>

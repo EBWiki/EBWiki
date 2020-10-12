@@ -15,14 +15,15 @@ AllCops:
     - bin/*
     - script/*
     - config/routes.rb
+    - 'spec/**/*'
 
 Style/Lambda:
   Enabled: false
 
-Style/UnneededInterpolation:
+Style/RedundantInterpolation:
   Enabled: false
 
-Layout/IndentFirstArgument:
+Layout/FirstArgumentIndentation:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -33,3 +34,4 @@ Style/GlobalVars:
 
 Security/JSONLoad:
   Enabled: false
+
