@@ -499,7 +499,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
     mini_histogram (0.3.1)
-    mini_magick (4.9.5)
+    mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.14.1)
@@ -670,7 +670,7 @@ GEM
     rspec-mocks (3.8.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
-    rspec-rails (3.8.2)
+    rspec-rails (~> 4.0, >= 4.0.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
@@ -840,7 +840,7 @@ DEPENDENCIES
   launchy (~> 2.5)
   lograge (~> 0.11)
   mailboxer (~> 0.15)
-  mini_magick (~> 4.9)
+  mini_magick (~> 4.10)
   mock_redis (~> 0.26)
   momentjs-rails
   newrelic_rpm (~> 5.2.0)
@@ -863,7 +863,7 @@ DEPENDENCIES
   redis-rails
   redis-store
   rollbar (~> 3.0)
-  rspec-rails (~> 3.8)
+  rspec-rails (~> 4.0, >= 4.0.1)
   rubocop (~> 0.67)
   sassc-rails (~> 2.1)
   searchkick (~> 3.1)
