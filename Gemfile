@@ -84,20 +84,19 @@ end
 gem 'bootstrap3-datetimepicker-rails'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'devise', '4.7.3'
-gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form', '5.0'
 
 # for aws cloud storage
 gem 'fog', '2.2'
 # photo resizing
-gem 'mini_magick', '~> 4.9'
+gem 'mini_magick', '~> 4.10'
 # file upload solution
 gem 'carrierwave', '~> 1.3'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
 # CMS panel for admin
-gem 'rails_admin', '~> 1.3.0'
+gem 'rails_admin', '~> 2.0'
 
 gem 'geocoder'
 gem 'puma'
