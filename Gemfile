@@ -97,7 +97,7 @@ gem 'carrierwave', '~> 1.3'
 gem 'carrierwave-imageoptimizer'
 
 # CMS panel for admin
-gem 'rails_admin', '~> 1.3.0'
+gem 'rails_admin', '~> 2.0'
 
 gem 'geocoder'
 gem 'puma'
