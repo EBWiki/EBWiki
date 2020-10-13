@@ -4,7 +4,7 @@ name: Rspec
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  main:
+  rspec:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
