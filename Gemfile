@@ -106,7 +106,7 @@ gem 'puma'
 gem 'searchkick', '~> 3.1'
 
 # manage nested forms
-gem 'cocoon'
+gem 'cocoon', '~> 1.2', '>= 1.2.15'
 
 # add social share buttons
 gem 'social-share-button'
