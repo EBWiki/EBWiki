@@ -1,7 +1,7 @@
 ---
 name: Rspec
 
-on: [pull_request, workflow_dispatch, push]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   main:
