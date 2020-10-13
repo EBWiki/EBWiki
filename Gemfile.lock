@@ -834,7 +834,7 @@ DEPENDENCIES
   launchy (~> 2.5)
   lograge (~> 0.11)
   mailboxer (~> 0.15)
-  mini_magick (~> 4.9)
+  mini_magick (~> 4.10)
   mock_redis (~> 0.26)
   momentjs-rails
   newrelic_rpm (~> 5.2.0)
