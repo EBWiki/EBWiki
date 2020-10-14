@@ -130,7 +130,7 @@ gem 'paper_trail-association_tracking'
 gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
-gem 'kaminari'
+gem 'kaminari', '~> 1.2', '>= 1.2.1'
 
 gem 'redis'
 gem 'redis-namespace', '~> 1.6'

@@ -796,7 +796,7 @@ DEPENDENCIES
   httparty (~> 0.16)
   jb (~> 0.7.1)
   jquery-rails (~> 4.4)
-  kaminari
+  kaminari (~> 1.2, >= 1.2.1)
   launchy (~> 2.5)
   lograge (~> 0.11)
   mailboxer (~> 0.15)
