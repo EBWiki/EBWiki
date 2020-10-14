@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  main:
+  publish_docker_image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

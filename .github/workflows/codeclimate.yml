@@ -4,7 +4,7 @@ name: Codeclimate Lite
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  main:
+  codeclimate_lite:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
