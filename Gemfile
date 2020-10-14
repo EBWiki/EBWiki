@@ -77,7 +77,7 @@ group :test do
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 2.53.0'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
-  gem 'vcr', '~> 3.0', '>= 3.0.3'
+  gem 'vcr', '~> 6.0'
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
