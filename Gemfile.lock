@@ -769,7 +769,7 @@ GEM
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
     uniform_notifier (1.13.0)
-    vcr (3.0.3)
+    vcr (6.0.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (3.7.0)
@@ -870,7 +870,7 @@ DEPENDENCIES
   turbolinks (~> 5.2)
   twitter (~> 7.0)
   uglifier (= 4.2)
-  vcr (~> 3.0, >= 3.0.3)
+  vcr (~> 6.0)
   web-console (~> 3.7)
   webmock (~> 3.9, >= 3.9.1)
 
