@@ -105,12 +105,12 @@
 		</fieldset>
 	</div>
 
-<div class="cold-md-12">
-  <fieldset class="fsStyle">
-  	<legend class="legendStyle">Blurb About Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover', :placement => "bottom", :title => "Blurb", :content => "A text-only summary of the case.  All HTML will automatically be stripped, and the field is limited to 500 characters or less"})%></legend>
-  	<%= f.input :blurb %>
-  </fieldset>
-</div>
+  <div class="cold-md-12">
+    <fieldset class="fsStyle">
+      <legend class="legendStyle">Blurb About Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover', :placement => "bottom", :title => "Blurb", :content => "A text-only summary of the case.  All HTML will automatically be stripped, and the field is limited to 500 characters or less"})%></legend>
+      <%= f.input :blurb %>
+    </fieldset>
+  </div>
 
 	<div class="cold-md-12">
 	  <fieldset class="fsStyle">
@@ -136,8 +136,11 @@
 <% end %>
 
 <script type="text/javascript">
-  $('.datetimepicker').datetimepicker();
-  $('input[id=lefile_article]').change(function() {
-  	$('#photoCover_article').val(_.last($(this).val().split("\\")));
+  $(document).ready(function() {
+    $('#case_agency_ids').select2();
+    $('.datetimepicker').datetimepicker();
+    $('input[id=lefile_article]').change(function() {
+      $('#photoCover_article').val(_.last($(this).val().split("\\")));
+    });
   });
 </script>
