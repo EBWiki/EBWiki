@@ -8,7 +8,6 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    CFPropertyList (2.3.6)
     actioncable (5.0.7.2)
       actionpack (= 5.0.7.2)
       nio4r (>= 1.2, < 3.0)
@@ -166,7 +165,6 @@ GEM
     dotenv-rails (2.7.2)
       dotenv (= 2.7.2)
       railties (>= 3.2, < 6.1)
-    dry-inflector (0.1.2)
     elasticsearch (7.0.0)
       elasticsearch-api (= 7.0.0)
       elasticsearch-transport (= 7.0.0)
@@ -177,7 +175,7 @@ GEM
       multi_json
     equalizer (0.0.11)
     erubis (2.7.0)
-    excon (0.71.0)
+    excon (0.78.0)
     execjs (2.7.0)
     factory_bot (4.11.1)
       activesupport (>= 3.0.0)
@@ -189,159 +187,19 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.10.0)
-    fission (0.5.0)
-      CFPropertyList (~> 2.2)
-    fog (2.0.0)
-      fog-aliyun (>= 0.1.0)
-      fog-atmos
-      fog-aws (>= 0.6.0)
-      fog-brightbox (~> 0.4)
-      fog-cloudatcost (~> 0.1.0)
-      fog-core (~> 1.45)
-      fog-digitalocean (>= 0.3.0)
-      fog-dnsimple (~> 1.0)
-      fog-dynect (~> 0.0.2)
-      fog-ecloud (~> 0.1)
-      fog-google (<= 0.1.0)
-      fog-internet-archive
-      fog-joyent
-      fog-json
-      fog-local
-      fog-openstack
-      fog-ovirt
-      fog-powerdns (>= 0.1.1)
-      fog-profitbricks
-      fog-rackspace
-      fog-radosgw (>= 0.0.2)
-      fog-riakcs
-      fog-sakuracloud (>= 0.0.4)
-      fog-serverlove
-      fog-softlayer
-      fog-storm_on_demand
-      fog-terremark
-      fog-vmfusion
-      fog-voxel
-      fog-vsphere (>= 0.4.0)
-      fog-xenserver
-      fog-xml (~> 0.1.1)
-      ipaddress (~> 0.5)
-      json (~> 2.0)
-    fog-aliyun (0.3.3)
-      fog-core
-      fog-json
-      ipaddress (~> 0.8)
-      xml-simple (~> 1.1)
-    fog-atmos (0.1.0)
-      fog-core
-      fog-xml
-    fog-aws (2.0.1)
-      fog-core (~> 1.38)
-      fog-json (~> 1.0)
+    fog-aws (3.6.7)
+      fog-core (~> 2.1)
+      fog-json (~> 1.1)
       fog-xml (~> 0.1)
       ipaddress (~> 0.8)
-    fog-brightbox (0.16.1)
-      dry-inflector
-      fog-core
-      fog-json
-      mime-types
-    fog-cloudatcost (0.1.2)
-      fog-core (~> 1.36)
-      fog-json (~> 1.0)
-      fog-xml (~> 0.1)
-      ipaddress (~> 0.8)
-    fog-core (1.45.0)
+    fog-core (2.2.3)
       builder
-      excon (~> 0.58)
+      excon (~> 0.71)
       formatador (~> 0.2)
-    fog-digitalocean (0.4.0)
-      fog-core
-      fog-json
-      fog-xml
-      ipaddress (>= 0.5)
-    fog-dnsimple (1.0.0)
-      fog-core (~> 1.38)
-      fog-json (~> 1.0)
-    fog-dynect (0.0.3)
-      fog-core
-      fog-json
-      fog-xml
-    fog-ecloud (0.3.0)
-      fog-core
-      fog-xml
-    fog-google (0.1.0)
-      fog-core
-      fog-json
-      fog-xml
-    fog-internet-archive (0.0.1)
-      fog-core
-      fog-json
-      fog-xml
-    fog-joyent (0.0.1)
-      fog-core (~> 1.42)
-      fog-json (>= 1.0)
+      mime-types
     fog-json (1.2.0)
       fog-core
       multi_json (~> 1.10)
-    fog-local (0.6.0)
-      fog-core (>= 1.27, < 3.0)
-    fog-openstack (0.3.10)
-      fog-core (>= 1.45, <= 2.1.0)
-      fog-json (>= 1.0)
-      ipaddress (>= 0.8)
-    fog-ovirt (1.1.6)
-      fog-core
-      fog-json
-      fog-xml
-      ovirt-engine-sdk (>= 4.1.3)
-      rbovirt (~> 0.1.5)
-    fog-powerdns (0.2.0)
-      fog-core
-      fog-json
-      fog-xml
-    fog-profitbricks (4.1.1)
-      fog-core (~> 1.42)
-      fog-json (~> 1.0)
-    fog-rackspace (0.1.6)
-      fog-core (>= 1.35)
-      fog-json (>= 1.0)
-      fog-xml (>= 0.1)
-      ipaddress (>= 0.8)
-    fog-radosgw (0.0.5)
-      fog-core (>= 1.21.0)
-      fog-json
-      fog-xml (>= 0.0.1)
-    fog-riakcs (0.1.0)
-      fog-core
-      fog-json
-      fog-xml
-    fog-sakuracloud (1.7.5)
-      fog-core
-      fog-json
-    fog-serverlove (0.1.2)
-      fog-core
-      fog-json
-    fog-softlayer (1.1.4)
-      fog-core
-      fog-json
-    fog-storm_on_demand (0.1.1)
-      fog-core
-      fog-json
-    fog-terremark (0.1.0)
-      fog-core
-      fog-xml
-    fog-vmfusion (0.1.0)
-      fission
-      fog-core
-    fog-voxel (0.1.0)
-      fog-core
-      fog-xml
-    fog-vsphere (3.0.0)
-      fog-core
-      rbvmomi (>= 1.9, < 3)
-    fog-xenserver (1.0.0)
-      fog-core
-      fog-xml
-      xmlrpc
     fog-xml (0.1.3)
       fog-core
       nokogiri (>= 1.5.11, < 2.0.0)
@@ -484,7 +342,6 @@ GEM
     net-http-digest_auth (1.4.1)
     net-http-persistent (3.0.1)
       connection_pool (~> 2.2)
-    netrc (0.11.0)
     newrelic_rpm (5.2.0.345)
     nio4r (2.4.0)
     nokogiri (1.10.5)
@@ -493,10 +350,7 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     ntlm-http (0.1.1)
-    optimist (3.0.0)
     orm_adapter (0.5.0)
-    ovirt-engine-sdk (4.3.0)
-      json (>= 1, < 3)
     paper_trail (9.2.0)
       activerecord (>= 4.2, < 5.3)
       paper_trail-association_tracking (< 2)
@@ -582,14 +436,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    rbovirt (0.1.7)
-      nokogiri
-      rest-client (> 1.7.0)
-    rbvmomi (2.1.2)
-      builder (~> 3.0)
-      json (>= 1.8)
-      nokogiri (~> 1.5)
-      optimist (~> 3.0)
     rdoc (6.1.1)
     recaptcha (5.2.1)
       json
@@ -619,10 +465,6 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
-    rest-client (2.0.2)
-      http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 4.0)
-      netrc (~> 0.8)
     rollbar (2.19.4)
       multi_json
     rspec (3.8.0)
@@ -770,8 +612,6 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
-    xml-simple (1.1.5)
-    xmlrpc (0.3.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
 
@@ -801,7 +641,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails (~> 4.10)
   faker (~> 1.9)
-  fog (= 2.0)
+  fog-aws (~> 3.6.7)
   friendly_id (~> 5.2)
   fullcalendar-rails (~> 3.9)
   galerts (~> 1.1)
