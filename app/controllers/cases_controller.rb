@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Cases controller
-class CasesController < ApplicationController
+class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   before_action :authenticate_user!, except: %i[index show history followers]
   before_action :set_instance_vars, only: %i[edit new create]
 
@@ -27,7 +27,7 @@ class CasesController < ApplicationController
     @subjects = @this_case.subjects
     @follow_id = current_user.follows.find_by_followable_id(@this_case.id) if user_signed_in?
     # Check to make sure all required elements are here
-    unless @this_case.present?
+    unless @this_case.present? # rubocop:todo Style/GuardClause
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
@@ -40,7 +40,6 @@ class CasesController < ApplicationController
     # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
       flash[:success] = 'Case was created!'
-      flash[:undo] = @this_case.versions
       redirect_to @this_case
     else
       set_instance_vars
@@ -57,14 +56,13 @@ class CasesController < ApplicationController
     @this_case = Case.friendly.find(params[:case_slug])
   end
 
-  def update
+  # rubocop:todo Metrics/MethodLength
+  def update # rubocop:todo Metrics/AbcSize
     @this_case = Case.friendly.find(params[:id])
     @this_case.slug = nil
-    @this_case.remove_avatar!
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     if @this_case.update_attributes(case_params)
       flash[:success] = 'Case was updated!'
-      flash[:undo] = @this_case.versions
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
       redirect_to @this_case
@@ -72,14 +70,16 @@ class CasesController < ApplicationController
       set_instance_vars
       render 'edit'
     end
+  rescue StandardError => e
+    Rollbar.exception(e)
   end
+  # rubocop:enable Metrics/MethodLength
 
   def destroy
     begin
       @this_case = Case.friendly.find(params[:id])
       @this_case.destroy
       flash[:success] = 'Case was removed!'
-      flash[:undo] = @this_case.versions
       CaseMailer.send_deletion_email(users: @this_case.followers,
                                      this_case: @this_case).deliver_now
     rescue ActiveRecord::RecordNotFound
@@ -91,38 +91,16 @@ class CasesController < ApplicationController
   def history
     @this_case = Case.friendly.find(params[:case_slug])
     @case_history = @this_case.versions.order(created_at: :desc)
-  rescue ActiveRecord::RecordNotFound
-  end
-
-  def undo
-    @case_version = PaperTrail::Version.find(params[:case_slug])
-    begin
-      if @case_version.reify
-        @case_version.reify.save
-      else
-        # For undoing the create action
-        @case_version.item.destroy
-      end
-      flash[:success] = 'Undid that!'
-      flash[:undo] = @this_case.versions
-    rescue StandardError
-      flash[:alert] = 'Failed undoing the action...'
-    ensure
-      redirect_to root_path
-    end
+  rescue ActiveRecord::RecordNotFound # rubocop:todo Lint/SuppressedException
   end
 
   def after_sign_up_path_for(resource)
     stored_location_for(resource) || super
   end
 
-  def after_sign_in_path_for(resource)
-    stored_location_for(resource) || super
-  end
-
   private
 
-  def case_params
+  def case_params # rubocop:todo Metrics/MethodLength
     params[:case][:date] ||= []
     params.require(:case).permit(
                                   :title,
@@ -140,6 +118,7 @@ class CasesController < ApplicationController
                                   :longitude,
                                   :latitude,
                                   :avatar,
+                                  :remove_avatar,
                                   :video_url,
                                   :summary,
                                   :blurb,

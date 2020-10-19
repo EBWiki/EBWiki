@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   end
   get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
   get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
-  post '/cases/:case_slug/undo', to: 'cases#undo', as: :undo
 
   #redirect logic
   get '/articles', to: redirect('/cases')
@@ -27,9 +26,10 @@ Rails.application.routes.draw do
 
   resources :agencies
   resources :organizations
+  resources :maps
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
-  resources :users, only: %i[show edit]
+  resources :users, only: %i[show edit update]
   mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
 
   get '/analytics/users_by_day', to: 'analytics#users_by_day'
@@ -46,13 +46,6 @@ Rails.application.routes.draw do
   get '/how-to-help', to: 'static#how_to_help'
 
   get '/sitemap', to: redirect(SITEMAP_URL, status: 301)
-
-  mount Split::Dashboard, at: 'split', anchor: false, constraints: lambda { |request|
-    request.env['warden'].authenticated? # are we authenticated?
-    request.env['warden'].authenticate! # authenticate if not already
-    # or even check any other condition
-    request.env['warden'].user.admin?
-  }
 
   # mailbox folder routes
   get 'mailbox', to: redirect('mailbox/inbox')

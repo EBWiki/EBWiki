@@ -3,7 +3,7 @@
 module Cases
   # versions controller
   class VersionsController < ApplicationController
-    # rubocop:disable MethodLength
+    # rubocop:disable Metrics/MethodLength
 
     def revert
       @case = PaperTrail::Version.find_by_id(params[:id])
@@ -22,6 +22,6 @@ module Cases
       end
     end
 
-    # rubocop:enable MethodLength
+    # rubocop:enable Metrics/MethodLength
   end
 end

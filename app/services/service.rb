@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Service
+module Service # rubocop:todo Style/Documentation
   extend ActiveSupport::Concern
 
   included do

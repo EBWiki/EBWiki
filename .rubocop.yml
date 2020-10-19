@@ -15,16 +15,15 @@ AllCops:
     - bin/*
     - script/*
     - config/routes.rb
-    - spec/rails_helper.rb
-    - spec/factories/*
+    - 'spec/**/*'
 
 Style/Lambda:
   Enabled: false
 
-Style/UnneededInterpolation:
+Style/RedundantInterpolation:
   Enabled: false
 
-Layout/IndentFirstArgument:
+Layout/FirstArgumentIndentation:
   Enabled: false
 
 Style/ClassAndModuleChildren:

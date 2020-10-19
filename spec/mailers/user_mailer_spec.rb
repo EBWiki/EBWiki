@@ -11,7 +11,7 @@ RSpec.describe UserMailer, type: :mailer do
   after(:each) do
     ActionMailer::Base.deliveries.clear
   end
-  
+
   describe 'welcome_email' do
     let(:user)      { FactoryBot.create(:user) }
     let(:this_case) { FactoryBot.create(:case) }

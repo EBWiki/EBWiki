@@ -1,0 +1,15 @@
+---
+name: Markdown
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  markdown_link_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          config-file: './.github/workflows/markdown_config.json'
+          use-verbose-mode: 'yes'
+          base-branch: main

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  if Rails.env.staging?
+  if Rails.env.staging? || ENV['HOST'] == 'ebwiki-newstack.herokuapp.com'
     http_basic_authenticate_with name: ENV['STAGING_USERNAME'], password: ENV['STAGING_PASSWORD']
   end
 
@@ -34,7 +34,10 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { host: ENV.fetch('HOST', 'localhost:3000') }
+    {
+      host: ENV.fetch('HOST', 'localhost'),
+      port: ENV.fetch('PORT', '8080')
+    }
   end
 
   private

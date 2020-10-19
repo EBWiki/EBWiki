@@ -1,4 +1,4 @@
-<p><a href="https://travis-ci.org/EBWiki/EBWiki"><img src="https://travis-ci.org/EBWiki/EBWiki.svg?branch=master" alt="Build Status" style="max-width:100%;"></a>  <a href="https://codeclimate.com/github/EBWiki/EBWiki"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki/coverage"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/coverage.svg" /></a> <a href="https://www.codetriage.com/ebwiki/ebwiki"><img src="https://www.codetriage.com/ebwiki/ebwiki/badges/users.svg" /></a></p>
+<p><a href="https://travis-ci.org/EBWiki/EBWiki"><img src="https://travis-ci.org/EBWiki/EBWiki.svg?branch=main" alt="Build Status" style="max-width:100%;"></a>  <a href="https://codeclimate.com/github/EBWiki/EBWiki"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki/coverage"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/coverage.svg" /></a> <a href="https://www.codetriage.com/ebwiki/ebwiki"><img src="https://www.codetriage.com/ebwiki/ebwiki/badges/users.svg" /></a></p>
 
 # EBWiki
 
@@ -24,7 +24,9 @@ All contributors are expected to adhere to our code of conduct, which can be fou
 
 ### Development
 
-Instructions on setting up a local development environment can be found [here](docs/SETUP_LOCALLY.md).
+Instructions on setting up a local development environment can be found in the following documents:
+* [Set Up Locally with Docker](docs/SETUP_LOCALLY.md).
+* [Set Up Locally with All Services (Full Stack)](docs/SETUP_LOCALLY_FULLSTACK.md).
 
 In general, contributors will use the following languages, frameworks, and technologies:
 

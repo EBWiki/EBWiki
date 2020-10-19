@@ -3,110 +3,103 @@
 ruby '2.6.5'
 
 source 'https://rubygems.org'
-gem 'dotenv-rails', groups: %i[development test production], require: 'dotenv/rails-now'
+gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'fullcalendar-rails', '~> 3.9'
 gem 'rails', '~> 5.0.7.2'
 # Use postgresql as the database for Active Record
-gem 'pg', '1.1.4'
+gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '4.1'
+gem 'uglifier', '4.2'
 
 # Reduce N+1 queries
-gem 'bullet', '~> 5.7'
+gem 'bullet', '~> 6.1'
 
 # Use gem pundit for authorization
-gem 'pundit', '~> 2.0.0'
+gem 'pundit', '~> 2.1'
 # Use jquery as the JavaScript library
-gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
+gem 'jquery-rails', '~> 4.4'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '~> 5.1'
-# Jquery.turbolinks fixes binded event problems cause by Turbolinks
-gem 'jquery-turbolinks', '~> 2.1'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 1.0', group: :doc
+gem 'turbolinks', '~> 5.2'
 
 gem 'momentjs-rails'
 gem 'rack'
 
 # For configurable CORS domain settings
-gem 'rack-cors', '~> 1.0', require: 'rack/cors'
+gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 
 # help with charts and graphs
-gem 'active_median', '~> 0.1'
-gem 'chartkick', '~> 3.3'
-gem 'groupdate', '~> 4.0'
+
+gem 'active_median', '~> 0.2'
+gem 'chartkick', '~> 3.4'
+gem 'groupdate', '~> 5.0'
 gem 'hightop', '~> 0.2'
 
 # xml sitemap
-gem 'sitemap_generator', '~> 6.0'
+gem 'sitemap_generator', '~> 6.1'
 
-# use split gem for a/b testing
-gem 'split', '3.2', require: 'split/dashboard'
+gem 'rollbar', '~> 3.0'
 
-gem 'rollbar', '~> 2.16'
+gem 'simplecov', '~> 0.19.0'
 
-gem 'simplecov', '~> 0.16.1'
-
-gem 'twitter', '~> 6.2'
+gem 'twitter', '~> 7.0'
 
 # JSON renderer for Rails
-gem 'jb', '~> 0.5.0'
+gem 'jb', '~> 0.7.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'factory_bot_rails', '~> 4.10'
-  gem 'faker', '~> 1.9'
+  gem 'factory_bot_rails', '~> 6.1'
+  gem 'faker', '~> 2.14.0'
   gem 'guard-rspec', '~> 4.7'
-  gem 'pry-byebug', '~> 3.6'
+  gem 'pry-byebug', '~> 3.9'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
   # Install a pre-commit hook to enforce code checks before commits
-  gem 'mock_redis'
-  gem 'pre-commit', '~> 0.38'
-  gem 'rspec-rails', '~> 3.8'
+  gem 'mock_redis', '~> 0.26'
+  gem 'pre-commit', '~> 0.39'
+  gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
 end
 
 group :development do
-  gem 'brakeman', '~> 4.3', require: false
+  gem 'brakeman', '~> 4.10', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'derailed'
+  gem 'derailed_benchmarks', '~> 1.8'
   gem 'rails_real_favicon'
-  gem 'web-console', '~> 3.3'
+  gem 'web-console', '~> 3.7'
 end
 
 group :test do
   # makes it easy to programatically simulate users' interactions
   gem 'capybara', '~> 3.4'
   gem 'cucumber-rails', '~> 1.6', require: false
-  gem 'database_cleaner', '~> 1.3.0'
-  gem 'launchy', '~> 2.4'
-  gem 'selenium-webdriver', '~> 2.43.0'
-  gem 'shoulda-matchers', '~> 3.1.1'
-  gem 'vcr', '~> 3.0', '>= 3.0.3'
-  gem 'webmock'
+  gem 'database_cleaner-active_record', '~> 1.8.0'
+  gem 'launchy', '~> 2.5'
+  gem 'selenium-webdriver', '~> 2.53.0'
+  gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
+  gem 'vcr', '~> 6.0'
+  gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap3-datetimepicker-rails'
-gem 'devise', '4.7.1'
-gem 'rails_12factor', groups: %i[production staging]
+gem 'bootstrap-sass', '>= 3.4.1'
+gem 'devise', '4.7.3'
 gem 'simple_form', '5.0'
 
 # for aws cloud storage
 gem 'fog-aws', '~> 3.6.7'
 # photo resizing
-gem 'mini_magick', '~> 4.9'
+gem 'mini_magick', '~> 4.10'
 # file upload solution
 gem 'carrierwave', '~> 1.3'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
 # CMS panel for admin
-gem 'rails_admin', '~> 1.3.0'
+gem 'rails_admin', '~> 2.0'
 
 gem 'geocoder'
-gem 'puma'
+gem 'puma', '~> 5.0', '>= 5.0.2'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3.1'
@@ -127,7 +120,7 @@ gem 'acts_as_follower', github: 'tcocca/acts_as_follower'
 gem 'mailboxer', '~> 0.15'
 
 # track changes in model objects
-gem 'paper_trail', '~> 9.2.0'
+gem 'paper_trail', '~> 10.3'
 
 # needed for paper_trail to track changes done via rails_admin views
 gem 'paper_trail-association_tracking'

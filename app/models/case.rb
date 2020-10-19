@@ -15,7 +15,9 @@ class Case < ApplicationRecord
     medical_neglect: 'medical neglect',
     response_to_medical_emergency: 'response to medical emergency',
     suicide: 'suicide',
-    chemical_agents_or_weapons: 'chemical_agents_or_weapons'
+    chemical_agents_or_weapons: 'chemical_agents_or_weapons',
+    stabbing: 'stabbing',
+    drowning: 'drowning'
   }
 
   belongs_to :user
@@ -125,6 +127,7 @@ class Case < ApplicationRecord
 
   def case_date_validator
     errors.add(:date, 'must be present') && return unless date.present?
+
     errors.add(:date, 'must be in the past') if date > Date.current
   end
 

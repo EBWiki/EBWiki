@@ -1,0 +1,14 @@
+---
+name: Codeclimate Lite
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  codeclimate_lite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run codeclimate
+        run: |
+          make codeclimate

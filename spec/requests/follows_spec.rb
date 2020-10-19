@@ -28,7 +28,7 @@ RSpec.describe 'Follows', type: :request do
       end
 
       it 'will redirect to the case page' do
-        expect(response).to redirect_to case_path(_case)
+        expect(response).to redirect_to "/cases/#{_case.slug}"
       end
     end
   end
