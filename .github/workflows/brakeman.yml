@@ -4,7 +4,7 @@ name: Brakeman
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  main:
+  brakeman:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
