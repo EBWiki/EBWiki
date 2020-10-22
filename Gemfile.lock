@@ -842,7 +842,7 @@ DEPENDENCIES
   pg (~> 1.2)
   pre-commit (~> 0.39)
   pry-byebug (~> 3.9)
-  puma
+  puma (~> 5.0, >= 5.0.2)
   pundit (~> 2.1)
   rack
   rack-cors (~> 1.1)
