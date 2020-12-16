@@ -37,7 +37,7 @@ RSpec.describe Case do
   end
 end
 
-describe 'versioning', versioning: true do
+describe 'versioning', versioning: true do # rubocop:todo Metrics/BlockLength
   it 'starts versioning when a new case is created' do
     this_case = FactoryBot.create(:case)
     expect(this_case.versions.size).to eq 1
@@ -212,7 +212,7 @@ describe '#default_avatar_url', versioning: true do
   end
 end
 
-describe 'scopes', versioning: true do
+describe 'scopes', versioning: true do # rubocop:todo Metrics/BlockLength
   let(:dc) { FactoryBot.create(:state_dc) }
   let(:louisiana) { FactoryBot.create(:state_louisiana) }
   let(:texas) { FactoryBot.create(:state_texas) }

@@ -15,7 +15,7 @@ AllCops:
     - bin/*
     - script/*
     - config/routes.rb
-    - 'spec/**/*'
+
 
 Style/Lambda:
   Enabled: false

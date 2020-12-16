@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SortCollectionOrdinally do
+describe SortCollectionOrdinally do # rubocop:todo Metrics/BlockLength
   let(:agency_one) { FactoryBot.create(:agency, name: 'Alan Anderson PD') }
   let(:agency_two) { FactoryBot.create(:agency, name: 'Bob Barker PD') }
   let(:agency_three) { FactoryBot.create(:agency, name: '1st PD') }

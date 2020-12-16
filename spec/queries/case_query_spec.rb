@@ -8,7 +8,9 @@ RSpec.describe CaseQuery do
     let(:date) { 15.days.ago }
 
     it 'returns, given a date, the cases available that day occurring within 30 days prior' do
+      # rubocop:todo Lint/UnderscorePrefixedVariableName
       _case = FactoryBot.create(:case, date: 20.days.ago)
+      # rubocop:enable Lint/UnderscorePrefixedVariableName
       _case.update(created_at: 17.days.ago)
       expect(most_recent_as_of.pluck(:title).first).to eq _case.title
     end
@@ -19,7 +21,7 @@ RSpec.describe CaseQuery do
     let(:date) { 15.days.ago }
 
     it 'returns, given a date, the cases created by that date' do
-      _case = FactoryBot.create(:case)
+      _case = FactoryBot.create(:case) # rubocop:todo Lint/UnderscorePrefixedVariableName
       _case.update(created_at: 17.days.ago)
       expect(created_by.pluck(:title).first).to eq _case.title
     end
@@ -30,7 +32,9 @@ RSpec.describe CaseQuery do
     let(:date) { 15.days.ago }
 
     it 'returns, given a date, the cases available that day and updated within 30 days prior' do
+      # rubocop:todo Lint/UnderscorePrefixedVariableName
       _case = FactoryBot.create(:case, date: 20.days.ago)
+      # rubocop:enable Lint/UnderscorePrefixedVariableName
       _case.update(created_at: 17.days.ago, updated_at: 17.days.ago)
       expect(recently_updated_as_of.pluck(:title).first).to eq _case.title
     end

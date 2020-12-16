@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This will guess the Article class
-FactoryBot.define do
+FactoryBot.define do # rubocop:todo Metrics/BlockLength
   sequence(:id)
 
   factory :state do |f|

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Agencies', type: :request do
+RSpec.describe 'Agencies', type: :request do # rubocop:todo Metrics/BlockLength
   describe 'GET /agencies' do
     context 'will get list of agencies' do
       before { get '/agencies', params: {}, headers: {} }

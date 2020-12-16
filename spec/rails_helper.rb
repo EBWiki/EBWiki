@@ -12,11 +12,11 @@ require 'rspec/rails'
 require 'database_cleaner'
 require 'webmock/rspec'
 require 'paper_trail/frameworks/rspec'
-include Warden::Test::Helpers
+include Warden::Test::Helpers # rubocop:todo Style/MixinUsage
 Warden.test_mode!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -39,7 +39,7 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
-RSpec.configure do |config|
+RSpec.configure do |config| # rubocop:todo Metrics/BlockLength
   # Factory Girl
   config.include FactoryBot::Syntax::Methods
 
@@ -99,7 +99,9 @@ RSpec.configure do |config|
   config.before(:each, type: :feature) do
     # :rack_test driver's Rack app under test shares database connection
     # with the specs, so continue to use transaction strategy for speed.
+    # rubocop:todo Lint/UselessAssignment
     driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
+    # rubocop:enable Lint/UselessAssignment
     DatabaseCleaner.strategy = :truncation
   end
 

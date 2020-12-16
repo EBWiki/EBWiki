@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe User do
+describe User do # rubocop:todo Metrics/BlockLength
   feature 'Anonymous User' do
     # This is a feature spec where a user tries to log onto the
     # main site as well as the admin section, but does not have

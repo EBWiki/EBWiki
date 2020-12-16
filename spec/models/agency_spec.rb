@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Agency do
+RSpec.describe Agency do # rubocop:todo Metrics/BlockLength
   before(:each) do
     @texas = FactoryBot.create(:state_texas)
   end
@@ -45,7 +45,7 @@ RSpec.describe Agency do
       agency = FactoryBot.create(:agency, state_id: @texas.id)
       ohio = FactoryBot.create(:state_ohio)
 
-      expect do
+      expect do # rubocop:todo Lint/AmbiguousBlockAssociation
         agency.update_attributes(city: 'Worthington',
                                  state_id: ohio.id,
                                  street_address: '1867 Irving Road',
