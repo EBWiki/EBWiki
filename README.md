@@ -44,7 +44,7 @@ In general, contributors will use the following languages, frameworks, and techn
 We use [RSpec](https://github.com/rspec/rspec-rails), [shoulda-matchers](http://matchers.shoulda.io/), and [FactoryBot](https://github.com/thoughtbot/factory_bot) for our tests.  You can run the tests locally with the following commands:
 
 ```
-rspec spec/
+rake
 ```
 
 More information on how to use RSpec, shoulda-matchers, and FactoryBot can be found at the links above.

@@ -2,7 +2,7 @@ build:
 	docker build --tag ebwiki/ebwiki .
 
 run:
-	docker run --detach --rm --volume  /home/nyonmark/src/ebwiki:/usr/src/ebwiki \
+	docker run --detach --rm --volume  .:/usr/src/ebwiki \
 		--publish 3000:3000 --name ebwiki ebwiki/ebwiki
 	./dev_provisions/prewarm.sh
 
@@ -35,7 +35,7 @@ rspec:
 codeclimate:
 	@echo "## Please note that codeclimate takes a while to run and does not"
 	@echo "## generate any output until all jobs are complete...."
-	time docker run --rm --env CODECLIMATE_CODE=/home/nyonmark/src/ebwiki --volume /home/nyonmark/src/ebwiki:/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc --volume "/home/nyonmark/src/ebwiki/.codeclimate.yml.lite:/code/.codeclimate.yml codeclimate/codeclimate analyze
+	time docker run --rm --env CODECLIMATE_CODE=. --volume .:/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc --volume "./.codeclimate.yml.lite:/code/.codeclimate.yml codeclimate/codeclimate analyze
 
 all: clean build run
 
