@@ -9,6 +9,7 @@ export MAILCHIMP_LINK=''
 export MAILCHIMP_LIST_ID=''
 export CODECLIMATE_REPO_TOKEN=''
 export AUTOBUS_SNAPSHOT_URL=''
+export PWD=`pwd`
 
 # AWS Credentials for FakeS3.  Please don't change!
 export AWS_ACCESS_KEY_ID='accessKey1'
