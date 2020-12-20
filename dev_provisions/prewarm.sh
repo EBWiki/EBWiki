@@ -9,6 +9,8 @@ do
     if [ "$( docker container inspect -f '{{.State.Running}}' ebwiki )" == "true" ] && [ $count -lt 360 ];
     then
         echo -n ".";
+	echo "Docker images";
+	docker images
         count=$((count+1))
         sleep 1;
     else

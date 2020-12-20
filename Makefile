@@ -30,7 +30,7 @@ test:
 rspec:
 	@echo "## Please note that rspec requires the container to be running and"
 	@echo "## takes a while to complete"
-	docker exec ebwiki bash -c 'source dev_provisions/environment.sh && rspec spec/'
+	docker exec ebwiki bash -c 'source dev_provisions/environment.sh && rake'
 
 codeclimate:
 	@echo "## Please note that codeclimate takes a while to run and does not"
