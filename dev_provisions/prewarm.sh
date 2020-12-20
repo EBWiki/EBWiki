@@ -5,7 +5,7 @@ until [ "$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http:/
 do
     sleep 5;
     CURRENT_CONTAINERS=`docker container ls`
-    echo "List of docker containers: $(CURRENT_CONTAINERS)"
+    echo "List of docker containers: $CURRENT_CONTAINERS"
     if [ "$( docker container inspect -f '{{.State.Running}}' ebwiki )" == "true" ] && [ $count -lt 360 ];
     then
         echo -n ".";
