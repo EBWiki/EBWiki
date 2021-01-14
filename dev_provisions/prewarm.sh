@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "## Getting the PWD"
+PWD=`pwd`
 echo "## Warming up the server..."
 count=0
 until [ "$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://localhost:3000)" -ne 000 ];
