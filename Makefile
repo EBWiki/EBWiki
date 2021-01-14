@@ -39,7 +39,7 @@ codeclimate:
 	@echo "## PWD = $(PWD)"
 	@echo "## Please note that codeclimate takes a while to run and does not"
 	@echo "## generate any output until all jobs are complete...."
-	time docker run --rm --env CODECLIMATE_CODE=. --volume $(PWD):/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc --volume "$(PWD)/.codeclimate.yml.lite:/code/.codeclimate.yml" codeclimate/codeclimate analyze
+	time docker run --rm --env CODECLIMATE_CODE=$(PWD) --volume $(PWD):/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc --volume "$(PWD)/.codeclimate.yml.lite:/code/.codeclimate.yml" codeclimate/codeclimate analyze
 
 all: clean build run
 
