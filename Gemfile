@@ -126,7 +126,7 @@ gem 'paper_trail', '~> 10.3'
 gem 'paper_trail-association_tracking'
 
 # pretty urls
-gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
 gem 'kaminari'
