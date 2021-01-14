@@ -2,6 +2,8 @@ build:
 	docker build --tag ebwiki/ebwiki .
 
 run:
+	export PWD=`pwd`
+	@echo "## PWD = $(PWD)"
 	docker run --detach --rm --volume  $(PWD):/usr/src/ebwiki \
 		--publish 3000:3000 --name ebwiki ebwiki/ebwiki
 	./dev_provisions/prewarm.sh
@@ -33,6 +35,8 @@ rspec:
 	docker exec ebwiki bash -c 'source dev_provisions/environment.sh && rake'
 
 codeclimate:
+	export PWD=`pwd`
+	@echo "## PWD = $(PWD)"
 	@echo "## Please note that codeclimate takes a while to run and does not"
 	@echo "## generate any output until all jobs are complete...."
 	time docker run --rm --env CODECLIMATE_CODE=. --volume $(PWD):/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc --volume "./.codeclimate.yml.lite:/code/.codeclimate.yml codeclimate/codeclimate analyze
