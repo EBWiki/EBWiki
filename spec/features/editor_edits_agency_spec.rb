@@ -10,7 +10,7 @@ feature 'Editor edits an agency' do
     # rubocop:enable Lint/ImplicitStringConcatenation
     login_as(user, scope: :user)
     visit "/agencies/#{this_agency.id}/edit"
-    expect(page).to have_content('Editing Agency ' + this_agency.name)
+    expect(page).to have_content("Editing Agency #{this_agency.name}")
   end
 
   scenario 'Editor arrives at the agency edit page and selects back button' do

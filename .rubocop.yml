@@ -7,6 +7,7 @@ Metrics/BlockLength:
   Max: 35
 
 AllCops:
+  NewCops: enable
   Exclude:
     - db/migrate/*.rb
     - db/schema.rb
@@ -35,3 +36,49 @@ Style/GlobalVars:
 Security/JSONLoad:
   Enabled: false
 
+Layout/BeginEndAlignment: # (new in 0.91)
+  Enabled: true
+Layout/EmptyLinesAroundAttributeAccessor: # (new in 0.83)
+  Enabled: true
+Layout/SpaceAroundMethodCallOperator: # (new in 0.82)
+  Enabled: true
+Lint/BinaryOperatorWithIdenticalOperands: # (new in 0.89)
+  Enabled: true
+Style/ExponentialNotation: # (new in 0.82)
+  Enabled: true
+Style/GlobalStdStream: # (new in 0.89)
+  Enabled: true
+Style/HashAsLastArrayItem: # (new in 0.88)
+  Enabled: true
+Style/HashEachMethods: # (new in 0.80)
+  Enabled: true
+Style/HashLikeCase: # (new in 0.88)
+  Enabled: true
+Style/HashTransformKeys: # (new in 0.80)
+  Enabled: true
+Style/HashTransformValues: # (new in 0.80)
+  Enabled: true
+Style/KeywordParametersOrder: # (new in 0.90)
+  Enabled: true
+Style/OptionalBooleanParameter: # (new in 0.89)
+  Enabled: true
+Style/RedundantAssignment: # (new in 0.87)
+  Enabled: true
+Style/RedundantFetchBlock: # (new in 0.86)
+  Enabled: true
+Style/RedundantFileExtensionInRequire: # (new in 0.88)
+  Enabled: true
+Style/RedundantRegexpCharacterClass: # (new in 0.85)
+  Enabled: true
+Style/RedundantRegexpEscape: # (new in 0.85)
+  Enabled: true
+Style/RedundantSelfAssignment: # (new in 0.90)
+  Enabled: true
+Style/SingleArgumentDig: # (new in 0.89)
+  Enabled: true
+Style/SlicingWithRange: # (new in 0.83)
+  Enabled: true
+Style/SoleNestedConditional: # (new in 0.89)
+  Enabled: true
+Style/StringConcatenation: # (new in 0.89)
+  Enabled: true

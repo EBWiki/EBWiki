@@ -45,9 +45,10 @@ class User < ApplicationRecord
   end
 
   def mailchimp_status
-    if mailchimp_user.is_a?(Array)
+    case mailchimp_user
+    when Array
       nil
-    elsif mailchimp_user.is_a?(Hash)
+    when Hash
       mailchimp_user['status']
     end
   end
@@ -58,6 +59,6 @@ class User < ApplicationRecord
     gb = Gibbon::Request.new
     gb.lists(ENV['MAILCHIMP_LIST_ID']).members(Digest::MD5.hexdigest(email.downcase.to_s)).retrieve
   rescue Gibbon::MailChimpError => e
-    [nil, flash: { error: e.message }]
+    [nil, { flash: { error: e.message } }]
   end
 end
