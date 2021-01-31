@@ -58,7 +58,7 @@ group :development, :test do
   # Install a pre-commit hook to enforce code checks before commits
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
-  gem 'rspec-rails', '~> 3.8'
+  gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
 end
 
 group :development do
@@ -77,30 +77,29 @@ group :test do
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 2.53.0'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
-  gem 'vcr', '~> 3.0', '>= 3.0.3'
+  gem 'vcr', '~> 6.0'
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
 gem 'bootstrap3-datetimepicker-rails'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'devise', '4.7.3'
-gem 'rails_12factor', groups: %i[production staging]
 gem 'simple_form', '5.0'
 
 # for aws cloud storage
 gem 'fog', '2.2'
 # photo resizing
-gem 'mini_magick', '~> 4.9'
+gem 'mini_magick', '~> 4.10'
 # file upload solution
 gem 'carrierwave', '~> 1.3'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer', '~> 1.5.0'
 
 # CMS panel for admin
-gem 'rails_admin', '~> 1.3.0'
+gem 'rails_admin', '~> 2.0'
 
 gem 'geocoder'
-gem 'puma'
+gem 'puma', '~> 5.0', '>= 5.0.2'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3.1'
