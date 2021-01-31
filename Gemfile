@@ -129,7 +129,7 @@ gem 'paper_trail-association_tracking'
 gem 'friendly_id', '~> 5.4'
 
 # pagination
-gem 'kaminari'
+gem 'kaminari', '~> 1.2', '>= 1.2.1'
 
 gem 'redis'
 gem 'redis-namespace', '~> 1.6'
