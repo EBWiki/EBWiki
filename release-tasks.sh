@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "*** Running any new migrations ***"
-rake db:migrate
+bundle exec rails db:migrate
