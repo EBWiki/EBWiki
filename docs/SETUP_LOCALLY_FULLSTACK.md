@@ -19,7 +19,7 @@ This guide will explain the process of setting up a local development environmen
 ## Prerequisites
 Before beginning the installation and configuration of your environment, ensure that you have a copy of git, Ruby, and Rails on your computer.  You can find installation instructions at the links below:
 * [Git](https://git-scm.com/downloads)
-* [Ruby v2.5.1](https://www.ruby-lang.org/en/downloads/)
+* [Ruby v2.6.6](https://www.ruby-lang.org/en/downloads/)
 * [Rails v5.0.7](http://rubyonrails.org/)
 
 ## Installation

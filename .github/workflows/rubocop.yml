@@ -13,7 +13,7 @@ jobs:
         run: |
           PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
           echo $PATH
-          gem install --user-install rubocop
+          gem install --user-install rubocop -v=0.93.1
           rubocop --auto-correct-all --disable-uncorrectable
       - name: Check for changes
         run: |

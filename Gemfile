@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.6.5'
+ruby '2.6.6'
 
 source 'https://rubygems.org'
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
@@ -129,7 +129,7 @@ gem 'paper_trail-association_tracking'
 gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
-gem 'kaminari'
+gem 'kaminari', '~> 1.2', '>= 1.2.1'
 
 gem 'redis'
 gem 'redis-namespace', '~> 1.6'
