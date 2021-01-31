@@ -2,7 +2,7 @@
 
 require 'simplecov'
 require 'pundit/rspec'
-SimpleCov.start
+SimpleCov.start 'rails'
 require 'capybara/rspec'
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
