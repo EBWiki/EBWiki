@@ -4,7 +4,6 @@ build:
 run:
 	docker run --detach --rm --volume "$(shell pwd)":/usr/src/ebwiki \
 		--publish 3000:3000 --name ebwiki ebwiki/ebwiki
-	./dev_provisions/prewarm.sh
 
 updatedb:
 	docker exec -e PGPASSWORD=ebwiki ebwiki pg_restore --verbose --clean \
