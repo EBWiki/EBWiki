@@ -23,8 +23,8 @@ class CaseMailer < ApplicationMailer
   private
 
   def log_info(user)
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     Rails.logger.info("CaseMailer#send_followers_email: Sending notification to #{user.email} about case #{@this_case.title}")
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   end
 end

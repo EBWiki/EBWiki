@@ -1,6 +1,6 @@
 # require: rubocop-performance
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 100
 
 Metrics/BlockLength:
