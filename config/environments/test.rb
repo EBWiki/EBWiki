@@ -51,6 +51,6 @@ Rails.application.configure do
     Bullet.raise = true # raise an error if an n+1 query occurs
   end
 
-  # Set default url for mailer testing
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  url_options = { host: 'localhost', port: 3000 }
+  Rails.application.routes.default_url_options = url_options
 end
