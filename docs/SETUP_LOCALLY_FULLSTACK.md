@@ -74,7 +74,7 @@ config.skip_verify_env.push('development')
 Choose the appropriate instruction set based on the operating system of your local environment.
 
 ### Linux
-First, make a create the file `config/database.yml` by copying `config/database.example.yml`.  Then, start the postgres console using the following command:
+First, create the file `config/database.yml` by copying `config/database.example.yml`.  Then, start the postgres console using the following command:
 
 `psql -p 5432 -h localhost -U postgres`
 
@@ -98,7 +98,7 @@ password:<%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>
 ```
 
 ### Windows
-First, make a create the file `config/database.yml` by copying `config/database.example.yml`.  Then, start the postgres console using the following command:
+First, create the file `config/database.yml` by copying `config/database.example.yml`.  Then, start the postgres console using the following command:
 
 `psql -p 5432 -h localhost -U postgres`
 
