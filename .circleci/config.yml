@@ -1,0 +1,301 @@
+version: 2.1
+
+orbs:
+  # https://circleci.com/orbs/registry/orb/circleci/ruby
+  # https://circleci.com/orbs/registry/orb/circleci/node
+  node: circleci/node@4.1.0
+
+executors:
+  # https://circleci.com/docs/2.0/language-ruby/
+  ruby_image:
+    docker:
+      - image: circleci/ruby:2.6.6-stretch-browsers
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          CAPYBARA_TIMEOUT: 10
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          NODE_ENV: test
+          RAILS_ENV: test
+      - image: circleci/postgres:11-ram
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: app_test
+          POSTGRES_PASSWORD:
+      - image: redis
+
+    working_directory: ~/app
+
+commands:
+  setup_js:
+    steps:
+      - checkout
+      - node/install:
+          node-version: 12.19.0
+          install-yarn: true
+
+      # - node/install-packages:
+      #     # https://github.com/CircleCI-Public/node-orb/issues/42
+      #     app-dir: ~/app
+      #     pkg-manager: yarn
+
+  setup_ruby:
+    steps:
+      - run:
+          name: Install Bundler
+          command:
+            gem install bundler:1.17.3
+
+      - run:
+          name: Setup Base Dependencies
+          command: |
+            # postgresql-client needed for `db:structure:load`
+            sudo apt update && sudo apt install vim nano postgresql-client
+
+      - run:
+          name: Which Versions?
+          command: |
+            ruby -v
+            bundle -v
+            node --version
+            yarn --version
+
+      # https://github.com/CircleCI-Public/ruby-orb/issues/41
+      - restore_cache:
+          keys:
+            - bundler-{{ checksum "Gemfile.lock" }}
+            - bundler-
+
+      - run:
+          name: Bundle Install
+          command: bundle install --frozen
+
+      - save_cache:
+          key: bundler-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+  setup_rails:
+    steps:
+      - run:
+          name: Database Setup
+          command: |
+            cp config/database.ci.yml config/database.yml
+            bin/rails db:create
+            bin/rails db:structure:load
+
+      - restore_cache:
+          keys:
+            - assets-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - assets-{{ .Branch }}
+            - assets
+
+      # - run:
+      #     name: Precompile Assets
+      #     command:
+      #       bin/rails assets:precompile
+
+      - save_cache:
+          key: assets-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - public/assets
+            - public/packs-test
+            - tmp/cache
+
+jobs:
+  lints:
+    executor: ruby_image
+    steps:
+      - setup_js
+      - setup_ruby
+
+      - restore_cache:
+          keys:
+            # Note: right now this cache does not work because RuboCop and
+            # ESLint both cache based on `mtime` (modified time). When files
+            # are checked out on CI, they will *always* have a more recent
+            # `mtime` than what is in the cache because for the local machine
+            # it was "modified" the moment it appeared on the system via git.
+            # Both Rubocop and ESLint have issues around switching to a file
+            # hash so that files can be cached across machines, not just on a
+            # single machine. Once they are enabled, build times should
+            # decrease pretty significantly, from ~5 minutes for RuboCop to ~30
+            # seconds, and ~1.5 minutes for ESLint, to ~5 seconds.
+            # https://github.com/rubocop-hq/rubocop/pull/8633
+            # https://github.com/eslint/eslint/issues/13517
+            - linters-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - linters-{{ .Branch }}-
+            - linters
+
+      # - run:
+      #     name: Yarn Deduplicate
+      #     command: |
+      #       yarn deduplicate --fail || (echo 'Duplicate packages in yarn.lock. Run `yarn deduplicate` locally.'; exit 1)
+
+      # - run:
+      #     name: HAML-Lint
+      #     command: yarn haml_lint
+
+      - run:
+          name: RuboCop
+          command: bundle exec rubocop --format progress
+
+      # - run:
+      #     name: SCSS-Lint
+      #     command: yarn scss_lint
+
+      # - run:
+      #     name: ESLint
+      #     command: yarn eslint
+
+      # - run:
+      #     name: ESLint Find Unused Rules
+      #     command: yarn eslint_find_unused_rules
+
+      # - run:
+      #     name: Brakeman
+      #     command: bundle exec brakeman
+
+      # - run:
+      #     name: TypeScript
+      #     command: yarn ts_check
+
+      - save_cache:
+          key: linters-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/.cache/rubocop_cache
+            - .eslintcache
+
+      - store_test_results:
+          path: /tmp/test-results
+
+  # javascript_tests:
+  #   executor: ruby_image
+  #   parallelism: 10
+  #   steps:
+  #     - setup_js
+
+  #     - run:
+  #         name: JavaScript Tests
+  #         command: |
+  #           TEST_FILES="$(circleci tests glob "spec/javascript/**/*_spec.{ts,tsx}" | \
+  #             circleci tests split --split-by=timings)"
+  #           yarn jest --ci --runInBand $TEST_FILES --reporters=default --reporters=jest-junit
+  #         environment:
+  #           JEST_JUNIT_OUTPUT_DIR: /tmp/test-results
+  #     - store_test_results:
+  #         path: /tmp/test-results
+
+  unit_tests:
+    executor: ruby_image
+    parallelism: 2
+    steps:
+      - setup_js
+      - setup_ruby
+      - setup_rails
+
+      - run:
+          name: Run Unit Tests
+          command: |
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+              grep -v "spec/features" | \
+              circleci tests split --split-by=timings)"
+
+            bundle exec rspec \
+              --format progress \
+              --format RspecJunitFormatter \
+              --out /tmp/test-results/rspec.xml \
+              --format progress \
+              $TEST_FILES
+
+      - store_test_results: # https://circleci.com/docs/2.0/collect-test-data/
+          path: /tmp/test-results
+
+      - run:
+          name: Stash Coverage Results
+          command: |
+            mkdir /tmp/coverage-results
+            cp -R coverage/.resultset.json /tmp/coverage-results/.resultset-${CIRCLE_NODE_INDEX}.json
+
+      - persist_to_workspace:
+          root: /tmp/
+          paths:
+            - coverage-results
+
+  coverage:
+    executor: ruby_image
+    steps:
+      - setup_js
+      - setup_ruby
+
+      - attach_workspace:
+          at: /tmp/
+
+      - run:
+          name: Merge and check coverage
+          command:
+            bundle exec rails coverage:process
+
+      - store_artifacts:
+          path: ~/app/coverage
+          destination: coverage
+
+  feature_tests:
+    executor: ruby_image
+    parallelism: 2
+    resource_class: large
+    steps:
+      - setup_js
+      - setup_ruby
+      - setup_rails
+
+      - run:
+          name: Run Feature Tests
+          command: |
+            TEST_FILES="$(circleci tests glob "spec/features/**/*_spec.rb" | \
+              circleci tests split --split-by=timings)"
+
+            bundle exec rspec \
+              --format progress \
+              --format RspecJunitFormatter \
+              --out /tmp/test-results/rspec.xml \
+              --format progress \
+              $TEST_FILES
+
+      - store_test_results: # https://circleci.com/docs/2.0/collect-test-data/
+          path: /tmp/test-results
+
+      - store_artifacts:
+          path: ~/app/tmp/capybara
+          destination: feature_tests
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - lints
+      - unit_tests
+      - feature_tests
+      - coverage:
+          requires:
+            - unit_tests
+
+  # https://circleci.com/docs/2.0/workflows/#nightly-example
+  # https://circleci.com/docs/2.0/configuration-reference/#filters-1
+  # this can be useful for testing fixes for flaky tests
+  repeat:
+    jobs:
+      - feature_tests
+    triggers:
+      - schedule:
+          cron: "0,20,40 * * * *"
+          filters:
+            branches:
+              only:
+                - /.*ci-repeat.*/

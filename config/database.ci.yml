@@ -1,4 +1,5 @@
 test:
   adapter: postgresql
-  database: travis_ci_test
+  database: ebwiki_test
   username: postgres
+  host: localhost
