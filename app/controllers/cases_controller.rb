@@ -71,7 +71,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       render 'edit'
     end
   rescue StandardError => e
-    Rollbar.exception(e)
+    Rollbar.error(e)
   end
   # rubocop:enable Metrics/MethodLength
 
