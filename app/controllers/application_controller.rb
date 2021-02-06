@@ -33,13 +33,6 @@ class ApplicationController < ActionController::Base
     user_signed_in? ? current_user.id : 'Guest'
   end
 
-  def default_url_options
-    {
-      host: ENV.fetch('HOST', 'localhost'),
-      port: ENV.fetch('PORT', '8080')
-    }
-  end
-
   private
 
   def log_invalid_token_attempt(exception)
