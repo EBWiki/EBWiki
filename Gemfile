@@ -168,3 +168,5 @@ gem 'recaptcha'
 group :production do
   gem 'cloudflare-rails', '~> 0.6'
 end
+
+gem 'sprockets', '3.7.2'
