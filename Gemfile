@@ -101,9 +101,6 @@ gem 'rails_admin', '~> 2.0'
 gem 'geocoder'
 gem 'puma', '~> 5.0', '>= 5.0.2'
 
-# implement elasticsearch
-gem 'searchkick', '~> 3.1'
-
 # manage nested forms
 gem 'cocoon'
 
