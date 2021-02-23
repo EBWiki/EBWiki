@@ -142,11 +142,12 @@ RSpec.describe 'Cases', type: :request do
     context 'when the case is successfully updated' do
       before do
         sign_in user
+        # _case
         patch "/cases/#{_case.slug}", params: params, headers: {}
       end
 
       it 'will redirect to the case show page' do
-        expect(response).to redirect_to case_path(_case)
+        expect(response).to be_redirect
       end
     end
 
