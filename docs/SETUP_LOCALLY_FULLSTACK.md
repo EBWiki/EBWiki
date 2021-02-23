@@ -25,7 +25,7 @@ Before beginning the installation and configuration of your environment, ensure 
 ## Installation
 To work on EBWiki locally you will need to have PostgreSQL, NodeJS, Redis, and Elasticsearch running on your local environment.  Information on how to install and configure these programs and services is listed below:
 * [PostGreSQL](https://www.postgresql.org/)
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch) - Keep in mind that Elasticsearch requires Java to run properly.  The latest Java Development Kit can be found [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+* [Elasticsearch 6.8.8](https://www.elastic.co/products/elasticsearch) - Keep in mind that Elasticsearch requires Java to run properly.  The latest Java Development Kit can be found [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 * [NodeJS](https://nodejs.org/en/) - Note: if you are using Windows Subsystem for Linux, you will need to follow the instructions to install Node within Ubuntu, not the standalone Windows version.
 * [Redis](https://redis.io/)
 

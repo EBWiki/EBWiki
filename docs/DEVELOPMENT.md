@@ -41,7 +41,7 @@ The EBWiki repo has a `db/seeds.rb` file that you can use to add some basic data
 ```
 
 ## Third-Party Services
-* Elasticsearch for searching cases
+* Elasticsearch 6 for searching cases
 * Postgres 11 or higher
 * Redis
 * Sumologic
