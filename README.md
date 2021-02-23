@@ -32,7 +32,7 @@ In general, contributors will use the following languages, frameworks, and techn
 
 * [Ruby 2.6.6](https://www.ruby-lang.org/en/downloads/)
 * [Rails 5.0.7](http://rubyonrails.org/)
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+* [Elasticsearch 6.8.8](https://www.elastic.co/products/elasticsearch)
 * [Postgres 9.4](https://www.postgresql.org/) or higher
 * [Redis](https://redis.io/)
 * [AWS S3](https://aws.amazon.com/free/)
