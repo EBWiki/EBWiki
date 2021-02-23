@@ -58,10 +58,10 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
 
   # rubocop:todo Metrics/MethodLength
   def update # rubocop:todo Metrics/AbcSize
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.find(params[:id])
     @this_case.slug = nil
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
-    if @this_case.update_attributes(case_params)
+    if @this_case.update(case_params)
       flash[:success] = 'Case was updated!'
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
@@ -71,7 +71,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       render 'edit'
     end
   rescue StandardError => e
-    Rollbar.exception(e)
+    Rollbar.error(e)
   end
   # rubocop:enable Metrics/MethodLength
 
