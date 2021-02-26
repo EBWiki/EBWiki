@@ -54,10 +54,12 @@ RSpec.describe Agency do
     end
   end
 
-  it 'retrieves the state of the agency' do
-    agency = FactoryBot.create(:agency, state_id: @texas.id)
-    agency_state = agency.retrieve_state
-    expect(agency_state).to eq @texas.name
+  describe '#retrieve_state' do
+    it 'retrieves the state of the agency' do
+      agency = FactoryBot.create(:agency, state_id: @texas.id)
+      agency_state = agency.retrieve_state
+      expect(agency_state).to eq @texas.name
+    end
   end
 
   describe '#location' do
@@ -71,10 +73,10 @@ RSpec.describe Agency do
         zipcode: '43085',
       )
 
-      expect(location).to be_a(Location)
-      expect(location.city).to eq('Worthington')
-      expect(location.street_location).to eq('1867 Irving Road')
-      expect(location.zipcode).to eq('43085')
+      expect(agency.location).to be_a(Location)
+      expect(agency.location.city).to eq('Worthington')
+      expect(agency.location.street_location).to eq('1867 Irving Road')
+      expect(agency.location.zipcode).to eq('43085')
     end
   end
 
