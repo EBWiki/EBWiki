@@ -59,4 +59,50 @@ RSpec.describe Agency do
     agency_state = agency.retrieve_state
     expect(agency_state).to eq @texas.name
   end
+
+  describe '#location' do
+    it 'creates a location object' do
+      ohio = FactoryBot.create(:state_ohio)
+      agency = FactoryBot.create(
+        :agency,
+        city: 'Worthington',
+        state_id: ohio.id,
+        street_address: '1867 Irving Road',
+        zipcode: '43085',
+      )
+
+      expect(location).to be_a(Location)
+      expect(location.city).to eq('Worthington')
+      expect(location.street_location).to eq('1867 Irving Road')
+      expect(location.zipcode).to eq('43085')
+    end
+  end
+
+  describe '#location=' do
+    let(:new_location) do
+      Location.new(
+        city: 'Houston',
+        state: @texas.name,
+        street_location: '5555 Hermann Park Dr.',
+        zipcode: '77030'
+      )
+    end
+
+    it 'sets new location' do
+      ohio = FactoryBot.create(:state_ohio)
+      agency = FactoryBot.create(
+        :agency,
+        city: 'Worthington',
+        state_id: ohio.id,
+        street_address: '1867 Irving Road',
+        zipcode: '43085',
+      )
+
+      agency.location = new_location
+
+      expect(agency.location.city).to eq('Houston')
+      expect(agency.location.street_location).to eq('5555 Hermann Park Dr.')
+      expect(agency.location.zipcode).to eq('77030')
+    end
+  end
 end

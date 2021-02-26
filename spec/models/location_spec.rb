@@ -9,6 +9,7 @@ describe Location do
       city: 'Bangalore', state: 'Karnataka', street_location: '21st, MG road', zipcode: '560078'
     }
   end
+
   context 'when all location params are present' do
     it 'returns address as inline' do
       location = Location.new(bangalore_location)
@@ -44,7 +45,7 @@ describe Location do
       location1 = Location.new(bangalore_location)
       location2 = Location.new(bangalore_location)
 
-      expect(location1 == location2).to be_truthy
+      expect(location1 == location2).to eq(true)
     end
 
     it 'returns false if locations are not identical' do
@@ -55,7 +56,7 @@ describe Location do
         street_location: '22nd, MG road',
         zipcode: '560078'
       )
-      expect(location1 == location2).to be_falsey
+      expect(location1 == location2).to eq(false)
     end
 
     context 'when location with only states' do
@@ -63,7 +64,7 @@ describe Location do
         location1 = Location.new(state: 'Karnataka')
         location2 = Location.new(state: 'Karnataka')
 
-        expect(location1 == location2).to be_truthy
+        expect(location1 == location2).to eq(true)
       end
     end
   end
