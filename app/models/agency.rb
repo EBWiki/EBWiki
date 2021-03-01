@@ -73,7 +73,7 @@ class Agency < ApplicationRecord
   end
 
   def location
-    @location ||= Location.new(
+    Location.new(
       state: state.name,
       street_location: street_address,
       city: city,
