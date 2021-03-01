@@ -21,8 +21,7 @@ class Location
 
   # rubocop:disable Style/RedundantSelf
   def ==(other)
-    other.class.eql?(self.class) &&
-      self.to_s.eql?(other.to_s)
+    other.class.eql?(self.class) && self.to_s.eql?(other.to_s)
   end
   # rubocop:enable Style/RedundantSelf
 end
