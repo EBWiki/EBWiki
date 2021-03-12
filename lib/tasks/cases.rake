@@ -19,7 +19,7 @@ namespace :cases do
   desc 'Convert cause of death to enum'
   task convert_cause_of_death: :environment do
     causes_of_death = CauseOfDeath.where.not(name: 'Unknown').pluck(:id, :name).to_h
-    lookup = causes_of_death.map { |k, v| [k, v.downcase.parameterize(separator: '_').to_sym] }.to_h
+    lookup = causes_of_death.transform_values { |v| v.downcase.parameterize(separator: '_').to_sym }
 
     lookup.each do |k, v|
       Case.where(cause_of_death_id: k).in_batches do |group|
