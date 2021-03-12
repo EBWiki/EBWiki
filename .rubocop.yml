@@ -37,7 +37,7 @@ Style/GlobalVars:
 Security/JSONLoad:
   Enabled: false
 
-  Gemspec/DateAssignment: # (new in 1.10)
+Gemspec/DateAssignment: # (new in 1.10)
   Enabled: true
 Layout/SpaceBeforeBrackets: # (new in 1.7)
   Enabled: true
