@@ -49,8 +49,10 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.bullet_logger = true
     Bullet.raise = true # raise an error if an n+1 query occurs
+    # sometimes an eager loaded association appears to be unused in a spec
+    Bullet.unused_eager_loading_enable = false
   end
 
-  # Set default url for mailer testing
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  url_options = { host: 'localhost', port: 3000 }
+  Rails.application.routes.default_url_options = url_options
 end

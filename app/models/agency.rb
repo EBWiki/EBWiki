@@ -10,7 +10,7 @@ class Agency < ApplicationRecord
     federal: 'federal',
     university: 'university',
     commercial: 'commercial'
-  }
+  }.freeze
 
   STRIPPED_ATTRIBUTES = %w[
     name
@@ -70,5 +70,21 @@ class Agency < ApplicationRecord
 
   def retrieve_state
     State.where(id: state_id).pluck(:name).join
+  end
+
+  def location
+    Location.new(
+      state: state.name,
+      street_location: street_address,
+      city: city,
+      zipcode: zipcode
+    )
+  end
+
+  def location=(location)
+    self.state = State.find_by_name(location.state)
+    self.street_address = location.street_location
+    self.city = location.city
+    self.zipcode = location.zipcode
   end
 end

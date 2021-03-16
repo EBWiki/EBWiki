@@ -2,7 +2,7 @@
 
 # Value object - date range
 class Location
-  attr_reader :state, :street_location, :city, :zipcode
+  attr_accessor :state, :street_location, :city, :zipcode
 
   def initialize(state:, street_location: nil, city: nil, zipcode: nil)
     @state = state

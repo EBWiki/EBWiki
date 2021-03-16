@@ -55,7 +55,8 @@ Rails.application.configure do
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   config.web_console.whitelisted_ips = '10.240.0.0/16'
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  url_options = { host: 'localhost', port: 3000 }
+  Rails.application.routes.default_url_options = url_options
 
   # config.action_mailer.smtp_settings = {
   #   address: 'smtp.sendgrid.net',
