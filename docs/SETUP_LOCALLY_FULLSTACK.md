@@ -9,22 +9,21 @@ This guide will explain the process of setting up a local development environmen
 1. [Prerequisites](#prerequisites)
 2. [Installation](#installation)
 3. [App Configuration](#app-configuration)
-4. [AWS Configuration](#aws-configuration)
-5. [Postgres Setup](#postgres-setup)
+4. [Postgres Setup](#postgres-setup)
    * [Linux](#linux)
    * [Windows](#windows)
-6. [Local Database Setup](#local-database-setup)
+5. [Local Database Setup](#local-database-setup)
+6. [AWS Configuration](#aws-configuration)
 7. [Finish](#finish)
 
 ## Prerequisites
 Before beginning the installation and configuration of your environment, ensure that you have a copy of git, Ruby, and Rails on your computer.  You can find installation instructions at the links below:
 * [Git](https://git-scm.com/downloads)
-* [Ruby v2.5.1](https://www.ruby-lang.org/en/downloads/)
+* [Ruby v2.6.6](https://www.ruby-lang.org/en/downloads/)
 * [Rails v5.0.7](http://rubyonrails.org/)
 
 ## Installation
-To work on EBWiki locally you will need to have PostgreSQL and Elasticsearch running on your local environment.  You will also need to have an Amazon Web Services (AWS) account to use S3 for storage.  Information on how to install and configure these programs and services is listed below:
-* [Sign up for a free AWS account here](https://aws.amazon.com/free/) - Note that information on how to configure your account will be detailed further below.
+To work on EBWiki locally you will need to have PostgreSQL, NodeJS, Redis, and Elasticsearch running on your local environment.  Information on how to install and configure these programs and services is listed below:
 * [PostGreSQL](https://www.postgresql.org/)
 * [Elasticsearch](https://www.elastic.co/products/elasticsearch) - Keep in mind that Elasticsearch requires Java to run properly.  The latest Java Development Kit can be found [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 * [NodeJS](https://nodejs.org/en/) - Note: if you are using Windows Subsystem for Linux, you will need to follow the instructions to install Node within Ubuntu, not the standalone Windows version.
@@ -52,35 +51,30 @@ Once the git clone is complete, navigate into the `EBWiki` folder.  Then, use th
 
 Finally, contact us at rlgreen91@gmail.com so that we can add you as a contributor to the repo - please include your Github username.  This will allow you push access to the repo so you can avoid issues with Travis.
 
-## AWS Configuration
-Login into your Amazon Web Services (AWS) account.  Navigate to the IAM service using the products tab at the top left.  Select the option to create a user.  Set the name of the user to be EBWiki_user, or some other similar name.  Choose the option for programmatic access.  Click next. Select the policy for full access s3 permissions.  Click next.  After reviewing the details, select create user.
+### Environment Variables
 
-Once the user has been created, open the tab to view the access key and secret access key.  Add these values as environment variables to your .bashrc file.  Reboot your command line prompt.  If necessary, update the following files with your specific environment variable names:
-* `/config/initializers/s3.rb`
-* `/config/sitemap.rb`
+EBWiki uses environment variables to run with different configurations in
+different environments through the [dotenv](https://github.com/bkeepers/dotenv)
+gem. A sample file named
+`.env.example` has already been provided at the top level of the project.  You can use this sample file to create your own `.env` file.  All of the variables listed in the sample file are optional.
+The only required variable that you will need to add is the database password, as described in further detail below.
 
-If you prefer, you can add these files to `.gitignore` so that your personal changes are not tracked.
+### Recaptcha & Local Development
 
-![Screenshot](https://i.imgur.com/AjfaJLd.jpg)
-
-![Screenshot](https://i.imgur.com/KFvdZgx.jpg)
-
-![Screenshot](https://i.imgur.com/2UAsjDy.jpg)
-
-![Screenshot](https://i.imgur.com/RKkiuXV.jpg)
-
-![Screenshot](https://i.imgur.com/TyHKkPI.jpg)
-
-![Screenshot](https://i.imgur.com/TyHKkPI.jpg)
-
-![Screenshot](https://i.imgur.com/89XU1nF.jpg)
-
+While in production we use [reCAPTCHA](https://www.google.com/recaptcha) to
+prevent bots from sigining up for this service, in order to simplify
+development, reCAPTCHA is disabled in development by default.  In order
+to re-enable reCAPTCHA in development, remove the `config/initializers/recaptcha.rb`
+file or comment out the following line:
+```
+config.skip_verify_env.push('development')
+```
 
 ## Postgres Setup
 Choose the appropriate instruction set based on the operating system of your local environment.
 
 ### Linux
-Start the postgres console using the following command:
+First, create the file `config/database.yml` by copying `config/database.example.yml`.  Then, start the postgres console using the following command:
 
 `psql -p 5432 -h localhost -U postgres`
 
@@ -92,44 +86,19 @@ Exit the console using the following command:
 
  `\q`
 
-## Recaptcha & Local Development
+Add the password as an environment variable in your `.env` file: 
 
-While in production we use [reCAPTCHA](https://www.google.com/recaptcha) to
-prevent bots from sigining up for this service, in order to simplify
-development, reCAPTCHA is disabled in development by default.  In order
-to re-enable reCAPTCHA in development, remove the `config/initializers/recaptcha.rb`
-file or comment out the following line:
-```
-config.skip_verify_env.push('development')
-```
+`BLACKOPS_DATABASE_PASSWORD='ebwiki'`
 
-### Environmental Variables
-
-EBWiki uses environmental variables to run with different configurations in
-different environments through the [dotenv](https://github.com/bkeepers/dotenv)
-gem. For more information, consult the dotenv documentation, but in the meantime,
-to set the variables, create a file named
-`.env` at the top level of the project and fill in data for the following:
-In order to fill in this credentials, you'll have to get:
-* AWs Credentials from Amazon.com
-* Mailchimp Credentials from Mailchimp.com. Failing that, get the configuration
-from an EBWiki team member
-
+Within `config/database.yml`, uncomment the following lines in the blocks for `development` and `test`:
 
 ```
-AWS_ACCESS_KEY_ID=<AWS Credentials>
-AWS_SECRET_KEY_ID=<AWS Credentials>
-MAILCHIMP_API_KEY=<Mailchimp Credentials>
-MAILCHIMP_LINK=<Mailchimp Credentials>
-MAILCHIMP_LIST_ID=<Mailchimp Credentials>
-SEARCHBOX_URL=<Elasticsearch URL>
-CODECLIMATE_REPO_TOKEN=<Codeclimate API>
-AUTOBUS_SNAPSHOT_URL=<Autobus URL>
-BLACKOPS_DATABASE_PASSWORD=<local database password>
+username: blackops
+password:<%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>
 ```
 
 ### Windows
-Start the postgres console using the following command:
+First, create the file `config/database.yml` by copying `config/database.example.yml`.  Then, start the postgres console using the following command:
 
 `psql -p 5432 -h localhost -U postgres`
 
@@ -141,20 +110,18 @@ Exit the console using the following command:
 
 `\q`
 
-Save your password as an environment variable by adding the following line to your `.bashrc` file:
+Add the password as an environment variable in your `.env` file: 
 
-`export BLACKOPS_DATABASE_PASSWORD='ebwiki'`
+`BLACKOPS_DATABASE_PASSWORD='ebwiki'`
 
-Within `config/database.yml`, uncomment the following lines in the blocks for `development`, `test`, and `production`:
+Within `config/database.yml`, uncomment the following lines in the blocks for `development` and `test`:
 
-`username: blackops`
-
-`password:<%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>`
-
-
-`host: localhost`
-
-`port:5432`
+```
+username: blackops
+password:<%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>
+host: localhost
+port:5432
+```
 
 ![Screenshot](https://i.imgur.com/XJADAoj.jpg)
 
@@ -163,23 +130,22 @@ Within `config/database.yml`, uncomment the following lines in the blocks for `d
 ![Screenshot](https://i.imgur.com/CdOnsI7.jpg)
 
 ## Local Database Setup
-Let's complete our local database setup.  First, create a copy of config/database.example.yml to config/database.yml using:
+Let's complete our local database setup.  First, create the development and test databases using the following command:
 
-`cp config/database.example.yml config/database.yml`
-
-You may need to change the username and/or password to the ones you used during postgres setup before proceeding. You don't need to change anything if you used `ebwiki` as the password.
-
-Now, create the development and test databases using the following command:
-
-`rake db:create`
+`rails db:create`
 
 Then, apply the schema and migrations to the databases using the following command:
 
-`rake db:migrate`
+`rails db:migrate`
 
 Finally, seed the database using:
 
-`rake db:seed`
+`rails db:seed`
+
+## AWS Configuration
+In production, EBWiki currently uses the S3 Service of AWS to store images uploaded to the site, via the carrierwave and fog gems.  However, in the test environment, the app is currently configured to use Fog::Mock to stub any calls to S3.  In development, the app is currently configured to save any uploaded photos to your local filesystem rather than S3.
+
+If for some reason you need the ability to upload photos and store them in S3 in development or testing, you will need to update `avatar_uploader.rb` and/or `config/initializers/carrierwave.rb` according to your needs.  Then you will need to follow the AWS documentation to generate and retrieve an access key/secret key pair and S3 bucket, which you will add as environment variables in your `.env` file.
 
 ## Finish
 Now, everything should be completely set up!  Run the app locally on your computer using the following command:

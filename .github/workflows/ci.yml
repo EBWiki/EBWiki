@@ -1,0 +1,104 @@
+---
+name: CI
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: test
+
+    services:
+      postgres:
+        image: postgres:11 # try circleci/postgres:11-ram
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis
+
+      elasticsearch:
+        image: elasticsearch:6.8.13
+
+    steps:
+      - name: Install Apt dependencies
+        run: |
+          sudo apt-get install libcurl4-openssl-dev # libcurl4-gnutls-dev
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup database
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec bin/rails db:create
+          bundle exec bin/rails db:structure:load
+
+      - name: Run RSpec
+        run: |
+          bundle exec rspec spec/
+
+  brakeman:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Apt dependencies
+        run: |
+          sudo apt-get install libcurl4-openssl-dev # libcurl4-gnutls-dev
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run Brakeman
+        run: |
+          bundle exec brakeman -A --no-pager --no-exit-on-warn --no-exit-on-error
+
+  markdown-link-checker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Markdown Link Check
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          config-file: './.github/workflows/markdown_config.json'
+          use-verbose-mode: 'yes'
+          base-branch: main
+
+  rubocop:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Apt dependencies
+        run: |
+          sudo apt-get install libcurl4-openssl-dev # libcurl4-gnutls-dev
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run Rubocop
+        run: bundle exec rubocop

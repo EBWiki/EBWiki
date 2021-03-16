@@ -1,4 +1,6 @@
 test:
   adapter: postgresql
-  database: travis_ci_test
+  host: localhost
+  database: app_test
   username: postgres
+  password: postgres
