@@ -5,7 +5,6 @@ Welcome to our developer documentation for EBWiki!  Thank you for committing to 
 # Table of Contents
 * [General Timeline for Contributing to EBWiki](#general-timeline-for-contributing-to-ebwiki)
 * [Getting EBWiki Up and Running Locally](#getting-ebwiki-up-and-running-locally)
-* [Restoring Local Database from Production Backup](#restoring-local-database-from-production-backup)
 * [Third-Party Services](#third-party-services)
 
 ## General Timeline for Contributing to EBWiki
@@ -32,19 +31,17 @@ If everything looks great on staging, then we'll push the code to production wit
 ## Getting EBWiki Up and Running Locally
 
 There are a number of guides available for running EBWiki in your local environment:
-* [Running locally using a text editor and terminal](SETUP_LOCALLY.md)
+* [Running locally using a docker container](SETUP_LOCALLY.md)
+* [Running locally using a text editor and terminal](SETUP_LOCALLY_FULLSTACK.md)
 * [Running in a Cloud9 workspace](https://github.com/EBWiki/EBWiki/wiki/Running-EB-Wiki-development-environment-on-Cloud9-(WIP))
 
 ## Restoring Local Database from Production Backup
 
-The EBWiki repo has a `db/seeds.rb` file that you can use to add some basic data to your local database for development purposes.  However, there are times when you want your local database to have data similar to what you'd see in production (e.g, when working on analytics or search).  To address that, the repo also contains a recent backup of the production database, named `latest.dump`.  To restore the backup dump into your local database, use the following command:
-
-```
-pg_restore --verbose --clean --no-acl --no-owner -p 5432 -h localhost -U blackops -d blackops_development latest.dump
+The EBWiki repo has a `db/seeds.rb` file that you can use to add some basic data to your local database for development purposes.  However, there may be times when you want your local database to have data similar to what you'd see in production (e.g, when working on analytics or search).  In that case, please leave a comment stating your need on your ticket and mention Rachel Green or Mark Nyon.
 ```
 
 ## Third-Party Services
 * Elasticsearch for searching cases
-* Postgres 9.4 or higher
+* Postgres 11 or higher
 * Redis
 * Sumologic
