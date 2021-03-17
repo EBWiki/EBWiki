@@ -61,6 +61,8 @@ group :development, :test do
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
+  gem 'rubocop', '~> 0.93', require: false
+  gem 'rubocop-performance', require: false
 end
 
 group :development do
@@ -128,7 +130,7 @@ gem 'paper_trail', '~> 10.3'
 gem 'paper_trail-association_tracking'
 
 # pretty urls
-gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
@@ -154,9 +156,6 @@ gem 'httparty', '~> 0.16'
 
 # for setting middleware redirects
 gem 'rack-host-redirect', '~> 1.3'
-
-gem 'rubocop', '~> 0.67', require: false
-# gem 'rubocop-performance'
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'

@@ -175,16 +175,76 @@ end
 if Case.count.zero?
   puts 'Creating Cases...'
   states = State.limit(10).pluck(:id)
-  FactoryBot.create(:case, title: 'Sven Svensson', date: Date.new(2017, 1, 10), city: 'Houston', state_id: states[0])
-  FactoryBot.create(:case, title: 'Janez Novak', date: Date.new(2017, 2, 10), city: 'Little Rock', state_id: states[1])
-  FactoryBot.create(:case, title: 'Janina Kowalska', date: Date.new(2011, 1, 12), city: 'Boulder', state_id: states[2])
-  FactoryBot.create(:case, title: 'Kari Holm', date: Date.new(2017, 11, 5), city: 'Pensacola', state_id: states[3])
-  FactoryBot.create(:case, title: 'Jonas Petraitis', date: Date.new(2017, 10, 31), city: 'Boise', state_id: states[4])
-  FactoryBot.create(:case, title: 'Manku Thimman', date: Date.new(1997, 3, 17), city: 'Gary', state_id: states[5])
-  FactoryBot.create(:case, title: 'Mario Rossi', date: Date.new(2004, 11, 21), city: 'Louisville', state_id: states[6])
-  FactoryBot.create(:case, title: 'Max Mustermann', date: Date.new(2004, 10, 15), city: 'Amherst', state_id: states[7])
-  FactoryBot.create(:case, title: 'Chichiko Bendeliani', date: Date.new(2007, 9, 7), city: 'St. Louis', state_id: states[8])
-  FactoryBot.create(:case, title: 'Sally Housecoat', date: Date.new(2001, 1, 1), city: 'Houston', state_id: states[9])
+  FactoryBot.create(
+    :case,
+    title: 'Sven Svensson',
+    date: Date.new(2017, 1, 10),
+    city: 'Houston',
+    state_id: states[0]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Janez Novak',
+    date: Date.new(2017, 2, 10),
+    city: 'Little Rock',
+    state_id: states[1]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Janina Kowalska',
+    date: Date.new(2011, 1, 12),
+    city: 'Boulder',
+    state_id: states[2]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Kari Holm',
+    date: Date.new(2017, 11, 5),
+    city: 'Pensacola',
+    state_id: states[3]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Jonas Petraitis',
+    date: Date.new(2017, 10, 31),
+    city: 'Boise',
+    state_id: states[4]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Manku Thimman',
+    date: Date.new(1997, 3, 17),
+    city: 'Gary',
+    state_id: states[5]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Mario Rossi',
+    date: Date.new(2004, 11, 21),
+    city: 'Louisville',
+    state_id: states[6]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Max Mustermann',
+    date: Date.new(2004, 10, 15),
+    city: 'Amherst',
+    state_id: states[7]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Chichiko Bendeliani',
+    date: Date.new(2007, 9, 7),
+    city: 'St. Louis',
+    state_id: states[8]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Sally Housecoat',
+    date: Date.new(2001, 1, 1),
+    city: 'Houston',
+    state_id: states[9]
+  )
 end
 
 if Agency.count.zero?
