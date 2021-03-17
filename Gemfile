@@ -3,6 +3,8 @@
 ruby '2.6.6'
 
 source 'https://rubygems.org'
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'fullcalendar-rails', '~> 3.9'
 gem 'rails', '~> 5.0.7.2'
