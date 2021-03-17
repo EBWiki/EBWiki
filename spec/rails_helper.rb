@@ -133,6 +133,10 @@ RSpec.configure do |config|
   config.after(:each, type: :mailer) do
     ActionMailer::Base.deliveries.clear
   end
+
+  # randomize the order rspec uses when running
+  config.order = :random
+  Kernel.srand config.seed
 end
 
 # Config settings Shoulda Matchers gem
