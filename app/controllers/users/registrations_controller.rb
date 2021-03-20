@@ -2,6 +2,7 @@
 
 # Handles User registration
 module Users
+  # RegistrationsController
   class RegistrationsController < Devise::RegistrationsController
     # POST /resource
     def create
