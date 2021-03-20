@@ -19,13 +19,19 @@ AllCops:
     - vendor/**/*
     - node_modules/**/*
 
+Gemspec/DateAssignment:
+  Enabled: true
+
+Security/JSONLoad:
+  Enabled: false
+
+Layout/FirstArgumentIndentation:
+  Enabled: false
+
 Style/Lambda:
   Enabled: false
 
 Style/RedundantInterpolation:
-  Enabled: false
-
-Layout/FirstArgumentIndentation:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -37,193 +43,283 @@ Style/GlobalVars:
 Security/JSONLoad:
   Enabled: false
 
-Gemspec/DateAssignment: # (new in 1.10)
+Layout/SpaceBeforeBrackets:
   Enabled: true
-Layout/SpaceBeforeBrackets: # (new in 1.7)
+
+Lint/AmbiguousAssignment:
   Enabled: true
-Lint/AmbiguousAssignment: # (new in 1.7)
+
+Lint/DeprecatedConstants:
   Enabled: true
-Lint/DeprecatedConstants: # (new in 1.8)
+
+Lint/DuplicateBranch:
   Enabled: true
-Lint/DuplicateBranch: # (new in 1.3)
+
+Lint/DuplicateRegexpCharacterClassElement:
   Enabled: true
-Lint/DuplicateRegexpCharacterClassElement: # (new in 1.1)
+
+Lint/EmptyBlock:
   Enabled: true
-Lint/EmptyBlock: # (new in 1.1)
+
+Lint/EmptyClass:
   Enabled: true
-Lint/EmptyClass: # (new in 1.3)
+
+Lint/LambdaWithoutLiteralBlock:
   Enabled: true
-Lint/LambdaWithoutLiteralBlock: # (new in 1.8)
+
+Lint/NoReturnInBeginEndBlocks:
   Enabled: true
-Lint/NoReturnInBeginEndBlocks: # (new in 1.2)
+
+Lint/NumberedParameterAssignment:
   Enabled: true
-Lint/NumberedParameterAssignment: # (new in 1.9)
+
+Lint/OrAssignmentToConstant:
   Enabled: true
-Lint/OrAssignmentToConstant: # (new in 1.9)
+
+Lint/RedundantDirGlobSort:
   Enabled: true
-Lint/RedundantDirGlobSort: # (new in 1.8)
+
+Lint/SymbolConversion:
   Enabled: true
-Lint/SymbolConversion: # (new in 1.9)
+
+Lint/ToEnumArguments:
   Enabled: true
-Lint/ToEnumArguments: # (new in 1.1)
+
+Lint/TripleQuotes:
   Enabled: true
-Lint/TripleQuotes: # (new in 1.9)
+
+Lint/UnexpectedBlockArity:
   Enabled: true
-Lint/UnexpectedBlockArity: # (new in 1.5)
+
+Lint/UnmodifiedReduceAccumulator:
   Enabled: true
-Lint/UnmodifiedReduceAccumulator: # (new in 1.1)
+
+Style/ArgumentsForwarding:
   Enabled: true
-Style/ArgumentsForwarding: # (new in 1.1)
+
+Style/CollectionCompact:
   Enabled: true
-Style/CollectionCompact: # (new in 1.2)
+
+Style/DocumentDynamicEvalDefinition:
   Enabled: true
-Style/DocumentDynamicEvalDefinition: # (new in 1.1)
+
+Style/EndlessMethod:
   Enabled: true
-Style/EndlessMethod: # (new in 1.8)
+
+Style/HashConversion:
   Enabled: true
-Style/HashConversion: # (new in 1.10)
+
+Style/HashExcept:
   Enabled: true
-Style/HashExcept: # (new in 1.7)
+
+Style/IfWithBooleanLiteralBranches:
   Enabled: true
-Style/IfWithBooleanLiteralBranches: # (new in 1.9)
+
+Style/NegatedIfElseCondition:
   Enabled: true
-Style/NegatedIfElseCondition: # (new in 1.2)
+
+Style/NilLambda:
   Enabled: true
-Style/NilLambda: # (new in 1.3)
+
+Style/RedundantArgument:
   Enabled: true
-Style/RedundantArgument: # (new in 1.4)
+
+Style/SwapValues:
   Enabled: true
-Style/SwapValues: # (new in 1.1)
+
+Layout/BeginEndAlignment:
   Enabled: true
-Layout/BeginEndAlignment: # (new in 0.91)
+
+Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
-Layout/EmptyLinesAroundAttributeAccessor: # (new in 0.83)
+
+Layout/SpaceAroundMethodCallOperator:
   Enabled: true
-Layout/SpaceAroundMethodCallOperator: # (new in 0.82)
+
+Lint/BinaryOperatorWithIdenticalOperands:
   Enabled: true
-Lint/BinaryOperatorWithIdenticalOperands: # (new in 0.89)
+
+Lint/ConstantDefinitionInBlock:
   Enabled: true
-Lint/ConstantDefinitionInBlock: # (new in 0.91)
+
+Lint/DeprecatedOpenSSLConstant:
   Enabled: true
-Lint/DeprecatedOpenSSLConstant: # (new in 0.84)
+
+Lint/DuplicateElsifCondition:
   Enabled: true
-Lint/DuplicateElsifCondition: # (new in 0.88)
+
+Lint/DuplicateRequire:
   Enabled: true
-Lint/DuplicateRequire: # (new in 0.90)
+
+Lint/DuplicateRescueException:
   Enabled: true
-Lint/DuplicateRescueException: # (new in 0.89)
+
+Lint/EmptyConditionalBody:
   Enabled: true
-Lint/EmptyConditionalBody: # (new in 0.89)
+
+Lint/EmptyFile:
+
+Lint/FloatComparison:
   Enabled: true
-Lint/EmptyFile: # (new in 0.90)
+
+Lint/HashCompareByIdentity:
   Enabled: true
-Lint/FloatComparison: # (new in 0.89)
+
+Lint/IdentityComparison:
   Enabled: true
-Lint/HashCompareByIdentity: # (new in 0.93)
+
+Lint/MissingSuper:
   Enabled: true
-Lint/IdentityComparison: # (new in 0.91)
+
+Lint/MixedRegexpCaptureTypes:
   Enabled: true
-Lint/MissingSuper: # (new in 0.89)
+
+Lint/OutOfRangeRegexpRef:
   Enabled: true
-Lint/MixedRegexpCaptureTypes: # (new in 0.85)
+
+Lint/RaiseException:
   Enabled: true
-Lint/OutOfRangeRegexpRef: # (new in 0.89)
+
+Lint/RedundantSafeNavigation:
   Enabled: true
-Lint/RaiseException: # (new in 0.81)
+
+Lint/SelfAssignment:
   Enabled: true
-Lint/RedundantSafeNavigation: # (new in 0.93)
+
+Lint/StructNewOverride:
   Enabled: true
-Lint/SelfAssignment: # (new in 0.89)
+
+Lint/TopLevelReturnWithArgument:
   Enabled: true
-Lint/StructNewOverride: # (new in 0.81)
+
+Lint/TrailingCommaInAttributeDeclaration:
   Enabled: true
-Lint/TopLevelReturnWithArgument: # (new in 0.89)
+
+Lint/UnreachableLoop:
   Enabled: true
-Lint/TrailingCommaInAttributeDeclaration: # (new in 0.90)
+
+Lint/UselessMethodDefinition:
   Enabled: true
-Lint/UnreachableLoop: # (new in 0.89)
+
+Lint/UselessTimes:
   Enabled: true
-Lint/UselessMethodDefinition: # (new in 0.90)
+
+Style/AccessorGrouping:
   Enabled: true
-Lint/UselessTimes: # (new in 0.91)
+
+Style/BisectedAttrAccessor:
   Enabled: true
-Style/AccessorGrouping: # (new in 0.87)
+
+Style/CaseLikeIf:
   Enabled: true
-Style/BisectedAttrAccessor: # (new in 0.87)
+
+Style/ClassEqualityComparison:
   Enabled: true
-Style/CaseLikeIf: # (new in 0.88)
+
+Style/CombinableLoops:
   Enabled: true
-Style/ClassEqualityComparison: # (new in 0.93)
+
+Style/ExplicitBlockArgument:
   Enabled: true
-Style/CombinableLoops: # (new in 0.90)
+
+Style/ExponentialNotation:
   Enabled: true
-Style/ExplicitBlockArgument: # (new in 0.89)
+
+Style/GlobalStdStream:
   Enabled: true
-Style/ExponentialNotation: # (new in 0.82)
+
+Style/HashAsLastArrayItem:
   Enabled: true
-Style/GlobalStdStream: # (new in 0.89)
+
+Style/HashEachMethods:
   Enabled: true
-Style/HashAsLastArrayItem: # (new in 0.88)
+
+Style/HashLikeCase:
   Enabled: true
-Style/HashEachMethods: # (new in 0.80)
+
+Style/HashTransformKeys:
   Enabled: true
-Style/HashLikeCase: # (new in 0.88)
+
+Style/HashTransformValues:
   Enabled: true
-Style/HashTransformKeys: # (new in 0.80)
+
+Style/KeywordParametersOrder:
   Enabled: true
-Style/HashTransformValues: # (new in 0.80)
+
+Style/OptionalBooleanParameter:
   Enabled: true
-Style/KeywordParametersOrder: # (new in 0.90)
+
+Style/RedundantAssignment:
   Enabled: true
-Style/OptionalBooleanParameter: # (new in 0.89)
+
+Style/RedundantFetchBlock:
   Enabled: true
-Style/RedundantAssignment: # (new in 0.87)
+
+Style/RedundantFileExtensionInRequire:
   Enabled: true
-Style/RedundantFetchBlock: # (new in 0.86)
+
+Style/RedundantRegexpCharacterClass:
   Enabled: true
-Style/RedundantFileExtensionInRequire: # (new in 0.88)
+
+Style/RedundantRegexpEscape:
   Enabled: true
-Style/RedundantRegexpCharacterClass: # (new in 0.85)
+
+Style/RedundantSelfAssignment:
   Enabled: true
-Style/RedundantRegexpEscape: # (new in 0.85)
+
+Style/SingleArgumentDig:
   Enabled: true
-Style/RedundantSelfAssignment: # (new in 0.90)
+
+Style/SlicingWithRange:
   Enabled: true
-Style/SingleArgumentDig: # (new in 0.89)
+
+Style/SoleNestedConditional:
   Enabled: true
-Style/SlicingWithRange: # (new in 0.83)
+
+Style/StringConcatenation:
   Enabled: true
-Style/SoleNestedConditional: # (new in 0.89)
+
+Performance/AncestorsInclude:
   Enabled: true
-Style/StringConcatenation: # (new in 0.89)
+
+Performance/BigDecimalWithNumericArgument:
   Enabled: true
-Performance/AncestorsInclude: # (new in 1.7)
+
+Performance/BlockGivenWithExplicitBlock:
   Enabled: true
-Performance/BigDecimalWithNumericArgument: # (new in 1.7)
+
+Performance/CollectionLiteralInLoop:
   Enabled: true
-Performance/BlockGivenWithExplicitBlock: # (new in 1.9)
+
+Performance/ConstantRegexp:
   Enabled: true
-Performance/CollectionLiteralInLoop: # (new in 1.8)
+
+Performance/MethodObjectAsBlock:
   Enabled: true
-Performance/ConstantRegexp: # (new in 1.9)
+
+Performance/RedundantEqualityComparisonBlock:
   Enabled: true
-Performance/MethodObjectAsBlock: # (new in 1.9)
+
+Performance/RedundantSortBlock:
   Enabled: true
-Performance/RedundantEqualityComparisonBlock: # (new in 1.10)
+
+Performance/RedundantSplitRegexpArgument:
   Enabled: true
-Performance/RedundantSortBlock: # (new in 1.7)
+
+Performance/RedundantStringChars:
   Enabled: true
-Performance/RedundantSplitRegexpArgument: # (new in 1.10)
+
+Performance/ReverseFirst:
   Enabled: true
-Performance/RedundantStringChars: # (new in 1.7)
+
+Performance/SortReverse:
   Enabled: true
-Performance/ReverseFirst: # (new in 1.7)
+
+Performance/Squeeze:
   Enabled: true
-Performance/SortReverse: # (new in 1.7)
+
+Performance/StringInclude:
   Enabled: true
-Performance/Squeeze: # (new in 1.7)
-  Enabled: true
-Performance/StringInclude: # (new in 1.7)
-  Enabled: true
-Performance/Sum: # (new in 1.8)
+
+Performance/Sum:
   Enabled: true
