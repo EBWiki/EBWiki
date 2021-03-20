@@ -705,6 +705,10 @@ GEM
     rubocop-performance (1.10.1)
       rubocop (>= 0.90.0, < 2.0)
       rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.9.1)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 0.90.0, < 2.0)
     ruby-progressbar (1.11.0)
     ruby-statistics (2.1.2)
     ruby-vips (2.0.17)
@@ -877,6 +881,7 @@ DEPENDENCIES
   rspec-rails (~> 4.0, >= 4.0.1)
   rubocop (~> 0.93)
   rubocop-performance
+  rubocop-rails
   sassc-rails (~> 2.1)
   searchkick (~> 3.1)
   select2-rails (~> 4.0)
