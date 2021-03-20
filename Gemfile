@@ -61,7 +61,7 @@ group :development, :test do
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
-  gem 'rubocop', '~> 0.93', require: false
+  gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
 end
 
@@ -157,8 +157,6 @@ gem 'httparty', '~> 0.16'
 # for setting middleware redirects
 gem 'rack-host-redirect', '~> 1.3'
 
-gem 'rubocop', require: false
-gem 'rubocop-performance', require: false
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
 
