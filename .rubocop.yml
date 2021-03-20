@@ -158,6 +158,7 @@ Lint/EmptyConditionalBody:
   Enabled: true
 
 Lint/EmptyFile:
+  Enabled: true
 
 Lint/FloatComparison:
   Enabled: true
