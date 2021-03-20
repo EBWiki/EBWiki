@@ -1,4 +1,5 @@
-require: rubocop-performance
+require: 
+  - rubocop-performance
 
 Layout/LineLength:
   Max: 100
@@ -22,26 +23,28 @@ AllCops:
 Gemspec/DateAssignment:
   Enabled: true
 
-Security/JSONLoad:
-  Enabled: false
-
 Layout/FirstArgumentIndentation:
-  Enabled: false
+  Enabled: true
 
 Style/Lambda:
-  Enabled: false
+  Enabled: true
 
 Style/RedundantInterpolation:
-  Enabled: false
+  Enabled: true
 
 Style/ClassAndModuleChildren:
-  Enabled: false
+  Enabled: true
 
 Style/GlobalVars:
-  Enabled: false
+  Exclude:
+    - 'app/helpers/maps_helper.rb'
+    - 'config/initializers/redis.rb'
+  Enabled: true
 
 Security/JSONLoad:
-  Enabled: false
+  Exclude:
+    - 'app/helpers/maps_helper.rb'
+  Enabled: true
 
 Layout/SpaceBeforeBrackets:
   Enabled: true
@@ -59,6 +62,8 @@ Lint/DuplicateRegexpCharacterClassElement:
   Enabled: true
 
 Lint/EmptyBlock:
+  Exclude:
+    - 'lib/tasks/cucumber.rake'
   Enabled: true
 
 Lint/EmptyClass:
