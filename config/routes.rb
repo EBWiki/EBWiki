@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
   get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
 
-  #redirect logic
+  # redirect logic
   get '/articles', to: redirect('/cases')
   get '/articles/:slug', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}" }
   get '/articles/:slug/history', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/history" }
@@ -31,12 +31,6 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations' }
   resources :users, only: %i[show edit update]
   mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
-
-  get '/analytics/users_by_day', to: 'analytics#users_by_day'
-  get '/analytics/visits_by_browser', to: 'analytics#visits_by_browser'
-  get '/analytics/visits_by_day', to: 'analytics#visits_by_day'
-  get '/analytics/visits_by_referring_domain', to: 'analytics#visits_by_referring_domain'
-  get '/analytics', to: 'analytics#index'
 
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'

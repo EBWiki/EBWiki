@@ -46,11 +46,13 @@ RSpec.describe Agency do
       ohio = FactoryBot.create(:state_ohio)
 
       expect do
-        agency.update_attributes(city: 'Worthington',
-                                 state_id: ohio.id,
-                                 street_address: '1867 Irving Road',
-                                 zipcode: '43085')
-      end.to change { agency.latitude }
+        agency.update_attributes(
+          city: 'Worthington',
+          state_id: ohio.id,
+          street_address: '1867 Irving Road',
+          zipcode: '43085'
+        )
+      end.to(change { agency.latitude })
     end
   end
 
@@ -70,7 +72,7 @@ RSpec.describe Agency do
         city: 'Worthington',
         state_id: ohio.id,
         street_address: '1867 Irving Road',
-        zipcode: '43085',
+        zipcode: '43085'
       )
 
       expect(agency.location).to be_a(Location)
@@ -97,7 +99,7 @@ RSpec.describe Agency do
         city: 'Worthington',
         state_id: ohio.id,
         street_address: '1867 Irving Road',
-        zipcode: '43085',
+        zipcode: '43085'
       )
 
       agency.location = new_location
