@@ -12,7 +12,7 @@ class AgenciesController < ApplicationController
 
   # GET /agencies/1
   def show
-    @agency = Agency.friendly.find(params[:id])
+    @agency = Agency.includes(:cases).friendly.find(params[:id])
     @back_url = session[:previous_url]
     @cases = @agency.cases
     @agency_state = @agency.retrieve_state

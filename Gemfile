@@ -3,6 +3,8 @@
 ruby '2.6.6'
 
 source 'https://rubygems.org'
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'fullcalendar-rails', '~> 3.9'
 gem 'rails', '~> 5.0.7.2'
@@ -91,7 +93,7 @@ gem 'fog', '2.2'
 # photo resizing
 gem 'mini_magick', '~> 4.10'
 # file upload solution
-gem 'carrierwave', '~> 1.3'
+gem 'carrierwave', '~> 2.1'
 # image optimizer that works with carrierwave
 gem 'carrierwave-imageoptimizer'
 
@@ -126,7 +128,7 @@ gem 'paper_trail', '~> 10.3'
 gem 'paper_trail-association_tracking'
 
 # pretty urls
-gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
@@ -153,9 +155,6 @@ gem 'httparty', '~> 0.16'
 # for setting middleware redirects
 gem 'rack-host-redirect', '~> 1.3'
 
-gem 'rubocop', '~> 0.67', require: false
-# gem 'rubocop-performance'
-
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
 
@@ -168,3 +167,10 @@ gem 'recaptcha'
 group :production do
   gem 'cloudflare-rails', '~> 0.6'
 end
+
+# move out rubocop gems
+gem 'rubocop', '~> 0.93', require: false
+gem 'rubocop-performance', require: false
+gem 'rubocop-rails', require: false
+
+gem 'sprockets', '~> 3.7.2'

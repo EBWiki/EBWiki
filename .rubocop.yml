@@ -1,4 +1,4 @@
-# require: rubocop-performance
+require: rubocop-performance
 
 Layout/LineLength:
   Max: 100
@@ -9,13 +9,13 @@ Metrics/BlockLength:
 AllCops:
   Exclude:
     - db/migrate/*.rb
-    - db/schema.rb
-    - db/seeds.rb
     - db/structure.sql
     - bin/*
     - script/*
     - config/routes.rb
     - 'spec/**/*'
+    - vendor/**/*
+    - node_modules/**/*
 
 Style/Lambda:
   Enabled: false

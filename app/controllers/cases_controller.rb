@@ -58,10 +58,10 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
 
   # rubocop:todo Metrics/MethodLength
   def update # rubocop:todo Metrics/AbcSize
-    @this_case = Case.friendly.find(params[:id])
+    @this_case = Case.find(params[:id])
     @this_case.slug = nil
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
-    if @this_case.update_attributes(case_params)
+    if @this_case.update(case_params)
       flash[:success] = 'Case was updated!'
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
@@ -71,7 +71,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       render 'edit'
     end
   rescue StandardError => e
-    Rollbar.exception(e)
+    Rollbar.error(e)
   end
   # rubocop:enable Metrics/MethodLength
 
@@ -103,32 +103,32 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   def case_params # rubocop:todo Metrics/MethodLength
     params[:case][:date] ||= []
     params.require(:case).permit(
-                                  :title,
-                                  :age,
-                                  :overview,
-                                  :litigation,
-                                  :community_action,
-                                  :agency_id,
-                                  :cause_of_death_name,
-                                  :date,
-                                  :state_id,
-                                  :city,
-                                  :address,
-                                  :zipcode,
-                                  :longitude,
-                                  :latitude,
-                                  :avatar,
-                                  :remove_avatar,
-                                  :video_url,
-                                  :summary,
-                                  :blurb,
-                                  links_attributes: %i[id url title _destroy],
-                                  comments_attributes: \
-                                    I18n.t('cases_controller.comments_attributes').map(&:to_sym),
-                                  subjects_attributes: \
-                                    I18n.t('cases_controller.subjects_attributes').map(&:to_sym),
-                                  agency_ids: []
-                                )
+      :title,
+      :age,
+      :overview,
+      :litigation,
+      :community_action,
+      :agency_id,
+      :cause_of_death_name,
+      :date,
+      :state_id,
+      :city,
+      :address,
+      :zipcode,
+      :longitude,
+      :latitude,
+      :avatar,
+      :remove_avatar,
+      :video_url,
+      :summary,
+      :blurb,
+      links_attributes: %i[id url title _destroy],
+      comments_attributes: \
+        I18n.t('cases_controller.comments_attributes').map(&:to_sym),
+      subjects_attributes: \
+        I18n.t('cases_controller.subjects_attributes').map(&:to_sym),
+      agency_ids: []
+    )
   end
 
   # from the tutorial (https://gorails.com/episodes/comments-with-polymorphic-associations)

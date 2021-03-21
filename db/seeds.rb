@@ -163,175 +163,92 @@ if Ethnicity.count.zero?
 end
 
 if User.count.zero?
-    puts 'Creating Users...'
+  puts 'Creating Users...'
 
-    users = [
-      { name: 'John Doe',
-        email: 'jdoe@example.com',
-        password: 'password',
-        password_confirmation: 'password',
-        admin: true },
-      { name: 'Jane Smith',
-        email: 'jsmith@example.com',
-        password: 'password',
-        password_confirmation: 'password' },
-      { name: 'Jan Alleman',
-        email: 'jalleman@example.com',
-        password: 'password',
-        password_confirmation: 'password' },
-      {name: 'Zhang San',
-        email: 'szhang@example.com',
-        password: 'password',
-        password_confirmation: 'password' }
-    ]
-
-    users.each do |user|
-      User.create(user)
-    end
+  # All users have the password 'password'
+  FactoryBot.create(:user, name: 'John Doe', email: 'jdoe@example.com', admin: true)
+  FactoryBot.create(:user, name: 'Jane Smith', email: 'jsmith@example.com')
+  FactoryBot.create(:user, name: 'Jan Alleman', email: 'jalleman@example.com')
+  FactoryBot.create(:user, name: 'Zhang San', email: 'szhang@example.com')
 end
+
 if Case.count.zero?
   puts 'Creating Cases...'
-  cases = [
-    { title: 'Sven Svensson',
-      date: '01/10/2017',
-      subjects_attributes: { '0' => { name: 'Sven Svensson',
-                                      age: '25'
-                                    }
-                           },
-      city: 'Houston',
-      state: State.find_by(name: 'Texas'),
-      overview: 'a',
-      blurb: 'Sven Svensson',
-      summary: 'Added a case' },
-
-    { title: 'Janez Novak',
-      date: '02/10/2017',
-      subjects_attributes: { '0' => { name: 'Janez Novak',
-                                      age: '26'
-                                    }
-                           },
-      city: 'Little Rock',
-      state: State.find_by(name: 'Arkansas'),
-      overview: 'a',
-      blurb: 'Janez Novak',
-      summary: 'Added a case' },
-
-    { title: 'Janina Kowalska',
-      date: '01/12/2011',
-      subjects_attributes: { '0' => { name: 'Janina Kowalska',
-                                      age: '35'
-                                    }
-                           },
-      city: 'Boulder',
-      state: State.find_by(name: 'Colorado'),
-      overview: 'a',
-      blurb: 'Janina Kowalska',
-      summary: 'Added a case' },
-
-    { title: 'Kari Holm',
-      date: '11/05/2017',
-      subjects_attributes: { '0' => { name: 'Kari Holm',
-                                      age: '20'
-                                    }
-                           },
-      city: 'Pensacola',
-      state_id: State.find_by(name: 'Florida'),
-      overview: 'a',
-      blurb: 'Kari Holm',
-      summary: 'Added a case' },
-
-    { title: 'Jonas Petraitis',
-      date: '31/10/2017',
-      subjects_attributes: { '0' => { name: 'Jonas Petraitis',
-                                      age: '56'
-                                    }
-                           },
-      city: 'Boise',
-      state_id: State.find_by(name: 'Idaho'),
-      overview: 'a',
-      blurb: 'Jonas Petraitis',
-      summary: 'Added a case' },
-
-    { title: 'Manku Thimman',
-      date: '17/03/1997',
-      subjects_attributes: { '0' => { name: 'Manku Thimma',
-                                      age: '33'
-                                    }
-                           },
-      city: 'Gary',
-      state_id: State.find_by(name: 'Indiana'),
-      overview: 'a',
-      blurb: 'Manku Thimman',
-      summary: 'Added a case' },
-
-    { title: 'Mario Rossi',
-      date: '21/11/2004',
-      subjects_attributes: { '0' => { name: 'Mario Rossi',
-                                      age: '31'
-                                    }
-                           },
-      city: 'Louisville',
-      state: State.find_by(name: 'Kentucky'),
-      overview: 'a',
-      blurb: 'Mario Rossi',
-      summary: 'Added a case' },
-
-    { title: 'Max Mustermann',
-      date: '11/05/2014',
-      subjects_attributes: { '0' => { name: 'Max Mustermann',
-                                      age: '25'
-                                    }
-                           },
-      city: 'Amherst',
-      state: State.find_by(name: 'Massachusetts'),
-      overview: 'a',
-      blurb: 'Max Mustermann',
-      summary: 'Added a case' },
-
-    { title: 'Chichiko Bendeliani',
-      date: '09/07/2009',
-      subjects_attributes: { '0' => { name: 'Chichiko Bendeliani',
-                                      age: '40'
-                                    }
-                           },
-      city: 'St. Louis',
-      state:  State.find_by(name: 'Missouri'),
-      overview: 'a',
-      blurb: 'Chichiko Bendeliani',
-      summary: 'Added a case' },
-
-    { title: 'Sally Housecoat',
-      date: '01/01/2001',
-      subjects_attributes: { '0' => { name: 'Sally Housecoat',
-                                      age: '39'
-                                    }
-                           },
-      city: 'Houston',
-      state_id: State.find_by(name: 'Texas'),
-      overview: 'a',
-      blurb: 'Sally Housecoat',
-      summary: 'Added a case' }
-  ]
-
-  cases.each do |this_case|
-    Rails.logger.info "Adding case #{this_case['title']}"
-    Case.create(this_case)
-  end
+  states = State.limit(10).pluck(:id)
+  FactoryBot.create(
+    :case,
+    title: 'Sven Svensson',
+    date: Date.new(2017, 1, 10),
+    city: 'Houston',
+    state_id: states[0]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Janez Novak',
+    date: Date.new(2017, 2, 10),
+    city: 'Little Rock',
+    state_id: states[1]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Janina Kowalska',
+    date: Date.new(2011, 1, 12),
+    city: 'Boulder',
+    state_id: states[2]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Kari Holm',
+    date: Date.new(2017, 11, 5),
+    city: 'Pensacola',
+    state_id: states[3]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Jonas Petraitis',
+    date: Date.new(2017, 10, 31),
+    city: 'Boise',
+    state_id: states[4]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Manku Thimman',
+    date: Date.new(1997, 3, 17),
+    city: 'Gary',
+    state_id: states[5]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Mario Rossi',
+    date: Date.new(2004, 11, 21),
+    city: 'Louisville',
+    state_id: states[6]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Max Mustermann',
+    date: Date.new(2004, 10, 15),
+    city: 'Amherst',
+    state_id: states[7]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Chichiko Bendeliani',
+    date: Date.new(2007, 9, 7),
+    city: 'St. Louis',
+    state_id: states[8]
+  )
+  FactoryBot.create(
+    :case,
+    title: 'Sally Housecoat',
+    date: Date.new(2001, 1, 1),
+    city: 'Houston',
+    state_id: states[9]
+  )
 end
 
 if Agency.count.zero?
   puts 'Creating Agencies...'
-
-  agencies = [
-    { name: 'City of Houston Police Department',
-      city: 'Houston',
-      state:  State.where(name: 'Texas').first },
-    { name: 'City of Beaumont Police Department',
-      city: 'Beaumont',
-      state:  State.where(name: 'Texas').first }
-  ]
-
-  agencies.each do |agency|
-    Agency.create(agency)
-  end
+  FactoryBot.create(:agency, name: 'City of Houston Police Department', city: 'Houston')
+  FactoryBot.create(:agency, name: 'City of Beaumont Police Department', city: 'Beaumont')
 end
