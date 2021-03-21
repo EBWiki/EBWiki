@@ -125,7 +125,7 @@
 		<%= f.button :submit, class: 'btn btn-success' %>
 
 		<% if params[:action] == "edit" %>
-	    <%= button_to 'Back to Case', case_path(@this_case), class: 'btn btn-primary back' %>
+	    <%= link_to 'Back to Case', case_path(@this_case), class: 'btn btn-primary back' %>
 		<% else %>
 	    <%= link_to 'Back to Home', root_path, class: 'btn btn-primary back' %>
 		<% end %>
