@@ -172,3 +172,5 @@ end
 gem 'rubocop', '~> 0.93', require: false
 gem 'rubocop-performance', require: false
 gem 'rubocop-rails', require: false
+
+gem 'sprockets', '~> 3.7.2'
