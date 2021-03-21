@@ -23,7 +23,7 @@ plugins:
     enabled: true
   rubocop:
     enabled: true
-    channel: rubocop-0-67
+    channel: rubocop-0-93
 exclude_patterns:
 - vendor/assets/javascripts/*.js
 - db/

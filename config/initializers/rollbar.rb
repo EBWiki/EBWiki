@@ -11,7 +11,7 @@ Rollbar.configure do |config|
   config.environment = ENV['ROLLBAR_ENV']
 
   # Here we'll disable in 'test':
-  config.enabled = false if Rails.env.test?
+  config.enabled = false if Rails.env.test? || Rails.env.development?
 
   config.exception_level_filters['ActionController::RoutingError'] = 'ignore'
 
