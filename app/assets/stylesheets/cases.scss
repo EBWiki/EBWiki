@@ -302,3 +302,10 @@ input.case-btn {
   box-sizing: none;
   background-color: transparent;
 }
+
+.form-submit {
+  border-radius: 4px;
+  .btn-primary.back {
+    background-color: $color-gray;
+  }
+}
