@@ -63,6 +63,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
 end
 
 group :development do
@@ -169,3 +170,5 @@ gem 'recaptcha'
 group :production do
   gem 'cloudflare-rails', '~> 0.6'
 end
+
+gem 'sprockets', '~> 3.7.2'
