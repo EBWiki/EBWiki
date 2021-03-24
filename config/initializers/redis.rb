@@ -2,12 +2,8 @@
 
 # config/initializers/redis.rb
 
-$redis = if Rails.env.test?
-           Redis::Namespace.new('ebwiki', redis: MockRedis.new)
-         elsif Rails.env.production? || Rails.env.staging?
-           Redis::Namespace.new('ebwiki', redis: Redis.new(url: ENV['REDISTOGO_URL']))
-         else
-           Redis::Namespace.new('ebwiki', redis: Redis.new('localhost',
-                                                           port: 6379,
-                                                           db: 0))
-         end
+$redis=if Rails.env.test?
+          Redis::Namespace.new('ebwiki', redis: MockRedis.new, driver: :hiredis)
+        else
+          Redis::Namespace.new('ebwiki', redis: Redis.new(url: ENV['REDISTOGO_URL'], driver: :hiredis))
+        end
