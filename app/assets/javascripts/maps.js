@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
    		}
     );
 
-	let coordinates = window.CASES;
+	let coordinates = JSON.parse(window.CASES);
 	let createdObjects = coordinates.map(coord => new H.clustering.DataPoint(coord[0], coord[1]));
 	let clusteredDataProvider = new H.clustering.Provider(createdObjects);
 	// Create a layer that includes the data provider and its data points: 
