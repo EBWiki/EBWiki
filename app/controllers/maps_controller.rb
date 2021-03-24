@@ -7,10 +7,6 @@ class MapsController < ApplicationController
 
   def index
     @cases = fetch_cases
-    @cases = @cases.compact.map do |this_case|
-      [
-        this_case['latitude'], this_case['longitude']
-      ]
     end
   end
 
