@@ -7,7 +7,6 @@ class MapsController < ApplicationController
 
   def index
     @cases = fetch_cases
-    end
   end
 
   def after_sign_up_path_for(resource)
