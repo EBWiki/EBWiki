@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'minitest/autorun'
 require 'mimemagic'
 require 'stringio'
@@ -44,7 +46,7 @@ class TestMimeMagic < Minitest::Test
   end
 
   def test_have_extensions
-    assert_equal %w(htm html), MimeMagic.new('text/html').extensions
+    assert_equal %w[htm html], MimeMagic.new('text/html').extensions
   end
 
   def test_have_comment
@@ -69,16 +71,16 @@ class TestMimeMagic < Minitest::Test
   end
 
   def test_recognize_xlsx_as_zip_without_magic
-    file = "test/files/application.vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    %w(msoffice rubyxl gdocs).each do |variant|
+    file = 'test/files/application.vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    %w[msoffice rubyxl gdocs].each do |variant|
       file = "test/files/application.vnd.openxmlformats-officedocument.spreadsheetml{#{variant}}.sheet"
-      assert_equal "application/zip", MimeMagic.by_magic(File.read(file)).to_s
-      assert_equal "application/zip", MimeMagic.by_magic(File.open(file, 'rb')).to_s
+      assert_equal 'application/zip', MimeMagic.by_magic(File.read(file)).to_s
+      assert_equal 'application/zip', MimeMagic.by_magic(File.open(file, 'rb')).to_s
     end
   end
 
   def test_recognize_by_magic
-    load "mimemagic/overlay.rb"
+    load 'mimemagic/overlay.rb'
     Dir['test/files/*'].each do |file|
       mime = file[11..-1].sub('.', '/').sub(/\{\w+\}/, '')
       assert_equal mime, MimeMagic.by_magic(File.read(file)).to_s
@@ -88,7 +90,7 @@ class TestMimeMagic < Minitest::Test
 
   def test_recognize_all_by_magic
     load 'mimemagic/overlay.rb'
-    %w(msoffice rubyxl gdocs).each do |variant|
+    %w[msoffice rubyxl gdocs].each do |variant|
       file = "test/files/application.vnd.openxmlformats-officedocument.spreadsheetml{#{variant}}.sheet"
       mimes = %w[application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/zip]
       assert_equal mimes, MimeMagic.all_by_magic(File.read(file)).map(&:type)
@@ -97,22 +99,22 @@ class TestMimeMagic < Minitest::Test
 
   def test_have_add
     MimeMagic.add('application/mimemagic-test',
-                  extensions: %w(ext1 ext2),
+                  extensions: %w[ext1 ext2],
                   parents: 'application/xml',
                   comment: 'Comment')
     assert_equal 'application/mimemagic-test', MimeMagic.by_extension('ext1').to_s
     assert_equal 'application/mimemagic-test', MimeMagic.by_extension('ext2').to_s
     assert_equal 'Comment', MimeMagic.by_extension('ext2').comment
-    assert_equal %w(ext1 ext2), MimeMagic.new('application/mimemagic-test').extensions
+    assert_equal %w[ext1 ext2], MimeMagic.new('application/mimemagic-test').extensions
     assert MimeMagic.new('application/mimemagic-test').child_of?('text/plain')
   end
 
   def test_process_magic
     MimeMagic.add('application/mimemagic-test',
                   magic: [[0, 'MAGICTEST'], # MAGICTEST at position 0
-                             [1, 'MAGICTEST'], # MAGICTEST at position 1
-                             [9..12, 'MAGICTEST'], # MAGICTEST starting at position 9 to 12
-                             [2, 'MAGICTEST', [[0, 'X'], [0, 'Y']]]]) # MAGICTEST at position 2 and (X at 0 or Y at 0)
+                          [1, 'MAGICTEST'], # MAGICTEST at position 1
+                          [9..12, 'MAGICTEST'], # MAGICTEST starting at position 9 to 12
+                          [2, 'MAGICTEST', [[0, 'X'], [0, 'Y']]]]) # MAGICTEST at position 2 and (X at 0 or Y at 0)
 
     assert_equal 'application/mimemagic-test', MimeMagic.by_magic('MAGICTEST').to_s
     assert_equal 'application/mimemagic-test', MimeMagic.by_magic('XMAGICTEST').to_s
@@ -125,16 +127,16 @@ class TestMimeMagic < Minitest::Test
     assert_equal 'application/mimemagic-test', MimeMagic.by_magic('Y MAGICTEST').to_s
     assert_nil MimeMagic.by_magic('Z MAGICTEST')
 
-    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new 'MAGICTEST').to_s
-    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new 'XMAGICTEST').to_s
-    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new ' MAGICTEST').to_s
-    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new '123456789MAGICTEST').to_s
-    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new '123456789ABMAGICTEST').to_s
-    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new '123456789ABCMAGICTEST').to_s
-    assert_nil MimeMagic.by_magic(StringIO.new '123456789ABCDMAGICTEST')
-    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new 'X MAGICTEST').to_s
-    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new 'Y MAGICTEST').to_s
-    assert_nil MimeMagic.by_magic(StringIO.new 'Z MAGICTEST')
+    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new('MAGICTEST')).to_s
+    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new('XMAGICTEST')).to_s
+    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new(' MAGICTEST')).to_s
+    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new('123456789MAGICTEST')).to_s
+    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new('123456789ABMAGICTEST')).to_s
+    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new('123456789ABCMAGICTEST')).to_s
+    assert_nil MimeMagic.by_magic(StringIO.new('123456789ABCDMAGICTEST'))
+    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new('X MAGICTEST')).to_s
+    assert_equal 'application/mimemagic-test', MimeMagic.by_magic(StringIO.new('Y MAGICTEST')).to_s
+    assert_nil MimeMagic.by_magic(StringIO.new('Z MAGICTEST'))
   end
 
   class IOObject
@@ -143,7 +145,7 @@ class TestMimeMagic < Minitest::Test
     end
 
     extend Forwardable
-    delegate [:read, :size, :rewind, :eof?, :close] => :@io
+    delegate %i[read size rewind eof? close] => :@io
   end
 
   class StringableObject

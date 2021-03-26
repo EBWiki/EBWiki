@@ -13,9 +13,8 @@ AllCops:
     - bin/*
     - script/*
     - config/routes.rb
-    - 'spec/**/*'
     - vendor/**/*
-    - node_modules/**/*
+    - spec/**/*
 
 Gemspec/DateAssignment:
   Enabled: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mimemagic/tables'
 require 'mimemagic/version'
 
@@ -25,9 +27,9 @@ class MimeMagic
   def self.add(type, options)
     extensions = [options[:extensions]].flatten.compact
     TYPES[type] = [extensions,
-                  [options[:parents]].flatten.compact,
-                  options[:comment]]
-    extensions.each {|ext| EXTENSIONS[ext] = type }
+                   [options[:parents]].flatten.compact,
+                   options[:comment]]
+    extensions.each { |ext| EXTENSIONS[ext] = type }
     MAGIC.unshift [type, options[:magic]] if options[:magic]
   end
 
@@ -35,18 +37,28 @@ class MimeMagic
   # you're seeing impossible conflicts (for instance, application/x-gmc-link).
   # * <i>type</i>: The mime type to remove.  All associated extensions and magic are removed too.
   def self.remove(type)
-    EXTENSIONS.delete_if {|ext, t| t == type }
-    MAGIC.delete_if {|t, m| t == type }
+    EXTENSIONS.delete_if { |_ext, t| t == type }
+    MAGIC.delete_if { |t, _m| t == type }
     TYPES.delete(type)
   end
 
   # Returns true if type is a text format
-  def text?; mediatype == 'text' || child_of?('text/plain'); end
+  def text?
+    mediatype == 'text' || child_of?('text/plain')
+  end
 
   # Mediatype shortcuts
-  def image?; mediatype == 'image'; end
-  def audio?; mediatype == 'audio'; end
-  def video?; mediatype == 'video'; end
+  def image?
+    mediatype == 'image'
+  end
+
+  def audio?
+    mediatype == 'audio'
+  end
+
+  def video?
+    mediatype == 'video'
+  end
 
   # Returns true if type is child of parent type
   def child_of?(parent)
@@ -105,7 +117,7 @@ class MimeMagic
   alias == eql?
 
   def self.child?(child, parent)
-    child == parent || TYPES.key?(child) && TYPES[child][1].any? {|p| child?(p, parent) }
+    child == parent || TYPES.key?(child) && TYPES[child][1].any? { |p| child?(p, parent) }
   end
 
   def self.magic_match(io, method)
@@ -113,18 +125,18 @@ class MimeMagic
 
     io.binmode if io.respond_to?(:binmode)
     io.set_encoding(Encoding::BINARY) if io.respond_to?(:set_encoding)
-    buffer = "".force_encoding(Encoding::BINARY)
+    buffer = ''.force_encoding(Encoding::BINARY)
 
-    MAGIC.send(method) { |type, matches| magic_match_io(io, matches, buffer) }
+    MAGIC.send(method) { |_type, matches| magic_match_io(io, matches, buffer) }
   end
 
   def self.magic_match_io(io, matches, buffer)
     matches.any? do |offset, value, children|
       match =
-        if Range === offset
+        if offset.is_a?(Range)
           io.read(offset.begin, buffer)
           x = io.read(offset.end - offset.begin + value.bytesize, buffer)
-          x && x.include?(value)
+          x&.include?(value)
         else
           io.read(offset, buffer)
           io.read(value.bytesize, buffer) == value

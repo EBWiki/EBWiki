@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'nokogiri'
 
@@ -7,7 +8,7 @@ class String
 
   def inspect
     x = b.inspect_old.gsub(/\\x([0-9a-f]{2})/i) do
-      '\\%03o' % $1.to_i(16)
+      '\\%03o' % Regexp.last_match(1).to_i(16)
     end
     x =~ /[\\']/ ? x : x.gsub('"', '\'')
   end
@@ -16,21 +17,22 @@ end
 def str2int(s)
   return s.to_i(16) if s[0..1].downcase == '0x'
   return s.to_i(8) if s[0..0].downcase == '0'
+
   s.to_i(10)
 end
 
 def get_matches(parent)
-  parent.elements.map {|match|
+  parent.elements.map do |match|
     if match['mask']
       nil
     else
       type = match['type']
       value = match['value']
-      offset = match['offset'].split(':').map {|x| x.to_i }
+      offset = match['offset'].split(':').map(&:to_i)
       offset = offset.size == 2 ? offset[0]..offset[1] : offset[0]
       case type
       when 'string'
-        value.gsub!(/\\(x[\dA-Fa-f]{1,2}|0\d{1,3}|\d{1,3}|.)/) { eval("\"\\#{$1}\"") }
+        value.gsub!(/\\(x[\dA-Fa-f]{1,2}|0\d{1,3}|\d{1,3}|.)/) { eval("\"\\#{Regexp.last_match(1)}\"") }
       when 'big16'
         value = str2int(value)
         value = ((value >> 8).chr + (value & 0xFF).chr)
@@ -56,11 +58,11 @@ def get_matches(parent)
       children = get_matches(match)
       children.empty? ? [offset, value] : [offset, value, children]
     end
-  }.compact
+  end.compact
 end
 
 if ARGV.size != 1
-  puts "Usage: #{$0} <freedesktop.org.xml>"
+  puts "Usage: #{$PROGRAM_NAME} <freedesktop.org.xml>"
   exit 1
 end
 
@@ -70,60 +72,60 @@ doc = Nokogiri::XML(file)
 extensions = {}
 types = {}
 magics = []
-(doc/'mime-info/mime-type').each do |mime|
-  comments = Hash[*(mime/'comment').map {|comment| [comment['xml:lang'], comment.inner_text] }.flatten]
+(doc / 'mime-info/mime-type').each do |mime|
+  comments = Hash[*(mime / 'comment').map { |comment| [comment['xml:lang'], comment.inner_text] }.flatten]
   type = mime['type']
-  subclass = (mime/'sub-class-of').map{|x| x['type']}
-  exts = (mime/'glob').map{|x| x['pattern'] =~ /^\*\.([^\[\]]+)$/ ? $1.downcase : nil }.compact
-  (mime/'magic').each do |magic|
+  subclass = (mime / 'sub-class-of').map { |x| x['type'] }
+  exts = (mime / 'glob').map { |x| x['pattern'] =~ /^\*\.([^\[\]]+)$/ ? Regexp.last_match(1).downcase : nil }.compact
+  (mime / 'magic').each do |magic|
     priority = magic['priority'].to_i
     matches = get_matches(magic)
     magics << [priority, type, matches]
   end
-  if !exts.empty?
-    exts.each{|x|
-      extensions[x] = type if !extensions.include?(x)
-    }
-    types[type] = [exts,subclass,comments[nil]]
+  next if exts.empty?
+
+  exts.each do |x|
+    extensions[x] = type unless extensions.include?(x)
   end
+  types[type] = [exts, subclass, comments[nil]]
 end
 
-magics = magics.sort {|a,b| [-a[0],a[1]] <=> [-b[0],b[1]] }
+magics = magics.sort { |a, b| [-a[0], a[1]] <=> [-b[0], b[1]] }
 
 common_types = [
-  "image/jpeg",                                                              # .jpg
-  "image/png",                                                               # .png
-  "image/gif",                                                               # .gif
-  "image/tiff",                                                              # .tiff
-  "image/bmp",                                                               # .bmp
-  "image/vnd.adobe.photoshop",                                               # .psd
-  "image/webp",                                                              # .webp
-  "image/svg+xml",                                                           # .svg
+  'image/jpeg',                                                              # .jpg
+  'image/png',                                                               # .png
+  'image/gif',                                                               # .gif
+  'image/tiff',                                                              # .tiff
+  'image/bmp',                                                               # .bmp
+  'image/vnd.adobe.photoshop',                                               # .psd
+  'image/webp',                                                              # .webp
+  'image/svg+xml',                                                           # .svg
 
-  "video/x-msvideo",                                                         # .avi
-  "video/x-ms-wmv",                                                          # .wmv
-  "video/mp4",                                                               # .mp4, .m4v
-  "video/quicktime",                                                         # .mov
-  "video/mpeg",                                                              # .mpeg
-  "video/ogg",                                                               # .ogv
-  "video/webm",                                                              # .webm
-  "video/x-matroska",                                                        # .mkv
-  "video/x-flv",                                                             # .flv
+  'video/x-msvideo',                                                         # .avi
+  'video/x-ms-wmv',                                                          # .wmv
+  'video/mp4',                                                               # .mp4, .m4v
+  'video/quicktime',                                                         # .mov
+  'video/mpeg',                                                              # .mpeg
+  'video/ogg',                                                               # .ogv
+  'video/webm',                                                              # .webm
+  'video/x-matroska',                                                        # .mkv
+  'video/x-flv',                                                             # .flv
 
-  "audio/mpeg",                                                              # .mp3
-  "audio/x-wav",                                                             # .wav
-  "audio/aac",                                                               # .aac
-  "audio/flac",                                                              # .flac
-  "audio/mp4",                                                               # .m4a
-  "audio/ogg",                                                               # .ogg
+  'audio/mpeg',                                                              # .mp3
+  'audio/x-wav',                                                             # .wav
+  'audio/aac',                                                               # .aac
+  'audio/flac',                                                              # .flac
+  'audio/mp4',                                                               # .m4a
+  'audio/ogg',                                                               # .ogg
 
-  "application/pdf",                                                         # .pdf
-  "application/msword",                                                      # .doc
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", # .docx
-  "application/vnd.ms-powerpoint",                                           # .pps
-  "application/vnd.openxmlformats-officedocument.presentationml.slideshow",  # .ppsx
-  "application/vnd.ms-excel",                                                # .pps
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",       # .ppsx
+  'application/pdf',                                                         # .pdf
+  'application/msword',                                                      # .doc
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', # .docx
+  'application/vnd.ms-powerpoint',                                           # .pps
+  'application/vnd.openxmlformats-officedocument.presentationml.slideshow',  # .ppsx
+  'application/vnd.ms-excel',                                                # .pps
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'       # .ppsx
 ]
 
 common_magics = common_types.map do |common_type|
@@ -132,32 +134,32 @@ end
 
 magics = (common_magics.compact + magics).uniq
 
-puts "# -*- coding: binary -*-"
-puts "# frozen_string_literal: true"
+puts '# -*- coding: binary -*-'
+puts '# frozen_string_literal: true'
 puts "# Generated from #{FILE}"
-puts "class MimeMagic"
-puts "  # @private"
-puts "  # :nodoc:"
-puts "  EXTENSIONS = {"
+puts 'class MimeMagic'
+puts '  # @private'
+puts '  # :nodoc:'
+puts '  EXTENSIONS = {'
 extensions.keys.sort.each do |key|
   puts "    '#{key}' => '#{extensions[key]}',"
 end
-puts "  }"
-puts "  # @private"
-puts "  # :nodoc:"
-puts "  TYPES = {"
+puts '  }'
+puts '  # @private'
+puts '  # :nodoc:'
+puts '  TYPES = {'
 types.keys.sort.each do |key|
   exts = types[key][0].join(' ')
   parents = types[key][1].sort.join(' ')
   comment = types[key][2].inspect
   puts "    '#{key}' => [%w(#{exts}), %w(#{parents}), #{comment}],"
 end
-puts "  }"
-puts "  # @private"
-puts "  # :nodoc:"
-puts "  MAGIC = ["
-magics.each do |priority, type, matches|
+puts '  }'
+puts '  # @private'
+puts '  # :nodoc:'
+puts '  MAGIC = ['
+magics.each do |_priority, type, matches|
   puts "    ['#{type}', #{matches.inspect}],"
 end
-puts "  ]"
-puts "end"
+puts '  ]'
+puts 'end'
