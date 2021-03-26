@@ -5,6 +5,11 @@ GIT
     acts_as_follower (0.2.1)
       activerecord (>= 4.0)
 
+PATH
+  remote: vendor/gems/mimemagic-0.3.5
+  specs:
+    mimemagic (0.3.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -855,6 +860,7 @@ DEPENDENCIES
   launchy (~> 2.5)
   lograge (~> 0.11)
   mailboxer (~> 0.15)
+  mimemagic (= 0.3.5)!
   mini_magick (~> 4.10)
   mock_redis (~> 0.26)
   momentjs-rails

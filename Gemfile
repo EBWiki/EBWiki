@@ -172,3 +172,4 @@ group :production do
 end
 
 gem 'sprockets', '~> 3.7.2'
+gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
