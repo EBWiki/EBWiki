@@ -10,6 +10,6 @@ module MapsHelper
       $redis.set('cases', cases)
       $redis.expire('cases', 2.hour.to_i)
     end
-    JSON.load cases
+    JSON.load(cases)
   end
 end

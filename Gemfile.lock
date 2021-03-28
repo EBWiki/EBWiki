@@ -651,7 +651,7 @@ GEM
       redis-store (>= 1.2, < 2)
     redis-store (1.9.0)
       redis (>= 4, < 5)
-    regexp_parser (2.0.3)
+    regexp_parser (2.1.1)
     remotipart (1.4.4)
     representable (3.0.4)
       declarative (< 0.1.0)
@@ -691,15 +691,15 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.2)
-    rubocop (0.93.1)
+    rubocop (1.11.0)
       parallel (~> 1.10)
-      parser (>= 2.7.1.5)
+      parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.8)
+      regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 0.6.0)
+      rubocop-ast (>= 1.2.0, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 2.0)
+      unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.4.1)
       parser (>= 2.7.1.5)
     rubocop-performance (1.10.1)
@@ -788,7 +788,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
-    unicode-display_width (1.7.0)
+    unicode-display_width (2.0.0)
     uniform_notifier (1.13.2)
     vcr (6.0.0)
     warden (1.2.9)
@@ -879,7 +879,7 @@ DEPENDENCIES
   redis-store
   rollbar (~> 3.0)
   rspec-rails (~> 4.0, >= 4.0.1)
-  rubocop (~> 0.93)
+  rubocop
   rubocop-performance
   rubocop-rails
   sassc-rails (~> 2.1)

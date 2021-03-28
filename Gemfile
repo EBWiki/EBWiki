@@ -61,6 +61,9 @@ group :development, :test do
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
 end
 
 group :development do
@@ -167,10 +170,5 @@ gem 'recaptcha'
 group :production do
   gem 'cloudflare-rails', '~> 0.6'
 end
-
-# move out rubocop gems
-gem 'rubocop', '~> 0.93', require: false
-gem 'rubocop-performance', require: false
-gem 'rubocop-rails', require: false
 
 gem 'sprockets', '~> 3.7.2'
