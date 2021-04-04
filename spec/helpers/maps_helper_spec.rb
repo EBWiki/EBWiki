@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe MapsHelper, type: :helper do
   describe '#fetch_cases' do
     it 'fetches cases from the database if they do not exist in the cache' do
-      pending
       $redis.set('cases', '')
       expect($redis.get('cases')).to be_empty
       FactoryBot.create(:case)
