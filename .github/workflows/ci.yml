@@ -31,9 +31,9 @@ jobs:
         image: elasticsearch:6.8.13
 
     steps:
-      - name: Auto Update
+      - name: Update Libcurl
         run: |
-          sudo apt-get update -y && sudo apt-get upgrade
+          sudo apt-get update -y && sudo apt-get --only-upgrade install libcurl4-openssl-dev
 
       - name: Install Apt dependencies
         run: |
@@ -61,6 +61,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Update Libcurl
+        run: |
+          sudo apt-get update -y && sudo apt-get --only-upgrade install libcurl4-openssl-dev
+
       - name: Install Apt dependencies
         run: |
           sudo apt-get install libcurl4-openssl-dev # libcurl4-gnutls-dev
@@ -92,6 +96,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Update Libcurl
+        run: |
+          sudo apt-get update -y && sudo apt-get --only-upgrade install libcurl4-openssl-dev
+      
       - name: Install Apt dependencies
         run: |
           sudo apt-get install libcurl4-openssl-dev # libcurl4-gnutls-dev
