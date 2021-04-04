@@ -171,5 +171,9 @@ group :production do
   gem 'cloudflare-rails', '~> 0.6'
 end
 
+<<<<<<< HEAD
+=======
+gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
+>>>>>>> Updated path in gemfile #4001
 gem 'sprockets', '~> 3.7.2'
 gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
