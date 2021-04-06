@@ -108,6 +108,9 @@ class Case < ApplicationRecord
   scope :sorted_by_followers, lambda { |limit|
     order(follows_count: :desc).first(limit)
   }
+  scope :with_location, lambda {
+    where('latitude is not null AND longitude is not null')
+  }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip

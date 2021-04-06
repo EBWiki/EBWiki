@@ -136,6 +136,7 @@ gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
 # pagination
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
 
+gem 'hiredis'
 gem 'redis'
 gem 'redis-namespace', '~> 1.6'
 gem 'redis-rails'

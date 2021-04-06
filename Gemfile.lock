@@ -431,6 +431,7 @@ GEM
       thor
     hightop (0.2.4)
       activesupport (>= 5)
+    hiredis (0.6.3)
     http (4.4.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -513,7 +514,7 @@ GEM
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2021.0212)
-    mimemagic (0.3.5)
+    mimemagic (0.4.0)
     mini_histogram (0.3.1)
     mini_magick (4.11.0)
     mini_mime (1.0.2)
@@ -848,6 +849,7 @@ DEPENDENCIES
   groupdate (~> 5.0)
   guard-rspec (~> 4.7)
   hightop (~> 0.2)
+  hiredis
   httparty (~> 0.16)
   jb (~> 0.7.1)
   jquery-rails (~> 4.4)
