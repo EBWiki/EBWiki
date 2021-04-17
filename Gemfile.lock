@@ -441,6 +441,7 @@ GEM
       thor
     hightop (0.2.4)
       activesupport (>= 5)
+    hiredis (0.6.3)
     http (4.4.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -861,6 +862,7 @@ DEPENDENCIES
   groupdate (~> 5.0)
   guard-rspec (~> 4.7)
   hightop (~> 0.2)
+  hiredis
   httparty (~> 0.16)
   jb (~> 0.7.1)
   jquery-rails (~> 4.4)

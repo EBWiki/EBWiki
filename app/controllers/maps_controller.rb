@@ -7,13 +7,6 @@ class MapsController < ApplicationController
 
   def index
     @cases = fetch_cases
-    @cases = @cases.map do |this_case|
-      next if this_case.empty?
-
-      [
-        this_case['latitude'], this_case['longitude']
-      ]
-    end
   end
 
   def after_sign_up_path_for(resource)
