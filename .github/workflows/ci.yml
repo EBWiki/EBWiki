@@ -34,6 +34,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: install dependencies
+        run: |
+          sudo apt-get install libcurl libcurl-devel
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
