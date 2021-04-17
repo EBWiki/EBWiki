@@ -15,11 +15,6 @@ describe Agency do
       expect(page.driver.status_code).to eq(200)
     end
 
-    scenario 'Unsigned in user visit agency creation page' do
-      visit new_agency_path
-      expect(page).to have_content('You need to sign in or sign up before continuing.')
-    end
-
     scenario 'user creates agency with in correct credentials' do
       collection = SortCollectionOrdinally.call(collection: State.all)
       login_as(user, scope: :user)
