@@ -3,7 +3,7 @@
 ruby '2.6.6'
 
 source 'https://rubygems.org'
-git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'fullcalendar-rails', '~> 3.9'
@@ -172,4 +172,5 @@ group :production do
   gem 'cloudflare-rails', '~> 0.6'
 end
 
+gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
 gem 'sprockets', '~> 3.7.2'

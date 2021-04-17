@@ -34,6 +34,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: install dependencies
+        run: |
+          sudo apt-get install libcurl4 libcurl4-gnutls-dev build-essential
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -55,6 +59,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: install dependencies
+        run: |
+          sudo apt-get install libcurl4 libcurl4-gnutls-dev build-essential
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -82,6 +90,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: install dependencies
+        run: |
+          sudo apt-get install libcurl4 libcurl4-gnutls-dev
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1

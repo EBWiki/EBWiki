@@ -26,6 +26,7 @@ plugins:
     channel: rubocop-1-11
 exclude_patterns:
 - vendor/assets/javascripts/*.js
+- vendor/gems/**/*
 - db/
 - spec/
 - "Gemfile.lock"
