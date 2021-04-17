@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/tcocca/acts_as_follower.git
+  revision: c5ac7b9601c4af01eb4d9112330b27be4d694ecc
+  specs:
+    acts_as_follower (0.2.1)
+      activerecord (>= 4.0)
+
 PATH
   remote: vendor/gems/mimemagic-0.3.5
   specs:
@@ -56,7 +63,6 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    acts_as_follower (0.2.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     aliyun-sdk (0.8.0)
@@ -826,7 +832,7 @@ PLATFORMS
 DEPENDENCIES
   active_median (~> 0.2)
   activerecord-session_store
-  acts_as_follower
+  acts_as_follower!
   auto_strip_attributes (~> 2.5)
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails

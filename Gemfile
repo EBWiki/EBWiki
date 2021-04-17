@@ -119,7 +119,7 @@ gem 'social-share-button'
 gem 'select2-rails', '~> 4.0'
 
 # follower functionality
-gem 'acts_as_follower'
+gem 'acts_as_follower', github: 'tcocca/acts_as_follower'
 
 # messaging
 gem 'mailboxer', '~> 0.15'
