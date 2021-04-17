@@ -37,27 +37,17 @@ RSpec.describe 'Cases', type: :request do
     let(:user) { create(:user) }
     let(:redis) { MockRedis.new }
 
-    context 'when authenticated' do
-      before do
-        sign_in user
-        get '/cases/new', params: {}, headers: {}
-      end
-
-      it 'will return status code 200' do
-        expect(response).to have_http_status(200)
-      end
-
-      it 'will return the agency form' do
-        expect(response.body).to include('New Case')
-      end
+    before do
+      sign_in user
+      get '/cases/new', params: {}, headers: {}
     end
 
-    context 'when not authenticated' do
-      before { get '/cases/new', params: {}, headers: {} }
+    it 'will return status code 200' do
+      expect(response).to have_http_status(200)
+    end
 
-      it 'will return a redirect to the login page' do
-        expect(response).to redirect_to new_user_session_path
-      end
+    it 'will return the agency form' do
+      expect(response.body).to include('New Case')
     end
   end
 
@@ -65,27 +55,17 @@ RSpec.describe 'Cases', type: :request do
     let(:user) { create(:user) }
     let(:_case) { create(:case) }
 
-    context 'when authenticated' do
-      before do
-        sign_in user
-        get "/cases/#{_case.slug}/edit", params: {}, headers: {}
-      end
-
-      it 'will return status code 200' do
-        expect(response).to have_http_status(200)
-      end
-
-      it 'will return the case form' do
-        expect(response.body).to include 'Summary'
-      end
+    before do
+      sign_in user
+      get "/cases/#{_case.slug}/edit", params: {}, headers: {}
     end
 
-    context 'when not authenticated' do
-      before { get "/cases/#{_case.slug}/edit", params: {}, headers: {} }
+    it 'will return status code 200' do
+      expect(response).to have_http_status(200)
+    end
 
-      it 'will redirect to the login page' do
-        expect(response).to redirect_to new_user_session_path
-      end
+    it 'will return the case form' do
+      expect(response.body).to include 'Summary'
     end
   end
 
@@ -123,14 +103,6 @@ RSpec.describe 'Cases', type: :request do
         expect(response.body).to include('New Case')
       end
     end
-
-    context 'when not authenticated' do
-      before { post '/cases', params: params, headers: {} }
-
-      it 'will redirect to the login page' do
-        expect(response).to redirect_to new_user_session_path
-      end
-    end
   end
 
   describe 'PATCH /cases/:slug' do
@@ -142,7 +114,6 @@ RSpec.describe 'Cases', type: :request do
     context 'when the case is successfully updated' do
       before do
         sign_in user
-        # _case
         patch "/cases/#{_case.slug}", params: params, headers: {}
       end
 
@@ -163,14 +134,6 @@ RSpec.describe 'Cases', type: :request do
 
       it 'will navigate to the case form' do
         expect(response.body).to include('Editing')
-      end
-    end
-
-    context 'when not authenticated' do
-      before { patch "/cases/#{_case.slug}", params: params, headers: {} }
-
-      it 'will redirect to the login page' do
-        expect(response).to redirect_to new_user_session_path
       end
     end
   end
