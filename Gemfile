@@ -6,7 +6,6 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
-gem 'fullcalendar-rails', '~> 3.9'
 gem 'rails', '~> 5.0.7.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
@@ -53,7 +52,6 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 6.1'
   gem 'faker', '~> 2.14.0'
-  gem 'guard-rspec', '~> 4.7'
   gem 'pry-byebug', '~> 3.9'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
