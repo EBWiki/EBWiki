@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rspec'
+require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 describe Location do
