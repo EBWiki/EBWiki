@@ -807,7 +807,7 @@ DEPENDENCIES
   bullet (~> 6.1)
   capybara (~> 3.4)
   carrierwave (~> 2.1)
-  carrierwave-imageoptimizer
+  carrierwave-imageoptimizer (~> 1.6)
   chartkick (~> 3.4)
   ckeditor (~> 4.2)
   cloudflare-rails (~> 0.6)
