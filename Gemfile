@@ -136,7 +136,7 @@ gem 'kaminari', '~> 1.2', '>= 1.2.1'
 
 gem 'hiredis'
 gem 'redis'
-gem 'redis-namespace', '~> 1.6'
+gem 'redis-namespace', '~> 1.8'
 gem 'redis-rails'
 gem 'redis-store'
 
