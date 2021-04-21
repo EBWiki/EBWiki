@@ -854,7 +854,7 @@ DEPENDENCIES
   rails_real_favicon
   recaptcha
   redis
-  redis-namespace (~> 1.6)
+  redis-namespace (~> 1.8)
   redis-rails
   redis-store
   rollbar (~> 3.0)
