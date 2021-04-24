@@ -149,7 +149,7 @@ gem 'galerts', '~> 1.1'
 gem 'ckeditor', '~> 5.1'
 
 # New Relic performance monitor
-gem 'newrelic_rpm', '~> 5.2.0'
+gem 'newrelic_rpm', '~> 7.0'
 
 # for HTTParty
 gem 'httparty', '~> 0.16'
