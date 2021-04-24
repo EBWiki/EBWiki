@@ -146,7 +146,7 @@ gem 'gibbon'
 # Google News API help
 gem 'galerts', '~> 1.1'
 
-gem 'ckeditor', '~> 4.2'
+gem 'ckeditor', '~> 5.1'
 
 # New Relic performance monitor
 gem 'newrelic_rpm', '~> 5.2.0'
