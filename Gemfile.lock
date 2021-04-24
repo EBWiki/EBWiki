@@ -521,7 +521,7 @@ GEM
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
     netrc (0.11.0)
-    newrelic_rpm (5.2.0.345)
+    newrelic_rpm (7.0.0)
     nio4r (2.5.7)
     nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
@@ -834,7 +834,7 @@ DEPENDENCIES
   mini_magick (~> 4.10)
   mock_redis (~> 0.26)
   momentjs-rails
-  newrelic_rpm (~> 5.2.0)
+  newrelic_rpm (~> 7.0)
   paper_trail (~> 10.3)
   paper_trail-association_tracking
   pg (~> 1.2)
