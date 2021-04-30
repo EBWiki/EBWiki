@@ -823,7 +823,7 @@ DEPENDENCIES
   groupdate (~> 5.0)
   hightop (~> 0.2)
   hiredis
-  httparty (~> 0.16)
+  httparty (~> 0.18)
   jb (~> 0.7.1)
   jquery-rails (~> 4.4)
   kaminari (~> 1.2, >= 1.2.1)

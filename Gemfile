@@ -152,7 +152,7 @@ gem 'ckeditor', '~> 5.1'
 gem 'newrelic_rpm', '~> 7.0'
 
 # for HTTParty
-gem 'httparty', '~> 0.16'
+gem 'httparty', '~> 0.18'
 
 # for setting middleware redirects
 gem 'rack-host-redirect', '~> 1.3'
