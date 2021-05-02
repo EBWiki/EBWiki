@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
   get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
 
-  #redirect logic
+  # redirect logic
   get '/articles', to: redirect('/cases')
   get '/articles/:slug', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}" }
   get '/articles/:slug/history', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/history" }

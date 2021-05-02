@@ -4,14 +4,12 @@ require 'rails_helper'
 
 RSpec.describe MapsHelper, type: :helper do
   describe '#fetch_cases' do
-    before :each do
-      $redis.set('cases', '')
-    end
     it 'fetches cases from the database if they do not exist in the cache' do
+      $redis.set('cases', '')
       expect($redis.get('cases')).to be_empty
-      FactoryBot.create(:case)
+      this_case = FactoryBot.create(:case)
       helper.fetch_cases
-      expect($redis.get('cases')).to eql('')
+      expect($redis.get('cases')).to eql([this_case['latitude'], this_case['longitude']].to_json)
     end
 
     it 'fetches cases from the cache if they are present' do

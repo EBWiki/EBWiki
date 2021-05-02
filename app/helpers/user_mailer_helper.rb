@@ -15,7 +15,7 @@ module UserMailerHelper
 
   def create_welcome_email_message(user, is_subscribed)
     followed_cases = user.all_following.count
-    follow_cases_message(followed_cases) + ' ' + subscribe_message(is_subscribed)
+    "#{follow_cases_message(followed_cases)} #{subscribe_message(is_subscribed)}"
   end
 
   def follow_cases_message(followed_cases)

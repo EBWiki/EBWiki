@@ -3,10 +3,9 @@
 ruby '2.6.6'
 
 source 'https://rubygems.org'
-git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
-gem 'fullcalendar-rails', '~> 3.9'
 gem 'rails', '~> 5.0.7.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
@@ -53,7 +52,6 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 6.1'
   gem 'faker', '~> 2.14.0'
-  gem 'guard-rspec', '~> 4.7'
   gem 'pry-byebug', '~> 3.9'
   # Reduce N+1 queries
   # gem 'bullet', '~> 5.7'
@@ -61,6 +59,9 @@ group :development, :test do
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
 end
 
 group :development do
@@ -95,7 +96,7 @@ gem 'mini_magick', '~> 4.10'
 # file upload solution
 gem 'carrierwave', '~> 2.1'
 # image optimizer that works with carrierwave
-gem 'carrierwave-imageoptimizer'
+gem 'carrierwave-imageoptimizer', '~> 1.6'
 
 # CMS panel for admin
 gem 'rails_admin', '~> 2.0'
@@ -128,13 +129,14 @@ gem 'paper_trail', '~> 10.3'
 gem 'paper_trail-association_tracking'
 
 # pretty urls
-gem 'friendly_id', '~> 5.2' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
 
 # pagination
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
 
+gem 'hiredis'
 gem 'redis'
-gem 'redis-namespace', '~> 1.6'
+gem 'redis-namespace', '~> 1.8'
 gem 'redis-rails'
 gem 'redis-store'
 
@@ -144,19 +146,16 @@ gem 'gibbon'
 # Google News API help
 gem 'galerts', '~> 1.1'
 
-gem 'ckeditor', '~> 4.2'
+gem 'ckeditor', '~> 5.1'
 
 # New Relic performance monitor
-gem 'newrelic_rpm', '~> 5.2.0'
+gem 'newrelic_rpm', '~> 7.0'
 
 # for HTTParty
-gem 'httparty', '~> 0.16'
+gem 'httparty', '~> 0.18'
 
 # for setting middleware redirects
 gem 'rack-host-redirect', '~> 1.3'
-
-gem 'rubocop', '~> 0.67', require: false
-# gem 'rubocop-performance'
 
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
@@ -170,3 +169,6 @@ gem 'recaptcha'
 group :production do
   gem 'cloudflare-rails', '~> 0.6'
 end
+
+gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
+gem 'sprockets', '~> 3.7.2'

@@ -11,7 +11,7 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
-Rails.application.config.assets.precompile += %w[ckeditor/* markerclusterer chartkick]
-Rails.application.config.assets.configure do |env|
-  env.export_concurrent = false
-end
+Rails.application.config.assets.precompile += %w[ckeditor/config.js markerclusterer chartkick]
+# Rails.application.config.assets.configure do |env|
+#   env.export_concurrent = false
+# end

@@ -31,12 +31,12 @@ jobs:
         image: elasticsearch:6.8.13
 
     steps:
-      - name: Install Apt dependencies
-        run: |
-          sudo apt-get install libcurl4-openssl-dev # libcurl4-gnutls-dev
-
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: install dependencies
+        run: |
+          sudo apt-get install libcurl4 libcurl4-gnutls-dev build-essential
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -57,12 +57,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install Apt dependencies
-        run: |
-          sudo apt-get install libcurl4-openssl-dev # libcurl4-gnutls-dev
-
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: install dependencies
+        run: |
+          sudo apt-get install libcurl4 libcurl4-gnutls-dev build-essential
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -88,12 +88,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install Apt dependencies
-        run: |
-          sudo apt-get install libcurl4-openssl-dev # libcurl4-gnutls-dev
-
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: install dependencies
+        run: |
+          sudo apt-get install libcurl4 libcurl4-gnutls-dev
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1

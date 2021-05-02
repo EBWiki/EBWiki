@@ -99,14 +99,17 @@ class Case < ApplicationRecord
   end
 
   # Scopes
-  scope :most_recent_occurrences, ->(duration) {
+  scope :most_recent_occurrences, lambda { |duration|
     where(date: duration.beginning_of_day..Time.current)
   }
-  scope :sorted_by_update, ->(limit) {
+  scope :sorted_by_update, lambda { |limit|
     order('updated_at desc').limit(limit)
   }
-  scope :sorted_by_followers, ->(limit) {
+  scope :sorted_by_followers, lambda { |limit|
     order(follows_count: :desc).first(limit)
+  }
+  scope :with_location, lambda {
+    where('latitude is not null AND longitude is not null')
   }
 
   def full_address

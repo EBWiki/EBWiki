@@ -15,7 +15,7 @@ include Warden::Test::Helpers
 Warden.test_mode!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -132,6 +132,10 @@ RSpec.configure do |config|
   config.after(:each, type: :mailer) do
     ActionMailer::Base.deliveries.clear
   end
+
+  # randomize the order rspec uses when running
+  config.order = :random
+  Kernel.srand config.seed
 end
 
 # Config settings Shoulda Matchers gem
@@ -150,8 +154,8 @@ end
 # Configure rspec to use fog mocks
 Fog.mock!
 service = Fog::Storage.new({
-  provider: 'AWS',
-  aws_access_key_id: 'fake_access_key_id',
-  aws_secret_access_key: 'fake_secret_access_key'
-});
+                             provider: 'AWS',
+                             aws_access_key_id: 'fake_access_key_id',
+                             aws_secret_access_key: 'fake_secret_access_key'
+                           })
 service.directories.create(key: 'testbucket')
