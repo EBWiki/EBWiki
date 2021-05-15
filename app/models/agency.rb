@@ -12,7 +12,7 @@ class Agency < ApplicationRecord
     commercial: 'commercial'
   }.freeze
 
-  STRIPPED_ATTRIBUTES = %w[
+  FORMATTED_ATTRIBUTES = %w[
     name
     city
     street_address
@@ -22,12 +22,12 @@ class Agency < ApplicationRecord
     website
   ].freeze
 
-  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
-
   has_paper_trail
   has_many :case_agencies
   has_many :cases, through: :case_agencies
   belongs_to :state
+
+  before_validation :format_attributes
 
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
@@ -86,5 +86,15 @@ class Agency < ApplicationRecord
     self.street_address = location.street_location
     self.city = location.city
     self.zipcode = location.zipcode
+  end
+
+  private
+
+  def format_attributes
+    FORMATTED_ATTRIBUTES.each do |attribute|
+      next unless self.public_send(attribute)
+      formatted_value = self.public_send(attribute).strip.gsub(/,\z/, '')
+      self.public_send("#{attribute}=", formatted_value)
+    end
   end
 end

@@ -48,6 +48,8 @@ class Case < ApplicationRecord
   searchkick _all: false, default_fields: ['*']
 
   # Model Validations
+  before_validation :format_attributes
+
   validate :case_date_validator
   validates :city, presence: { message: 'Please add a city.' }
   validates :state_id, presence: {
@@ -68,7 +70,7 @@ class Case < ApplicationRecord
   validates :blurb, length: { maximum: 500 }
   validates_presence_of :blurb, message: 'A blurb about the case is required.'
 
-  STRIPPED_ATTRIBUTES = %w[
+  FORMATTED_ATTRIBUTES = %w[
     title
     city
     address
@@ -76,14 +78,11 @@ class Case < ApplicationRecord
     overview
     community_action
     country
-    state
     overview
     litigation
     summary
     blurb
   ].freeze
-
-  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
@@ -146,6 +145,16 @@ class Case < ApplicationRecord
       %i[title city],
       %i[title city zipcode]
     ]
+  end
+
+  private
+
+  def format_attributes
+    FORMATTED_ATTRIBUTES.each do |attribute|
+      next unless self.public_send(attribute)
+      formatted_value = self.public_send(attribute).strip.gsub(/,\z/, '')
+      self.public_send("#{attribute}=", formatted_value)
+    end
   end
 end
 # rubocop:enable Metrics/ClassLength

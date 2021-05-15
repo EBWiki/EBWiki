@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Agency do
+RSpec.describe Agency, type: :model do
   before(:each) do
     @texas = FactoryBot.create(:state_texas)
   end
 
-  it_behaves_like 'a sanatized_record'
+  it_behaves_like 'a sanitized_record'
 
   it { should validate_presence_of(:name).with_message('Please enter a name.') }
 

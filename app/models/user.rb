@@ -9,8 +9,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  validates :name, presence: { message: 'Please add a name.' }
-
   has_many :cases
   has_many :comments
   acts_as_follower
@@ -18,7 +16,7 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
 
-  STRIPPED_ATTRIBUTES = %w[
+  FORMATTED_ATTRIBUTES = %w[
     email
     name
     description city
@@ -27,7 +25,10 @@ class User < ApplicationRecord
     linkedin
   ].freeze
 
-  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
+  # Model validations
+  before_validation :format_attributes
+
+  validates :name, presence: { message: 'Please add a name.' }
 
   def mailboxer_name
     name
@@ -60,5 +61,13 @@ class User < ApplicationRecord
     gb.lists(ENV['MAILCHIMP_LIST_ID']).members(Digest::MD5.hexdigest(email.downcase.to_s)).retrieve
   rescue Gibbon::MailChimpError => e
     [nil, { flash: { error: e.message } }]
+  end
+
+  def format_attributes
+    FORMATTED_ATTRIBUTES.each do |attribute|
+      next unless self.public_send(attribute)
+      formatted_value = self.public_send(attribute).strip.gsub(/,\z/, '')
+      self.public_send("#{attribute}=", formatted_value)
+    end
   end
 end
