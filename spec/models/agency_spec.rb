@@ -7,8 +7,6 @@ RSpec.describe Agency, type: :model do
     @texas = FactoryBot.create(:state_texas)
   end
 
-  it_behaves_like 'a sanitized_record'
-
   it { should validate_presence_of(:name).with_message('Please enter a name.') }
 
   it do

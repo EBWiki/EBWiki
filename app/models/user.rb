@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'observer'
-
 # EBWiki site user
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -16,17 +14,8 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
 
-  FORMATTED_ATTRIBUTES = %w[
-    email
-    name
-    description city
-    facebook_url
-    twitter_url
-    linkedin
-  ].freeze
-
   # Model validations
-  before_validation :format_attributes
+  sanitize :email, :name, :description, :city, :facebook_url, :twitter_url, :linkedin
 
   validates :name, presence: { message: 'Please add a name.' }
 
@@ -61,13 +50,5 @@ class User < ApplicationRecord
     gb.lists(ENV['MAILCHIMP_LIST_ID']).members(Digest::MD5.hexdigest(email.downcase.to_s)).retrieve
   rescue Gibbon::MailChimpError => e
     [nil, { flash: { error: e.message } }]
-  end
-
-  def format_attributes
-    FORMATTED_ATTRIBUTES.each do |attribute|
-      next unless self.public_send(attribute)
-      formatted_value = self.public_send(attribute).strip.gsub(/,\z/, '')
-      self.public_send("#{attribute}=", formatted_value)
-    end
   end
 end

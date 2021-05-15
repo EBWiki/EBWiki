@@ -2,7 +2,6 @@
 
 # This is the main model of the application. Each death is a case.
 # TODO: Lots & lots of refactoring
-# rubocop:disable Metrics/ClassLength
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
 
@@ -48,7 +47,8 @@ class Case < ApplicationRecord
   searchkick _all: false, default_fields: ['*']
 
   # Model Validations
-  before_validation :format_attributes
+  sanitize :title, :city, :address, :zipcode, :overview, :community_action, :country, :litigation,
+           :summary, :blurb
 
   validate :case_date_validator
   validates :city, presence: { message: 'Please add a city.' }
@@ -69,20 +69,6 @@ class Case < ApplicationRecord
 
   validates :blurb, length: { maximum: 500 }
   validates_presence_of :blurb, message: 'A blurb about the case is required.'
-
-  FORMATTED_ATTRIBUTES = %w[
-    title
-    city
-    address
-    zipcode
-    overview
-    community_action
-    country
-    overview
-    litigation
-    summary
-    blurb
-  ].freeze
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
@@ -146,15 +132,4 @@ class Case < ApplicationRecord
       %i[title city zipcode]
     ]
   end
-
-  private
-
-  def format_attributes
-    FORMATTED_ATTRIBUTES.each do |attribute|
-      next unless self.public_send(attribute)
-      formatted_value = self.public_send(attribute).strip.gsub(/,\z/, '')
-      self.public_send("#{attribute}=", formatted_value)
-    end
-  end
 end
-# rubocop:enable Metrics/ClassLength
