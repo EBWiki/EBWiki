@@ -1,8 +1,8 @@
-<p><a href="https://travis-ci.org/EBWiki/EBWiki"><img src="https://travis-ci.org/EBWiki/EBWiki.svg?branch=main" alt="Build Status" style="max-width:100%;"></a>  <a href="https://codeclimate.com/github/EBWiki/EBWiki"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki/coverage"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/coverage.svg" /></a> <a href="https://www.codetriage.com/ebwiki/ebwiki"><img src="https://www.codetriage.com/ebwiki/ebwiki/badges/users.svg" /></a></p>
+<p><a href="https://github.com/EBWiki/EBWiki/actions/workflows/ci.yml/badge.svg"></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki/coverage"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/coverage.svg" /></a></p>
 
 # EBWiki
 
-[EBWiki.org](http://ebwiki.org) is a site dedicated to documenting instances where people of color are killed by law enforcement officers during routine interactions.
+[EBWiki.org](http://ebwiki.org) is a site dedicated to documenting when people of color are killed by law enforcement officers during routine interactions.
 
 ## Motivation
 
@@ -12,15 +12,13 @@ Our idea, EBWiki, is designed to highlight not only the original incident betwee
 
 ## Contributing
 
-All developers are welcome to contribute to the codebase.  For general information on contributing, consult [this guide](docs/DEVELOPMENT.md) on developing for EBWiki.
-
-We ask that, if possible, you address issues that are labelled `quick fix` first, followed by those marked as `high priority`.
-
-Additionally, take care to note when an issue is one of several (e.g., 1 of 7, 2 of 3, etc).  Those issues are part of a project or milestone (indicated on the right side under the label), and clicking on the project or milestone should take you to a list of all of the issues.  Please note that those must be completed and merged in order.
+Any and all developers are welcome to contribute to the codebase.  For general information on contributing, please read [this guide](docs/DEVELOPMENT.md) on developing for EBWiki before selecting your first issue.
 
 If this is your first open source contribution, welcome!  We're glad that you chose to get started with us.  You can find some good first issues labelled exactly that, `good first issue`.
 
-All contributors are expected to adhere to our code of conduct, which can be found [here](docs/CODE_OF_CONDUCT.md).  Thank you for your contribution - details on our stack can be found below.
+We ask that, if possible, you address issues that are labelled `quick fix` first, followed by those marked as `high priority`.  Otherwise, you're free to select any issue that seems interesting to you.  There are times when we may ask you to switch to another issue, as we match dev work against our internal roadmap, but that's not something you need to worry about.  In that case, we'll just let you know and provide another issue you might be interested in.
+
+All contributors are expected to adhere to our code of conduct, which can be found [here](docs/CODE_OF_CONDUCT.md).  Thank you for your contribution - details on our stack and setting up a local environment can be found below.
 
 ### Development
 
@@ -33,7 +31,7 @@ In general, contributors will use the following languages, frameworks, and techn
 * [Ruby 2.6.6](https://www.ruby-lang.org/en/downloads/)
 * [Rails 5.0.7](http://rubyonrails.org/)
 * [Elasticsearch](https://www.elastic.co/products/elasticsearch)
-* [Postgres 9.4](https://www.postgresql.org/) or higher
+* [Postgres 12](https://www.postgresql.org/) or higher
 * [Redis](https://redis.io/)
 * [AWS S3](https://aws.amazon.com/free/)
 * [NodeJS](https://nodejs.org/en/)
@@ -49,11 +47,29 @@ rspec spec/
 
 More information on how to use RSpec, shoulda-matchers, and FactoryBot can be found at the links above.
 
-We also use [Rubocop](https://github.com/bbatsov/rubocop) as part of our continous integration process in Travis.  To run Rubocop locally, enter
+We also use [Rubocop](https://github.com/bbatsov/rubocop) as part of our continous integration process in Github Actions.  To run Rubocop locally, enter
 
 ```
 rubocop
 ```
+
+### Continuous Integration (CI)
+EBWiki uses Github Actions for continuous integration (CI).  Each time a ull request (PR) is opened or updated, our actions workflow will automatically perform four checks.
+
+The full test suite will be run, to ensure that submitted changes do not break functionality elsewhere in the app.  Brakeman, Rubocop, and a link checker will also be run on the submitted changes.
+
+As noted in our development guide, your PR is expected to pass all checks before a maintainer will merge it.  If your PR is failing one of the checks, refer to our development guide for tips on how to address the failure(s).
+
+### Deployment
+EBWiki is currently hosted on Heroku.  We have two environments - staging and production.  If you're interested in contributing but are more of a DevOps person than a developer, feel free to send us a message at info@ebwiki.org to see how you can get involved.
+
+The staging app does require credentials to access the app.  If you need to access the staging app send us a message at info@ebwiki.org to get a copy of the credentials.
+
+## Found a Bug?
+Want to report a bug you found?  Feel free to create a new issue for it!  Please be sure to use the bug template we've created for issues.  Additionally, check our docs here and the guides on [EBWiki](https://ebwiki.org) first to see if your issue has already been addressed.
+
+## Questions
+Have any questions not covered in our docs?  Feel free to send us a message at info@ebwiki.org.
 
 ## Contributors
 
