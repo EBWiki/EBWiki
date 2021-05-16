@@ -45,8 +45,6 @@ RSpec.configure do |config|
   # This is also best set to 'false' when using another tool to manage the test
   # database, such as database_cleaner
 
-  # TODO: Explicitly describe the DatabaseCleaner strategies used and the reasons
-  # for that  below
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
