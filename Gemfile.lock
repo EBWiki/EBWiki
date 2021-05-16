@@ -70,8 +70,6 @@ GEM
       rest-client (~> 2.0)
     arel (7.1.4)
     ast (2.4.2)
-    auto_strip_attributes (2.6.0)
-      activerecord (>= 4.0)
     autoprefixer-rails (10.2.4.0)
       execjs
     backports (3.21.0)
@@ -796,7 +794,6 @@ DEPENDENCIES
   active_median (~> 0.2)
   activerecord-session_store
   acts_as_follower!
-  auto_strip_attributes (~> 2.5)
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails
   brakeman (~> 4.10)
