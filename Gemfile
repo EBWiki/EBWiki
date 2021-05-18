@@ -162,7 +162,7 @@ gem 'activerecord-session_store'
 
 gem 'lograge', '~> 0.11'
 
-gem 'recaptcha'
+gem 'recaptcha', '~> 5.8'
 
 group :production do
   gem 'cloudflare-rails', '~> 0.6'

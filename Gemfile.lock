@@ -608,7 +608,7 @@ GEM
       json (>= 1.8)
       nokogiri (~> 1.5)
       optimist (~> 3.0)
-    recaptcha (5.7.0)
+    recaptcha (5.8.0)
       json
     redis (4.2.5)
     redis-actionpack (5.2.0)
@@ -845,7 +845,7 @@ DEPENDENCIES
   rails (~> 5.0.7.2)
   rails_admin (~> 2.0)
   rails_real_favicon
-  recaptcha
+  recaptcha (~> 5.8)
   redis
   redis-namespace (~> 1.8)
   redis-rails
