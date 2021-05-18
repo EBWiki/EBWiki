@@ -503,7 +503,7 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.11.0)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.1)
     minitest (5.14.4)
     mock_redis (0.27.3)
       ruby2_keywords
@@ -521,7 +521,7 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (7.0.0)
     nio4r (2.5.7)
-    nokogiri (1.11.3)
+    nokogiri (1.11.4)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     optimist (3.0.1)
