@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # This is the main model of the application. Each death is a case.
-# TODO: Lots & lots of refactoring
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
 
