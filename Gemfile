@@ -165,7 +165,7 @@ gem 'lograge', '~> 0.11'
 gem 'recaptcha', '~> 5.8'
 
 group :production do
-  gem 'cloudflare-rails', '~> 0.6'
+  gem 'cloudflare-rails', '~> 2.0'
 end
 
 gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
