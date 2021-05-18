@@ -102,7 +102,7 @@ gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'rails_admin', '~> 2.0'
 
 gem 'geocoder'
-gem 'puma', '~> 5.0', '>= 5.0.2'
+gem 'puma', '~> 5.3'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3.1'
@@ -162,7 +162,7 @@ gem 'activerecord-session_store'
 
 gem 'lograge', '~> 0.11'
 
-gem 'recaptcha'
+gem 'recaptcha', '~> 5.8'
 
 group :production do
   gem 'cloudflare-rails', '~> 0.6'
