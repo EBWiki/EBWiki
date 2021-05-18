@@ -54,7 +54,7 @@ rubocop
 ```
 
 ### Continuous Integration (CI)
-EBWiki uses Github Actions for continuous integration (CI).  Each time a ull request (PR) is opened or updated, our actions workflow will automatically perform four checks.
+Each time a pull request (PR) is opened or updated
 
 The full test suite will be run, to ensure that submitted changes do not break functionality elsewhere in the app.  Brakeman, Rubocop, and a link checker will also be run on the submitted changes.
 
