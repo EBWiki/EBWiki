@@ -2,8 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe Comment do
-  it_behaves_like 'a sanatized_record'
+RSpec.describe Comment, type: :model do
+
+  it { should validate_presence_of(:content) }
 
   describe 'scopes' do
     it 'returns comments sorted by desc create time' do

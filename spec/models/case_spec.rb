@@ -7,8 +7,6 @@ RSpec.describe Case do
     it { should validate_presence_of(:city).with_message('Please add a city.') }
     it { should validate_presence_of(:subjects).with_message('at least one subject is required') }
 
-    it_behaves_like 'a sanatized_record'
-
     it do
       should validate_presence_of(:overview)
         .with_message('An overview of the case is required')

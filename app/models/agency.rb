@@ -12,22 +12,13 @@ class Agency < ApplicationRecord
     commercial: 'commercial'
   }.freeze
 
-  STRIPPED_ATTRIBUTES = %w[
-    name
-    city
-    street_address
-    zipcode
-    telephone
-    email
-    website
-  ].freeze
-
-  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
-
   has_paper_trail
   has_many :case_agencies
   has_many :cases, through: :case_agencies
   belongs_to :state
+
+  # Model validations
+  sanitize :name, :city, :street_address, :zipcode, :telephone, :email, :website
 
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {

@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
-require 'observer'
-
 # EBWiki site user
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
-
-  validates :name, presence: { message: 'Please add a name.' }
 
   has_many :cases
   has_many :comments
@@ -18,16 +14,10 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
 
-  STRIPPED_ATTRIBUTES = %w[
-    email
-    name
-    description city
-    facebook_url
-    twitter_url
-    linkedin
-  ].freeze
+  # Model validations
+  sanitize :email, :name, :description, :city, :facebook_url, :twitter_url, :linkedin
 
-  auto_strip_attributes(*STRIPPED_ATTRIBUTES)
+  validates :name, presence: { message: 'Please add a name.' }
 
   def mailboxer_name
     name

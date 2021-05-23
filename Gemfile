@@ -102,7 +102,7 @@ gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'rails_admin', '~> 2.0'
 
 gem 'geocoder'
-gem 'puma', '~> 5.0', '>= 5.0.2'
+gem 'puma', '~> 5.3'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3.1'
@@ -160,14 +160,12 @@ gem 'rack-host-redirect', '~> 1.3'
 # for storing cookies via active record storage to avoid 4kb limit
 gem 'activerecord-session_store'
 
-gem 'auto_strip_attributes', '~> 2.5'
-
 gem 'lograge', '~> 0.11'
 
-gem 'recaptcha'
+gem 'recaptcha', '~> 5.8'
 
 group :production do
-  gem 'cloudflare-rails', '~> 0.6'
+  gem 'cloudflare-rails', '~> 2.0'
 end
 
 gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
