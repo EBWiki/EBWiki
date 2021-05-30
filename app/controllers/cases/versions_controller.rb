@@ -4,6 +4,7 @@ module Cases
   # versions controller
   class VersionsController < ApplicationController
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
 
     def revert
       @case = Case.friendly.find(revert_params[:case_id])
@@ -25,6 +26,7 @@ module Cases
       end
     end
 
+    # rubocop:enable Metrics/AbcSize
     # rubocop:enable Metrics/MethodLength
 
     private
