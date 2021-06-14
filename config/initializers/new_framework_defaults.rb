@@ -8,7 +8,7 @@
 #
 # Read the Guide for Upgrading Ruby on Rails for more info on each option.
 
-Rails.application.config.action_controller.raise_on_unfiltered_parameters = true
+# Rails.application.config.action_controller.raise_on_unfiltered_parameters = true
 
 # Enable per-form CSRF tokens. Previous versions had false.
 Rails.application.config.action_controller.per_form_csrf_tokens = true
@@ -24,4 +24,4 @@ ActiveSupport.to_time_preserves_timezone = false
 Rails.application.config.active_record.belongs_to_required_by_default = false
 
 # Do not halt callback chains when a callback returns false. Previous versions had true.
-ActiveSupport.halt_callback_chains_on_return_false = true
+# ActiveSupport.halt_callback_chains_on_return_false = true

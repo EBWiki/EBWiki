@@ -325,3 +325,6 @@ Performance/StringInclude:
 
 Performance/Sum:
   Enabled: true
+
+Style/StringChars:
+  Enabled: true
