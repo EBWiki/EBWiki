@@ -26,14 +26,14 @@
     <%= javascript_include_tag Ckeditor.cdn_url %>
     <%= csrf_meta_tags %>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-32848364-7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag("js", new Date());
-      gtag("config", "UA-32848364-7D");
-    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','<%= ENV["GOOGLE_TAG_MANAGER_ID"] %>');</script>
+    <!-- End Google Tag Manager -->
+
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js" async></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js" async></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-clustering.js" async></script>
@@ -49,6 +49,10 @@
     <meta name="cf-2fa-verify" content="2y1jaIA9tjJ9xyHE">
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= ENV["GOOGLE_TAG_MANAGER_ID"] %>"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="container">
       <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
         <div class="alert alert-<%= key %>">

@@ -11,6 +11,6 @@ feature 'User visits case history page' do
     user = FactoryBot.create(:user)
     login_as(user, scope: :user)
     visit cases_history_path(this_case)
-    expect(page).to have_text('Edited by')
+    expect(page).to have_text('History')
   end
 end
