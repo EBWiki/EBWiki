@@ -211,6 +211,23 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
+    fog-aws (3.10.0)
+      fog-core (~> 2.1)
+      fog-json (~> 1.1)
+      fog-xml (~> 0.1)
+      ipaddress (~> 0.8)
+    fog-core (2.2.4)
+      builder
+      excon (~> 0.71)
+      formatador (~> 0.2)
+      mime-types
+    fog-json (1.2.0)
+      fog-core
+      multi_json (~> 1.10)
+    fog-xml (0.1.3)
+      fog-core
+      nokogiri (>= 1.5.11, < 2.0.0)
+    formatador (0.3.0)
     friendly_id (5.4.2)
       activerecord (>= 4.0.0)
     galerts (1.1.3)
@@ -256,6 +273,7 @@ GEM
     image_processing (1.12.1)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
+    ipaddress (0.8.3)
     jb (0.7.1)
       multi_json
     jquery-rails (4.4.0)
@@ -593,6 +611,7 @@ DEPENDENCIES
   dotenv-rails (~> 2.7)
   factory_bot_rails (~> 6.1)
   faker (~> 2.14.0)
+  fog-aws (~> 3.10)
   friendly_id (~> 5.2)
   galerts (~> 1.1)
   geocoder
