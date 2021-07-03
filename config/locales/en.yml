@@ -16,37 +16,18 @@
 #
 # This would use the information in config/locales/es.yml.
 #
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  greetings:
-    welcome: "Welcome"
-  mailboxer:
-    message_mailer:
-      subject_new: 'You received a new EBWiki message about %{subject}'
-      subject_reply: 'You received a new reply on EBWiki about %{subject}'
-  autobus:
-    completion_message: "We've got plenty of room now. No need to destroy anything!"
-  cases_controller:
-    comments_attributes: [comment, content, commentable_id, commentable_type]
-    subjects_attributes: [name, age, gender_id, ethnicity_id, unarmed, homeless, veteran, mentally_ill, id, _destroy]
-    case_not_found_message: 'Case was not found!'
-  cases_helper:
-    youtube_helper_url: "https://www.youtube.com/watch?v=Mgn1r3_eM-s"
-    vimeo_helper_url: "https://vimeo.com/136536466"
-    youtube_iframe_url: '<iframe src="//www.youtube.com/embed/Mgn1r3_eM-s"></iframe>'
-    vimeo_iframe_url: '<iframe src="https://player.vimeo.com/video/136536466"></iframe>'
-  notifier:
-    follow_cases: "It is very important that you click to follow one or more cases and allow us to keep you up to date. The more people paying attention, the easier it will be to affect change."
-    subscribe_message: "As a newsletter subscriber, you'll receive our general updates periodically."
-    mail_body: "You have already taken the first step by following 1 case on EBWiki and allowing us to keep you up to date."
-    confirmation_message: "Thanks for signing up for EBWiki."
-    confirmation_cta: "Click here to confirm your account"
-    followers_email_text: 'UserNotifier#send_followers_email: Sending notification to %{email} about case %{title}'
-    deletion_email_text: 'UserNotifier#send_deletion_email: Sending notification to %{email} about case %{title}'
-    call_to_action: '%{link} for periodic general updates and commentaries on this issue.'
-    subscribe: "Subscribe to our newsletter as well"
-  presenter:
-    test_query: "Your search for \"%{query}\" has returned 1 result."
-    test_state: "Your search for cases in %{state} has returned 1 result."
+  hello: "Hello world"
