@@ -80,6 +80,8 @@ GEM
     bcrypt (3.1.16)
     benchmark-ips (2.8.4)
     bindex (0.8.1)
+    bootsnap (1.7.5)
+      msgpack (~> 1.0)
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
@@ -515,6 +517,7 @@ GEM
       ruby2_keywords
     momentjs-rails (2.20.1)
       railties (>= 3.1)
+    msgpack (1.4.2)
     multi_json (1.15.0)
     multi_test (0.1.2)
     multi_xml (0.6.0)
@@ -801,6 +804,7 @@ DEPENDENCIES
   active_median (~> 0.2)
   activerecord-session_store
   acts_as_follower!
+  bootsnap
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails
   brakeman (~> 4.10)
