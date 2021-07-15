@@ -99,8 +99,8 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: false
-          cache-version: 1
+          bundler-cache: true
+
 
       - name: Run Rubocop
         run: bundle exec rubocop
