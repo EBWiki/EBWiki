@@ -171,4 +171,4 @@ end
 gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
 gem 'sprockets', '~> 3.7.2'
 
-gem 'bootsnap'
+gem 'bootsnap', require: false
