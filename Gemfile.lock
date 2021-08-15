@@ -850,6 +850,7 @@ DEPENDENCIES
   rails (~> 5.2.6)
   rails_admin (~> 2.0)
   rails_real_favicon
+  rake
   recaptcha (~> 5.8)
   redis
   redis-namespace (~> 1.8)
