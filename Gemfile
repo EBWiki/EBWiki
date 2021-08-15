@@ -59,6 +59,7 @@ group :development, :test do
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
+  gem 'rake', require: false
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
