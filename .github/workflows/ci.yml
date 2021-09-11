@@ -36,7 +36,7 @@ jobs:
 
       - name: install dependencies
         run: |
-          sudo apt-get update && apt-get install libcurl4 libcurl4-gnutls-dev build-essential
+          sudo apt-get update && sudo apt-get install libcurl4 libcurl4-gnutls-dev build-essential
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
