@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@heroku/buildpack-registry": "^1.0.1",
+    "async-file": "^2.0.2",
+    "cli-ux": "^5.5.1",
+    "got": "^11.8.2",
+    "heroku": "^7.54.1",
+    "phoenix": "^1.5.8"
+  }
+}
