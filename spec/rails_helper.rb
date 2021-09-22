@@ -7,7 +7,6 @@ require 'capybara/rspec'
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
-require File.expand_path('../lib', __dir__)
 require 'devise'
 require 'rspec/rails'
 require 'database_cleaner'
@@ -18,7 +17,7 @@ Warden.test_mode!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
-
+Dir[Rails.root.join('lib/**/*.rb')].sort.each { |f| require f }
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Checks for pending migrations before tests are run.
