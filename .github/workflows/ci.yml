@@ -93,7 +93,7 @@ jobs:
 
       - name: install dependencies
         run: |
-          sudo apt-get updae && sudo apt-get install libcurl4-gnutls-dev
+          sudo apt-get update
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
