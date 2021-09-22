@@ -27,6 +27,8 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   # Factory Girl
   config.include FactoryBot::Syntax::Methods
+  
+  FactoryBot.use_parent_strategy = false
 
   # Include Devise test helpers
   config.include Devise::Test::IntegrationHelpers, type: :feature
