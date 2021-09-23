@@ -8,7 +8,7 @@ FactoryBot.define do
     f.city { 'Albany' }
     f.date { Date.current }
     f.state # { FactoryBot.create(:state) }
-    f.subjects { [create(:subject, case_id: f.id, gender_id: 1, ethnicity_id: 1)] }
+    f.subjects { [create(:subject, case:f, gender: create(:gender), ethnicity: create(:ethnicity))] }
     f.links { [create(:link)] }
     f.latitude { 50.00000 }
     f.longitude { 113.000 }
