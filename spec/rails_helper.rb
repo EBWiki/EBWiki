@@ -24,13 +24,13 @@ Dir[Rails.root.join('lib/**/*.rb')].sort.each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+FactoryBot.use_parent_strategy = false
+
 RSpec.configure do |config|
   # Factory Girl
   config.include FactoryBot::Syntax::Methods
   
-  FactoryBot.use_parent_strategy = false
-
-  # Include Devise test helpers
+    # Include Devise test helpers
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.extend ControllerMacros, type: :controller
