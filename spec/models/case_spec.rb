@@ -136,27 +136,13 @@ describe '#title', versioning: true do
 end
 
 describe 'follower_count', versioning: true do
+  let(:test_case) { create(:case) }
+  let(:user) { create(:user) }
+
+  before(:each) { user.follow(test_case) }
+
   it 'gives the correct followers count' do
-    this_case = FactoryBot.create(:case, id: 10)
-    FactoryBot.create(:follow, followable_id: 10)
-    expect(this_case.followers.count).to eq(1)
-  end
-
-  it 'has a zero counter cache to start' do
-    FactoryBot.create(:case)
-    expect(Case.last.follows_count).to eq(0)
-  end
-
-  it 'has a counter cache' do
-    this_case = FactoryBot.create(:case)
-    expect do
-      this_case.follows.create(
-        follower_id: 1,
-        followable_id: this_case.id,
-        followable_type: 'Case',
-        follower_type: 'User'
-      )
-    end.to change { this_case.reload.follows_count }.by(1)
+    expect(test_case.followers.count).to eq(1)
   end
 end
 
