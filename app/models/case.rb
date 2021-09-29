@@ -19,7 +19,7 @@ class Case < ApplicationRecord
   }
 
   belongs_to :user
-  belongs_to :cause_of_death
+  belongs_to :cause_of_death, optional: true
   belongs_to :state
   has_many :links, dependent: :destroy
   has_many :links, as: :linkable
@@ -56,9 +56,9 @@ class Case < ApplicationRecord
   }
   validates :title, presence: { message: 'Please specify a title' }
   validates_associated :subjects
-  validates :subjects, presence: {
-    message: 'at least one subject is required'
-  }
+  # validates :subjects, presence: {
+  #   message: 'at least one subject is required'
+  # }
   validates :summary, presence: {
     message: 'Please use the last field at the bottom of this form ' \
       'to summarize your edits to the case.'
