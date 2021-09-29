@@ -123,10 +123,8 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       :summary,
       :blurb,
       links_attributes: %i[id url title _destroy],
-      comments_attributes: \
-        I18n.t('cases_controller.comments_attributes').map(&:to_sym),
-      subjects_attributes: \
-        I18n.t('cases_controller.subjects_attributes').map(&:to_sym),
+      comments_attributes: [:comment, :content, :commentable_id, :commentable_type],
+      subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy],
       agency_ids: []
     )
   end
