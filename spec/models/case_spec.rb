@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe Case do
   describe 'validity' do
     it { should validate_presence_of(:city).with_message('Please add a city.') }
-    it { should validate_presence_of(:subjects).with_message('at least one subject is required') }
 
     it do
       should validate_presence_of(:overview)
@@ -215,67 +214,41 @@ describe 'scopes', versioning: true do
   let(:louisiana) { FactoryBot.create(:state_louisiana) }
   let(:texas) { FactoryBot.create(:state_texas) }
 
-  it 'returns the most recently occurring cases' do
-    FactoryBot.create(
-      :case,
-      city: 'Houston',
-      state_id: texas.id,
-      date: Time.current
-    )
-    FactoryBot.create(:case,
-                      city: 'Baton Rouge',
-                      state_id: louisiana.id,
-                      date: 2.weeks.ago)
-    dc_case = FactoryBot.create(:case,
-                                city: 'Washington',
-                                state_id: dc.id,
-                                date: 1.year.ago)
+  let!(:texas_case) { create(:case, city: 'Houston', state: texas) }
+  let!(:louisiana_case) { create(:case, city: 'Baton Rouge', state: louisiana, date: 2.weeks.ago) }
+  let!(:dc_case) { create(:case, city: 'Washington', state: dc, date: 1.year.ago) }
 
+  before(:each) do
+    louisiana_case.update!(created_at: 2.weeks.ago, updated_at: 2.weeks.ago)
+    dc_case.update!(created_at: 1.year.ago, updated_at: 1.year.ago)
+  end
+
+  it 'returns the most recently occurring cases' do
     recent_cases = Case.most_recent_occurrences 1.month.ago
     expect(recent_cases.count).to eq 2
     expect(recent_cases.to_a).not_to include(dc_case)
   end
 
   it 'returns cases sorted by update date' do
-    FactoryBot.create(:case,
-                      city: 'Houston',
-                      state_id: texas.id,
-                      updated_at: Time.current)
-    FactoryBot.create(:case,
-                      city: 'Baton Rouge',
-                      state_id: louisiana.id,
-                      updated_at: 2.weeks.ago)
-    dc_case = FactoryBot.create(:case,
-                                city: 'Washington',
-                                state_id: dc.id,
-                                updated_at: 1.year.ago)
-
     sorted_cases = Case.sorted_by_update 2
     expect(sorted_cases.to_a).not_to include(dc_case)
   end
 
-  it 'returns cases sorted by number of followers' do
-    texas_case = FactoryBot.create(:case,
-                                   city: 'Houston',
-                                   state_id: texas.id,
-                                   updated_at: Time.current)
-    louisiana_case = FactoryBot.create(:case,
-                                       city: 'Baton Rouge',
-                                       state_id: louisiana.id,
-                                       updated_at: 2.weeks.ago)
-    dc_case = FactoryBot.create(:case,
-                                city: 'Washington',
-                                state_id: dc.id,
-                                updated_at: 1.year.ago)
+  context 'based on follows' do
+    let(:users) { create_pair(:user) }
 
-    FactoryBot.create(:follow, followable_id: texas_case.id)
-    FactoryBot.create(:follow, followable_id: texas_case.id)
-    FactoryBot.create(:follow, followable_id: dc_case.id)
-    FactoryBot.create(:follow, followable_id: dc_case.id)
-    FactoryBot.create(:follow, followable_id: louisiana_case.id)
+    before(:each) do
+      users.each do |u| 
+        u.follow(texas_case)
+        u.follow(dc_case)
+      end
+      users[0].follow(louisiana_case)
+    end
 
-    sorted_cases = Case.sorted_by_followers 2
-    expect(sorted_cases.count).to eq 2
-    expect(sorted_cases.to_a).not_to include(louisiana_case)
+    it 'returns cases sorted by number of followers' do
+      sorted_cases = Case.sorted_by_followers 2
+      expect(sorted_cases.count).to eq 2
+      expect(sorted_cases.to_a).not_to include(louisiana_case)
+    end
   end
 end
