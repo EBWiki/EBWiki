@@ -12,6 +12,7 @@ require 'rspec/rails'
 require 'database_cleaner'
 require 'webmock/rspec'
 require 'paper_trail/frameworks/rspec'
+require 'null_fields_counter'
 include Warden::Test::Helpers
 Warden.test_mode!
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -29,7 +30,7 @@ FactoryBot.use_parent_strategy = false
 RSpec.configure do |config|
   # Factory Girl
   config.include FactoryBot::Syntax::Methods
-  
+
     # Include Devise test helpers
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
