@@ -58,8 +58,8 @@ group :development, :test do
   # Install a pre-commit hook to enforce code checks before commits
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
-  gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
   gem 'rake', require: false
+  gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false

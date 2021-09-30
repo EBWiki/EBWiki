@@ -123,8 +123,9 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       :summary,
       :blurb,
       links_attributes: %i[id url title _destroy],
-      comments_attributes: [:comment, :content, :commentable_id, :commentable_type],
-      subjects_attributes: [:name, :age, :gender_id, :ethnicity_id, :unarmed, :homeless, :veteran, :mentally_ill, :id, :_destroy],
+      comments_attributes: %i[comment content commentable_id commentable_type],
+      subjects_attributes: %i[name age gender_id ethnicity_id unarmed homeless veteran
+                              mentally_ill id _destroy],
       agency_ids: []
     )
   end
