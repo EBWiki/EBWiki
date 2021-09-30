@@ -19,7 +19,7 @@ describe 'cases:convert_cause_of_death' do
   let(:_case) { create(:case) }
   let(:cod) {  CauseOfDeath.create(name: 'Shooting') }
 
-  it 'converts cause of death from reference to enum' do
+  xit 'converts cause of death from reference to enum' do
     _case.update_attribute :cause_of_death_id, cod.id
     subject.invoke
     _case.reload
