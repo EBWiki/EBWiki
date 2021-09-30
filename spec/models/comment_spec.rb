@@ -7,15 +7,15 @@ RSpec.describe Comment, type: :model do
   it { should validate_presence_of(:content) }
 
   describe 'scopes' do
+    let(:user) { create(:user) }
+    let(:test_case) { create(:case, user: user) }
+    let(:comments) { Comment.all }
+    
+    before(:each) { 3.times { |n| test_case.comments.create!(content: 'A comment', user: user) } }
+    
     it 'returns comments sorted by desc create time' do
-      comment_one = FactoryBot.create(:comment)
-      comment_two = FactoryBot.create(:comment)
-      comment_three = FactoryBot.create(:comment)
-
-      comments = Comment.sorted_by_creation 2
-      expect(comments.to_a).to include(comment_three)
-      expect(comments.to_a).to include(comment_two)
-      expect(comments.to_a).not_to include(comment_one)
+      query_result = Comment.sorted_by_creation(2).to_a
+      expect(query_result).to eq(comments[1..2].reverse)
     end
   end
 end

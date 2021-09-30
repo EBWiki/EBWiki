@@ -1,7 +1,7 @@
 <!-- Meta Tag Information -->
 <% content_for :meta_title, "People tracking the case of #{@this_case.title}" %>
 <% content_for :meta_description, "There are #{@this_case.followers.count} people tracking the case of #{@this_case.title} on EBWiki" %>
-<% content_for :meta_keywords, "#{@this_case.subjects.first.name} police violence people color" %>
+<% content_for :meta_keywords, "#{@this_case.subjects.first&.name} police violence people color" %>
 
 <!-- Page Content -->
 <div class="container">

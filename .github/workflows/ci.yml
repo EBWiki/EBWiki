@@ -36,7 +36,7 @@ jobs:
 
       - name: install dependencies
         run: |
-          sudo apt-get install libcurl4 libcurl4-gnutls-dev build-essential
+          sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -62,12 +62,12 @@ jobs:
 
       - name: install dependencies
         run: |
-          sudo apt-get install libcurl4 libcurl4-gnutls-dev build-essential
-
+          sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          cache-version: 1
 
       - name: Run Brakeman
         run: |
@@ -93,12 +93,13 @@ jobs:
 
       - name: install dependencies
         run: |
-          sudo apt-get install libcurl4 libcurl4-gnutls-dev
+          sudo apt-get update
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+
 
       - name: Run Rubocop
         run: bundle exec rubocop

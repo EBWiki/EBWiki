@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
-gem 'rails', '~> 5.1.7'
+gem 'rails', '~> 5.2.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
@@ -58,6 +58,7 @@ group :development, :test do
   # Install a pre-commit hook to enforce code checks before commits
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
+  gem 'rake', require: false
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
@@ -68,6 +69,7 @@ group :development do
   gem 'brakeman', '~> 4.10', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'derailed_benchmarks', '~> 1.8'
+  gem 'listen'
   gem 'rails_real_favicon'
   gem 'web-console', '~> 3.7'
 end
@@ -168,5 +170,6 @@ group :production do
   gem 'cloudflare-rails', '~> 2.0'
 end
 
-gem 'mimemagic', '0.3.5', path: 'vendor/gems/mimemagic-0.3.5'
 gem 'sprockets', '~> 3.7.2'
+
+gem 'bootsnap', require: false

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'null_fields_counter'
+
 
 RSpec.describe NullFieldsCounter do
   describe '.count_null_fields' do

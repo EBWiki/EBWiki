@@ -6,8 +6,8 @@ FactoryBot.define do
   factory :subject do
     name { Faker::Name.name }
     age { 1 }
-    gender_id { 1 }
-    ethnicity_id { 1 }
+    gender
+    ethnicity
     unarmed { false }
     mentally_ill { false }
     veteran { false }
