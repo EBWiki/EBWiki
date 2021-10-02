@@ -30,7 +30,7 @@ RSpec.describe Case do
 
   describe 'blurb' do
     it { should validate_presence_of(:blurb).with_message('A blurb about the case is required.') }
-    it { should validate_length_of(:blurb).is_at_most(500) }
+    it { should validate_length_of(:blurb).is_at_most(Case::MAX_BLURB_CHARACTERS) }
   end
 end
 
