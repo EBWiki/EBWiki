@@ -110,7 +110,7 @@
       <% @maximum_length = Case::MAX_BLURB_CHARACTERS %>
       <legend class="legendStyle">Blurb About Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover', :placement => "bottom", :title => "Blurb", :content => "A text-only summary of the case.  All HTML will automatically be stripped, and the field is limited to #{@maximum_length} characters or less"})%></legend>
       <%= f.input :blurb %>
-      <span id='characters-left'> Characters left: <span id="counter" data-maximum-length="<%= @maximum_length %>"><%= @maximum_length %></span> </span>
+      <span id='characters-count'> Characters left: <span id="counter" data-maximum-length="<%= @maximum_length %>"><%= @maximum_length %></span> </span>
     </fieldset>
   </div>
 
@@ -140,7 +140,7 @@
     console.log("Set Blurb Char Count");
 
     var input_field = $("#case_blurb");
-    var counter_element = $("#characters-left");
+    var counter_element = $("#characters-count");
     var counter = $("#counter");
     var maximum_length = counter.data("maximum-length");
     var current_length = maximum_length - input_field.val().length;
