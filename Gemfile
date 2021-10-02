@@ -46,6 +46,8 @@ gem 'simplecov', '~> 0.19.0'
 
 gem 'twitter', '~> 7.0'
 
+gem 'montrose'
+
 # JSON renderer for Rails
 gem 'jb', '~> 0.7.1'
 group :development, :test do
