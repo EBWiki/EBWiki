@@ -116,41 +116,6 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.calendar_events (
-    id integer NOT NULL,
-    title character varying,
-    start_time timestamp without time zone,
-    end_time timestamp without time zone,
-    description text,
-    city character varying,
-    state_id integer
-);
-
-
---
--- Name: calendar_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.calendar_events_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: calendar_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.calendar_events_id_seq OWNED BY public.calendar_events.id;
-
-
---
 -- Name: case_agencies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1010,13 +975,6 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 
 
 --
--- Name: calendar_events id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.calendar_events ALTER COLUMN id SET DEFAULT nextval('public.calendar_events_id_seq'::regclass);
-
-
---
 -- Name: case_agencies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1192,14 +1150,6 @@ ALTER TABLE ONLY public.ahoy_events
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: calendar_events calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.calendar_events
-    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -1771,6 +1721,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190825000337'),
 ('20191114063555'),
 ('20200812015951'),
-('20200901014746');
+('20200901014746'),
+('20211002101752');
 
 
