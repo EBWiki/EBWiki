@@ -4,6 +4,8 @@
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
 
+  MAX_BLURB_CHARACTERS = 500
+
   enum cause_of_death_name: {
     choking: 'choking',
     shooting: 'shooting',
@@ -66,7 +68,7 @@ class Case < ApplicationRecord
 
   validates_presence_of :overview, message: 'An overview of the case is required'
 
-  validates :blurb, length: { maximum: 500 }
+  validates :blurb, length: { maximum: MAX_BLURB_CHARACTERS }
   validates_presence_of :blurb, message: 'A blurb about the case is required.'
 
   # Avatar uploader using carrierwave
