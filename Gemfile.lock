@@ -342,6 +342,8 @@ GEM
       ruby2_keywords
     momentjs-rails (2.20.1)
       railties (>= 3.1)
+    montrose (0.12.0)
+      activesupport (>= 5.2, <= 7.0)
     msgpack (1.4.2)
     multi_json (1.15.0)
     multi_test (0.1.2)
@@ -640,6 +642,7 @@ DEPENDENCIES
   mini_magick (~> 4.10)
   mock_redis (~> 0.26)
   momentjs-rails
+  montrose
   newrelic_rpm (~> 7.0)
   paper_trail (~> 10.3)
   paper_trail-association_tracking
