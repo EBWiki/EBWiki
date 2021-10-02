@@ -15,7 +15,7 @@ logs:
 	docker logs --timestamps --follow ebwiki
 
 exec:
-	docker exec -it ebwiki bash
+	docker exec -e PGPASSWORD=ebwiki -it ebwiki bash
 
 stop:
 	@docker stop ebwiki > /dev/null 2>&1 || echo "ebwiki container is not running"
