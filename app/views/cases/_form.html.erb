@@ -107,8 +107,10 @@
 
   <div class="cold-md-12">
     <fieldset class="fsStyle">
-      <legend class="legendStyle">Blurb About Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover', :placement => "bottom", :title => "Blurb", :content => "A text-only summary of the case.  All HTML will automatically be stripped, and the field is limited to 500 characters or less"})%></legend>
+      <% @maximum_length = Case::MAX_BLURB_CHARACTERS %>
+      <legend class="legendStyle">Blurb About Case <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover', :placement => "bottom", :title => "Blurb", :content => "A text-only summary of the case.  All HTML will automatically be stripped, and the field is limited to #{@maximum_length} characters or less"})%></legend>
       <%= f.input :blurb %>
+      <span id='characters-left'> Characters left: <span id="counter" data-maximum-length="<%= @maximum_length %>"><%= @maximum_length %></span> </span>
     </fieldset>
   </div>
 
@@ -134,11 +136,30 @@
 <% end %>
 
 <script type="text/javascript">
+  function displayBlurbCharactersCount() {
+    console.log("Set Blurb Char Count");
+
+    var input_field = $("#case_blurb");
+    var counter_element = $("#characters-left");
+    var counter = $("#counter");
+    var maximum_length = counter.data("maximum-length");
+    var current_length = maximum_length - input_field.val().length;
+
+    counter.text(current_length);
+    (current_length < 50) ? counter_element.addClass('danger') : counter_element.removeClass('danger');
+  }
+
   $(document).ready(function() {
     $('#case_agency_ids').select2();
     $('.datetimepicker').datetimepicker();
     $('input[id=lefile_article]').change(function() {
       $('#photoCover_article').val(_.last($(this).val().split("\\")));
     });
+
+    displayBlurbCharactersCount();
+    $("#case_blurb").keyup(function() {
+      displayBlurbCharactersCount();
+    });
   });
+
 </script>
