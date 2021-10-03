@@ -68,6 +68,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'annotate', '~> 3.1', '>= 3.1.1'
   gem 'brakeman', '~> 4.10', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'derailed_benchmarks', '~> 1.8'
