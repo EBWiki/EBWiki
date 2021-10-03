@@ -1,5 +1,24 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: follows
+#
+#  id              :integer          not null, primary key
+#  blocked         :boolean          default(FALSE), not null
+#  followable_type :string           not null
+#  follower_type   :string           not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#  followable_id   :integer          not null
+#  follower_id     :integer          not null
+#
+# Indexes
+#
+#  fk_followables               (followable_id,followable_type)
+#  fk_follows                   (follower_id,follower_type)
+#  index_follows_on_created_at  (created_at)
+#
 # A model for acts_as_follower
 class Follow < ApplicationRecord
   extend ActsAsFollower::FollowerLib
