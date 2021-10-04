@@ -8,7 +8,7 @@ RSpec.describe 'Versions', type: :request, versioning: true do
 
     before do
       this_case.update!(blurb: "A new blurb")
-      version_id = this_case.versions[-1].id
+      version_id = this_case.versions.at(-1).id
       post "/cases/#{this_case.id}/versions/#{version_id}/revert",
            params: {},
            headers: {
@@ -24,7 +24,7 @@ RSpec.describe 'Versions', type: :request, versioning: true do
 
     context 'when the case is new' do
       before do
-        version_id = this_case.versions[-1].id
+        version_id = this_case.versions.at(-1).id
         post "/cases/#{this_case.id}/versions/#{version_id}/revert",
            params: {},
            headers: {
