@@ -1,8 +1,9 @@
+<% current_subject = f.object %>
 <div class="nested-fields">
     <%= f.input :name %>
     <%= f.input :age %>
-    <%= f.collection_select :gender_id, @genders, :id, :sex, {prompt: "Choose a Gender"} %>
-    <%= f.input :ethnicity_id,:collection => @ethnicities,:label_method => :title,:value_method => :id,:label => "Race" ,:include_blank => false, :selected => 1 %>
+    <%= f.collection_select :gender_id, @genders, :id, :sex, {prompt: "Choose a Gender", selected: current_subject.gender_id} %>
+    <%= f.input :ethnicity_id,:collection => @ethnicities,:label_method => :title,:value_method => :id,:label => "Race" ,:include_blank => false, :selected => current_subject.ethnicity_id %>
     <%= f.input :unarmed %>
     <%= f.input :mentally_ill %>
     <%= f.input :homeless%>
