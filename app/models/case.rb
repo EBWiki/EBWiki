@@ -1,5 +1,44 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: cases
+#
+#  id                  :integer          not null, primary key
+#  address             :string
+#  age                 :integer
+#  avatar              :string
+#  blurb               :text
+#  cause_of_death_name :enum
+#  city                :string           not null
+#  community_action    :text
+#  country             :string
+#  date                :date
+#  default_avatar_url  :string
+#  follows_count       :integer          default(0), not null
+#  latitude            :float
+#  litigation          :text
+#  longitude           :float
+#  overview            :text             not null
+#  remove_avatar       :boolean
+#  slug                :string
+#  state               :string
+#  summary             :text             not null
+#  title               :string           not null
+#  video_url           :string
+#  zipcode             :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  cause_of_death_id   :integer
+#  state_id            :integer
+#  user_id             :integer
+#
+# Indexes
+#
+#  index_cases_on_slug     (slug) UNIQUE
+#  index_cases_on_title    (title)
+#  index_cases_on_user_id  (user_id)
+#
 # This is the main model of the application. Each death is a case.
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
