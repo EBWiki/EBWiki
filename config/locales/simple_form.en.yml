@@ -20,7 +20,7 @@ en:
           university: 'University'
           commercial: 'Commercial'
       case:
-        cause_of_death_name:
+        cause_of_death:
           choking: 'Choking'
           shooting: 'Shooting'
           beating: 'Beating'

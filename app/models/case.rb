@@ -9,7 +9,7 @@
 #  age                 :integer
 #  avatar              :string
 #  blurb               :text
-#  cause_of_death_name :enum
+#  cause_of_death :enum
 #  city                :string           not null
 #  community_action    :text
 #  country             :string
@@ -45,7 +45,7 @@ class Case < ApplicationRecord
 
   MAX_BLURB_CHARACTERS = 500
 
-  enum cause_of_death_name: {
+  enum cause_of_death: {
     choking: 'choking',
     shooting: 'shooting',
     beating: 'beating',

@@ -23,7 +23,7 @@ namespace :cases do
 
     lookup.each do |k, v|
       Case.where(cause_of_death_id: k).in_batches do |group|
-        group.update_all(cause_of_death_name: v)
+        group.update_all(cause_of_death: v)
       end
     end
   end

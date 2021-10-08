@@ -24,6 +24,6 @@ describe 'cases:convert_cause_of_death' do
     subject.invoke
     _case.reload
     name = cod.name.downcase.parameterize(separator: '_')
-    expect(_case.cause_of_death_name).to eq name
+    expect(_case.cause_of_death).to eq name
   end
 end

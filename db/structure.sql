@@ -213,7 +213,7 @@ CREATE TABLE public.cases (
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
     blurb text,
-    cause_of_death_name public.cause_of_death
+    cause_of_death public.cause_of_death
 );
 
 
