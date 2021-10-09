@@ -21,17 +21,18 @@ en:
           commercial: 'Commercial'
       case:
         cause_of_death_name:
-          choking: 'Choking'
-          shooting: 'Shooting'
           beating: 'Beating'
-          taser: 'Taser'
-          vehicular: 'Vehicular'
+          bombing: 'Bombing'
+          chemical_agents_or_weapons: 'Chemical Agents or Weapons'
+          choking: 'Choking'
+          drowning: 'Drowning'
           medical_neglect: 'Medical Neglect'
           response_to_medical_emergency: 'Response to Medical Emergency'
-          suicide: 'Suicide'
-          chemical_agents_or_weapons: 'Chemical Agents or Weapons'
+          shooting: 'Shooting'
           stabbing: 'Stabbing'
-          drowning: 'Drowning'
+          suicide: 'Suicide'
+          taser: 'Taser'
+          vehicular: 'Vehicular'
     labels:
       agency:
         state: 'State'
