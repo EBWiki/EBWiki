@@ -54,6 +54,10 @@ $color-dark-gray: #4D4D4D;
 .case-title {
   text-align: left;
   padding-bottom: 30px;
+
+  .lead {
+    margin-bottom: 5px;
+  }
 }
 
 .timeAgo {
