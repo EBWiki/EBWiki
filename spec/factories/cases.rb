@@ -13,5 +13,6 @@ FactoryBot.define do
     user
     summary { 'Added case' }
     blurb { 'Blurb about case' }
+    video_url { 'https://example.com' }
   end
 end

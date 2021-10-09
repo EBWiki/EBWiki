@@ -46,17 +46,18 @@ class Case < ApplicationRecord
   MAX_BLURB_CHARACTERS = 500
 
   enum cause_of_death_name: {
-    choking: 'choking',
-    shooting: 'shooting',
     beating: 'beating',
-    taser: 'taser',
-    vehicular: 'vehicular',
+    bombing: 'bombing',
+    chemical_agents_or_weapons: 'chemical_agents_or_weapons',
+    choking: 'choking',
+    drowning: 'drowning',
     medical_neglect: 'medical neglect',
     response_to_medical_emergency: 'response to medical emergency',
-    suicide: 'suicide',
-    chemical_agents_or_weapons: 'chemical_agents_or_weapons',
+    shooting: 'shooting',
     stabbing: 'stabbing',
-    drowning: 'drowning'
+    suicide: 'suicide',
+    taser: 'taser',
+    vehicular: 'vehicular'
   }
 
   belongs_to :user
