@@ -471,6 +471,8 @@ GEM
       railties (>= 5.0)
     rexml (3.2.5)
     rollbar (3.1.2)
+    rollout (2.5.0)
+      redis (~> 4.0)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
     rspec-expectations (3.10.1)
@@ -668,6 +670,7 @@ DEPENDENCIES
   redis-rails
   redis-store
   rollbar (~> 3.0)
+  rollout (~> 2.5)
   rspec-rails (~> 4.0, >= 4.0.1)
   rubocop
   rubocop-performance
