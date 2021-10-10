@@ -15,11 +15,11 @@ describe Rollout do
     expect(subject.date_added).to eq('10/10/10')
   end
 
-  it 'should return a string representing the date object' do
+  it 'should return a string representing the rollout object' do
     expect(subject.to_s).to eq(name)
   end
 
-  it 'should mark rollouts with the same dates as equal' do
+  it 'should mark rollouts with the same name as equal' do
     second_service = Rollout.new(path_to_file)
     expect(subject == second_service).to be_truthy
   end
