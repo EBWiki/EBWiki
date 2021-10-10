@@ -13,7 +13,7 @@ class Rollout
   end
 
   def to_s
-    "name #{name}"
+    "#{name}"
   end
 
   def ==(other)

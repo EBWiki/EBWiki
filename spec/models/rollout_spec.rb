@@ -5,17 +5,18 @@ require 'rails_helper'
 describe Rollout do
   subject { described_class.new(path_to_file) }
 
-  let(:path_to_file) { '' }
+  let(:path_to_file) { 'spec/fixtures/rollout.yml' }
+  let(:name) { 'Peter' }
 
   it 'has the correct attributes' do
-    expect(subject.name).to eq('')
-    expect(subject.description).to eq('')
-    expect(subject.creator).to eq('')
-    expect(subject.date_added).to eq('')
+    expect(subject.name).to eq(name)
+    expect(subject.description).to eq('This is a description')
+    expect(subject.creator).to eq('Parker')
+    expect(subject.date_added).to eq('10/10/10')
   end
 
   it 'should return a string representing the date object' do
-    expect(subject.to_s).to eq('')
+    expect(subject.to_s).to eq(name)
   end
 
   it 'should mark rollouts with the same dates as equal' do
