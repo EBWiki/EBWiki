@@ -32,6 +32,8 @@ Style/ClassAndModuleChildren:
   Enabled: true
 
 Style/GlobalVars:
+  AllowedVariables:
+    - $rollout
   Exclude:
     - 'app/helpers/maps_helper.rb'
     - 'config/initializers/redis.rb'

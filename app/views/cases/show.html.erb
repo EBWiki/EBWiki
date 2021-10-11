@@ -33,34 +33,37 @@
     </div>
 
     <div class="col-md-9">
-      <h1 class="page-header case-title"><%= @subjects.first&.name %>, <%= @subjects.first&.age ? "#{@subjects.first.age}" : "" %>
-      <br>
-          <small><%= @this_case.city %>, <%= @this_case.state.name %></small>
-      <br/><small><%= @this_case.date.to_s(:long) %></small>
-          <% if @this_case.agencies.present? %>
-            <p>Agencies:
-              <% @this_case.agencies.each_with_index do |agency, index| %>
-                <%= link_to agency.name, agency_path(agency) %>
-                <% unless index == @this_case.agencies.size - 1 %>
-                  <%= "|" %>
-                <% end %>
-              <% end %>
-            </p>
-          <% end %>
-          <% if @this_case.cause_of_death_name? %>
-            <p>Cause of death: <%= @this_case.cause_of_death_name %></p>
-          <% end %>
-          <div>
-            <% if current_user %>
-              <% if current_user.following?(@this_case) %>
-              <% else %>
-                <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Click here to receive an email whenever this case is updated.' } %>
-              <% end %>
-            <% else %>
-              <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Login to Follow this case!', content: 'Click here to receive an email whenever this case is updated.' } %>
-            <% end %>
-          </div>
+      <h1 class="page-header case-title">
+        <%= @subjects.first&.name %>, <%= @subjects.first&.age ? "#{@subjects.first.age}" : "" %>
+        <p class="lead text-muted">
+          <%= @this_case.city %>, <%= @this_case.state.name %>
+          <br />
+          <%= @this_case.date.to_s(:long) %>
+        </p>
       </h1>
+      <% if @this_case.agencies.present? %>
+        <p class="h5">Agencies:
+          <% @this_case.agencies.each_with_index do |agency, index| %>
+            <%= link_to agency.name, agency_path(agency) %>
+            <% unless index == @this_case.agencies.size - 1 %>
+              <%= "|" %>
+            <% end %>
+          <% end %>
+        </p>
+      <% end %>
+      <p class="h5">Cause of death: <b><%= @this_case.cause_of_death_name.presence&.titleize || 'Not Yet Known' %></b></p>
+      <br />
+      <p>
+        <% if current_user %>
+          <% if current_user.following?(@this_case) %>
+          <% else %>
+            <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Click here to receive an email whenever this case is updated.' } %>
+          <% end %>
+        <% else %>
+          <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Login to Follow this case!', content: 'Click here to receive an email whenever this case is updated.' } %>
+        <% end %>
+      </p>
+      <hr />
       <p class="timeAgo">Last updated: <%= time_ago_in_words(@this_case.updated_at) %> ago</p>
         <% if @this_case.followers.present? %>
           <p>
