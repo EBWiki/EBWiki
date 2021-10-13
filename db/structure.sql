@@ -191,7 +191,6 @@ CREATE TABLE public.cases (
     title character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    user_id integer,
     cause_of_death_id integer,
     date date,
     state_id integer,
@@ -1399,13 +1398,6 @@ CREATE UNIQUE INDEX index_cases_on_slug ON public.cases USING btree (slug);
 --
 
 CREATE INDEX index_cases_on_title ON public.cases USING btree (title);
-
-
---
--- Name: index_cases_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cases_on_user_id ON public.cases USING btree (user_id);
 
 
 --
