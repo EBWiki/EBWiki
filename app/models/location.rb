@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 # Value object - date range
-class Location
+class Location < ValueObject
   attr_accessor :state, :street_location, :city, :zipcode
 
-  def initialize(state:, street_location: nil, city: nil, zipcode: nil)
+  def initialize(state:, street_location: nil, city: nil, zipcode: nil) # rubocop:disable Lint/MissingSuper
     @state = state
     @street_location = street_location
     @city = city
@@ -18,10 +18,4 @@ class Location
       [street_location, city, state, zipcode].compact.join(', ')
     end
   end
-
-  # rubocop:disable Style/RedundantSelf
-  def ==(other)
-    other.class.eql?(self.class) && self.to_s.eql?(other.to_s)
-  end
-  # rubocop:enable Style/RedundantSelf
 end
