@@ -108,7 +108,7 @@ gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'rails_admin', '~> 2.0'
 
 gem 'geocoder'
-gem 'puma', '~> 5.3'
+gem 'puma', '~> 5.5'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3.1'
