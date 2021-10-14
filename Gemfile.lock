@@ -358,7 +358,7 @@ GEM
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
     newrelic_rpm (7.0.0)
-    nio4r (2.5.7)
+    nio4r (2.5.8)
     nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
@@ -381,7 +381,7 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.13.0)
     public_suffix (4.0.6)
-    puma (5.3.1)
+    puma (5.5.1)
       nio4r (~> 2.0)
     pundit (2.1.0)
       activesupport (>= 3.0.0)
@@ -471,6 +471,8 @@ GEM
       railties (>= 5.0)
     rexml (3.2.5)
     rollbar (3.1.2)
+    rollout (2.5.0)
+      redis (~> 4.0)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
     rspec-expectations (3.10.1)
@@ -653,7 +655,7 @@ DEPENDENCIES
   pg (~> 1.2)
   pre-commit (~> 0.39)
   pry-byebug (~> 3.9)
-  puma (~> 5.3)
+  puma (~> 5.5)
   pundit (~> 2.1)
   rack
   rack-cors (~> 1.1)
@@ -668,6 +670,7 @@ DEPENDENCIES
   redis-rails
   redis-store
   rollbar (~> 3.0)
+  rollout (~> 2.5)
   rspec-rails (~> 4.0, >= 4.0.1)
   rubocop
   rubocop-performance

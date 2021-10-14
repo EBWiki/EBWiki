@@ -50,6 +50,7 @@ gem 'montrose'
 
 # JSON renderer for Rails
 gem 'jb', '~> 0.7.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 6.1'
@@ -107,7 +108,7 @@ gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'rails_admin', '~> 2.0'
 
 gem 'geocoder'
-gem 'puma', '~> 5.3'
+gem 'puma', '~> 5.5'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3.1'
@@ -176,3 +177,6 @@ end
 gem 'sprockets', '~> 3.7.2'
 
 gem 'bootsnap', require: false
+
+# fast feature flags based on Redis
+gem 'rollout', '~> 2.5'
