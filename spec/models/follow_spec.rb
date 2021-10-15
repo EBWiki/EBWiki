@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Follow do
   describe 'scopes' do
     let(:user) { create(:user) }
-    let(:test_case) { create(:case, user: user) }
+    let(:test_case) { create(:case) }
 
     before(:each) { user.follow(test_case) }
 

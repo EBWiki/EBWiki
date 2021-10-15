@@ -17,10 +17,11 @@ RSpec.describe CaseMailer, type: :mailer do
     let(:author) { FactoryBot.create(:user, name: 'John', email: 'john@email.com') }
     let(:user) { FactoryBot.create(:user) }
     let(:state) { FactoryBot.create(:state, id: 33) }
-    let(:this_case) { user.cases.create! attributes_for(:case, state_id: state.id) }
+    let(:this_case) { Case.create! attributes_for(:case, state_id: state.id) }
     let(:mail) { CaseMailer.send_followers_email(users: [follower], this_case: this_case) }
 
     before do
+      user.follow(this_case)
       allow(this_case).to receive_message_chain('versions.last.whodunnit').and_return(User.last)
       allow(this_case).to receive_message_chain('versions.last.comment').and_return('Comment')
       allow(Rails.logger).to receive(:info)
