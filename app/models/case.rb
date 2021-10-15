@@ -31,13 +31,11 @@
 #  updated_at          :datetime         not null
 #  cause_of_death_id   :integer
 #  state_id            :integer
-#  user_id             :integer
 #
 # Indexes
 #
-#  index_cases_on_slug     (slug) UNIQUE
-#  index_cases_on_title    (title)
-#  index_cases_on_user_id  (user_id)
+#  index_cases_on_slug   (slug) UNIQUE
+#  index_cases_on_title  (title)
 #
 # This is the main model of the application. Each death is a case.
 class Case < ApplicationRecord
@@ -60,7 +58,6 @@ class Case < ApplicationRecord
     vehicular: 'vehicular'
   }
 
-  belongs_to :user
   belongs_to :cause_of_death, optional: true
   belongs_to :state
   has_many :links, dependent: :destroy

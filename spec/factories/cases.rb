@@ -2,15 +2,14 @@
 
 FactoryBot.define do
   factory :case do
-    sequence :title do |n| 
-      "#{n}Title" 
+    sequence :title do |n|
+      "#{n}Title"
     end
     overview { 'A new case' }
     city { 'Albany' }
     date { Date.current }
     state
     subjects { [] }
-    user
     summary { 'Added case' }
     blurb { 'Blurb about case' }
     video_url { 'https://example.com' }

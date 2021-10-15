@@ -51,7 +51,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  has_many :cases
   has_many :comments
   acts_as_follower
   acts_as_messageable
