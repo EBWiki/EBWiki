@@ -15,18 +15,7 @@
   </thead>
 
   <tbody>
-    <% @organizations.each do |organization| %>
-      <tr>
-        <td><%= organization.name %></td>
-        <td><%= organization.description %></td>
-        <td><%= organization.website %></td>
-        <td><%= organization.telephone %></td>
-        <td><%= organization.avatar %></td>
-        <td><%= link_to 'Show', organization %></td>
-        <td><%= link_to 'Edit', edit_organization_path(organization) %></td>
-        <td><%= link_to 'Destroy', organization, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+    <%= render @organizations %>
   </tbody>
 </table>
 
