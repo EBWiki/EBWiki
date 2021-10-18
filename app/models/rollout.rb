@@ -4,8 +4,8 @@
 class Rollout < ValueObject
   attr_reader :name, :description, :creator, :date_added
 
-  def initialize(path_to_yaml) # rubocop:disable Lint/MissingSuper
-    file = YAML.load_file(path_to_yaml)
+  def initialize(pathname:) # rubocop:disable Lint/MissingSuper
+    file = YAML.load_file(pathname)
     @name = file['name']
     @description = file['description']
     @creator = file['creator']

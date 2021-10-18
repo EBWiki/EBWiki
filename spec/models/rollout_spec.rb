@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe Rollout do
-  subject { described_class.new(path_to_file) }
+  subject { described_class.new(pathname: pathname) }
 
-  let(:path_to_file) { 'spec/fixtures/rollout.yml' }
+  let(:pathname) { 'spec/fixtures/rollout.yml' }
   let(:name) { 'Peter' }
 
   it 'has the correct attributes' do
@@ -20,7 +20,7 @@ describe Rollout do
   end
 
   it 'should mark rollouts with the same name as equal' do
-    second_service = Rollout.new(path_to_file)
+    second_service = Rollout.new(pathname: pathname)
     expect(subject == second_service).to be_truthy
   end
 end
