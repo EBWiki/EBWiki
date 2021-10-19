@@ -40,14 +40,6 @@ class OrganizationsController < ApplicationController
     end
   end
 
-  # DELETE /organizations/1
-  def destroy
-    @organization = Organization.find(params[:id])
-    @organization.destroy
-    flash[:success] = 'Organization was successfully destroyed.'
-    redirect_to organizations_url
-  end
-
   def after_sign_up_path_for(resource)
     stored_location_for(resource) || super
   end

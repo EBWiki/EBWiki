@@ -191,7 +191,6 @@ CREATE TABLE public.cases (
     title character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    user_id integer,
     cause_of_death_id integer,
     date date,
     state_id integer,
@@ -1402,13 +1401,6 @@ CREATE INDEX index_cases_on_title ON public.cases USING btree (title);
 
 
 --
--- Name: index_cases_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cases_on_user_id ON public.cases USING btree (user_id);
-
-
---
 -- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1724,6 +1716,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200812015951'),
 ('20200901014746'),
 ('20211002101752'),
-('20211009014322');
+('20211009014322'),
+('20211013144648');
 
 
