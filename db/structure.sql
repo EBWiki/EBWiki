@@ -690,6 +690,41 @@ ALTER SEQUENCE public.organizations_id_seq OWNED BY public.organizations.id;
 
 
 --
+-- Name: rollout_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rollout_histories (
+    id integer NOT NULL,
+    rollout_name character varying NOT NULL,
+    change_date date NOT NULL,
+    change_description text NOT NULL,
+    author_name character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: rollout_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rollout_histories_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: rollout_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.rollout_histories_id_seq OWNED BY public.rollout_histories.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1087,6 +1122,13 @@ ALTER TABLE ONLY public.organizations ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: rollout_histories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rollout_histories ALTER COLUMN id SET DEFAULT nextval('public.rollout_histories_id_seq'::regclass);
+
+
+--
 -- Name: sessions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1278,6 +1320,14 @@ ALTER TABLE ONLY public.mailboxer_receipts
 
 ALTER TABLE ONLY public.organizations
     ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: rollout_histories rollout_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rollout_histories
+    ADD CONSTRAINT rollout_histories_pkey PRIMARY KEY (id);
 
 
 --
@@ -1717,6 +1767,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200901014746'),
 ('20211002101752'),
 ('20211009014322'),
-('20211013144648');
+('20211013144648'),
+('20211018164958');
 
 

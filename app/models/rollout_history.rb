@@ -2,7 +2,7 @@
 #
 # Table name: rollout_histories
 #
-#  id                 :bigint           not null, primary key
+#  id                 :integer          not null, primary key
 #  author_name        :string           not null
 #  change_date        :date             not null
 #  change_description :text             not null
