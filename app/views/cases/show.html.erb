@@ -15,7 +15,7 @@
   <div class="row">
     <div class="col-md-3">
       <% if @this_case.avatar? %>
-        <%= image_tag(@this_case.avatar.large_avatar, :class => "img-responsive articleImage") %>
+        <%= image_tag(@this_case.avatar.large_avatar_url, :class => "img-responsive articleImage") %>
       <% else %>
         <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
       <% end %>
