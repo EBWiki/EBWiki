@@ -8,7 +8,6 @@
 capybara-*.html
 .rspec
 /log
-/tmp
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /public/system
@@ -44,9 +43,6 @@ bower.json
 # Ignore DS_Store files
 .DS_Store
 
-# remove database.yml from files being pushed
-# config/database.yml
-
 # Local dev files and directories
 .vscode
 .vagrant
@@ -54,3 +50,9 @@ environment.sh
 
 # Ignore database.yml from version control...
 config/database.yml
+
+# Ignore tmp files
+/tmp/*
+/tmp/pids/*
+!/tmp/pids               # need to keep for puma configuration
+!/tmp/pids/.keep         # need to keep for puma configuration

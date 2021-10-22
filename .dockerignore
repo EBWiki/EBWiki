@@ -1,6 +1,11 @@
 latest.dump
 codeclimate-test-reporter
 ./.git
-./tmp
 ./log
 ./docs
+
+# Ignore tmp files
+./tmp
+./tmp/pids
+!./tmp/pids               # need to keep for puma configuration
+!./tmp/pids/.keep         # need to keep for puma configuration
