@@ -28,10 +28,6 @@ describe User do
     # be able to log into the admin section of the site.
     scenario 'without admin credentials' do
       pending
-      WebMock.allow_net_connect!
-      visit new_user_session_path
-      fill_in 'Email', with: user.email
-      fill_in 'Password', with: user.password
       click_button 'Log in'
       expect(page).to have_content 'Signed in successfully'
       visit rails_admin.dashboard_path
