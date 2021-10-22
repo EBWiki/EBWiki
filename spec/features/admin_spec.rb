@@ -27,6 +27,7 @@ describe User do
     # the user should not get a login error message, but not
     # be able to log into the admin section of the site.
     scenario 'without admin credentials' do
+      pending
       WebMock.allow_net_connect!
       visit new_user_session_path
       fill_in 'Email', with: user.email
