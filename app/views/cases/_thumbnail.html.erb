@@ -1,7 +1,7 @@
 <div class="view view-first">
   <div class="thumbnail text-center">
     <% if this_case.avatar? %>
-      <%= link_to image_tag(this_case.avatar.large_avatar, :class => "img-responsive"), this_case %>
+      <%= link_to image_tag(this_case.avatar.large_avatar_url, :class => "img-responsive"), this_case %>
     <% else %>
       <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), this_case %>
       <div class="caption">
