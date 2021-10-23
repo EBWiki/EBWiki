@@ -16,7 +16,10 @@ class OrganizationsController < ApplicationController
   end
 
   # GET /organizations/1/edit
-  def edit; end
+  def edit
+    @organization = Organization.find(params[:id])
+    authorize @organization
+  end
 
   # POST /organizations
   def create
@@ -32,6 +35,8 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   def update
     @organization = Organization.find(params[:id])
+    authorize @organization
+
     if @organization.update(organization_params)
       flash[:success] = 'Organization was successfully updated.'
       redirect_to @organization
