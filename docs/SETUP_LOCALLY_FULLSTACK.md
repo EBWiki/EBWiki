@@ -134,9 +134,9 @@ Let's complete our local database setup.  First, create the development and test
 
 `rails db:create`
 
-Then, apply the schema and migrations to the databases using the following command:
+Then, recreate the schema from **structure.sql** using the following command:
 
-`rails db:migrate`
+`rails db:structure:load`
 
 Finally, seed the database using:
 
