@@ -6,11 +6,6 @@ run:
 		--publish 3000:3000 --name ebwiki ebwiki/ebwiki
 	./dev_provisions/prewarm.sh
 
-updatedb:
-	docker exec -e PGPASSWORD=ebwiki ebwiki pg_restore --verbose --clean \
-		--no-acl --no-owner -p 5432 -h localhost -U blackops \
-		-d blackops_development /usr/src/ebwiki/latest.dump || true
-
 logs:
 	docker logs --timestamps --follow ebwiki
 
@@ -26,6 +21,11 @@ clean: stop
 
 test:
 	./dev_provisions/run_tests.sh
+
+searchkick reindex_all:
+	@echo "## Please note that searchkick requires the container to be running and"
+	@echo "## takes a while to complete"
+	docker exec ebwiki bash -c 'source dev_provisions/environment.sh && rake searchkick:reindex:all'
 
 rspec:
 	@echo "## Please note that rspec requires the container to be running and"
