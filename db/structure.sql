@@ -117,6 +117,43 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.calendar_events (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    street_address character varying,
+    city character varying,
+    state character varying,
+    zipcode character varying,
+    format character varying,
+    description text NOT NULL,
+    schedule jsonb NOT NULL,
+    owner_id bigint
+);
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.calendar_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.calendar_events_id_seq OWNED BY public.calendar_events.id;
+
+
+--
 -- Name: case_agencies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1010,6 +1047,13 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 
 
 --
+-- Name: calendar_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events ALTER COLUMN id SET DEFAULT nextval('public.calendar_events_id_seq'::regclass);
+
+
+--
 -- Name: case_agencies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1192,6 +1236,14 @@ ALTER TABLE ONLY public.ahoy_events
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: calendar_events calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events
+    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -1434,6 +1486,13 @@ CREATE INDEX index_ahoy_events_on_user_id ON public.ahoy_events USING btree (use
 --
 
 CREATE INDEX index_ahoy_events_on_visit_id ON public.ahoy_events USING btree (visit_id);
+
+
+--
+-- Name: index_calendar_events_on_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_calendar_events_on_owner_id ON public.calendar_events USING btree (owner_id);
 
 
 --
@@ -1768,6 +1827,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211002101752'),
 ('20211009014322'),
 ('20211013144648'),
-('20211018164958');
+('20211018164958'),
+('20211026091305');
 
 
