@@ -56,3 +56,4 @@ config/database.yml
 /tmp/pids/*
 !/tmp/pids               # need to keep for puma configuration
 !/tmp/pids/.keep         # need to keep for puma configuration
+db/schema.rb
