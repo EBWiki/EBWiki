@@ -553,6 +553,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    squasher (0.6.2)
     ssrf_filter (1.0.7)
     temple (0.8.2)
     thor (1.1.0)
@@ -685,6 +686,7 @@ DEPENDENCIES
   sitemap_generator (~> 6.1)
   social-share-button
   sprockets (~> 3.7.2)
+  squasher
   turbolinks (~> 5.2)
   twitter (~> 7.0)
   uglifier (= 4.2)

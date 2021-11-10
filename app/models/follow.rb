@@ -21,7 +21,7 @@ end
 #
 # Table name: follows
 #
-#  id              :integer          not null, primary key
+#  id              :bigint           not null, primary key
 #  blocked         :boolean          default(FALSE), not null
 #  followable_type :string           not null
 #  follower_type   :string           not null
@@ -36,3 +36,4 @@ end
 #  fk_follows                   (follower_id,follower_type)
 #  index_follows_on_created_at  (created_at)
 #
+

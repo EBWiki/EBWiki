@@ -1,18 +1,14 @@
 # frozen_string_literal: true
 
-class Ethnicity < ApplicationRecord
-  extend FriendlyId
-  friendly_id :title, use: :slugged
-  has_many :subjects
+class EventStatus < ApplicationRecord
 end
 
 # == Schema Information
 #
-# Table name: ethnicities
+# Table name: event_statuses
 #
 #  id         :bigint           not null, primary key
-#  slug       :string
-#  title      :string
+#  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

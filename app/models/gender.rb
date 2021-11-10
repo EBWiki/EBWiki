@@ -12,7 +12,7 @@ end
 #
 # Table name: genders
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  sex        :string
 #  slug       :string
 #  created_at :datetime         not null
