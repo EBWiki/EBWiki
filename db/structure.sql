@@ -275,38 +275,6 @@ ALTER SEQUENCE public.cases_id_seq OWNED BY public.cases.id;
 
 
 --
--- Name: causes_of_death; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.causes_of_death (
-    id integer NOT NULL,
-    name character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: causes_of_death_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.causes_of_death_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: causes_of_death_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.causes_of_death_id_seq OWNED BY public.causes_of_death.id;
-
-
---
 -- Name: comments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -731,7 +699,7 @@ ALTER SEQUENCE public.organizations_id_seq OWNED BY public.organizations.id;
 --
 
 CREATE TABLE public.rollout_histories (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     rollout_name character varying NOT NULL,
     change_date date NOT NULL,
     change_description text NOT NULL,
@@ -746,7 +714,6 @@ CREATE TABLE public.rollout_histories (
 --
 
 CREATE SEQUENCE public.rollout_histories_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1075,13 +1042,6 @@ ALTER TABLE ONLY public.cases ALTER COLUMN id SET DEFAULT nextval('public.cases_
 
 
 --
--- Name: causes_of_death id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.causes_of_death ALTER COLUMN id SET DEFAULT nextval('public.causes_of_death_id_seq'::regclass);
-
-
---
 -- Name: comments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1268,14 +1228,6 @@ ALTER TABLE ONLY public.case_officers
 
 ALTER TABLE ONLY public.cases
     ADD CONSTRAINT cases_pkey PRIMARY KEY (id);
-
-
---
--- Name: causes_of_death causes_of_death_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.causes_of_death
-    ADD CONSTRAINT causes_of_death_pkey PRIMARY KEY (id);
 
 
 --
@@ -1828,6 +1780,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211009014322'),
 ('20211013144648'),
 ('20211018164958'),
-('20211026091305');
+('20211026091305'),
+('20211108220639');
 
 

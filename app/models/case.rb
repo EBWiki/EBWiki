@@ -37,7 +37,6 @@
 #  index_cases_on_slug   (slug) UNIQUE
 #  index_cases_on_title  (title)
 #
-# This is the main model of the application. Each death is a case.
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
 
@@ -58,7 +57,6 @@ class Case < ApplicationRecord
     vehicular: 'vehicular'
   }
 
-  belongs_to :cause_of_death, optional: true
   belongs_to :state
   has_many :links, dependent: :destroy
   has_many :links, as: :linkable
