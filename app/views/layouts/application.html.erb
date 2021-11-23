@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <%# These elements must come first to consistently ensure proper document rendering. %>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title><%= meta_title %></title>
     <meta name="description" content="<%= meta_description %>">
     <meta name="keywords" content="<%= meta_keywords %>">
@@ -44,8 +48,6 @@
     <script type="text/javascript" async>window.API_KEY="<%= ENV['HERE_MAPS_API_KEY'] %>"</script>
     <%= render 'application/favicon' %>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="cf-2fa-verify" content="2y1jaIA9tjJ9xyHE">
   </head>
   <body>
