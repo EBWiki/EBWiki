@@ -4,9 +4,9 @@ gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703
 echo progress-bar >> ~/.curlrc
 curl -sSL https://get.rvm.io | bash -s stable
 source /home/vagrant/.rvm/scripts/rvm
-rvm install "ruby-2.5.5"
+rvm install "ruby-2.6.6"
 gem install fakes3 --no-document
-gem install bundler:1.17.3 --no-document
+gem install bundler:2.2.32 --no-document
 cd /vagrant
 bundle install
 echo '##  Running rake commands...'
