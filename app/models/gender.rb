@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+class Gender < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
+  has_many :subjects
+  alias_attribute :name, :sex
+end
+
 # == Schema Information
 #
 # Table name: genders
@@ -10,11 +18,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-# Encapsulates the many genders that are affected by this
-class Gender < ApplicationRecord
-  extend FriendlyId
-  friendly_id :name, use: :slugged
-
-  has_many :subjects
-  alias_attribute :name, :sex
-end

@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+class Ethnicity < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+  has_many :subjects
+end
+
 # == Schema Information
 #
 # Table name: ethnicities
@@ -10,9 +16,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-# The specific ethnicity of the subject
-class Ethnicity < ApplicationRecord
-  extend FriendlyId
-  friendly_id :title, use: :slugged
-  has_many :subjects
-end

@@ -1,26 +1,6 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: agencies
-#
-#  id             :integer          not null, primary key
-#  city           :string
-#  email          :string
-#  jurisdiction   :enum             default("unknown")
-#  latitude       :float
-#  longitude      :float
-#  name           :string           not null
-#  slug           :string
-#  street_address :string
-#  telephone      :string
-#  website        :string
-#  zipcode        :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  state_id       :integer
-#
-# This model refers to law enforcement agencies involved in the cases
+# Agency model
 class Agency < ApplicationRecord
   # This is the jurisdiction of the agency
   enum jurisdiction: {
@@ -99,3 +79,24 @@ class Agency < ApplicationRecord
     self.zipcode = location.zipcode
   end
 end
+
+# == Schema Information
+#
+# Table name: agencies
+#
+#  id             :integer          not null, primary key
+#  city           :string
+#  email          :string
+#  jurisdiction   :enum             default("unknown")
+#  latitude       :float
+#  longitude      :float
+#  name           :string           not null
+#  slug           :string
+#  street_address :string
+#  telephone      :string
+#  website        :string
+#  zipcode        :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  state_id       :integer
+#

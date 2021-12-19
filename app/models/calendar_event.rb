@@ -1,24 +1,6 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: calendar_events
-#
-#  id             :bigint           not null, primary key
-#  city           :string
-#  description    :text             not null
-#  format         :string
-#  schedule       :jsonb            not null
-#  state          :string
-#  street_address :string
-#  title          :string           not null
-#  zipcode        :string
-#  owner_id       :bigint
-#
-# Indexes
-#
-#  index_calendar_events_on_owner_id  (owner_id)
-#
+# CalendarEvent model
 class CalendarEvent < ApplicationRecord
   sanitize :title, :street_address, :city, :state, :zipcode, :description
   validates_presence_of :title, :schedule, :description
@@ -47,3 +29,23 @@ class CalendarEvent < ApplicationRecord
     self.zipcode = location.zipcode
   end
 end
+
+# == Schema Information
+#
+# Table name: calendar_events
+#
+#  id             :bigint           not null, primary key
+#  city           :string
+#  description    :text             not null
+#  format         :string
+#  schedule       :jsonb            not null
+#  state          :string
+#  street_address :string
+#  title          :string           not null
+#  zipcode        :string
+#  owner_id       :bigint
+#
+# Indexes
+#
+#  index_calendar_events_on_owner_id  (owner_id)
+#
