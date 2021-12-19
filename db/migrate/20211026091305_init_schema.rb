@@ -2,8 +2,32 @@ class InitSchema < ActiveRecord::Migration[5.2]
   def up
     # These are extensions that must be enabled in order to support this database
     enable_extension "plpgsql"
-    # Could not dump table "agencies" because of following StandardError
-    #   Unknown type 'jurisdiction' for column 'jurisdiction'
+
+    create_enum :jurisdiction, %w(
+      'unknown' 
+      'local' 
+      'state' 
+      'federal' 
+      'university' 
+      'commercial'
+    )
+
+    create_table "agencies" do |t|
+      t.string "character", null: false
+      t.string "street_address"
+      t.string "city"
+      t.integer "state_id"
+      t.string "zipcode"
+      t.string "telephone"
+      t.string "email"
+      t.string "website"
+      t.string "slug"
+      t.float "latitude"
+      t.float "longitude"
+      t.enum "jurisdiction", enum_name: :jurisdiction
+      t.timestamps
+    end
+
     create_table "ahoy_events", id: :uuid, default: nil do |t|
       t.uuid "visit_id"
       t.integer "user_id"
@@ -41,11 +65,50 @@ class InitSchema < ActiveRecord::Migration[5.2]
     end
     # Could not dump table "cases" because of following StandardError
     #   Unknown type 'cause_of_death' for column 'cause_of_death_name'
-    create_table "causes_of_death" do |t|
-      t.string "name"
-      t.datetime "created_at", null: false
-      t.datetime "updated_at", null: false
+
+    create_enum :cause_of_death, %w(
+      'choking'
+      'shooting' 
+      'beating' 
+      'taser' 
+      'vehicular' 
+      'medical neglect' 
+      'response to medical emergency' 
+      'suicide' 
+      'chemical_agents_or_weapons' 
+      'drowning' 
+      'stabbing' 
+      'bombing'
+    )
+
+    create_table "cases" do |t|
+      t.string "title", null: false
+      t.enum :cause_of_death, enum_name: :cause_of_death
+      t.datetime "date"
+      t.integer "state_id"
+      t.string "city"
+      t.string "address"
+      t.string "zipcode"
+      t.float "latitude"
+      t.float "longitude"
+      t.string "avatar"
+      t.string "slug"
+      t.string "video_url"
+      t.string "state"
+      t.integer "age"
+      t.string "overview", null: false
+      t.text "community_action"
+      t.text "litigation"
+      t.string "country"
+      t.boolean "remove_avatar"
+      t.text  "summary", null: false
+      t.integer "follows_count", null: false, default: 0
+      t.string "default_avatar_url"
+      t.text "blurb"
+      t.timestamps
     end
+
+
     create_table "comments" do |t|
       t.text "content"
       t.integer "commentable_id"

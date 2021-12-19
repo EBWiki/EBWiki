@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :agency do |f|
     f.sequence(:name) { |n| "#{n}_Agency" }
-    f.state
+    f.state_id { 1 }
   end
 
   factory :invalid_agency, class: Agency do |f|
