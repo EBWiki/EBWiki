@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+class EventStatus < ApplicationRecord
+end
+
 # == Schema Information
 #
 # Table name: event_statuses
@@ -9,5 +12,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class EventStatus < ApplicationRecord
-end

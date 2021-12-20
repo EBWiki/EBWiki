@@ -5,8 +5,10 @@ Welcome to our developer documentation for EBWiki!  Thank you for committing to 
 # Table of Contents
 * [General Timeline for Contributing to EBWiki](#general-timeline-for-contributing-to-ebwiki)
 * [Getting EBWiki Up and Running Locally](#getting-ebwiki-up-and-running-locally)
+* [Restoring Local Database from Production Backup](#restoring-local-database-from-production-backup)
 * [Third-Party Services](#third-party-services)
 * [Recaptcha](#recaptcha)
+* [Annotate](#annotate)
 
 ## General Timeline for Contributing to EBWiki
 
@@ -56,3 +58,6 @@ file or comment out the following line:
 ```
 config.skip_verify_env.push('development')
 ```
+
+## Annotate
+EBWiki uses the [annotate gem](https://github.com/ctran/annotate_models) in development to record the schema of our ActiveRecord models in the model files.  annotate is configured to run each time that `rails db:migrate` is run, and so each PR that includes a migration should also included an updated model file.  The schema is listed as comments at the bottom of the file.
