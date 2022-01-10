@@ -342,38 +342,6 @@ ALTER SEQUENCE public.ethnicities_id_seq OWNED BY public.ethnicities.id;
 
 
 --
--- Name: event_statuses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.event_statuses (
-    id integer NOT NULL,
-    name character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: event_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.event_statuses_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: event_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.event_statuses_id_seq OWNED BY public.event_statuses.id;
-
-
---
 -- Name: follows; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1055,13 +1023,6 @@ ALTER TABLE ONLY public.ethnicities ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- Name: event_statuses id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.event_statuses ALTER COLUMN id SET DEFAULT nextval('public.event_statuses_id_seq'::regclass);
-
-
---
 -- Name: follows id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1243,14 +1204,6 @@ ALTER TABLE ONLY public.comments
 
 ALTER TABLE ONLY public.ethnicities
     ADD CONSTRAINT ethnicities_pkey PRIMARY KEY (id);
-
-
---
--- Name: event_statuses event_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.event_statuses
-    ADD CONSTRAINT event_statuses_pkey PRIMARY KEY (id);
 
 
 --
@@ -1782,6 +1735,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211026091305'),
 ('20211108220639'),
 ('20220109194513'),
-('20220109195551');
+('20220109195551'),
+('20220110021739');
 
 
