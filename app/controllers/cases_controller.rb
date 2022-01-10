@@ -110,7 +110,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       :litigation,
       :community_action,
       :agency_id,
-      :cause_of_death_name,
+      :cause_of_death,
       :date,
       :state_id,
       :city,

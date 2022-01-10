@@ -6,7 +6,7 @@ class Case < ApplicationRecord
 
   MAX_BLURB_CHARACTERS = 500
 
-  enum cause_of_death_name: {
+  enum cause_of_death: {
     beating: 'beating',
     bombing: 'bombing',
     chemical_agents_or_weapons: 'chemical_agents_or_weapons',
@@ -138,33 +138,32 @@ end
 #
 # Table name: cases
 #
-#  id                  :integer          not null, primary key
-#  address             :string
-#  age                 :integer
-#  avatar              :string
-#  blurb               :text
-#  cause_of_death_name :enum
-#  city                :string           not null
-#  community_action    :text
-#  country             :string
-#  date                :date
-#  default_avatar_url  :string
-#  follows_count       :integer          default(0), not null
-#  latitude            :float
-#  litigation          :text
-#  longitude           :float
-#  overview            :text             not null
-#  remove_avatar       :boolean
-#  slug                :string
-#  state               :string
-#  summary             :text             not null
-#  title               :string           not null
-#  video_url           :string
-#  zipcode             :string
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  cause_of_death_id   :integer
-#  state_id            :integer
+#  id                 :integer          not null, primary key
+#  address            :string
+#  age                :integer
+#  avatar             :string
+#  blurb              :text
+#  cause_of_death     :enum
+#  city               :string           not null
+#  community_action   :text
+#  country            :string
+#  date               :date
+#  default_avatar_url :string
+#  follows_count      :integer          default(0), not null
+#  latitude           :float
+#  litigation         :text
+#  longitude          :float
+#  overview           :text             not null
+#  remove_avatar      :boolean
+#  slug               :string
+#  state              :string
+#  summary            :text             not null
+#  title              :string           not null
+#  video_url          :string
+#  zipcode            :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  state_id           :integer
 #
 # Indexes
 #

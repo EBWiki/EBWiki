@@ -228,7 +228,6 @@ CREATE TABLE public.cases (
     title character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    cause_of_death_id integer,
     date date,
     state_id integer,
     city character varying NOT NULL,
@@ -250,7 +249,7 @@ CREATE TABLE public.cases (
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
     blurb text,
-    cause_of_death_name public.cause_of_death
+    cause_of_death public.cause_of_death
 );
 
 
@@ -1781,6 +1780,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211013144648'),
 ('20211018164958'),
 ('20211026091305'),
-('20211108220639');
+('20211108220639'),
+('20220109194513'),
+('20220109195551');
 
 
