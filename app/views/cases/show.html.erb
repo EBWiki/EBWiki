@@ -51,7 +51,15 @@
           <% end %>
         </p>
       <% end %>
-      <p class="h5">Cause of death: <b><%= @this_case.cause_of_death.presence&.titleize || 'Not Yet Known' %></b></p>
+      <% if @this_case.cause_of_death %>
+        <p class="h5">
+          Cause of death: <b><%= t("case.cause_of_death.#{@this_case.cause_of_death}") %></b>
+        </p>
+      <% else %>
+        <p class="h5">
+          Cause of death: <b>'Not Yet Known'</b>
+        </p>
+      <% end%>
       <br />
       <p>
         <% if current_user %>
