@@ -75,7 +75,7 @@
       <p class="timeAgo">Last updated: <%= time_ago_in_words(@this_case.updated_at) %> ago</p>
         <% if @this_case.followers.present? %>
           <p>
-            <%= link_to 'People tracking this case', cases_followers_path(@this_case) %>: <span class="timeAgo"><%= @this_case.followers.count %></span>
+            <%= link_to 'People tracking this case', cases_followers_path(@this_case) %>: <span class="timeAgo"><%= @this_case.followers.size %></span>
               <% unless @this_case.followers.include?(current_user) %>
                 -- Click here to <%= link_to 'Track this', follows_case_path(@this_case), :method => :post %>.
               <% end %>
@@ -93,7 +93,7 @@
       </div>
       <div class="row">
         <div class="col-md-12" >
-          <% if @this_case.links.count > 0 %>
+          <% if @this_case.links.size > 0 %>
             <h4 class="article_subheader">Additional Resources:</h4>
             <ul class="background-links" id="link-list">
               <%= render partial: 'case_link', collection: @this_case.links, as: :link %>
