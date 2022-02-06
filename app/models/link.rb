@@ -9,7 +9,7 @@ end
 #
 # Table name: links
 #
-#  id            :bigint           not null, primary key
+#  id            :integer          not null, primary key
 #  linkable_type :string
 #  title         :string
 #  url           :string

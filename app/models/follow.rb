@@ -21,7 +21,7 @@ end
 #
 # Table name: follows
 #
-#  id              :bigint           not null, primary key
+#  id              :integer          not null, primary key
 #  blocked         :boolean          default(FALSE), not null
 #  followable_type :string           not null
 #  follower_type   :string           not null

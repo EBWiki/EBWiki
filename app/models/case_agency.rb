@@ -8,7 +8,7 @@ end
 #
 # Table name: case_agencies
 #
-#  id         :bigint           not null, primary key
+#  id         :integer          not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  agency_id  :integer

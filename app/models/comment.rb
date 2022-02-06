@@ -17,7 +17,7 @@ end
 #
 # Table name: comments
 #
-#  id               :bigint           not null, primary key
+#  id               :integer          not null, primary key
 #  commentable_type :string
 #  content          :text
 #  created_at       :datetime         not null
