@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # Case model
-
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
 

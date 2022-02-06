@@ -32,4 +32,3 @@ end
 #
 #  fk_rails_...  (case_id => cases.id) ON DELETE => cascade
 #
-

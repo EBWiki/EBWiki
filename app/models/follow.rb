@@ -36,4 +36,3 @@ end
 #  fk_follows                   (follower_id,follower_type)
 #  index_follows_on_created_at  (created_at)
 #
-
