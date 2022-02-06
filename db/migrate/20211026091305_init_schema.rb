@@ -4,11 +4,11 @@ class InitSchema < ActiveRecord::Migration[5.2]
     enable_extension "plpgsql"
 
     create_enum :jurisdiction, %w(
-      'unknown' 
-      'local' 
-      'state' 
-      'federal' 
-      'university' 
+      'unknown'
+      'local'
+      'state'
+      'federal'
+      'university'
       'commercial'
     )
 
@@ -68,16 +68,16 @@ class InitSchema < ActiveRecord::Migration[5.2]
 
     create_enum :cause_of_death, %w(
       'choking'
-      'shooting' 
-      'beating' 
-      'taser' 
-      'vehicular' 
-      'medical neglect' 
-      'response to medical emergency' 
-      'suicide' 
-      'chemical_agents_or_weapons' 
-      'drowning' 
-      'stabbing' 
+      'shooting'
+      'beating'
+      'taser'
+      'vehicular'
+      'medical neglect'
+      'response to medical emergency'
+      'suicide'
+      'chemical_agents_or_weapons'
+      'drowning'
+      'stabbing'
       'bombing'
     )
 
@@ -124,11 +124,7 @@ class InitSchema < ActiveRecord::Migration[5.2]
       t.datetime "updated_at", null: false
       t.string "slug"
     end
-    create_table "event_statuses" do |t|
-      t.string "name"
-      t.datetime "created_at", null: false
-      t.datetime "updated_at", null: false
-    end
+
     create_table "follows" do |t|
       t.integer "followable_id", null: false
       t.string "followable_type", null: false
