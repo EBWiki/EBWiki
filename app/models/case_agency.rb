@@ -4,7 +4,6 @@ class CaseAgency < ApplicationRecord
   belongs_to :case
   belongs_to :agency
 end
-
 # == Schema Information
 #
 # Table name: case_agencies
