@@ -53,11 +53,11 @@
       <% end %>
       <% if @this_case.cause_of_death %>
         <p class="h5">
-          Cause of death: <b><%= t("case.cause_of_death.#{@this_case.cause_of_death}") %></b>
+          <b>Cause of death: <%= t("case.cause_of_death.#{@this_case.cause_of_death}") %></b>
         </p>
       <% else %>
         <p class="h5">
-          Cause of death: <b>'Not Yet Known'</b>
+          <b>Cause of death: Not Yet Known</b>
         </p>
       <% end%>
       <br />
