@@ -46,8 +46,5 @@ echo "redis   = $(redis-server --version | awk '{print $3}')"
 echo "elastic = $(curl -sX GET 'http://localhost:9200')"
 echo '#########################################################'
 
-echo "refreshing bundle install"
-bundle install
-
 echo "## Starting the server..."
 bundle exec rails server -b 0.0.0.0 -e development
