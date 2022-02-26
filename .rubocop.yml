@@ -8,7 +8,6 @@ Metrics/BlockLength:
 
 AllCops:
   Exclude:
-    - db/schema.rb
     - db/migrate/*.rb
     - db/structure.sql
     - bin/*

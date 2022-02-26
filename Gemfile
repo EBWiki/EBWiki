@@ -51,8 +51,6 @@ gem 'montrose'
 # JSON renderer for Rails
 gem 'jb', '~> 0.7.1'
 
-gem 'activerecord-postgres_enum'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 6.1'
@@ -68,7 +66,6 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
-  gem 'squasher'
 end
 
 group :development do
