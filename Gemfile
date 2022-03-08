@@ -54,9 +54,9 @@ gem 'jb', '~> 0.7.1'
 group :development, :test do
   gem 'factory_bot_rails', '~> 6.1'
   gem 'faker', '~> 2.14.0'
-  gem 'pry-byebug', '~> 3.9'
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
+  gem 'pry-byebug', '~> 3.9'
   gem 'rake', require: false
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
   gem 'rubocop', '~> 1.12', require: false
