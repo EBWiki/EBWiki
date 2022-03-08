@@ -24,8 +24,8 @@ gem 'jquery-rails', '~> 4.4'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks', '~> 5.2'
 
-gem 'momentjs-rails'
-gem 'rack'
+gem 'momentjs-rails', '~> 2.20'
+gem 'rack', '~> 2.2'
 
 # For configurable CORS domain settings
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
@@ -46,35 +46,30 @@ gem 'simplecov', '~> 0.19.0'
 
 gem 'twitter', '~> 7.0'
 
-gem 'montrose'
+gem 'montrose', '~> 0.12'
 
 # JSON renderer for Rails
 gem 'jb', '~> 0.7.1'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 6.1'
   gem 'faker', '~> 2.14.0'
   gem 'pry-byebug', '~> 3.9'
-  # Reduce N+1 queries
-  # gem 'bullet', '~> 5.7'
-  # Install a pre-commit hook to enforce code checks before commits
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
   gem 'rake', require: false
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
-  gem 'rubocop', require: false
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rails', require: false
+  gem 'rubocop', '~> 1.12', require: false
+  gem 'rubocop-performance', '~> 1.10', require: false
+  gem 'rubocop-rails', '~> 2.9', require: false
 end
 
 group :development do
   gem 'annotate', '~> 3.1', '>= 3.1.1'
   gem 'brakeman', '~> 4.10', require: false
-  # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'derailed_benchmarks', '~> 1.8'
-  gem 'listen'
-  gem 'rails_real_favicon'
+  gem 'listen', '~> 3.7'
+  gem 'rails_real_favicon', '~> 0.0.13'
   gem 'web-console', '~> 3.7'
 end
 
@@ -90,7 +85,7 @@ group :test do
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-gem 'bootstrap3-datetimepicker-rails'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'devise', '4.7.3'
 gem 'simple_form', '5.0'
@@ -107,17 +102,17 @@ gem 'carrierwave-imageoptimizer', '~> 1.6'
 # CMS panel for admin
 gem 'rails_admin', '~> 2.0'
 
-gem 'geocoder'
+gem 'geocoder', '~> 1.6'
 gem 'puma', '~> 5.6'
 
 # implement elasticsearch
 gem 'searchkick', '~> 3.1'
 
 # manage nested forms
-gem 'cocoon'
+gem 'cocoon', '~> 1.2'
 
 # add social share buttons
-gem 'social-share-button'
+gem 'social-share-button', '~> 1.2'
 
 # select tag jquery plugin
 gem 'select2-rails', '~> 4.0'
@@ -132,7 +127,7 @@ gem 'mailboxer', '~> 0.15'
 gem 'paper_trail', '~> 10.3'
 
 # needed for paper_trail to track changes done via rails_admin views
-gem 'paper_trail-association_tracking'
+gem 'paper_trail-association_tracking', '~> 2.1'
 
 # pretty urls
 gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
@@ -140,14 +135,14 @@ gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
 # pagination
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
 
-gem 'hiredis'
-gem 'redis'
+gem 'hiredis', '~> 0.6'
+gem 'redis', '~> 4.2'
 gem 'redis-namespace', '~> 1.8'
-gem 'redis-rails'
-gem 'redis-store'
+gem 'redis-rails', '~> 5.0'
+gem 'redis-store', '~> 1.9'
 
 # access mailchimp api
-gem 'gibbon'
+gem 'gibbon', '~> 3.4'
 
 # Google News API help
 gem 'galerts', '~> 1.1'
@@ -164,7 +159,7 @@ gem 'httparty', '~> 0.18'
 gem 'rack-host-redirect', '~> 1.3'
 
 # for storing cookies via active record storage to avoid 4kb limit
-gem 'activerecord-session_store'
+gem 'activerecord-session_store', '~> 2.0'
 
 gem 'lograge', '~> 0.11'
 
@@ -176,7 +171,7 @@ end
 
 gem 'sprockets', '~> 3.7.2'
 
-gem 'bootsnap', require: false
+gem 'bootsnap', '~> 1.7', require: false
 
 # fast feature flags based on Redis
 gem 'rollout', '~> 2.5'
