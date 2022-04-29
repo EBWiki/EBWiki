@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
-gem 'rails', '~> 5.2.6.3'
+gem 'rails', '~> 5.2.7.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
