@@ -1,4 +1,12 @@
 en:
+  agency:
+    jurisdiction:
+      unknown: 'Unknown'
+      local: 'Local'
+      state: 'State'
+      federal: 'Federal'
+      university: 'University'
+      commercial: 'Commercial'
   greetings:
     welcome: "Welcome"
   mailboxer:
@@ -7,6 +15,20 @@ en:
       subject_reply: 'You received a new reply on EBWiki about %{subject}'
   autobus:
     completion_message: "We've got plenty of room now. No need to destroy anything!"
+  case:
+    cause_of_death:
+      beating: 'Beating'
+      bombing: 'Bombing'
+      chemical_agents_or_weapons: 'Chemical Agents or Weapons'
+      choking: 'Choking'
+      drowning: 'Drowning'
+      medical_neglect: 'Medical Neglect'
+      response_to_medical_emergency: 'Response to Medical Emergency'
+      shooting: 'Shooting'
+      stabbing: 'Stabbing'
+      suicide: 'Suicide'
+      taser: 'Taser'
+      vehicular: 'Vehicular'
   cases_controller:
     case_not_found_message: 'Case was not found!'
   cases_helper:

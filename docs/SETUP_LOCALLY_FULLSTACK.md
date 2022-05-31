@@ -9,18 +9,19 @@ This guide will explain the process of setting up a local development environmen
 1. [Prerequisites](#prerequisites)
 2. [Installation](#installation)
 3. [App Configuration](#app-configuration)
-4. [Postgres Setup](#postgres-setup)
+4. [Environment Variables](#environment-variables)
+5. [Postgres Setup](#postgres-setup)
    * [Linux](#linux)
    * [Windows](#windows)
-5. [Local Database Setup](#local-database-setup)
-6. [AWS Configuration](#aws-configuration)
-7. [Finish](#finish)
+6. [Local Database Setup](#local-database-setup)
+7. [AWS Configuration](#aws-configuration)
+8. [Finish](#finish)
 
 ## Prerequisites
 Before beginning the installation and configuration of your environment, ensure that you have a copy of git, Ruby, and Rails on your computer.  You can find installation instructions at the links below:
 * [Git](https://git-scm.com/downloads)
 * [Ruby v2.6.6](https://www.ruby-lang.org/en/downloads/)
-* [Rails v5.0.7](http://rubyonrails.org/)
+* [Rails v5.2.6](http://rubyonrails.org/)
 
 ## Installation
 To work on EBWiki locally you will need to have PostgreSQL, NodeJS, Redis, and Elasticsearch running on your local environment.  Information on how to install and configure these programs and services is listed below:
@@ -33,11 +34,7 @@ To work on EBWiki locally you will need to have PostgreSQL, NodeJS, Redis, and E
 It is generally recommended that you have PostGreSQL and Elasticsearch start at bootup.
 
 ## App Configuration
-Using your command line, navigate to the location where you will store your local copy of the codebase.  Use the following command to clone a copy of the repo to your local environment:
-
-`git clone https://github.com/EBWiki/EBWiki.git`
-
-**Important Note: You must clone a copy of the repo from the EBWiki organization.  If you try to fork the repo, then Travis, our continuous integration service, will error out when you submit your PR.**
+Using your command line, navigate to the location where you will store your local copy of the codebase.  Create your own personal fork of our repo, and then clone a copy of your fork to your local environment:
 
 Once the git clone is complete, navigate into the `EBWiki` folder.  Then, use the following command to install dependencies:
 
@@ -49,26 +46,15 @@ Once the git clone is complete, navigate into the `EBWiki` folder.  Then, use th
 
 ![Screenshot](https://i.imgur.com/vY46FOe.jpg)
 
-Finally, contact us at rlgreen91@gmail.com so that we can add you as a contributor to the repo - please include your Github username.  This will allow you push access to the repo so you can avoid issues with Travis.
+With that, you'll have your own copy of the latest version of EBWiki on your local machine.  However, there are still a couple fo steps to take before you can run the site locally.
 
-### Environment Variables
+## Environment Variables
 
 EBWiki uses environment variables to run with different configurations in
 different environments through the [dotenv](https://github.com/bkeepers/dotenv)
 gem. A sample file named
 `.env.example` has already been provided at the top level of the project.  You can use this sample file to create your own `.env` file.  All of the variables listed in the sample file are optional.
 The only required variable that you will need to add is the database password, as described in further detail below.
-
-### Recaptcha & Local Development
-
-While in production we use [reCAPTCHA](https://www.google.com/recaptcha) to
-prevent bots from sigining up for this service, in order to simplify
-development, reCAPTCHA is disabled in development by default.  In order
-to re-enable reCAPTCHA in development, remove the `config/initializers/recaptcha.rb`
-file or comment out the following line:
-```
-config.skip_verify_env.push('development')
-```
 
 ## Postgres Setup
 Choose the appropriate instruction set based on the operating system of your local environment.
@@ -134,9 +120,9 @@ Let's complete our local database setup.  First, create the development and test
 
 `rails db:create`
 
-Then, apply the schema and migrations to the databases using the following command:
+Then, recreate the schema from **structure.sql** using the following command:
 
-`rails db:migrate`
+`rails db:structure:load`
 
 Finally, seed the database using:
 

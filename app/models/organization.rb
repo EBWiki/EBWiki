@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+class Organization < ApplicationRecord
+end
+
 # == Schema Information
 #
 # Table name: organizations
@@ -13,5 +16,3 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-class Organization < ApplicationRecord
-end

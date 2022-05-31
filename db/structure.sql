@@ -117,6 +117,43 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: calendar_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.calendar_events (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    street_address character varying,
+    city character varying,
+    state character varying,
+    zipcode character varying,
+    format character varying,
+    description text NOT NULL,
+    schedule jsonb NOT NULL,
+    owner_id bigint
+);
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.calendar_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.calendar_events_id_seq OWNED BY public.calendar_events.id;
+
+
+--
 -- Name: case_agencies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -191,7 +228,6 @@ CREATE TABLE public.cases (
     title character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    cause_of_death_id integer,
     date date,
     state_id integer,
     city character varying NOT NULL,
@@ -213,7 +249,7 @@ CREATE TABLE public.cases (
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
     blurb text,
-    cause_of_death_name public.cause_of_death
+    cause_of_death public.cause_of_death
 );
 
 
@@ -235,38 +271,6 @@ CREATE SEQUENCE public.cases_id_seq
 --
 
 ALTER SEQUENCE public.cases_id_seq OWNED BY public.cases.id;
-
-
---
--- Name: causes_of_death; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.causes_of_death (
-    id integer NOT NULL,
-    name character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: causes_of_death_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.causes_of_death_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: causes_of_death_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.causes_of_death_id_seq OWNED BY public.causes_of_death.id;
 
 
 --
@@ -335,38 +339,6 @@ CREATE SEQUENCE public.ethnicities_id_seq
 --
 
 ALTER SEQUENCE public.ethnicities_id_seq OWNED BY public.ethnicities.id;
-
-
---
--- Name: event_statuses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.event_statuses (
-    id integer NOT NULL,
-    name character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: event_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.event_statuses_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: event_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.event_statuses_id_seq OWNED BY public.event_statuses.id;
 
 
 --
@@ -694,7 +666,7 @@ ALTER SEQUENCE public.organizations_id_seq OWNED BY public.organizations.id;
 --
 
 CREATE TABLE public.rollout_histories (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     rollout_name character varying NOT NULL,
     change_date date NOT NULL,
     change_description text NOT NULL,
@@ -709,7 +681,6 @@ CREATE TABLE public.rollout_histories (
 --
 
 CREATE SEQUENCE public.rollout_histories_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1010,6 +981,13 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 
 
 --
+-- Name: calendar_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events ALTER COLUMN id SET DEFAULT nextval('public.calendar_events_id_seq'::regclass);
+
+
+--
 -- Name: case_agencies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1031,13 +1009,6 @@ ALTER TABLE ONLY public.cases ALTER COLUMN id SET DEFAULT nextval('public.cases_
 
 
 --
--- Name: causes_of_death id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.causes_of_death ALTER COLUMN id SET DEFAULT nextval('public.causes_of_death_id_seq'::regclass);
-
-
---
 -- Name: comments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1049,13 +1020,6 @@ ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.com
 --
 
 ALTER TABLE ONLY public.ethnicities ALTER COLUMN id SET DEFAULT nextval('public.ethnicities_id_seq'::regclass);
-
-
---
--- Name: event_statuses id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.event_statuses ALTER COLUMN id SET DEFAULT nextval('public.event_statuses_id_seq'::regclass);
 
 
 --
@@ -1195,6 +1159,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: calendar_events calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.calendar_events
+    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: case_agencies case_agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1219,14 +1191,6 @@ ALTER TABLE ONLY public.cases
 
 
 --
--- Name: causes_of_death causes_of_death_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.causes_of_death
-    ADD CONSTRAINT causes_of_death_pkey PRIMARY KEY (id);
-
-
---
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1240,14 +1204,6 @@ ALTER TABLE ONLY public.comments
 
 ALTER TABLE ONLY public.ethnicities
     ADD CONSTRAINT ethnicities_pkey PRIMARY KEY (id);
-
-
---
--- Name: event_statuses event_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.event_statuses
-    ADD CONSTRAINT event_statuses_pkey PRIMARY KEY (id);
 
 
 --
@@ -1434,6 +1390,13 @@ CREATE INDEX index_ahoy_events_on_user_id ON public.ahoy_events USING btree (use
 --
 
 CREATE INDEX index_ahoy_events_on_visit_id ON public.ahoy_events USING btree (visit_id);
+
+
+--
+-- Name: index_calendar_events_on_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_calendar_events_on_owner_id ON public.calendar_events USING btree (owner_id);
 
 
 --
@@ -1768,6 +1731,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211002101752'),
 ('20211009014322'),
 ('20211013144648'),
-('20211018164958');
+('20211018164958'),
+('20211026091305'),
+('20211108220639'),
+('20220109194513'),
+('20220109195551'),
+('20220110021739');
 
 

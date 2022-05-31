@@ -56,3 +56,7 @@ config/database.yml
 /tmp/pids/*
 !/tmp/pids               # need to keep for puma configuration
 !/tmp/pids/.keep         # need to keep for puma configuration
+db/schema.rb
+
+# Ignore node_modules in favor of package.json and package-lock.json
+/node_modules

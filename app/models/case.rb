@@ -1,49 +1,12 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: cases
-#
-#  id                  :integer          not null, primary key
-#  address             :string
-#  age                 :integer
-#  avatar              :string
-#  blurb               :text
-#  cause_of_death_name :enum
-#  city                :string           not null
-#  community_action    :text
-#  country             :string
-#  date                :date
-#  default_avatar_url  :string
-#  follows_count       :integer          default(0), not null
-#  latitude            :float
-#  litigation          :text
-#  longitude           :float
-#  overview            :text             not null
-#  remove_avatar       :boolean
-#  slug                :string
-#  state               :string
-#  summary             :text             not null
-#  title               :string           not null
-#  video_url           :string
-#  zipcode             :string
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  cause_of_death_id   :integer
-#  state_id            :integer
-#
-# Indexes
-#
-#  index_cases_on_slug   (slug) UNIQUE
-#  index_cases_on_title  (title)
-#
-# This is the main model of the application. Each death is a case.
+# Case model
 class Case < ApplicationRecord
   # TODO: Clean up relationship section
 
   MAX_BLURB_CHARACTERS = 500
 
-  enum cause_of_death_name: {
+  enum cause_of_death: {
     beating: 'beating',
     bombing: 'bombing',
     chemical_agents_or_weapons: 'chemical_agents_or_weapons',
@@ -58,7 +21,6 @@ class Case < ApplicationRecord
     vehicular: 'vehicular'
   }
 
-  belongs_to :cause_of_death, optional: true
   belongs_to :state
   has_many :links, dependent: :destroy
   has_many :links, as: :linkable
@@ -171,3 +133,40 @@ class Case < ApplicationRecord
     ]
   end
 end
+
+# == Schema Information
+#
+# Table name: cases
+#
+#  id                 :integer          not null, primary key
+#  address            :string
+#  age                :integer
+#  avatar             :string
+#  blurb              :text
+#  cause_of_death     :enum
+#  city               :string           not null
+#  community_action   :text
+#  country            :string
+#  date               :date
+#  default_avatar_url :string
+#  follows_count      :integer          default(0), not null
+#  latitude           :float
+#  litigation         :text
+#  longitude          :float
+#  overview           :text             not null
+#  remove_avatar      :boolean
+#  slug               :string
+#  state              :string
+#  summary            :text             not null
+#  title              :string           not null
+#  video_url          :string
+#  zipcode            :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  state_id           :integer
+#
+# Indexes
+#
+#  index_cases_on_slug   (slug) UNIQUE
+#  index_cases_on_title  (title)
+#
