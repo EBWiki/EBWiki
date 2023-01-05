@@ -2,7 +2,6 @@
 
 # Case model
 class Case < ApplicationRecord
-
   MAX_BLURB_CHARACTERS = 500
 
   enum cause_of_death: {
