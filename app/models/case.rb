@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # Case model
 class Case < ApplicationRecord
   MAX_BLURB_CHARACTERS = 500
