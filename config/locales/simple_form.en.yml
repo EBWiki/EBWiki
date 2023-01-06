@@ -20,7 +20,7 @@ en:
           university: 'University'
           commercial: 'Commercial'
       case:
-        cause_of_death_name:
+        cause_of_death:
           beating: 'Beating'
           bombing: 'Bombing'
           chemical_agents_or_weapons: 'Chemical Agents or Weapons'

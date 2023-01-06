@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+class CaseAgency < ApplicationRecord
+  belongs_to :case
+  belongs_to :agency
+end
+
 # == Schema Information
 #
 # Table name: case_agencies
@@ -10,8 +15,3 @@
 #  agency_id  :integer
 #  case_id    :integer
 #
-# Join table between case and agency
-class CaseAgency < ApplicationRecord
-  belongs_to :case
-  belongs_to :agency
-end

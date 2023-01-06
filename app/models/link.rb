@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+class Link < ApplicationRecord
+  validates :url, presence: true
+  belongs_to :linkable, polymorphic: true, touch: true
+end
+
 # == Schema Information
 #
 # Table name: links
@@ -21,8 +26,3 @@
 #
 #  fk_rails_...  (linkable_id => cases.id)
 #
-# associate Case property
-class Link < ApplicationRecord
-  validates :url, presence: true
-  belongs_to :linkable, polymorphic: true, touch: true
-end
