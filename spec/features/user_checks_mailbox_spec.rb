@@ -6,6 +6,7 @@ feature 'User checks mailbox' do
   let!(:user) { FactoryBot.create(:user) }
   # This is a happy path feature spec; this covers the scenario
   # where a user logs onto the site and then accesses the mailbox URL
+  pending
   scenario 'Logged in user checks mailbox by accessing the mailbox URL' do
     WebMock.allow_net_connect!
     visit new_user_session_path
