@@ -189,6 +189,9 @@ GEM
       elasticsearch-api (= 8.3.0)
     elasticsearch-api (8.3.0)
       multi_json
+    elasticsearch-transport (7.17.7)
+      faraday (~> 1)
+      multi_json
     equalizer (0.0.11)
     erubi (1.10.0)
     excon (0.92.3)
@@ -644,6 +647,7 @@ DEPENDENCIES
   devise (= 4.7.3)
   dotenv-rails (~> 2.7)
   elasticsearch
+  elasticsearch-transport
   factory_bot_rails (~> 6.1)
   faker (~> 2.14.0)
   fog-aws (~> 3.10)
