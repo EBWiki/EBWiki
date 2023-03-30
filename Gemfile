@@ -6,13 +6,16 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
-gem 'rails', '~> 6.0.3'
+gem 'rails', '~> 6.0.6.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '4.2'
+
+# Webpacker
+gem 'webpacker'
 
 # Reduce N+1 queries
 gem 'bullet', '~> 6.1'
@@ -52,7 +55,7 @@ gem 'montrose', '~> 0.12'
 gem 'jb', '~> 0.7.1'
 
 group :development, :test do
-  gem 'factory_bot_rails', '~> 6.1'
+  gem 'factory_bot_rails', '~> 6.2'
   gem 'faker', '~> 2.14.0'
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
@@ -126,10 +129,10 @@ gem 'acts_as_follower', github: 'tcocca/acts_as_follower'
 gem 'mailboxer', '~> 0.15'
 
 # track changes in model objects
-gem 'paper_trail', '~> 10.3'
+gem 'paper_trail'
 
 # needed for paper_trail to track changes done via rails_admin views
-gem 'paper_trail-association_tracking', '~> 2.1'
+gem 'paper_trail-association_tracking', '~> 2.2.1'
 
 # pretty urls
 gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+

@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Raise pull requests for version updates
+    # to pip against the `develop` branch
+    target-branch: "update_rails_6_0"
+    # Labels on pull requests for version updates only
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      # Check for npm updates on Sundays
+      day: "sunday"
+    # Labels on pull requests for security and version updates
+    labels:
+      - "npm dependencies"

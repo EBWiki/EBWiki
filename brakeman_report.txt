@@ -1,0 +1,39 @@
+
+== Brakeman Report ==
+
+Application Path: /home/mnyon/src/ebwiki
+Rails Version: 5.2.8.1
+Brakeman Version: 5.4.1
+Scan Date: 2023-04-01 19:31:45 -0600
+Duration: 2.119137819 seconds
+Checks Run: BasicAuth, BasicAuthTimingAttack, CSRFTokenForgeryCVE, ContentTag, CookieSerialization, CreateWith, CrossSiteScripting, DefaultRoutes, Deserialize, DetailedExceptions, DigestDoS, DynamicFinders, EOLRails, EOLRuby, EscapeFunction, Evaluation, Execute, FileAccess, FileDisclosure, FilterSkipping, ForgerySetting, HeaderDoS, I18nXSS, JRubyXML, JSONEncoding, JSONEntityEscape, JSONParsing, LinkTo, LinkToHref, MailTo, MassAssignment, MimeTypeDoS, ModelAttrAccessible, ModelAttributes, ModelSerialize, NestedAttributes, NestedAttributesBypass, NumberToCurrency, PageCachingCVE, Pathname, PermitAttributes, QuoteTableName, Redirect, RegexDoS, Render, RenderDoS, RenderInline, ResponseSplitting, RouteDoS, SQL, SQLCVEs, SSLVerify, SafeBufferManipulation, SanitizeConfigCve, SanitizeMethods, SelectTag, SelectVulnerability, Send, SendFile, SessionManipulation, SessionSettings, SimpleFormat, SingleQuotes, SkipBeforeFilter, SprocketsPathTraversal, StripTags, SymbolDoSCVE, TemplateInjection, TranslateBug, UnsafeReflection, UnsafeReflectionMethods, ValidationRegex, VerbConfusion, WeakRSAKey, WithoutProtection, XMLDoS, YAMLParsing
+
+== Overview ==
+
+Controllers: 16
+Models: 19
+Templates: 91
+Errors: 0
+Security Warnings: 2
+Ignored Warnings: 1
+
+== Warning Types ==
+
+Unmaintained Dependency: 2
+
+== Warnings ==
+
+Confidence: High
+Category: Unmaintained Dependency
+Check: EOLRuby
+Message: Support for Ruby 2.6.6 ended on 2022-03-31
+File: .ruby-version
+Line: 1
+
+Confidence: High
+Category: Unmaintained Dependency
+Check: EOLRails
+Message: Support for Rails 5.2.8.1 ended on 2022-06-01
+File: Gemfile.lock
+Line: 416
+

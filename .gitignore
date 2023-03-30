@@ -60,3 +60,9 @@ db/schema.rb
 
 # Ignore node_modules in favor of package.json and package-lock.json
 /node_modules
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
