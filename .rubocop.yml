@@ -25,6 +25,9 @@ Layout/FirstArgumentIndentation:
 Style/Lambda:
   Enabled: true
 
+Style/Documentation:
+  Enabled: false
+
 Style/RedundantInterpolation:
   Enabled: true
 
