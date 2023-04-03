@@ -66,7 +66,7 @@ end
 
 group :development do
   gem 'annotate', '~> 3.1', '>= 3.1.1'
-  gem 'brakeman', '~> 4.10', require: false
+  gem 'brakeman', '~> 5.4.1', require: false
   gem 'derailed_benchmarks', '~> 1.8'
   gem 'listen', '~> 3.7'
   gem 'rails_real_favicon', '~> 0.0.13'
