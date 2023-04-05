@@ -13,11 +13,6 @@ RSpec.describe 'Article redirects' do
     expect(response).to redirect_to("/cases/#{this_case.slug}")
   end
 
-  it 'redirects for the history action' do
-    get "/articles/#{this_case.slug}/history"
-    expect(response).to redirect_to("/cases/#{this_case.slug}/history")
-  end
-
   it 'redirects for the followers action' do
     get "/articles/#{this_case.slug}/followers"
     expect(response).to redirect_to("/cases/#{this_case.slug}/followers")
