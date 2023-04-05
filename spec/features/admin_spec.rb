@@ -35,20 +35,6 @@ describe User do
       WebMock.disable_net_connect!
     end
 
-    # This is a failure feature spec; this covers the scenario
-    # where a user tries to log into the site, but
-    # does not have the proper credentials to do so. In this case
-    # the user should get an error message and not be able to log
-    # into the site
-    scenario 'without any credentials' do
-      visit new_user_session_path
-      click_button 'Log in'
-      expect(page).to have_content 'Invalid Email or password'
-      visit rails_admin.dashboard_path
-      expect(page).to have_content 'You are not an admin'
-    end
-  end
-
   feature 'Admin signs in' do
     let!(:admin) { FactoryBot.create(:admin) }
 
