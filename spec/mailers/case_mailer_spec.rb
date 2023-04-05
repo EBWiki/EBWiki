@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-PaperTrail.request.disable_model(Case)
 RSpec.describe CaseMailer, type: :mailer do
   before(:each) do
     ActionMailer::Base.perform_deliveries = true
