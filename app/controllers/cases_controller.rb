@@ -89,12 +89,6 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     redirect_to root_path
   end
 
-  def history
-    @this_case = Case.friendly.find(params[:case_slug])
-    @case_history = @this_case.versions.order(created_at: :desc)
-  rescue ActiveRecord::RecordNotFound # rubocop:todo Lint/SuppressedException
-  end
-
   def after_sign_up_path_for(resource)
     stored_location_for(resource) || super
   end

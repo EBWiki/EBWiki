@@ -10,17 +10,14 @@ Rails.application.routes.draw do
       delete 'follows', to: 'follows#destroy'
     end
     resources :comments, only: %i[index create]
-    scope module: 'cases' do
-      post 'versions/:id/revert', to: 'versions#revert', as: :revert
-    end
+  
   end
-  get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
+  
   get '/cases/:case_slug/followers', to: 'cases#followers', as: :cases_followers
 
   # redirect logic
   get '/articles', to: redirect('/cases')
   get '/articles/:slug', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}" }
-  get '/articles/:slug/history', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/history" }
   get '/articles/:slug/followers', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/followers" }
 
   resources :agencies
