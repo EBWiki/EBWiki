@@ -15,7 +15,6 @@ RailsAdmin.config do |config|
   ## == Cancan ==
   # config.authorize_with :cancan
 
-  
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
 
   config.actions do
