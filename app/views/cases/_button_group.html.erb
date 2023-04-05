@@ -9,5 +9,4 @@
 	<% else %>
 		<%= button_to 'Follow', follows_case_path(@this_case), form_class: "btn case-btn", class: "case-btn" %>
 	<% end %>
-	<%= button_to "History", cases_history_path(@this_case), method: :get, form_class: "btn case-btn", class: "case-btn", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track Changes",:content => "Click here to see all the past edits to this case."} %>
 </div>

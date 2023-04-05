@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+pending
 
 describe Guest do
-  pending
   context '#name' do
     it 'returns Guest' do
       guest = Guest.new
