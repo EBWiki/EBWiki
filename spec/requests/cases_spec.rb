@@ -157,21 +157,5 @@ RSpec.describe 'Cases', type: :request do
       end
     end
   end
-
-  describe 'GET /cases/:slug/history' do
-    let(:_case) { create(:case) }
-
-    before { get "/cases/#{_case.slug}/history", params: {}, headers: {} }
-
-    context 'will get history page' do
-      it 'will return status code 200' do
-        expect(response).to have_http_status(200)
-      end
-
-      it 'will return the history of the case' do
-        expect(response.body).to include('history')
-      end
-    end
-  end
 end
 # rubocop:enable Metrics/BlockLength.

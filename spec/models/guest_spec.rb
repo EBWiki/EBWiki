@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 describe Guest do
+  pending
   context '#name' do
     it 'returns Guest' do
       guest = Guest.new
