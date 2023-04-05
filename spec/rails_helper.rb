@@ -11,7 +11,6 @@ require 'devise'
 require 'rspec/rails'
 require 'database_cleaner'
 require 'webmock/rspec'
-require 'paper_trail/frameworks/rspec'
 require 'null_fields_counter'
 include Warden::Test::Helpers
 Warden.test_mode!
