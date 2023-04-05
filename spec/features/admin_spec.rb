@@ -34,6 +34,7 @@ describe User do
       expect(page).to have_content 'You are not an admin'
       WebMock.disable_net_connect!
     end
+  end
 
   feature 'Admin signs in' do
     let!(:admin) { FactoryBot.create(:admin) }
