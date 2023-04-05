@@ -33,8 +33,6 @@ class Case < ApplicationRecord
   has_many :case_agencies, dependent: :destroy
   has_many :agencies, through: :case_agencies
   accepts_nested_attributes_for :case_agencies, reject_if: :all_blank, allow_destroy: true
-  # Paper Trail
-  has_paper_trail ignore: [:summary], meta: { comment: :edit_summary }
 
   # Acts as Follows, for follower functionality
   acts_as_followable
