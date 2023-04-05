@@ -128,12 +128,6 @@ gem 'acts_as_follower', github: 'tcocca/acts_as_follower'
 # messaging
 gem 'mailboxer', '~> 0.15'
 
-# track changes in model objects
-gem 'paper_trail'
-
-# needed for paper_trail to track changes done via rails_admin views
-gem 'paper_trail-association_tracking', '~> 2.2.1'
-
 # pretty urls
 gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
 
