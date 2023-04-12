@@ -108,7 +108,7 @@ gem 'puma', '~> 5.6'
 # implement elasticsearch
 gem 'searchkick', '~> 3.1'
 gem 'elasticsearch'
-gem 'elastic-transport'
+gem 'elastic-transport', require: false
 # manage nested forms
 gem 'cocoon', '~> 1.2'
 
