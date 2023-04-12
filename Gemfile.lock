@@ -633,6 +633,8 @@ DEPENDENCIES
   derailed_benchmarks (~> 1.8)
   devise (= 4.7.3)
   dotenv-rails (~> 2.7)
+  elastic-transport
+  elasticsearch
   factory_bot_rails (~> 6.1)
   faker (~> 2.14.0)
   fog-aws (~> 3.10)
