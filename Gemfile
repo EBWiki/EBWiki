@@ -106,8 +106,8 @@ gem 'geocoder', '~> 1.6'
 gem 'puma', '~> 5.6'
 
 # implement elasticsearch
-gem 'searchkick', '~> 3.1'
 gem 'elasticsearch', '8.7.0'
+gem 'searchkick', '~> 3.1'
 gem 'elasticsearch-transport'
 
 # manage nested forms
