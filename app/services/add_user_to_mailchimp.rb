@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddUserToMailchimp # rubocop:todo Style/Documentation
+class AddUserToMailchimp
   include Service
   def call(user)
     if user.subscribed # rubocop:todo Style/GuardClause

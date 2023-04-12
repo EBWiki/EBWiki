@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AvatarUploader < CarrierWave::Uploader::Base # rubocop:todo Style/Documentation
+class AvatarUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
