@@ -357,6 +357,7 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.12.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.1)
     minitest (5.18.0)
     mock_redis (0.36.0)
       ruby2_keywords
@@ -385,6 +386,9 @@ GEM
       net-protocol
     newrelic_rpm (7.2.0)
     nio4r (2.5.9)
+    nokogiri (1.14.3)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
@@ -631,6 +635,7 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -723,7 +728,7 @@ DEPENDENCIES
   webmock (~> 3.9, >= 3.9.1)
 
 RUBY VERSION
-   ruby 2.7.2p137
+   ruby 2.7.8p225
 
 BUNDLED WITH
    2.2.32
