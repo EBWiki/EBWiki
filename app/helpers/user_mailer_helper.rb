@@ -11,7 +11,7 @@ module UserMailerHelper
     subscriber_link_copy, ENV['MAILCHIMP_LINK']
   )
   SUBSCRIBER_CALL_TO_ACTION = "#{subscriber_link} for periodic" \
-                              'general updates and commentaries on this issue.'
+                              'general updates and commentaries on this issue.'.freeze
 
   def create_welcome_email_message(user, is_subscribed)
     followed_cases = user.all_following.count
