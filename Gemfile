@@ -107,7 +107,7 @@ gem 'puma', '~> 5.6'
 
 # implement elasticsearch
 gem 'elasticsearch', '8.3.0'
-gem 'elasticsearch-transport','7.17.7'
+gem 'elasticsearch-transport', '7.17.7'
 gem 'searchkick', '~> 3.1'
 
 # manage nested forms
