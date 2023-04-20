@@ -22,8 +22,8 @@ class Agency < ApplicationRecord
 
   validates :name, presence: { message: 'Please enter a name.' }
   validates :name, uniqueness: {
-    message: 'An agency with this name already exists and can be found. If you'\
-             ' want to create a new agency, it must have a unique name.'
+    message: 'An agency with this name already exists and can be found. If you ' \
+             'want to create a new agency, it must have a unique name.'
   }
   validates :state_id, presence: {
     message: 'You must specify the state in which the agency is located.'

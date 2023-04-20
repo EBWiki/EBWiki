@@ -335,7 +335,7 @@ Style/StringChars:
   Enabled: true
 
 Style/Documentation:
-  Enabled: true
+  Enabled: false
 
 Gemspec/RequireMFA: # new in 1.23
   Enabled: true
@@ -409,7 +409,7 @@ Performance/MapCompact: # new in 1.11
   Enabled: true
 Performance/StringIdentifierArgument: # new in 1.13
   Enabled:
-  
+
 Gemspec/RequireMFA: # new in 1.23
   Enabled: true
 Layout/LineContinuationLeadingSpace: # new in 1.31
