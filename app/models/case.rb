@@ -2,8 +2,6 @@
 
 # Case model
 class Case < ApplicationRecord
-  # TODO: Clean up relationship section
-
   MAX_BLURB_CHARACTERS = 500
 
   enum cause_of_death: {

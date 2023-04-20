@@ -31,6 +31,9 @@ Style/RedundantInterpolation:
 Style/ClassAndModuleChildren:
   Enabled: true
 
+Style/Documentation:
+  Enabled: False
+
 Style/GlobalVars:
   AllowedVariables:
     - $rollout
