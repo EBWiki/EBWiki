@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
-gem 'rails', '~> 5.2.7.1'
+gem 'rails', '~> 5.2.8.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
@@ -66,7 +66,7 @@ end
 
 group :development do
   gem 'annotate', '~> 3.1', '>= 3.1.1'
-  gem 'brakeman', '~> 4.10', require: false
+  gem 'brakeman', '~> 5.4.1', require: false
   gem 'derailed_benchmarks', '~> 1.8'
   gem 'listen', '~> 3.7'
   gem 'rails_real_favicon', '~> 0.0.13'
@@ -106,8 +106,8 @@ gem 'geocoder', '~> 1.6'
 gem 'puma', '~> 5.6'
 
 # implement elasticsearch
-gem 'elasticsearch', '8.3.0'
-gem 'elasticsearch-transport', '7.17.7'
+gem 'elasticsearch'
+gem 'elasticsearch-transport'
 gem 'searchkick', '~> 3.1'
 
 # manage nested forms

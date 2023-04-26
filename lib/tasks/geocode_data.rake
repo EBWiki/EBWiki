@@ -6,8 +6,8 @@
 namespace :geocode_data do
   desc 'Geocode all objects without coordinates.'
   task all: :environment do
-    class_name = ENV['CLASS'] || ENV['class']
-    sleep_timer = ENV['SLEEP'] || ENV['sleep']
+    class_name = ENV['CLASS'] || ENV.fetch('class', nil)
+    sleep_timer = ENV['SLEEP'] || ENV.fetch('sleep', nil)
     raise 'Please specify a CLASS (model)' unless class_name
 
     klass = class_from_string(class_name)

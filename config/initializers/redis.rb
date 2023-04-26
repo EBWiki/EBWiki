@@ -8,5 +8,6 @@ $redis = if Rails.env.test?
                                 driver: :hiredis)
          else
            Redis::Namespace.new('ebwiki',
-                                redis: Redis.new(url: ENV['REDISTOGO_URL'], driver: :hiredis))
+                                redis: Redis.new(url: ENV.fetch('REDISTOGO_URL', nil),
+                                                 driver: :hiredis))
          end
