@@ -1,4 +1,4 @@
-FROM ruby:2.6.6
+FROM ruby:2.7.8
 
 COPY Gemfile Gemfile.lock /
 COPY dev_provisions/environment.sh /etc/profile.d
