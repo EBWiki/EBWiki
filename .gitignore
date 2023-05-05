@@ -63,3 +63,6 @@ db/schema.rb
 
 # Jetbrains products
 /.idea
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
