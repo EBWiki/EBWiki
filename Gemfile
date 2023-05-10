@@ -17,6 +17,7 @@ gem 'uglifier', '4.2'
 # Reduce N+1 queries
 gem 'bullet', '~> 6.1'
 
+
 # Use gem pundit for authorization
 gem 'pundit', '~> 2.1'
 # Use jquery as the JavaScript library
@@ -85,6 +86,8 @@ group :test do
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
+
+gem 'rails-controller-testing'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'devise', '4.7.3'
