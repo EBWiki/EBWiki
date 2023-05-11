@@ -1,4 +1,4 @@
-class MigrateArticleFieldsToCase < ActiveRecord::Migration
+class MigrateArticleFieldsToCase < ActiveRecord::Migration[5.2]
   def change
     rename_table :articles, :cases
     rename_table :article_agencies, :case_agencies

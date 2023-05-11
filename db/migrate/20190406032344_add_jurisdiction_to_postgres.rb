@@ -1,4 +1,4 @@
-class AddJurisdictionToPostgres < ActiveRecord::Migration
+class AddJurisdictionToPostgres < ActiveRecord::Migration[5.2]
   def up
     execute <<-SQL
       CREATE TYPE jurisdiction AS ENUM ('unknown', 'local', 'state', 'federal', 'university', 'commercial')

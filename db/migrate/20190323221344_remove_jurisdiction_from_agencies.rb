@@ -1,4 +1,4 @@
-class RemoveJurisdictionFromAgencies < ActiveRecord::Migration
+class RemoveJurisdictionFromAgencies < ActiveRecord::Migration[5.2]
   def up
     remove_column :agencies, :jurisdiction
 
