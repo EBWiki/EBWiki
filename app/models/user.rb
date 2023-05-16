@@ -46,7 +46,8 @@ class User < ApplicationRecord
 
   def mailchimp_user
     gb = Gibbon::Request.new
-    gb.lists(ENV['MAILCHIMP_LIST_ID']).members(Digest::MD5.hexdigest(email.downcase.to_s)).retrieve
+    gb.lists(ENV.fetch('MAILCHIMP_LIST_ID',
+                       nil)).members(Digest::MD5.hexdigest(email.downcase.to_s)).retrieve
   rescue Gibbon::MailChimpError => e
     [nil, { flash: { error: e.message } }]
   end

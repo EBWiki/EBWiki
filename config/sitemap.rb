@@ -13,14 +13,15 @@ if Rails.env.production?
   # Instance of `SitemapGenerator::s3Adapter -- could have used wave adapter instead
   SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new(
     fog_provider: 'AWS',
-    aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-    aws_secret_access_key: ENV['AWS_SECRET_KEY_ID'],
-    fog_directory: ENV['FOG_DIRECTORY'],
-    fog_region: ENV['S3_REGION']
+    aws_access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', nil),
+    aws_secret_access_key: ENV.fetch('AWS_SECRET_KEY_ID', nil),
+    fog_directory: ENV.fetch('FOG_DIRECTORY', nil),
+    fog_region: ENV.fetch('S3_REGION', nil)
   )
 
   # The remote host where your sitemaps will be hosted
-  SitemapGenerator::Sitemap.sitemaps_host = "http://#{ENV['FOG_DIRECTORY']}.s3.amazonaws.com/"
+  SitemapGenerator::Sitemap.sitemaps_host = "http://#{ENV.fetch('FOG_DIRECTORY',
+                                                                nil)}.s3.amazonaws.com/"
 end
 
 SitemapGenerator::Sitemap.create do

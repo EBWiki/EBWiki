@@ -2,8 +2,6 @@
 
 # Case model
 class Case < ApplicationRecord
-  # TODO: Clean up relationship section
-
   MAX_BLURB_CHARACTERS = 500
 
   enum cause_of_death: {
@@ -62,7 +60,7 @@ class Case < ApplicationRecord
   # }
   validates :summary, presence: {
     message: 'Please use the last field at the bottom of this form ' \
-      'to summarize your edits to the case.'
+             'to summarize your edits to the case.'
   }
 
   validates_presence_of :overview, message: 'An overview of the case is required'

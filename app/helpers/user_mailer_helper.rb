@@ -8,7 +8,7 @@ module UserMailerHelper
 
   subscriber_link_copy = 'Subscribe to our newsletter as well'
   subscriber_link = ActionController::Base.helpers.link_to(
-    subscriber_link_copy, ENV['MAILCHIMP_LINK']
+    subscriber_link_copy, ENV.fetch('MAILCHIMP_LINK', nil)
   )
   SUBSCRIBER_CALL_TO_ACTION = "#{subscriber_link} for periodic" \
                               'general updates and commentaries on this issue.'

@@ -60,3 +60,6 @@ db/schema.rb
 
 # Ignore node_modules in favor of package.json and package-lock.json
 /node_modules
+
+# Jetbrains products
+/.idea

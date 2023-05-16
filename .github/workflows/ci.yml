@@ -9,6 +9,7 @@ jobs:
 
     env:
       RAILS_ENV: test
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
 
     services:
       postgres:

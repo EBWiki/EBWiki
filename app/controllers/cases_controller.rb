@@ -37,7 +37,6 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   def create
     @this_case = Case.new(case_params)
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
-    # TODO: Create a scope to send only to users who have chosen to receive email updates
     if @this_case.save
       current_user.follow(@this_case)
       flash[:success] = 'Case was created!'
