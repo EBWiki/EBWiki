@@ -44,10 +44,6 @@
     <meta name="cf-2fa-verify" content="2y1jaIA9tjJ9xyHE">
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= ENV["GOOGLE_TAG_MANAGER_ID"] %>"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <div class="container">
       <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
         <div class="alert alert-<%= key %>">
