@@ -72,7 +72,7 @@ Exit the console using the following command:
 
  `\q`
 
-Add the password as an environment variable in your `.env` file: 
+Add the password as an environment variable in your `.env` file:
 
 `BLACKOPS_DATABASE_PASSWORD='ebwiki'`
 
@@ -96,7 +96,7 @@ Exit the console using the following command:
 
 `\q`
 
-Add the password as an environment variable in your `.env` file: 
+Add the password as an environment variable in your `.env` file:
 
 `BLACKOPS_DATABASE_PASSWORD='ebwiki'`
 

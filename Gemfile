@@ -48,6 +48,7 @@ gem 'twitter', '~> 7.0'
 
 gem 'montrose', '~> 0.12'
 
+gem 'connection_pool'
 # JSON renderer for Rails
 gem 'jb', '~> 0.7.1'
 
