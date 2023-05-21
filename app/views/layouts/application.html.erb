@@ -8,7 +8,7 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', <%= ENV["GOOGLE_ANALYTICS_MEASUREMENT_ID"] %>);
+      gtag('config', "<%= ENV["GOOGLE_ANALYTICS_MEASUREMENT_ID"] %>");
     </script>
     <%# These elements must come first to consistently ensure proper document rendering. %>
     <meta charset="utf-8">
