@@ -249,6 +249,6 @@ end
 
 if Agency.count.zero?
   puts 'Creating Agencies...'
-  FactoryBot.create(:agency, name: 'City of Houston Police Department', city: 'Houston')
-  FactoryBot.create(:agency, name: 'City of Beaumont Police Department', city: 'Beaumont')
+  FactoryBot.create(:agency, name: 'City of Houston Police Department', city: 'Houston', state: State.find_by_name("Texas"))
+  FactoryBot.create(:agency, name: 'City of Beaumont Police Department', city: 'Beaumont', state: State.find_by_name("Texas"))
 end
