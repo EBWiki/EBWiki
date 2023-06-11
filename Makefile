@@ -1,9 +1,9 @@
 build:
-	docker build --tag ebwiki/ebwiki .
+	docker build --tag local_ebwiki .
 
 run:
 	docker run --detach --rm --volume "$(shell pwd)":/usr/src/ebwiki \
-		--publish 3000:3000 --name ebwiki ebwiki/ebwiki
+		--publish 3000:3000 --name ebwiki local_ebwiki
 	./dev_provisions/prewarm.sh
 
 logs:
