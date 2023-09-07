@@ -1,10 +1,3 @@
-# frozen_string_literal: true
-
-require 'attribute_sanitizer'
-
-# base class for ActiveRecord objects
 class ApplicationRecord < ActiveRecord::Base
-  self.abstract_class = true
-
-  extend AttributeSanitizer
+  primary_abstract_class
 end

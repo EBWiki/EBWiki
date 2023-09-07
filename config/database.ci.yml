@@ -1,6 +1,0 @@
-test:
-  adapter: postgresql
-  host: localhost
-  database: app_test
-  username: postgres
-  password: postgres

@@ -1,80 +1,294 @@
-<p><a href="https://github.com/EBWiki/EBWiki/actions/workflows/ci.yml/badge.svg"></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki/coverage"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/coverage.svg" /></a></p>
+<p align="center">
+  <a href="https://rubyonrails.org/"><img width="300" src="https://zakaria.dev/assets/images/rails_base_app/Ruby_On_Rails_Logo.png" alt="Ruby On Rails"></a>
+  <a href="https://vite-ruby.netlify.app/" style="margin-left: 20px"><img width="110" src="https://zakaria.dev/assets/images/rails_base_app/vite_ruby.svg" alt="Vite Ruby"></a>
+  <a href="https://vuejs.org/" style="margin-left: 20px"><img width="90" src="https://zakaria.dev/assets/images/rails_base_app/vuejs-logo.png" alt="Vue.js"></a>
+  <a href="https://www.docker.com" style="margin-left: 20px"><img width="105" src="https://zakaria.dev/assets/images/rails_base_app/docker-logo.png" alt="Docker"></a>
+</p>
 
-# EBWiki
+# An example Rails 7 app
 
-[EBWiki.org](http://ebwiki.org) is a site dedicated to documenting when people of color are killed by law enforcement officers during routine interactions.
+[![](https://badgen.net/badge/Rails/7.0.4.3/red)](https://github.com/zakariaf/rails-base-app/blob/main/Gemfile.lock) [![](https://badgen.net/badge/Ruby/3.2.2/red)](https://github.com/zakariaf/rails-base-app/blob/main/.ruby-version) [![](https://img.shields.io/badge/dynamic/json?color=red&label=Vite&query=%24.devDependencies.vite&url=https%3A%2F%2Fraw.githubusercontent.com%2Fzakariaf%2Frails-base-app%2Fmain%2Fpackage.json)](https://github.com/zakariaf/rails-base-app/blob/main/package.json) [![](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=Vue&query=%24.dependencies.vue&url=https%3A%2F%2Fraw.githubusercontent.com%2Fzakariaf%2Frails-base-app%2Fmain%2Fpackage.json)](https://github.com/zakariaf/rails-base-app/blob/main/package.json) [![](https://img.shields.io/badge/dynamic/json?color=blue&label=TypeScript&query=%24.devDependencies.typescript&url=https%3A%2F%2Fraw.githubusercontent.com%2Fzakariaf%2Frails-base-app%2Fmain%2Fpackage.json)](https://github.com/zakariaf/rails-base-app/blob/main/package.json) [![GitHub license](https://img.shields.io/github/license/zakariaf/rails-base-app)](https://github.com/zakariaf/rails-base-app/blob/main/LICENSE)
 
-## Motivation
+**This app is built with Rails 7, Ruby 3, Vite, Vue 3 and typescript. and is using Docker for building production images** You could use this example app as a base for your upcoming projects. Or, you could use it as a tutorial that tells you which steps you need to take to create a project from scratch.
 
-The release of the [Walter Scott body-cam video](https://ebwiki.org/cases/walter-scott) in 2015 showed the vast discrepancy between the official report of the encounter and the video.  After seeing the video, a group of Black technologists had the idea of a site where information on each encounter could be stored and recorded. This would help show both the frequency with which this occurs as well as the way bias affects the proceedings.
+Several gems and packages are included in this example app that I've been using for a long time. It wires up a number of things you might use in a real world Rails app. However, at the same time it's not loaded up with a million personal opinions.
 
-Our idea, EBWiki, is designed to highlight not only the original incident between law enforcement and victims but also what happens to the family, police officers, and communities afterwards. Our goal is to become the most comprehensive resource on people of color killed by law enforcement in the United States and Canada.  Our hope is that, by shedding light on these incidents, we will move and empower others to come together to create and enact solutions.
+- As [Webpacker](https://github.com/rails/webpacker#webpacker-has-been-retired-) has been retired, we are using [Vite](https://vite-ruby.netlify.app/) instead. It wouldn't be fair if I didn't say that: **Vite** is fantastic.
 
-## Contributing
+<!-- List of all topics -->
 
-Any and all developers are welcome to contribute to the codebase.  For general information on contributing, please read [this guide](docs/DEVELOPMENT.md) on developing for EBWiki before selecting your first issue.
+## Table of Contents
 
-If this is your first open source contribution, welcome!  We're glad that you chose to get started with us.  You can find some good first issues labelled exactly that, `good first issue`.
+- [An example Rails 7 app](#an-example-rails-7-app)
+  - [Table of Contents](#table-of-contents)
+  - [Tech stack](#tech-stack)
+    - [Back-end](#back-end)
+    - [Front-end](#front-end)
+    - [Healthy app](#healthy-app)
+      - [Frontend](#frontend)
+      - [Backend](#backend)
+      - [Common](#common)
+  - [Auth](#auth)
+    - [`/signup`](#signup)
+    - [`/login`](#login)
+    - [`/logout`](#logout)
+  - [Apps](#apps)
+  - [Running app](#running-app)
+    - [1. Clone the repo](#1-clone-the-repo)
+    - [2. Install dependencies](#2-install-dependencies)
+    - [3. Copy .env to .env.local](#3-copy-env-to-envlocal)
+    - [4. Setup database](#4-setup-database)
+    - [5. Run the app](#5-run-the-app)
+  - [Docker](#docker)
+    - [1. Build the images](#1-build-the-images)
+  - [Renaming the project](#renaming-the-project)
+  - [How to contribute](#how-to-contribute)
+  - [License](#license)
+  - [TODO](#todo)
 
-We ask that, if possible, you address issues that are labelled `quick fix` first, followed by those marked as `high priority`.  Otherwise, you're free to select any issue that seems interesting to you.  There are times when we may ask you to switch to another issue, as we match dev work against our internal roadmap, but that's not something you need to worry about.  In that case, we'll just let you know and provide another issue you might be interested in.
+## Tech stack
 
-All contributors are expected to adhere to our code of conduct, which can be found [here](docs/CODE_OF_CONDUCT.md).  Thank you for your contribution - details on our stack and setting up a local environment can be found below.
+Initially, I used the `rails new ebwiki -c tailwindcss -d postgresql` command to initialize the project using the importmaps and default configurations, but I have since removed the importmaps, tailwindcss, and all default configurations in favor of using Vite.
+You can see a list of gems that are in the project with a link to their commit. Therefore, you can easily find what we configured for each gem.
 
-### Development
+**Note** there is a commit/branch for each gem/package and adding/changing a code in the repo, and you can see the list of the steps we did in order at the below. e.g. step 1 in the repo was **init project** and using **PostgreSQL**. step number 2 was adding **RSpec**, etc.
 
-Instructions on setting up a local development environment can be found in the following documents:
-* [Set Up Locally with Docker](docs/SETUP_LOCALLY.md).
-* [Set Up Locally with All Services (Full Stack)](docs/SETUP_LOCALLY_FULLSTACK.md).
+### Back-end
 
-In general, contributors will use the following languages, frameworks, and technologies:
+- 1- [PostgreSQL](https://www.postgresql.org/) ([init project](https://github.com/zakariaf/rails-base-app/commit/f62b5cfab5a58aff5f233d3f05b5e5b157d5a5c9))
+- 2- [RSpec](https://github.com/rspec/rspec-metagem) ([commit1](https://github.com/zakariaf/rails-base-app/commit/9363d5196130661481ebad2f4067f88b5558ed8e)) ([commit2](https://github.com/zakariaf/rails-base-app/commit/98b97191858a41055c624a9668627a63efa2393f))
+- 3- [Factory Bot Rails](https://github.com/thoughtbot/factory_bot_rails) ([commit](https://github.com/zakariaf/rails-base-app/commit/6345a47aab301abf731678bc70a29af67c8d6d64))
+- 4- [Faker](https://github.com/faker-ruby/faker) ([commit](https://github.com/zakariaf/rails-base-app/commit/436743fccee0e9f2d72a2af556dcb2bccea0d44e))
+- 5- [Database Cleaner](https://github.com/DatabaseCleaner/database_cleaner) ([commit](https://github.com/zakariaf/rails-base-app/commit/653e37e65260ad1b28f699d08ddf206054800810))
+- 6- [SimpleCov](https://github.com/simplecov-ruby/simplecov) ([commit](https://github.com/zakariaf/rails-base-app/commit/a1e629b26bf45f008d27ca4ae1a794de65581e2c))
+- 7. Rubocop(Check the [**Healthy app/Backend**](#healthy-app) part)
+- 8- [Annotate](https://github.com/ctran/annotate_models) ([commit](https://github.com/zakariaf/rails-base-app/commit/5c2a5d2480bbfdd7afd148fc08dc02bda324fc0e))
+- 9- [Pry](https://github.com/pry/pry) ([commit](https://github.com/zakariaf/rails-base-app/commit/fd94d91fda2e28293266b3f210801e8462fad4cb))
+- 10- [Pagy](https://github.com/ddnexus/pagy) ([commit1](https://github.com/zakariaf/rails-base-app/commit/f5c4839ba05fe8a927bb18e06e89b0fb20f12045)) ([commit2](https://github.com/zakariaf/rails-base-app/commit/090194eb6912a72ec23349afbca1d3e211204769))
+- 11- [HasScope](https://github.com/heartcombo/has_scope) ([commit](https://github.com/zakariaf/rails-base-app/commit/a1564e9f8ee645b5b6394bc99608d57eef95b830))
+- 12- [JSON:API serializer](https://github.com/jsonapi-serializer/jsonapi-serializer) A fast JSON:API serializer for Ruby Objects ([commit](https://github.com/zakariaf/rails-base-app/commit/c57cb9db2c0df761e48bdae77971d5fd093033bb))
+  - [jsonapi.rb](https://github.com/stas/jsonapi.rb) which provides some features for `jsonapi-serializer` [PR](https://github.com/zakariaf/rails-base-app/pull/9), [commit](https://github.com/zakariaf/rails-base-app/commit/b463d3a024513040c52b0745d042ee1fd9ea96aa) and [PR2](https://github.com/zakariaf/rails-base-app/pull/13)
+  - [jsonapi-rspec](https://github.com/jsonapi-rb/jsonapi-rspec) which provides some beautiful RSpec matchers for JSON API [PR](https://github.com/zakariaf/rails-base-app/pull/10)
+- 13- [Action Cable](https://guides.rubyonrails.org/action_cable_overview.html) ([commit](https://github.com/zakariaf/rails-base-app/commit/3d6bd4194c3a992c838093bb8c8c7332784cffba))
+- 14- [Redis](https://redis.io/) ([commit](https://github.com/zakariaf/rails-base-app/commit/3d6bd4194c3a992c838093bb8c8c7332784cffba), [PR](https://github.com/zakariaf/rails-base-app/pull/20))
+- 15- [Sidekiq](https://github.com/mperham/sidekiq) ([commit](https://github.com/zakariaf/rails-base-app/commit/f7b759d9d42ce3444a04978fe2cbfc66cd120250), [PR](https://github.com/zakariaf/rails-base-app/pull/22))
+- 16- [dotenv](https://github.com/bkeepers/dotenv) ([commit](https://github.com/zakariaf/rails-base-app/commit/3aaa696c4228aac2dac40ff42591f07dc74a62bb))
+- 28- [shoulda-matchers]() ([PR] (https://github.com/zakariaf/rails-base-app/pull/34))
 
-* [Ruby 2.7.8](https://www.ruby-lang.org/en/downloads/)
-* [Rails 5.2.8.1](http://rubyonrails.org/)
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch)
-* [Postgres 12](https://www.postgresql.org/) or higher
-* [Redis](https://redis.io/)
-* [AWS S3](https://aws.amazon.com/free/)
-* [NodeJS](https://nodejs.org/en/)
+### Front-end
 
+- 17- [Vite](https://github.com/ElMassimo/vite_ruby) Removing importmaps and all frontend libraries and Use Vite instead ([PR](https://github.com/zakariaf/rails-base-app/pull/1)), and remove Sprockets and unused assets files ([PR](https://github.com/zakariaf/rails-base-app/pull/21))
+- 18- Code quality and format (Check **Healthy app/Frontend** part)
+- 19- [Vue.js](https://vuejs.org/) Vue.js version 3 ([PR](https://github.com/zakariaf/rails-base-app/pull/4) , [PR-fixbug](https://github.com/zakariaf/rails-base-app/pull/11))
+- 27- Enabling auth process(and make the app ready) which needed more packages [PR](https://github.com/zakariaf/rails-base-app/pull/15):
+  - [axios](https://www.npmjs.com/package/axios)
+  - [pinia](https://pinia.vuejs.org/introduction.html) The official state management library for Vue. will be used instead of **Vuex**
+  - [vue-query](https://www.npmjs.com/package/vue-query)
+  - [@babel/types](https://babeljs.io/docs/en/babel-types)
+  - We start using [TypeScript](https://www.typescriptlang.org/) and [Vue3 compistion API](https://vuejs.org/guide/extras/composition-api-faq.html) here
 
-### Testing
+### Healthy app
 
-We use [RSpec](https://github.com/rspec/rspec-rails), [shoulda-matchers](http://matchers.shoulda.io/), and [FactoryBot](https://github.com/thoughtbot/factory_bot) for our tests.  You can run the tests locally with the following commands:
+#### Frontend
+
+- 18- Code quality and format ([PR1](https://github.com/zakariaf/rails-base-app/pull/2), [PR2](https://github.com/zakariaf/rails-base-app/pull/3))
+  - [ESlint](https://eslint.org/)
+  - [Eslint plugin vue](https://eslint.vuejs.org/rules/)
+  - [Prettier](https://prettier.io/)
+  - [Husky](https://typicode.github.io/husky/#/)
+  - [lint-staged](https://github.com/okonet/lint-staged)
+
+#### Backend
+
+- 7- [RuboCop](https://github.com/rubocop/rubocop) Code quality and format. First I added [rubocop-rails_config gem](https://github.com/toshimaru/rubocop-rails_config) by these two commits ([commit1](https://github.com/zakariaf/rails-base-app/commit/abfdce196721e517b9391b618093506fe062c499)) ([commit2](https://github.com/zakariaf/rails-base-app/commit/89e675b793a0467b271e91c85215a6539bcc4b57)), but after a while, I removed this gem and added rubocop gem and its extensions separately in this [PR](https://github.com/zakariaf/rails-base-app/pull/8)
+
+- 20- [Brakeman](https://github.com/presidentbeef/brakeman) Checking Ruby on Rails applications for security vulnerabilities. you can check `config/brakeman.ignore` to see ignore errors ([PR](https://github.com/zakariaf/rails-base-app/pull/7))
+- 21- [bundler-audit](https://github.com/rubysec/bundler-audit) Patch-level verification for bundler ([PR](https://github.com/zakariaf/rails-base-app/pull/7))
+- 22- [Fasterer](https://github.com/DamirSvrtan/fasterer) Make Rubies code faster by suggestion some speed improvements. check `.fasterer.yml` to enable/disable suggestions ([PR](https://github.com/zakariaf/rails-base-app/pull/7))
+- 23- [License Finder](https://github.com/pivotal/LicenseFinder) Check the licenses of the gems and packages. you can update `doc/dependency_decisions.yml` to manage licenses ([PR](https://github.com/zakariaf/rails-base-app/pull/7))
+- Moving linting gems into development and test group in Gemfile ([commit](https://github.com/zakariaf/rails-base-app/commit/5671c93ac791b4ad7ea8dcc191d0f36730887f50))
+
+#### Common
+
+- 24- [overcommit](https://github.com/sds/overcommit) to manage and configure Git hooks by managing all healthy app tools. you can check `.overcommit.yml` to enable or disable tools. ([PR](https://github.com/zakariaf/rails-base-app/pull/7))
+- 25- Enabling github action to run `overcommit` after push and pull requests in github. Check `.github/workflows/lint.yml` to see the github configs ([PR](https://github.com/zakariaf/rails-base-app/pull/7))
+
+## Auth
+
+- 26- [Devise](https://github.com/heartcombo/devise) and [Devise::JWT](https://github.com/waiting-for-dev/devise-jwt) JWT authentication solution [Backend PR1](https://github.com/zakariaf/rails-base-app/pull/6), [Backend PR2](https://github.com/zakariaf/rails-base-app/pull/12)
+
+We are using JWT to authentication using Devise and Devise::JWT gems. If you send a request to log in, the successful response will give you a header called `Authorization` which has the JWT token as value. and you need to add this header and its value to all of your requests.
+
+Predefined auth routes:
+
+### `/signup`
+
+**Request**:
 
 ```
-rspec spec/
+curl -XPOST -H "Content-Type: application/json" -d '{ "user": { "email": "test@example.com", "password": "12345678", "password_confirmation": "12345678" } }' http://localhost:3000/signup
 ```
 
-More information on how to use RSpec, shoulda-matchers, and FactoryBot can be found at the links above.
-
-We also use [Rubocop](https://github.com/bbatsov/rubocop) as part of our continous integration process in Github Actions.  To run Rubocop locally, enter
+**Response**: Returns the details of the created user
 
 ```
-rubocop
+{"data":{"id":"4","type":"user","attributes":{"email":"test@example.com","sign_in_count":1,"created_at":"2022-04-18T17:49:06.798Z"}}}
 ```
 
-### Continuous Integration (CI)
-Each time a pull request (PR) is opened or updated
+### `/login`
 
-The full test suite will be run, to ensure that submitted changes do not break functionality elsewhere in the app.  Brakeman, Rubocop, and a link checker will also be run on the submitted changes.
+**Request**:
 
-As noted in our development guide, your PR is expected to pass all checks before a maintainer will merge it.  If your PR is failing one of the checks, refer to our development guide for tips on how to address the failure(s).
+```bash
+curl -XPOST -i -H "Content-Type: application/json" -d '{ "user": { "email": "test@example.com", "password": "12345678" } }' http://localhost:3000/login
+```
 
-### Deployment
-EBWiki is currently hosted on Heroku.  We have two environments - staging and production.  If you're interested in contributing but are more of a DevOps person than a developer, feel free to send us a message at info@ebwiki.org to see how you can get involved.
+**Response**: includes `Authorization` in header and details of the loggedin user
 
-The staging app does require credentials to access the app.  If you need to access the staging app send us a message at info@ebwiki.org to get a copy of the credentials.
+```bash
+HTTP/1.1 200 OK
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 0
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+....
+Content-Type: application/vnd.api+json; charset=utf-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjUwMzA0MjU3LCJleHAiOjE2NTAzOTA2NTcsImp0aSI6IjM4ZmI4ZGIyLWVlMjgtNDg2Yy05YjE5LTA2NWVmYmQ0ZGE4MCJ9.p8766vPrhiGpPyV2FdShw1ljBx2Os3D1oE_rPjjAYrY
+...
 
-## Found a Bug?
-Want to report a bug you found?  Feel free to create a new issue for it!  Please be sure to use the bug template we've created for issues.  Additionally, check our docs here and the guides on [EBWiki](https://ebwiki.org) first to see if your issue has already been addressed.
+{"data":{"id":"4","type":"user","attributes":{"email":"test@example.com","sign_in_count":2,"created_at":"2022-04-18T17:49:06.798Z"}}}
+```
 
-## Questions
-Have any questions not covered in our docs?  Feel free to send us a message at info@ebwiki.org.
+<img width="400" src="https://zakaria.dev/assets/images/rails_base_app/login.png" alt="Login">
 
-## Contributors
+### `/logout`
 
-Thank you to all of our contributors.  Contributors to the codebase can be found [here](https://github.com/BOWiki/BOW/graphs/contributors).
+**Request**: includes `Authorization` and its JWT token in the header of `DELETE` request
+
+```bash
+curl -XDELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjUwMzA0MjU3LCJleHAiOjE2NTAzOTA2NTcsImp0aSI6IjM4ZmI4ZGIyLWVlMjgtNDg2Yy05YjE5LTA2NWVmYmQ0ZGE4MCJ9.p8766vPrhiGpPyV2FdShw1ljBx2Os3D1oE_rPjjAYrY" -H "Content-Type: application/json" http://localhost:3000/logout
+```
+
+**Response**: nothing
+
+<img width="400" src="https://zakaria.dev/assets/images/rails_base_app/logout.png" alt="Logout">
+
+**Note** We are using JWT to authentication, it means you can use this Rails base app as a **vanilla rails app** (Backend and frontend together), or as a **Rails API app**. both you can use.
+
+## Apps
+
+I always prefer to have two apps for my projects, one for the part that will be shown public (I called it **Website**), and the second one for the part that you are managing there (I called it **Panel**), simplify you need to log in to have access there.
+
+If you can check the codes you can see that there are two layout view files and two actions in application_controller, and two routes in routes.rb file. and for frontend there are two different entrypoints and routers ane etc.
+
+In this case, you can use different technologies and UI Component Libraries in frontend, e.g. use [Vuetify](https://vuetifyjs.com/en/) for **Website** and use [VueTailwind](https://www.vue-tailwind.com/) for **Panel**. or even (it's a bit headache) but you can use [React](https://reactjs.org/) for **Website** and use [Vue.js](https://vuejs.org/) for **Panel**.
+
+Two simple html/css templates have been added for **Website** and **Panel**. you can remove them easily
+
+![Website and Panel preview](https://zakaria.dev/repos_images/website.png)
+
+## Running app
+
+I generally recommend to use Docker only for building production images, and not for development. hence I didn't add any docker configs for development.
+
+To run the app locally, you need to have [Ruby](https://www.ruby-lang.org/en/) and [PostgreSQL](https://www.postgresql.org/) installed on your machine.
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/zakariaf/rails-base-app ebwiki
+cd ebwiki
+```
+
+### 2. Install dependencies
+
+```bash
+bundle install # install ruby gems
+yarn install # install node packages
+```
+
+### 3. Copy .env to .env.local
+
+- `.env` file is used for production
+- `.env.local` will be used for development
+- `.env.test` will be used for test
+
+Usually, you only need to change the Postgres variables in `.env.local` file to match your local database.
+
+```bash
+cp .env .env.local
+cp .env .env.test
+```
+
+### 4. Setup database
+
+```bash
+bundle exec rails db:setup
+```
+
+### 5. Run the app
+
+```bash
+bin/dev
+```
+
+## Docker
+
+As I mentioned before, We use Docker only for building production images. We are using [Docker Compose](https://docs.docker.com/compose/) to build the images and run the containers. You can check the `docker-compose.yml` file to see the configurations. and you can check the `Dockerfile` file to see the configurations for the production image.
+
+Dockerize was done by these two MRs:
+
+- [Dockerize the app](https://github.com/zakariaf/rails-base-app/pull/23)
+- [Dockerize the app (2)](https://github.com/zakariaf/rails-base-app/pull/32)
+
+**NOTE** Documentation about docker is not complete yet, I will update it soon.
+
+### 1. Build the images
+
+```bash
+docker compose build
+```
+
+## Renaming the project
+
+This app is named `ebwiki` and the module is named `EBWiki`. But for sure you would like to have a different name.
+
+The only thing you need to do is just running the `bin/rename-project yourappname YouAppName` script.
+as you see this script needs 2 arguments:
+
+- First argument: The lower case version of your app's name, such as `myapp` or `my_app` depending on your preference.
+- Second argument: Used for your app's module name. such as `MyApp`
+
+`bin/rename-project myapp MyApp`
+
+This script is going to:
+
+- Perform a number of find / replace actions
+- Initialize a new git repo for you (Optionally)
+
+After that, If you're happy with your new project's name you can delete this
+script.
+
+Or you can keep it around in case you decide to change your project's
+name later on.
+
+I got the rename script idea and codes from [Docker Rails Example](https://github.com/nickjj/docker-rails-example#running-a-script-to-automate-renaming-the-project) project with some small changes.
+
+## How to contribute
+
+I'm happy to accept any contributions you might want to make. Please follow these steps:
+
+1. Fork the repo
+2. Create a new branch
+3. Make your changes
+4. Run the test suite
+5. Submit a pull request
 
 ## License
 
-EBWiki is using the [Apache 2.0 License](LICENSE.txt).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+## TODO
+
+- [ ] automat deploy process using capistrano
+- [ ] Add cypress (e2e testing)

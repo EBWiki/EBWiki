@@ -1,8 +1,0 @@
-<!-- Meta Tag Information -->
-<% content_for :meta_title, "Editing #{@this_case.title} on EBWiki" %>
-<% content_for :meta_description, "#{@this_case.blurb}" %>
-<% content_for :meta_keywords, "#{@this_case.subjects.first&.name} police violence people color" %>
-
-<h1>Editing Case <%= @this_case.title %></h1>
-
-<%= render 'form' %>

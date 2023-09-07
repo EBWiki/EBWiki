@@ -1,10 +1,15 @@
-development:
-  adapter: async
-
-test:
-  adapter: async
-
-production:
+default: &default
   adapter: redis
   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: eb_wiki_production
+
+development:
+  <<: *default
+  channel_prefix: <%= ENV.fetch("REDIS_CHANNEL_PREFIX") { "ebwiki_development" } %>
+
+test:
+  <<: *default
+  adapter: test
+
+production:
+  <<: *default
+  channel_prefix: <%= ENV.fetch("REDIS_CHANNEL_PREFIX") { "ebwiki_production" } %>

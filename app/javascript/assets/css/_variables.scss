@@ -1,0 +1,29 @@
+//
+// This file will be added to all scss files automatically, you don't need to import this in other files
+// Check vite.config.ts#css-preprocessorOptions
+//
+
+//---------------------------------
+//        Color variables
+//---------------------------------
+
+$white: #ffffff;
+
+$lightest-gray: #f1f1f1;
+$light-gray: #dcdcdc;
+$gray: #9aa7b0;
+
+$red: #c63040;
+$orange: #fa9334;
+$green: #007575;
+$dark: #333333;
+
+/* Color
+-------------------------- */
+$--color-text-primary: $gray;
+
+$--color-app-background: $lightest-gray;
+$--color-menu-background: $white;
+
+$--color-menu-item: $--color-text-primary;
+$--color-menu-item-hover: $orange;
