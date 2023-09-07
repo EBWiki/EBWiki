@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV["GOOGLE_ANALYTICS_MEASUREMENT_ID"] %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', "<%= ENV["GOOGLE_ANALYTICS_MEASUREMENT_ID"] %>");
+    </script>
     <%# These elements must come first to consistently ensure proper document rendering. %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -30,31 +39,11 @@
     <%= javascript_include_tag Ckeditor.cdn_url %>
     <%= csrf_meta_tags %>
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','<%= ENV["GOOGLE_TAG_MANAGER_ID"] %>');</script>
-    <!-- End Google Tag Manager -->
-
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js" async></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js" async></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-clustering.js" async></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" async></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" async></script>
-    <script type="text/javascript" async>window.ENV_VARIABLE = 'https://<%= request.host %>'</script>
-    <script type="text/javascript" src='https://developer.here.com/javascript/src/iframeheight.js' async></script>
-    <script type="text/javascript" async>window.API_KEY="<%= ENV['HERE_MAPS_API_KEY'] %>"</script>
     <%= render 'application/favicon' %>
 
     <meta name="cf-2fa-verify" content="2y1jaIA9tjJ9xyHE">
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= ENV["GOOGLE_TAG_MANAGER_ID"] %>"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <div class="container">
       <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
         <div class="alert alert-<%= key %>">
@@ -74,5 +63,9 @@
       </div>
     </div>
     <%= render 'layouts/footer' %>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= ENV["GOOGLE_TAG_MANAGER_ID"] %>"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
   </body>
 </html>
