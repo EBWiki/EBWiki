@@ -5,25 +5,8 @@ default: &default
 
 development:
   <<: *default
-  host: localhost
+  host: db
   port: 5432
   database: blackops_development
   username: blackops
   password: <%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>
-
-test: &test
-  <<: *default
-  database: blackops_test
-  host: localhost
-  port: 5432
-  username: blackops
-  password: <%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>
-
-production:
-  <<: *default
-  database: blackops_production
-  username: blackops
-  password: <%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>
-
-cucumber:
-  <<: *test

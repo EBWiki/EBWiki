@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/usr/src/ebwiki"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+    environment:
+      - BLACKOPS_DATABASE_PASSWORD=ebwiki
+    command: ./dev_provisions/entrypoint.sh
+  
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: blackops
+      POSTGRES_PASSWORD: ebwiki
+      POSTGRES_DB: blackops_development
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis
+    volumes:
+      - rsdata:/data
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.14
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+
+volumes:
+  pgdata:
+    driver: local
+  esdata:
+    driver: local
+  rsdata:
+    driver: local
