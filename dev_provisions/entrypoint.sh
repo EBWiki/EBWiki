@@ -24,7 +24,7 @@ bundle exec rake db:drop db:create db:structure:load db:seed db:migrate
 
 # Start fakes3
 echo "## Starting fakes3"
-# fakes3 --root ${FAKE_S3_HOME} --port ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
+fakes3 --root ${FAKE_S3_HOME} --port ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
 sleep 2
 
 # Display environment summary

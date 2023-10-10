@@ -6,7 +6,7 @@ RUN apt-get update -qq && apt-get install -y nodejs npm postgresql-client && npm
 WORKDIR /usr/src/ebwiki
 
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install
+RUN gem install bundler && bundle install && gem install fakes3
 
 COPY . .
 
