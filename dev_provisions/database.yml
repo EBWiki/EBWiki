@@ -10,3 +10,11 @@ development:
   database: blackops_development
   username: blackops
   password: <%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>
+
+test:
+  <<: *default
+  host: db
+  port: 5432
+  database: blackops_development
+  username: blackops
+  password: <%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>

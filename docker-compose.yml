@@ -1,9 +1,10 @@
 version: '3.8'
 services:
   web:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
+    container_name: ebwiki
     volumes:
       - ".:/usr/src/ebwiki"
     ports:
@@ -15,23 +16,26 @@ services:
     environment:
       - BLACKOPS_DATABASE_PASSWORD=ebwiki
     command: ./dev_provisions/entrypoint.sh
-  
+
   db:
     image: postgres:12
+    container_name: postgres
     environment:
       POSTGRES_USER: blackops
       POSTGRES_PASSWORD: ebwiki
       POSTGRES_DB: blackops_development
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./dev_provisions/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
     image: redis
+    container_name: redis
     volumes:
       - rsdata:/data
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.14
+    container_name: elasticsearch
     volumes:
       - esdata:/usr/share/elasticsearch/data
     environment:

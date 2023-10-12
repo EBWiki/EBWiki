@@ -3,6 +3,8 @@ source ./dev_provisions/environment.sh
 
 cp -v ./dev_provisions/database.yml ./config
 
+rm -f tmp/pids/server.pid
+
 # Wait for Elasticsearch to start
 echo -n "## Waiting for elasticsearch..."
 until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://elasticsearch:9200) -eq 200 ];
