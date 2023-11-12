@@ -1,4 +1,4 @@
-class AddDrowningToCausesOfDeath < ActiveRecord::Migration[5.0]
+class AddDrowningToCausesOfDeath < ActiveRecord::Migration[5.2][5.0]
   disable_ddl_transaction!
   def change
     execute <<-SQL
