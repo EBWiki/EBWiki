@@ -15,7 +15,7 @@ end
 #
 # Table name: subjects
 #
-#  id           :integer          not null, primary key
+#  id           :bigint           not null, primary key
 #  age          :integer
 #  homeless     :boolean
 #  mentally_ill :boolean

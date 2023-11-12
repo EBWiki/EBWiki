@@ -84,7 +84,7 @@ end
 #
 # Table name: agencies
 #
-#  id             :integer          not null, primary key
+#  id             :bigint           not null, primary key
 #  city           :string
 #  email          :string
 #  jurisdiction   :enum             default("unknown")

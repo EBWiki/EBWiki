@@ -10,7 +10,7 @@ end
 #
 # Table name: ethnicities
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  slug       :string
 #  title      :string
 #  created_at :datetime         not null

@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
-gem 'rails', '~> 5.2.8.1'
+gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
@@ -51,6 +51,8 @@ gem 'montrose', '~> 0.12'
 gem 'connection_pool'
 # JSON renderer for Rails
 gem 'jb', '~> 0.7.1'
+
+gem 'activerecord-postgres_enum'
 
 group :development, :test do
   gem 'factory_bot_rails', '~> 6.1'

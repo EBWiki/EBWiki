@@ -23,7 +23,7 @@ Dir[Rails.root.join('lib/**/*.rb')].sort.each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
-ActiveRecord::Migration[5.2].maintain_test_schema!
+ActiveRecord::Migration.maintain_test_schema!
 
 FactoryBot.use_parent_strategy = false
 
