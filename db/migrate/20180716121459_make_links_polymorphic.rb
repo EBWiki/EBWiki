@@ -1,4 +1,4 @@
-class MakeLinksPolymorphic < ActiveRecord::Migration
+class MakeLinksPolymorphic < ActiveRecord::Migration[5.2]
   def up
     rename_column :links, :case_id, :linkable_id
     add_column :links, :linkable_type, :string
