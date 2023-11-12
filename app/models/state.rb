@@ -12,7 +12,7 @@ end
 #
 # Table name: states
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  ansi_code  :string
 #  iso        :string
 #  name       :string

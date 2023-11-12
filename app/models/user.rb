@@ -57,7 +57,7 @@ end
 #
 # Table name: users
 #
-#  id                     :integer          not null, primary key
+#  id                     :bigint           not null, primary key
 #  admin                  :boolean          default(FALSE)
 #  analyst                :boolean          default(FALSE)
 #  city                   :string

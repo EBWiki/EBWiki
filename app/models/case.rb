@@ -136,7 +136,7 @@ end
 #
 # Table name: cases
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint           not null, primary key
 #  address            :string
 #  age                :integer
 #  avatar             :string
