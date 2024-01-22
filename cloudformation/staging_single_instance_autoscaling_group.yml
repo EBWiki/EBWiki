@@ -1,0 +1,570 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'Cloudformation for provisioning services required to setup the CI/CD using GitHub actions and CodeDeploy.
+**WARNING** This template creates EC2,VPC and related resources. You will be billed for the AWS resources used if you create a stack from this template'
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "VPC Configurations"
+        Parameters:
+          - VpcCIDR
+          - PublicSubnet1CIDR
+          - PublicSubnet2CIDR
+          - PrivateSubnet1CIDR
+          - PrivateSubnet2CIDR
+      - Label:
+          default: "Autoscaling configurations"
+        Parameters:
+          - ImageId
+          - InstanceType
+          - AutoScalingGroupMinSize
+          - AutoScalingGroupMaxSize
+          - AutoScalingGroupDesiredCapacity
+      - Label:
+          default: "Github configurations"
+        Parameters:
+          - GithubRepoName
+          - ThumbprintList
+Parameters:
+  VpcCIDR:
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Type: String
+    Default: 10.192.0.0/16
+
+  PublicSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Type: String
+    Default: 10.192.10.0/24
+
+  PublicSubnet2CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
+    Type: String
+    Default: 10.192.11.0/24
+
+  PrivateSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
+    Type: String
+    Default: 10.192.20.0/24
+
+  PrivateSubnet2CIDR:
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone
+    Type: String
+    Default: 10.192.21.0/24
+
+  ImageId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: 'ami-00874d747dde814fa'
+    Description: The Amazon EC2 Linux instance Amazon Machine Image (AMI), based upon the existing production image.
+  InstanceType:
+    Type: String
+    Default: t2.medium
+    Description: The type of Amazon EC2 Linux instances that will be launched for this project.
+  AutoScalingGroupMinSize:
+    Type: Number
+    Default: 1
+    Description: Enter the Min Size for the ASG
+  AutoScalingGroupMaxSize:
+    Type: Number
+    Default: 1
+    Description: Enter the Max Size for the ASG
+  AutoScalingGroupDesiredCapacity:
+    Type: Number
+    Default: 1
+    Description: Enter the Max Size for the ASG
+  ThumbprintList:
+    Type: String
+    Default: 6938fd4d98bab03faadb97b34396831e3780aea1
+    Description: A thumbprint of an Open ID Connector is a SHA1 hash of the public certificate of the host
+  GithubRepoName:
+    Type: String
+    Description: GitHub repository name Ex-TestUser/TestCodeDeploy
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PublicSubnet1CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: Public Subnet (AZ1)
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 1, !GetAZs  '' ]
+      CidrBlock: !Ref PublicSubnet2CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value:  Public Subnet (AZ2)
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs  '' ]
+      CidrBlock: !Ref PrivateSubnet1CIDR
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: Private Subnet (AZ1)
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 1, !GetAZs  '' ]
+      CidrBlock: !Ref PrivateSubnet2CIDR
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: Private Subnet (AZ2)
+
+  NatGateway1EIP:
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      Domain: vpc
+
+  NatGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGateway1EIP.AllocationId
+      SubnetId: !Ref PublicSubnet1
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet2
+
+
+  PrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  DefaultPrivateRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway1
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      SubnetId: !Ref PrivateSubnet1
+
+  PrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  DefaultPrivateRoute2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway1
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      SubnetId: !Ref PrivateSubnet2
+
+  WebappRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      RoleName: WebappRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+                - "codedeploy.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
+      Policies:
+        -
+          PolicyName: "allow-webapp-deployment-bucket-policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - "s3:getObject"
+                Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
+  IDCProvider:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: "https://token.actions.githubusercontent.com"
+      ClientIdList:
+        - "sts.amazonaws.com"
+      ThumbprintList:
+        - !Ref ThumbprintList
+  GitHubIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      RoleName: CodeDeployRoleforGitHub
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: !Ref IDCProvider
+            Condition:
+              StringLike:
+                token.actions.githubusercontent.com:sub: !Sub repo:${GithubRepoName}:*
+      MaxSessionDuration: 3600
+      Description: "Github Actions role"
+      Policies:
+
+        - PolicyName: 'CodeDeployRoleforGitHub-policy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'codedeploy:Get*'
+                  - 'codedeploy:Batch*'
+                  - 'codedeploy:CreateDeployment'
+                  - 'codedeploy:RegisterApplicationRevision'
+                  - 'codedeploy:List*'
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
+              - Effect: Allow
+                Action:
+                  - 's3:putObject'
+                Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
+
+  WebappApplication:
+    Type: AWS::CodeDeploy::Application
+    Properties:
+      ApplicationName: CodeDeployAppNameWithASG
+  WebappDeploymentGroup:
+    Type: AWS::CodeDeploy::DeploymentGroup
+    Properties:
+      ApplicationName: !Ref WebappApplication
+      ServiceRoleArn: !GetAtt CodeDeployRole.Arn
+      DeploymentConfigName: CodeDeployDefault.OneAtATime
+      DeploymentGroupName: CodeDeployGroupName
+      AutoRollbackConfiguration:
+        Enabled: true
+        Events:
+          - DEPLOYMENT_FAILURE
+          - DEPLOYMENT_STOP_ON_REQUEST
+
+      AutoScalingGroups:
+        - Ref: AutoScalingGroup
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: allow access to ALB from internet
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: '-1'
+          CidrIp: 0.0.0.0/0
+  WebappSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: allow access to Webapp from ALB
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          SourceSecurityGroupId:
+            Ref: ALBSecurityGroup
+      SecurityGroupEgress:
+        - IpProtocol: '-1'
+          CidrIp: 0.0.0.0/0
+  WebappDeploymentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  CodeDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "codedeploy.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
+      Policies:
+        -
+          PolicyName: allow-autoscaling
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  - ec2:RunInstances
+                  - ec2:CreateTags
+                  - iam:PassRole
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
+
+  WebappInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: WebappRole
+  WebappLaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      AssociatePublicIpAddress: true
+      ImageId:
+        Ref: ImageId
+      InstanceType:
+        Ref: InstanceType
+      SecurityGroups:
+        - Ref: WebappSecurityGroup
+      IamInstanceProfile:
+        Ref: WebappInstanceProfile
+      UserData:
+        "Fn::Base64":
+          !Sub |
+          #!/bin/bash
+          # Begin environment.sh
+          export EBWIKI_SITEMAP_URL='http://bow-sitemaps.s3.amazonaws.com/sitemaps/sitemap.xml.gz'
+          export DEBIAN_FRONTEND='noninteractive'
+          export BLACKOPS_DATABASE_PASSWORD='ebwiki'
+          export DATABASE_DUMP_FILE='latest.dump'
+          export SEARCHBOX_URL='http://127.0.0.1:9200/'
+          export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64/jre'
+          export MAILCHIMP_API_KEY=''
+          export MAILCHIMP_LINK=''
+          export MAILCHIMP_LIST_ID=''
+          export CODECLIMATE_REPO_TOKEN=''
+          export AUTOBUS_SNAPSHOT_URL=''
+
+          # AWS Credentials for FakeS3.  Please don't change!
+          export AWS_ACCESS_KEY_ID='accessKey1'
+          export AWS_SECRET_KEY_ID='verySecretKey1'
+          export FAKE_S3_KEY='1908855126'
+          export FAKE_S3_PORT='4567'
+          export FAKE_S3_HOME='/tmp/fakes3'
+
+          # End environment.sh
+          chown postgres ./db/structure.sql
+          cp -v ./dev_provisions/database.yml ./config
+
+          for i in postgresql redis-server elasticsearch;
+          do
+            echo "## Starting $i"
+            service $i start
+          done
+
+
+          echo -n "## Waiting for elasticsearch..."
+          until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:9200) -eq 200 ];
+          do
+            echo -n ".";
+            sleep 1;
+          done
+          echo
+
+          echo "## Create DB user"
+          runuser -l postgres -c "psql -c \"CREATE USER blackops WITH PASSWORD '${BLACKOPS_DATABASE_PASSWORD}';\""
+          runuser -l postgres -c "psql -c \"ALTER USER blackops WITH SUPERUSER;\""
+
+          for i in create structure:load seed migrate;
+          do
+            echo "## Running rake db:${i}"
+            rake db:${i}
+          done
+
+          echo "## Starting fakes3"
+          fakes3 --root ${FAKE_S3_HOME} --port ${FAKE_S3_PORT} --license ${FAKE_S3_KEY} &
+          sleep 2
+
+          echo '#########################################################'
+          echo '##  Environment Summary'
+          echo '#########################################################'
+          echo "rails   = $(rails -v)"
+          echo "ruby    = $(ruby -v)"
+          echo "node    = $(node --version)"
+          echo "npm     = $(npm -v)"
+          echo "java    = $(java -version 2>&1 | grep version)"
+          echo "psql    = $(psql --version)"
+          echo "redis   = $(redis-server --version | awk '{print $3}')"
+          echo "elastic = $(curl -sX GET 'http://localhost:9200')"
+          echo '#########################################################'
+
+          echo "## Starting the server..."
+          bundle exec rails server -b 0.0.0.0 -e development
+
+          echo "[Unit]
+          Description=EBWiki
+          Requires=network.target
+          Requires=postgres.service
+
+          [Service]
+          Type=simple
+          User=rails
+          Group=rails
+          WorkingDirectory=/usr/src/ebwiki
+          ExecStart=/usr/bin/bash -lc 'bundle exec rails server -e production --bind 0.0.0.0 --port 80'
+          TimeoutSec=30
+          RestartSec=15s
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target" > /etc/systemd/system/rails.service
+
+          # Install Ruby
+          apt-get install ruby -y
+          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+          chmod +x ./install
+          ./install auto
+          cd /tmp
+          apt-get install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+          systemctl enable amazon-ssm-agent
+          systemctl start amazon-ssm-agent
+
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      HealthCheckType: ELB
+      HealthCheckGracePeriod: 300
+      DesiredCapacity: !Ref AutoScalingGroupDesiredCapacity
+      MinSize: !Ref AutoScalingGroupMinSize
+      MaxSize: !Ref AutoScalingGroupMaxSize
+      LaunchConfigurationName:
+        Ref: WebappLaunchConfig
+      VPCZoneIdentifier:
+        - Ref: PrivateSubnet1
+        - Ref: PrivateSubnet2
+      TargetGroupARNs:
+        - Ref: ALBTargetGroup
+      Tags:
+        - Key: Name
+          Value: webapp-example
+          PropagateAtLaunch: true
+  ALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        -
+          Type: forward
+          TargetGroupArn:
+            Ref: ALBTargetGroup
+      LoadBalancerArn:
+        Ref: ApplicationLoadBalancer
+      Port: 8080
+      Protocol: HTTP
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    DependsOn: InternetGateway
+    Properties:
+      Scheme: internet-facing
+      Subnets:
+        - Ref: PublicSubnet1
+        - Ref: PublicSubnet2
+      SecurityGroups:
+        - Ref: ALBSecurityGroup
+  ALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 10
+      UnhealthyThresholdCount: 2
+      HealthyThresholdCount: 2
+      HealthCheckPath: "/"
+      Port: 8080
+      Protocol: HTTP
+      VpcId: !Ref VPC
+Outputs:
+
+  WebappUrl:
+    Description: Webapp URL
+    Value:
+      Fn::Join:
+        - ''
+        - - http://
+          - !GetAtt ApplicationLoadBalancer.DNSName
+          - ':8080/EBWikiStaging'
+  DeploymentGroup:
+    Description: Webapp Deployment Group
+    Value: !Ref WebappDeploymentGroup
+  DeploymentBucket:
+    Description: Deployment bucket
+    Value: !Ref WebappDeploymentBucket
+  ApplicationName:
+    Description: CodeDeploy Application name
+    Value: !Ref WebappApplication
+  GithubIAMRoleArn:
+    Description: IAM role for GitHub
+    Value: !GetAtt GitHubIAMRole.Arn
