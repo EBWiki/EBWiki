@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-ruby '2.6.6'
+ruby '2.7.8'
 
 source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
-gem 'rails', '~> 6.0.6.1'
+gem 'rails', '~> 6.1.7.7'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
 # Use SCSS for stylesheets
@@ -61,7 +61,7 @@ group :development, :test do
   gem 'pre-commit', '~> 0.39'
   gem 'pry-byebug', '~> 3.9'
   gem 'rake', require: false
-  gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
+  gem 'rspec-rails'
   gem 'rubocop', '~> 1.12', require: false
   gem 'rubocop-performance', '~> 1.10', require: false
   gem 'rubocop-rails', '~> 2.9', require: false
@@ -132,7 +132,7 @@ gem 'mailboxer', '~> 0.15'
 gem 'paper_trail'
 
 # needed for paper_trail to track changes done via rails_admin views
-gem 'paper_trail-association_tracking', '~> 2.2.1'
+gem 'paper_trail-association_tracking'
 
 # pretty urls
 gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+

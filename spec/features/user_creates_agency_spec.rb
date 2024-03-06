@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Agency do
+describe Agency, type: :feature do
   feature 'User Creates new Agency' do
     let!(:user) { FactoryBot.create(:user) }
     let!(:state) { FactoryBot.create(:state) }

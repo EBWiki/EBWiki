@@ -147,7 +147,7 @@ describe 'geocoded', versioning: true do
     ohio = FactoryBot.create(:state_ohio)
 
     expect do
-      this_case.update_attributes(city: 'Worthington',
+      this_case.update(city: 'Worthington',
                                   state_id: ohio.id,
                                   address: '1867 Irving Road',
                                   zipcode: '43085')
@@ -206,7 +206,7 @@ describe 'scopes', versioning: true do
     let(:users) { create_pair(:user) }
 
     before(:each) do
-      users.each do |u| 
+      users.each do |u|
         u.follow(texas_case)
         u.follow(dc_case)
       end

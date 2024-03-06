@@ -1,11 +1,6 @@
-require "paper_trail/version"
-require "paper_trail/version_concern"
-
-PaperTrail::Rails::Engine.eager_load!
-include PaperTrail::VersionConcern
-module PaperTrail
-  class Version < ActiveRecord::Base
-    PaperTrail.config.track_associations = true
-  end
-end
-PaperTrail.config.track_associations = true
+# config/initializers/paper_trail.rb
+PaperTrail.config.enabled = true
+PaperTrail.config.has_paper_trail_defaults = {
+  on: %i[create update destroy]
+}
+PaperTrail.config.version_limit = 3
