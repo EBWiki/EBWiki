@@ -14,6 +14,9 @@ gem 'sassc-rails', '~> 2.1'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '4.2'
 
+# Connection Pooling for Redis
+gem 'connection_pool'
+
 # Webpacker
 gem 'webpacker'
 

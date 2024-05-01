@@ -3,14 +3,9 @@
 # Fetches the cases using Redis cache
 module MapsHelper
   def fetch_cases
-    cases = $redis.get('cases')
-
-    if cases.blank?
-      case_locations = location_data(Case.with_location)
-      $redis.set('cases', case_locations)
-      $redis.expire('cases', 2.hour.to_i)
+    Rails.cache.fetch("#{cache_key_with_verison}/case_locations", expires_in: 12.hours) do
+      location_data(Case.with_location)
     end
-    cases
   end
 
   private

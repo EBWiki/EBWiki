@@ -686,6 +686,7 @@ DEPENDENCIES
   ckeditor (~> 5.1)
   cloudflare-rails (~> 2.0)
   cocoon (~> 1.2)
+  connection_pool
   cucumber-rails (~> 1.6)
   database_cleaner-active_record (~> 1.8.0)
   derailed_benchmarks (~> 1.8)
