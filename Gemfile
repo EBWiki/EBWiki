@@ -58,11 +58,11 @@ gem 'montrose', '~> 0.12'
 gem 'jb', '~> 0.7.1'
 
 group :development, :test do
+  gem 'debug', '>= 1.0.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker', '~> 2.14.0'
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
-  gem 'pry-byebug', '~> 3.9'
   gem 'rake', require: false
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.12', require: false
@@ -126,7 +126,7 @@ gem 'social-share-button', '~> 1.2'
 gem 'select2-rails', '~> 4.0'
 
 # follower functionality
-gem 'acts_as_follower', github: 'tcocca/acts_as_follower'
+gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
 
 # messaging
 gem 'mailboxer', '~> 0.15'
