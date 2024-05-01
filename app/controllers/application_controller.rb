@@ -2,7 +2,7 @@
 
 # application controller
 class ApplicationController < ActionController::Base
-  include Pundit
+  include Pundit::Authorization
 
   before_action :store_user_location!, if: :storable_location?
 
