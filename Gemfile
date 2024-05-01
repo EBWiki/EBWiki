@@ -144,7 +144,7 @@ gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
 
 gem 'hiredis', '~> 0.6'
-gem 'redis', '~> 4.2'
+gem 'redis', '~> 5'
 gem 'redis-namespace', '~> 1.8'
 gem 'redis-rails', '~> 5.0'
 gem 'redis-store', '~> 1.9'
