@@ -1,0 +1,103 @@
+# Exported from Render on 2024-07-06T23:50:03Z
+services:
+  - type: web
+    name: EBWiki
+    runtime: ruby
+    repo: https://github.com/EBWiki/EBWiki
+    plan: starter
+    envVars:
+      - key: STAGING_USERNAME
+        sync: false
+      - key: STAGING_PASSWORD
+        sync: false
+      - key: WEB_CONCURRENCY
+        sync: false
+      - key: TWITTER_CONSUMER_SECRET
+        sync: false
+      - key: TWITTER_CONSUMER_KEY
+        sync: false
+      - key: TWITTER_ACCESS_TOKEN
+        sync: false
+      - key: TWITTER_ACCESS_SECRET
+        sync: false
+      - key: SENDGRID_USERNAME
+        sync: false
+      - key: SENDGRID_PASSWORD
+        sync: false
+      - key: SECRET_KEY_BASE
+        sync: false
+      - key: SEARCHBOX_URL
+        sync: false
+      - key: SEARCHBOX_SSL_URL
+        sync: false
+      - key: S3_BUCKET
+        sync: false
+      - key: ROLLBAR_ACCESS_TOKEN
+        sync: false
+      - key: REDISTOGO_URL
+        sync: false
+      - key: RECAPTCHA_SITE_KEY
+        sync: false
+      - key: RECAPTCHA_SECRET_KEY
+        sync: false
+      - key: RAILS_SERVE_STATIC_FILES
+        sync: false
+      - key: RAILS_MAX_THREADS
+        sync: false
+      - key: RAILS_ENV
+        sync: false
+      - key: RACK_ENV
+        sync: false
+      - key: NEW_RELIC_LOG
+        sync: false
+      - key: NEW_RELIC_LICENSE_KEY
+        sync: false
+      - key: NEW_RELIC_APP_NAME
+        sync: false
+      - key: MIN_THREADS
+        sync: false
+      - key: MAILCHIMP_LIST_ID
+        sync: false
+      - key: MAILCHIMP_LINK
+        sync: false
+      - key: MAILCHIMP_API_KEY
+        sync: false
+      - key: LOG_LEVEL
+        sync: false
+      - key: LANG
+        sync: false
+      - key: HOST
+        sync: false
+      - key: HERE_MAPS_API_KEY
+        sync: false
+      - key: GOOGLE_TAG_MANAGER_ID
+        sync: false
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: GA_MEASUREMENT_ID
+        sync: false
+      - key: FOG_PROVIDER
+        sync: false
+      - key: FOG_DIRECTORY
+        sync: false
+      - key: ELASTICSEARCH_URL
+        sync: false
+      - key: EBWIKI_SITEMAP_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: AWS_SECRET_KEY_ID
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AUTOBUS_SNAPSHOT_URL
+        sync: false
+      - key: API_KEY
+        sync: false
+    region: oregon
+    buildCommand: bundle install; bundle exec rake assets:precompile; bundle exec rake
+      assets:clean;
+    startCommand: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}
+    domains:
+      - staging-render.ebwiki.org
+version: "1"
