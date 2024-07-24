@@ -8,9 +8,6 @@ name: Publish Docker Image
 
 on:
   workflow_dispatch:
-    branches:
-      - main
-      - feature/*
   push:
     branches:
       - main

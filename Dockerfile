@@ -1,4 +1,4 @@
-FROM ruby:2.7.8
+FROM ruby:ruby:3.3.4-bullseye
 
 COPY Gemfile Gemfile.lock /
 COPY dev_provisions/environment.sh /etc/profile.d
