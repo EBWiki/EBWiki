@@ -6,26 +6,28 @@ COPY dev_provisions/environment.sh /etc/profile.d
 RUN gem install bundler -v 2.4.22
 RUN bundle install
 RUN gem install fakes3
-RUN apt-get update -qq && apt-get install -qq --no-install-recommends lsb-release apt-transport-https && \
-    wget -q https://artifacts.elastic.co/GPG-KEY-elasticsearch && \
-    wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
-    apt-key add GPG-KEY-elasticsearch && \
-    apt-key add ACCC4CF8.asc && \
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" > /etc/apt/sources.list.d/elastic-6.x.list && \
+
+RUN apt-get update -qq && \
+    apt-get install -qq --no-install-recommends lsb-release apt-transport-https && \
+    curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | gpg --dearmor -o /usr/share/keyrings/elastic.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/elastic.gpg] https://artifacts.elastic.co/packages/7.x/apt stable main" | \
+    tee -a /etc/apt/sources.list.d/elastic-7.x.list && \
     apt-get update -qq && \
-    apt-get install -qq --no-install-recommends \
+    apt-get install -qq --no-install-recommends vim \
         apt-utils \
         build-essential \
         libpq-dev \
         nodejs \
         npm \
         default-jre \
-        postgresql-12  \
-        postgresql-client-12  \
+        postgresql \
+        postgresql-contrib \
+        postgresql-client \
         redis-server && \
     apt-get install -qq --no-install-recommends elasticsearch && \
-    mkdir /usr/src/ebwiki
+    mkdir /usr/src/ebwiki && \
+    update-rc.d elasticsearch defaults 95 10 && \
+    update-rc.d postgresql defaults 95 10
 
 WORKDIR /usr/src/ebwiki
 COPY . /usr/src/ebwiki
