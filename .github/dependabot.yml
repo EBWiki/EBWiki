@@ -6,7 +6,7 @@ updates:
       interval: "weekly"
     # Raise pull requests for version updates
     # to pip against the `develop` branch
-    target-branch: "update_rails_6_0"
+    target-branch: "update_to_rails_6_1"
     # Labels on pull requests for version updates only
 
   - package-ecosystem: "npm"
