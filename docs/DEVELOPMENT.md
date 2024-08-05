@@ -7,6 +7,7 @@ you'll find links, notes, HOWTOs and other useful information about developing f
 # Table of Contents
 * [General Timeline for Contributing to EBWiki](#general-timeline-for-contributing-to-ebwiki)
 * [Getting EBWiki Up and Running Locally](#getting-ebwiki-up-and-running-locally)
+* [Deploying Changes](#deploying-changes)
 * [Restoring Local Database from Production Backup](#restoring-local-database-from-production-backup)
 * [Third-Party Services](#third-party-services)
 * [Recaptcha](#recaptcha)
@@ -39,7 +40,12 @@ If everything looks great on staging, then we'll push the code to production wit
 There are a number of guides available for running EBWiki in your local environment:
 * [Running locally using a docker container](SETUP_LOCALLY.md)
 * [Running locally using a text editor and terminal](SETUP_LOCALLY_FULLSTACK.md)
-* [TODO: Running EBWiki in a GitHub codespace](CODESPACE (WIP))
+
+## Deploying Changes
+
+As we're migrating EBWiki over to render.com, we've also changed the deployment process. To deploy changes to staging,
+make a pull request with render-staging as the base branch. An approved pull request will automatically deploy to the
+Render.com staging instance.
 
 ## Restoring Local Database from Production Backup
 
