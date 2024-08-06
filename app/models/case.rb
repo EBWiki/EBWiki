@@ -43,9 +43,6 @@ class Case < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
 
-  # Elasticsearch Gem
-  searchkick _all: false, default_fields: ['*']
-
   # Model Validations
   sanitize :title, :city, :address, :zipcode, :overview, :community_action, :country, :litigation,
            :summary, :blurb
@@ -62,7 +59,7 @@ class Case < ApplicationRecord
   # }
   validates :summary, presence: {
     message: 'Please use the last field at the bottom of this form ' \
-      'to summarize your edits to the case.'
+             'to summarize your edits to the case.'
   }
 
   validates_presence_of :overview, message: 'An overview of the case is required'

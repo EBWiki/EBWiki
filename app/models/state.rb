@@ -5,7 +5,6 @@ class State < ApplicationRecord
   friendly_id :name, use: :slugged
   has_many :cases
   has_many :agencies
-  searchkick
 end
 
 # == Schema Information

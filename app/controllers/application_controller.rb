@@ -10,7 +10,10 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   if Rails.env.staging? || ENV['HOST'] == 'ebwiki-newstack.herokuapp.com'
-    http_basic_authenticate_with name: ENV['STAGING_USERNAME'], password: ENV['STAGING_PASSWORD']
+    http_basic_authenticate_with name: ENV.fetch('STAGING_USERNAME', nil),
+                                 password: ENV.fetch(
+                                   'STAGING_PASSWORD', nil
+                                 )
   end
 
   # Prevent CSRF attacks by raising an exception.
@@ -18,7 +21,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception, prepend: true
   before_action :set_paper_trail_whodunnit
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :state_objects
   before_action :set_paper_trail_whodunnit
 
   helper_method :mailbox, :conversation

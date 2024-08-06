@@ -6,10 +6,11 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'active_median', '~> 0.2'
+gem 'activerecord-session_store', '~> 2.0'
 gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
 gem 'bootsnap', '~> 1.7', require: false
-gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
+gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bullet', '~> 6.1'
 gem 'carrierwave', '~> 2.1'
 gem 'carrierwave-imageoptimizer', '~> 1.6'
@@ -24,8 +25,8 @@ gem 'elasticsearch-transport'
 gem 'fog-aws', '~> 3.10'
 gem 'friendly_id', '~> 5.2'
 gem 'galerts', '~> 1.1'
-gem 'gibbon', '~> 3.4'
 gem 'geocoder', '~> 1.6'
+gem 'gibbon', '~> 3.4'
 gem 'groupdate', '~> 5.0'
 gem 'hightop', '~> 0.2'
 gem 'hiredis', '~> 0.6'
@@ -42,25 +43,25 @@ gem 'newrelic_rpm', '~> 7.0'
 gem 'paper_trail'
 gem 'paper_trail-association_tracking'
 gem 'pg', '~> 1.2'
-gem 'pundit', '~> 2.1'
 gem 'puma', '~> 5.6'
+gem 'pundit', '~> 2.1'
 gem 'rack', '~> 2.2'
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 gem 'rack-host-redirect', '~> 1.3'
 gem 'rails', '~> 6.1.7.7'
 gem 'rails_admin', '~> 2.0'
+gem 'recaptcha', '~> 5.8'
 gem 'redis', '~> 5'
 gem 'redis-namespace', '~> 1.8'
 gem 'redis-rails', '~> 5.0'
 gem 'redis-store', '~> 1.9'
-gem 'recaptcha', '~> 5.8'
 gem 'rollbar', '~> 3.0'
 gem 'rollout', '~> 2.5'
 gem 'sassc-rails', '~> 2.1'
 gem 'searchkick', '~> 3.1'
 gem 'select2-rails', '~> 4.0'
-gem 'simple_form', '5.0'
 gem 'simplecov', '~> 0.19.0'
+gem 'simple_form', '5.0'
 gem 'sitemap_generator', '~> 6.1'
 gem 'social-share-button', '~> 1.2'
 gem 'sprockets', '~> 3.7.2'
@@ -72,7 +73,7 @@ gem 'webpacker'
 group :development, :test do
   gem 'debug', '>= 1.0.0'
   gem 'factory_bot_rails', '~> 6.2'
-  gem 'faker', '~> 2.14.0'
+  gem 'faker'
   gem 'mock_redis', '~> 0.26'
   gem 'pre-commit', '~> 0.39'
   gem 'rake', require: false
@@ -81,7 +82,6 @@ group :development, :test do
   gem 'rubocop-performance', '~> 1.10', require: false
   gem 'rubocop-rails', '> 2.9', require: false
   gem 'standard', '>= 1.35.1', require: false
-
 end
 
 group :development do
@@ -106,6 +106,4 @@ end
 
 group :production do
   gem 'cloudflare-rails', '~> 2.0'
-
-  gem 'activerecord-session_store', '~> 2.0'
 end
