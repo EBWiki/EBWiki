@@ -6,12 +6,12 @@ module UserMailerHelper
 
   SUBSCRIBER_MESSAGE = I18n.t 'notifier.subscribe_message'
 
-  def subscriber_call_to_action
-    subscriber_link_copy = 'Subscribe to our newsletter as well'
-    subscriber_link = Rails.application.routes.url_helpers.root_url + '?subscribe=true'
-    "#{subscriber_link_copy} (#{subscriber_link}) for periodic" \
-    'general updates and commentaries on this issue.'
-  end
+  subscriber_link_copy = 'Subscribe to our newsletter as well'
+  subscriber_link = ActionController::Base.helpers.link_to(
+    subscriber_link_copy, ENV.fetch('MAILCHIMP_LINK', nil)
+  )
+  SUBSCRIBER_CALL_TO_ACTION = "#{subscriber_link} for periodic" \
+                              'general updates and commentaries on this issue.'
 
   def create_welcome_email_message(user, is_subscribed)
     followed_cases = user.all_following.count
@@ -29,6 +29,6 @@ module UserMailerHelper
   def subscribe_message(is_subscribed)
     return SUBSCRIBER_MESSAGE if is_subscribed
 
-    subscriber_call_to_action
+    SUBSCRIBER_CALL_TO_ACTION
   end
 end
