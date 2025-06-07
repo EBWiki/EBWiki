@@ -26,6 +26,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     @comment = Comment.new
     @subjects = @this_case.subjects
     @follow_id = current_user.follows.find_by_followable_id(@this_case.id) if user_signed_in?
+    @state_objects = SortCollectionOrdinally.call(collection: State.all)
     # Check to make sure all required elements are here
     unless @this_case.present? # rubocop:todo Style/GuardClause
       flash[:error] = 'There was an error showing this case. Please try again later'
