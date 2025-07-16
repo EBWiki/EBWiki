@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddStabbingToCausesOfDeath < ActiveRecord::Migration[5.0]
+class AddStabbingToCausesOfDeath < ActiveRecord::Migration[5.2][5.0]
   disable_ddl_transaction!
   def change
     execute <<-SQL

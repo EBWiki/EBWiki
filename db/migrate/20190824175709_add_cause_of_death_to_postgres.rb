@@ -1,4 +1,4 @@
-class AddCauseOfDeathToPostgres < ActiveRecord::Migration[5.0]
+class AddCauseOfDeathToPostgres < ActiveRecord::Migration[5.2][5.0]
   def up
     execute <<-SQL
       CREATE TYPE cause_of_death AS ENUM ('choking', 'shooting', 'beating', 'taser', 'vehicular', 'medical neglect', 'response to medical emergency', 'suicide')

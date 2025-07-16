@@ -1,4 +1,4 @@
-class CreateNewCalendarEvents < ActiveRecord::Migration[5.2]
+class CreateNewCalendarEvents < ActiveRecord::Migration[5.2][5.2]
   def change
     create_table :calendar_events do |t|
       t.string :title,       null: false

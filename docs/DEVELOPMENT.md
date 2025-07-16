@@ -1,6 +1,8 @@
 # EBWiki.org Development Documentation
 
-Welcome to our developer documentation for EBWiki!  Thank you for committing to work with us on tackling police brutality, racial bias in criminal justice systems, and other related topics through EBWiki. Below, you'll find links, notes, HOWTOs and other useful information about developing for EBWiki.org.
+Welcome to our developer documentation for EBWiki!  Thank you for committing to work with us on tackling
+police brutality, racial bias in criminal justice systems, and other related topics through EBWiki. Below
+you'll find links, notes, HOWTOs and other useful information about developing for EBWiki.org.
 
 # Table of Contents
 * [General Timeline for Contributing to EBWiki](#general-timeline-for-contributing-to-ebwiki)
@@ -12,7 +14,8 @@ Welcome to our developer documentation for EBWiki!  Thank you for committing to 
 
 ## General Timeline for Contributing to EBWiki
 
-Here's a general overview of the process for contributing to EBWiki, outlining specifically what you do and what we do:
+Here's a general overview of the process for contributing to EBWiki, outlining specifically what you do and
+what we do:
 
 1. **You: Choose an issue to work on**
 You're welcome to any issue that isn't assigned to someone else.  Be sure to check if the issue is part of a milestone or project - if that's the case, then this might be one of multiple issues that need to be performed in a certain order.
@@ -36,15 +39,15 @@ If everything looks great on staging, then we'll push the code to production wit
 There are a number of guides available for running EBWiki in your local environment:
 * [Running locally using a docker container](SETUP_LOCALLY.md)
 * [Running locally using a text editor and terminal](SETUP_LOCALLY_FULLSTACK.md)
-* [Running in a Cloud9 workspace](https://github.com/EBWiki/EBWiki/wiki/Running-EB-Wiki-development-environment-on-Cloud9-(WIP))
+* [TODO: Running EBWiki in a GitHub codespace](CODESPACE (WIP))
 
 ## Restoring Local Database from Production Backup
 
 The EBWiki repo has a `db/seeds.rb` file that you can use to add some basic data to your local database for development purposes.  However, there may be times when you want your local database to have data similar to what you'd see in production (e.g, when working on analytics or search).  In that case, please leave a comment stating your need on your ticket and mention Rachel Green or Mark Nyon.
 
 ## Third-Party Services
-* Elasticsearch for searching cases
-* Postgres 11 or higher
+* Elasticsearch for searching cases. Elasticsearch < 7 due to licensing issues.
+* Postgres 12 or higher
 * Redis
 * Sumologic
 

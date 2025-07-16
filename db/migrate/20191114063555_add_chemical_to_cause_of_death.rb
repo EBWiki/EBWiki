@@ -1,4 +1,4 @@
-class AddChemicalToCauseOfDeath < ActiveRecord::Migration[5.0]
+class AddChemicalToCauseOfDeath < ActiveRecord::Migration[5.2][5.0]
   disable_ddl_transaction!
 
   def change

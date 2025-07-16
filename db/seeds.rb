@@ -249,3 +249,4 @@ p "Texas #{texas} is a #{State.count}"
 FactoryBot.create(:agency, name: 'City of Houston Police Department', city: 'Houston', state: texas)
 FactoryBot.create(:agency, name: 'City of Beaumont Police Department', city: 'Beaumont',
                            state: texas)
+

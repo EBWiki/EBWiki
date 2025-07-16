@@ -1,9 +1,11 @@
-FROM ruby:2.6.6
+FROM ruby:2.7.8
 
 COPY Gemfile Gemfile.lock /
 COPY dev_provisions/environment.sh /etc/profile.d
 
-RUN gem install bundler && bundle install && gem install fakes3
+RUN gem install bundler
+RUN bundle install
+RUN gem install fakes3
 RUN apt-get update -qq && apt-get install -qq --no-install-recommends lsb-release apt-transport-https && \
     wget -q https://artifacts.elastic.co/GPG-KEY-elasticsearch && \
     wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc && \

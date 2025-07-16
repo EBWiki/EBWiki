@@ -1,4 +1,4 @@
-class CreateRolloutHistories < ActiveRecord::Migration[5.2]
+class CreateRolloutHistories < ActiveRecord::Migration[5.2][5.2]
   def change
     create_table :rollout_histories do |t|
       t.string :rollout_name, null: false
