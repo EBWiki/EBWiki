@@ -82,6 +82,7 @@ end
 #  sign_in_count          :integer          default(0), not null
 #  slug                   :string
 #  state                  :string
+#  storytime_name         :string
 #  subscribed             :boolean
 #  twitter_url            :string
 #  created_at             :datetime

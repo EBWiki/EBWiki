@@ -21,9 +21,9 @@ module UserMailerHelper
   def follow_cases_message(followed_cases)
     return FOLLOW_CALL_TO_ACTION if followed_cases.zero?
 
-    "You have already taken the first step by following " \
+    'You have already taken the first step by following ' \
       "#{pluralize(followed_cases, 'case')} " \
-      "on EBWiki and allowing us to keep you up to date."
+      'on EBWiki and allowing us to keep you up to date.'
   end
 
   def subscribe_message(is_subscribed)
