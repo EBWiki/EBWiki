@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 ruby '3.0.0'
 
 source 'https://rubygems.org'
@@ -87,7 +86,7 @@ end
 
 group :development do
   gem 'annotate', '~> 3.1', '>= 3.1.1'
-  gem 'brakeman', '~> 5.4.1', require: false
+  gem 'brakeman', '~> 4.10', require: false
   gem 'derailed_benchmarks', '~> 1.8'
   gem 'listen', '~> 3.7'
   gem 'rails_real_favicon', '~> 0.0.13'
@@ -104,88 +103,6 @@ group :test do
   gem 'vcr', '~> 6.0'
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
-
-gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
-gem 'bootstrap-sass', '>= 3.4.1'
-gem 'devise', '4.7.3'
-gem 'simple_form', '5.0'
-
-# for aws cloud storage
-gem 'fog-aws', '~> 3.10'
-# photo resizing
-gem 'mini_magick', '~> 4.10'
-# file upload solution
-gem 'carrierwave', '~> 2.1'
-# image optimizer that works with carrierwave
-gem 'carrierwave-imageoptimizer', '~> 1.6'
-
-# CMS panel for admin
-gem 'rails_admin', '~> 2.0'
-
-gem 'geocoder', '~> 1.6'
-gem 'puma', '~> 5.6'
-
-# implement elasticsearch
-gem 'elasticsearch', '< 7.14'
-gem 'elasticsearch-transport'
-gem 'searchkick', '~> 3.1'
-
-# manage nested forms
-gem 'cocoon', '~> 1.2'
-
-# add social share buttons
-gem 'social-share-button', '~> 1.2'
-
-# select tag jquery plugin
-gem 'select2-rails', '~> 4.0'
-
-# follower functionality
-gem 'acts_as_follower', github: 'tcocca/acts_as_follower'
-
-# messaging
-gem 'mailboxer', '~> 0.15'
-
-# track changes in model objects
-gem 'paper_trail', '~> 10.3'
-
-# needed for paper_trail to track changes done via rails_admin views
-gem 'paper_trail-association_tracking', '~> 2.1'
-
-# pretty urls
-gem 'friendly_id', '~> 5.2' # NOTE: You MUST use 5.0.0 or greater for Rails 4.0+
-
-# pagination
-gem 'kaminari', '~> 1.2', '>= 1.2.1'
-
-gem 'hiredis', '~> 0.6'
-gem 'redis', '~> 4.2'
-gem 'redis-namespace', '~> 1.8'
-gem 'redis-rails', '~> 5.0'
-gem 'redis-store', '~> 1.9'
-
-# access mailchimp api
-gem 'gibbon', '~> 3.4'
-
-# Google News API help
-gem 'galerts', '~> 1.1'
-
-gem 'ckeditor', '~> 5.1'
-
-# New Relic performance monitor
-gem 'newrelic_rpm', '~> 7.0'
-
-# for HTTParty
-gem 'httparty', '~> 0.21'
-
-# for setting middleware redirects
-gem 'rack-host-redirect', '~> 1.3'
-
-# for storing cookies via active record storage to avoid 4kb limit
-gem 'activerecord-session_store', '~> 2.0'
-
-gem 'lograge', '~> 0.11'
-
-gem 'recaptcha', '~> 5.8'
 
 group :production do
   gem 'cloudflare-rails', '~> 2.0'

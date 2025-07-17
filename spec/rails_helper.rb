@@ -8,7 +8,6 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 require 'devise'
 require 'rspec/rails'
-Rails.application.load_seed
 require 'database_cleaner'
 require 'webmock/rspec'
 require 'paper_trail/frameworks/rspec'
@@ -94,6 +93,20 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+  end
+
+  # Set up @state_objects for tests that render views with the search bar
+  config.before(:each, type: :view) do
+    allow(controller).to receive(:set_state_objects).and_return(true)
+    controller.instance_variable_set(:@state_objects, [])
+  end
+
+  # Enable PaperTrail versioning for tests that need it
+  config.around(:each, versioning: true) do |example|
+    PaperTrail.enabled = true
+    PaperTrail.request.whodunnit = 'test'
+    example.run
+    PaperTrail.enabled = false
   end
 
   config.append_after(:each) do

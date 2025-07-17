@@ -11,8 +11,4 @@ namespace :pre_commit do
   task ci: [:spec]
 end
 
-task 'db:schema:load' do
-  Rake::Task['db:structure:load'].invoke
-end
-
 ENV['NEWRELIC_AGENT_ENABLED'] = 'false'

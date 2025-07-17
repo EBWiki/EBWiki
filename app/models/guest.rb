@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Guest
+class Guest
   def name
     'Guest'
   end

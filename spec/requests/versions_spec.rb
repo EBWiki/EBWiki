@@ -1,3 +1,4 @@
+
 # frozen_string_literal: true
 
 require 'rails_helper'
@@ -18,6 +19,8 @@ RSpec.describe 'Versions', type: :request, versioning: true do
 
     context 'reverts the version of the case' do
       it 'redirects to the previous page' do
+        puts "DEBUG: Status = #{response.status}"
+        puts "DEBUG: Location = #{response.location}"
         expect(response).to redirect_to("/cases/#{this_case.slug}")
       end
     end
@@ -33,6 +36,8 @@ RSpec.describe 'Versions', type: :request, versioning: true do
       end
 
       it 'redirects to the previous page' do
+        puts "DEBUG: Status = #{response.status}"
+        puts "DEBUG: Location = #{response.location}"
         expect(response).to redirect_to("/cases/#{this_case.slug}")
       end
     end

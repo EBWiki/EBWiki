@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
   before_action :store_user_location!, if: :storable_location?
+  before_action :set_state_objects
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -37,15 +38,15 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def set_state_objects
+    @state_objects ||= SortCollectionOrdinally.call(collection: State.all)
+  end
+
   def log_invalid_token_attempt(exception)
     warning_message = 'Invalid Auth Token error'
     Rails.logger.warn warning_message
     Rollbar.error(exception)
     redirect_to '/'
-  end
-
-  def state_objects
-    @state_objects ||= SortCollectionOrdinally.call(collection: State.all)
   end
 
   def storable_location?
