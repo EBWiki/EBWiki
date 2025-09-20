@@ -38,7 +38,7 @@
         <p class="lead text-muted">
           <%= @this_case.city %>, <%= @this_case.state.name %>
           <br />
-          <%= @this_case.date.to_s(:long) %>
+          <%= @this_case.date.to_formatted_s(:long) %>
         </p>
       </h1>
       <% if @this_case.agencies.present? %>
