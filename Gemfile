@@ -100,7 +100,7 @@ end
 group :test do
   gem 'capybara', '~> 3.40'
   gem 'cucumber-rails', '~> 2.1', require: false
-  gem 'database_cleaner-active_record', '~> 1.8.0'
+  gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 3.142'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
