@@ -5,6 +5,8 @@ require 'pundit/rspec'
 require 'capybara/rspec'
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
+# Silence PaperTrail ActiveRecord compatibility warnings for Rails 8.1
+ENV['PT_SILENCE_AR_COMPAT_WARNING'] = 'true'
 require File.expand_path('../config/environment', __dir__)
 require 'devise'
 require 'rspec/rails'
