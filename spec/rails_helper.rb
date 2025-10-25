@@ -8,7 +8,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 require 'devise'
 require 'rspec/rails'
-require 'database_cleaner'
+require 'database_cleaner/active_record'
 require 'webmock/rspec'
 require 'paper_trail/frameworks/rspec'
 require 'null_fields_counter'

@@ -197,10 +197,10 @@ GEM
       rexml (~> 3.0)
       webrick (~> 1.7)
     cucumber-tag-expressions (4.1.0)
-    database_cleaner (1.8.5)
-    database_cleaner-active_record (1.8.0)
-      activerecord
-      database_cleaner (~> 1.8.0)
+    database_cleaner-active_record (2.2.2)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0)
+    database_cleaner-core (2.0.1)
     date (3.4.1)
     debug (1.11.0)
       irb (~> 1.10)
@@ -748,7 +748,7 @@ DEPENDENCIES
   concurrent-ruby (= 1.3.4)
   connection_pool
   cucumber-rails (~> 2.1)
-  database_cleaner-active_record (~> 1.8.0)
+  database_cleaner-active_record (~> 2.0)
   debug (>= 1.0.0)
   derailed_benchmarks (~> 1.8)
   devise (= 4.8.1)
