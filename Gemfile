@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '3.0.0'
+ruby '3.1.4'
 
 source 'https://rubygems.org'
 gem 'concurrent-ruby', '1.3.4'
@@ -51,7 +51,7 @@ gem 'pundit', '~> 2.1'
 gem 'rack', '~> 2.2'
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 gem 'rack-host-redirect', '~> 1.3'
-gem 'rails', '7.0.0'
+gem 'rails', '7.1.0'
 gem 'rails_admin', '~> 3.0'
 gem 'recaptcha', '~> 5.8'
 gem 'redis', '~> 5'
@@ -67,11 +67,11 @@ gem 'simplecov', '~> 0.19.0'
 gem 'simple_form', '5.0'
 gem 'sitemap_generator', '~> 6.1'
 gem 'social-share-button', '~> 1.2'
-gem 'sprockets', '~> 3.7.2'
+gem 'sprockets', '~> 3.7'
 gem 'statistics'
 gem 'turbolinks', '~> 5.2'
 gem 'twitter', '~> 7.0'
-gem 'uglifier', '4.2'
+gem 'uglifier', '~> 4.2'
 gem 'importmap-rails'
 
 group :development, :test do
@@ -98,16 +98,17 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '~> 3.4'
+  gem 'capybara', '~> 3.40'
   gem 'cucumber-rails', '~> 2.1', require: false
   gem 'database_cleaner-active_record', '~> 1.8.0'
   gem 'launchy', '~> 2.5'
-  gem 'selenium-webdriver', '~> 2.53.0'
+  gem 'selenium-webdriver', '~> 3.142'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
   gem 'vcr', '~> 6.0'
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-group :production do
-  gem 'cloudflare-rails', '~> 2.0'
-end
+# Temporarily commented out for Rails 7.1 compatibility
+# group :production do
+#   gem 'cloudflare-rails', '~> 3.0'
+# end
