@@ -1,5 +1,5 @@
-# Use Ruby 3.0.0 as base image
-FROM ruby:3.0.0-slim
+# Use Ruby 3.2.6 as base image
+FROM ruby:3.2.6-slim
 
 # Set environment variables
 ENV RAILS_ENV=development
