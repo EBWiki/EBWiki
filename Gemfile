@@ -108,7 +108,6 @@ group :test do
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-# Temporarily commented out for Rails 7.1 compatibility
-# group :production do
-#   gem 'cloudflare-rails', '~> 3.0'
-# end
+group :production do
+  gem 'cloudflare-rails', '~> 6.2'
+end
