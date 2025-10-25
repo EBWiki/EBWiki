@@ -75,7 +75,7 @@ gem 'uglifier', '~> 4.2'
 gem 'importmap-rails'
 
 group :development, :test do
-  gem 'debug', '>= 1.0.0'
+  # gem 'debug', '>= 1.0.0'  # Temporarily disabled for Rails 7.1 compatibility
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker'
   gem 'mock_redis', '~> 0.26'
