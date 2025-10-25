@@ -136,10 +136,11 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # Add bullet wrapper to catch and log N+1 queries
-  if Bullet.enable?
-    config.before(:each) { Bullet.start_request }
-    config.after(:each)  { Bullet.end_request }
-  end
+  # Temporarily commented out for Rails 8.1 compatibility
+  # if Bullet.enable?
+  #   config.before(:each) { Bullet.start_request }
+  #   config.after(:each)  { Bullet.end_request }
+  # end
 
   # Settings for testing mailers
   config.before(:each, type: :mailer) do
