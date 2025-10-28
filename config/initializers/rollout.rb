@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-$rollout = Rollout.new($redis)
+# $rollout = Rollout.new($redis)
