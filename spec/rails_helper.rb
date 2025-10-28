@@ -5,6 +5,8 @@ require 'pundit/rspec'
 require 'capybara/rspec'
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
+# Silence PaperTrail ActiveRecord compatibility warnings for Rails 8.1
+ENV['PT_SILENCE_AR_COMPAT_WARNING'] = 'true'
 require File.expand_path('../config/environment', __dir__)
 require 'devise'
 require 'rspec/rails'
@@ -136,10 +138,11 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # Add bullet wrapper to catch and log N+1 queries
-  if Bullet.enable?
-    config.before(:each) { Bullet.start_request }
-    config.after(:each)  { Bullet.end_request }
-  end
+  # Temporarily commented out for Rails 8.1 compatibility
+  # if Bullet.enable?
+  #   config.before(:each) { Bullet.start_request }
+  #   config.after(:each)  { Bullet.end_request }
+  # end
 
   # Settings for testing mailers
   config.before(:each, type: :mailer) do
