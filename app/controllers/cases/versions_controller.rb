@@ -17,7 +17,7 @@ module Cases
         if version&.reify
           @case.paper_trail.previous_version
           @case.save
-          puts "Successfully reverted to previous version"
+          puts 'Successfully reverted to previous version'
           flash[:success] = 'Reverted changes' # {make_redo_link}
           flash[:reversion] = version
           puts "Redirecting to case: #{@case}"
@@ -25,7 +25,7 @@ module Cases
         else
           # For undoing the create action
           @case.item.destroy
-          puts "Destroyed case item"
+          puts 'Destroyed case item'
           flash[:success] = 'Case deleted'
           redirect_to root_path
         end
