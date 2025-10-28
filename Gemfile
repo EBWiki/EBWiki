@@ -15,7 +15,7 @@ gem 'bootsnap', '~> 1.7', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bullet', '~> 7.0'
-gem 'carrierwave', '~> 2.1'
+gem 'carrierwave', '~> 2.2.6'
 gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'chartkick', '~> 3.4'
 gem 'ckeditor', '~> 5.1'
@@ -75,7 +75,7 @@ gem 'twitter', '~> 7.0'
 gem 'uglifier', '~> 4.2'
 
 group :development, :test do
-  gem 'debug', '>= 1.0.0'
+  # gem 'debug', '>= 1.0.0'  # Temporarily disabled for Rails 7.1 compatibility
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker'
   gem 'mock_redis', '~> 0.26'
@@ -100,7 +100,7 @@ end
 group :test do
   gem 'capybara', '~> 3.40'
   gem 'cucumber-rails', '~> 2.1', require: false
-  gem 'database_cleaner-active_record', '~> 1.8.0'
+  gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 3.142'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
@@ -108,7 +108,6 @@ group :test do
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-# Temporarily commented out for Rails 7.1 compatibility
-# group :production do
-#   gem 'cloudflare-rails', '~> 3.0'
-# end
+group :production do
+  gem 'cloudflare-rails', '~> 6.2'
+end

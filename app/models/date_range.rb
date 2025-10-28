@@ -10,6 +10,6 @@ class DateRange < ValueObject
   end
 
   def to_s
-    "from #{start_date.to_s(:short_date)} to #{end_date.to_s(:short_date)}"
+    "from #{start_date.to_formatted_s(:short_date)} to #{end_date.to_formatted_s(:short_date)}"
   end
 end
