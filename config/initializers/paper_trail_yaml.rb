@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # config/initializers/paper_trail_yaml.rb
 
 require 'paper_trail/serializers/yaml'
@@ -11,11 +13,12 @@ PERMITTED_CLASSES = [
   ActiveSupport::TimeWithZone,
   ActiveSupport::TimeZone,
   ActiveSupport::Duration
-]
+].freeze
 
 PaperTrail::Serializers::YAML.class_eval do
   def load(string)
     return unless string
+
     YAML.safe_load(
       string,
       permitted_classes: PERMITTED_CLASSES,

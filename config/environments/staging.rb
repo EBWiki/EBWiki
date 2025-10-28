@@ -61,7 +61,7 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, {
-    url: ENV['REDIS_URL'], pool_size: 2, pool_timeout: 2
+    url: ENV.fetch('REDIS_URL', nil), pool_size: 2, pool_timeout: 2
   }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
