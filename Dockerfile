@@ -1,33 +1,37 @@
-FROM ruby:2.7.8
+# Use Ruby 3.4.2 as base image
+FROM ruby:3.4.2-slim
 
-COPY Gemfile Gemfile.lock /
-COPY dev_provisions/environment.sh /etc/profile.d
+# Set environment variables
+ENV RAILS_ENV=development
+ENV BUNDLE_PATH=/usr/local/bundle
+ENV BUNDLE_WITHOUT=""
 
-RUN gem install bundler
-RUN bundle install
-RUN gem install fakes3
-RUN apt-get update -qq && apt-get install -qq --no-install-recommends lsb-release apt-transport-https && \
-    wget -q https://artifacts.elastic.co/GPG-KEY-elasticsearch && \
-    wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
-    apt-key add GPG-KEY-elasticsearch && \
-    apt-key add ACCC4CF8.asc && \
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" > /etc/apt/sources.list.d/elastic-6.x.list && \
-    apt-get update -qq && \
-    apt-get install -qq --no-install-recommends \
-        apt-utils \
-        build-essential \
-        libpq-dev \
-        nodejs \
-        npm \
-        default-jre \
-        postgresql-12  \
-        postgresql-client-12  \
-        redis-server && \
-    apt-get install -qq --no-install-recommends elasticsearch && \
-    mkdir /usr/src/ebwiki
+# Install system dependencies
+RUN apt-get update -qq && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
+# Set working directory
 WORKDIR /usr/src/ebwiki
-COPY . /usr/src/ebwiki
+
+# Copy Gemfile and Gemfile.lock
+COPY Gemfile Gemfile.lock ./
+
+# Install gems
+RUN bundle config --global frozen 1 && \
+    bundle install --without test production
+
+# Copy application code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p tmp/pids log
+
+# Expose port
 EXPOSE 3000
-ENTRYPOINT ./dev_provisions/entrypoint.sh
+
+# Default command
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

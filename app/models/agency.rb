@@ -3,7 +3,7 @@
 # Agency model
 class Agency < ApplicationRecord
   # This is the jurisdiction of the agency
-  enum jurisdiction: {
+  enum :jurisdiction, {
     unknown: 'unknown',
     local: 'local',
     state: 'state',

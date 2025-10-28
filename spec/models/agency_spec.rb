@@ -41,7 +41,7 @@ RSpec.describe Agency, type: :model do
       agency = FactoryBot.create(:agency, state_id: texas.id)
 
       expect do
-        agency.update_attributes(
+        agency.update(
           city: 'Worthington',
           state_id: ohio.id,
           street_address: '1867 Irving Road',

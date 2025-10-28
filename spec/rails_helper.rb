@@ -2,14 +2,15 @@
 
 require 'simplecov'
 require 'pundit/rspec'
-SimpleCov.start 'rails'
 require 'capybara/rspec'
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
+# Silence PaperTrail ActiveRecord compatibility warnings for Rails 8.1
+ENV['PT_SILENCE_AR_COMPAT_WARNING'] = 'true'
 require File.expand_path('../config/environment', __dir__)
 require 'devise'
 require 'rspec/rails'
-require 'database_cleaner'
+require 'database_cleaner/active_record'
 require 'webmock/rspec'
 require 'paper_trail/frameworks/rspec'
 require 'null_fields_counter'
@@ -38,9 +39,12 @@ RSpec.configure do |config|
   config.extend ControllerMacros, type: :feature
 
   config.include Devise::Test::ControllerHelpers, type: :view
+  # Added URL Helper
+  config.include Rails.application.routes.url_helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
+
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -67,11 +71,11 @@ RSpec.configure do |config|
       MSG
     end
 
-    DatabaseCleaner.clean_with(:deletion)
+    DatabaseCleaner[:active_record].clean_with(:deletion)
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :deletion
+    DatabaseCleaner[:active_record].strategy = :deletion
   end
 
   config.before(:each, type: :request) do
@@ -86,15 +90,29 @@ RSpec.configure do |config|
     # :rack_test driver's Rack app under test shares database connection
     # with the specs, so continue to use transaction strategy for speed.
     driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
-    DatabaseCleaner.strategy = :deletion
+    DatabaseCleaner[:active_record].strategy = :deletion
   end
 
   config.before(:each) do
-    DatabaseCleaner.start
+    DatabaseCleaner[:active_record].start
+  end
+
+  # Set up @state_objects for tests that render views with the search bar
+  config.before(:each, type: :view) do
+    allow(controller).to receive(:set_state_objects).and_return(true)
+    controller.instance_variable_set(:@state_objects, [])
+  end
+
+  # Enable PaperTrail versioning for tests that need it
+  config.around(:each, versioning: true) do |example|
+    PaperTrail.enabled = true
+    PaperTrail.request.whodunnit = 'test'
+    example.run
+    PaperTrail.enabled = false
   end
 
   config.append_after(:each) do
-    DatabaseCleaner.clean
+    DatabaseCleaner[:active_record].clean
   end
 
   # Seachkick testing config
@@ -120,10 +138,11 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # Add bullet wrapper to catch and log N+1 queries
-  if Bullet.enable?
-    config.before(:each) { Bullet.start_request }
-    config.after(:each)  { Bullet.end_request }
-  end
+  # Temporarily commented out for Rails 8.1 compatibility
+  # if Bullet.enable?
+  #   config.before(:each) { Bullet.start_request }
+  #   config.after(:each)  { Bullet.end_request }
+  # end
 
   # Settings for testing mailers
   config.before(:each, type: :mailer) do

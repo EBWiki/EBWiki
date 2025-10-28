@@ -61,8 +61,11 @@ db/schema.rb
 # Ignore node_modules in favor of package.json and package-lock.json
 /node_modules
 
-# Jetbrains products
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
 /.idea
-
-# Ignore master key for decrypting credentials and more.
 /config/master.key

@@ -3,9 +3,9 @@
     <div id="error_explanation">
       <h2><%= pluralize(@this_case.errors.count, "error") %> prohibited this case from being saved:</h2>
       <ul>
-      	<% @this_case.errors.each do |field,msg| %>
-        	<li><strong><%= "#{field.capitalize}:" %></strong> <%= msg %></li>
-      	<% end %>
+      <% @this_case.errors.each do |error| %>
+        	<li><strong><%= "#{error.attribute.to_s.capitalize}:" %></strong> <%= error.message %></li>
+      <% end %>
       </ul>
     </div>
   <% end %>

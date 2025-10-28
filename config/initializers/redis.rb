@@ -1,13 +1,8 @@
 # frozen_string_literal: true
 
-# config/initializers/redis.rb
+require 'redis'
+require 'connection_pool'
 
-$redis = if Rails.env.test?
-           Redis::Namespace.new('ebwiki',
-                                redis: MockRedis.new,
-                                driver: :hiredis)
-         else
-           Redis::Namespace.new('ebwiki',
-                                redis: Redis.new(url: ENV.fetch('REDISTOGO_URL', nil),
-                                                 driver: :hiredis))
-         end
+$redis = ConnectionPool.new(size: 5, timeout: 5) do
+  Redis.new(url: ENV['REDIS_URL'] || 'redis://localhost:6379/0')
+end

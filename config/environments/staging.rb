@@ -61,7 +61,7 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, {
-    url: ENV['REDIS_URL'], pool_size: 2, pool_timeout: 2
+    url: ENV.fetch('REDIS_URL', nil), pool_size: 2, pool_timeout: 2
   }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
@@ -82,16 +82,18 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Bullet configuration
-  Bullet.enable = true
-  Bullet.alert = true
-  Bullet.rails_logger = true
-  Bullet.console = true
+  # Bullet configuration (only if gem is available)
+  if defined?(Bullet)
+    Bullet.enable = true
+    Bullet.alert = true
+    Bullet.rails_logger = true
+    Bullet.console = true
+  end
 
   config.middleware.use Rack::HostRedirect, 'ebwiki-staging.herokuapp.com' => 'staging.ebwiki.org'
 end

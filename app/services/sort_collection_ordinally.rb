@@ -13,7 +13,8 @@ class SortCollectionOrdinally
     return first_sort if names_with_numbers.empty?
 
     names_with_no_numbers = first_sort - names_with_numbers
-    sorted_names_with_numbers = ordinal_sort(collection: names_with_numbers)
+    sorted_names_with_numbers = ordinal_sort(collection: names_with_numbers,
+                                             column_name: column_name)
     sorted_names_with_numbers + names_with_no_numbers
   end
 

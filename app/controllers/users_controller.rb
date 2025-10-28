@@ -2,7 +2,8 @@
 
 # EBWiki Users controller
 class UsersController < ApplicationController
-  around_action :skip_bullet, only: :show
+  # Temporarily commented out for Rails 8.1 compatibility
+  # around_action :skip_bullet, only: :show
 
   def show
     @user = User.find(params[:id])
@@ -17,7 +18,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     authorize @user
-    if @user.update_attributes(user_params)
+    if @user.update(user_params)
       SendAdminEmail.call(user: @user) if @user.previous_changes.include?('admin')
       flash[:success] = 'Your profile was updated!'
       redirect_to user_path(@user)
@@ -37,7 +38,7 @@ class UsersController < ApplicationController
   def update_email
     @user = User.find(params[:id])
     authorize @user
-    if @user.update_attributes(user_param)
+    if @user.update(user_param)
       flash[:success] = 'Email updated Successfully!'
       redirect_to @user
     else
@@ -63,13 +64,14 @@ class UsersController < ApplicationController
     @mailbox ||= current_user.mailbox
   end
 
-  def skip_bullet
-    previous_value = Bullet.enable?
-    Bullet.enable = false
-    yield
-  ensure
-    Bullet.enable = previous_value
-  end
+  # Temporarily commented out for Rails 8.1 compatibility
+  # def skip_bullet
+  #   previous_value = Bullet.enable?
+  #   Bullet.enable = false
+  #   yield
+  # ensure
+  #   Bullet.enable = previous_value
+  # end
 
   def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'

@@ -27,7 +27,7 @@ module ApplicationHelper
   end
 
   def display_updated_at(object)
-    object.updated_at.to_s(:stamp)
+    object.updated_at.to_formatted_s(:stamp)
   end
 
   def link_to_case_title(this_case, length)

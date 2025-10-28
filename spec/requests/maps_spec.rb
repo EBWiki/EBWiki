@@ -9,7 +9,7 @@ RSpec.describe 'Maps', type: :request do
       let(:this_case) { create(:case) }
 
       before do
-        $redis.set('cases', [this_case].to_json)
+        redis.set('cases', [this_case].to_json)
         get '/maps', params: {}, headers: {}
       end
 

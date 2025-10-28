@@ -4,7 +4,7 @@
 class Case < ApplicationRecord
   MAX_BLURB_CHARACTERS = 500
 
-  enum cause_of_death: {
+  enum :cause_of_death, {
     beating: 'beating',
     bombing: 'bombing',
     chemical_agents_or_weapons: 'chemical_agents_or_weapons',
@@ -40,9 +40,6 @@ class Case < ApplicationRecord
   # Friendly ID
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged finders]
-
-  # Elasticsearch Gem
-  searchkick _all: false, default_fields: ['*']
 
   # Model Validations
   sanitize :title, :city, :address, :zipcode, :overview, :community_action, :country, :litigation,

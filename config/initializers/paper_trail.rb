@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-# Config settings for paper_trail gem
-PaperTrail::Rails::Engine.eager_load!
-PaperTrail.config.track_associations = true
-module PaperTrail
-  class Version < ActiveRecord::Base
-    PaperTrail.config.track_associations = true
-  end
-end
+# config/initializers/paper_trail.rb
+PaperTrail.config.enabled = true
+PaperTrail.config.has_paper_trail_defaults = {
+  on: %i[create update destroy]
+}
+PaperTrail.config.version_limit = 3

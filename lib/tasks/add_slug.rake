@@ -7,7 +7,7 @@ task add_slug: :environment do
   cases.each do |this_case|
     next unless this_case.subjects.count.positive?
 
-    this_case.update_attributes(
+    this_case.update(
       title: this_case.subjects.first.name,
       slug: this_case.subjects.first.name.parameterize
     )

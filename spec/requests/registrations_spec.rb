@@ -39,7 +39,7 @@ RSpec.describe 'Registrations', type: :request do
       end
 
       it 'displays the registration form successfully' do
-        expect(response.code).to eq '200'
+        expect(response.status).to eq(422)
       end
 
       it 'displays an error message' do

@@ -8,7 +8,7 @@ module AttributeSanitizer
         next unless public_send(attribute)
 
         sanitized_value = public_send(attribute).strip.delete_suffix(',')
-        public_send("#{attribute}=", sanitized_value)
+        public_send(:"#{attribute}=", sanitized_value)
       end
     end
   end

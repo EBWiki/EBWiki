@@ -1,3 +1,4 @@
+
 # frozen_string_literal: true
 
 require 'rails_helper'
@@ -8,7 +9,7 @@ RSpec.describe 'Versions', type: :request, versioning: true do
 
     before do
       this_case.update!(blurb: "A new blurb")
-      version_id = this_case.versions[-1].id
+      version_id = this_case.versions.last&.id
       post "/cases/#{this_case.id}/versions/#{version_id}/revert",
            params: {},
            headers: {
