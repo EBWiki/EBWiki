@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '3.4.2'
+ruby '3.2.6'
 
 source 'https://rubygems.org'
 gem 'concurrent-ruby', '1.3.4'
@@ -34,12 +34,13 @@ gem 'groupdate', '~> 5.0'
 gem 'hightop', '~> 0.2'
 gem 'hiredis', '~> 0.6'
 gem 'httparty', '~> 0.21'
+gem 'image_processing', '~> 1.12'
+gem 'importmap-rails'
 gem 'jb', '~> 0.7.1'
 gem 'jquery-rails', '~> 4.4'
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
 gem 'lograge', '~> 0.11'
 gem 'mailboxer', '~> 0.15'
-gem 'image_processing', '~> 1.12'
 gem 'momentjs-rails', '~> 2.20'
 gem 'montrose', '~> 0.12'
 gem 'newrelic_rpm', '~> 7.0'
@@ -72,7 +73,6 @@ gem 'statistics'
 gem 'turbolinks', '~> 5.2'
 gem 'twitter', '~> 7.0'
 gem 'uglifier', '~> 4.2'
-gem 'importmap-rails'
 
 group :development, :test do
   # gem 'debug', '>= 1.0.0'  # Temporarily disabled for Rails 7.1 compatibility
