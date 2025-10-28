@@ -5,9 +5,9 @@ class CalendarEvent < ApplicationRecord
   sanitize :title, :street_address, :city, :state, :zipcode, :description
   validates_presence_of :title, :schedule, :description
   has_many :links, dependent: :destroy
-  serialize :schedule, Montrose::Schedule
+  serialize :schedule, coder: Montrose::Schedule
 
-  enum format: {
+  enum :format, {
     in_person: 'in_person',
     virtual: 'virtual',
     hybrid: 'hybrid'

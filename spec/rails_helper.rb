@@ -41,7 +41,7 @@ RSpec.configure do |config|
   config.include Rails.application.routes.url_helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
 
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
