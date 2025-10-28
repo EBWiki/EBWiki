@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   private
 
   def set_state_objects
-    @set_state_objects ||= SortCollectionOrdinally.call(collection: State.all)
+    @state_objects ||= SortCollectionOrdinally.call(collection: State.all)
   end
 
   def log_invalid_token_attempt(exception)
