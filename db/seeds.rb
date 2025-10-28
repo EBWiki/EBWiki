@@ -9,11 +9,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-if Rails.env.test?
-  [Agency, Ethnicity, State, Gender, User].each do |model|
-    model.delete_all
-  end
-end
+[Agency, Ethnicity, State, Gender, User].each(&:delete_all) if Rails.env.test?
 
 puts 'Creating States...'
 states =
@@ -249,4 +245,3 @@ p "Texas #{texas} is a #{State.count}"
 FactoryBot.create(:agency, name: 'City of Houston Police Department', city: 'Houston', state: texas)
 FactoryBot.create(:agency, name: 'City of Beaumont Police Department', city: 'Beaumont',
                            state: texas)
-

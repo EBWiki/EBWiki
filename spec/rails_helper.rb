@@ -69,11 +69,11 @@ RSpec.configure do |config|
       MSG
     end
 
-    DatabaseCleaner.clean_with(:deletion)
+    DatabaseCleaner[:active_record].clean_with(:deletion)
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :deletion
+    DatabaseCleaner[:active_record].strategy = :deletion
   end
 
   config.before(:each, type: :request) do
@@ -88,11 +88,11 @@ RSpec.configure do |config|
     # :rack_test driver's Rack app under test shares database connection
     # with the specs, so continue to use transaction strategy for speed.
     driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
-    DatabaseCleaner.strategy = :deletion
+    DatabaseCleaner[:active_record].strategy = :deletion
   end
 
   config.before(:each) do
-    DatabaseCleaner.start
+    DatabaseCleaner[:active_record].start
   end
 
   # Set up @state_objects for tests that render views with the search bar
@@ -110,7 +110,7 @@ RSpec.configure do |config|
   end
 
   config.append_after(:each) do
-    DatabaseCleaner.clean
+    DatabaseCleaner[:active_record].clean
   end
 
   # Seachkick testing config

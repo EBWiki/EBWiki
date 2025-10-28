@@ -8,13 +8,23 @@ Metrics/BlockLength:
 
 AllCops:
   Exclude:
-    - db/migrate/*.rb
-    - db/structure.sql
-    - bin/*
-    - script/*
-    - config/routes.rb
-    - vendor/**/*
-    - spec/**/*
+    - 'db/schema.rb'
+    - 'db/migrate/**/*'
+    - 'db/structure.sql'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'log/**/*'
+    - 'public/**/*'
+    - 'config/environments/**/*'
+    - 'config/initializers/devise.rb'  # or any generated initializer you don’t want flagged
+    - 'app/assets/**/*'
+    - 'app/javascript/**/*'
+    - 'script/*'
+    - 'config/routes.rb'
+    - 'vendor/**/*'
+    - 'spec/**/*'
 
 Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
