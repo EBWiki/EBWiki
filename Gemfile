@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '3.2.6'
+ruby '3.4.2'
 
 source 'https://rubygems.org'
 gem 'concurrent-ruby', '1.3.4'
@@ -15,7 +15,7 @@ gem 'bootsnap', '~> 1.7', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bullet', '~> 7.0'
-gem 'carrierwave', '~> 2.1'
+gem 'carrierwave', '~> 2.2.6'
 gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'chartkick', '~> 3.4'
 gem 'ckeditor', '~> 5.1'

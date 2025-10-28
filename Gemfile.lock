@@ -57,8 +57,8 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    active_median (0.5.0)
-      activesupport (>= 7)
+    active_median (0.6.0)
+      activesupport (>= 7.1)
     activejob (7.1.0)
       activesupport (= 7.1.0)
       globalid (>= 0.3.6)
@@ -239,8 +239,7 @@ GEM
       faraday (>= 1, < 3)
       multi_json
     equalizer (0.0.11)
-    erb (4.0.4)
-      cgi (>= 0.3.3)
+    erb (5.1.1)
     erubi (1.13.1)
     excon (1.3.0)
       logger
@@ -258,7 +257,14 @@ GEM
       logger
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
+    ffi (1.17.2-aarch64-linux-gnu)
+    ffi (1.17.2-aarch64-linux-musl)
+    ffi (1.17.2-arm-linux-gnu)
+    ffi (1.17.2-arm-linux-musl)
+    ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
+    ffi (1.17.2-x86_64-linux-musl)
     ffi-compiler (1.3.2)
       ffi (>= 1.15.5)
       rake
@@ -300,8 +306,8 @@ GEM
     hashie (5.0.0)
     heapy (0.2.0)
       thor
-    hightop (0.5.0)
-      activesupport (>= 7)
+    hightop (0.6.0)
+      activesupport (>= 7.1)
     hiredis (0.6.3)
     http (4.4.1)
       addressable (~> 2.3)
@@ -414,7 +420,7 @@ GEM
     msgpack (1.8.0)
     multi_json (1.17.0)
     multi_test (1.1.0)
-    multi_xml (0.7.1)
+    multi_xml (0.7.2)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
     mutex_m (0.3.0)
@@ -437,12 +443,26 @@ GEM
     newrelic_rpm (7.2.0)
     nio4r (2.7.4)
     nkf (0.2.0)
+    nokogiri (1.18.10-aarch64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.10-aarch64-linux-musl)
+      racc (~> 1.4)
+    nokogiri (1.18.10-arm-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.10-arm-linux-musl)
+      racc (~> 1.4)
+    nokogiri (1.18.10-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.18.10-x86_64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.10-x86_64-linux-musl)
       racc (~> 1.4)
     observer (0.1.2)
     orm_adapter (0.5.0)
-    paper_trail (16.0.0)
-      activerecord (>= 6.1)
+    paper_trail (17.0.0)
+      activerecord (>= 7.1)
       request_store (~> 1.4)
     paper_trail-association_tracking (2.3.0)
       paper_trail (>= 12.0)
@@ -450,7 +470,13 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    pg (1.6.2)
+    pg (1.6.2-aarch64-linux)
+    pg (1.6.2-aarch64-linux-musl)
+    pg (1.6.2-arm64-darwin)
+    pg (1.6.2-x86_64-darwin)
     pg (1.6.2-x86_64-linux)
+    pg (1.6.2-x86_64-linux-musl)
     pluginator (1.5.0)
     pp (0.6.3)
       prettyprint
@@ -720,10 +746,18 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.18)
+    zeitwerk (2.7.3)
 
 PLATFORMS
-  x86_64-linux
+  aarch64-linux
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux-gnu
+  arm-linux-musl
+  arm64-darwin
+  x86_64-darwin
+  x86_64-linux-gnu
+  x86_64-linux-musl
 
 DEPENDENCIES
   active_median (~> 0.2)
@@ -736,7 +770,7 @@ DEPENDENCIES
   brakeman (~> 4.10)
   bullet (~> 7.0)
   capybara (~> 3.40)
-  carrierwave (~> 2.1)
+  carrierwave (~> 2.2.6)
   carrierwave-imageoptimizer (~> 1.6)
   chartkick (~> 3.4)
   ckeditor (~> 5.1)
@@ -821,7 +855,7 @@ DEPENDENCIES
   webmock (~> 3.9, >= 3.9.1)
 
 RUBY VERSION
-   ruby 3.2.6p234
+   ruby 3.4.2p28
 
 BUNDLED WITH
-   2.3.26
+   2.6.7
