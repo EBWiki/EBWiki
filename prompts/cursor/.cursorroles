@@ -1,0 +1,25 @@
+# Cursor Roles Configuration for EBWiki
+
+## Environment Configuration Role
+When setting up Ruby/RVM environment:
+- Use ebwiki gemset only: `GEM_HOME="/usr/share/rvm/gems/ruby-3.4.2@ebwiki"`
+- Exclude global gemset from GEM_PATH unless absolutely necessary
+- Keep PATH minimal and avoid redundancy
+
+## Testing Role
+- Always verify tests pass before completing work
+- Run full test suite: `bundle exec rspec spec/features/playwright`
+- Verify server starts: `bundle exec rails server` (must start without errors)
+- Never create documentation until tests confirm passing status
+
+## Code Quality Role
+- Fix deprecation warnings immediately
+- Maintain version consistency across all version files
+- Use proper RSpec conventions (type tags, matchers)
+- Follow project branch naming: `feature/description` or `feature/EB-N-description`
+
+## Browser Testing Role
+- Playwright specs require WebMock localhost configuration
+- Use flexible matchers for non-visible content
+- Handle external service dependencies (Elasticsearch) gracefully
+
