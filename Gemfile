@@ -5,7 +5,8 @@ ruby '3.4.2'
 source 'https://rubygems.org'
 gem 'concurrent-ruby', '1.3.4'
 gem 'json', '~> 2.6'
-gem 'psych', '~> 4.0'
+# psych is now a default gem in Ruby 3.4, no need to specify
+# gem 'psych', '~> 4.0'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'active_median', '~> 0.2'
@@ -104,6 +105,7 @@ group :test do
   gem 'capybara', '~> 3.40'
   # Temporarily commented out for Rails 8.1 compatibility
   # gem 'cucumber-rails', '~> 2.1', require: false
+  gem 'capybara-playwright-driver'
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 3.142'

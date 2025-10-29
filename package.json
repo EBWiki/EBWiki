@@ -5,6 +5,7 @@
     "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
+    "playwright": "^1.48.0",
     "webpack-dev-server": "^3"
   }
 }

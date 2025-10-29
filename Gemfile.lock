@@ -35,8 +35,7 @@ GEM
       actionview (= 8.1.0)
       activesupport (= 8.1.0)
       nokogiri (>= 1.8.5)
-      racc
-      rack (>= 2.2.4, < 3.2)
+      rack (>= 2.2.4)
       rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
@@ -85,7 +84,6 @@ GEM
       marcel (~> 1.0)
     activesupport (8.1.0)
       base64
-      benchmark (>= 0.3)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.3.1)
       connection_pool (>= 2.2.5)
@@ -104,7 +102,6 @@ GEM
       execjs (~> 2)
     base64 (0.3.0)
     bcrypt (3.1.20)
-    benchmark (0.5.0)
     benchmark-ips (2.14.0)
     bigdecimal (3.3.1)
     bindex (0.8.1)
@@ -118,9 +115,6 @@ GEM
     brakeman (4.10.1)
     buftok (0.2.0)
     builder (3.3.0)
-    bullet (7.2.0)
-      activesupport (>= 3.0.0)
-      uniform_notifier (~> 1.11)
     capybara (3.40.0)
       addressable
       matrix
@@ -130,6 +124,10 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    capybara-playwright-driver (0.5.7)
+      addressable
+      capybara
+      playwright-ruby-client (>= 1.16.0)
     carrierwave (2.2.6)
       activemodel (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -166,9 +164,6 @@ GEM
       database_cleaner-core (~> 2.0)
     database_cleaner-core (2.0.1)
     date (3.4.1)
-    debug (1.11.0)
-      irb (~> 1.10)
-      reline (>= 0.3.8)
     derailed_benchmarks (1.8.1)
       benchmark-ips (~> 2)
       get_process_mem (~> 0)
@@ -441,6 +436,9 @@ GEM
     pg (1.6.2-x86_64-darwin)
     pg (1.6.2-x86_64-linux)
     pg (1.6.2-x86_64-linux-musl)
+    playwright-ruby-client (1.56.0)
+      concurrent-ruby (>= 1.1.6)
+      mime-types (>= 3.0)
     pluginator (1.5.0)
     pp (0.6.3)
       prettyprint
@@ -670,7 +668,6 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
-    uniform_notifier (1.18.0)
     uri (1.0.4)
     useragent (0.16.11)
     vcr (6.3.1)
@@ -715,8 +712,8 @@ DEPENDENCIES
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails (~> 4.17)
   brakeman (~> 4.10)
-  bullet (~> 7.0)
   capybara (~> 3.40)
+  capybara-playwright-driver
   carrierwave (~> 2.2.6)
   carrierwave-imageoptimizer (~> 1.6)
   chartkick (~> 3.4)
@@ -725,7 +722,6 @@ DEPENDENCIES
   concurrent-ruby (= 1.3.4)
   connection_pool
   database_cleaner-active_record (~> 2.0)
-  debug (>= 1.0.0)
   derailed_benchmarks (~> 1.8)
   devise (~> 4.9)
   dotenv-rails (~> 2.7)
@@ -760,7 +756,6 @@ DEPENDENCIES
   paper_trail-association_tracking
   pg (~> 1.2)
   pre-commit (~> 0.39)
-  psych (~> 4.0)
   puma (~> 5.6)
   pundit (~> 2.1)
   rack (~> 2.2)

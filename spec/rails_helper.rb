@@ -122,6 +122,12 @@ RSpec.configure do |config|
     end
   end
 
+  # WebMock configuration for Playwright/Capybara browser tests
+  # Allow localhost connections for browser-based feature tests
+  config.before(:each, js: true, type: :feature) do
+    WebMock.disable_net_connect!(allow_localhost: true)
+  end
+
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
