@@ -1,0 +1,62 @@
+# EBWiki Project Rules for Cursor AI
+
+## Critical Testing Requirements
+- **NEVER consider a task complete until all tests pass**
+- Always run `bundle exec rspec` or `rake spec` after making changes
+- Test failures must be fixed before marking tasks as done
+- Use `bundle exec rails server` to verify server starts without errors
+
+## Environment Setup
+- Always use the `ebwiki` gemset for Ruby 3.4.2:
+  ```bash
+  export GEM_HOME="/usr/share/rvm/gems/ruby-3.4.2@ebwiki"
+  export GEM_PATH="/usr/share/rvm/gems/ruby-3.4.2@ebwiki"
+  export PATH="${GEM_HOME}/bin:/usr/share/rvm/rubies/ruby-3.4.2/bin:/usr/share/rvm/bin:${PATH}"
+  ```
+- Never include the global gemset in GEM_PATH unless explicitly needed
+- Keep PATH clean and non-redundant
+
+## Branch Naming Conventions
+- Use `feature/` prefix for feature branches (e.g., `feature/playwright-integration`)
+- For JIRA tickets: `feature/EB-N-description` format
+- Keep branch names descriptive and kebab-case
+
+## Ruby and Rails Version
+- Current: Ruby 3.4.2, Rails 8.1.0
+- Always maintain version consistency across:
+  - `.ruby-version`
+  - `Gemfile` ruby specification
+  - `Dockerfile`
+  - `.github/workflows/ci.yml`
+
+## Testing Practices
+- Run full test suite before claiming completion
+- Playwright specs require headless browser setup
+- WebMock must allow localhost connections for browser tests (`js: true` tagged specs)
+- Use FactoryBot for test data creation
+- DatabaseCleaner configured for test isolation
+
+## Code Quality
+- Fix all deprecation warnings
+- Ensure Rubocop passes
+- Maintain RSpec best practices (use `type: :feature` for feature specs)
+- Don't create documentation until tests are confirmed passing
+
+## Playwright/Browser Testing
+- All Playwright specs use `js: true` tag
+- WebMock automatically allows localhost for `js: true, type: :feature` specs
+- Use `page.has_content?()` instead of `have_content()` for flexible matching
+- Handle non-visible text gracefully (may be in title tags, etc.)
+
+## Git Workflow
+- Create separate PRs for distinct features/fixes
+- Include comprehensive commit messages
+- Link PRs to GitHub issues
+- Request review from `gktreviewer` for significant changes
+
+## Project-Specific Notes
+- EBWiki uses Elasticsearch (may not be available in test environment - handle 500s gracefully)
+- PaperTrail requires `PT_SILENCE_AR_COMPAT_WARNING=true` in test environment
+- Bullet gem is temporarily commented out for Rails 8.1 compatibility
+- Database uses PostgreSQL with full-text search capabilities
+
