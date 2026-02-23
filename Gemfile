@@ -106,7 +106,7 @@ group :test do
   # gem 'cucumber-rails', '~> 2.1', require: false
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
-  gem 'selenium-webdriver', '~> 3.142'
+  gem 'selenium-webdriver', '~> 4.0'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
   gem 'vcr', '~> 6.0'
   gem 'webmock', '~>3.9', '>= 3.9.1'
