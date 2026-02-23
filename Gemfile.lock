@@ -665,8 +665,6 @@ GEM
       simple_oauth (~> 0.3.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uglifier (4.2.1)
-      execjs (>= 0.3.0, < 3)
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
@@ -793,7 +791,6 @@ DEPENDENCIES
   statistics
   turbolinks (~> 5.2)
   twitter (~> 7.0)
-  uglifier (~> 4.2)
   vcr (~> 6.0)
   web-console (~> 3.7)
   webmock (~> 3.9, >= 3.9.1)

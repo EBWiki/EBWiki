@@ -74,7 +74,6 @@ gem 'sprockets', '~> 3.7'
 gem 'statistics'
 gem 'turbolinks', '~> 5.2'
 gem 'twitter', '~> 7.0'
-gem 'uglifier', '~> 4.2'
 
 group :development, :test do
   # gem 'debug', '>= 1.0.0'  # Temporarily disabled for Rails 7.1 compatibility
