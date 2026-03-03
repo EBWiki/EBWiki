@@ -9,7 +9,6 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    abbrev (0.1.2)
     action_text-trix (2.1.15)
       railties
     actioncable (8.1.0)
@@ -116,7 +115,8 @@ GEM
       sassc (>= 2.0.0)
     bootstrap3-datetimepicker-rails (4.17.47)
       momentjs-rails (>= 2.8.1)
-    brakeman (4.10.1)
+    brakeman (6.2.2)
+      racc
     buftok (0.2.0)
     builder (3.3.0)
     capybara (3.40.0)
@@ -141,7 +141,6 @@ GEM
       image_optimizer (~> 1.6)
     cgi (0.5.0)
     chartkick (3.4.2)
-    childprocess (3.0.0)
     ckeditor (5.1.3)
       orm_adapter (~> 0.5.0)
     cocoon (1.2.15)
@@ -268,7 +267,6 @@ GEM
     hashie (5.0.0)
     heapy (0.2.0)
       thor
-    highline (2.1.0)
     hightop (0.6.0)
       activesupport (>= 7.1)
     hiredis (0.6.3)
@@ -447,7 +445,7 @@ GEM
     psych (4.0.6)
       stringio
     public_suffix (6.0.2)
-    puma (5.6.9)
+    puma (6.6.1)
       nio4r (~> 2.0)
     pundit (2.5.2)
       activesupport (>= 3.0.0)
@@ -597,9 +595,12 @@ GEM
       hashie
     securerandom (0.4.1)
     select2-rails (4.0.13)
-    selenium-webdriver (3.142.7)
-      childprocess (>= 0.5, < 4.0)
-      rubyzip (>= 1.2.2)
+    selenium-webdriver (4.41.0)
+      base64 (~> 0.2)
+      logger (~> 1.4)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 4.0)
+      websocket (~> 1.0)
     shoulda-matchers (4.5.1)
       activesupport (>= 4.2.0)
     simple_form (5.0.0)
@@ -681,6 +682,7 @@ GEM
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.9.1)
     webrobots (0.1.2)
+    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -701,14 +703,13 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  abbrev
   active_median (~> 0.2)
   activerecord-session_store (~> 2.0)
   acts_as_follower!
   bootsnap (~> 1.7)
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails (~> 4.17)
-  brakeman (~> 4.10)
+  brakeman (~> 6.0)
   capybara (~> 3.40)
   carrierwave (~> 2.2.6)
   carrierwave-imageoptimizer (~> 1.6)
@@ -731,10 +732,9 @@ DEPENDENCIES
   geocoder (~> 1.6)
   gibbon (~> 3.4)
   groupdate (~> 5.0)
-  highline (~> 2.0)
   hightop (~> 0.2)
   hiredis (~> 0.6)
-  httparty (~> 0.21)
+  httparty (~> 0.24)
   image_processing (~> 1.12)
   importmap-rails
   jb (~> 0.7.1)
@@ -754,9 +754,8 @@ DEPENDENCIES
   pg (~> 1.2)
   pre-commit (~> 0.39)
   psych (~> 4.0)
-  puma (~> 5.6)
+  puma (~> 6.0)
   pundit (~> 2.1)
-  rack (~> 2.2)
   rack-cors (~> 1.1)
   rack-host-redirect (~> 1.3)
   rails (~> 8.1.0)
@@ -775,7 +774,7 @@ DEPENDENCIES
   sassc-rails (~> 2.1)
   searchkick (~> 3.1)
   select2-rails (~> 4.0)
-  selenium-webdriver (~> 3.142)
+  selenium-webdriver (~> 4.0)
   shoulda-matchers (~> 4.4, >= 4.4.1)
   simple_form (= 5.0)
   simplecov (~> 0.19.0)

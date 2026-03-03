@@ -1,4 +1,6 @@
-plugins: rubocop-performance
+plugins:
+  - rubocop-performance
+  - rubocop-rails
 
 Layout/LineLength:
   Max: 100

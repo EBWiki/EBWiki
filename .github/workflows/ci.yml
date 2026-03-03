@@ -50,8 +50,7 @@ jobs:
       - name: Setup database
         run: |
           cp config/database.ci.yml config/database.yml
-          bundle exec bin/rails db:create
-          bundle exec bin/rails db:schema:load
+          bundle exec bin/rails db:prepare
 
       - name: Run RSpec
         run: |
