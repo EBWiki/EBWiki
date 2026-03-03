@@ -84,17 +84,19 @@ group :development, :test do
   gem 'pre-commit', '~> 0.39'
   gem 'rake', require: false
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.12', require: false
-  gem 'rubocop-performance', '~> 1.10', require: false
-  gem 'rubocop-rails', '> 2.9', require: false
+  gem 'rubocop', '~> 1.65', require: false
+  gem 'rubocop-performance', '~> 1.23', require: false
+  gem 'rubocop-rails', '~> 2.26', require: false
   gem 'standard', '>= 1.35.1', require: false
 end
 
 group :development do
   # Temporarily commented out for Rails 8.1 compatibility
   # gem 'annotate', '~> 3.1', '>= 3.1.1'
+  gem 'abbrev'
   gem 'brakeman', '~> 4.10', require: false
   gem 'derailed_benchmarks', '~> 1.8'
+  gem 'highline', '~> 2.0'
   gem 'listen', '~> 3.7'
   gem 'rails_real_favicon', '~> 0.0.13'
   gem 'web-console', '~> 3.7'

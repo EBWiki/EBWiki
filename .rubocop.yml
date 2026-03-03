@@ -501,3 +501,12 @@ Performance/MapMethodChain: # new in 1.19
   Enabled: true
 Performance/StringIdentifierArgument: # new in 1.13
   Enabled: true
+
+Gemspec/AddRuntimeDependency:
+  Enabled: true
+
+Gemspec/AttributeAssignment:
+  Enabled: true
+
+Layout/EmptyLinesAfterModuleInclusion:
+  Enabled: true

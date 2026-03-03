@@ -44,12 +44,13 @@ jobs:
         with:
           bundler-cache: true
           ruby-version: 3.4.2
+          deployment: false
 
       - name: Setup database
         run: |
           cp config/database.ci.yml config/database.yml
           bundle exec bin/rails db:create
-          bundle exec bin/rails db:structure:load
+          bundle exec bin/rails db:schema:load
 
       - name: Run RSpec
         run: |
@@ -71,6 +72,7 @@ jobs:
           bundler-cache: true
           ruby-version: 3.4.2
           cache-version: 1
+          deployment: false
 
       - name: Run Brakeman
         run: |
@@ -103,7 +105,7 @@ jobs:
         with:
           bundler-cache: true
           ruby-version: 3.4.2
-
+          deployment: false
 
       - name: Run Rubocop
         run: bundle exec rubocop
