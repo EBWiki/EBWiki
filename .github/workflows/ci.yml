@@ -44,6 +44,9 @@ jobs:
         with:
           ruby-version: 3.4.2
 
+      - name: Install gems
+        run: bundle install
+
       - name: Setup database
         run: |
           cp config/database.ci.yml config/database.yml
@@ -69,6 +72,9 @@ jobs:
         with:
           ruby-version: 3.4.2
           cache-version: 1
+
+      - name: Install gems
+        run: bundle install
 
       - name: Run Brakeman
         run: |
@@ -100,6 +106,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2
+
+      - name: Install gems
+        run: bundle install
 
       - name: Run Rubocop
         run: bundle exec rubocop
