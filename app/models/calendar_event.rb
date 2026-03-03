@@ -23,7 +23,8 @@ class CalendarEvent < ApplicationRecord
   end
 
   def location=(location)
-    self.state = State.find_by(name: location.state).name
+    resolved_state = State.find_by(name: location.state)
+    self.state = resolved_state&.name || location.state
     self.street_address = location.street_location
     self.city = location.city
     self.zipcode = location.zipcode
