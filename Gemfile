@@ -48,9 +48,8 @@ gem 'newrelic_rpm', '~> 7.0'
 gem 'paper_trail'
 gem 'paper_trail-association_tracking'
 gem 'pg', '~> 1.2'
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6.0'
 gem 'pundit', '~> 2.1'
-gem 'rack', '~> 2.2'
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 gem 'rack-host-redirect', '~> 1.3'
 gem 'rails', '~> 8.1.0'
@@ -74,7 +73,6 @@ gem 'sprockets', '~> 3.7'
 gem 'statistics'
 gem 'turbolinks', '~> 5.2'
 gem 'twitter', '~> 7.0'
-gem 'uglifier', '~> 4.2'
 
 group :development, :test do
   # gem 'debug', '>= 1.0.0'  # Temporarily disabled for Rails 7.1 compatibility
@@ -108,7 +106,7 @@ group :test do
   # gem 'cucumber-rails', '~> 2.1', require: false
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
-  gem 'selenium-webdriver', '~> 3.142'
+  gem 'selenium-webdriver', '~> 4.0'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
   gem 'vcr', '~> 6.0'
   gem 'webmock', '~>3.9', '>= 3.9.1'
