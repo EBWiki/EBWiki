@@ -42,9 +42,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
           ruby-version: 3.4.2
-          deployment: false
 
       - name: Setup database
         run: |
@@ -69,10 +67,8 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
           ruby-version: 3.4.2
           cache-version: 1
-          deployment: false
 
       - name: Run Brakeman
         run: |
@@ -103,9 +99,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
           ruby-version: 3.4.2
-          deployment: false
 
       - name: Run Rubocop
         run: bundle exec rubocop
