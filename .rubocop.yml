@@ -7,6 +7,7 @@ Metrics/BlockLength:
   Max: 35
 
 AllCops:
+  NewCops: enable
   Exclude:
     - 'db/schema.rb'
     - 'db/migrate/**/*'
@@ -554,5 +555,29 @@ Style/DigChain:
   Enabled: true
 Style/EmptyStringInsideInterpolation:
   Enabled: true
-Style/FileEmpty:
+Style/FileNull:
+  Enabled: true
+Style/FileTouch:
+  Enabled: true
+Style/HashFetchChain:
+  Enabled: true
+Style/HashSlice:
+  Enabled: true
+Style/ItAssignment:
+  Enabled: true
+Style/ItBlockParameter:
+  Enabled: true
+Style/KeywordArgumentsMerging:
+  Enabled: true
+Style/RedundantArrayFlatten:
+  Enabled: true
+Style/RedundantFormat:
+  Enabled: true
+Style/RedundantInterpolationUnfreeze:
+  Enabled: true
+Style/SafeNavigationChainLength:
+  Enabled: true
+Performance/StringBytesize:
+  Enabled: true
+Performance/ZipWithoutBlock:
   Enabled: true

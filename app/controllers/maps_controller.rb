@@ -3,6 +3,7 @@
 # Handle map related actions
 class MapsController < ApplicationController
   include MapsHelper
+
   before_action :authenticate_user!, except: %i[index show history followers]
 
   def index

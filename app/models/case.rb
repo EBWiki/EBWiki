@@ -39,6 +39,7 @@ class Case < ApplicationRecord
 
   # Friendly ID
   extend FriendlyId
+
   friendly_id :slug_candidates, use: %i[slugged finders]
 
   # Model Validations

@@ -11,6 +11,7 @@ class User < ApplicationRecord
   acts_as_follower
   acts_as_messageable
   extend FriendlyId
+
   friendly_id :slug_candidates, use: %i[slugged finders]
 
   # Model validations
