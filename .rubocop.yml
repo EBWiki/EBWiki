@@ -1,4 +1,4 @@
-require: rubocop-performance
+plugins: rubocop-performance
 
 Layout/LineLength:
   Max: 100
@@ -43,9 +43,6 @@ Style/RedundantInterpolation:
 
 Style/ClassAndModuleChildren:
   Enabled: true
-
-Style/Documentation:
-  Enabled: False
 
 Style/GlobalVars:
   AllowedVariables:
@@ -509,4 +506,53 @@ Gemspec/AttributeAssignment:
   Enabled: true
 
 Layout/EmptyLinesAfterModuleInclusion:
+  Enabled: true
+
+Lint/ArrayLiteralInRegexp:
+  Enabled: true
+Lint/ConstantReassignment:
+  Enabled: true
+Lint/CopDirectiveSyntax:
+  Enabled: true
+Lint/DuplicateSetElement:
+  Enabled: true
+Lint/HashNewWithKeywordArgumentsAsDefault:
+  Enabled: true
+Lint/NumericOperationWithConstantResult:
+  Enabled: true
+Lint/RedundantTypeConversion:
+  Enabled: true
+Lint/SharedMutableDefault:
+  Enabled: true
+Lint/SuppressedExceptionInNumberConversion:
+  Enabled: true
+Lint/UnescapedBracketInRegexp:
+  Enabled: true
+Lint/UselessConstantScoping:
+  Enabled: true
+Lint/UselessDefaultValueArgument:
+  Enabled: true
+Lint/UselessDefined:
+  Enabled: true
+Lint/UselessNumericOperation:
+  Enabled: true
+Lint/UselessOr:
+  Enabled: true
+Naming/PredicateMethod:
+  Enabled: true
+Style/AmbiguousEndlessMethodDefinition:
+  Enabled: true
+Style/BitwisePredicate:
+  Enabled: true
+Style/CollectionQuerying:
+  Enabled: true
+Style/CombinableDefined:
+  Enabled: true
+Style/ComparableBetween:
+  Enabled: true
+Style/DigChain:
+  Enabled: true
+Style/EmptyStringInsideInterpolation:
+  Enabled: true
+Style/FileEmpty:
   Enabled: true
