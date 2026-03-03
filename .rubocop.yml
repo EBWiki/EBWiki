@@ -1,4 +1,7 @@
-require: rubocop-performance
+plugins: rubocop-performance
+
+AllCops:
+  NewCops: enable
 
 Layout/LineLength:
   Max: 100
@@ -500,4 +503,13 @@ Performance/MapCompact: # new in 1.11
 Performance/MapMethodChain: # new in 1.19
   Enabled: true
 Performance/StringIdentifierArgument: # new in 1.13
+  Enabled: true
+
+Gemspec/AddRuntimeDependency:
+  Enabled: true
+
+Gemspec/AttributeAssignment:
+  Enabled: true
+
+Layout/EmptyLinesAfterModuleInclusion:
   Enabled: true
