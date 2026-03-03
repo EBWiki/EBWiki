@@ -20,12 +20,11 @@ class Case < ApplicationRecord
   }
 
   belongs_to :state
-  has_many :links, dependent: :destroy
-  has_many :links, as: :linkable
+  has_many :links, as: :linkable, dependent: :destroy
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :follows, as: :followable, dependent: :destroy
-  has_many :subjects
+  has_many :subjects, dependent: :destroy
   accepts_nested_attributes_for :subjects, reject_if: :all_blank, allow_destroy: true
 
   has_many :case_agencies, dependent: :destroy
@@ -61,10 +60,10 @@ class Case < ApplicationRecord
              'to summarize your edits to the case.'
   }
 
-  validates_presence_of :overview, message: 'An overview of the case is required'
+  validates :overview, presence: { message: 'An overview of the case is required' }
 
   validates :blurb, length: { maximum: MAX_BLURB_CHARACTERS }
-  validates_presence_of :blurb, message: 'A blurb about the case is required.'
+  validates :blurb, presence: { message: 'A blurb about the case is required.' }
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
@@ -84,7 +83,7 @@ class Case < ApplicationRecord
     where(date: duration.beginning_of_day..Time.current)
   }
   scope :sorted_by_update, lambda { |limit|
-    order('updated_at desc').limit(limit)
+    order(updated_at: :desc).limit(limit)
   }
   scope :sorted_by_followers, lambda { |limit|
     order(follows_count: :desc).first(limit)
@@ -110,7 +109,7 @@ class Case < ApplicationRecord
   end
 
   def case_date_validator
-    errors.add(:date, 'must be present') && return unless date.present?
+    errors.add(:date, 'must be present') && return if date.blank?
 
     errors.add(:date, 'must be in the past') if date > Date.current
   end

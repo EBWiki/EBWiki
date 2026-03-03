@@ -29,6 +29,14 @@ AllCops:
     - 'vendor/**/*'
     - 'spec/**/*'
 
+# Disabled pending i18n refactor - requires moving all flash/validation messages to locale files
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+# Disabled - @active_page pattern is common in helpers
+Rails/HelperInstanceVariable:
+  Enabled: false
+
 Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
 

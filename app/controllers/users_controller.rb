@@ -50,14 +50,14 @@ class UsersController < ApplicationController
 
   def user_params
     if current_user.admin?
-      params.require(:user).permit(:admin)
+      params.expect(user: [:admin])
     else
-      params.require(:user).permit(:name, :email, :description, :subscribed)
+      params.expect(user: %i[name email description subscribed])
     end
   end
 
   def user_param
-    params.require(:user).permit(:email)
+    params.expect(user: [:email])
   end
 
   def mailbox

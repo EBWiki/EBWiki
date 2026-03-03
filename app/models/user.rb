@@ -7,7 +7,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  has_many :comments
+  has_many :comments, dependent: :destroy
   acts_as_follower
   acts_as_messageable
   extend FriendlyId

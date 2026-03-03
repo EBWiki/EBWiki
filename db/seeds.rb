@@ -11,7 +11,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 [Agency, Ethnicity, State, Gender, User].each(&:delete_all) if Rails.env.test?
 
-puts 'Creating States...'
+Rails.logger.debug 'Creating States...'
 states =
   [
     { ansi_code: 'AL', iso: 'US-AL', name: 'Alabama' },
@@ -83,7 +83,7 @@ states.each do |state|
   State.create(state)
 end
 
-puts 'Creating Genders...'
+Rails.logger.debug 'Creating Genders...'
 
 genders = [
   ['Male'],
@@ -142,7 +142,7 @@ genders.each do |gender|
   Gender.create(sex: gender[0])
 end
 
-puts 'Creating Ethnicities...'
+Rails.logger.debug 'Creating Ethnicities...'
 ethnicities = [
   ['Black'],
   ['White'],
@@ -157,7 +157,7 @@ ethnicities.each do |ethnicity|
   Ethnicity.create(title: ethnicity[0])
 end
 
-puts 'Creating Users...'
+Rails.logger.debug 'Creating Users...'
 
 # All users have the password 'password'
 FactoryBot.create(:user, name: 'John Doe', email: 'jdoe@example.com', admin: true)
@@ -165,7 +165,7 @@ FactoryBot.create(:user, name: 'Jane Smith', email: 'jsmith@example.com')
 FactoryBot.create(:user, name: 'Jan Alleman', email: 'jalleman@example.com')
 FactoryBot.create(:user, name: 'Zhang San', email: 'szhang@example.com')
 
-puts 'Creating Cases...'
+Rails.logger.debug 'Creating Cases...'
 states = State.limit(10).pluck(:id)
 FactoryBot.create(
   :case,
@@ -239,9 +239,9 @@ FactoryBot.create(
 )
 
 Agency.delete_all
-puts 'Creating Agencies...'
+Rails.logger.debug 'Creating Agencies...'
 texas = State.where(ansi_code: 'TX').first
-p "Texas #{texas} is a #{State.count}"
+Rails.logger.debug { "Texas #{texas} is a #{State.count}" }
 FactoryBot.create(:agency, name: 'City of Houston Police Department', city: 'Houston', state: texas)
 FactoryBot.create(:agency, name: 'City of Beaumont Police Department', city: 'Beaumont',
                            state: texas)

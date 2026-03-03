@@ -4,9 +4,13 @@
 class MapsController < ApplicationController
   include MapsHelper
 
-  before_action :authenticate_user!, except: %i[index show history followers]
+  before_action :authenticate_user!, except: %i[index show]
 
   def index
+    @cases = fetch_cases
+  end
+
+  def show
     @cases = fetch_cases
   end
 

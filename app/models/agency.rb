@@ -13,7 +13,7 @@ class Agency < ApplicationRecord
   }.freeze
 
   has_paper_trail
-  has_many :case_agencies
+  has_many :case_agencies, dependent: :destroy
   has_many :cases, through: :case_agencies
   belongs_to :state
 
@@ -74,7 +74,7 @@ class Agency < ApplicationRecord
   end
 
   def location=(location)
-    self.state = State.find_by_name(location.state)
+    self.state = State.find_by(name: location.state)
     self.street_address = location.street_location
     self.city = location.city
     self.zipcode = location.zipcode

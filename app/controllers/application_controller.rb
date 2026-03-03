@@ -10,12 +10,14 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  # rubocop:disable Rails/UnknownEnv -- staging is a valid custom environment
   if Rails.env.staging? || ENV['HOST'] == 'ebwiki-newstack.herokuapp.com'
     http_basic_authenticate_with name: ENV.fetch('STAGING_USERNAME', nil),
                                  password: ENV.fetch(
                                    'STAGING_PASSWORD', nil
                                  )
   end
+  # rubocop:enable Rails/UnknownEnv
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -59,7 +61,7 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'
-    redirect_to(request.referrer || root_path)
+    redirect_to(request.referer || root_path)
   end
 
   protected
