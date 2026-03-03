@@ -30,7 +30,7 @@ module Cases
       rescue StandardError => e
         Rails.logger.debug { "Revert error case_id=#{@case.id}: #{e.message}" }
         flash[:alert] = 'Failed undoing the action...'
-        redirect_back(fallback_location: @case)
+        redirect_back_or_to @case
       end
     end
 
