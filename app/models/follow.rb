@@ -10,10 +10,10 @@ class Follow < ApplicationRecord
   belongs_to :follower,   polymorphic: true
 
   # Scopes
-  scope :occurring_by, ->(date) { where('created_at < ?', date.end_of_day) }
+  scope :occurring_by, ->(date) { where(created_at: ...date.end_of_day) }
 
   def block!
-    update_attribute(:blocked, true)
+    update!(blocked: true)
   end
 end
 

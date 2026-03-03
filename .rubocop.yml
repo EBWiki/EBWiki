@@ -1,4 +1,6 @@
-require: rubocop-performance
+plugins:
+  - rubocop-performance
+  - rubocop-rails
 
 Layout/LineLength:
   Max: 100
@@ -7,6 +9,7 @@ Metrics/BlockLength:
   Max: 35
 
 AllCops:
+  NewCops: enable
   Exclude:
     - 'db/schema.rb'
     - 'db/migrate/**/*'
@@ -26,6 +29,14 @@ AllCops:
     - 'vendor/**/*'
     - 'spec/**/*'
 
+# Disabled pending i18n refactor - requires moving all flash/validation messages to locale files
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+# Disabled - @active_page pattern is common in helpers
+Rails/HelperInstanceVariable:
+  Enabled: false
+
 Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
 
@@ -43,9 +54,6 @@ Style/RedundantInterpolation:
 
 Style/ClassAndModuleChildren:
   Enabled: true
-
-Style/Documentation:
-  Enabled: False
 
 Style/GlobalVars:
   AllowedVariables:
@@ -500,4 +508,86 @@ Performance/MapCompact: # new in 1.11
 Performance/MapMethodChain: # new in 1.19
   Enabled: true
 Performance/StringIdentifierArgument: # new in 1.13
+  Enabled: true
+
+Gemspec/AddRuntimeDependency:
+  Enabled: true
+
+Gemspec/AttributeAssignment:
+  Enabled: true
+
+Layout/EmptyLinesAfterModuleInclusion:
+  Enabled: true
+
+Lint/ArrayLiteralInRegexp:
+  Enabled: true
+Lint/ConstantReassignment:
+  Enabled: true
+Lint/CopDirectiveSyntax:
+  Enabled: true
+Lint/DuplicateSetElement:
+  Enabled: true
+Lint/HashNewWithKeywordArgumentsAsDefault:
+  Enabled: true
+Lint/NumericOperationWithConstantResult:
+  Enabled: true
+Lint/RedundantTypeConversion:
+  Enabled: true
+Lint/SharedMutableDefault:
+  Enabled: true
+Lint/SuppressedExceptionInNumberConversion:
+  Enabled: true
+Lint/UnescapedBracketInRegexp:
+  Enabled: true
+Lint/UselessConstantScoping:
+  Enabled: true
+Lint/UselessDefaultValueArgument:
+  Enabled: true
+Lint/UselessDefined:
+  Enabled: true
+Lint/UselessNumericOperation:
+  Enabled: true
+Lint/UselessOr:
+  Enabled: true
+Naming/PredicateMethod:
+  Enabled: true
+Style/AmbiguousEndlessMethodDefinition:
+  Enabled: true
+Style/BitwisePredicate:
+  Enabled: true
+Style/CollectionQuerying:
+  Enabled: true
+Style/CombinableDefined:
+  Enabled: true
+Style/ComparableBetween:
+  Enabled: true
+Style/DigChain:
+  Enabled: true
+Style/EmptyStringInsideInterpolation:
+  Enabled: true
+Style/FileNull:
+  Enabled: true
+Style/FileTouch:
+  Enabled: true
+Style/HashFetchChain:
+  Enabled: true
+Style/HashSlice:
+  Enabled: true
+Style/ItAssignment:
+  Enabled: true
+Style/ItBlockParameter:
+  Enabled: true
+Style/KeywordArgumentsMerging:
+  Enabled: true
+Style/RedundantArrayFlatten:
+  Enabled: true
+Style/RedundantFormat:
+  Enabled: true
+Style/RedundantInterpolationUnfreeze:
+  Enabled: true
+Style/SafeNavigationChainLength:
+  Enabled: true
+Performance/StringBytesize:
+  Enabled: true
+Performance/ZipWithoutBlock:
   Enabled: true

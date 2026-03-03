@@ -2,9 +2,10 @@
 
 class State < ApplicationRecord
   extend FriendlyId
+
   friendly_id :name, use: :slugged
-  has_many :cases
-  has_many :agencies
+  has_many :cases, dependent: :restrict_with_error
+  has_many :agencies, dependent: :restrict_with_error
 end
 
 # == Schema Information

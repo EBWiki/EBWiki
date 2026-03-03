@@ -3,7 +3,7 @@
 # CalendarEvent model
 class CalendarEvent < ApplicationRecord
   sanitize :title, :street_address, :city, :state, :zipcode, :description
-  validates_presence_of :title, :schedule, :description
+  validates :title, :schedule, :description, presence: true
   has_many :links, dependent: :destroy
   serialize :schedule, coder: Montrose::Schedule
 
@@ -23,7 +23,8 @@ class CalendarEvent < ApplicationRecord
   end
 
   def location=(location)
-    self.state = State.find_by_name(location.state).name
+    resolved_state = State.find_by(name: location.state)
+    self.state = resolved_state&.name || location.state
     self.street_address = location.street_location
     self.city = location.city
     self.zipcode = location.zipcode
