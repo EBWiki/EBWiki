@@ -9,6 +9,7 @@ you'll find links, notes, HOWTOs and other useful information about developing f
 * [Getting EBWiki Up and Running Locally](#getting-ebwiki-up-and-running-locally)
 * [Restoring Local Database from Production Backup](#restoring-local-database-from-production-backup)
 * [Third-Party Services](#third-party-services)
+* [Rails Upgrade Stage Gates](#rails-upgrade-stage-gates)
 * [Recaptcha](#recaptcha)
 * [Annotate](#annotate)
 
@@ -50,6 +51,18 @@ The EBWiki repo has a `db/seeds.rb` file that you can use to add some basic data
 * Postgres 12 or higher
 * Redis
 * Sumologic
+
+## Rails Upgrade Stage Gates
+
+When working on Rails or Ruby upgrade tasks, use the stage-gate checklist:
+
+* [Rails Upgrade Stage Gates](RAILS_UPGRADE_STAGE_GATES.md)
+
+The checklist defines:
+
+* required commands to run at every stage
+* manual smoke checks that must pass before promotion
+* stage-specific viability criteria and a PR template
 
 ## Recaptcha & Local Development
 
