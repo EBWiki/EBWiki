@@ -25,11 +25,12 @@ All contributors are expected to adhere to our code of conduct, which can be fou
 Instructions on setting up a local development environment can be found in the following documents:
 * [Set Up Locally with Docker](docs/SETUP_LOCALLY.md).
 * [Set Up Locally with All Services (Full Stack)](docs/SETUP_LOCALLY_FULLSTACK.md).
+* [Rails Upgrade Stage Gates](docs/RAILS_UPGRADE_STAGE_GATES.md).
 
 In general, contributors will use the following languages, frameworks, and technologies:
 
-* [Ruby 3.2.0](https://www.ruby-lang.org/en/downloads/)
-* [Rails 7.0.0](http://rubyonrails.org/)
+* [Ruby 3.4.2](https://www.ruby-lang.org/en/downloads/)
+* [Rails 8.1.x](http://rubyonrails.org/)
 * [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 * [Postgres 12](https://www.postgresql.org/) or higher
 * [Redis](https://redis.io/)

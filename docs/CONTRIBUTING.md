@@ -7,4 +7,5 @@ Please start with the Code of Conduct and then continue to the following documen
   1. [Code of Conduct](CODE_OF_CONDUCT.md)
   1. [Setting Up Your Development Environment](SETUP_LOCALLY.md)
   1. [Developing Code](DEVELOPMENT.md)
+  1. [Rails Upgrade Stage Gates](RAILS_UPGRADE_STAGE_GATES.md)
   1. [Submitting a Pull Request](PULL_REQUESTS.md)
