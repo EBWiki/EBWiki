@@ -20,6 +20,6 @@ class MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:message).permit(:body, :subject, recipients: [])
+    params.expect(message: [:body, :subject, { recipients: [] }])
   end
 end

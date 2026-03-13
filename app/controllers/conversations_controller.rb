@@ -4,6 +4,12 @@
 class ConversationsController < ApplicationController
   before_action :authenticate_user!
 
+  def show
+    @receipts = conversation.receipts_for(current_user)
+    # mark conversation as read
+    conversation.mark_as_read(current_user)
+  end
+
   def new
     @other_users = User.where.not(id: current_user.id).pluck(:name, :id)
   end
@@ -17,12 +23,6 @@ class ConversationsController < ApplicationController
                    .conversation
     flash[:success] = 'Your message was successfully sent!'
     redirect_to conversation_path(conversation)
-  end
-
-  def show
-    @receipts = conversation.receipts_for(current_user)
-    # mark conversation as read
-    conversation.mark_as_read(current_user)
   end
 
   def reply
@@ -60,10 +60,10 @@ class ConversationsController < ApplicationController
   end
 
   def conversation_params
-    params.require(:conversation).permit(:subject, :body, recipients: [])
+    params.expect(conversation: [:subject, :body, { recipients: [] }])
   end
 
   def message_params
-    params.require(:message).permit(:body, :subject)
+    params.expect(message: %i[body subject])
   end
 end

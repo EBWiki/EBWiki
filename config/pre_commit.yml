@@ -2,3 +2,6 @@
 :common_remove: []
 :common_add:
 - :rails
+:checks_remove: []
+:checks_add:
+- :ci

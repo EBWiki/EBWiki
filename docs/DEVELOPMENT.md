@@ -64,3 +64,20 @@ config.skip_verify_env.push('development')
 
 ## Annotate
 EBWiki uses the [annotate gem](https://github.com/ctran/annotate_models) in development to record the schema of our ActiveRecord models in the model files.  annotate is configured to run each time that `rails db:migrate` is run, and so each PR that includes a migration should also included an updated model file.  The schema is listed as comments at the bottom of the file.
+
+## Pre-commit Hooks
+
+EBWiki uses the [pre-commit gem](https://github.com/jish/pre-commit) to run Rubocop, Brakeman, and RSpec before each commit. This helps catch issues locally before pushing to GitHub.
+
+To install the pre-commit hook (run once after cloning or when setting up a new environment):
+
+```bash
+bundle exec pre-commit install
+```
+
+The hook runs `rake pre_commit:ci`, which executes:
+- **Rubocop** – Ruby style checker
+- **Brakeman** – Security vulnerability scanner
+- **RSpec** – Full test suite
+
+To bypass the hook in exceptional cases (e.g., WIP commits), use `git commit -n`.

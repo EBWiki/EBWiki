@@ -2,8 +2,9 @@
 
 class Ethnicity < ApplicationRecord
   extend FriendlyId
+
   friendly_id :title, use: :slugged
-  has_many :subjects
+  has_many :subjects, dependent: :nullify
 end
 
 # == Schema Information

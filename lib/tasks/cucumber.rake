@@ -7,7 +7,7 @@
 # files.
 
 unless ARGV.any? { |a| a =~ /^gems/ } # Don't load anything when running the gems:* tasks
-  vendored_cucumber_path = "#{Rails.root}/vendor/{gems,plugins}/cucumber*/bin/cucumber"
+  vendored_cucumber_path = Rails.root.join('vendor/{gems,plugins}/cucumber*/bin/cucumber').to_s
   vendored_cucumber_bin = Dir[vendored_cucumber_path].first
   $LOAD_PATH.unshift("#{File.dirname(vendored_cucumber_bin)}/../lib") \
     unless vendored_cucumber_bin.nil?
@@ -40,7 +40,7 @@ unless ARGV.any? { |a| a =~ /^gems/ } # Don't load anything when running the gem
       desc 'Run all features'
       task all: %i[ok wip]
 
-      task :statsetup do
+      task statsetup: :environment do
         require 'rails/code_statistics'
         STATS_DIRECTORIES << %w[Cucumber features features] if File.exist?('features')
         CodeStatistics::TEST_TYPES << 'Cucumber features' if File.exist?('features')
@@ -57,13 +57,13 @@ unless ARGV.any? { |a| a =~ /^gems/ } # Don't load anything when running the gem
 
     # In case we don't have the generic Rails test:prepare hook,
     # append a no-op task that we can depend upon.
-    task 'test:prepare' do
+    task 'test:prepare' => :environment do
     end
 
     task stats: 'cucumber:statsetup'
   rescue LoadError
     desc 'cucumber rake task not available (cucumber not installed)'
-    task :cucumber do
+    task cucumber: :environment do
       abort 'Cucumber rake task is not available. Be sure to install cucumber as a gem or plugin'
     end
   end

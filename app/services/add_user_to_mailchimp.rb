@@ -2,6 +2,7 @@
 
 class AddUserToMailchimp
   include Service
+
   def call(user)
     if user.subscribed # rubocop:todo Style/GuardClause
       gb = Gibbon::Request.new

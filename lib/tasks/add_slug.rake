@@ -5,7 +5,7 @@ task add_slug: :environment do
   p 'Task started!'
   cases = Case.where(title: nil)
   cases.each do |this_case|
-    next unless this_case.subjects.count.positive?
+    next unless this_case.subjects.any?
 
     this_case.update(
       title: this_case.subjects.first.name,
