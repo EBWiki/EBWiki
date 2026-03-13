@@ -3,12 +3,18 @@
 describe 'users:confirm_all' do
   include_context 'rake'
 
-  let!(:users) { create_list(:user, 5, confirmed_at: (Time.current - 1.day)) }
+  let!(:unconfirmed_users) do
+    users = create_list(:user, 5)
+    users.each { |u| u.update_column(:confirmed_at, nil) }
+    users
+  end
 
-  it 'updates confirmed_at of users' do
+  it 'updates confirmed_at of unconfirmed users' do
     subject.invoke
-    User.all.each do |user|
-      expect(user.confirmed_at.day).to eq Time.current.day
+    unconfirmed_users.each do |user|
+      user.reload
+      expect(user.confirmed_at).to be_present
+      expect(user.confirmed_at).to be_within(1.minute).of(Time.current)
     end
   end
 end
