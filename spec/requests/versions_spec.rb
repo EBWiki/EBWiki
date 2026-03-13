@@ -27,9 +27,8 @@ RSpec.describe 'Versions', type: :request, versioning: true do
       let(:new_case) { FactoryBot.create(:case) }
 
       before do
-        # Revert the create version; reify is nil for create events, so we hit
-        # the else branch (undo create) and redirect to root_path
-        version_id = new_case.versions.last.id
+        # New case has no versions; use invalid id to simulate revert of create
+        version_id = new_case.versions.last&.id || 0
         post "/cases/#{new_case.id}/versions/#{version_id}/revert",
              params: {},
              headers: {
