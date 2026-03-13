@@ -770,7 +770,7 @@ DEPENDENCIES
   rollbar (~> 3.0)
   rollout (~> 2.5)
   rspec-rails
-  rubocop (~> 1.65)
+  rubocop (~> 1.8)
   rubocop-performance (~> 1.23)
   rubocop-rails (~> 2.26)
   sassc-rails (~> 2.1)
