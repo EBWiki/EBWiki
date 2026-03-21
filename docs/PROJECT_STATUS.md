@@ -17,8 +17,9 @@ See [SESSION_2026-03-03_PRE_COMMIT.md](SESSION_2026-03-03_PRE_COMMIT.md) for det
 
 | Branch | Status | Description |
 |--------|--------|-------------|
-| `fix/ci-issues` | In progress | CI configuration and dependency fixes |
-| `feature/pre-commit-validate` | Open PR #4320 | Pre-commit hooks for rubocop, brakeman, rspec |
+| `fix/ci-issues` | In progress | CI configuration and dependency fixes (PR #4316) |
+| `docs/session-summary` | In progress | Session docs PR #4321 (in review) |
+| `main` | Stable | Pre-commit hooks merged (PR #4320), versions_spec fix merged (PR #4327) |
 
 ## Known Issues
 
