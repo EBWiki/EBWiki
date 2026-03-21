@@ -5,17 +5,11 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   before_action :authenticate_user!, except: %i[index show history followers]
   before_action :set_instance_vars, only: %i[edit new create]
 
-  def new
-    @this_case = Case.new
-    @this_case.agencies.build
-    @this_case.links.build
-  end
-
   def index
     page_size = 12
     @total_cases = Case.count
     @recently_updated_cases = Case.sorted_by_update 10
-    @cases = Case.order('date DESC').includes(:state).page(params[:page]).per(page_size)
+    @cases = Case.order(date: :desc).includes(:state).page(params[:page]).per(page_size)
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -25,12 +19,23 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     @comments = @this_case.comments
     @comment = Comment.new
     @subjects = @this_case.subjects
-    @follow_id = current_user.follows.find_by_followable_id(@this_case.id) if user_signed_in?
+    @follow_id = current_user.follows.find_by(followable_id: @this_case.id) if user_signed_in?
     # Check to make sure all required elements are here
-    unless @this_case.present? # rubocop:todo Style/GuardClause
+    if @this_case.blank? # rubocop:todo Style/GuardClause
       flash[:error] = 'There was an error showing this case. Please try again later'
       redirect_to root_path
     end
+  end
+
+  def new
+    @this_case = Case.new
+    @this_case.agencies.build
+    @this_case.links.build
+  end
+
+  def edit
+    @this_case = Case.friendly.find(params[:id])
+    @this_case.links.build
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -45,11 +50,6 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       set_instance_vars
       render 'new'
     end
-  end
-
-  def edit
-    @this_case = Case.friendly.find(params[:id])
-    @this_case.links.build
   end
 
   def followers
@@ -102,31 +102,31 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
 
   def case_params # rubocop:todo Metrics/MethodLength
     params[:case][:date] ||= []
-    params.require(:case).permit(
-      :title,
-      :age,
-      :overview,
-      :litigation,
-      :community_action,
-      :agency_id,
-      :cause_of_death,
-      :date,
-      :state_id,
-      :city,
-      :address,
-      :zipcode,
-      :longitude,
-      :latitude,
-      :avatar,
-      :remove_avatar,
-      :video_url,
-      :summary,
-      :blurb,
-      links_attributes: %i[id url title _destroy],
-      comments_attributes: %i[comment content commentable_id commentable_type],
-      subjects_attributes: %i[name age gender_id ethnicity_id unarmed homeless veteran
-                              mentally_ill id _destroy],
-      agency_ids: []
+    params.expect(
+      case: [:title,
+             :age,
+             :overview,
+             :litigation,
+             :community_action,
+             :agency_id,
+             :cause_of_death,
+             :date,
+             :state_id,
+             :city,
+             :address,
+             :zipcode,
+             :longitude,
+             :latitude,
+             :avatar,
+             :remove_avatar,
+             :video_url,
+             :summary,
+             :blurb,
+             { links_attributes: %i[id url title _destroy],
+               comments_attributes: %i[comment content commentable_id commentable_type],
+               subjects_attributes: %i[name age gender_id ethnicity_id unarmed homeless veteran
+                                       mentally_ill id _destroy],
+               agency_ids: [] }]
     )
   end
 

@@ -8,32 +8,29 @@ module Cases
 
     def revert
       @case = Case.friendly.find(revert_params[:case_id])
-      version = PaperTrail::Version.find_by_id(revert_params[:id])
-      puts "Case: #{@case.inspect}"
-      puts "Version: #{version.inspect}"
-      puts "Version reify: #{version&.reify.inspect}"
+      version = PaperTrail::Version.find_by(id: revert_params[:id])
+      msg = "Revert case=#{@case.id} ver=#{version&.id} reified=#{version&.reify.present?}"
+      Rails.logger.debug { msg }
 
       begin
         if version&.reify
           @case.paper_trail.previous_version
           @case.save
-          puts 'Successfully reverted to previous version'
+          Rails.logger.debug { "Reverted case_id=#{@case.id}" }
           flash[:success] = 'Reverted changes' # {make_redo_link}
           flash[:reversion] = version
-          puts "Redirecting to case: #{@case}"
           redirect_to @case
         else
           # For undoing the create action
           @case.item.destroy
-          puts 'Destroyed case item'
+          Rails.logger.debug { "Destroyed case_id=#{@case.id}" }
           flash[:success] = 'Case deleted'
           redirect_to root_path
         end
       rescue StandardError => e
-        puts "Error during revert: #{e.message}"
-        puts e.backtrace.first(5)
+        Rails.logger.debug { "Revert error case_id=#{@case.id}: #{e.message}" }
         flash[:alert] = 'Failed undoing the action...'
-        redirect_back(fallback_location: @case)
+        redirect_back_or_to @case
       end
     end
 
@@ -44,8 +41,13 @@ module Cases
 
     def save_my_previous_url
       # session[:previous_url] is a Rails built-in variable to save last url.
-      puts "request.referer: #{request.referer}"
-      session[:previous_url] = URI(request.referer || '').path
+      referer_path = begin
+        request.referer.present? ? URI.parse(request.referer).path : nil
+      rescue URI::InvalidURIError
+        nil
+      end
+      Rails.logger.debug { "redirect_path=#{referer_path}" }
+      session[:previous_url] = referer_path
     end
 
     def revert_params

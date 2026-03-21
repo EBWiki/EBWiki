@@ -4,12 +4,8 @@ module Service
   extend ActiveSupport::Concern
 
   included do
-    def self.call(*args, **kwargs)
-      if kwargs.any?
-        new.call(**kwargs)
-      else
-        new.call(*args)
-      end
+    def self.call(...)
+      new.call(...)
     end
   end
 end

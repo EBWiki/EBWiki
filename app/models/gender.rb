@@ -2,9 +2,10 @@
 
 class Gender < ApplicationRecord
   extend FriendlyId
+
   friendly_id :name, use: :slugged
 
-  has_many :subjects
+  has_many :subjects, dependent: :nullify
   alias_attribute :name, :sex
 end
 

@@ -6,7 +6,7 @@ module NullFieldsCounter
   def self.count_null_fields(model, column)
     begin
       count = model.constantize.where("#{column}": nil).size
-    rescue StandardError, ActiveRecord::ActiveRecordError => e
+    rescue StandardError => e
       return "Error: #{e.message}"
     end
     "Total NULL values: #{count}"
