@@ -15,6 +15,7 @@ require 'webmock/rspec'
 require 'paper_trail/frameworks/rspec'
 require 'null_fields_counter'
 include Warden::Test::Helpers
+
 Warden.test_mode!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -32,7 +33,7 @@ RSpec.configure do |config|
   # Factory Girl
   config.include FactoryBot::Syntax::Methods
 
-    # Include Devise test helpers
+  # Include Devise test helpers
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.extend ControllerMacros, type: :controller
@@ -43,8 +44,7 @@ RSpec.configure do |config|
   config.include Rails.application.routes.url_helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
-
+  config.fixture_paths = ["#{Rails.root.join('spec/fixtures')}"]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -89,7 +89,7 @@ RSpec.configure do |config|
   config.before(:each, type: :feature) do
     # :rack_test driver's Rack app under test shares database connection
     # with the specs, so continue to use transaction strategy for speed.
-    driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
+    Capybara.current_driver
     DatabaseCleaner[:active_record].strategy = :deletion
   end
 
@@ -101,6 +101,10 @@ RSpec.configure do |config|
   config.before(:each, type: :view) do
     allow(controller).to receive(:set_state_objects).and_return(true)
     controller.instance_variable_set(:@state_objects, [])
+  end
+
+  config.after(:each, type: :view) do
+    Warden.test_reset!
   end
 
   # Enable PaperTrail versioning for tests that need it
