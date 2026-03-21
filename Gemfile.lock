@@ -101,7 +101,7 @@ GEM
     autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
     base64 (0.3.0)
-    bcrypt (3.1.21)
+    bcrypt (3.1.22)
     benchmark-ips (2.14.0)
     bigdecimal (4.0.1)
     bindex (0.8.1)
