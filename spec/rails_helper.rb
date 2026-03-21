@@ -154,8 +154,19 @@ RSpec.configure do |config|
     ActionMailer::Base.deliveries = []
   end
 
+  config.before(:each, type: :mailer) do
+    ActionMailer::Base.default_url_options = {
+      host: 'localhost',
+      protocol: 'http'
+    }
+    Rails.application.reload_routes!
+    # Ensure Devise mappings are properly loaded
+    Devise::Models.add_module_on_default_scope(:database_authenticatable) if Devise.mappings.empty?
+  end
+
   config.after(:each, type: :mailer) do
     ActionMailer::Base.deliveries.clear
+    Warden.test_reset!
   end
 
   # randomize the order rspec uses when running
