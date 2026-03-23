@@ -11,9 +11,9 @@ Bundler.require(*Rails.groups)
 
 module EBWiki
   class Application < Rails::Application
-    # Initialize configuration defaults for Rails 7.2
+    # Initialize configuration defaults for Rails 8.0
     # Incrementally upgrading: 7.0 → 7.1 → 7.2 → 8.0 → 8.1
-    config.load_defaults 7.2
+    config.load_defaults 8.0
 
     # Use structure.sql instead of schema.rb for database schema
     config.active_record.schema_format = :sql
