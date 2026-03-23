@@ -100,8 +100,7 @@ end
 
 group :test do
   gem 'capybara', '~> 3.40'
-  # Temporarily commented out for Rails 8.1 compatibility
-  # gem 'cucumber-rails', '~> 2.1', require: false
+  gem 'cucumber-rails', '~> 4.0', require: false
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 4.0'
