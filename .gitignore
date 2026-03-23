@@ -24,7 +24,6 @@ config/secrets.yml
 ## Environment normalisation:
 /.bundle
 /vendor/bundle
-/.env
 
 # these should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
@@ -44,7 +43,6 @@ bower.json
 .DS_Store
 
 # Local dev files and directories
-.vscode
 .vagrant
 environment.sh
 
@@ -69,3 +67,4 @@ yarn-debug.log*
 .yarn-integrity
 /.idea
 /config/master.key
+config.bat
