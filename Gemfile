@@ -14,8 +14,7 @@ gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
 gem 'bootsnap', '~> 1.7', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
-# Temporarily commented out for Rails 8.1 compatibility
-# gem 'bullet', '~> 7.0'
+gem 'bullet', '~> 8.1'
 gem 'carrierwave', '~> 2.2.6'
 gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'chartkick', '~> 3.4'
@@ -75,7 +74,7 @@ gem 'turbolinks', '~> 5.2'
 gem 'twitter', '~> 7.0'
 
 group :development, :test do
-  # gem 'debug', '>= 1.0.0'  # Temporarily disabled for Rails 7.1 compatibility
+  gem 'debug', '>= 1.0.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker'
   gem 'mock_redis', '~> 0.26'
@@ -89,8 +88,8 @@ group :development, :test do
 end
 
 group :development do
-  # Temporarily commented out for Rails 8.1 compatibility
-  # gem 'annotate', '~> 3.1', '>= 3.1.1'
+  # annotate 3.2 requires activerecord < 8.0 — incompatible with Rails 8.x, no update yet
+  # gem 'annotate', '~> 3.2'
   gem 'brakeman', '~> 8.0', require: false
   gem 'derailed_benchmarks', '~> 1.8'
   gem 'listen', '~> 3.7'
@@ -110,7 +109,6 @@ group :test do
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-# Temporarily commented out for Rails 8.1 compatibility
-# group :production do
-#   gem 'cloudflare-rails', '~> 6.2'
-# end
+group :production do
+  gem 'cloudflare-rails', '~> 7.0'
+end
