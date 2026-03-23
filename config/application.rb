@@ -11,9 +11,12 @@ Bundler.require(*Rails.groups)
 
 module EBWiki
   class Application < Rails::Application
-    # Initialize configuration defaults for Rails 8.0
-    # Incrementally upgrading: 7.0 → 7.1 → 7.2 → 8.0 → 8.1
-    config.load_defaults 8.0
+    # Rails framework defaults, fully upgraded to 8.1
+    config.load_defaults 8.1
+
+    # Intentional override: allow belongs_to associations to be optional.
+    # Rails default is true (required). EBWiki's data model relies on optional associations.
+    config.active_record.belongs_to_required_by_default = false
 
     # Use structure.sql instead of schema.rb for database schema
     config.active_record.schema_format = :sql
