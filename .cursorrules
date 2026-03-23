@@ -1,0 +1,33 @@
+# EBWiki Code Quality & Engineering Rules
+
+Follow these rules when editing EBWiki. Full details: docs/CODE_QUALITY_RULES.md
+
+## Pre-commit & CI
+- Run rubocop, brakeman, rspec before committing. Use `bundle exec pre-commit install`.
+- Do not push failing checks. CI must pass for PRs.
+
+## Code Style
+- Pass rubocop. No new offenses. Max 100 chars/line, 35 lines/block.
+- Avoid `rubocop:disable` without a tracked issue.
+
+## Testing
+- Add specs for new features, services, and non-trivial changes.
+- Use FactoryBot. Specs must be independent.
+
+## Architecture
+- Use service objects (`include Service`, `call(...)`) for business logic.
+- Keep controllers thin; delegate to services/models.
+- Single responsibility; explicit over implicit.
+
+## Security
+- No new Brakeman warnings. Use strong params. No secrets in code.
+
+## Error Handling
+- Rescue specific exceptions; log errors. No silent failures.
+
+## Git & PRs
+- Branch per feature. One logical change per PR.
+- Clear commit messages; reference issues when relevant.
+
+## General
+- DRY, YAGNI, readability. Update docs when behavior changes.
