@@ -31,7 +31,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{current_user.email}" %><span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <%if signed_in? && current_user.admin? %>
-                <li><%= link_to "Admin", rails_admin.dashboard_path %></li>
+                <li><%= link_to "Admin", admin_root_path %></li>
               <% end %>
               <li> <%= link_to "Profile", user_path(current_user) %></li>
               <li> <%= link_to "View Inbox", mailbox_inbox_path %></li>
