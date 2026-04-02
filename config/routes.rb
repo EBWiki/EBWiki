@@ -1,7 +1,25 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  default_url_options host: "example.com"
+  namespace :admin do
+    resources :agencies
+    resources :calendar_events
+    resources :cases
+    resources :case_agencies
+    resources :comments
+    resources :ethnicities
+    resources :follows
+    resources :genders
+    resources :links
+    resources :organizations
+    resources :rollout_histories
+    resources :states
+    resources :subjects
+    resources :users
+
+    root to: 'agencies#index'
+  end
+  default_url_options host: 'example.com'
   root 'cases#index'
 
   resources :cases do
@@ -20,8 +38,12 @@ Rails.application.routes.draw do
   # redirect logic
   get '/articles', to: redirect('/cases')
   get '/articles/:slug', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}" }
-  get '/articles/:slug/history', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/history" }
-  get '/articles/:slug/followers', to: redirect { |path_params, _req| "/cases/#{path_params[:slug]}/followers" }
+  get '/articles/:slug/history', to: redirect { |path_params, _req|
+    "/cases/#{path_params[:slug]}/history"
+  }
+  get '/articles/:slug/followers', to: redirect { |path_params, _req|
+    "/cases/#{path_params[:slug]}/followers"
+  }
 
   resources :agencies
   resources :organizations
@@ -29,7 +51,6 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
   resources :users, only: %i[show edit update]
-  mount RailsAdmin::Engine, at: '/admin', as: 'rails_admin'
 
   get '/about', to: 'static#about'
   get '/guidelines', to: 'static#guidelines'
