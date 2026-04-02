@@ -68,7 +68,7 @@ gem 'sitemap_generator', '~> 6.1'
 gem 'social-share-button', '~> 1.2'
 gem 'sprockets', '~> 4.0'
 gem 'statistics'
-gem 'turbolinks', '~> 5.2'
+
 gem 'twitter', '~> 7.0'
 
 group :development, :test do
