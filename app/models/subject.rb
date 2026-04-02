@@ -2,13 +2,13 @@
 
 class Subject < ApplicationRecord
   belongs_to :case
-  belongs_to :gender
-  belongs_to :ethnicity
+  belongs_to :gender, optional: true
+  belongs_to :ethnicity, optional: true
 
   # Model validations
   sanitize :name
 
-  validates :name, presence: { message: 'Name of the victim can\'t be blank.' }
+  validates :name, presence: { message: "Name of the victim can't be blank." }
 end
 
 # == Schema Information
