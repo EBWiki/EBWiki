@@ -9,7 +9,7 @@ feature 'User visits case history page' do
     this_case.update title: 'Case Update'
     this_case.update summary: 'New case summary'
     user = FactoryBot.create(:user)
-    login_as(user, scope: :user)
+    sign_in user
     visit cases_history_path(this_case)
     expect(page).to have_text('History')
   end
