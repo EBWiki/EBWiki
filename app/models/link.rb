@@ -2,7 +2,7 @@
 
 class Link < ApplicationRecord
   validates :url, presence: true
-  belongs_to :linkable, polymorphic: true, touch: true
+  belongs_to :linkable, polymorphic: true, touch: true, optional: true
 end
 
 # == Schema Information
