@@ -10,7 +10,7 @@ feature 'User visits user profile page' do
     cases.each do |this_case|
       user.follow(this_case)
     end
-    login_as(user, scope: :user)
+    sign_in user
     visit("/users/#{user.id}")
     cases.each do |this_case|
       expect(page).to have_content(this_case.title)
@@ -21,7 +21,7 @@ end
 feature 'User visits user profile page' do
   let!(:user) { FactoryBot.create(:user) }
   scenario 'and is not following any cases' do
-    login_as(user, scope: :user)
+    sign_in user
     visit("/users/#{user.id}")
     expect(page).to have_text('Please take 30 seconds')
   end
