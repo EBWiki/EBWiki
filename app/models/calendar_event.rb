@@ -4,7 +4,7 @@
 class CalendarEvent < ApplicationRecord
   sanitize :title, :street_address, :city, :state, :zipcode, :description
   validates :title, :schedule, :description, presence: true
-  has_many :links, dependent: :destroy
+  has_many :links, as: :linkable, dependent: :destroy
   serialize :schedule, coder: Montrose::Schedule
 
   enum :format, {
