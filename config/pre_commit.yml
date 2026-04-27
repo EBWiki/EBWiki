@@ -4,4 +4,5 @@
 - :rails
 :checks_remove: []
 :checks_add:
+- :rubocop
 - :ci
