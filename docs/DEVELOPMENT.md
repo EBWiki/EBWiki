@@ -75,7 +75,7 @@ To install the pre-commit hook (run once after cloning or when setting up a new 
 bundle exec pre-commit install
 ```
 
-The hook runs `rake pre_commit:ci`, which executes:
+The hook runs `rubocop` directly and `rake pre_commit:ci`, which executes:
 - **Rubocop** – Ruby style checker
 - **Brakeman** – Security vulnerability scanner
 - **RSpec** – Full test suite
