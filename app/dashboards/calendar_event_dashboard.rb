@@ -60,7 +60,6 @@ class CalendarEventDashboard < Administrate::BaseDashboard
     city
     description
     format
-    links
     owner_id
     schedule
     state

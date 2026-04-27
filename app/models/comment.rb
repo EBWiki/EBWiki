@@ -8,6 +8,7 @@ class Comment < ApplicationRecord
   sanitize :content
 
   validates :content, presence: true
+  validates :commentable, :user, presence: true
 
   # Scopes
   scope :sorted_by_creation, ->(limit) { order(created_at: :desc).limit(limit) }

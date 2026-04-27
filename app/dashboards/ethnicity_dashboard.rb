@@ -26,8 +26,8 @@ class EthnicityDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     slug
-    subjects
     title
+    created_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -46,7 +46,6 @@ class EthnicityDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     slug
-    subjects
     title
   ].freeze
 

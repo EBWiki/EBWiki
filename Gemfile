@@ -103,6 +103,5 @@ group :test do
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-group :production do
-  gem 'cloudflare-rails', '~> 7.0'
-end
+# Defer cloudflare-rails until production origin traffic is restricted to
+# Cloudflare/trusted proxies; otherwise CF-Connecting-IP can be spoofed.

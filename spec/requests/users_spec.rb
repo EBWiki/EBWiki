@@ -54,4 +54,17 @@ RSpec.describe 'Users', type: :request do
       end
     end
   end
+
+  describe 'DELETE /users/sign_out' do
+    before { delete destroy_user_session_path }
+
+    it 'redirects after sign out' do
+      expect(response).to redirect_to(root_path)
+    end
+
+    it 'clears the user session' do
+      follow_redirect!
+      expect(request.env['warden'].user).to be_nil
+    end
+  end
 end

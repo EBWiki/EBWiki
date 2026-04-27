@@ -6,10 +6,17 @@ FactoryBot.define do
   factory :subject do
     name { Faker::Name.name }
     age { 1 }
-    gender
-    ethnicity
+    association :case
     unarmed { false }
     mentally_ill { false }
     veteran { false }
+
+    trait :with_gender do
+      gender
+    end
+
+    trait :with_ethnicity do
+      ethnicity
+    end
   end
 end

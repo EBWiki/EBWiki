@@ -27,7 +27,7 @@ class GenderDashboard < Administrate::BaseDashboard
     id
     sex
     slug
-    subjects
+    created_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -47,7 +47,6 @@ class GenderDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     sex
     slug
-    subjects
   ].freeze
 
   # COLLECTION_FILTERS

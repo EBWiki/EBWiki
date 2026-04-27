@@ -9,15 +9,18 @@ feature 'User checks mailbox' do
   pending
   scenario 'Logged in user checks mailbox by accessing the mailbox URL' do
     WebMock.allow_net_connect!
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_button 'Log in'
-    visit '/mailbox'
-    expect(page).to have_content('Inbox')
-    expect(page).to have_content('Sent')
-    expect(page).to have_content('Trash')
-    WebMock.disable_net_connect!
+    begin
+      visit new_user_session_path
+      fill_in 'Email', with: user.email
+      fill_in 'Password', with: user.password
+      click_button 'Log in'
+      visit '/mailbox'
+      expect(page).to have_content('Inbox')
+      expect(page).to have_content('Sent')
+      expect(page).to have_content('Trash')
+    ensure
+      WebMock.disable_net_connect!
+    end
   end
 
   # This is a happy path feature spec; this covers the scenario
