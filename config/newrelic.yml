@@ -12,7 +12,7 @@
 
 development:
   # Required license key associated with your New Relic account.
-  license_key: ENV['NEW_RELIC_API_KEY']
+  license_key: ENV['NEW_RELIC_LICENSE_KEY'] || ENV['NEW_RELIC_API_KEY']
 
   # Your application name. Renaming here affects where data displays in New
   # Relic. For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
@@ -27,16 +27,16 @@ development:
 
 test:
   # It doesn't make sense to report to New Relic from automated test runs.
-  license_key: ENV['NEW_RELIC_API_KEY']
+  license_key: ENV['NEW_RELIC_LICENSE_KEY'] || ENV['NEW_RELIC_API_KEY']
   monitor_mode: false
   log_level: info
 
 staging:
-  license_key: ENV['NEW_RELIC_API_KEY']
+  license_key: ENV['NEW_RELIC_LICENSE_KEY'] || ENV['NEW_RELIC_API_KEY']
   app_name: EBWiki (Staging)
   log_level: info
 
 production:
-  license_key: ENV['NEW_RELIC_API_KEY']
+  license_key: ENV['NEW_RELIC_LICENSE_KEY'] || ENV['NEW_RELIC_API_KEY']
   app_name: EBWiki
   log_level: info

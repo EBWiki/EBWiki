@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
     root to: 'agencies#index'
   end
-  default_url_options host: ENV.fetch('APP_HOST', 'localhost')
+  default_url_options host: ENV.fetch('APP_HOST', 'ebwiki.org')
   root 'cases#index'
 
   resources :cases do
