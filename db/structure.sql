@@ -1,6 +1,7 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -292,7 +293,8 @@ CREATE TABLE public.cases (
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
     blurb text,
-    cause_of_death public.cause_of_death
+    cause_of_death public.cause_of_death,
+    tsv tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (((((((((COALESCE(title, ''::character varying))::text || ' '::text) || COALESCE(blurb, ''::text)) || ' '::text) || COALESCE(overview, ''::text)) || ' '::text) || (COALESCE(city, ''::character varying))::text) || ' '::text) || COALESCE(summary, ''::text)))) STORED
 );
 
 
@@ -1494,6 +1496,13 @@ CREATE INDEX index_cases_on_title ON public.cases USING btree (title);
 
 
 --
+-- Name: index_cases_on_tsv; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cases_on_tsv ON public.cases USING gin (tsv);
+
+
+--
 -- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1763,6 +1772,7 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260428201731'),
 ('20260428164616'),
 ('20240304022234'),
 ('20220110021739'),
