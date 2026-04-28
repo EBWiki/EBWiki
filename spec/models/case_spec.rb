@@ -177,6 +177,66 @@ describe '#default_avatar_url', versioning: true do
   end
 end
 
+describe '.search_text' do
+  let(:texas) { FactoryBot.create(:state_texas) }
+  let(:louisiana) { FactoryBot.create(:state_louisiana) }
+  let!(:houston_case) do
+    FactoryBot.create(
+      :case,
+      title: 'Police shooting in Houston',
+      blurb: 'Officer-involved shooting downtown',
+      overview: 'A detailed overview of the Houston incident',
+      city: 'Houston',
+      state: texas,
+      summary: 'initial entry'
+    )
+  end
+  let!(:baton_rouge_case) do
+    FactoryBot.create(
+      :case,
+      title: 'Vehicular incident in Baton Rouge',
+      blurb: 'Traffic stop escalation',
+      overview: 'Different unrelated content',
+      city: 'Baton Rouge',
+      state: louisiana,
+      summary: 'initial entry'
+    )
+  end
+
+  it 'matches text in the title' do
+    results = Case.search_text('shooting')
+    expect(results).to include(houston_case)
+    expect(results).not_to include(baton_rouge_case)
+  end
+
+  it 'matches text in the blurb' do
+    results = Case.search_text('escalation')
+    expect(results).to include(baton_rouge_case)
+    expect(results).not_to include(houston_case)
+  end
+
+  it 'matches text in the city' do
+    results = Case.search_text('Houston')
+    expect(results).to include(houston_case)
+    expect(results).not_to include(baton_rouge_case)
+  end
+
+  it 'supports prefix matching' do
+    results = Case.search_text('shoot')
+    expect(results).to include(houston_case)
+  end
+
+  it 'returns an empty relation when no rows match' do
+    expect(Case.search_text('nonexistent_term_xyz')).to be_empty
+  end
+
+  it 'returns an ActiveRecord::Relation that supports chaining' do
+    chained = Case.search_text('shooting').where(city: 'Houston')
+    expect(chained).to include(houston_case)
+    expect(chained).not_to include(baton_rouge_case)
+  end
+end
+
 describe 'scopes', versioning: true do
   let(:dc) { FactoryBot.create(:state_dc) }
   let(:louisiana) { FactoryBot.create(:state_louisiana) }

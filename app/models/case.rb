@@ -2,6 +2,8 @@
 
 # Case model
 class Case < ApplicationRecord
+  include CaseSearchable
+
   MAX_BLURB_CHARACTERS = 500
 
   enum :cause_of_death, {

@@ -445,6 +445,9 @@ GEM
     pg (1.6.3-x86_64-darwin)
     pg (1.6.3-x86_64-linux)
     pg (1.6.3-x86_64-linux-musl)
+    pg_search (2.3.7)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     pluginator (1.5.0)
     pp (0.6.3)
       prettyprint
@@ -751,6 +754,7 @@ DEPENDENCIES
   paper_trail
   paper_trail-association_tracking
   pg (~> 1.2)
+  pg_search (~> 2.3)
   pre-commit (~> 0.39)
   psych (~> 4.0)
   puma (~> 6.0)
