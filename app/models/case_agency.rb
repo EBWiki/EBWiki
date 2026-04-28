@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class CaseAgency < ApplicationRecord
-  belongs_to :case
-  belongs_to :agency
+  belongs_to :case, optional: true
+  belongs_to :agency, optional: true
 end
 
 # == Schema Information

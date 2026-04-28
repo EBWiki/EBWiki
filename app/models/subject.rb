@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Subject < ApplicationRecord
-  belongs_to :case
+  belongs_to :case, optional: true
   belongs_to :gender, optional: true
   belongs_to :ethnicity, optional: true
 
