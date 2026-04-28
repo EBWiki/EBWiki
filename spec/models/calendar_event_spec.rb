@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe CalendarEvent, type: :model do
   let(:texas) { FactoryBot.create(:state_texas) }
   let(:ohio) { FactoryBot.create(:state_ohio) }
@@ -27,6 +28,22 @@ RSpec.describe CalendarEvent, type: :model do
       expect(calendar_event.location.street_location).to eq('1867 Irving Road')
       expect(calendar_event.location.zipcode).to eq('43085')
       expect(calendar_event.location.state).to eq('Ohio')
+    end
+  end
+
+  describe 'polymorphic links association' do
+    it 'allows creating a link for a CalendarEvent without violating the legacy cases FK' do
+      calendar_event = FactoryBot.create(
+        :calendar_event,
+        city: 'Worthington',
+        state: ohio.name,
+        street_address: '1867 Irving Road',
+        zipcode: '43085'
+      )
+
+      expect do
+        calendar_event.links.create!(url: 'https://example.com/event')
+      end.to change { calendar_event.links.count }.by(1)
     end
   end
 
@@ -58,3 +75,4 @@ RSpec.describe CalendarEvent, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
