@@ -702,7 +702,7 @@ DEPENDENCIES
   active_median (~> 0.2)
   activerecord-session_store (~> 2.0)
   acts_as_follower!
-  administrate
+  administrate (~> 1.0)
   annotaterb (~> 4.22)
   bootsnap (~> 1.7)
   bootstrap-sass (>= 3.4.1)
