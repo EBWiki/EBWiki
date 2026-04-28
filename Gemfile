@@ -51,7 +51,7 @@ gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 gem 'rack-host-redirect', '~> 1.3'
 # Override action_text-trix to 2.1.17+ for XSS security fix (issue #4317)
 gem 'action_text-trix', '~> 2.1.17'
-gem 'administrate'
+gem 'administrate', '~> 1.0'
 gem 'rails', '~> 8.1.0'
 gem 'recaptcha', '~> 5.8'
 gem 'redis', '~> 5'
