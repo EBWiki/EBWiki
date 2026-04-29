@@ -15,7 +15,7 @@ class Agency < ApplicationRecord
   has_paper_trail
   has_many :case_agencies, dependent: :destroy
   has_many :cases, through: :case_agencies
-  belongs_to :state
+  belongs_to :state, optional: true
 
   # Model validations
   sanitize :name, :city, :street_address, :zipcode, :telephone, :email, :website

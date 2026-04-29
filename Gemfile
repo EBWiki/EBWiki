@@ -3,41 +3,38 @@
 ruby '3.4.2'
 
 source 'https://rubygems.org'
-gem 'concurrent-ruby', '1.3.4'
-gem 'json', '~> 2.6'
+gem 'concurrent-ruby', '1.3.6'
+gem 'json', '~> 2.19'
 gem 'psych', '~> 4.0'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'active_median', '~> 0.2'
 gem 'activerecord-session_store', '~> 2.0'
 gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
-gem 'bootsnap', '~> 1.7', require: false
+gem 'bootsnap', '~> 1.24', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
-# Temporarily commented out for Rails 8.1 compatibility
-# gem 'bullet', '~> 7.0'
+gem 'bullet', '~> 8.1'
 gem 'carrierwave', '~> 2.2.6'
 gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'chartkick', '~> 3.4'
 gem 'ckeditor', '~> 5.1'
 gem 'cocoon', '~> 1.2'
 gem 'connection_pool'
-gem 'devise', '~> 4.9'
+gem 'devise', '~> 5.0'
 gem 'dotenv-rails', '~> 2.7', groups: %i[development test production], require: 'dotenv/rails-now'
 gem 'elasticsearch'
 gem 'elasticsearch-transport'
-gem 'fog-aws', '~> 3.10'
+gem 'fog-aws', '~> 3.33'
 gem 'friendly_id', '~> 5.2'
 gem 'galerts', '~> 1.1'
 gem 'geocoder', '~> 1.6'
 gem 'gibbon', '~> 3.4'
 gem 'groupdate', '~> 5.0'
 gem 'hightop', '~> 0.2'
-gem 'hiredis', '~> 0.6'
 gem 'httparty', '~> 0.24'
 gem 'image_processing', '~> 1.12'
-gem 'importmap-rails'
-gem 'jb', '~> 0.7.1'
+gem 'jb', '~> 0.8.2'
 gem 'jquery-rails', '~> 4.4'
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
 gem 'lograge', '~> 0.11'
@@ -48,34 +45,34 @@ gem 'newrelic_rpm', '~> 7.0'
 gem 'paper_trail'
 gem 'paper_trail-association_tracking'
 gem 'pg', '~> 1.2'
+gem 'pg_search', '~> 2.3'
 gem 'puma', '~> 6.0'
 gem 'pundit', '~> 2.1'
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 gem 'rack-host-redirect', '~> 1.3'
+# Override action_text-trix to 2.1.17+ for XSS security fix (issue #4317)
+gem 'action_text-trix', '~> 2.1.17'
+gem 'administrate', '~> 1.0'
 gem 'rails', '~> 8.1.0'
-gem 'rails_admin', '~> 3.0'
-gem 'recaptcha', '~> 5.8'
+gem 'recaptcha', '~> 5.21'
 gem 'redis', '~> 5'
 gem 'redis-namespace', '~> 1.8'
-# Temporarily commented out for Rails 8.1 compatibility
-# gem 'redis-rails', '~> 5.0'
-# gem 'redis-store', '~> 1.9'
 gem 'rollbar', '~> 3.0'
 gem 'rollout', '~> 2.5'
 gem 'sassc-rails', '~> 2.1'
-gem 'searchkick', '~> 3.1'
+gem 'searchkick', '~> 6.1'
 gem 'select2-rails', '~> 4.0'
-gem 'simplecov', '~> 0.19.0'
-gem 'simple_form', '5.0'
+gem 'simplecov', '~> 0.22.0'
+gem 'simple_form', '5.4.1'
 gem 'sitemap_generator', '~> 6.1'
 gem 'social-share-button', '~> 1.2'
-gem 'sprockets', '~> 3.7'
+gem 'sprockets', '~> 4.0'
 gem 'statistics'
-gem 'turbolinks', '~> 5.2'
+
 gem 'twitter', '~> 7.0'
 
 group :development, :test do
-  # gem 'debug', '>= 1.0.0'  # Temporarily disabled for Rails 7.1 compatibility
+  gem 'debug', '>= 1.0.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker'
   gem 'mock_redis', '~> 0.26'
@@ -89,8 +86,7 @@ group :development, :test do
 end
 
 group :development do
-  # Temporarily commented out for Rails 8.1 compatibility
-  # gem 'annotate', '~> 3.1', '>= 3.1.1'
+  gem 'annotaterb', '~> 4.22'
   gem 'brakeman', '~> 8.0', require: false
   gem 'derailed_benchmarks', '~> 1.8'
   gem 'listen', '~> 3.7'
@@ -100,8 +96,6 @@ end
 
 group :test do
   gem 'capybara', '~> 3.40'
-  # Temporarily commented out for Rails 8.1 compatibility
-  # gem 'cucumber-rails', '~> 2.1', require: false
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 4.0'
@@ -110,7 +104,6 @@ group :test do
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end
 
-# Temporarily commented out for Rails 8.1 compatibility
-# group :production do
-#   gem 'cloudflare-rails', '~> 6.2'
-# end
+group :production do
+  gem 'cloudflare-rails', '~> 7.0'
+end

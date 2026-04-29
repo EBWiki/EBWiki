@@ -2,18 +2,16 @@
 
 require 'rails_helper'
 
-describe User do
+describe 'Admin Dashboard' do
   feature 'Anonymous User' do
-    # This is a feature spec where a user tries to log onto the
-    # main site as well as the admin section, but does not have
-    # the proper credentials for either section of the site.
-    # In this case the user should get a login error message and not
-    # be able to log into the admin section of the site.
+    # This is a feature spec where a user tries to access the
+    # admin section without being logged in.
+    # The user should be redirected and not see the admin dashboard.
     scenario 'without sign in' do
       visit new_user_session_path
       click_button 'Log in'
-      expect(page).to have_content 'Invalid Email or password'
-      visit rails_admin.dashboard_path
+      expect(page).to have_content 'Invalid email or password'
+      visit admin_root_path
       expect(page).to have_content 'You are not an admin'
     end
   end
@@ -21,8 +19,8 @@ describe User do
   feature 'User signs in' do
     let!(:user) { FactoryBot.create(:user) }
     # This is a happy path feature spec; this covers the scenario
-    # where a user log into the site section, but
-    # does not have the proper credentials access the admin section,
+    # where a user logs into the site section, but
+    # does not have the proper credentials to access the admin section,
     # which it then attempts to access. In this case
     # the user should not get a login error message, but not
     # be able to log into the admin section of the site.
@@ -30,7 +28,7 @@ describe User do
       pending
       click_button 'Log in'
       expect(page).to have_content 'Signed in successfully'
-      visit rails_admin.dashboard_path
+      visit admin_root_path
       expect(page).to have_content 'You are not an admin'
       WebMock.disable_net_connect!
     end
@@ -43,8 +41,8 @@ describe User do
     scenario 'without any credentials' do
       visit new_user_session_path
       click_button 'Log in'
-      expect(page).to have_content 'Invalid Email or password'
-      visit rails_admin.dashboard_path
+      expect(page).to have_content 'Invalid email or password'
+      visit admin_root_path
       expect(page).to have_content 'You are not an admin'
     end
   end
@@ -54,9 +52,9 @@ describe User do
 
     # This is a happy path feature spec; this covers the scenario
     # where an admin user logs into the site section and has
-    # the proper credentials access the admin section,
+    # the proper credentials to access the admin section,
     # which it then attempts to access. In this case
-    # the user should not get a login error message, and  be able
+    # the user should not get a login error message, and be able
     # to log into the admin section of the site.
     scenario 'with admin credentials' do
       WebMock.allow_net_connect!
@@ -64,8 +62,8 @@ describe User do
       fill_in 'Email', with: admin.email
       fill_in 'Password', with: admin.password
       click_button 'Log in'
-      visit rails_admin.dashboard_path
-      expect(page).to have_content 'Site Administration'
+      visit admin_root_path
+      expect(page).to have_content 'Agencies'
       WebMock.disable_net_connect!
     end
 
@@ -79,8 +77,8 @@ describe User do
       fill_in 'Email', with: admin.email
       fill_in 'Password', with: 'bad_password'
       click_button 'Log in'
-      expect(page).to have_content 'Invalid Email or password'
-      visit rails_admin.dashboard_path
+      expect(page).to have_content 'Invalid email or password'
+      visit admin_root_path
       expect(page).to have_content 'You are not an admin'
     end
 
@@ -92,8 +90,8 @@ describe User do
     scenario 'without any credentials' do
       visit new_user_session_path
       click_button 'Log in'
-      expect(page).to have_content 'Invalid Email or password'
-      visit rails_admin.dashboard_path
+      expect(page).to have_content 'Invalid email or password'
+      visit admin_root_path
       expect(page).to have_content 'You are not an admin'
     end
   end

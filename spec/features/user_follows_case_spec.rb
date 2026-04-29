@@ -7,7 +7,7 @@ RSpec.describe 'the follow process', type: :feature do
   let(:user) { FactoryBot.create(:user) }
 
   it 'shows the follow link when user visits case page' do
-    login_as(user, scope: :user)
+    sign_in user
     visit case_path(this_case)
     click_button 'Follow'
     visit case_path(this_case)
@@ -15,7 +15,7 @@ RSpec.describe 'the follow process', type: :feature do
   end
 
   it 'shows the unfollow link if user is already following case' do
-    login_as(user, scope: :user)
+    sign_in user
     user.follow(this_case)
     visit case_path(this_case)
     click_button 'Unfollow'

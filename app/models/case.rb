@@ -2,6 +2,8 @@
 
 # Case model
 class Case < ApplicationRecord
+  include CaseSearchable
+
   MAX_BLURB_CHARACTERS = 500
 
   enum :cause_of_death, {
@@ -19,7 +21,7 @@ class Case < ApplicationRecord
     vehicular: 'vehicular'
   }
 
-  belongs_to :state
+  belongs_to :state, optional: true
   has_many :links, as: :linkable, dependent: :destroy
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
   has_many :comments, as: :commentable, dependent: :destroy

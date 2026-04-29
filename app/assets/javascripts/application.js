@@ -17,7 +17,6 @@
 //= require bootstrap-datetimepicker
 //= require pickers
 //= require cocoon
-//= require turbolinks
 //= require social-share-button
 //= require underscore
 //= require select2

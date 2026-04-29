@@ -5,14 +5,14 @@ require 'rails_helper'
 feature 'Editor edits an agency' do
   let(:this_agency) { FactoryBot.create(:agency) }
   let(:user) { FactoryBot.create(:user) }
-  scenario 'Editor arrives at the agency edit page and sees the agency''s name' do
-    login_as(user, scope: :user)
+  scenario "Editor arrives at the agency edit page and sees the agency's name" do
+    sign_in user
     visit "/agencies/#{this_agency.id}/edit"
-    expect(page).to have_content('Editing Agency ' + this_agency.name)
+    expect(page).to have_content("Editing Agency #{this_agency.name}")
   end
 
   scenario 'Editor arrives at the agency edit page and selects back button' do
-    login_as(user, scope: :user)
+    sign_in user
     visit "/agencies/#{this_agency.id}/edit"
     expect(page).to have_content('Back to Agency')
     click_link('Back to Agency')
