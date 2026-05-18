@@ -8,7 +8,7 @@ gem 'json', '~> 2.19'
 gem 'psych', '~> 4.0'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
-gem 'active_median', '~> 0.2'
+gem 'active_median', '~> 1.0'
 gem 'activerecord-session_store', '~> 2.0'
 gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
 gem 'bootsnap', '~> 1.24', require: false
