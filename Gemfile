@@ -81,27 +81,27 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.65', require: false
   gem 'rubocop-performance', '~> 1.23', require: false
-  gem 'rubocop-rails', '~> 2.26', require: false
+  gem 'rubocop-rails', '~> 2.35', require: false
   gem 'standard', '>= 1.35.1', require: false
 end
 
 group :development do
   gem 'annotaterb', '~> 4.22'
   gem 'brakeman', '~> 8.0', require: false
-  gem 'derailed_benchmarks', '~> 1.8'
+  gem 'derailed_benchmarks', '~> 2.2'
   gem 'listen', '~> 3.7'
-  gem 'rails_real_favicon', '~> 0.0.13'
-  gem 'web-console', '~> 3.7'
+  gem 'rails_real_favicon', '~> 0.1.1'
+  gem 'web-console', '~> 4.3'
 end
 
 group :test do
   gem 'capybara', '~> 3.40'
   gem 'database_cleaner-active_record', '~> 2.0'
-  gem 'launchy', '~> 2.5'
-  gem 'selenium-webdriver', '~> 4.0'
-  gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
+  gem 'launchy', '~> 3.1'
+  gem 'selenium-webdriver', '~> 4.44'
+  gem 'shoulda-matchers', '~> 7.0'
   gem 'vcr', '~> 6.0'
-  gem 'webmock', '~>3.9', '>= 3.9.1'
+  gem 'webmock', '~>3.26'
 end
 
 group :production do
