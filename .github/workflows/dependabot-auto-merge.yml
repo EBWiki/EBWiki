@@ -9,8 +9,17 @@ permissions:
   pull-requests: write
 
 jobs:
+  check-ci:
+    name: Wait for CI checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check CI status
+        run: |
+          echo "Waiting for CI checks to complete..."
+
   dependabot:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
+    needs: check-ci
     runs-on: ubuntu-latest
     steps:
       - name: Fetch metadata
