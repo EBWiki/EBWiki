@@ -15,7 +15,7 @@ gem 'bootsnap', '~> 1.24', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bullet', '~> 8.1'
-gem 'carrierwave', '~> 2.2.6'
+gem 'carrierwave', '~> 2.2.7'
 gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'chartkick', '~> 3.4'
 gem 'ckeditor', '~> 5.1'
