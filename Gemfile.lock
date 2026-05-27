@@ -407,7 +407,8 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    newrelic_rpm (7.2.0)
+    newrelic_rpm (10.5.0)
+      logger
     nio4r (2.7.5)
     nkf (0.2.0)
     nokogiri (1.19.3-aarch64-linux-gnu)
@@ -751,7 +752,7 @@ DEPENDENCIES
   mock_redis (~> 0.26)
   momentjs-rails (~> 2.20)
   montrose (~> 0.12)
-  newrelic_rpm (~> 7.0)
+  newrelic_rpm (~> 10.5)
   paper_trail
   paper_trail-association_tracking
   pg (~> 1.2)
