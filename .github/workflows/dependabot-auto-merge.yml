@@ -9,17 +9,97 @@ permissions:
   pull-requests: write
 
 jobs:
-  check-ci:
-    name: Wait for CI checks
+  wait-for-ci:
+    name: Wait for CI to pass
     runs-on: ubuntu-latest
     steps:
-      - name: Check CI status
-        run: |
-          echo "Waiting for CI checks to complete..."
+      - name: Wait for CI workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const prNumber = context.issue.number;
+
+            // Get the PR
+            const { data: pr } = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: prNumber,
+            });
+
+            const headSha = pr.head.sha;
+            let isComplete = false;
+            let isSuccess = false;
+            const maxAttempts = 120; // 30 minutes
+            let attempts = 0;
+
+            while (!isComplete && attempts < maxAttempts) {
+              attempts++;
+
+              // Get commit status
+              const { data: statuses } =
+                await github.rest.repos.getCombinedStatusForRef({
+                  owner,
+                  repo,
+                  ref: headSha,
+                });
+
+              // Check all required checks
+              const requiredChecks = ['rspec', 'brakeman', 'rubocop'];
+              const checkStatus = {};
+
+              for (const status of statuses.statuses) {
+                if (status.context.includes('rspec')) {
+                  checkStatus.rspec = status.state;
+                }
+                if (status.context.includes('brakeman')) {
+                  checkStatus.brakeman = status.state;
+                }
+                if (status.context.includes('rubocop')) {
+                  checkStatus.rubocop = status.state;
+                }
+              }
+
+              const allChecksPresent = requiredChecks.every(
+                check => checkStatus[check] !== undefined
+              );
+
+              if (allChecksPresent) {
+                const allSuccess = requiredChecks.every(
+                  check => checkStatus[check] === 'success'
+                );
+                if (allSuccess) {
+                  isComplete = true;
+                  isSuccess = true;
+                  console.log('✓ All CI checks passed');
+                } else {
+                  isComplete = true;
+                  isSuccess = false;
+                  const failed = requiredChecks.filter(
+                    check => checkStatus[check] !== 'success'
+                  );
+                  console.log('✗ CI check failed: ' + failed.join(', '));
+                }
+              } else {
+                console.log(
+                  `Attempt ${attempts}/${maxAttempts}: ` +
+                  'Waiting for CI checks...'
+                );
+                // Wait 15 seconds before checking again
+                await new Promise(resolve =>
+                  setTimeout(resolve, 15000)
+                );
+              }
+            }
+
+            if (!isSuccess) {
+              throw new Error('CI checks did not pass or timed out');
+            }
 
   dependabot:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
-    needs: check-ci
+    needs: wait-for-ci
     runs-on: ubuntu-latest
     steps:
       - name: Fetch metadata
