@@ -454,7 +454,8 @@ GEM
       pluginator (~> 1.5)
     prettyprint (0.2.0)
     prism (1.9.0)
-    psych (4.0.6)
+    psych (5.3.1)
+      date
       stringio
     public_suffix (7.0.5)
     puma (6.6.1)
@@ -757,7 +758,7 @@ DEPENDENCIES
   pg (~> 1.2)
   pg_search (~> 2.3)
   pre-commit (~> 0.39)
-  psych (~> 4.0)
+  psych (~> 5.3)
   puma (~> 6.0)
   pundit (~> 2.1)
   rack-cors (~> 1.1)
