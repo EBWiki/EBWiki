@@ -457,7 +457,7 @@ GEM
     psych (4.0.6)
       stringio
     public_suffix (7.0.5)
-    puma (6.6.1)
+    puma (8.0.2)
       nio4r (~> 2.0)
     pundit (2.5.2)
       activesupport (>= 3.0.0)
@@ -758,7 +758,7 @@ DEPENDENCIES
   pg_search (~> 2.3)
   pre-commit (~> 0.39)
   psych (~> 4.0)
-  puma (~> 6.0)
+  puma (~> 8.0)
   pundit (~> 2.1)
   rack-cors (~> 1.1)
   rack-host-redirect (~> 1.3)
