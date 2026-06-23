@@ -3,7 +3,7 @@
 ruby '3.4.2'
 
 source 'https://rubygems.org'
-gem 'concurrent-ruby', '1.3.6'
+gem 'concurrent-ruby', '1.3.7'
 gem 'json', '~> 2.19'
 gem 'psych', '~> 4.0'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
