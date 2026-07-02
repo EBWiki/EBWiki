@@ -1,4 +1,4 @@
-name: Droid Auto Review
+name: Agent Review / Droid (informational)
 
 on:
   pull_request:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3.6.0
         with:
           fetch-depth: 1
-      - name: Run Droid Auto Review
+      - name: Run Droid Auto Review (informational)
         uses: Factory-AI/droid-action@main
         with:
           factory_api_key: ${{ secrets.FACTORY_API_KEY }}
