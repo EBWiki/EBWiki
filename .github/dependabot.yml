@@ -1,45 +1,96 @@
 version: 2
+
 updates:
   - package-ecosystem: "bundler"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "sunday"
-    open-pull-requests-limit: 10
+      day: "monday"
+      time: "05:00"
+    open-pull-requests-limit: 4
+    labels:
+      - "dependencies"
+      - "ruby"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     groups:
-      dev-dependencies:
-        dependency-type: "development"
-      production-dependencies:
+      bundler-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      bundler-runtime:
         dependency-type: "production"
         update-types:
           - "patch"
           - "minor"
-    labels:
-      - "bundler dependencies"
+        patterns:
+          - "*"
+      bundler-dev:
+        dependency-type: "development"
+        update-types:
+          - "patch"
+          - "minor"
+        patterns:
+          - "*"
 
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "sunday"
-    open-pull-requests-limit: 10
+      day: "monday"
+      time: "05:30"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "javascript"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     groups:
-      dev-dependencies:
-        dependency-type: "development"
-      production-dependencies:
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      npm-runtime:
         dependency-type: "production"
         update-types:
           - "patch"
           - "minor"
-    labels:
-      - "npm dependencies"
+        patterns:
+          - "*"
+      npm-dev:
+        dependency-type: "development"
+        update-types:
+          - "patch"
+          - "minor"
+        patterns:
+          - "*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "sunday"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 2
+    labels:
+      - "dependencies"
+      - "github_actions"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     groups:
-      actions:
+      github-actions-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      github-actions-routine:
+        update-types:
+          - "patch"
+          - "minor"
         patterns:
           - "*"
