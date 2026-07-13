@@ -4,7 +4,7 @@ ruby '3.4.2'
 
 source 'https://rubygems.org'
 gem 'concurrent-ruby', '1.3.7'
-gem 'json', '~> 2.20'
+gem 'json', '~> 2.21'
 gem 'psych', '~> 4.0'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12'
 gem 'jb', '~> 0.8.2'
 gem 'jquery-rails', '~> 4.4'
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
-gem 'lograge', '~> 0.11'
+gem 'lograge', '~> 0.15'
 gem 'mailboxer', '~> 0.15'
 gem 'momentjs-rails', '~> 2.20'
 gem 'montrose', '~> 0.12'
