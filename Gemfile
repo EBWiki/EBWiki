@@ -3,13 +3,13 @@
 ruby '3.4.2'
 
 source 'https://rubygems.org'
-gem 'concurrent-ruby', '1.3.7'
+gem 'concurrent-ruby', '1.3.8'
 gem 'json', '~> 2.21'
 gem 'psych', '~> 4.0'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'active_median', '~> 0.2'
-gem 'activerecord-session_store', '~> 2.0'
+gem 'activerecord-session_store', '~> 2.3'
 gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
 gem 'bootsnap', '~> 1.24', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
