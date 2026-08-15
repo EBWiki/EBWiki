@@ -118,6 +118,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
              :longitude,
              :latitude,
              :avatar,
+             :avatar_kind,
              :remove_avatar,
              :video_url,
              :summary,

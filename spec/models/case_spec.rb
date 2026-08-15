@@ -237,6 +237,21 @@ describe '.search_text' do
   end
 end
 
+describe 'friendly photos' do
+  it 'identifies cases that still need a dignified photo' do
+    missing = create(:case)
+    mugshot_case = create(:case, avatar_kind: 'mugshot')
+    portrait_case = create(:case, avatar_kind: 'portrait')
+    portrait_case.update_columns(avatar: 'uploads/case/avatar/9/portrait.jpg')
+
+    expect(missing.needs_friendly_photo?).to be true
+    expect(mugshot_case.needs_friendly_photo?).to be true
+    expect(portrait_case.needs_friendly_photo?).to be false
+    expect(Case.needing_friendly_photo).to include(missing, mugshot_case)
+    expect(Case.needing_friendly_photo).not_to include(portrait_case)
+  end
+end
+
 describe 'scopes', versioning: true do
   let(:dc) { FactoryBot.create(:state_dc) }
   let(:louisiana) { FactoryBot.create(:state_louisiana) }

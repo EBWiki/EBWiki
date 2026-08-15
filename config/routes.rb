@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     resources :states
     resources :subjects
     resources :users
+    resources :photo_candidates
 
     root to: 'agencies#index'
   end
@@ -78,4 +79,13 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine, at: '/ckeditor'
 
   resource :search, controller: 'search'
+
+  resources :friendly_photos, only: %i[index show] do
+    member do
+      post :search
+      patch :classify
+      post :apply
+      post :reject
+    end
+  end
 end

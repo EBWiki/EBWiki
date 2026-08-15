@@ -19,6 +19,9 @@
       <% else %>
         <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
       <% end %>
+      <% if user_signed_in? && @this_case.needs_friendly_photo? %>
+        <p><%= link_to 'Find a friendly photo', friendly_photo_path(@this_case) %></p>
+      <% end %>
 
       <div class="">
         <%= social_share_button_tag("Take a look at what I just found on EBWiki:") %>

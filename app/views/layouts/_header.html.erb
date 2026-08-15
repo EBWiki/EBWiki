@@ -23,6 +23,9 @@
             <%= link_to "Add a New Case", new_case_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
           </li>
           <li>
+            <%= link_to 'Friendly photos', friendly_photos_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Replace mugshots",:content => "Search Wikimedia for dignified photos of people in the database. Mugshots are filtered out."} %>
+          </li>
+          <li>
             <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'] %>
           </li>
         <% end %>
