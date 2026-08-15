@@ -16,6 +16,8 @@ cannot yet prove.
 - Editors can classify the current photo without uploading a new file.
 - Mugshot candidates show a warning and have no **Use this photo** button.
 - Rejecting a pending candidate removes the apply action.
+- Applying a reviewed portrait marks the case as a portrait and hides
+  **Use this photo**. Mugshot candidates stay flagged and cannot be applied.
 - Search persists candidates. In CI that search is stubbed.
 
 ## Gaps the e2e run surfaces
@@ -30,7 +32,8 @@ cannot yet prove.
    "portrait" would not be flagged. There is no pixel-level check.
 4. **Mobile nav hides the workflow.** On a phone-sized viewport the
    Friendly photos link is inside the collapsed Bootstrap menu. Editors
-   have to open the hamburger first.
+   have to open the hamburger first. Playwright also saw the Wikimedia
+   search button sit under candidate cards on a phone-sized viewport.
 5. **Confirm dialogs need JavaScript.** Search and apply use
    `data-confirm` via jquery_ujs. Without JS the request still submits.
 6. **Classify skips the edit summary.** Photo type is saved with
@@ -44,11 +47,16 @@ cannot yet prove.
    not linked from the editor workflow.
 10. **The case edit form still has a stray `<<div`.** That is older
     markup, but Playwright will see it on the edit page.
+11. **Missing and mugshot filters overlap.** A case marked mugshot with
+    no stored file still appears under **Missing photo**, because that
+    filter only checks the avatar column.
 
 ## Suggested follow-ups
 
 - Notify followers when a case photo is replaced.
 - Show a flash when Wikimedia returns an error or zero hits.
 - Add a mobile entry point that does not depend on the hamburger.
+- Keep the missing-photo filter from also listing mugshot cases that
+  have no stored file, or document that overlap in the UI.
 - Run one staging apply against a real Commons portrait before relying
   on the workflow in production.
