@@ -6,7 +6,7 @@
 #   e2e fixtures, or this file change.
 # - Pull requests run the desktop smoke suite only (no mobile project).
 # - A Monday cron and manual "Run workflow" run the full suite.
-# - Draft PRs, Elasticsearch, and superseded pushes are skipped.
+# - Elasticsearch and superseded pushes are skipped.
 # - Gems, npm, and Playwright browsers are cached.
 name: E2E
 
@@ -53,7 +53,6 @@ permissions:
 jobs:
   playwright:
     name: playwright
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     timeout-minutes: 20
 

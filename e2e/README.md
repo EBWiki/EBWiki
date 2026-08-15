@@ -65,7 +65,7 @@ That keeps Action minutes under control:
 | PR that touches photo UI, e2e fixtures, or the e2e workflow | Desktop Chromium smoke (`npm run e2e:smoke`) |
 | Monday 06:00 UTC on the default branch | Full suite, including Pixel 5 |
 | Actions → E2E → Run workflow | Smoke or full, on demand |
-| Draft PRs, unrelated file changes, superseded pushes | Skipped or cancelled |
+| Unrelated file changes or superseded pushes | Skipped or cancelled |
 
 The e2e job does not start Elasticsearch. Searchkick callbacks are disabled
 when `E2E_STUB_WIKIMEDIA=1`. Gems, npm, and Chromium are cached. Failed

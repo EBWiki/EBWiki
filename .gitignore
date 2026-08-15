@@ -78,3 +78,4 @@ yarn-debug.log*
 /test-results/
 /blob-report/
 /playwright/.cache/
+config.bat
