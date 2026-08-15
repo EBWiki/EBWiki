@@ -13,14 +13,6 @@ module FriendlyPhotos
       end
     end
 
-    def self.print_results(results)
-      if ENV['FORMAT'] == 'json'
-        puts JSON.pretty_generate(results)
-      else
-        results.each { |row| puts summary_line(row) }
-      end
-    end
-
     def self.summary_line(row)
       friendly = row[:candidates].count { |candidate| !candidate[:likely_mugshot] }
       "#{row[:slug]} (#{row[:subject_name]}): #{row[:candidates].size} images, " \

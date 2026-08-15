@@ -8,11 +8,8 @@ module FriendlyPhotos
     Result = Struct.new(:success, :error, keyword_init: true)
 
     def call(this_case:, candidate:)
-      return failure('Candidate does not belong to this case.') unless candidate.case_id == this_case.id
-      return failure('Mugshot candidates cannot be applied.') if candidate.likely_mugshot?
-      unless WikimediaClient.allowed_image_url?(candidate.image_url)
-        return failure('That image is not from an allowed Wikimedia host.')
-      end
+      error = rejection_reason(this_case, candidate)
+      return failure(error) if error
 
       apply_to_case(this_case, candidate)
     rescue StandardError => e
@@ -21,6 +18,14 @@ module FriendlyPhotos
     end
 
     private
+
+    def rejection_reason(this_case, candidate)
+      return 'Candidate does not belong to this case.' if candidate.case_id != this_case.id
+      return 'Mugshot candidates cannot be applied.' if candidate.likely_mugshot?
+      return if WikimediaClient.allowed_image_url?(candidate.image_url)
+
+      'That image is not from an allowed Wikimedia host.'
+    end
 
     def apply_to_case(this_case, candidate)
       this_case.remote_avatar_url = candidate.image_url
