@@ -50,7 +50,6 @@ gem 'redis', '~> 5'
 gem 'redis-namespace', '~> 1.8'
 gem 'rollbar', '~> 3.8'
 gem 'rollout', '~> 2.5'
-gem 'simplecov', '~> 0.22.0'
 gem 'simple_form', '~> 5.4'
 gem 'sitemap_generator', '~> 6.1'
 gem 'statistics'
@@ -86,6 +85,7 @@ group :test do
   gem 'launchy', '~> 2.5'
   gem 'selenium-webdriver', '~> 4.0'
   gem 'shoulda-matchers', '~> 6.0'
+  gem 'simplecov', '~> 0.22.0', require: false
   gem 'vcr', '~> 6.0'
   gem 'webmock', '~>3.9', '>= 3.9.1'
 end

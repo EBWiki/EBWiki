@@ -21,9 +21,9 @@
 					<%# <h4>Upload a new image to replace the placeholder:</h4> %>
 				<% else %>
 					<h4>Current image showing on the case page: </h4>
-		      <% if @this_case.avatar? %>
-			      <%= image_tag(@this_case.avatar_variant(:medium_avatar), class: "img-fluid") %>
-			      <%= f.check_box :remove_avatar, label: 'Remove current image' %>
+		      <% if @this_case.photo? %>
+			      <%= image_tag(@this_case.photo_variant(:medium), class: "img-fluid") %>
+			      <%= f.check_box :remove_photo, label: 'Remove current image' %>
 			    <% else %>
 				    <%= image_tag('default-user-icon.png', size: "150x150", class: "img-fluid") %>
 				  <% end %>

@@ -18,7 +18,7 @@ class Conversation < ApplicationRecord
       .where.not(originator_id: user.id)
   }
 
-  scope :sentbox, lambda { |user|
+  scope :sent, lambda { |user|
     for_user(user)
       .where(conversation_participants: { trashed: false })
       .where(originator_id: user.id)
@@ -27,10 +27,6 @@ class Conversation < ApplicationRecord
   scope :trashed, lambda { |user|
     for_user(user).where(conversation_participants: { trashed: true })
   }
-
-  def receipts_for(_user)
-    messages.order(:created_at)
-  end
 
   def mark_as_read(user)
     participants.find_by(user: user)&.update(read_at: Time.current)
@@ -46,11 +42,6 @@ class Conversation < ApplicationRecord
 
   def trashed?(user)
     participants.find_by(user: user)&.trashed?
-  end
-  alias is_trashed? trashed?
-
-  def count_messages
-    messages.count
   end
 
   def originator

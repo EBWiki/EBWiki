@@ -17,7 +17,7 @@ $color-dark-gray: #4D4D4D;
   font-weight: bold;
 }
 
-.page-header{
+.page-heading{
   text-align: center;
 }
 
@@ -69,16 +69,10 @@ $color-dark-gray: #4D4D4D;
   padding-bottom: 10px;
 }
 
-.social-share-button {
+.share-links {
   display: flex;
   height: 32px;
   justify-content: space-between;
-}
-
-.ssb-icon {
-    background-size: 32px 32px;
-    height: 32px;
-    width: 32px;
 }
 
 .case-btns {

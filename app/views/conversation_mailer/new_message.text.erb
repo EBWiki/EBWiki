@@ -1,0 +1,9 @@
+Hello <%= @recipient.name %>,
+
+<%= @message.sender.name %> sent you a message on EBWiki:
+
+Subject: <%= @message.subject %>
+
+<%= @message.body %>
+
+View the conversation: <%= conversation_url(@message.conversation) %>

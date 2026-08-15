@@ -15,7 +15,7 @@ Fully working Rails 8.1.3.1 app: pg_search, Active Storage, Action Text/Trix, cu
 - cursor/rails-8-modernization-060d
 
 ## Last Completed Step
-Rails 8.1 modernization complete: pg_search, Active Storage, Trix, custom mailbox, Propshaft + Bootstrap 5 + Stimulus. Remaining Bootstrap 3 / jQuery / mailboxer leftovers removed.
+Clean-slate follow-up: dropped mailboxer tables and CarrierWave columns, removed cucumber leftovers, replaced mailboxer mailers, and enabled previously pending specs.
 
 ## Technical Notes
 - Case search uses `pg_search` over generated `cases.tsv`

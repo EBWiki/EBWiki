@@ -6,7 +6,9 @@ RSpec.describe 'Conversations', type: :request do
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
 
-  let!(:conversation) { another_user.send_message(user, Faker::Lorem.paragraph, Faker::Lorem.sentence).conversation }
+  let!(:conversation) do
+    another_user.send_message(user, Faker::Lorem.paragraph, Faker::Lorem.sentence).conversation
+  end
 
   describe 'GET /conversations/new' do
     context 'when authenticated' do
@@ -100,7 +102,7 @@ RSpec.describe 'Conversations', type: :request do
       end
 
       it 'will reply to conversation' do
-        expect(conversation.count_messages).to eq 2
+        expect(conversation.messages.count).to eq 2
       end
 
       it 'will return a redirect to the conversation page' do
@@ -125,7 +127,7 @@ RSpec.describe 'Conversations', type: :request do
       end
 
       it 'will trash the conversation' do
-        expect(conversation.is_trashed?(user)).to eq true
+        expect(conversation.trashed?(user)).to eq true
       end
 
       it 'will return a redirect to the mailbox inbox page' do
@@ -151,7 +153,7 @@ RSpec.describe 'Conversations', type: :request do
       end
 
       it 'will untrash the conversation' do
-        expect(conversation.is_trashed?(user)).to eq false
+        expect(conversation.trashed?(user)).to eq false
       end
 
       it 'will return a redirect to the mailbox inbox page' do

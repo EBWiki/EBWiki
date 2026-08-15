@@ -84,8 +84,6 @@ Lint/DuplicateRegexpCharacterClassElement:
   Enabled: true
 
 Lint/EmptyBlock:
-  Exclude:
-    - 'lib/tasks/cucumber.rake'
   Enabled: true
 
 Lint/EmptyClass:

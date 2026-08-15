@@ -25,12 +25,13 @@ describe 'Admin Dashboard' do
     # the user should not get a login error message, but not
     # be able to log into the admin section of the site.
     scenario 'without admin credentials' do
-      pending
+      visit new_user_session_path
+      fill_in 'Email', with: user.email
+      fill_in 'Password', with: user.password
       click_button 'Log in'
       expect(page).to have_content 'Signed in successfully'
       visit admin_root_path
       expect(page).to have_content 'You are not an admin'
-      WebMock.disable_net_connect!
     end
 
     # This is a failure feature spec; this covers the scenario

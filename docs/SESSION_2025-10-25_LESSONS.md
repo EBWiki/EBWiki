@@ -1,5 +1,7 @@
 # Session Lessons Learned - October 25, 2025
 
+_Historical notes from the Rails 5–8 upgrade. This is not a current project-status document._
+
 ## Overview
 This session focused on completing a comprehensive Rails and Ruby upgrade for EBWiki, from Rails 5.2.8.1 to Rails 8.1.0 and Ruby 3.0.0 to Ruby 3.4.2, along with JIRA/GitHub issue synchronization and sprint management.
 

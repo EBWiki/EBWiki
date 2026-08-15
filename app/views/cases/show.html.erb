@@ -14,8 +14,8 @@
   <!-- Portfolio Item Row -->
   <div class="row">
     <div class="col-md-3">
-      <% if @this_case.avatar? %>
-        <%= image_tag(@this_case.avatar_variant(:large_avatar), class: "img-fluid articleImage") %>
+      <% if @this_case.photo? %>
+        <%= image_tag(@this_case.photo_variant(:large), class: "img-fluid articleImage") %>
       <% else %>
         <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-fluid articleImage") %>
       <% end %>
@@ -33,7 +33,7 @@
     </div>
 
     <div class="col-md-9">
-      <h1 class="page-header case-title">
+      <h1 class="page-heading case-title">
         <%= @subjects.first&.name %>, <%= @subjects.first&.age ? "#{@subjects.first.age}" : "" %>
         <p class="lead text-muted">
           <%= @this_case.city %>, <%= @this_case.state.name %>

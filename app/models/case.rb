@@ -68,14 +68,13 @@ class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates :blurb, presence: { message: 'A blurb about the case is required.' }
 
   has_one_attached :photo
+  attr_accessor :remove_photo
 
   # Geocoding
   geocoded_by :full_address
   before_save :geocode, if: proc { |art|
     art.address_changed? || art.city_changed? || art.state_id_changed? || art.zipcode_changed?
   } # auto-fetch coordinates
-
-  before_save :set_default_avatar_url, if: -> { photo.attached? }
 
   # Scopes
   scope :most_recent_occurrences, lambda { |duration|
@@ -95,26 +94,17 @@ class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
   end
 
-  def set_default_avatar_url
-    return unless photo.attached?
-
-    helpers = Rails.application.routes.url_helpers
-    self.default_avatar_url = helpers.rails_blob_path(photo, only_path: true)
-  rescue StandardError
-    nil
-  end
-
-  def avatar?
+  def photo?
     photo.attached?
   end
 
-  def avatar_variant(style = :large_avatar)
+  def photo_variant(style = :large)
     return unless photo.attached?
 
     sizes = {
-      large_avatar: [250, 250],
-      medium_avatar: [150, 150],
-      small_avatar: [35, 35],
+      large: [250, 250],
+      medium: [150, 150],
+      small: [35, 35],
       thumb: [50, 50]
     }
     photo.variant(resize_to_fill: sizes.fetch(style, [250, 250]))
@@ -160,20 +150,17 @@ end
 #  id                 :integer          not null, primary key
 #  address            :string
 #  age                :integer
-#  avatar             :string
 #  blurb              :text
 #  cause_of_death     :enum
 #  city               :string           not null
 #  community_action   :text
 #  country            :string
 #  date               :date
-#  default_avatar_url :string
 #  follows_count      :integer          default(0), not null
 #  latitude           :float
 #  litigation         :text
 #  longitude          :float
 #  overview           :text             not null
-#  remove_avatar      :boolean
 #  slug               :string
 #  state              :string
 #  summary            :text             not null

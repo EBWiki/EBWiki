@@ -32,11 +32,14 @@ class User < ApplicationRecord
       conversation.participants.find_or_create_by!(user: participant)
     end
     message = conversation.messages.create!(sender: self, body: body)
-    MessageDelivery.new(conversation:, message:)
+    notify_participants(conversation, message, reply: false)
+    message
   end
 
-  def reply_to_conversation(conversation, body)
-    conversation.messages.create!(sender: self, body: body)
+  def reply_to(conversation, body)
+    message = conversation.messages.create!(sender: self, body: body)
+    notify_participants(conversation, message, reply: true)
+    message
   end
 
   def slug_candidates
@@ -56,6 +59,17 @@ class User < ApplicationRecord
   end
 
   private
+
+  def notify_participants(conversation, message, reply:)
+    conversation.users.where.not(id: id).find_each do |recipient|
+      mail = if reply
+               ConversationMailer.reply_message(message: message, recipient: recipient)
+             else
+               ConversationMailer.new_message(message: message, recipient: recipient)
+             end
+      mail.deliver_later
+    end
+  end
 
   def mailchimp_user
     gb = Gibbon::Request.new

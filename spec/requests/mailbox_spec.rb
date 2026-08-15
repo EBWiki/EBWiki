@@ -6,8 +6,8 @@ RSpec.describe 'Mailbox', type: :request do
   let!(:user) { create(:user) }
   let!(:another_user) { create(:user) }
 
-  let!(:inbox_message) { another_user.send_message(user, Faker::Lorem.paragraph, Faker::Lorem.sentence).message }
-  let!(:sent_message) { user.send_message(another_user, Faker::Lorem.paragraph, Faker::Lorem.sentence).message }
+  let!(:inbox_message) { another_user.send_message(user, Faker::Lorem.paragraph, Faker::Lorem.sentence) }
+  let!(:sent_message) { user.send_message(another_user, Faker::Lorem.paragraph, Faker::Lorem.sentence) }
 
   describe 'GET /mailbox' do
     before { get '/mailbox', params: {}, headers: {} }

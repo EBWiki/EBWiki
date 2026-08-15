@@ -31,13 +31,13 @@
           <p class="user-description"><%= @user.description %></p>
         </div>
         <% if @user != current_user %>
-          <h3 class="page-header">Cases <%= @user.name %> follows:</h3>
+          <h3 class="page-heading">Cases <%= @user.name %> follows:</h3>
         <% else %>
-          <h3 class="page-header">
+          <h3 class="page-heading">
             <% if @cases.size.zero? %>
               Please take 30 seconds and <%= link_to 'pick a case', root_path %> that you want to track and click the follow button. We'll take it from there to keep you informed.
             <% else %>
-              <h3 class="page-header">Cases we are tracking for you:</h3>
+              <h3 class="page-heading">Cases we are tracking for you:</h3>
             <% end %>
           </h3>
         <% end %>

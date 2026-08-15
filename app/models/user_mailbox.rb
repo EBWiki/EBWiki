@@ -12,8 +12,8 @@ class UserMailbox
     scope.where(conversation_participants: { read_at: nil })
   end
 
-  def sentbox
-    Conversation.sentbox(@user)
+  def sent
+    Conversation.sent(@user)
   end
 
   def trash

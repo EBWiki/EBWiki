@@ -7,8 +7,4 @@ class Message < ApplicationRecord
   validates :body, presence: true
 
   delegate :subject, to: :conversation
-
-  def message
-    self
-  end
 end

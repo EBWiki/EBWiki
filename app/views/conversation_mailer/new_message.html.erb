@@ -1,0 +1,5 @@
+<p>Hello <%= @recipient.name %>,</p>
+<p><%= @message.sender.name %> sent you a message on EBWiki:</p>
+<p><strong>Subject:</strong> <%= @message.subject %></p>
+<p><%= @message.body %></p>
+<p><%= link_to 'View the conversation', conversation_url(@message.conversation) %></p>
