@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "e2e": "playwright test",
+    "e2e:smoke": "E2E_SUITE=smoke playwright test",
+    "e2e:full": "E2E_SUITE=full playwright test",
     "e2e:headed": "playwright test --headed"
   },
   "devDependencies": {

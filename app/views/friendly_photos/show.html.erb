@@ -49,7 +49,10 @@
         <% @candidates.each do |candidate| %>
           <div class="col-sm-6" style="margin-bottom: 1.5em;">
             <div class="thumbnail" data-testid="candidate-<%= candidate.id %>" data-candidate-kind="<%= candidate.likely_mugshot? ? 'mugshot' : 'friendly' %>">
-              <%= image_tag candidate.image_url, alt: candidate.title, class: 'img-responsive', style: 'max-height: 180px; object-fit: contain;' %>
+              <%= image_tag candidate.image_url,
+                            alt: candidate.title,
+                            class: 'img-responsive',
+                            style: 'max-height: 180px; object-fit: contain;' %>
               <div class="caption">
                 <h4><%= candidate.title %></h4>
                 <p>

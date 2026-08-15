@@ -1,0 +1,138 @@
+# Real-browser coverage for the friendly-photo editor flow.
+#
+# Quota rules:
+# - Capybara feature specs already run on every PR via CI/rspec. This
+#   workflow is the extra Chromium pass and is skipped unless photo UI,
+#   e2e fixtures, or this file change.
+# - Pull requests run the desktop smoke suite only (no mobile project).
+# - A Monday cron and manual "Run workflow" run the full suite.
+# - Draft PRs, Elasticsearch, and superseded pushes are skipped.
+# - Gems, npm, and Playwright browsers are cached.
+name: E2E
+
+on:
+  pull_request:
+    paths:
+      - 'e2e/**'
+      - 'playwright.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'app/controllers/friendly_photos_controller.rb'
+      - 'app/controllers/e2e/**'
+      - 'app/helpers/friendly_photos_helper.rb'
+      - 'app/views/friendly_photos/**'
+      - 'app/views/layouts/_header.html.erb'
+      - 'app/views/cases/show.html.erb'
+      - 'app/views/cases/_form.html.erb'
+      - 'app/services/friendly_photos/**'
+      - 'app/models/photo_candidate.rb'
+      - 'app/models/concerns/case_friendly_photo.rb'
+      - 'app/assets/javascripts/application.js'
+      - 'config/routes.rb'
+      - 'config/initializers/e2e_friendly_photos.rb'
+      - 'lib/tasks/e2e.rake'
+      - '.github/workflows/e2e.yml'
+  schedule:
+    # Weekly safety net on main. Daily would burn minutes for little gain.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: 'smoke is desktop Chromium only; full also runs Pixel 5'
+        type: choice
+        options: [smoke, full]
+        default: full
+
+concurrency:
+  group: e2e-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    name: playwright
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      RAILS_ENV: test
+      E2E_STUB_WIKIMEDIA: '1'
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+      E2E_SUITE: ${{ github.event_name == 'pull_request' && 'smoke' || inputs.suite || 'full' }}
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install native package headers
+        run: sudo apt-get update && sudo apt-get install -y libcurl4-gnutls-dev
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+
+      - name: Setup database
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec bin/rails db:prepare
+          bundle exec rake e2e:seed_friendly_photos
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright OS deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Run Playwright
+        run: npm run e2e:${{ env.E2E_SUITE }}
+
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
+          retention-days: 3
