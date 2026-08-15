@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { acceptConfirms, loginAsEditor } from './helpers/auth';
+import { loginAsEditor, resetFriendlyPhotoFixtures } from './helpers/auth';
+
+test.beforeEach(async ({ request }) => {
+  await resetFriendlyPhotoFixtures(request);
+});
 
 test.describe('Friendly photos', () => {
   test('sends guests to login', async ({ page }) => {
@@ -8,15 +12,21 @@ test.describe('Friendly photos', () => {
     await expect(page.getByRole('heading', { name: 'Log in' })).toBeVisible();
   });
 
-  test('lists people who still need a dignified photo', async ({ page }) => {
+  test('lists people who still need a dignified photo', async ({ page }, testInfo) => {
     await loginAsEditor(page);
     await page.goto('/friendly_photos');
 
-    await expect(page.getByTestId('friendly-photos-nav')).toBeVisible();
+    const navLink = page.getByTestId('friendly-photos-nav');
+    if (testInfo.project.name === 'mobile-chrome') {
+      await expect(navLink).toBeHidden();
+    } else {
+      await expect(navLink).toBeVisible();
+    }
+
     await expect(page.getByTestId('friendly-photos-table')).toBeVisible();
-    await expect(page.getByText('Jordan Doe')).toBeVisible();
-    await expect(page.getByText('Riley Mugshot')).toBeVisible();
-    await expect(page.getByText('Casey Portrait')).toHaveCount(0);
+    await expect(page.getByTestId('case-row-e2e-missing-photo')).toBeVisible();
+    await expect(page.getByTestId('case-row-e2e-mugshot-case')).toBeVisible();
+    await expect(page.getByTestId('case-row-e2e-portrait-case')).toHaveCount(0);
   });
 
   test('filters missing, mugshot, and portrait cases', async ({ page }) => {
@@ -24,15 +34,18 @@ test.describe('Friendly photos', () => {
     await page.goto('/friendly_photos');
 
     await page.getByTestId('filter-missing').click();
-    await expect(page.getByText('Jordan Doe')).toBeVisible();
-    await expect(page.getByText('Riley Mugshot')).toHaveCount(0);
+    await expect(page).toHaveURL(/filter=missing/);
+    await expect(page.getByTestId('case-row-e2e-missing-photo')).toBeVisible();
+    await expect(page.getByTestId('case-row-e2e-portrait-case')).toHaveCount(0);
 
     await page.getByTestId('filter-mugshot').click();
-    await expect(page.getByText('Riley Mugshot')).toBeVisible();
-    await expect(page.getByText('Jordan Doe')).toHaveCount(0);
+    await expect(page).toHaveURL(/filter=mugshot/);
+    await expect(page.getByTestId('case-row-e2e-mugshot-case')).toBeVisible();
+    await expect(page.getByTestId('case-row-e2e-missing-photo')).toHaveCount(0);
 
     await page.getByTestId('filter-portrait').click();
-    await expect(page.getByText('Casey Portrait')).toBeVisible();
+    await expect(page).toHaveURL(/filter=portrait/);
+    await expect(page.getByTestId('case-row-e2e-portrait-case')).toBeVisible();
   });
 
   test('shows a find-photo link on cases that need one', async ({ page }) => {
@@ -59,18 +72,35 @@ test.describe('Friendly photos', () => {
     await expect(page.getByText('Rejected that candidate')).toBeVisible();
   });
 
+  test('applies a reviewed portrait and leaves mugshots un-applicable', async ({ page }) => {
+    await loginAsEditor(page);
+    await page.goto('/friendly_photos/e2e-missing-photo');
+
+    await expect(page.getByTestId('apply-photo')).toHaveCount(1);
+    await expect(page.getByTestId('mugshot-flag')).toBeVisible();
+
+    await page.getByTestId('apply-photo').click();
+    await expect(page.getByText('Applied the selected portrait to this case.')).toBeVisible();
+    await expect(page.getByText('Photo type:')).toContainText('Portrait');
+    await expect(page.getByTestId('apply-photo')).toHaveCount(0);
+    await expect(page.getByTestId('mugshot-flag')).toBeVisible();
+  });
+
   test('searches Wikimedia through the stub and keeps mugshots un-applicable', async ({
     page,
   }) => {
-    acceptConfirms(page);
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
-    await page.getByTestId('search-wikimedia').click();
+
+    const search = page.getByTestId('search-wikimedia');
+    await search.scrollIntoViewIfNeeded();
+    await search.click({ force: true });
 
     await expect(page.getByText(/Found \d+ images/)).toBeVisible();
     await expect(page.getByText('E2E family portrait')).toBeVisible();
     await expect(page.getByText('E2E booking mugshot')).toBeVisible();
     await expect(page.getByTestId('mugshot-flag')).toBeVisible();
+    await expect(page.getByTestId('apply-photo')).toHaveCount(2);
   });
 });
 

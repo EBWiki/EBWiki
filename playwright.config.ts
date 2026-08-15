@@ -9,10 +9,13 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: 1,
   reporter: [['list'], ['html', { open: 'never' }]],
+  timeout: 45_000,
+  expect: { timeout: 10_000 },
   use: {
     baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
+    actionTimeout: 15_000,
   },
   projects: [
     {

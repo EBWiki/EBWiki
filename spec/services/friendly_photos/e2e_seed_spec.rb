@@ -14,4 +14,12 @@ RSpec.describe FriendlyPhotos::E2eSeed do
     expect(Case.needing_friendly_photo).to include(result[:missing], result[:mugshot])
     expect(Case.needing_friendly_photo).not_to include(result[:portrait])
   end
+
+  it 'reloads associations so a second seed still exposes subjects' do
+    described_class.call
+    result = described_class.call
+
+    expect(result[:missing].subjects.map(&:name)).to eq(['Jordan Doe'])
+    expect(result[:mugshot].subjects.map(&:name)).to eq(['Riley Mugshot'])
+  end
 end

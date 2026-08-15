@@ -33,7 +33,7 @@
     </thead>
     <tbody>
       <% @cases.each do |this_case| %>
-        <tr>
+        <tr data-testid="case-row-<%= this_case.slug %>">
           <td>
             <% if this_case.avatar? %>
               <%= image_tag this_case.avatar.small_avatar.url, alt: this_case.subject_display_name %>

@@ -35,7 +35,9 @@ feature 'Friendly photos' do
     sign_in user
     visit friendly_photos_path(filter: 'missing')
     expect(page).to have_content('Jordan Doe')
-    expect(page).not_to have_content('Riley Mugshot')
+    expect(page).not_to have_content('Casey Portrait')
+    # A mugshot case with no stored file also matches the missing filter.
+    expect(page).to have_content('Riley Mugshot')
 
     visit friendly_photos_path(filter: 'mugshot')
     expect(page).to have_content('Riley Mugshot')
@@ -90,6 +92,19 @@ feature 'Friendly photos' do
     expect(page).to have_content('Rejected that candidate')
     expect(friendly.reload).to be_rejected
     expect(page).not_to have_button('Use this photo')
+  end
+
+  scenario 'an editor applies a friendly candidate' do
+    allow(FriendlyPhotos::WikimediaClient).to receive(:stubbed?).and_return(true)
+    friendly = create(:photo_candidate, case: missing_case, title: 'Family portrait')
+
+    sign_in user
+    visit friendly_photo_path(missing_case)
+    click_button 'Use this photo'
+
+    expect(page).to have_content('Applied the selected portrait')
+    expect(missing_case.reload).to be_portrait
+    expect(friendly.reload).to be_accepted
   end
 
   scenario 'searching stores stubbed Wikimedia hits' do
