@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe FriendlyPhotos::CandidateSearch do
-  let(:this_case) { create(:case, city: 'North Charleston') }
+  let(:this_case) { create(:case, city: 'Albany') }
   let!(:subject_record) { create(:subject, case: this_case, name: 'Walter Scott') }
   let(:portrait_hit) do
     FriendlyPhotos::WikimediaClient::Hit.new(
