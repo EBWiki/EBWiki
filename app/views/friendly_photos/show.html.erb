@@ -28,6 +28,13 @@
       </div>
       <%= submit_tag 'Update photo type', class: 'btn btn-default', data: { testid: 'update-photo-type' } %>
     <% end %>
+    <div data-testid="search-wikimedia-wrap" style="margin-top: 1.5em;">
+      <%= button_to 'Search Wikimedia for a friendly photo',
+                    search_friendly_photo_path(@this_case),
+                    class: 'btn btn-warning',
+                    data: { confirm: 'Search Wikimedia Commons and Wikipedia for portraits of this person?',
+                            testid: 'search-wikimedia' } %>
+    </div>
     <p style="margin-top: 1em;">
       <%= link_to 'Edit case', edit_case_path(@this_case), class: 'btn btn-primary' %>
       <%= link_to 'Back to list', friendly_photos_path, class: 'btn btn-default' %>
@@ -36,20 +43,13 @@
 
   <div class="col-md-8">
     <h3>Wikimedia candidates</h3>
-    <div data-testid="search-wikimedia-wrap" style="position: relative; z-index: 2; margin-bottom: 1.5em;">
-      <%= button_to 'Search Wikimedia for a friendly photo',
-                    search_friendly_photo_path(@this_case),
-                    class: 'btn btn-warning',
-                    data: { confirm: 'Search Wikimedia Commons and Wikipedia for portraits of this person?',
-                            testid: 'search-wikimedia' } %>
-    </div>
 
     <% if @candidates.any? %>
       <div class="row" style="margin-top: 1.5em;">
         <% @candidates.each do |candidate| %>
           <div class="col-sm-6" style="margin-bottom: 1.5em;">
             <div class="thumbnail" data-testid="candidate-<%= candidate.id %>" data-candidate-kind="<%= candidate.likely_mugshot? ? 'mugshot' : 'friendly' %>">
-              <%= image_tag candidate.image_url, alt: candidate.title, class: 'img-responsive' %>
+              <%= image_tag candidate.image_url, alt: candidate.title, class: 'img-responsive', style: 'max-height: 180px; object-fit: contain;' %>
               <div class="caption">
                 <h4><%= candidate.title %></h4>
                 <p>
