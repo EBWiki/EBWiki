@@ -20,7 +20,7 @@ npm ci
 PW_CHANNEL=chrome bin/e2e
 ```
 
-`playwright.config.js` also selects system Chrome automatically when `/usr/bin/google-chrome` is present and `CI` is unset.
+`playwright.config.js` also selects system Chrome automatically when `/usr/bin/google-chrome` is present and `CI` is unset. Failure video is recorded only in CI so a Cloud Agent does not need Playwright's ffmpeg binary.
 
 ## Run in GitHub Actions
 
