@@ -3,7 +3,7 @@
   <div class="col-md-6">
     <div class="spacer"></div>
   </div>
-  <div class="col-md-6 text-right">
+  <div class="col-md-6 text-end">
     <% if conversation.is_trashed?(current_user) %>
         <%= button_to 'Untrash', untrash_conversation_path(conversation), class: 'btn btn-info', method: :post %>
     <% else %>
@@ -11,35 +11,31 @@
                     data: { turbo_confirm: 'Are you sure?' } %>
     <% end %>
   </div>
- 
+
   <div class="row">
     <div class="spacer"></div>
     <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-body">
+      <div class="card">
+        <div class="card-body">
           <%= render 'mailbox/folders' %>
         </div>
       </div>
-      <%= link_to "Compose", new_conversation_path, class: "btn btn-success" %>
+      <%= link_to "Compose", new_conversation_path, class: "btn btn-success mt-2" %>
     </div>
     <div class="col-md-8">
-      <div class="panel panel-default">
-        <div class="panel-body">
+      <div class="card">
+        <div class="card-body">
           <%= render partial: 'messages' %>
         </div>
-        <div class="panel-footer">
-          <!-- Reply Form -->
+        <div class="card-footer">
           <%= form_for :message, url: reply_conversation_path(conversation) do |f| %>
-              <div class="form-group">
+              <div class="mb-3">
                 <%= f.text_area :body, placeholder: "Reply Message", rows: 4, class: "form-control" %>
               </div>
-              <%= f.submit "Reply", class: 'btn btn-danger pull-right' %>
+              <%= f.submit "Reply", class: 'btn btn-danger float-end' %>
           <% end %>
-          <div class="clearfix"></div>
         </div>
       </div>
     </div>
-  
   </div>
- 
 </div>

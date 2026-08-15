@@ -3,7 +3,7 @@
     <% if this_case.avatar? %>
       <%= link_to image_tag(this_case.avatar_variant(:large_avatar), class: "img-fluid"), this_case %>
     <% else %>
-      <%= link_to image_tag("default-user-icon.png", :class => "img-responsive"), this_case %>
+      <%= link_to image_tag("default-user-icon.png", :class => "img-fluid"), this_case %>
       <div class="caption">
         <h4><%= this_case.subjects.first&.name %></h4>
       </div>

@@ -40,9 +40,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2
-
-      - name: Install gems
-        run: bundle install
+          bundler-cache: true
 
       - name: Build CSS
         run: bundle exec rails dartsass:build
@@ -70,10 +68,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2
-          cache-version: 1
-
-      - name: Install gems
-        run: bundle install
+          bundler-cache: true
 
       - name: Run Brakeman
         run: |
@@ -105,9 +100,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2
-
-      - name: Install gems
-        run: bundle install
+          bundler-cache: true
 
       - name: Run Rubocop
         run: bundle exec rubocop

@@ -126,9 +126,9 @@ Finally, seed the database using:
 `rails db:seed`
 
 ## AWS Configuration
-In production, EBWiki currently uses the S3 Service of AWS to store images uploaded to the site, via the carrierwave and fog gems.  However, in the test environment, the app is currently configured to use Fog::Mock to stub any calls to S3.  In development, the app is currently configured to save any uploaded photos to your local filesystem rather than S3.
+In production, EBWiki stores uploaded case photos with Active Storage on AWS S3 when `S3_BUCKET` is set. In development and test, Active Storage uses the local disk service.
 
-If for some reason you need the ability to upload photos and store them in S3 in development or testing, you will need to update `avatar_uploader.rb` and/or `config/initializers/carrierwave.rb` according to your needs.  Then you will need to follow the AWS documentation to generate and retrieve an access key/secret key pair and S3 bucket, which you will add as environment variables in your `.env` file.
+To use S3 in development, set `S3_BUCKET`, `S3_KEY`, `S3_SECRET`, and `S3_REGION` in your `.env` file (see `config/storage.yml`) and point `config.active_storage.service` at `:amazon`. After deploy, existing CarrierWave files can be copied with `rails active_storage:migrate_case_avatars`.
 
 ## Finish
 Now, everything should be completely set up!  Run the app locally on your computer using the following command:

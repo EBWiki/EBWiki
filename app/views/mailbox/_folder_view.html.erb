@@ -3,18 +3,18 @@
   <div class="col-md-12">
     <div class="spacer"></div>
   </div>
- 
+
   <div class="col-md-4 mailFolder">
-    <div class="panel panel-default">
-      <div class="panel-body">
+    <div class="card">
+      <div class="card-body">
         <%= render 'mailbox/folders' %>
       </div>
     </div>
   </div>
- 
+
   <div class="col-md-8 mailFolder">
-    <div class="panel panel-default">
-      <div class="panel-body">
+    <div class="card">
+      <div class="card-body">
         <% if is_conversation %>
           <%= render 'conversations/form' %>
         <% else %>
@@ -23,5 +23,4 @@
       </div>
     </div>
   </div>
- 
 </div>

@@ -17,7 +17,7 @@
       <% if @this_case.avatar? %>
         <%= image_tag(@this_case.avatar_variant(:large_avatar), class: "img-fluid articleImage") %>
       <% else %>
-        <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
+        <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-fluid articleImage") %>
       <% end %>
 
       <div class="">
@@ -65,10 +65,10 @@
         <% if current_user %>
           <% if current_user.following?(@this_case) %>
           <% else %>
-            <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Click here to receive an email whenever this case is updated.' } %>
+            <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn btn-lg btn-primary text-center", data: popover_data(content: 'Click here to receive an email whenever this case is updated.') %>
           <% end %>
         <% else %>
-          <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Login to Follow this case!', content: 'Click here to receive an email whenever this case is updated.' } %>
+          <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn btn-lg btn-primary text-center", data: popover_data(title: 'Login to Follow this case!', content: 'Click here to receive an email whenever this case is updated.') %>
         <% end %>
       </p>
       <hr />
@@ -95,7 +95,7 @@
         <div class="col-md-12" >
           <% if @this_case.links.size > 0 %>
             <h4 class="article_subheader">Additional Resources:</h4>
-            <ul class="background-links" id="link-list">
+            <ul class="background-links" id="link-list" data-controller="show-more" data-show-more-limit-value="10">
               <%= render partial: 'case_link', collection: @this_case.links, as: :link %>
             </ul>
           <% end %>
@@ -107,37 +107,4 @@
 
 
 <!-- /.row -->
-
-<script type="text/javascript">
-  $(document).ready(function(){
-      $('[data-toggle="popover"]').popover();
-  });
-</script>
-<script type="text/javascript">
-  if($('ul#link-list').children().length > 10) {
-    $(document).ready(function(){
-      var more = $('<li class="more btn btn-xs btn-default"><a href="">Show more</a></li>');
-      var less = $('<li class="less btn btn-xs btn-default" ><a href="">Show less</a></li>');
-
-      $('ul#link-list').children('li:gt(10)').hide();
-      $('ul#link-list').append(more);
-
-      $('body').on('click','.more',function(e){
-          e.preventDefault();
-          $(this).remove();
-          $('ul#link-list').children().show();
-          $('ul#link-list').append(less);
-          return false;
-      });
-
-      $('body').on('click','.less',function(e){
-          e.preventDefault();
-          $(this).remove();
-          $('ul#link-list').children('li:gt(10)').hide();
-          $('ul#link-list').append(more);
-          return false;
-      });
-    });
-  }
-</script>
 

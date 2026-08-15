@@ -54,4 +54,18 @@ module ApplicationHelper
       )
     end
   end
+
+  def popover_data(title: nil, content:)
+    {
+      bs_toggle: 'popover',
+      bs_trigger: 'hover focus',
+      bs_placement: 'bottom',
+      bs_title: title,
+      bs_content: content
+    }.compact
+  end
+
+  def help_icon(title:, content:)
+    image_tag('help_icon.png', data: popover_data(title: title, content: content))
+  end
 end

@@ -2,14 +2,14 @@
   <section class="userAvatar">
     <div class="row">
       <div class="col-md-2">
-        <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
+        <%= image_tag avatar_url(@user,200),  class: "rounded img-fluid" %>
         <%= @user.name %>
         <br>
         Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
         <br>
         <% if @user == current_user %>
-          <div class="panel panel-default mailFoldershort">
-            <div class="panel-body">
+          <div class="card mailFoldershort">
+            <div class="card-body">
               Your Mailboxes:
               <%= render 'mailbox/folders' %>
             </div>

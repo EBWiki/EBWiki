@@ -16,9 +16,9 @@
 		<div class="row">
       <div class="col-lg-12">
 		    <% @this_case.followers.each do |follower| %>
-			    <div class="col-lg-2 col-md-3 col-xs-12">
+			    <div class="col-lg-2 col-md-3 col-12">
           <div class="">
-            <%= link_to image_tag(avatar_url(follower,200), :class => "img-responsive"), follower %>
+            <%= link_to image_tag(avatar_url(follower,200), :class => "img-fluid"), follower %>
           </div>
       </div>
 		    <% end %>
@@ -35,10 +35,4 @@
 
 
 <!-- /.row -->
-
-<script type="text/javascript">
-	$(document).ready(function(){
-	    $('[data-toggle="popover"]').popover();
-	});
-</script>
 

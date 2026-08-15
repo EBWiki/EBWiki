@@ -15,7 +15,7 @@ Fully working Rails 8.1.3.1 app: pg_search, Active Storage, Action Text/Trix, cu
 - cursor/rails-8-modernization-060d
 
 ## Last Completed Step
-In-progress full modernization: dead gems removed, search on Postgres, frontend moved off Sprockets/jQuery.
+Rails 8.1 modernization complete: pg_search, Active Storage, Trix, custom mailbox, Propshaft + Bootstrap 5 + Stimulus. Remaining Bootstrap 3 / jQuery / mailboxer leftovers removed.
 
 ## Technical Notes
 - Case search uses `pg_search` over generated `cases.tsv`

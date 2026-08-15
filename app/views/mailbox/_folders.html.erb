@@ -1,22 +1,17 @@
-<ul class="nav nav-pills nav-stacked">
-  <li class="<%= active_page(:inbox) %>">
-    <%= link_to mailbox_inbox_path do  %>
-        <span class="label label-danger pull-right"><%=unread_messages_count%></span>
-        <em class="fa fa-inbox fa-lg"></em>
+<ul class="nav nav-pills flex-column">
+  <li class="nav-item">
+    <%= link_to mailbox_inbox_path, class: "nav-link #{active_page(:inbox)}" do %>
+        <span class="badge bg-danger float-end"><%= unread_messages_count %></span>
         <span>Inbox</span>
     <% end %>
   </li>
-  <li class="<%= active_page(:sent) %>">
-    <%= link_to mailbox_sent_path do %>
- 
-        <em class="fa fa-paper-plane-o fa-lg"></em>
+  <li class="nav-item">
+    <%= link_to mailbox_sent_path, class: "nav-link #{active_page(:sent)}" do %>
         <span>Sent</span>
     <% end %>
   </li>
- 
-  <li class="<%= active_page(:trash) %>">
-    <%= link_to mailbox_trash_path do %>
-        <em class="fa fa-trash-o fa-lg"></em>
+  <li class="nav-item">
+    <%= link_to mailbox_trash_path, class: "nav-link #{active_page(:trash)}" do %>
         <span>Trash</span>
     <% end %>
   </li>
