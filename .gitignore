@@ -43,7 +43,6 @@ bower.json
 .DS_Store
 
 # Local dev files and directories
-.vscode
 .vagrant
 environment.sh
 
