@@ -27,14 +27,9 @@ Rails.application.configure do
   config.public_file_server.enabled = true
 
   # Compress CSS using a preprocessor.
-  config.assets.css_compressor = :sass
+  # CSS is compiled by dartsass-rails.
 
-  # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
-
-  # Asset digests allow you to set far-future HTTP expiration dates on all assets,
-  # yet still be able to expire them through the digest params.
-  config.assets.digest = true
+  # CSS is compiled by dartsass-rails before deploy.
 
   # `config.assets.precompile` and `config.assets.version`
   # have moved to config/initializers/assets.rb

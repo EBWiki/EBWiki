@@ -3,15 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'agencies/index.html.erb', type: :view do
-  xit 'displays all the agencies' do
-    houston_pd = FactoryBot.build(:agency, name: 'City of Houston Police Department', city: 'Houston', state: State.find_by_name("Texas"))
-    beaumont_pd = FactoryBot.build(:agency,  name: 'City of Beaumont Police Department', city: 'Beaumont', state: State.find_by_name("Texas"))
-    assign(:cases, Kaminari.paginate_array([houston_pd, beaumont_pd]).page(1))
-
-    assign(:agencies, SortCollectionOrdinally.call(collection: Agency.all))
+  it 'displays all the agencies' do
+    texas = FactoryBot.create(:state_texas)
+    houston_pd = FactoryBot.create(:agency, name: 'City of Houston Police Department',
+                                            city: 'Houston', state: texas)
+    dallas_pd = FactoryBot.create(:agency, name: 'City of Dallas Police Department',
+                                           city: 'Dallas', state: texas)
+    assign(:agencies, [houston_pd, dallas_pd])
     render
 
     expect(rendered).to match(/Houston/m)
-    expect(rendered).to match(/Beaumont/m)
+    expect(rendered).to match(/Dallas/m)
   end
 end

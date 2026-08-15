@@ -168,12 +168,10 @@ describe '#nearby_cases', versioning: true do
   end
 end
 
-describe '#default_avatar_url', versioning: true do
-  it 'takes the avatars default URL and turns this into a column' do
+describe '#photo?' do
+  it 'is false when no photo is attached' do
     this_case = FactoryBot.create(:case)
-    avatar_mock = double('Avatar', url: 'https://avatar.com')
-    allow(this_case).to receive(:default_avatar_url).and_return(avatar_mock.url)
-    expect(this_case.default_avatar_url).to_not be_nil
+    expect(this_case.photo?).to be false
   end
 end
 

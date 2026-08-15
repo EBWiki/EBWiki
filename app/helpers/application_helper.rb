@@ -33,4 +33,39 @@ module ApplicationHelper
   def link_to_case_title(this_case, length)
     link_to truncate(this_case.title, length: length), this_case
   end
+
+  def bootstrap_flash_class(key)
+    { notice: 'info', alert: 'warning', error: 'danger', success: 'success' }.fetch(key.to_sym, key)
+  end
+
+  def social_share_button_tag(text) # rubocop:disable Metrics/MethodLength
+    url = ERB::Util.url_encode(request.original_url)
+    message = ERB::Util.url_encode(text)
+    share_class = 'btn btn-sm btn-outline-secondary'
+    content_tag(:div, class: 'share-links') do
+      safe_join(
+        [
+          link_to('Share on X', "https://twitter.com/intent/tweet?text=#{message}&url=#{url}",
+                  target: '_blank', rel: 'noopener', class: share_class),
+          link_to('Share on Facebook', "https://www.facebook.com/sharer/sharer.php?u=#{url}",
+                  target: '_blank', rel: 'noopener', class: share_class)
+        ],
+        ' '
+      )
+    end
+  end
+
+  def popover_data(content:, title: nil)
+    {
+      bs_toggle: 'popover',
+      bs_trigger: 'hover focus',
+      bs_placement: 'bottom',
+      bs_title: title,
+      bs_content: content
+    }.compact
+  end
+
+  def help_icon(title:, content:)
+    image_tag('help_icon.png', data: popover_data(title: title, content: content))
+  end
 end

@@ -8,8 +8,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   has_many :comments, dependent: :destroy
+  has_many :conversation_participants, dependent: :destroy
+  has_many :conversations, through: :conversation_participants
+  has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id, dependent: :destroy,
+                           inverse_of: :sender
   acts_as_follower
-  acts_as_messageable
   extend FriendlyId
 
   friendly_id :slug_candidates, use: %i[slugged finders]
@@ -19,12 +22,24 @@ class User < ApplicationRecord
 
   validates :name, presence: { message: 'Please add a name.' }
 
-  def mailboxer_name
-    name
+  def mailbox
+    UserMailbox.new(self)
   end
 
-  def mailboxer_email(_object)
-    email
+  def send_message(recipients, body, subject)
+    conversation = Conversation.create!(subject: subject, originator: self)
+    ([self] + Array(recipients)).uniq.each do |participant|
+      conversation.participants.find_or_create_by!(user: participant)
+    end
+    message = conversation.messages.create!(sender: self, body: body)
+    notify_participants(conversation, message, reply: false)
+    message
+  end
+
+  def reply_to(conversation, body)
+    message = conversation.messages.create!(sender: self, body: body)
+    notify_participants(conversation, message, reply: true)
+    message
   end
 
   def slug_candidates
@@ -44,6 +59,17 @@ class User < ApplicationRecord
   end
 
   private
+
+  def notify_participants(conversation, message, reply:)
+    conversation.users.where.not(id: id).find_each do |recipient|
+      mail = if reply
+               ConversationMailer.reply_message(message: message, recipient: recipient)
+             else
+               ConversationMailer.new_message(message: message, recipient: recipient)
+             end
+      mail.deliver_later
+    end
+  end
 
   def mailchimp_user
     gb = Gibbon::Request.new

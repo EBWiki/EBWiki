@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # config/initializers/geocoder.rb
-Geocoder.configure(
+geocoder_config = {
   # geocoding service (see below for supported options):
   # lookup: :yandex,
   # IP address geocoding service (see below for supported options):
@@ -15,4 +15,8 @@ Geocoder.configure(
   # caching (see below for details):
   # cache: Redis.new,
   # cache_prefix: '...'
-)
+}
+# CI / e2e seeds should not call an external geocoder.
+geocoder_config[:lookup] = :test if ENV['SKIP_GEOCODE'].present?
+
+Geocoder.configure(geocoder_config)

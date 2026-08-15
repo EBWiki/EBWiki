@@ -3,8 +3,8 @@
 <% content_for :meta_description, "EBWiki is following the involvement of the #{@agency.name} in killings of people of color." %>
 <% content_for :meta_keywords, "#{@agency.name} police violence people color" %>
 
-<span  class="page-header caseTitle">
-  <h1 class="page-header caseTitle"><%= @agency.name %></h1>
+<span  class="page-heading caseTitle">
+  <h1 class="page-heading caseTitle"><%= @agency.name %></h1>
   <h4><%= @agency.street_address %></h4>
   <h4><%= @agency.city %>, <%= @agency_state %> <%= @agency.zipcode %></h4>
 </span>
@@ -31,7 +31,7 @@
 <!-- Related Cases Row -->
 <div class="row">
   <div class="col-lg-12">
-    <h3 class="page-header">EBWiki is tracking <%= pluralize(@cases.size, "case")%> involving the <%= @agency.name %>:</h3>
+    <h3 class="page-heading">EBWiki is tracking <%= pluralize(@cases.size, "case")%> involving the <%= @agency.name %>:</h3>
   </div>
 </div>
 <div class="row">

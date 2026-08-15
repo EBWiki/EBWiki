@@ -28,13 +28,11 @@ Instructions on setting up a local development environment can be found in the f
 
 In general, contributors will use the following languages, frameworks, and technologies:
 
-* [Ruby 3.2.0](https://www.ruby-lang.org/en/downloads/)
-* [Rails 7.0.0](http://rubyonrails.org/)
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch)
-* [Postgres 12](https://www.postgresql.org/) or higher
+* [Ruby 3.4.2](https://www.ruby-lang.org/en/downloads/)
+* [Rails 8.1](http://rubyonrails.org/)
+* [Postgres 17](https://www.postgresql.org/) (full-text search via `pg_search`)
 * [Redis](https://redis.io/)
-* [AWS S3](https://aws.amazon.com/free/)
-* [NodeJS](https://nodejs.org/en/)
+* [AWS S3](https://aws.amazon.com/free/) for Active Storage uploads
 
 
 ### Testing
@@ -47,6 +45,8 @@ rspec spec/
 
 More information on how to use RSpec, shoulda-matchers, and FactoryBot can be found at the links above.
 
+Browser end-to-end tests use [Playwright](https://playwright.dev/). They run in GitHub Actions and in a Cursor Cloud / web agent container so you do not need to install Chromium on a local machine. See [docs/E2E.md](docs/E2E.md).
+
 We also use [Rubocop](https://github.com/bbatsov/rubocop) as part of our continous integration process in Github Actions.  To run Rubocop locally, enter
 
 ```
@@ -56,7 +56,7 @@ rubocop
 ### Continuous Integration (CI)
 Each time a pull request (PR) is opened or updated
 
-The full test suite will be run, to ensure that submitted changes do not break functionality elsewhere in the app.  Brakeman, Rubocop, and a link checker will also be run on the submitted changes.
+The full test suite will be run, to ensure that submitted changes do not break functionality elsewhere in the app.  Brakeman, Rubocop, Playwright e2e, and a link checker will also be run on the submitted changes.
 
 As noted in our development guide, your PR is expected to pass all checks before a maintainer will merge it.  If your PR is failing one of the checks, refer to our development guide for tips on how to address the failure(s).
 

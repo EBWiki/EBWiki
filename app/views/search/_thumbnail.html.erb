@@ -1,9 +1,9 @@
 <div class="view view-first">
   <div class="thumbnail text-center">
-    <% if this_case.avatar? %>
-      <%= link_to image_tag(this_case.avatar.large_avatar.url, class: "img-responsive"), this_case %>
+    <% if this_case.photo? %>
+      <%= link_to image_tag(this_case.photo_variant(:large), class: "img-fluid"), this_case %>
     <% else %>
-      <%= link_to image_tag("default-user-icon.png", class: "img-responsive"), this_case %>
+      <%= link_to image_tag("default-user-icon.png", class: "img-fluid"), this_case %>
       <div class="caption">
         <h4><%= this_case.subjects.first.name %></h4>
       </div>

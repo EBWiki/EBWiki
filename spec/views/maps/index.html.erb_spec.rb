@@ -8,14 +8,7 @@ RSpec.describe 'maps/index.html.erb', type: :view do
     FactoryBot.create(
       :case, title: 'Jimmy Doe', state: State.where(ansi_code: 'NY').first
     )
-    assign(:cases, Kaminari.paginate_array(
-        Case.pluck(:id,
-                   :latitude,
-                   :longitude,
-                   :avatar,
-                   :title,
-                   :overview)
-      ).page(1))
+    assign(:cases, [[40.7, -74.0], [29.7, -95.3]].flatten.to_json)
     render
 
     expect(rendered).to match(/Click on the map pins below to learn more/m)

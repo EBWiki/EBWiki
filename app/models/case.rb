@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Case model
-class Case < ApplicationRecord
+class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include CaseSearchable
 
   MAX_BLURB_CHARACTERS = 500
@@ -67,18 +67,14 @@ class Case < ApplicationRecord
   validates :blurb, length: { maximum: MAX_BLURB_CHARACTERS }
   validates :blurb, presence: { message: 'A blurb about the case is required.' }
 
-  # Avatar uploader using carrierwave
-  mount_uploader :avatar, AvatarUploader
+  has_one_attached :photo
+  attr_accessor :remove_photo
 
   # Geocoding
   geocoded_by :full_address
   before_save :geocode, if: proc { |art|
     art.address_changed? || art.city_changed? || art.state_id_changed? || art.zipcode_changed?
   } # auto-fetch coordinates
-
-  before_save :set_default_avatar_url if proc do |art|
-    art.avatar.changed?
-  end
 
   # Scopes
   scope :most_recent_occurrences, lambda { |duration|
@@ -98,12 +94,28 @@ class Case < ApplicationRecord
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
   end
 
-  def set_default_avatar_url
-    self.default_avatar_url = avatar.url
+  def photo?
+    photo.attached?
+  end
+
+  def photo_variant(style = :large)
+    return unless photo.attached?
+
+    sizes = {
+      large: [250, 250],
+      medium: [150, 150],
+      small: [35, 35],
+      thumb: [50, 50]
+    }
+    photo.variant(resize_to_fill: sizes.fetch(style, [250, 250]))
+  end
+
+  def purge_photo
+    photo.purge_later if photo.attached?
   end
 
   def self.find_by_search(query)
-    search(query)
+    query.to_s.strip.present? ? search_text(query) : all
   end
 
   def nearby_cases
@@ -138,20 +150,17 @@ end
 #  id                 :integer          not null, primary key
 #  address            :string
 #  age                :integer
-#  avatar             :string
 #  blurb              :text
 #  cause_of_death     :enum
 #  city               :string           not null
 #  community_action   :text
 #  country            :string
 #  date               :date
-#  default_avatar_url :string
 #  follows_count      :integer          default(0), not null
 #  latitude           :float
 #  litigation         :text
 #  longitude          :float
 #  overview           :text             not null
-#  remove_avatar      :boolean
 #  slug               :string
 #  state              :string
 #  summary            :text             not null

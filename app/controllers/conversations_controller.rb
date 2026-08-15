@@ -5,8 +5,7 @@ class ConversationsController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    @receipts = conversation.receipts_for(current_user)
-    # mark conversation as read
+    @messages = conversation.messages.order(:created_at)
     conversation.mark_as_read(current_user)
   end
 
@@ -23,12 +22,20 @@ class ConversationsController < ApplicationController
                    .conversation
     flash[:success] = 'Your message was successfully sent!'
     redirect_to conversation_path(conversation)
+  rescue ActiveRecord::RecordInvalid
+    flash.now[:error] = 'Subject and message are required.'
+    @other_users = User.where.not(id: current_user.id).pluck(:name, :id)
+    render :new, status: :unprocessable_entity
   end
 
   def reply
-    current_user.reply_to_conversation(conversation, message_params[:body])
+    current_user.reply_to(conversation, message_params[:body])
     flash[:notice] = 'Your reply message was successfully sent!'
     redirect_to conversation_path(conversation)
+  rescue ActiveRecord::RecordInvalid
+    flash.now[:error] = 'Reply cannot be blank.'
+    @messages = conversation.messages.order(:created_at)
+    render :show, status: :unprocessable_entity
   end
 
   def trash

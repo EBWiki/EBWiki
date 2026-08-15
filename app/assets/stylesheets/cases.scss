@@ -17,7 +17,7 @@ $color-dark-gray: #4D4D4D;
   font-weight: bold;
 }
 
-.page-header{
+.page-heading{
   text-align: center;
 }
 
@@ -69,23 +69,17 @@ $color-dark-gray: #4D4D4D;
   padding-bottom: 10px;
 }
 
-.social-share-button {
+.share-links {
   display: flex;
   height: 32px;
   justify-content: space-between;
-}
-
-.ssb-icon {
-    background-size: 32px 32px;
-    height: 32px;
-    width: 32px;
 }
 
 .case-btns {
   width: 100%;
 }
 
-.btn-group-justified {
+.case-btn-group {
     width: calc(100% - 30px);
     margin: 15px 0 15px 15px;
 }
@@ -262,7 +256,8 @@ $color-dark-gray: #4D4D4D;
     opacity: 1;
 }
 
-.img-responsive {
+.view img,
+.articleImage {
   width: 100%;
 }
 

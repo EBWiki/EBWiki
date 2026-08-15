@@ -9,7 +9,7 @@ class MailboxController < ApplicationController
   end
 
   def sent
-    @sent = mailbox.sentbox
+    @sent = mailbox.sent
     @active = :sent
   end
 

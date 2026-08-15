@@ -2,14 +2,14 @@
   <section class="userAvatar">
     <div class="row">
       <div class="col-md-2">
-        <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
+        <%= image_tag avatar_url(@user,200),  class: "rounded img-fluid" %>
         <%= @user.name %>
         <br>
-        Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
+        Last seen at <%= @user.last_sign_in_at ? l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") : 'Never' %>
         <br>
         <% if @user == current_user %>
-          <div class="panel panel-default mailFoldershort">
-            <div class="panel-body">
+          <div class="card mailFoldershort">
+            <div class="card-body">
               Your Mailboxes:
               <%= render 'mailbox/folders' %>
             </div>
@@ -31,13 +31,13 @@
           <p class="user-description"><%= @user.description %></p>
         </div>
         <% if @user != current_user %>
-          <h3 class="page-header">Cases <%= @user.name %> follows:</h3>
+          <h3 class="page-heading">Cases <%= @user.name %> follows:</h3>
         <% else %>
-          <h3 class="page-header">
+          <h3 class="page-heading">
             <% if @cases.size.zero? %>
               Please take 30 seconds and <%= link_to 'pick a case', root_path %> that you want to track and click the follow button. We'll take it from there to keep you informed.
             <% else %>
-              <h3 class="page-header">Cases we are tracking for you:</h3>
+              <h3 class="page-heading">Cases we are tracking for you:</h3>
             <% end %>
           </h3>
         <% end %>

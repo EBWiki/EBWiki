@@ -28,12 +28,9 @@ jobs:
       redis:
         image: redis
 
-      elasticsearch:
-        image: elasticsearch:6.8.13
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@v4
 
       - name: install dependencies
         run: |
@@ -43,9 +40,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2
+          bundler-cache: true
 
-      - name: Install gems
-        run: bundle install
+      - name: Build CSS
+        run: bundle exec rails dartsass:build
 
       - name: Setup database
         run: |
@@ -61,7 +59,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@v4
 
       - name: install dependencies
         run: |
@@ -70,10 +68,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2
-          cache-version: 1
-
-      - name: Install gems
-        run: bundle install
+          bundler-cache: true
 
       - name: Run Brakeman
         run: |
@@ -95,7 +90,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@v4
 
       - name: install dependencies
         run: |
@@ -105,9 +100,99 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2
-
-      - name: Install gems
-        run: bundle install
+          bundler-cache: true
 
       - name: Run Rubocop
         run: bundle exec rubocop
+
+  e2e:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: development
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+      SKIP_GEOCODE: "1"
+      BASE_URL: http://127.0.0.1:3000
+      REDIS_URL: redis://localhost:6379/0
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install system packages
+        run: sudo apt-get update && sudo apt-get install -y libcurl4-gnutls-dev libvips
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Playwright
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Build CSS
+        run: bundle exec rails dartsass:build
+
+      - name: Setup database
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec bin/rails db:prepare db:seed
+
+      - name: Start Rails
+        run: |
+          bundle exec rails server -b 127.0.0.1 -p 3000 --pid tmp/pids/e2e-server.pid > log/e2e-server.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS "$BASE_URL" >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Rails did not become ready" >&2
+          cat log/e2e-server.log >&2 || true
+          exit 1
+
+      - name: Run Playwright
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore

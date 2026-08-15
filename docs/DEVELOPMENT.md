@@ -24,7 +24,7 @@ Once you've selected an issue, assign it to yourself and get started!  Be sure t
 3. **You: Submit a pull request**
 Once you're finished with your work, push it up and open a pull request (PR).  Note that in each PR, there's a checklist of things you need to do before submitting.  Not all of them will be applicable every time, but you should be able to check off at least the first two each time. (Hint: put an "X" in the brackets to check off an item).
 4. **You: Pass automated testing and linting**
-Once you submit your PR for review, Github Actions will automatically run our continuous integration (CI) setup on the code in your PR.  CodeClimate and Rubocop will analyze the code style, complexity, and quality of your code.  Rspec will run all of the tests for the code, and Brakeman will analyze the code in light of known security vulnerabilities.  If everything passes, great!  You'll see a nice green check mark.  If one or more things fail, it'll have a red mark next to it, along with a link for "Details" that explains what exactly is failing.  Give that a look and make changes as needed.  If something unrelated to the changes you've made is failing, just note that in a comment on the PR.
+Once you submit your PR for review, Github Actions will automatically run our continuous integration (CI) setup on the code in your PR.  CodeClimate and Rubocop will analyze the code style, complexity, and quality of your code.  Rspec will run all of the tests for the code, Playwright will run browser e2e tests in CI (you do not need Playwright on your laptop), and Brakeman will analyze the code in light of known security vulnerabilities.  If everything passes, great!  You'll see a nice green check mark.  If one or more things fail, it'll have a red mark next to it, along with a link for "Details" that explains what exactly is failing.  Give that a look and make changes as needed.  If something unrelated to the changes you've made is failing, just note that in a comment on the PR.
 5.  **We: Review the pull request**
 Within two weeks, one of the maintainers of repo will review your PR themselves.  We'll provide some general suggestions on improving the code, ask what your motivations are behind certain changes, that type of thing.  At that point, there will be some back and forth as we put the finishing touches on your PR.
 6.  **We: Merge the pull request**
@@ -46,8 +46,7 @@ There are a number of guides available for running EBWiki in your local environm
 The EBWiki repo has a `db/seeds.rb` file that you can use to add some basic data to your local database for development purposes.  However, there may be times when you want your local database to have data similar to what you'd see in production (e.g, when working on analytics or search).  In that case, please leave a comment stating your need on your ticket and mention Rachel Green or Mark Nyon.
 
 ## Third-Party Services
-* Elasticsearch for searching cases. Elasticsearch < 7 due to licensing issues.
-* Postgres 12 or higher
+* Postgres 17 (or 12+) with full-text search via `pg_search` / `cases.tsv`
 * Redis
 * Sumologic
 

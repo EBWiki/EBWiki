@@ -53,12 +53,8 @@ heroku pg:backups:download
 
 In another terminal, delete the old production backup and rename the latest one from `latest.dump` to `MM_YYYY.dump`, with the appropriate values filled in. 
 
-## Reindex for Search
+## Search
 
-Finally, let's redo the indexes we use for searching in the app:
-
-```
-heroku run rake searchkick:reindex:all  --app ebwiki
-```
+Case search uses Postgres full-text search (`pg_search` over the generated `cases.tsv` column). No Elasticsearch reindex is required after deploy.
 
 And with that, we're done!

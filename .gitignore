@@ -24,7 +24,6 @@ config/secrets.yml
 ## Environment normalisation:
 /.bundle
 /vendor/bundle
-/.env
 
 # these should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
@@ -61,6 +60,10 @@ db/schema.rb
 # Ignore node_modules in favor of package.json and package-lock.json
 /node_modules
 
+/app/assets/builds/*
+!/app/assets/builds/.keep
+/storage
+
 /public/packs
 /public/packs-test
 /node_modules
@@ -69,3 +72,10 @@ yarn-debug.log*
 .yarn-integrity
 /.idea
 /config/master.key
+
+# Playwright
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
+config.bat
