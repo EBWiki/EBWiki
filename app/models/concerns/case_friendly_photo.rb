@@ -24,7 +24,7 @@ module CaseFriendlyPhoto
   end
 
   def missing_avatar?
-    avatar.blank?
+    self[:avatar].blank?
   end
 
   def needs_friendly_photo?

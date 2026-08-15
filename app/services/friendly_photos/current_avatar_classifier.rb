@@ -21,10 +21,11 @@ module FriendlyPhotos
     private
 
     def classifiable?(this_case)
-      return false if this_case.avatar.blank?
+      filename = this_case[:avatar]
+      return false if filename.blank?
       return false unless this_case.unclassified?
 
-      MugshotClassifier.call(text: this_case.avatar.to_s).likely_mugshot
+      MugshotClassifier.call(text: filename).likely_mugshot
     end
   end
 end
