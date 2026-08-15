@@ -60,6 +60,20 @@ RSpec.describe 'Conversations', type: :request do
       end
     end
 
+    context 'when authenticated with a blank message' do
+      before do
+        sign_in user
+        post '/conversations', params: {
+          conversation: { subject: '', body: '', recipients: [another_user.id] }
+        }
+      end
+
+      it 're-renders the compose form' do
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include('Subject and message are required.')
+      end
+    end
+
     context 'when not authenticated' do
       before { post '/conversations' }
 
@@ -107,6 +121,18 @@ RSpec.describe 'Conversations', type: :request do
 
       it 'will return a redirect to the conversation page' do
         expect(response).to redirect_to conversation_path(conversation)
+      end
+    end
+
+    context 'when authenticated with a blank reply' do
+      before do
+        sign_in user
+        post "/conversations/#{conversation.id}/reply", params: { message: { body: '' } }
+      end
+
+      it 're-renders the conversation' do
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include('Reply cannot be blank.')
       end
     end
 

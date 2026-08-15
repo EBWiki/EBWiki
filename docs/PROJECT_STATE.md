@@ -15,7 +15,7 @@ Fully working Rails 8.1.3.1 app: pg_search, Active Storage, Action Text/Trix, cu
 - cursor/rails-8-modernization-060d
 
 ## Last Completed Step
-Added containerized Playwright e2e (CI + Cloud / web agent). Local Playwright install is not required.
+Expanded Playwright e2e to happy path plus two primary errors for each user-facing use case.
 
 ## Technical Notes
 - Case search uses `pg_search` over generated `cases.tsv`
