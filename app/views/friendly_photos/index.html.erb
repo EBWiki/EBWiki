@@ -13,13 +13,13 @@
     ['portrait', 'Friendly portraits']
   ].each do |value, label| %>
     <li class="<%= 'active' if @filter == value %>">
-      <%= link_to label, friendly_photos_path(filter: value) %>
+      <%= link_to label, friendly_photos_path(filter: value), data: { testid: "filter-#{value}" } %>
     </li>
   <% end %>
 </ul>
 
 <% if @cases.any? %>
-  <table class="table table-striped">
+  <table class="table table-striped" data-testid="friendly-photos-table">
     <thead>
       <tr>
         <th>Current photo</th>
@@ -46,7 +46,7 @@
           <td><%= this_case.city %><%= ", #{this_case.state.name}" if this_case.state %></td>
           <td><%= this_case.avatar_kind.humanize %></td>
           <td><%= pending_friendly_photo_count(this_case) %></td>
-          <td><%= link_to 'Find photos', friendly_photo_path(this_case), class: 'btn btn-warning btn-sm' %></td>
+          <td><%= link_to 'Find photos', friendly_photo_path(this_case), class: 'btn btn-warning btn-sm', data: { testid: "find-photos-#{this_case.slug}" } %></td>
         </tr>
       <% end %>
     </tbody>

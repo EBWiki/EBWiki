@@ -73,3 +73,8 @@ yarn-debug.log*
 # Compound Engineering checkout-local config and generated artifacts
 .compound-engineering/config.local.yaml
 .compound-engineering/artifacts/
+
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/

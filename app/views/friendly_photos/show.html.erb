@@ -19,13 +19,14 @@
     <p style="margin-top: 1em;">
       Photo type: <strong><%= @this_case.avatar_kind.humanize %></strong>
     </p>
-    <%= form_with url: classify_friendly_photo_path(@this_case), method: :patch do %>
+    <%= form_with url: classify_friendly_photo_path(@this_case), method: :patch, html: { data: { testid: 'classify-form' } } do %>
       <div class="form-group">
         <%= select_tag :avatar_kind,
                        options_for_select(Case.avatar_kinds.keys.map { |kind| [kind.humanize, kind] }, @this_case.avatar_kind),
-                       class: 'form-control' %>
+                       class: 'form-control',
+                       data: { testid: 'avatar-kind-select' } %>
       </div>
-      <%= submit_tag 'Update photo type', class: 'btn btn-default' %>
+      <%= submit_tag 'Update photo type', class: 'btn btn-default', data: { testid: 'update-photo-type' } %>
     <% end %>
     <p style="margin-top: 1em;">
       <%= link_to 'Edit case', edit_case_path(@this_case), class: 'btn btn-primary' %>
@@ -38,13 +39,14 @@
     <%= button_to 'Search Wikimedia for a friendly photo',
                   search_friendly_photo_path(@this_case),
                   class: 'btn btn-warning',
-                  data: { confirm: 'Search Wikimedia Commons and Wikipedia for portraits of this person?' } %>
+                  data: { confirm: 'Search Wikimedia Commons and Wikipedia for portraits of this person?',
+                          testid: 'search-wikimedia' } %>
 
     <% if @candidates.any? %>
       <div class="row" style="margin-top: 1.5em;">
         <% @candidates.each do |candidate| %>
           <div class="col-sm-6" style="margin-bottom: 1.5em;">
-            <div class="thumbnail">
+            <div class="thumbnail" data-testid="candidate-<%= candidate.id %>" data-candidate-kind="<%= candidate.likely_mugshot? ? 'mugshot' : 'friendly' %>">
               <%= image_tag candidate.image_url, alt: candidate.title, class: 'img-responsive' %>
               <div class="caption">
                 <h4><%= candidate.title %></h4>
@@ -56,7 +58,7 @@
                   <% end %>
                 </p>
                 <% if candidate.likely_mugshot? %>
-                  <p class="text-danger">
+                  <p class="text-danger" data-testid="mugshot-flag">
                     Flagged as a likely mugshot
                     <%= " (#{candidate.notes})" if candidate.notes.present? %>
                   </p>
@@ -73,13 +75,15 @@
                                 apply_friendly_photo_path(@this_case),
                                 params: { photo_candidate_id: candidate.id },
                                 class: 'btn btn-success btn-sm',
-                                data: { confirm: 'Replace the case photo with this Wikimedia portrait?' } %>
+                                data: { confirm: 'Replace the case photo with this Wikimedia portrait?',
+                                        testid: 'apply-photo' } %>
                 <% end %>
                 <% if candidate.pending? %>
                   <%= button_to 'Reject',
                                 reject_friendly_photo_path(@this_case),
                                 params: { photo_candidate_id: candidate.id },
-                                class: 'btn btn-default btn-sm' %>
+                                class: 'btn btn-default btn-sm',
+                                data: { testid: 'reject-photo' } %>
                 <% end %>
               </div>
             </div>
