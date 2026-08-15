@@ -1,0 +1,57 @@
+<h1>Friendly photos</h1>
+<p>
+  Search Wikimedia for dignified portraits of people in the EBWiki database.
+  Mugshots and booking photos are filtered out and never applied automatically.
+</p>
+
+<ul class="nav nav-pills" style="margin-bottom: 1em;">
+  <% [
+    ['needs_photo', 'Needs a better photo'],
+    ['missing', 'Missing photo'],
+    ['mugshot', 'Marked mugshot'],
+    ['unclassified', 'Unclassified'],
+    ['portrait', 'Friendly portraits']
+  ].each do |value, label| %>
+    <li class="<%= 'active' if @filter == value %>">
+      <%= link_to label, friendly_photos_path(filter: value) %>
+    </li>
+  <% end %>
+</ul>
+
+<% if @cases.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Current photo</th>
+        <th>Person</th>
+        <th>Case</th>
+        <th>Location</th>
+        <th>Photo type</th>
+        <th>Candidates</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cases.each do |this_case| %>
+        <tr>
+          <td>
+            <% if this_case.avatar? %>
+              <%= image_tag this_case.avatar.small_avatar.url, alt: this_case.subject_display_name %>
+            <% else %>
+              <%= image_tag 'default-user-icon.png', size: '35x35', alt: 'No photo' %>
+            <% end %>
+          </td>
+          <td><%= this_case.subject_display_name %></td>
+          <td><%= link_to this_case.title, this_case %></td>
+          <td><%= this_case.city %><%= ", #{this_case.state.name}" if this_case.state %></td>
+          <td><%= this_case.avatar_kind.humanize %></td>
+          <td><%= pending_friendly_photo_count(this_case) %></td>
+          <td><%= link_to 'Find photos', friendly_photo_path(this_case), class: 'btn btn-warning btn-sm' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @cases %>
+<% else %>
+  <p>No cases match this filter.</p>
+<% end %>

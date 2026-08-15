@@ -34,6 +34,13 @@
 			    <input id="photoCover_article" class="input-large" type="text">
 			    <a class="btn btn-warning" onclick="$('input[id=lefile_article]').click();">Browse</a>
 			  </div>
+				<h4>What kind of photo is this?</h4>
+				<p>Prefer a family photo, portrait, or other dignified image. Avoid mugshots and booking photos.</p>
+				<%= f.input :avatar_kind, collection: Case.avatar_kinds.keys.map { |kind| [kind.humanize, kind] },
+				            include_blank: false, label: false %>
+				<% if params[:action] == 'edit' %>
+				  <p><%= link_to 'Search Wikimedia for a friendly photo', friendly_photo_path(@this_case) %></p>
+				<% end %>
 				<h4>Add a YouTube or Vimeo video url relating to the case:</h4>
 				<%= f.input :video_url %>
 				<h4>Cause of death:</h4>
