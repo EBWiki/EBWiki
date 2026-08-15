@@ -8,7 +8,9 @@ class OrganizationsController < ApplicationController
   end
 
   # GET /organizations/1
-  def show; end
+  def show
+    @organization = Organization.find(params[:id])
+  end
 
   # GET /organizations/new
   def new
