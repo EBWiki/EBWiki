@@ -5,7 +5,7 @@
         <%= image_tag avatar_url(@user,200),  class: "rounded img-fluid" %>
         <%= @user.name %>
         <br>
-        Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
+        Last seen at <%= @user.last_sign_in_at ? l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") : 'Never' %>
         <br>
         <% if @user == current_user %>
           <div class="card mailFoldershort">
