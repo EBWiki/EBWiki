@@ -1,0 +1,11 @@
+{
+  "name": "ebwiki",
+  "private": true,
+  "scripts": {
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}
