@@ -7,12 +7,9 @@ describe 'photos:search_friendly' do
 
   it 'runs the batch search and prints results' do
     allow(FriendlyPhotos::BatchSearch).to receive(:call).and_return([])
-    allow(FriendlyPhotos::BatchSearch).to receive(:print_results)
 
-    subject.invoke
-
+    expect { subject.invoke }.to output('').to_stdout
     expect(FriendlyPhotos::BatchSearch).to have_received(:call)
-    expect(FriendlyPhotos::BatchSearch).to have_received(:print_results).with([])
   end
 end
 

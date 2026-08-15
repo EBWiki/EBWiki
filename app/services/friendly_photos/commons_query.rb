@@ -3,6 +3,16 @@
 module FriendlyPhotos
   # File search against Wikimedia Commons, excluding obvious booking-photo terms.
   class CommonsQuery
+    BASE_PARAMS = {
+      action: 'query',
+      format: 'json',
+      generator: 'search',
+      gsrnamespace: 6,
+      prop: 'imageinfo',
+      iiprop: 'url|extmetadata|mime',
+      iiurlwidth: 400
+    }.freeze
+
     def initialize(http)
       @http = http
     end
@@ -19,36 +29,18 @@ module FriendlyPhotos
     attr_reader :http
 
     def params(query, limit)
-      {
-        action: 'query',
-        format: 'json',
-        generator: 'search',
+      BASE_PARAMS.merge(
         gsrsearch: "#{query} -mugshot -booking -inmate",
-        gsrnamespace: 6,
-        gsrlimit: limit,
-        prop: 'imageinfo',
-        iiprop: 'url|extmetadata|mime',
-        iiurlwidth: 400
-      }
+        gsrlimit: limit
+      )
     end
 
     def hit(page)
       info = page.dig('imageinfo', 0)
-      return if info.blank?
-
-      image_url = info['thumburl'].presence || info['url']
+      image_url = info && (info['thumburl'].presence || info['url'])
       return unless WikimediaClient.allowed_image_url?(image_url)
 
-      metadata = info['extmetadata'] || {}
-      WikimediaClient::Hit.new(
-        source: 'wikimedia_commons',
-        title: page['title'].to_s.delete_prefix('File:'),
-        image_url: image_url,
-        page_url: ResponseParser.page_url(info['descriptionurl']),
-        license: metadata.dig('LicenseShortName', 'value'),
-        author: ResponseParser.strip_tags(metadata.dig('Artist', 'value')),
-        description: ResponseParser.strip_tags(metadata.dig('ImageDescription', 'value'))
-      )
+      WikimediaClient::Hit.new(ResponseParser.commons_attrs(page, info, image_url))
     end
   end
 end

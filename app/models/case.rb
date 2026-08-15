@@ -3,6 +3,7 @@
 # Case model
 class Case < ApplicationRecord
   include CaseSearchable
+  include CaseFriendlyPhoto
 
   MAX_BLURB_CHARACTERS = 500
 
@@ -28,14 +29,6 @@ class Case < ApplicationRecord
   has_many :follows, as: :followable, dependent: :destroy
   has_many :subjects, dependent: :destroy
   accepts_nested_attributes_for :subjects, reject_if: :all_blank, allow_destroy: true
-  has_many :photo_candidates, dependent: :destroy
-
-  enum :avatar_kind, {
-    unclassified: 'unclassified',
-    portrait: 'portrait',
-    mugshot: 'mugshot',
-    other: 'other'
-  }
 
   has_many :case_agencies, dependent: :destroy
   has_many :agencies, through: :case_agencies
@@ -101,9 +94,6 @@ class Case < ApplicationRecord
   scope :with_location, lambda {
     where('latitude is not null AND longitude is not null')
   }
-  scope :needing_friendly_photo, lambda {
-    where(avatar_kind: %w[unclassified mugshot]).or(where(avatar: [nil, '']))
-  }
 
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
@@ -129,18 +119,6 @@ class Case < ApplicationRecord
 
   def edit_summary
     summary
-  end
-
-  def subject_display_name
-    subjects.first&.name.presence || title
-  end
-
-  def missing_avatar?
-    avatar.blank?
-  end
-
-  def needs_friendly_photo?
-    missing_avatar? || unclassified? || mugshot?
   end
 
   # Try building a slug based on the following fields in
