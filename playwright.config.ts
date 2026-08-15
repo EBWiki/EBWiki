@@ -1,12 +1,26 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.E2E_BASE_URL || 'http://127.0.0.1:3001';
+const suite = process.env.E2E_SUITE || 'full';
+const projects = [
+  {
+    name: 'chromium',
+    use: { ...devices['Desktop Chrome'] },
+  },
+];
+
+if (suite === 'full') {
+  projects.push({
+    name: 'mobile-chrome',
+    use: { ...devices['Pixel 5'] },
+  });
+}
 
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
+  retries: process.env.CI && suite === 'full' ? 1 : 0,
   workers: 1,
   reporter: [['list'], ['html', { open: 'never' }]],
   timeout: 45_000,
@@ -17,16 +31,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     actionTimeout: 15_000,
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-  ],
+  projects,
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {

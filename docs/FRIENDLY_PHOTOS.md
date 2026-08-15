@@ -64,15 +64,16 @@ instead of clicking through the UI.
 
 ## End-to-end tests
 
-Capybara covers the editor UI in `spec/features/friendly_photos_spec.rb`.
-Playwright covers the same flow in a real browser. See `e2e/README.md`
-and `docs/E2E_FRIENDLY_PHOTOS.md` for confirmed behavior and gaps.
+Capybara covers the editor UI in `spec/features/friendly_photos_spec.rb`
+and runs on every PR. Playwright is a path-filtered GitHub Actions
+workflow so it does not spend minutes on unrelated changes. See
+`e2e/README.md` and `docs/E2E_FRIENDLY_PHOTOS.md`.
 
 ```
 bundle exec rake e2e:seed_friendly_photos
 npm install
 npx playwright install chromium
-npm run e2e
+npm run e2e:smoke
 ```
 
 ## Rules

@@ -53,3 +53,23 @@ npm run e2e
 
 Capybara covers the same editor flows inside `spec/features/friendly_photos_spec.rb`
 and runs with the existing RSpec job.
+
+## GitHub Actions
+
+Playwright lives in `.github/workflows/e2e.yml`, not the main CI workflow.
+That keeps Action minutes under control:
+
+| Trigger | What runs |
+| --- | --- |
+| Every PR | Capybara feature specs via **CI / rspec** |
+| PR that touches photo UI, e2e fixtures, or the e2e workflow | Desktop Chromium smoke (`npm run e2e:smoke`) |
+| Monday 06:00 UTC on the default branch | Full suite, including Pixel 5 |
+| Actions → E2E → Run workflow | Smoke or full, on demand |
+| Draft PRs, unrelated file changes, superseded pushes | Skipped or cancelled |
+
+The e2e job does not start Elasticsearch. Searchkick callbacks are disabled
+when `E2E_STUB_WIKIMEDIA=1`. Gems, npm, and Chromium are cached. Failed
+runs keep the Playwright report for 3 days.
+
+To force a browser pass on a PR that would otherwise skip it, use
+**Run workflow** from the Actions tab and choose this branch.
