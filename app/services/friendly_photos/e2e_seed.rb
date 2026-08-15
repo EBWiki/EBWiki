@@ -8,6 +8,20 @@ module FriendlyPhotos
     EMAIL = 'e2e@example.com'
     PASSWORD = 'e2e-password'
     SLUGS = %w[e2e-missing-photo e2e-mugshot-case e2e-portrait-case].freeze
+    FRIENDLY_CANDIDATE = {
+      subject_name: 'Jordan Doe', source: 'wikimedia_commons',
+      title: 'Jordan Doe portrait', license: 'CC BY-SA 4.0', author: 'Family',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-seed-portrait.jpg',
+      page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_portrait.jpg',
+      score: 3, likely_mugshot: false
+    }.freeze
+    MUGSHOT_CANDIDATE = {
+      subject_name: 'Jordan Doe', source: 'wikimedia_commons',
+      title: 'Jordan Doe mugshot', license: 'Public domain', author: 'Sheriff',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-seed-mugshot.jpg',
+      page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_mugshot.jpg',
+      score: -5, likely_mugshot: true, notes: 'mugshot'
+    }.freeze
 
     def call
       reset_records
@@ -15,6 +29,7 @@ module FriendlyPhotos
       cases = build_cases(state)
       attach_subjects(cases)
       create_candidates(cases[:missing])
+      cases.each_value(&:reload)
       cases.merge(user: create_user)
     end
 
@@ -79,36 +94,12 @@ module FriendlyPhotos
     end
 
     def create_candidates(this_case)
-      create_candidate(this_case, friendly_candidate_attrs)
-      create_candidate(this_case, mugshot_candidate_attrs)
+      create_candidate(this_case, FRIENDLY_CANDIDATE)
+      create_candidate(this_case, MUGSHOT_CANDIDATE)
     end
 
     def create_candidate(this_case, attrs)
       this_case.photo_candidates.create!(attrs)
-    end
-
-    FRIENDLY_CANDIDATE = {
-      subject_name: 'Jordan Doe', source: 'wikimedia_commons',
-      title: 'Jordan Doe portrait', license: 'CC BY-SA 4.0', author: 'Family',
-      image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-seed-portrait.jpg',
-      page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_portrait.jpg',
-      score: 3, likely_mugshot: false
-    }.freeze
-
-    MUGSHOT_CANDIDATE = {
-      subject_name: 'Jordan Doe', source: 'wikimedia_commons',
-      title: 'Jordan Doe mugshot', license: 'Public domain', author: 'Sheriff',
-      image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-seed-mugshot.jpg',
-      page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_mugshot.jpg',
-      score: -5, likely_mugshot: true, notes: 'mugshot'
-    }.freeze
-
-    def friendly_candidate_attrs
-      FRIENDLY_CANDIDATE
-    end
-
-    def mugshot_candidate_attrs
-      MUGSHOT_CANDIDATE
     end
   end
 end

@@ -13,8 +13,13 @@ gaps that unit tests cannot see.
 - Case pages only offer **Find a friendly photo** when one is needed
 - Classifying the current photo
 - Rejecting a candidate and refusing to apply a mugshot
+- Applying a reviewed portrait through the stub
 - Searching Wikimedia through the `E2E_STUB_WIKIMEDIA=1` stub
 - Mobile navbar: the Friendly photos link is behind the hamburger
+
+Each test resets fixtures via `POST /e2e/friendly_photos/reset` so classify
+and apply do not leak into later cases. That route exists only when the
+Wikimedia stub is enabled.
 
 ## What is stubbed
 

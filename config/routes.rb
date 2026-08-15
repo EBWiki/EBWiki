@@ -88,4 +88,11 @@ Rails.application.routes.draw do
       post :reject
     end
   end
+
+  # Playwright fixture reset. Only mounted when the Wikimedia stub is on.
+  if ENV['E2E_STUB_WIKIMEDIA'] == '1'
+    namespace :e2e do
+      post 'friendly_photos/reset', to: 'friendly_photos#reset'
+    end
+  end
 end

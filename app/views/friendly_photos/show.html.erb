@@ -36,11 +36,13 @@
 
   <div class="col-md-8">
     <h3>Wikimedia candidates</h3>
-    <%= button_to 'Search Wikimedia for a friendly photo',
-                  search_friendly_photo_path(@this_case),
-                  class: 'btn btn-warning',
-                  data: { confirm: 'Search Wikimedia Commons and Wikipedia for portraits of this person?',
-                          testid: 'search-wikimedia' } %>
+    <div data-testid="search-wikimedia-wrap" style="position: relative; z-index: 2; margin-bottom: 1.5em;">
+      <%= button_to 'Search Wikimedia for a friendly photo',
+                    search_friendly_photo_path(@this_case),
+                    class: 'btn btn-warning',
+                    data: { confirm: 'Search Wikimedia Commons and Wikipedia for portraits of this person?',
+                            testid: 'search-wikimedia' } %>
+    </div>
 
     <% if @candidates.any? %>
       <div class="row" style="margin-top: 1.5em;">
