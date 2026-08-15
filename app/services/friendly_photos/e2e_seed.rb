@@ -87,33 +87,28 @@ module FriendlyPhotos
       this_case.photo_candidates.create!(attrs)
     end
 
+    FRIENDLY_CANDIDATE = {
+      subject_name: 'Jordan Doe', source: 'wikimedia_commons',
+      title: 'Jordan Doe portrait', license: 'CC BY-SA 4.0', author: 'Family',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-seed-portrait.jpg',
+      page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_portrait.jpg',
+      score: 3, likely_mugshot: false
+    }.freeze
+
+    MUGSHOT_CANDIDATE = {
+      subject_name: 'Jordan Doe', source: 'wikimedia_commons',
+      title: 'Jordan Doe mugshot', license: 'Public domain', author: 'Sheriff',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-seed-mugshot.jpg',
+      page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_mugshot.jpg',
+      score: -5, likely_mugshot: true, notes: 'mugshot'
+    }.freeze
+
     def friendly_candidate_attrs
-      {
-        subject_name: 'Jordan Doe',
-        source: 'wikimedia_commons',
-        title: 'Jordan Doe portrait',
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-seed-portrait.jpg',
-        page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_portrait.jpg',
-        license: 'CC BY-SA 4.0',
-        author: 'Family',
-        score: 3,
-        likely_mugshot: false
-      }
+      FRIENDLY_CANDIDATE
     end
 
     def mugshot_candidate_attrs
-      {
-        subject_name: 'Jordan Doe',
-        source: 'wikimedia_commons',
-        title: 'Jordan Doe mugshot',
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-seed-mugshot.jpg',
-        page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_mugshot.jpg',
-        license: 'Public domain',
-        author: 'Sheriff',
-        score: -5,
-        likely_mugshot: true,
-        notes: 'mugshot'
-      }
+      MUGSHOT_CANDIDATE
     end
   end
 end
