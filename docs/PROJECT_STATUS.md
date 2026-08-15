@@ -23,3 +23,4 @@ Mailboxer tables, CarrierWave columns, cucumber rake/config, CKEditor, Searchkic
 - [DEVELOPMENT.md](DEVELOPMENT.md) - Development setup and workflow
 - [SETUP_LOCALLY.md](SETUP_LOCALLY.md) - Docker setup
 - [SETUP_LOCALLY_FULLSTACK.md](SETUP_LOCALLY_FULLSTACK.md) - Full local setup
+- [E2E.md](E2E.md) - Playwright e2e in CI / Cloud Agent (not on a local laptop)

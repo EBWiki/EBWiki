@@ -15,7 +15,7 @@ Fully working Rails 8.1.3.1 app: pg_search, Active Storage, Action Text/Trix, cu
 - cursor/rails-8-modernization-060d
 
 ## Last Completed Step
-Clean-slate follow-up: dropped mailboxer tables and CarrierWave columns, removed cucumber leftovers, replaced mailboxer mailers, and enabled previously pending specs.
+Added containerized Playwright e2e (CI + Cloud / web agent). Local Playwright install is not required.
 
 ## Technical Notes
 - Case search uses `pg_search` over generated `cases.tsv`

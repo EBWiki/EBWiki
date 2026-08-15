@@ -1,0 +1,3 @@
+{
+  "install": "bundle install\nnpm ci\nnpx playwright install chromium"
+}

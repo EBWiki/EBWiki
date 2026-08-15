@@ -1,6 +1,13 @@
-test:
+default: &default
   adapter: postgresql
   host: localhost
-  database: app_test
   username: postgres
   password: postgres
+
+development:
+  <<: *default
+  database: app_development
+
+test:
+  <<: *default
+  database: app_test

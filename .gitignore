@@ -73,3 +73,9 @@ yarn-debug.log*
 .yarn-integrity
 /.idea
 /config/master.key
+
+# Playwright
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
