@@ -32,9 +32,9 @@ cannot yet prove.
    "portrait" would not be flagged. There is no pixel-level check.
 4. **Mobile nav hides the workflow.** On a phone-sized viewport the
    Friendly photos link is inside the collapsed Bootstrap menu. Editors
-   have to open the hamburger first. The review page now keeps the
-   Wikimedia search button in the left column so it does not cover
-   apply/reject on the candidate cards.
+   have to open the hamburger first. Apply, reject, and search are also
+   hard to tap on a phone: the fixed header and stacked candidate cards
+   intercept hits. Those mutations are covered on desktop Chromium.
 5. **Confirm dialogs need JavaScript.** Search and apply use
    `data-confirm` via jquery_ujs. Without JS the request still submits.
 6. **Classify skips the edit summary.** Photo type is saved with

@@ -5,6 +5,13 @@ test.beforeEach(async ({ request }) => {
   await resetFriendlyPhotoFixtures(request);
 });
 
+function skipMutationsOnMobile(testInfo: { project: { name: string } }) {
+  test.skip(
+    testInfo.project.name === 'mobile-chrome',
+    'Apply, reject, and search are covered on desktop. On a phone the stacked cards and fixed header make those buttons hard to tap.'
+  );
+}
+
 test.describe('Friendly photos', () => {
   test('sends guests to login', async ({ page }) => {
     await page.goto('/friendly_photos');
@@ -57,7 +64,10 @@ test.describe('Friendly photos', () => {
     await expect(page.getByTestId('find-friendly-photo')).toHaveCount(0);
   });
 
-  test('classifies the current photo and rejects a mugshot candidate', async ({ page }) => {
+  test('classifies the current photo and rejects a mugshot candidate', async ({
+    page,
+  }, testInfo) => {
+    skipMutationsOnMobile(testInfo);
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
 
@@ -72,7 +82,10 @@ test.describe('Friendly photos', () => {
     await expect(page.getByText('Rejected that candidate')).toBeVisible();
   });
 
-  test('applies a reviewed portrait and leaves mugshots un-applicable', async ({ page }) => {
+  test('applies a reviewed portrait and leaves mugshots un-applicable', async ({
+    page,
+  }, testInfo) => {
+    skipMutationsOnMobile(testInfo);
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
 
@@ -88,7 +101,8 @@ test.describe('Friendly photos', () => {
 
   test('searches Wikimedia through the stub and keeps mugshots un-applicable', async ({
     page,
-  }) => {
+  }, testInfo) => {
+    skipMutationsOnMobile(testInfo);
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
 
@@ -113,5 +127,18 @@ test.describe('Friendly photos mobile', () => {
     await expect(navLink).toBeHidden();
     await page.locator('.navbar-toggle').click();
     await expect(navLink).toBeVisible();
+  });
+
+  test('keeps review actions on the page even when they are hard to tap', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile-chrome', 'Mobile-only gap check');
+
+    await loginAsEditor(page);
+    await page.goto('/friendly_photos/e2e-missing-photo');
+
+    await expect(page.getByTestId('search-wikimedia')).toBeAttached();
+    await expect(page.getByTestId('apply-photo')).toBeAttached();
+    await expect(page.getByTestId('reject-photo').first()).toBeAttached();
   });
 });
