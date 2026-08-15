@@ -89,6 +89,3 @@ production:
   database: blackops_production
   username: blackops
   password: <%= ENV['BLACKOPS_DATABASE_PASSWORD'] %>
-
-cucumber:
-  <<: *test

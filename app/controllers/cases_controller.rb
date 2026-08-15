@@ -40,7 +40,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   # rubocop:enable Metrics/AbcSize
 
   def create
-    @this_case = Case.new(case_params)
+    @this_case = Case.new(case_params.except(:remove_avatar))
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     if @this_case.save
       current_user.follow(@this_case)
@@ -61,7 +61,8 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     @this_case = Case.find(params[:id])
     @this_case.slug = nil
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
-    if @this_case.update(case_params)
+    @this_case.purge_photo if ActiveModel::Type::Boolean.new.cast(case_params[:remove_avatar])
+    if @this_case.update(case_params.except(:remove_avatar))
       flash[:success] = 'Case was updated!'
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
@@ -117,7 +118,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
              :zipcode,
              :longitude,
              :latitude,
-             :avatar,
+             :photo,
              :remove_avatar,
              :video_url,
              :summary,

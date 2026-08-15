@@ -1,48 +1,39 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <%= link_to image_tag('EBWikiLogo.png', size: "90x23"), root_path, class: "navbar-brand" %>
-    </div>
+    <%= link_to image_tag('EBWikiLogo.png', size: "90x23", alt: "EBWiki"), root_path, class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" id="main-navbar">
       <%= render "search/bar" %>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-          <%= link_to 'About',about_path %>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= link_to 'About', about_path, class: "nav-link" %>
         </li>
         <% if user_signed_in? %>
-          <li>
-            <%= link_to "Add a New Case", new_case_path, data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Did we miss a case?",:content => "Click here to add a new case. Please use the search field to the left to make sure we don't already have it."} %>
+          <li class="nav-item">
+            <%= link_to "Add a New Case", new_case_path, class: "nav-link", title: "Did we miss a case? Use search first to avoid duplicates." %>
           </li>
-          <li>
-            <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'] %>
+          <li class="nav-item">
+            <%= link_to 'Get our newsletter', ENV['MAILCHIMP_LINK'], class: "nav-link" %>
           </li>
-        <% end %>
-        <li class="dropdown">
-          <% if user_signed_in? %>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= "#{current_user.email}" %><span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><%= current_user.email %></a>
+            <ul class="dropdown-menu dropdown-menu-end">
               <% if current_user.admin? %>
-                <li><%= link_to "Admin", admin_root_path %></li>
+                <li><%= link_to "Admin", admin_root_path, class: "dropdown-item" %></li>
               <% end %>
-              <li> <%= link_to "Profile", user_path(current_user) %></li>
-              <li> <%= link_to "View Inbox", mailbox_inbox_path %></li>
-              <li> <%= link_to "Log Out", destroy_user_session_path, :method => :delete %>
+              <li><%= link_to "Profile", user_path(current_user), class: "dropdown-item" %></li>
+              <li><%= link_to "View Inbox", mailbox_inbox_path, class: "dropdown-item" %></li>
+              <li><%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "dropdown-item" %></li>
             </ul>
-          <% else %>
-            <li><%= link_to "Login", new_user_session_path %></li>
-            <li><%= link_to "Sign Up", new_user_registration_path %></li>
-          <% end %>
-        </li>
+          </li>
+        <% else %>
+          <li class="nav-item"><%= link_to "Login", new_user_session_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Sign Up", new_user_registration_path, class: "nav-link" %></li>
+        <% end %>
       </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+    </div>
+  </div>
 </nav>

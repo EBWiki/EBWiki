@@ -67,8 +67,7 @@ class Case < ApplicationRecord
   validates :blurb, length: { maximum: MAX_BLURB_CHARACTERS }
   validates :blurb, presence: { message: 'A blurb about the case is required.' }
 
-  # Avatar uploader using carrierwave
-  mount_uploader :avatar, AvatarUploader
+  has_one_attached :photo
 
   # Geocoding
   geocoded_by :full_address
@@ -76,9 +75,7 @@ class Case < ApplicationRecord
     art.address_changed? || art.city_changed? || art.state_id_changed? || art.zipcode_changed?
   } # auto-fetch coordinates
 
-  before_save :set_default_avatar_url if proc do |art|
-    art.avatar.changed?
-  end
+  before_save :set_default_avatar_url, if: -> { photo.attached? }
 
   # Scopes
   scope :most_recent_occurrences, lambda { |duration|
@@ -99,11 +96,35 @@ class Case < ApplicationRecord
   end
 
   def set_default_avatar_url
-    self.default_avatar_url = avatar.url
+    return unless photo.attached?
+
+    self.default_avatar_url = Rails.application.routes.url_helpers.rails_blob_path(photo, only_path: true)
+  rescue StandardError
+    nil
+  end
+
+  def avatar?
+    photo.attached?
+  end
+
+  def avatar_variant(style = :large_avatar)
+    return unless photo.attached?
+
+    sizes = {
+      large_avatar: [250, 250],
+      medium_avatar: [150, 150],
+      small_avatar: [35, 35],
+      thumb: [50, 50]
+    }
+    photo.variant(resize_to_fill: sizes.fetch(style, [250, 250]))
+  end
+
+  def purge_photo
+    photo.purge_later if photo.attached?
   end
 
   def self.find_by_search(query)
-    search(query)
+    query.to_s.strip.present? ? search_text(query) : all
   end
 
   def nearby_cases

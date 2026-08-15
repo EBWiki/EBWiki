@@ -8,8 +8,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   has_many :comments, dependent: :destroy
+  has_many :conversation_participants, dependent: :destroy
+  has_many :conversations, through: :conversation_participants
+  has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id, dependent: :destroy,
+                           inverse_of: :sender
   acts_as_follower
-  acts_as_messageable
   extend FriendlyId
 
   friendly_id :slug_candidates, use: %i[slugged finders]
@@ -19,12 +22,21 @@ class User < ApplicationRecord
 
   validates :name, presence: { message: 'Please add a name.' }
 
-  def mailboxer_name
-    name
+  def mailbox
+    UserMailbox.new(self)
   end
 
-  def mailboxer_email(_object)
-    email
+  def send_message(recipients, body, subject)
+    conversation = Conversation.create!(subject: subject, originator: self)
+    ([self] + Array(recipients)).uniq.each do |participant|
+      conversation.participants.find_or_create_by!(user: participant)
+    end
+    message = conversation.messages.create!(sender: self, body: body)
+    MessageDelivery.new(conversation:, message:)
+  end
+
+  def reply_to_conversation(conversation, body)
+    conversation.messages.create!(sender: self, body: body)
   end
 
   def slug_candidates

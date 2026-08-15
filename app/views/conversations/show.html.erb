@@ -5,10 +5,10 @@
   </div>
   <div class="col-md-6 text-right">
     <% if conversation.is_trashed?(current_user) %>
-        <%= link_to 'Untrash', untrash_conversation_path(conversation), class: 'btn btn-info', method: :post %>
+        <%= button_to 'Untrash', untrash_conversation_path(conversation), class: 'btn btn-info', method: :post %>
     <% else %>
-        <%= link_to 'Move to trash', trash_conversation_path(conversation), class: 'btn btn-danger', method: :post,
-                    data: {confirm: 'Are you sure?'} %>
+        <%= button_to 'Move to trash', trash_conversation_path(conversation), class: 'btn btn-danger', method: :post,
+                    data: { turbo_confirm: 'Are you sure?' } %>
     <% end %>
   </div>
  

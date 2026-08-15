@@ -28,13 +28,11 @@ Instructions on setting up a local development environment can be found in the f
 
 In general, contributors will use the following languages, frameworks, and technologies:
 
-* [Ruby 3.2.0](https://www.ruby-lang.org/en/downloads/)
-* [Rails 7.0.0](http://rubyonrails.org/)
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch)
-* [Postgres 12](https://www.postgresql.org/) or higher
+* [Ruby 3.4.2](https://www.ruby-lang.org/en/downloads/)
+* [Rails 8.1](http://rubyonrails.org/)
+* [Postgres 17](https://www.postgresql.org/) (full-text search via `pg_search`)
 * [Redis](https://redis.io/)
-* [AWS S3](https://aws.amazon.com/free/)
-* [NodeJS](https://nodejs.org/en/)
+* [AWS S3](https://aws.amazon.com/free/) for Active Storage uploads
 
 
 ### Testing

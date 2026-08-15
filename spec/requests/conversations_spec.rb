@@ -6,9 +6,7 @@ RSpec.describe 'Conversations', type: :request do
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
 
-  before { allow_any_instance_of(Mailboxer::MailDispatcher).to receive(:call) }
-
-  let!(:conversation) { another_user.send_message(user, Faker::Lorem.paragraph, Faker::Lorem.sentence).conversation }
+  let!(:conversation) { another_user.send_message(user, Faker::Lorem.paragraph, Faker::Lorem.sentence).conversation } }
 
   describe 'GET /conversations/new' do
     context 'when authenticated' do
@@ -52,11 +50,11 @@ RSpec.describe 'Conversations', type: :request do
       end
 
       it 'will create a new conversation' do
-        expect(Mailboxer::Conversation.inbox(another_user).count).to eq 1
+        expect(Conversation.inbox(another_user).count).to eq 1
       end
 
       it 'will return a redirect to the conversation page' do
-        expect(response).to redirect_to conversation_path(Mailboxer::Conversation.inbox(another_user).last)
+        expect(response).to redirect_to conversation_path(Conversation.inbox(another_user).last)
       end
     end
 
