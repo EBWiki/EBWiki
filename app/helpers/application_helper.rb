@@ -55,7 +55,7 @@ module ApplicationHelper
     end
   end
 
-  def popover_data(title: nil, content:)
+  def popover_data(content:, title: nil)
     {
       bs_toggle: 'popover',
       bs_trigger: 'hover focus',
