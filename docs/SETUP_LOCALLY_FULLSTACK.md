@@ -128,7 +128,7 @@ Finally, seed the database using:
 ## AWS Configuration
 In production, EBWiki stores uploaded case photos with Active Storage on AWS S3 when `S3_BUCKET` is set. In development and test, Active Storage uses the local disk service.
 
-To use S3 in development, set `S3_BUCKET`, `S3_KEY`, `S3_SECRET`, and `S3_REGION` in your `.env` file (see `config/storage.yml`) and point `config.active_storage.service` at `:amazon`. After deploy, existing CarrierWave files can be copied with `rails active_storage:migrate_case_avatars`.
+To use S3 in development, set `S3_BUCKET`, `S3_KEY`, `S3_SECRET`, and `S3_REGION` in your `.env` file (see `config/storage.yml`) and point `config.active_storage.service` at `:amazon`.
 
 ## Finish
 Now, everything should be completely set up!  Run the app locally on your computer using the following command:
