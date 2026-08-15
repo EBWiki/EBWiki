@@ -56,8 +56,24 @@ cannot yet prove.
 
 - Notify followers when a case photo is replaced.
 - Show a flash when Wikimedia returns an error or zero hits.
-- Add a mobile entry point that does not depend on the hamburger.
+- Add a mobile entry point that does not depend on the hamburger, and
+  give apply/reject/search larger tap targets below the fixed header.
 - Keep the missing-photo filter from also listing mugshot cases that
   have no stored file, or document that overlap in the UI.
 - Run one staging apply against a real Commons portrait before relying
   on the workflow in production.
+
+## GitHub Actions quota
+
+Capybara in the main CI workflow is the every-PR check. Playwright is a
+separate **E2E** workflow so browser minutes stay bounded:
+
+- Runs on a PR only when friendly-photo UI, e2e fixtures, or
+  `.github/workflows/e2e.yml` change
+- Pull requests use desktop Chromium only (`E2E_SUITE=smoke`)
+- The full Pixel 5 suite runs weekly and on manual dispatch
+- Draft PRs are skipped; newer pushes cancel in-progress runs
+- Elasticsearch is not started; browsers, gems, and npm are cached
+- Failure artifacts expire after 3 days
+
+See `e2e/README.md` for how to run the same suites locally.
