@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { loginAsEditor, resetFriendlyPhotoFixtures } from './helpers/auth';
+import { clickTestId, loginAsEditor, resetFriendlyPhotoFixtures } from './helpers/auth';
 
 test.beforeEach(async ({ request }) => {
   await resetFriendlyPhotoFixtures(request);
@@ -61,14 +61,14 @@ test.describe('Friendly photos', () => {
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
 
-    await expect(page.getByTestId('mugshot-flag')).toBeVisible();
+    await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
     await expect(page.getByTestId('apply-photo')).toHaveCount(1);
 
     await page.getByTestId('avatar-kind-select').selectOption('mugshot');
-    await page.getByTestId('update-photo-type').click();
+    await clickTestId(page, 'update-photo-type');
     await expect(page.getByText('Marked the current photo as mugshot')).toBeVisible();
 
-    await page.getByTestId('reject-photo').first().click();
+    await clickTestId(page, 'reject-photo');
     await expect(page.getByText('Rejected that candidate')).toBeVisible();
   });
 
@@ -77,13 +77,13 @@ test.describe('Friendly photos', () => {
     await page.goto('/friendly_photos/e2e-missing-photo');
 
     await expect(page.getByTestId('apply-photo')).toHaveCount(1);
-    await expect(page.getByTestId('mugshot-flag')).toBeVisible();
+    await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
 
-    await page.getByTestId('apply-photo').click();
+    await clickTestId(page, 'apply-photo');
     await expect(page.getByText('Applied the selected portrait to this case.')).toBeVisible();
     await expect(page.getByText('Photo type:')).toContainText('Portrait');
     await expect(page.getByTestId('apply-photo')).toHaveCount(0);
-    await expect(page.getByTestId('mugshot-flag')).toBeVisible();
+    await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
   });
 
   test('searches Wikimedia through the stub and keeps mugshots un-applicable', async ({
@@ -92,14 +92,12 @@ test.describe('Friendly photos', () => {
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
 
-    const search = page.getByTestId('search-wikimedia');
-    await search.scrollIntoViewIfNeeded();
-    await search.click({ force: true });
+    await clickTestId(page, 'search-wikimedia');
 
     await expect(page.getByText(/Found \d+ images/)).toBeVisible();
     await expect(page.getByText('E2E family portrait')).toBeVisible();
     await expect(page.getByText('E2E booking mugshot')).toBeVisible();
-    await expect(page.getByTestId('mugshot-flag')).toBeVisible();
+    await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
     await expect(page.getByTestId('apply-photo')).toHaveCount(2);
   });
 });

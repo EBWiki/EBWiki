@@ -27,3 +27,9 @@ export async function acceptConfirms(page: Page) {
   await stubConfirms(page);
   page.on('dialog', (dialog) => dialog.accept());
 }
+
+export async function clickTestId(page: Page, testId: string) {
+  const locator = page.getByTestId(testId).first();
+  await locator.scrollIntoViewIfNeeded();
+  await locator.click({ force: true });
+}
