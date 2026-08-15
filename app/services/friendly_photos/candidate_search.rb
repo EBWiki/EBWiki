@@ -22,7 +22,7 @@ module FriendlyPhotos
     attr_reader :client
 
     def subject_names(this_case)
-      names = this_case.subjects.map(&:name).map(&:presence).compact
+      names = this_case.subjects.filter_map { |subject| subject.name.presence }
       names << this_case.title if names.empty?
       names.uniq
     end
@@ -49,18 +49,12 @@ module FriendlyPhotos
     end
 
     def hit_to_attrs(hit, name, classification)
-      {
+      hit.to_h.merge(
         subject_name: name,
-        source: hit.source,
-        title: hit.title,
-        image_url: hit.image_url,
-        page_url: hit.page_url,
-        license: hit.license,
-        author: hit.author,
         likely_mugshot: classification.likely_mugshot,
         score: classification.score,
         notes: classification.reasons.join(', ').presence
-      }
+      ).except(:description)
     end
 
     def persist_hits(this_case, hits)

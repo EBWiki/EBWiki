@@ -22,44 +22,29 @@ module FriendlyPhotos
     attr_reader :http
 
     def page_title(query)
-      response = http.get(WikimediaClient::WIKIPEDIA_API, query: {
-                            action: 'query',
-                            format: 'json',
-                            list: 'search',
-                            srsearch: query,
-                            srlimit: 1
-                          })
+      response = http.get(WikimediaClient::WIKIPEDIA_API, query: title_params(query))
       return unless response.success?
 
       response.dig('query', 'search', 0, 'title')
     end
 
+    def title_params(query)
+      { action: 'query', format: 'json', list: 'search', srsearch: query, srlimit: 1 }
+    end
+
     def image_params(title)
       {
-        action: 'query',
-        format: 'json',
-        titles: title,
-        prop: 'pageimages|info',
-        inprop: 'url',
-        piprop: 'original|name',
-        pithumbsize: 500
+        action: 'query', format: 'json', titles: title,
+        prop: 'pageimages|info', inprop: 'url',
+        piprop: 'original|name', pithumbsize: 500
       }
     end
 
     def hit(page)
-      image_url = page.dig('original', 'source').presence ||
-                  page.dig('thumbnail', 'source')
+      image_url = page.dig('original', 'source').presence || page.dig('thumbnail', 'source')
       return unless WikimediaClient.allowed_image_url?(image_url)
 
-      WikimediaClient::Hit.new(
-        source: 'wikipedia',
-        title: page['pageimage'].presence || page['title'],
-        image_url: image_url,
-        page_url: ResponseParser.page_url(page['fullurl']),
-        license: 'Wikipedia page image',
-        author: nil,
-        description: page['title']
-      )
+      WikimediaClient::Hit.new(ResponseParser.wikipedia_attrs(page, image_url))
     end
   end
 end
