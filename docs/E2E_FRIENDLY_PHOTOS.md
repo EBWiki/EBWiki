@@ -72,7 +72,7 @@ separate **E2E** workflow so browser minutes stay bounded:
   `.github/workflows/e2e.yml` change
 - Pull requests use desktop Chromium only (`E2E_SUITE=smoke`)
 - The full Pixel 5 suite runs weekly and on manual dispatch
-- Draft PRs are skipped; newer pushes cancel in-progress runs
+- Newer pushes cancel in-progress runs
 - Elasticsearch is not started; browsers, gems, and npm are cached
 - Failure artifacts expire after 3 days
 
