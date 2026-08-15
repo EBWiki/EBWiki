@@ -44,9 +44,10 @@ class Conversation < ApplicationRecord
     participants.find_by(user: user)&.update(trashed: false)
   end
 
-  def is_trashed?(user)
+  def trashed?(user)
     participants.find_by(user: user)&.trashed?
   end
+  alias is_trashed? trashed?
 
   def count_messages
     messages.count

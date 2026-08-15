@@ -28,6 +28,14 @@ class ApplicationController < ActionController::Base
 
   helper_method :mailbox, :conversation
 
+  def mailbox
+    current_user&.mailbox
+  end
+
+  def conversation
+    mailbox&.conversations&.find_by(id: params[:id])
+  end
+
   def info_for_paper_trail
     # Save additional info
     { ip: request.remote_ip }
@@ -41,7 +49,7 @@ class ApplicationController < ActionController::Base
   private
 
   def set_state_objects
-    @state_objects ||= SortCollectionOrdinally.call(collection: State.all)
+    @state_objects ||= SortCollectionOrdinally.call(collection: State.all) # rubocop:disable Naming/MemoizedInstanceVariableName
   end
 
   def log_invalid_token_attempt(exception)

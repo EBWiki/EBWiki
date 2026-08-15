@@ -9,7 +9,8 @@ namespace :active_storage do
       next if this_case.photo.attached?
       next if this_case[:avatar].blank?
 
-      path = Rails.root.join('public', 'uploads', 'case', 'avatar', this_case.id.to_s, this_case[:avatar])
+      filename = this_case[:avatar]
+      path = Rails.public_path.join('uploads', 'case', 'avatar', this_case.id.to_s, filename)
       if File.exist?(path)
         this_case.photo.attach(io: File.open(path), filename: this_case[:avatar])
         puts "Attached local avatar for case #{this_case.id}"

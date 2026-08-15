@@ -5,8 +5,11 @@ class UserMailbox
     @user = user
   end
 
-  def inbox
-    Conversation.inbox(@user)
+  def inbox(unread: false)
+    scope = Conversation.inbox(@user)
+    return scope unless unread
+
+    scope.where(conversation_participants: { read_at: nil })
   end
 
   def sentbox

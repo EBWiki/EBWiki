@@ -14,7 +14,6 @@ class CaseDashboard < Administrate::BaseDashboard
     address: Field::String,
     age: Field::Number,
     agencies: Field::HasMany,
-    photo: Field::ActiveStorage,
     avatar: Field::String,
     blurb: Field::Text,
     case_agencies: Field::HasMany,

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Case model
-class Case < ApplicationRecord
+class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include CaseSearchable
 
   MAX_BLURB_CHARACTERS = 500
@@ -98,7 +98,8 @@ class Case < ApplicationRecord
   def set_default_avatar_url
     return unless photo.attached?
 
-    self.default_avatar_url = Rails.application.routes.url_helpers.rails_blob_path(photo, only_path: true)
+    helpers = Rails.application.routes.url_helpers
+    self.default_avatar_url = helpers.rails_blob_path(photo, only_path: true)
   rescue StandardError
     nil
   end

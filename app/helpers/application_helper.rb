@@ -38,16 +38,20 @@ module ApplicationHelper
     { notice: 'info', alert: 'warning', error: 'danger', success: 'success' }.fetch(key.to_sym, key)
   end
 
-  def social_share_button_tag(text)
+  def social_share_button_tag(text) # rubocop:disable Metrics/MethodLength
     url = ERB::Util.url_encode(request.original_url)
     message = ERB::Util.url_encode(text)
+    share_class = 'btn btn-sm btn-outline-secondary'
     content_tag(:div, class: 'share-links') do
-      safe_join([
-                  link_to('Share on X', "https://twitter.com/intent/tweet?text=#{message}&url=#{url}",
-                          target: '_blank', rel: 'noopener', class: 'btn btn-sm btn-outline-secondary'),
-                  link_to('Share on Facebook', "https://www.facebook.com/sharer/sharer.php?u=#{url}",
-                          target: '_blank', rel: 'noopener', class: 'btn btn-sm btn-outline-secondary')
-                ], ' ')
+      safe_join(
+        [
+          link_to('Share on X', "https://twitter.com/intent/tweet?text=#{message}&url=#{url}",
+                  target: '_blank', rel: 'noopener', class: share_class),
+          link_to('Share on Facebook', "https://www.facebook.com/sharer/sharer.php?u=#{url}",
+                  target: '_blank', rel: 'noopener', class: share_class)
+        ],
+        ' '
+      )
     end
   end
 end
