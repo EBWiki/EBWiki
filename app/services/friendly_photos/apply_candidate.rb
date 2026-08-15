@@ -10,6 +10,7 @@ module FriendlyPhotos
     def call(this_case:, candidate:)
       error = rejection_reason(this_case, candidate)
       return failure(error) if error
+      return stub_apply(this_case, candidate) if WikimediaClient.stubbed?
 
       apply_to_case(this_case, candidate)
     rescue StandardError => e
@@ -25,6 +26,15 @@ module FriendlyPhotos
       return if WikimediaClient.allowed_image_url?(candidate.image_url)
 
       'That image is not from an allowed Wikimedia host.'
+    end
+
+    def stub_apply(this_case, candidate)
+      this_case.update_columns( # rubocop:disable Rails/SkipsModelValidations
+        avatar_kind: 'portrait',
+        default_avatar_url: candidate.image_url
+      )
+      candidate.accepted!
+      Result.new(success: true, error: nil)
     end
 
     def apply_to_case(this_case, candidate)

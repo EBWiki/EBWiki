@@ -23,9 +23,15 @@ module FriendlyPhotos
     )
 
     def search(query:, limit: 8)
+      return StubResults.for(query) if self.class.stubbed?
+
       hits = WikipediaQuery.new(self.class).search(query) +
              CommonsQuery.new(self.class).search(query, limit)
       hits.uniq(&:image_url)
+    end
+
+    def self.stubbed?
+      ENV['E2E_STUB_WIKIMEDIA'] == '1'
     end
 
     def self.allowed_image_url?(url)

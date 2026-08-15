@@ -70,6 +70,16 @@ RSpec.describe FriendlyPhotos::WikimediaClient do
         .to_return(status: 200, body: wikipedia_image_body.to_json, headers: { 'Content-Type' => 'application/json' })
     end
 
+    it 'returns fixture hits when e2e stubbing is on' do
+      ENV['E2E_STUB_WIKIMEDIA'] = '1'
+
+      hits = described_class.new.search(query: 'Jordan Doe')
+
+      expect(hits.map(&:title)).to include('E2E family portrait', 'E2E booking mugshot')
+    ensure
+      ENV.delete('E2E_STUB_WIKIMEDIA')
+    end
+
     it 'returns Wikimedia and Wikipedia hits' do
       hits = described_class.new.search(query: 'Jordan Doe')
 

@@ -20,7 +20,7 @@
         <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
       <% end %>
       <% if user_signed_in? && @this_case.needs_friendly_photo? %>
-        <p><%= link_to 'Find a friendly photo', friendly_photo_path(@this_case) %></p>
+        <p><%= link_to 'Find a friendly photo', friendly_photo_path(@this_case), data: { testid: 'find-friendly-photo' } %></p>
       <% end %>
 
       <div class="">

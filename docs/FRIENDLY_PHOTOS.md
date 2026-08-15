@@ -62,6 +62,19 @@ instead of clicking through the UI.
 6. After a person accepts a candidate, apply it in the app or by calling
    `FriendlyPhotos::ApplyCandidate` for that case and candidate.
 
+## End-to-end tests
+
+Capybara covers the editor UI in `spec/features/friendly_photos_spec.rb`.
+Playwright covers the same flow in a real browser. See `e2e/README.md`
+and `docs/E2E_FRIENDLY_PHOTOS.md` for confirmed behavior and gaps.
+
+```
+bundle exec rake e2e:seed_friendly_photos
+npm install
+npx playwright install chromium
+npm run e2e
+```
+
 ## Rules
 
 - Search only Wikimedia Commons and English Wikipedia.
