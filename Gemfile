@@ -11,7 +11,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 gem 'active_median', '~> 0.2'
 gem 'activerecord-session_store', '~> 2.3'
 gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
-gem 'bootsnap', '~> 1.24', require: false
+gem 'bootsnap', '~> 1.25', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bullet', '~> 8.1'
@@ -66,7 +66,7 @@ gem 'simplecov', '~> 0.22.0'
 gem 'simple_form', '5.4.1'
 gem 'sitemap_generator', '~> 6.1'
 gem 'social-share-button', '~> 1.2'
-gem 'sprockets', '~> 4.0'
+gem 'sprockets', '~> 4.3'
 gem 'statistics'
 
 gem 'twitter', '~> 7.0'
