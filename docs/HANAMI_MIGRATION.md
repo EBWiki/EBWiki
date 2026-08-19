@@ -4,6 +4,12 @@ _Snapshot as of 2026-08-19. Target: [Hanami 3.0](https://hanakai.org/blog/2026/0
 
 This is a feasibility study, not a commitment to migrate. It is grounded in the current Rails 8.1 codebase, not a generic Rails-vs-Hanami comparison.
 
+## Maintainer decisions (2026-08-19)
+
+- **Search:** Postgres `pg_search` / `cases.tsv` is the source of truth. Elasticsearch and Searchkick can be removed.
+- **Mailbox:** in-app messaging can be dropped. Do not port Mailboxer.
+- **Admin:** a full ActiveAdmin/Administrate clone is not required. See [What's simpler than ActiveAdmin?](#whats-simpler-than-activeadmin) below.
+
 ## Bottom line
 
 Migrating EBWiki to Hanami would be a **full rewrite of the application layer**, not a framework upgrade. The Postgres database, S3 uploads, and public URLs can be preserved. Almost nothing else can.
@@ -12,7 +18,9 @@ EBWiki is a volunteer-maintained wiki whose value lives in features that are tig
 
 The current project phase is Rails 8.1 modernization (Administrate, Devise 5, Sprockets 4, security). A Hanami rewrite would freeze or discard that work and raise the bar for new contributors, most of whom arrive expecting Rails.
 
-**Recommendation:** do not start a full rewrite. If the goal is Hanami-style architecture (explicit actions, repositories, operations), extract further in Rails first — the app already has `app/queries`, `app/services`, `app/presenters`, and `app/policies`. If someone still wants proof that Hanami can host this domain, do a **timeboxed spike** of public case index/show against a read-only replica of production data, then stop and reassess.
+Maintainer cuts (pg_search only, drop mailbox, staff tools instead of an admin gem) remove three of the noisy dependencies. They do **not** remove the core rewrite: ROM, Rodauth, PaperTrail-compatible history, nested case forms, and S3 avatars.
+
+**Recommendation:** do not start a full rewrite yet. Do the cuts in Rails first (they pay off either way). If the goal is Hanami-style architecture, extract further — the app already has `app/queries`, `app/services`, `app/presenters`, and `app/policies`. If someone still wants proof that Hanami can host this domain, do a **timeboxed spike** of public case index/show against a read-only replica of production data, then stop and reassess.
 
 ---
 
@@ -45,8 +53,7 @@ Public surface that must keep working after any rewrite:
 - Follow / unfollow + follower notification emails
 - Agency CRUD, organizations, maps, search
 - User registration (reCAPTCHA), sessions, profiles
-- Mailbox
-- `/admin` for admins
+- Staff tools for granting admin, moderation deletes, and lookup tables
 - Existing slugs, password hashes, S3 object keys, PaperTrail `versions` rows
 
 ---
@@ -78,7 +85,7 @@ Auth in the Hanami ecosystem is **Rodauth** (Roda middleware in a slice), not De
 
 ## The hard parts (ranked)
 
-These are ordered by how much they would dominate the rewrite. The first four are likely deal-breakers unless someone is prepared to own them for the life of the project.
+These are ordered by how much they would dominate the rewrite. Persistence, auth, and history are still the expensive parts after the search/mailbox/admin cuts.
 
 ### 1. Persistence rewrite: ActiveRecord → ROM
 
@@ -137,15 +144,9 @@ PaperTrail is ActiveRecord-only. Options:
 
 YAML serialization of PaperTrail objects (`config/initializers/paper_trail_yaml.rb`) is a security/compat concern either way.
 
-### 4. Admin: Administrate → a new admin slice
+### 4. Admin: skip the gem, ship staff tools
 
-~1,200 lines of dashboards plus 14 generated-style controllers. There is no Hanami Administrate. Realistic options:
-
-- A Hanami `admin` slice with list/show/edit actions per resource (most work, best fit).
-- [Rodauth](https://rodauth.jeremyevans.net/) is not an admin.
-- Mount a separate tool (Hope, a small CRUD layer, or even keep Rails Administrate behind a path during strangler).
-
-Admin is used by a small set of people. It is a good **last** slice to migrate, not the first.
+See [What's simpler than ActiveAdmin?](#whats-simpler-than-activeadmin). Do not port the 14 Administrate dashboards. Build three or four staff screens that cover the jobs Pundit already encodes (`destroy?` is admin-only; `UserPolicy` lets admins edit other users).
 
 ### 5. Uploads: CarrierWave → Shrine or a thin S3 wrapper
 
@@ -155,11 +156,16 @@ Avatars live under `uploads/#{model}/#{mounted_as}/#{id}` with versions `large_a
 
 CKEditor file uploads (`mount Ckeditor::Engine`) are a separate uploader path; confirm whether production still uses it or only the CDN editor for text.
 
-### 6. Search: finish the Elasticsearch exit, then wrap Postgres
+### 6. Search: wire `pg_search` and delete Elasticsearch
 
-The live case model uses `pg_search` (`CaseSearchable` / `tsv`). `CaseSearch` still calls `Case.search` (Searchkick API), Searchkick is still in the Gemfile, CI still boots Elasticsearch 6.8, and `docs/DEPLOYING.md` still says `searchkick:reindex:all`. That split has to be cleaned up in Rails *or* in Hanami; it is cheaper to clean up in Rails first.
+Maintainer decision: Postgres is enough. Do this in Rails *before* any Hanami work:
 
-A Hanami `CaseRepository#search` can call the same `tsv` column via Sequel `plainto_tsquery`. Kaminari pagination becomes a repository `limit`/`offset` (or `rom-sql` pager). Drop Elasticsearch from CI/Heroku if pg_search is enough.
+1. Point `CaseSearch` at `Case.search_text` (it currently still calls Searchkick's `Case.search`).
+2. Remove `searchkick`, `elasticsearch`, `elasticsearch-transport`.
+3. Drop the Elasticsearch service from `.github/workflows/ci.yml` and local Docker.
+4. Replace `heroku run rake searchkick:reindex:all` in `docs/DEPLOYING.md` with a no-op or a `tsv` backfill.
+
+A Hanami `CaseRepository#search` then just runs `plainto_tsquery` against `cases.tsv`.
 
 ### 7. Front end: Sprockets + jQuery + Bootstrap 3
 
@@ -171,11 +177,11 @@ Simple Form + Cocoon nested forms are the painful bit: Hanami has no form builde
 
 CKEditor 4 is loaded from CDN (`//cdn.ckeditor.com/4.6.1/standard/ckeditor.js`). It can stay as a script tag; it does not need Rails.
 
-### 8. Follows and mailbox
+### 8. Follows stay; mailbox goes
 
 `acts_as_follower` is an EBWiki-maintained fork. The `follows` table is ordinary polymorphic data — a repository plus `Follow`/`Unfollow` operations replace the gem.
 
-Mailboxer is not. It owns four tables (`mailboxer_conversations`, `notifications`, `receipts`, `conversation_opt_outs`) and mailer templates. Reimplementing a small inbox against those tables is feasible; keeping the gem is not (it is ActiveRecord). If mailbox usage is low, consider dropping in-app messaging and using email only — that is a product decision, not a technical one.
+Maintainer decision: drop in-app messaging. Delete Mailboxer routes, controllers, views, gem, and (later) the four `mailboxer_*` tables. Follower notification emails remain; they already go through `CaseMailer`.
 
 ### 9. Everything else that looks small until it is not
 
@@ -206,7 +212,7 @@ Run Rails and Hanami on the same Postgres. Route a subset of traffic to Hanami.
 3. Put a reverse proxy (Heroku vs two dynos, or Rack `URLMap`) in front: Hanami for `/` and `/cases/:slug`, Rails for everything else.
 4. Move writes (create/edit, follows, comments) once repositories and contracts are proven.
 5. Move identity (Rodauth) only after password verification is tested against production hashes in staging.
-6. Move admin last, or never — leaving Administrate on Rails behind `/admin` is acceptable.
+6. Replace `/admin` with staff tools (users, moderation deletes, lookups). Do not port Administrate.
 
 **Do not** dual-write PaperTrail from both apps without a single writer.
 
@@ -221,8 +227,9 @@ Stay on Rails 8.1. Continue extracting:
 - operations for case create/update/revert (already implied by fat `CasesController`)
 - repositories/query objects (already have `CaseQuery`, `FollowQuery`, `CaseSearch`)
 - drop Searchkick once `search_text` is wired through `CaseSearch`
+- delete Mailboxer
+- replace `/admin` with staff tools (see below)
 - replace CKEditor 4 when convenient
-- treat Administrate as the admin, not as domain logic
 
 This captures most of the architectural benefit without abandoning the contributor pool or the gem ecosystem that is carrying history, auth, and admin.
 
@@ -243,7 +250,7 @@ If maintainers want an empirical answer instead of this document:
 
 **Out of scope**
 
-- Auth, admin, uploads, writes, mailbox, assets pipeline, Heroku
+- Auth, staff tools, uploads, writes, assets pipeline, Heroku
 
 **Exit criteria**
 
@@ -268,14 +275,42 @@ The mission — documenting people of color killed by law enforcement — does n
 
 ---
 
-## Open questions to answer before any real work
+## What's simpler than ActiveAdmin?
 
-1. Is Elasticsearch still required in production, or is `pg_search` the source of truth?
-2. How much is mailbox actually used? Can it be dropped?
-3. Must `/admin` stay Administrate-shaped, or is a simpler CRUD acceptable?
-4. Are we willing to log everyone out once (session store change)?
-5. Who owns PaperTrail-on-Sequel if we start?
-6. Is Bootstrap 3 considered frozen visual identity for the rewrite?
+EBWiki does not use ActiveAdmin. It uses [Administrate](https://github.com/thoughtbot/administrate), which was Thoughtbot's answer to "ActiveAdmin is too much." Switching to ActiveAdmin would be a step *up* in complexity (DSL, themes, a second authorization model). Do not do that.
+
+The current `/admin` is 14 generated resources and ~1,200 lines of dashboard config. Almost none of the controllers override behavior. The feature spec only checks that non-admins are bounced. Cases, agencies, and organizations already have public editor forms. Genders, ethnicities, and states are lookup tables that change rarely. Links, follows, subjects, and case_agencies are children of a case.
+
+So the simpler admin is not another gem. It is **fewer screens**, covering the jobs that are actually staff-only:
+
+| Staff job | Why it is admin-only today | Simplest UI |
+| --- | --- | --- |
+| Grant / revoke `admin` and `analyst` | `UserPolicy`; `AdminMailer` already notifies | Users index: search by email/name, two checkboxes |
+| Delete a case / agency / org | `CasePolicy#destroy?` (and agency/org equivalents) | A delete button on the public show page, gated by `user.admin?`. No second case editor. |
+| Moderate comments | No public comment delete | Comments list with delete |
+| Edit genders / ethnicities / states | Seed data, not editorial | One "reference data" page, or keep them in `db/seeds.rb` and skip the UI |
+
+That is a Hanami `admin` slice (or a Rails `Staff::` namespace) with three resources, not fourteen. Reuse the public case/agency forms. Do not generate a second CRUD for them.
+
+### If you still want a gem
+
+| Option | Fits Hanami? | Verdict |
+| --- | --- | --- |
+| Hand-written staff tools | Yes | **Do this.** Matches the actual job. |
+| Keep Administrate on Rails during a strangler | Rails only | Fine as a temporary `/admin` while Hanami takes the public site. |
+| [TinyAdmin](https://github.com/blocknotes/tiny_admin) | Rack/Roda; has a Hanami mount example | Lightest gem that is not Rails-locked. Small project; write a Sequel/ROM repository adapter. Worth a look, not a commitment. |
+| Rails scaffolds / `layered-resource-rails` / Backstage | Rails only | Simpler than Administrate *if staying on Rails*. Irrelevant to Hanami. |
+| Avo, Trestle, RailsAdmin, ActiveAdmin | Rails only | Heavier than what we have. Skip. |
+
+Authorization stays a boolean on `users.admin` plus the existing Pundit (or a port of those four policy classes). Do not add a second roles engine.
+
+---
+
+## Open questions still open
+
+1. Are we willing to log everyone out once (session store change)?
+2. Who owns PaperTrail-on-Sequel if we start?
+3. Is Bootstrap 3 considered frozen visual identity for a rewrite?
 
 ---
 
@@ -285,6 +320,7 @@ The mission — documenting people of color killed by law enforcement — does n
 - Nested case writes: `app/controllers/cases_controller.rb`, `app/views/cases/_form.html.erb`
 - History: `app/controllers/cases/versions_controller.rb`
 - Search split: `app/models/concerns/case_searchable.rb` vs `app/search/case_search.rb`
+- Admin today: `app/dashboards/`, `app/controllers/admin/`, `app/policies/`
 - Maps: `docs/MAPPING_CASES.md`
 - Deploy: `docs/DEPLOYING.md`
 - Current phase: `docs/PROJECT_STATE.md` (Rails 8.1 modernization)
