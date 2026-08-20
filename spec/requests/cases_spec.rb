@@ -173,5 +173,23 @@ RSpec.describe 'Cases', type: :request do
       end
     end
   end
+
+  describe 'DELETE /cases/:id' do
+    let(:user) { create(:user) }
+    let(:admin) { create(:admin) }
+    let(:_case) { create(:case) }
+
+    it 'does not allow a non-admin to delete' do
+      sign_in user
+      delete "/cases/#{_case.slug}"
+      expect(Case.find_by(id: _case.id)).to eq _case
+    end
+
+    it 'allows an admin to delete' do
+      sign_in admin
+      delete "/cases/#{_case.slug}"
+      expect(Case.find_by(id: _case.id)).to be_nil
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength.

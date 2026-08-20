@@ -1,0 +1,8 @@
+<h1><%= @gender.persisted? ? 'Edit gender' : 'New gender' %></h1>
+
+<%= simple_form_for [:admin, @gender] do |f| %>
+  <%= f.input :sex %>
+  <%= f.button :submit, class: 'btn btn-success' %>
+<% end %>
+
+<p><%= link_to 'Back', admin_genders_path %></p>
