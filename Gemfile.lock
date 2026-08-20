@@ -349,9 +349,6 @@ GEM
       net-imap
       net-pop
       net-smtp
-    mailboxer (0.15.1)
-      carrierwave (>= 0.5.8)
-      rails (>= 5.0.0)
     marcel (1.0.4)
     matrix (0.4.3)
     mechanize (2.14.0)
@@ -752,7 +749,6 @@ DEPENDENCIES
   launchy (~> 2.5)
   listen (~> 3.7)
   lograge (~> 0.15)
-  mailboxer (~> 0.15)
   mock_redis (~> 0.26)
   momentjs-rails (~> 2.20)
   montrose (~> 0.12)
