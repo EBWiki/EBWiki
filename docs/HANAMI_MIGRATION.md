@@ -10,6 +10,14 @@ This is a feasibility study, not a commitment to migrate. It is grounded in the 
 - **Mailbox:** in-app messaging can be dropped. Do not port Mailboxer.
 - **Admin:** a full ActiveAdmin/Administrate clone is not required. See [What's simpler than ActiveAdmin?](#whats-simpler-than-activeadmin) below.
 
+Each cut is its own PR so it can be merged, skipped, or replaced independently:
+
+| Stage | PR | What it does |
+| --- | --- | --- |
+| 1. Search | [#4410](https://github.com/EBWiki/EBWiki/pull/4410) | Wire `CaseSearch` to `pg_search`, remove Elasticsearch |
+| 2. Mailbox | [#4411](https://github.com/EBWiki/EBWiki/pull/4411) | Remove Mailboxer and in-app messaging |
+| 3. Admin | [#4412](https://github.com/EBWiki/EBWiki/pull/4412) | Replace Administrate with staff tools |
+
 ## Bottom line
 
 Migrating EBWiki to Hanami would be a **full rewrite of the application layer**, not a framework upgrade. The Postgres database, S3 uploads, and public URLs can be preserved. Almost nothing else can.
