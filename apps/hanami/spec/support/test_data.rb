@@ -66,6 +66,17 @@ module TestData
     )
   end
 
+  def insert_version(case_id:, event: "update", comment: "Corrected city spelling", whodunnit: "1")
+    relations[:versions].insert(
+      item_type: "Case",
+      item_id: case_id,
+      event: event,
+      comment: comment,
+      whodunnit: whodunnit,
+      created_at: now
+    )
+  end
+
   def insert_link(case_id:, url: "https://ebwiki.org/cases/walter-scott")
     relations[:links].insert(
       url: url,
@@ -83,7 +94,8 @@ module TestData
       subjects: Hanami.app["relations.subjects"],
       agencies: Hanami.app["relations.agencies"],
       case_agencies: Hanami.app["relations.case_agencies"],
-      links: Hanami.app["relations.links"]
+      links: Hanami.app["relations.links"],
+      versions: Hanami.app["relations.versions"]
     }
   end
 end

@@ -1,0 +1,29 @@
+<section>
+  <h1>Search</h1>
+  <form action="/search" method="get" class="search-form">
+    <label>
+      Query
+      <input type="search" name="query" value="<%= query %>" placeholder="Name, city, or keywords">
+    </label>
+    <button type="submit">Search</button>
+  </form>
+
+  <% if query.to_s.strip != "" %>
+    <p class="lede"><%= total %> cases matched “<%= query %>”.</p>
+  <% end %>
+
+  <% if cases.empty? %>
+    <p>No cases matched.</p>
+  <% else %>
+    <ul class="case-cards">
+      <% cases.each do |this_case| %>
+        <li class="case-card">
+          <a href="/cases/<%= this_case.slug %>">
+            <h2><%= this_case.title %></h2>
+            <p><%= format_date(this_case.date) %> — <%= this_case.city %></p>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</section>
