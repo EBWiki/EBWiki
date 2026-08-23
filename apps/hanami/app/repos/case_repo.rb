@@ -79,7 +79,8 @@ module EbWiki
           .order(self.versions[:created_at].desc)
           .to_a
 
-        {record: record, versions: versions}
+        author_ids = versions.map { |version| version.author_id || integer_or_nil(version.whodunnit) }
+        {record: record, versions: versions, authors: users_by_id(author_ids)}
       end
 
       def comments_for(case_id)
@@ -87,6 +88,15 @@ module EbWiki
           .where(commentable_type: "Case", commentable_id: case_id)
           .order(comments[:created_at].desc)
           .to_a
+      end
+
+      def users_by_id(ids)
+        ids = ids.compact.uniq
+        return {} if ids.empty?
+
+        users.where(id: ids).to_a.each_with_object({}) do |user, hash|
+          hash[user.id] = user
+        end
       end
 
       def add_comment(case_id:, user_id:, content:)

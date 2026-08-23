@@ -16,7 +16,7 @@
           <p><strong>Date:</strong> <%= format_time(version.created_at) %></p>
           <p>
             <strong><%= index == versions.size - 1 ? "Added by" : "Edited by" %>:</strong>
-            <%= version.whodunnit.to_s.empty? || version.whodunnit == "Guest" ? "Guest" : "User #{version.whodunnit}" %>
+            <%= version_author_name(version, authors) %>
           </p>
           <p><strong>Description of changes:</strong></p>
           <pre><%= version.comment.to_s.strip.empty? ? "No edit summary is available for this version." : version.comment %></pre>

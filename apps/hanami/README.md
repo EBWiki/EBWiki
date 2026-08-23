@@ -68,4 +68,6 @@ bundle exec rspec
 - Staff at `/admin/users` can toggle `admin` / `analyst`.
 - Case pages embed OpenStreetMap when `latitude` / `longitude` are present. CarrierWave keys are left unchanged.
 
-Still on Rails: outgoing mail, S3 avatar versions, follower notification emails, Bootstrap 3 visual parity, and deleting Rails itself.
+Still on Rails: outgoing mail, writing new S3 objects, follower notification emails, a shared Devise session cookie, and deleting Rails itself.
+
+Hanami reads existing CarrierWave keys (`uploads/case/avatar/:id/large_avatar_:filename`) and, when `S3_BUCKET` is set, prefixes the bucket host. It does not change object keys. The layout uses Bootstrap 3.4 CSS from the same major version as Rails.

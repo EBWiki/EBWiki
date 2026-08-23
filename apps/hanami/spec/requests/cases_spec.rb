@@ -49,6 +49,16 @@ RSpec.describe "Public case pages", :db, type: :request do
     expect(last_response.body).to include("https://example.com/walter-scott")
   end
 
+  it "uses the CarrierWave large_avatar object key without changing S3 keys" do
+    state_id = TestData.insert_state
+    TestData.insert_case(state_id: state_id, avatar: "scott.jpg")
+
+    get "/cases/walter-scott"
+
+    expect(last_response.body).to include("/uploads/case/avatar/")
+    expect(last_response.body).to include("large_avatar_scott.jpg")
+  end
+
   it "returns 404 for an unknown slug" do
     get "/cases/does-not-exist"
 
@@ -103,13 +113,20 @@ RSpec.describe "Public case pages", :db, type: :request do
 
   it "reads PaperTrail versions for a case history page" do
     case_id = seed_walter_scott
-    TestData.insert_version(case_id: case_id, comment: "Corrected city spelling")
+    user_id = TestData.insert_user(name: "History Editor")
+    TestData.insert_version(
+      case_id: case_id,
+      comment: "Corrected city spelling",
+      whodunnit: user_id.to_s,
+      author_id: user_id
+    )
 
     get "/cases/walter-scott/history"
 
     expect(last_response.status).to eq(200)
     expect(last_response.body).to include("History")
     expect(last_response.body).to include("Corrected city spelling")
+    expect(last_response.body).to include("History Editor")
   end
 
   it "serves the about page" do
@@ -163,6 +180,36 @@ RSpec.describe "Public case pages", :db, type: :request do
 
     get "/cases/new-test-case/history"
     expect(last_response.body).to include("Created the case")
+  end
+
+  it "updates a case and stores a YAML snapshot for later revert" do
+    state_id = TestData.insert_state
+    TestData.insert_case(state_id: state_id)
+    TestData.insert_subject(case_id: TestData.relations[:cases].where(slug: "walter-scott").one[:id])
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/cases/walter-scott", {
+      _method: "patch",
+      case: {
+        title: "Walter Scott",
+        date: "2015-04-04",
+        city: "Charleston",
+        state_id: state_id,
+        overview: "<p>Updated overview.</p>",
+        blurb: "Updated blurb",
+        summary: "Moved the city name",
+        cause_of_death: "shooting",
+        subjects: [{name: "Walter Scott", age: "50"}],
+        links: [{url: "", title: ""}],
+        agency_ids: []
+      }
+    }
+
+    expect(last_response.status).to eq(302)
+    expect(TestData.relations[:cases].where(slug: "walter-scott").one[:city]).to eq("Charleston")
+    version = TestData.relations[:versions].where(item_type: "Case").order(Sequel.desc(:id)).first
+    expect(version[:object]).to include("North Charleston")
   end
 
   it "requires login to follow and comment, then writes both" do

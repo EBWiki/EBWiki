@@ -2,43 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>EBWiki</title>
     <meta name="description" content="Documenting people of color killed by law enforcement.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <%= favicon_tag %>
     <%= stylesheet_tag "app" %>
   </head>
   <body>
-    <header class="site-header">
-      <div class="wrap">
-        <a class="logo" href="/">EBWiki</a>
-        <nav>
-          <a href="/">Cases</a>
-          <a href="/search">Search</a>
-          <a href="/agencies">Agencies</a>
-          <a href="/organizations">Organizations</a>
-          <a href="/about">About</a>
-          <a href="/cases/new">Add a case</a>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">EBWiki</a>
+        </div>
+        <form class="navbar-form navbar-left" action="/search" method="get">
+          <div class="form-group">
+            <input type="search" name="query" class="form-control" placeholder="Search cases">
+          </div>
+          <button type="submit" class="btn btn-default">Search</button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/agencies">Agencies</a></li>
+          <li><a href="/organizations">Organizations</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/cases/new">Add a case</a></li>
           <% if current_user %>
-            <a href="/users/<%= current_user.id %>"><%= current_user.name %></a>
+            <li><a href="/users/<%= current_user.id %>"><%= current_user.name %></a></li>
             <% if current_user.admin %>
-              <a href="/admin/users">Staff</a>
+              <li><a href="/admin/users">Staff</a></li>
             <% end %>
-            <form action="/logout" method="post" class="nav-form">
-              <button type="submit">Logout</button>
-            </form>
+            <li>
+              <form action="/logout" method="post" class="navbar-form">
+                <button type="submit" class="btn btn-link">Logout</button>
+              </form>
+            </li>
           <% else %>
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
           <% end %>
-        </nav>
+        </ul>
       </div>
-    </header>
-    <main class="wrap">
+    </nav>
+    <main class="container">
       <%= yield %>
     </main>
     <footer class="site-footer">
-      <div class="wrap">
+      <div class="container">
         <p>Hanami public site sharing the Rails Postgres schema. Rails still owns mailers, S3 uploads, and production cutover.</p>
       </div>
     </footer>

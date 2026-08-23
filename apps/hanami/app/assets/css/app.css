@@ -18,32 +18,13 @@ body {
 
 a { color: var(--orange); }
 
-.wrap {
-  width: min(1100px, calc(100% - 2rem));
-  margin: 0 auto;
-}
-
-.site-header {
-  background: #111;
-  color: #fff;
-  padding: 0.85rem 0;
-}
-
-.site-header .wrap,
-.site-header nav {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.logo {
-  color: #fff;
+.navbar-default .navbar-brand {
+  color: var(--orange);
   font-weight: 700;
   letter-spacing: 0.04em;
-  text-decoration: none;
 }
 
-.site-header nav a { color: #fff; }
+.navbar-default .navbar-nav > li > a { color: #333; }
 
 .accent { color: var(--orange); }
 
@@ -155,9 +136,7 @@ aside th, aside td {
   font-size: 0.9rem;
 }
 
-.nav-form,
 .inline-form { display: inline; }
-.nav-form button,
 .inline-form button {
   background: none;
   border: 0;
@@ -167,7 +146,6 @@ aside th, aside td {
   padding: 0;
   text-decoration: underline;
 }
-.site-header .nav-form button { color: #fff; }
 .repeatable { display: grid; gap: 0.5rem; margin-bottom: 0.75rem; }
 .case-map {
   border: 1px solid var(--line);
