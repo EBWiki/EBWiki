@@ -14,7 +14,8 @@ module EbWiki
           halt 404 unless profile
 
           viewer = current_user(response)
-          halt 403 unless viewer && (viewer.id == profile.id || viewer.admin)
+          halt 403 unless viewer
+          halt 403 unless viewer.id == profile.id || viewer.admin
 
           raw = request.params[:user] || request.params
           if raw[:name].to_s.strip.empty?

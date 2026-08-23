@@ -59,6 +59,23 @@ HANAMI_ENV=test bundle exec rake db:load_schema
 bundle exec rspec
 ```
 
+## Style and security
+
+Preferred Ruby style is **[Standard Ruby](https://github.com/standardrb/standard)** — the same `standard` gem already listed in the Rails Gemfile. Rails CI still uses the repo-root `.rubocop.yml` (Rails cops). New Hanami code follows Standard.
+
+```bash
+cd apps/hanami
+bundle exec standardrb
+bundle exec standardrb --fix
+bundle exec rake lint
+```
+
+Brakeman is a Rails scanner. From this app it runs against the repo root (same target as Rails CI). Hanami gems are also checked with bundler-audit:
+
+```bash
+bundle exec rake security:check
+```
+
 ## Writes and identity on Hanami
 
 - Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in.

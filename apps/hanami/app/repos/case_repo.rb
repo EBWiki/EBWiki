@@ -114,7 +114,8 @@ module EbWiki
       def delete_comment(comment_id, actor:)
         comment = comments.where(id: comment_id).one
         return unless comment
-        return unless actor && (actor.admin || comment.user_id == actor.id)
+        return unless actor
+        return unless actor.admin || comment.user_id == actor.id
 
         comments.where(id: comment_id).delete
         comment
@@ -393,7 +394,6 @@ module EbWiki
         nil
       end
 
-
       def agencies_for(case_id)
         agency_ids = case_agencies.where(case_id: case_id).to_a.map(&:agency_id)
         return [] if agency_ids.empty?
@@ -405,7 +405,7 @@ module EbWiki
         if cases.dataset.columns.include?(:tsv)
           rel.where(Sequel.lit("tsv @@ plainto_tsquery('english', ?)", query))
         else
-          pattern = "%#{self.class.escape_like(query)}%"
+          pattern = "%#{escape_like(query)}%"
           rel.where(
             Sequel.lit(
               "title ILIKE ? OR city ILIKE ? OR overview ILIKE ? OR COALESCE(blurb, '') ILIKE ?",
@@ -415,7 +415,7 @@ module EbWiki
         end
       end
 
-      def self.escape_like(value)
+      def escape_like(value)
         value.gsub(/[%_\\]/) { |char| "\\#{char}" }
       end
     end

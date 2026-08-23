@@ -385,5 +385,3 @@ RSpec.describe "Public case pages", :db, type: :request do
     expect(last_response.status).to eq(302)
   end
 end
-
-
