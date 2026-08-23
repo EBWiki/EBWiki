@@ -4,6 +4,10 @@
 
 [EBWiki.org](http://ebwiki.org) is a site dedicated to documenting when people of color are killed by law enforcement officers during routine interactions.
 
+## Hanami first slice
+
+A sibling Hanami 3 app lives in [`apps/hanami`](apps/hanami). It is a read-only slice of `GET /` and `GET /cases/:slug` against the existing Postgres schema. Rails remains the production app.
+
 ## Motivation
 
 The release of the [Walter Scott body-cam video](https://ebwiki.org/cases/walter-scott) in 2015 showed the vast discrepancy between the official report of the encounter and the video.  After seeing the video, a group of Black technologists had the idea of a site where information on each encounter could be stored and recorded. This would help show both the frequency with which this occurs as well as the way bias affects the proceedings.
