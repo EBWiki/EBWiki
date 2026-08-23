@@ -27,6 +27,9 @@ module EbWiki
         expose :comments do |case_page:|
           Hanami.app["repos.case_repo"].comments_for(case_page.fetch(:record).id)
         end
+
+        expose :viewer, default: nil
+        expose :following, default: false
       end
     end
   end

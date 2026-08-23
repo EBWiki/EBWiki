@@ -1,0 +1,42 @@
+<% if errors.any? %>
+  <div class="flash-error">
+    <p>This agency could not be saved:</p>
+    <ul>
+      <% errors.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<% value = ->(key, fallback = "") { values[key] || fallback } %>
+
+<form action="<%= action %>" method="post" class="stack-form">
+  <% if method_override %>
+    <input type="hidden" name="_method" value="<%= method_override %>">
+  <% end %>
+
+  <label>Name <input name="agency[name]" value="<%= value.call(:name, agency&.name) %>" required></label>
+  <label>Street address <input name="agency[street_address]" value="<%= value.call(:street_address, agency&.street_address) %>"></label>
+  <label>City <input name="agency[city]" value="<%= value.call(:city, agency&.city) %>"></label>
+  <label>State
+    <select name="agency[state_id]" required>
+      <option value="">State</option>
+      <% states.each do |state| %>
+        <option value="<%= state.id %>" <%= "selected" if (values[:state_id] || agency&.state_id).to_s == state.id.to_s %>><%= state.name %></option>
+      <% end %>
+    </select>
+  </label>
+  <label>Zipcode <input name="agency[zipcode]" value="<%= value.call(:zipcode, agency&.zipcode) %>"></label>
+  <label>Telephone <input name="agency[telephone]" value="<%= value.call(:telephone, agency&.telephone) %>"></label>
+  <label>Email <input type="email" name="agency[email]" value="<%= value.call(:email, agency&.email) %>"></label>
+  <label>Website <input name="agency[website]" value="<%= value.call(:website, agency&.website) %>"></label>
+  <label>Jurisdiction
+    <select name="agency[jurisdiction]">
+      <% %w[unknown local state federal university commercial].each do |code| %>
+        <option value="<%= code %>" <%= "selected" if (values[:jurisdiction] || agency&.jurisdiction).to_s == code %>><%= code.capitalize %></option>
+      <% end %>
+    </select>
+  </label>
+  <button type="submit">Save agency</button>
+</form>

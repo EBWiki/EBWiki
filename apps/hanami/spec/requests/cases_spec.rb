@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "yaml"
+
 RSpec.describe "Public case pages", :db, type: :request do
   def seed_walter_scott
     state_id = TestData.insert_state
@@ -197,6 +199,113 @@ RSpec.describe "Public case pages", :db, type: :request do
 
     user = TestData.relations[:users].where(id: target_id).one
     expect(user[:analyst]).to be_truthy
+  end
+
+  it "reverts a case from a PaperTrail YAML snapshot without deleting it" do
+    state_id = TestData.insert_state
+    case_id = TestData.insert_case(state_id: state_id, city: "Charleston")
+    version_id = TestData.insert_version(
+      case_id: case_id,
+      comment: "City before correction",
+      object: YAML.dump("city" => "North Charleston", "title" => "Walter Scott", "summary" => "snapshot")
+    )
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/cases/walter-scott/history/#{version_id}/revert"
+
+    expect(last_response.status).to eq(302)
+    expect(TestData.relations[:cases].where(id: case_id).one[:city]).to eq("North Charleston")
+
+    get "/cases/walter-scott/history"
+    expect(last_response.body).to include("Reverted to version #{version_id}")
+  end
+
+  it "does not destroy a case when a create version has no snapshot" do
+    case_id = seed_walter_scott
+    version_id = TestData.insert_version(case_id: case_id, event: "create", comment: "Initial", object: nil)
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/cases/walter-scott/history/#{version_id}/revert"
+
+    expect(last_response.status).to eq(302)
+    expect(TestData.relations[:cases].where(id: case_id).one).not_to be_nil
+  end
+
+  it "creates an agency and organization, then lets an admin edit the organization" do
+    TestData.insert_user(email: "admin@example.com", password: "password123", admin: true)
+    state_id = TestData.insert_state
+
+    post "/login", email: "admin@example.com", password: "password123"
+    post "/agencies", {
+      agency: {
+        name: "Chicago Police Department",
+        city: "Chicago",
+        state_id: state_id,
+        jurisdiction: "local"
+      }
+    }
+    expect(last_response.status).to eq(302)
+    expect(last_response.headers["Location"]).to eq("/agencies/chicago-police-department")
+
+    post "/organizations", {organization: {name: "Black Lives Matter", website: "https://blacklivesmatter.com"}}
+    expect(last_response.status).to eq(302)
+    org_id = TestData.relations[:organizations].where(name: "Black Lives Matter").one[:id]
+
+    post "/organizations/#{org_id}", {_method: "patch", organization: {name: "Black Lives Matter", description: "National"}}
+    expect(last_response.status).to eq(302)
+    expect(TestData.relations[:organizations].where(id: org_id).one[:description]).to eq("National")
+  end
+
+  it "registers, confirms with the Devise token path, and shows a profile" do
+    post "/register", name: "New Editor", email: "new@example.com", password: "password123"
+    expect(last_response.status).to eq(302)
+
+    user = TestData.relations[:users].where(email: "new@example.com").one
+    expect(user[:confirmed_at]).to be_nil
+
+    get "/users/confirmation", confirmation_token: user[:confirmation_token]
+    expect(last_response.status).to eq(302)
+
+    get "/users/#{user[:id]}"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("New Editor")
+  end
+
+  it "lets the author delete a comment and embeds a map when coordinates exist" do
+    state_id = TestData.insert_state
+    TestData.insert_case(state_id: state_id, latitude: 32.8546, longitude: -79.9748)
+    user_id = TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/cases/walter-scott/comments", content: "Please remove this."
+    comment = TestData.relations[:comments].where(user_id: user_id).one
+
+    get "/cases/walter-scott"
+    expect(last_response.body).to include("openstreetmap.org")
+    expect(last_response.body).to include("Please remove this.")
+
+    post "/comments/#{comment[:id]}/delete"
+    expect(last_response.status).to eq(302)
+    expect(TestData.relations[:comments].where(id: comment[:id]).one).to be_nil
+  end
+
+  it "resets a password from a stored Devise token" do
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/password", email: "editor@example.com"
+    token = TestData.relations[:users].where(email: "editor@example.com").one[:reset_password_token]
+    expect(token).not_to be_nil
+
+    post "/password/update", reset_password_token: token, password: "newpass123"
+    expect(last_response.status).to eq(302)
+
+    post "/login", email: "editor@example.com", password: "password123"
+    expect(last_response.status).to eq(401)
+
+    post "/login", email: "editor@example.com", password: "newpass123"
+    expect(last_response.status).to eq(302)
   end
 end
 
