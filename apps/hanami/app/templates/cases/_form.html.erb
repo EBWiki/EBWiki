@@ -52,7 +52,7 @@
       <select name="case[state_id]" required>
         <option value="">State</option>
         <% states.each do |state| %>
-          <option value="<%= state.id %>" <%= "selected" if this_case&.state_id == state.id %>><%= state.name %></option>
+          <option value="<%= attr_of(state, :id) %>" <%= "selected" if attr_of(this_case, :state_id).to_s == attr_of(state, :id).to_s %>><%= attr_of(state, :name) %></option>
         <% end %>
       </select>
     </label>
