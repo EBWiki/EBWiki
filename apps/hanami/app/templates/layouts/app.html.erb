@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBWiki</title>
+    <meta name="description" content="Documenting people of color killed by law enforcement.">
+    <%= favicon_tag %>
+    <%= stylesheet_tag "app" %>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="logo" href="/">EBWiki</a>
+        <nav>
+          <a href="/">Cases</a>
+        </nav>
+      </div>
+    </header>
+    <main class="wrap">
+      <%= yield %>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>Read-only Hanami slice. Editing, accounts, and staff tools still live on Rails.</p>
+      </div>
+    </footer>
+    <%= javascript_tag "app" %>
+  </body>
+</html>
