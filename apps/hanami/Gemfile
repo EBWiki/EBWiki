@@ -17,6 +17,7 @@ gem "puma", ">= 7.1"
 gem "rake"
 gem "pg"
 gem "sanitize", "~> 7.0"
+gem "bcrypt", "~> 3.1"
 
 group :development do
   gem "hanami-webconsole", "~> 3.0.0"

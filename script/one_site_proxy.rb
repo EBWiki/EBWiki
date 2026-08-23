@@ -19,16 +19,18 @@ HANAMI_PREFIXES = %w[
   /articles
   /search
   /agencies
+  /organizations
   /about
   /guidelines
   /instructions
   /get-involved
   /how-to-help
+  /login
+  /logout
+  /admin
 ].freeze
 
 def hanami?(request)
-  return false unless request.request_method == "GET" || request.request_method == "HEAD"
-
   path = request.path
   HANAMI_PREFIXES.any? { |prefix| path == prefix || path.start_with?("#{prefix}/") }
 end

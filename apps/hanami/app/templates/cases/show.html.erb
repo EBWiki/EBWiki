@@ -34,6 +34,15 @@
       <p class="meta">
         Last updated: <%= format_time(this_case.updated_at) %>
         · <a href="/cases/<%= this_case.slug %>/history">History</a>
+        · <a href="/cases/<%= this_case.slug %>/edit">Edit</a>
+      </p>
+      <p>
+        <form action="/cases/<%= this_case.slug %>/follows" method="post" style="display:inline">
+          <button type="submit">Follow this case</button>
+        </form>
+        <form action="/cases/<%= this_case.slug %>/unfollow" method="post" style="display:inline">
+          <button type="submit">Unfollow</button>
+        </form>
       </p>
 
       <section>
@@ -58,6 +67,24 @@
       <% if this_case.video_url.to_s.strip != "" %>
         <p><a href="<%= this_case.video_url %>">Video</a></p>
       <% end %>
+
+      <section>
+        <h2>Comments</h2>
+        <form action="/cases/<%= this_case.slug %>/comments" method="post" class="stack-form">
+          <label>Add a comment <textarea name="content" rows="3" required></textarea></label>
+          <button type="submit">Post comment</button>
+        </form>
+        <% if comments.any? %>
+          <ul>
+            <% comments.each do |comment| %>
+              <li>
+                <p><%= comment.content %></p>
+                <p class="meta"><%= format_time(comment.created_at) %></p>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </section>
 
       <% if links.any? %>
         <section>

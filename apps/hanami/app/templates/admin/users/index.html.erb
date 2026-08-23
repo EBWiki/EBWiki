@@ -1,0 +1,34 @@
+<section>
+  <h1>Staff: users</h1>
+  <form action="/admin/users" method="get" class="search-form">
+    <label>Email <input type="search" name="query" value="<%= query %>"></label>
+    <button type="submit">Search</button>
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Admin</th>
+        <th>Analyst</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.each do |user| %>
+        <tr>
+          <td><%= user.email %></td>
+          <td><%= user.name %></td>
+          <td colspan="3">
+            <form action="/admin/users/<%= user.id %>" method="post">
+              <input type="hidden" name="_method" value="patch">
+              <label><input type="checkbox" name="admin" value="1" <%= "checked" if user.admin %>> admin</label>
+              <label><input type="checkbox" name="analyst" value="1" <%= "checked" if user.analyst %>> analyst</label>
+              <button type="submit">Save</button>
+            </form>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

@@ -23,6 +23,10 @@ module EbWiki
         expose :links do |case_page:|
           case_page.fetch(:links)
         end
+
+        expose :comments do |case_page:|
+          Hanami.app["repos.case_repo"].comments_for(case_page.fetch(:record).id)
+        end
       end
     end
   end

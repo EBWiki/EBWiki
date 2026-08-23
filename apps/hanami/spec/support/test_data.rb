@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bcrypt"
+
 module TestData
   module_function
 
@@ -77,6 +79,29 @@ module TestData
     )
   end
 
+  def insert_user(email: "editor@example.com", password: "password123", name: "Editor", admin: false)
+    relations[:users].insert(
+      email: email,
+      encrypted_password: BCrypt::Password.create(password),
+      name: name,
+      admin: admin,
+      analyst: false,
+      confirmed_at: now,
+      created_at: now,
+      updated_at: now,
+      sign_in_count: 0
+    )
+  end
+
+  def insert_organization(name: "Color of Change", website: "https://colorofchange.org")
+    relations[:organizations].insert(
+      name: name,
+      website: website,
+      created_at: now,
+      updated_at: now
+    )
+  end
+
   def insert_link(case_id:, url: "https://ebwiki.org/cases/walter-scott")
     relations[:links].insert(
       url: url,
@@ -95,7 +120,11 @@ module TestData
       agencies: Hanami.app["relations.agencies"],
       case_agencies: Hanami.app["relations.case_agencies"],
       links: Hanami.app["relations.links"],
-      versions: Hanami.app["relations.versions"]
+      versions: Hanami.app["relations.versions"],
+      users: Hanami.app["relations.users"],
+      comments: Hanami.app["relations.comments"],
+      follows: Hanami.app["relations.follows"],
+      organizations: Hanami.app["relations.organizations"]
     }
   end
 end

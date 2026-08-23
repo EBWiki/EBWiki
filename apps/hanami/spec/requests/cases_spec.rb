@@ -116,5 +116,88 @@ RSpec.describe "Public case pages", :db, type: :request do
     expect(last_response.status).to eq(200)
     expect(last_response.body).to include("Our Mission")
   end
+
+  it "rejects unknown logins and accepts a confirmed Devise-compatible password" do
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "wrong"
+    expect(last_response.status).to eq(401)
+
+    post "/login", email: "editor@example.com", password: "password123"
+    expect(last_response.status).to eq(302)
+    expect(last_response.headers["Location"]).to eq("/")
+  end
+
+  it "creates a case with a subject, link, agency, and history row" do
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+    state_id = TestData.insert_state
+    agency_id = TestData.insert_agency
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/cases", {
+      case: {
+        title: "New Test Case",
+        date: "2016-01-02",
+        city: "Chicago",
+        state_id: state_id,
+        overview: "<p>An overview of the case.</p>",
+        blurb: "A short blurb",
+        summary: "Created the case",
+        cause_of_death: "shooting",
+        subjects: [{name: "Test Subject", age: "22"}],
+        links: [{url: "https://example.com/source", title: "Source"}],
+        agency_ids: [agency_id]
+      }
+    }
+
+    expect(last_response.status).to eq(302)
+    expect(last_response.headers["Location"]).to eq("/cases/new-test-case")
+
+    get "/cases/new-test-case"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("Test Subject")
+    expect(last_response.body).to include("https://example.com/source")
+    expect(last_response.body).to include("North Charleston Police Department")
+
+    get "/cases/new-test-case/history"
+    expect(last_response.body).to include("Created the case")
+  end
+
+  it "requires login to follow and comment, then writes both" do
+    seed_walter_scott
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/cases/walter-scott/comments", content: "hello"
+    expect(last_response.status).to eq(302)
+    expect(last_response.headers["Location"]).to eq("/login")
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/cases/walter-scott/comments", content: "Remember the video."
+    expect(last_response.status).to eq(302)
+
+    post "/cases/walter-scott/follows"
+    get "/cases/walter-scott"
+    expect(last_response.body).to include("Remember the video.")
+  end
+
+  it "lists organizations" do
+    TestData.insert_organization
+    get "/organizations"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("Color of Change")
+  end
+
+  it "lets an admin toggle analyst on another user" do
+    TestData.insert_user(email: "admin@example.com", password: "password123", admin: true)
+    target_id = TestData.insert_user(email: "writer@example.com", password: "password123", name: "Writer")
+
+    post "/login", email: "admin@example.com", password: "password123"
+    post "/admin/users/#{target_id}", admin: "0", analyst: "1"
+    expect(last_response.status).to eq(302)
+
+    user = TestData.relations[:users].where(id: target_id).one
+    expect(user[:analyst]).to be_truthy
+  end
 end
+
 
