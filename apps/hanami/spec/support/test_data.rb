@@ -24,6 +24,8 @@ module TestData
                   overview: "<p>Walter Scott was shot in the back while fleeing.</p>",
                   blurb: "Walter Scott was shot by a North Charleston police officer.",
                   summary: "Initial case entry",
+                  latitude: nil,
+                  longitude: nil,
                   updated_at: nil)
     relations[:cases].insert(
       title: title,
@@ -35,6 +37,8 @@ module TestData
       blurb: blurb,
       summary: summary,
       cause_of_death: cause_of_death,
+      latitude: latitude,
+      longitude: longitude,
       created_at: now,
       updated_at: updated_at || now
     )
@@ -68,13 +72,14 @@ module TestData
     )
   end
 
-  def insert_version(case_id:, event: "update", comment: "Corrected city spelling", whodunnit: "1")
+  def insert_version(case_id:, event: "update", comment: "Corrected city spelling", whodunnit: "1", object: nil)
     relations[:versions].insert(
       item_type: "Case",
       item_id: case_id,
       event: event,
       comment: comment,
       whodunnit: whodunnit,
+      object: object,
       created_at: now
     )
   end

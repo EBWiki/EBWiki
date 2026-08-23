@@ -2,9 +2,9 @@
   <p class="crumb"><a href="/cases/<%= this_case.slug %>"><%= this_case.title %></a></p>
   <h1>History</h1>
   <p class="lede">
-    Any time case information is updated, PaperTrail writes a new row in
-    <code>versions</code>. This page reads those existing rows. Revert stays on Rails until a
-    single writer owns history.
+    PaperTrail <code>versions</code> for this case. Revert restores columns from a stored
+    YAML <code>object</code> snapshot. Create events with no snapshot are not undone, and
+    cases are never deleted from this page.
   </p>
 
   <% if versions.empty? %>
@@ -20,6 +20,11 @@
           </p>
           <p><strong>Description of changes:</strong></p>
           <pre><%= version.comment.to_s.strip.empty? ? "No edit summary is available for this version." : version.comment %></pre>
+          <% unless version.object.to_s.strip.empty? %>
+            <form action="/cases/<%= this_case.slug %>/history/<%= version.id %>/revert" method="post">
+              <button type="submit">Revert to this version</button>
+            </form>
+          <% end %>
         </li>
       <% end %>
     </ol>

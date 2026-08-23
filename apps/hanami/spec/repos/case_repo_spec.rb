@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "yaml"
+
 RSpec.describe EbWiki::Repos::CaseRepo, :db do
   subject(:repo) { described_class.new }
 
@@ -22,6 +24,21 @@ RSpec.describe EbWiki::Repos::CaseRepo, :db do
 
   it "returns nil when the slug is missing" do
     expect(repo.find_page("missing")).to be_nil
+  end
+
+  it "restores case columns from a YAML version snapshot" do
+    state_id = TestData.insert_state
+    case_id = TestData.insert_case(state_id: state_id, city: "Charleston")
+    version_id = TestData.insert_version(
+      case_id: case_id,
+      object: YAML.dump("city" => "North Charleston", "title" => "Walter Scott")
+    )
+    user = Struct.new(:id).new(1)
+
+    record = repo.revert_to_version("walter-scott", version_id, user: user)
+
+    expect(record.city).to eq("North Charleston")
+    expect(repo.revert_to_version("walter-scott", version_id, user: user)).not_to eq(:no_snapshot)
   end
 
   it "orders the homepage by incident date, newest first" do

@@ -1,0 +1,16 @@
+<h1>Edit profile</h1>
+<% if errors.any? %>
+  <div class="flash-error">
+    <ul>
+      <% errors.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<form action="/users/<%= profile.id %>" method="post" class="stack-form">
+  <input type="hidden" name="_method" value="patch">
+  <label>Name <input name="user[name]" value="<%= values[:name] || profile.name %>" required></label>
+  <label>Description <textarea name="user[description]" rows="5"><%= values[:description] || profile.description %></textarea></label>
+  <button type="submit">Save profile</button>
+</form>

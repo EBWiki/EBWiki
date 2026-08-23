@@ -155,6 +155,26 @@ aside th, aside td {
   font-size: 0.9rem;
 }
 
+.nav-form,
+.inline-form { display: inline; }
+.nav-form button,
+.inline-form button {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+.site-header .nav-form button { color: #fff; }
+.repeatable { display: grid; gap: 0.5rem; margin-bottom: 0.75rem; }
+.case-map {
+  border: 1px solid var(--line);
+  width: 100%;
+  height: 280px;
+}
+
 @media (max-width: 800px) {
   .home-grid,
   .case-layout {
