@@ -19,7 +19,18 @@
           <a href="/organizations">Organizations</a>
           <a href="/about">About</a>
           <a href="/cases/new">Add a case</a>
-          <a href="/login">Login</a>
+          <% if current_user %>
+            <a href="/users/<%= current_user.id %>"><%= current_user.name %></a>
+            <% if current_user.admin %>
+              <a href="/admin/users">Staff</a>
+            <% end %>
+            <form action="/logout" method="post" class="nav-form">
+              <button type="submit">Logout</button>
+            </form>
+          <% else %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          <% end %>
         </nav>
       </div>
     </header>
@@ -28,7 +39,7 @@
     </main>
     <footer class="site-footer">
       <div class="wrap">
-        <p>Read-only Hanami slice. Editing, accounts, and staff tools still live on Rails.</p>
+        <p>Hanami public site sharing the Rails Postgres schema. Rails still owns mailers, S3 uploads, and production cutover.</p>
       </div>
     </footer>
     <%= javascript_tag "app" %>

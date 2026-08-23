@@ -27,6 +27,10 @@ HANAMI_PREFIXES = %w[
   /how-to-help
   /login
   /logout
+  /register
+  /users
+  /password
+  /comments
   /admin
 ].freeze
 

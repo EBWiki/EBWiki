@@ -31,10 +31,17 @@
   </fieldset>
 
   <fieldset>
-    <legend>Subject</legend>
-    <% subject = subjects.first %>
-    <label>Name <input name="case[subjects][][name]" value="<%= subject&.name %>" required></label>
-    <label>Age <input type="number" name="case[subjects][][age]" value="<%= subject&.age %>"></label>
+    <legend>Subjects</legend>
+    <div id="subjects">
+      <% rows = subjects.any? ? subjects : [nil] %>
+      <% rows.each do |subject| %>
+        <div class="repeatable">
+          <label>Name <input name="case[subjects][][name]" value="<%= subject&.name %>"></label>
+          <label>Age <input type="number" name="case[subjects][][age]" value="<%= subject&.age %>"></label>
+        </div>
+      <% end %>
+    </div>
+    <button type="button" data-add="subjects">Add another subject</button>
   </fieldset>
 
   <fieldset>
@@ -71,10 +78,17 @@
   </fieldset>
 
   <fieldset>
-    <legend>Related link</legend>
-    <% link = links.first %>
-    <label>URL <input name="case[links][][url]" value="<%= link&.url %>"></label>
-    <label>Title <input name="case[links][][title]" value="<%= link&.title %>"></label>
+    <legend>Related links</legend>
+    <div id="links">
+      <% link_rows = links.any? ? links : [nil] %>
+      <% link_rows.each do |link| %>
+        <div class="repeatable">
+          <label>URL <input name="case[links][][url]" value="<%= link&.url %>"></label>
+          <label>Title <input name="case[links][][title]" value="<%= link&.title %>"></label>
+        </div>
+      <% end %>
+    </div>
+    <button type="button" data-add="links">Add another link</button>
   </fieldset>
 
   <fieldset>
