@@ -66,4 +66,55 @@ RSpec.describe "Public case pages", :db, type: :request do
     expect(last_response.status).to eq(301)
     expect(last_response.headers["Location"]).to eq("/cases")
   end
+
+  it "searches cases by title and city" do
+    seed_walter_scott
+    TestData.insert_case(
+      state_id: TestData.relations[:states].first[:id],
+      title: "Sandra Bland",
+      slug: "sandra-bland",
+      city: "Prairie View",
+      date: Date.new(2015, 7, 13),
+      overview: "<p>Arrested during a traffic stop in Prairie View, Texas.</p>",
+      blurb: "Sandra Bland was found dead in a jail cell in Waller County."
+    )
+
+    get "/search?query=Charleston"
+
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("Walter Scott")
+    expect(last_response.body).not_to include("Sandra Bland")
+  end
+
+  it "lists agencies and shows one by slug with its cases" do
+    seed_walter_scott
+
+    get "/agencies"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("North Charleston Police Department")
+
+    get "/agencies/ncpd"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("North Charleston Police Department")
+    expect(last_response.body).to include("Walter Scott")
+  end
+
+  it "reads PaperTrail versions for a case history page" do
+    case_id = seed_walter_scott
+    TestData.insert_version(case_id: case_id, comment: "Corrected city spelling")
+
+    get "/cases/walter-scott/history"
+
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("History")
+    expect(last_response.body).to include("Corrected city spelling")
+  end
+
+  it "serves the about page" do
+    get "/about"
+
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("Our Mission")
+  end
 end
+

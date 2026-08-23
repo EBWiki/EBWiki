@@ -41,6 +41,39 @@ module EbWiki
         }
       end
 
+      def search(query:, page: 1, state_id: nil)
+        rel = cases.combine(:us_state, :subjects)
+        rel = rel.where(state_id: Integer(state_id)) if state_id.to_s.match?(/\A\d+\z/)
+
+        q = query.to_s.strip
+        rel = apply_search(rel, q) unless q.empty?
+
+        rel.order(cases[:date].desc)
+          .page([page.to_i, 1].max)
+          .per_page(PAGE_SIZE)
+          .to_a
+      end
+
+      def search_count(query:, state_id: nil)
+        rel = cases
+        rel = rel.where(state_id: Integer(state_id)) if state_id.to_s.match?(/\A\d+\z/)
+        q = query.to_s.strip
+        rel = apply_search(rel, q) unless q.empty?
+        rel.count
+      end
+
+      def history_for(slug)
+        record = cases.where(slug: slug).one
+        return unless record
+
+        versions = self.versions
+          .where(item_type: "Case", item_id: record.id)
+          .order(self.versions[:created_at].desc)
+          .to_a
+
+        {record: record, versions: versions}
+      end
+
       private
 
       def agencies_for(case_id)
@@ -48,6 +81,24 @@ module EbWiki
         return [] if agency_ids.empty?
 
         agencies.where(id: agency_ids).to_a
+      end
+
+      def apply_search(rel, query)
+        if cases.dataset.columns.include?(:tsv)
+          rel.where(Sequel.lit("tsv @@ plainto_tsquery('english', ?)", query))
+        else
+          pattern = "%#{self.class.escape_like(query)}%"
+          rel.where(
+            Sequel.lit(
+              "title ILIKE ? OR city ILIKE ? OR overview ILIKE ? OR COALESCE(blurb, '') ILIKE ?",
+              pattern, pattern, pattern, pattern
+            )
+          )
+        end
+      end
+
+      def self.escape_like(value)
+        value.gsub(/[%_\\]/) { |char| "\\#{char}" }
       end
     end
   end

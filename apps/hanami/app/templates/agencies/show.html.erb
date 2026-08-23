@@ -1,0 +1,32 @@
+<article>
+  <p class="crumb"><a href="/agencies">All agencies</a></p>
+  <h1><%= agency.name %></h1>
+  <p class="lede">
+    <%= agency.street_address %>
+    <br>
+    <%= agency.city %><% if state %>, <%= state.name %><% end %>
+    <%= agency.zipcode %>
+  </p>
+  <p><strong>Jurisdiction:</strong> <%= agency.jurisdiction.to_s.empty? ? "Unknown" : agency.jurisdiction.to_s.capitalize %></p>
+  <% unless agency.telephone.to_s.empty? %>
+    <p><strong>Telephone:</strong> <%= agency.telephone %></p>
+  <% end %>
+  <% unless agency.email.to_s.empty? %>
+    <p><strong>Email:</strong> <%= agency.email %></p>
+  <% end %>
+  <% unless agency.website.to_s.empty? %>
+    <p><strong>Website:</strong> <a href="<%= agency.website %>" rel="noopener noreferrer"><%= agency.website %></a></p>
+  <% end %>
+
+  <h2>EBWiki is tracking <%= cases.size %> case<% if cases.size != 1 %>s<% end %> involving <%= agency.name %></h2>
+  <ul class="case-cards">
+    <% cases.each do |this_case| %>
+      <li class="case-card">
+        <a href="/cases/<%= this_case.slug %>">
+          <h2><%= this_case.title %></h2>
+          <p><%= format_date(this_case.date) %> — <%= this_case.city %></p>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</article>

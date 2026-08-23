@@ -1,0 +1,27 @@
+<article>
+  <p class="crumb"><a href="/cases/<%= this_case.slug %>"><%= this_case.title %></a></p>
+  <h1>History</h1>
+  <p class="lede">
+    Any time case information is updated, PaperTrail writes a new row in
+    <code>versions</code>. This page reads those existing rows. Revert stays on Rails until a
+    single writer owns history.
+  </p>
+
+  <% if versions.empty? %>
+    <p>There is no history for this case.</p>
+  <% else %>
+    <ol class="history">
+      <% versions.each_with_index do |version, index| %>
+        <li>
+          <p><strong>Date:</strong> <%= format_time(version.created_at) %></p>
+          <p>
+            <strong><%= index == versions.size - 1 ? "Added by" : "Edited by" %>:</strong>
+            <%= version.whodunnit.to_s.empty? || version.whodunnit == "Guest" ? "Guest" : "User #{version.whodunnit}" %>
+          </p>
+          <p><strong>Description of changes:</strong></p>
+          <pre><%= version.comment.to_s.strip.empty? ? "No edit summary is available for this version." : version.comment %></pre>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+</article>

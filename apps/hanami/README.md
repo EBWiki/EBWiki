@@ -1,59 +1,55 @@
-# EBWiki Hanami first slice
+# EBWiki Hanami public site
 
-This is increment 1 of a strangler-fig migration: a Hanami 3.0 app that **reads** the existing Postgres schema and serves the public wiki pages.
+Hanami 3 reads the existing Postgres schema. Rails still owns writes, identity, and PaperTrail inserts.
 
-| Method | Path | Rails equivalent |
-| --- | --- | --- |
-| `GET` | `/` | `cases#index` |
-| `GET` | `/cases` | `cases#index` |
-| `GET` | `/cases/:slug` | `cases#show` via FriendlyId |
-| `GET` | `/articles` | 301 → `/cases` |
-| `GET` | `/articles/:slug` | 301 → `/cases/:slug` |
+| Method | Path |
+| --- | --- |
+| `GET` | `/`, `/cases` |
+| `GET` | `/cases/:slug` |
+| `GET` | `/cases/:slug/history` (reads `versions`) |
+| `GET` | `/search?query=` |
+| `GET` | `/agencies`, `/agencies/:slug` |
+| `GET` | `/articles`, `/articles/:slug` (301) |
+| `GET` | `/about`, `/guidelines`, `/instructions`, `/get-involved`, `/how-to-help` |
 
-Writes, auth, history, uploads, search, follows, comments, and staff tools stay on Rails.
+## One site locally
 
-## Why a sibling app
-
-The analysis in the earlier study still holds: persistence, Rodauth, and PaperTrail-compatible history are the expensive parts. This slice answers a narrower question: can Hanami render a real case page from the production-shaped `cases` / `subjects` / `states` / `agencies` / `links` tables without changing those tables?
-
-Schema ownership stays with Rails (`db/structure.sql`). There are no Hanami migrations.
-
-## Run it
-
-Ruby 3.4.2. From this directory:
+From the repo root, with Rails already able to boot and Hanami pointed at `blackops_development`:
 
 ```bash
+chmod +x bin/one-site
+bin/one-site
+```
+
+That binds **http://localhost:3000** and splits traffic:
+
+- GET of the public read paths above → Hanami (`:2300`)
+- everything else (login, case editor, follow, admin) → Rails (`:3001`)
+
+Or run the two apps on their own ports and compare slugs by hand.
+
+## Hanami only
+
+```bash
+cd apps/hanami
 bin/setup
-# Point .env DATABASE_URL at the Rails development database, then:
+# apps/hanami/.env.local should match config/database.yml
+# DATABASE_URL=postgres://blackops:PASSWORD@localhost:5432/blackops_development
 bin/dev
 ```
 
-The app listens on [http://localhost:2300](http://localhost:2300).
+http://localhost:2300
 
-To use an empty database instead of the Rails one:
-
-```bash
-createdb ebwiki_hanami
-DATABASE_URL=postgres://localhost/ebwiki_hanami bundle exec rake db:load_schema
-```
-
-That loads `config/db/existing_schema.sql`, a subset of the Rails tables this slice reads.
+Do not run `LOAD_SCHEMA=1` against the Rails database. That flag is only for an empty throwaway DB.
 
 ## Tests
 
 ```bash
+cd apps/hanami
 HANAMI_ENV=test bundle exec rake db:load_schema
 bundle exec rspec
 ```
 
-CI creates `ebwiki_hanami_test` and runs the same commands. See `.github/workflows/hanami.yml` at the repo root.
+## Still Rails
 
-## What this does not do
-
-- No Devise / Rodauth
-- No PaperTrail history or revert
-- No CarrierWave version reconstruction beyond `default_avatar_url` / stored filename
-- No case editor, follows, comments, or maps
-- Visual identity is a readable stand-in, not a Bootstrap 3 port
-
-Next increments (separate PRs): search via `cases.tsv`, then writes, then identity.
+Auth, case/agency create and edit, follow emails, comment writes, maps, avatars beyond stored URLs, history revert, and staff tools.
