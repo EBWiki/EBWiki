@@ -45,13 +45,51 @@ module EbWiki
         Sanitize.fragment(html.to_s, Sanitize::Config::RELAXED)
       end
 
-      def case_image_url(this_case)
+      CARRIERWAVE_VERSIONS = {
+        large: "large_avatar",
+        medium: "medium_avatar",
+        small: "small_avatar",
+        thumb: "thumb"
+      }.freeze
+
+      def case_image_url(this_case, version: :large)
         url = this_case.default_avatar_url.to_s
         return url unless url.empty?
 
         filename = this_case.avatar.to_s
-        return "/uploads/case/avatar/#{this_case.id}/#{filename}" unless filename.empty?
+        return if filename.empty?
 
+        prefix = CARRIERWAVE_VERSIONS.fetch(version) { version.to_s }
+        object_key = "uploads/case/avatar/#{this_case.id}/#{prefix}_#{filename}"
+        carrierwave_asset_url(object_key)
+      end
+
+      def carrierwave_asset_url(object_key)
+        bucket = ENV["S3_BUCKET"].to_s
+        return "/#{object_key}" if bucket.empty?
+
+        region = ENV["S3_REGION"].to_s
+        host = if region.empty?
+          "https://#{bucket}.s3.amazonaws.com"
+        else
+          "https://#{bucket}.s3.#{region}.amazonaws.com"
+        end
+        "#{host}/#{object_key}"
+      end
+
+      def version_author_name(version, authors)
+        user = authors[version.author_id] || authors[integer_id(version.whodunnit)]
+        return user.name if user
+        return "Guest" if version.whodunnit.to_s.empty? || version.whodunnit == "Guest"
+
+        "User #{version.whodunnit}"
+      end
+
+      def integer_id(value)
+        return if value.to_s.strip.empty?
+
+        Integer(value)
+      rescue ArgumentError
         nil
       end
 
