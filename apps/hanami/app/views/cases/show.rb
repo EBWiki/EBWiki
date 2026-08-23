@@ -28,6 +28,11 @@ module EbWiki
           Hanami.app["repos.case_repo"].comments_for(case_page.fetch(:record).id)
         end
 
+        expose :comment_authors do |case_page:|
+          comments = Hanami.app["repos.case_repo"].comments_for(case_page.fetch(:record).id)
+          Hanami.app["repos.case_repo"].users_by_id(comments.map(&:user_id))
+        end
+
         expose :viewer, default: nil
         expose :following, default: false
       end

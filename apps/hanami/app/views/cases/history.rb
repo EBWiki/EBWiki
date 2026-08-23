@@ -11,6 +11,10 @@ module EbWiki
         expose :versions do |history_page:|
           history_page.fetch(:versions)
         end
+
+        expose :authors do |history_page:|
+          history_page.fetch(:authors, {})
+        end
       end
     end
   end

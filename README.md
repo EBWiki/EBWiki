@@ -6,7 +6,7 @@
 
 ## Hanami public site
 
-A sibling Hanami 3 app lives in [`apps/hanami`](apps/hanami). It reads the existing Postgres schema (cases, search, agencies, history, static pages). Rails still owns writes and accounts.
+A sibling Hanami 3 app lives in [`apps/hanami`](apps/hanami). It reads and writes the existing Postgres schema. Rails still owns mailers, S3 uploads, and production cutover.
 
 To run **one local site** on port 3000 (Hanami reads, Rails writes):
 

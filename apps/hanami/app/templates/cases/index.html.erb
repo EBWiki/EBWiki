@@ -5,8 +5,8 @@
     cases of people killed by police.
   </h1>
   <p class="lede">
-    Public case pages, search, agencies, and history are served from Hanami against the existing Postgres schema.
-    Editing, accounts, and follow emails still write through Rails.
+    Public pages and signed-in writes share the existing Postgres schema. Mail delivery,
+    S3 uploads, and production cutover still go through Rails.
   </p>
   <form action="/search" method="get" class="search-form">
     <label>

@@ -100,7 +100,10 @@
             <% comments.each do |comment| %>
               <li>
                 <p><%= comment.content %></p>
-                <p class="meta"><%= format_time(comment.created_at) %></p>
+                <p class="meta">
+                  <% author = comment_authors[comment.user_id] %>
+                  <% if author %><%= author.name %> · <% end %><%= format_time(comment.created_at) %>
+                </p>
                 <% if viewer && (viewer.admin || viewer.id == comment.user_id) %>
                   <form action="/comments/<%= comment.id %>/delete" method="post" class="inline-form">
                     <button type="submit">Delete comment</button>

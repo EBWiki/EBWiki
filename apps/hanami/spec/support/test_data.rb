@@ -26,6 +26,7 @@ module TestData
                   summary: "Initial case entry",
                   latitude: nil,
                   longitude: nil,
+                  avatar: nil,
                   updated_at: nil)
     relations[:cases].insert(
       title: title,
@@ -39,6 +40,7 @@ module TestData
       cause_of_death: cause_of_death,
       latitude: latitude,
       longitude: longitude,
+      avatar: avatar,
       created_at: now,
       updated_at: updated_at || now
     )
@@ -72,7 +74,7 @@ module TestData
     )
   end
 
-  def insert_version(case_id:, event: "update", comment: "Corrected city spelling", whodunnit: "1", object: nil)
+  def insert_version(case_id:, event: "update", comment: "Corrected city spelling", whodunnit: "1", object: nil, author_id: nil)
     relations[:versions].insert(
       item_type: "Case",
       item_id: case_id,
@@ -80,6 +82,7 @@ module TestData
       comment: comment,
       whodunnit: whodunnit,
       object: object,
+      author_id: author_id,
       created_at: now
     )
   end
