@@ -12,6 +12,7 @@ jobs:
     env:
       HANAMI_ENV: test
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/ebwiki_hanami_test
+      SESSION_SECRET: test-session-secret-not-for-production-must-be-at-least-64-characters-long
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
 
     services:

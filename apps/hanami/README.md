@@ -50,6 +50,11 @@ HANAMI_ENV=test bundle exec rake db:load_schema
 bundle exec rspec
 ```
 
-## Still Rails
+## Writes and identity now on Hanami
 
-Auth, case/agency create and edit, follow emails, comment writes, maps, avatars beyond stored URLs, history revert, and staff tools.
+- Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in.
+- Signed-in editors can create/edit cases (`/cases/new`, `/cases/:slug/edit`), comment, and follow.
+- Case writes insert a `versions` row (event + edit summary). Revert is still not implemented.
+- Staff at `/admin/users` can toggle `admin` / `analyst` (admin session required).
+
+Still on Rails: registration/confirm/reset mailers, maps, CarrierWave versions, history revert, follower notification emails, and the Bootstrap 3 UI.

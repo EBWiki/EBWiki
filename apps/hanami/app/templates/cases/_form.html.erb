@@ -1,0 +1,86 @@
+<% if errors.any? %>
+  <div class="flash-error">
+    <p>This case could not be saved:</p>
+    <ul>
+      <% errors.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<% value = ->(key, fallback = "") { values[key] || fallback } %>
+
+<form action="<%= action %>" method="post" class="stack-form">
+  <% if method_override %>
+    <input type="hidden" name="_method" value="<%= method_override %>">
+  <% end %>
+
+  <fieldset>
+    <legend>Basic case information</legend>
+    <label>Title <input name="case[title]" value="<%= value.call(:title, this_case&.title) %>" required></label>
+    <label>Date of death <input type="date" name="case[date]" value="<%= value.call(:date, this_case&.date) %>" required></label>
+    <label>Cause of death
+      <select name="case[cause_of_death]">
+        <% [["", ""], ["shooting", "Shooting"], ["beating", "Beating"], ["taser", "Taser"], ["vehicular", "Vehicular"], ["choking", "Choking"], ["drowning", "Drowning"], ["stabbing", "Stabbing"], ["bombing", "Bombing"], ["suicide", "Suicide"], ["medical_neglect", "Medical Neglect"], ["response_to_medical_emergency", "Response to Medical Emergency"], ["chemical_agents_or_weapons", "Chemical Agents or Weapons"]].each do |code, label| %>
+          <option value="<%= code %>" <%= "selected" if this_case&.cause_of_death.to_s == code || this_case&.cause_of_death.to_s.tr(" ", "_") == code %>><%= label %></option>
+        <% end %>
+      </select>
+    </label>
+    <label>Video URL <input name="case[video_url]" value="<%= value.call(:video_url, this_case&.video_url) %>"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Subject</legend>
+    <% subject = subjects.first %>
+    <label>Name <input name="case[subjects][][name]" value="<%= subject&.name %>" required></label>
+    <label>Age <input type="number" name="case[subjects][][age]" value="<%= subject&.age %>"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Location</legend>
+    <label>Address <input name="case[address]" value="<%= value.call(:address, this_case&.address) %>"></label>
+    <label>City <input name="case[city]" value="<%= value.call(:city, this_case&.city) %>" required></label>
+    <label>State
+      <select name="case[state_id]" required>
+        <option value="">State</option>
+        <% states.each do |state| %>
+          <option value="<%= state.id %>" <%= "selected" if this_case&.state_id == state.id %>><%= state.name %></option>
+        <% end %>
+      </select>
+    </label>
+    <label>Zipcode <input name="case[zipcode]" value="<%= value.call(:zipcode, this_case&.zipcode) %>"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Main content</legend>
+    <label>Overview <textarea name="case[overview]" rows="8" required><%= value.call(:overview, this_case&.overview) %></textarea></label>
+    <label>Legal action <textarea name="case[litigation]" rows="5"><%= value.call(:litigation, this_case&.litigation) %></textarea></label>
+    <label>Community and family efforts <textarea name="case[community_action]" rows="5"><%= value.call(:community_action, this_case&.community_action) %></textarea></label>
+    <label>Blurb <textarea name="case[blurb]" maxlength="500" required><%= value.call(:blurb, this_case&.blurb) %></textarea></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Agencies</legend>
+    <% agencies.each do |agency| %>
+      <label>
+        <input type="checkbox" name="case[agency_ids][]" value="<%= agency.id %>" <%= "checked" if selected_agency_ids.include?(agency.id) %>>
+        <%= agency.name %>
+      </label>
+    <% end %>
+  </fieldset>
+
+  <fieldset>
+    <legend>Related link</legend>
+    <% link = links.first %>
+    <label>URL <input name="case[links][][url]" value="<%= link&.url %>"></label>
+    <label>Title <input name="case[links][][title]" value="<%= link&.title %>"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Summary of changes</legend>
+    <label>Edit summary <textarea name="case[summary]" required></textarea></label>
+  </fieldset>
+
+  <button type="submit">Save case</button>
+</form>

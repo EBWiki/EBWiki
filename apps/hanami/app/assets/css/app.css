@@ -57,6 +57,12 @@ a { color: var(--orange); }
 .search-form label { display: grid; gap: 0.25rem; }
 .search-form input { min-width: 18rem; padding: 0.4rem 0.5rem; }
 
+.stack-form { display: grid; gap: 0.75rem; max-width: 40rem; }
+.stack-form label { display: grid; gap: 0.25rem; }
+.stack-form input, .stack-form textarea, .stack-form select { padding: 0.35rem 0.45rem; }
+.flash-error { color: #8b1e00; background: #fde8e0; padding: 0.75rem 1rem; border-radius: 4px; }
+fieldset { border: 1px solid var(--line); margin: 1rem 0; padding: 0.8rem 1rem; }
+
 .history { padding-left: 1.2rem; }
 .history li { margin-bottom: 1.2rem; }
 .history pre {
