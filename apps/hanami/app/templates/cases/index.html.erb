@@ -5,8 +5,16 @@
     cases of people killed by police.
   </h1>
   <p class="lede">
-    This is the first Hanami slice: the public case list and case page, read from the existing Postgres schema.
+    Public case pages, search, agencies, and history are served from Hanami against the existing Postgres schema.
+    Editing, accounts, and follow emails still write through Rails.
   </p>
+  <form action="/search" method="get" class="search-form">
+    <label>
+      Search cases
+      <input type="search" name="query" placeholder="Name, city, or keywords">
+    </label>
+    <button type="submit">Search</button>
+  </form>
 </section>
 
 <div class="home-grid">

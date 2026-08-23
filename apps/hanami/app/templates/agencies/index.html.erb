@@ -1,0 +1,25 @@
+<section>
+  <h1>Agencies</h1>
+  <% if agencies.empty? %>
+    <p>No agencies have been loaded into this database yet.</p>
+  <% else %>
+    <table>
+      <thead>
+        <tr>
+          <th>Agency</th>
+          <th>City</th>
+          <th>Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% agencies.each do |agency| %>
+          <tr>
+            <td><a href="/agencies/<%= agency.slug %>"><%= agency.name %></a></td>
+            <td><%= agency.city %></td>
+            <td><%= format_time(agency.updated_at) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</section>

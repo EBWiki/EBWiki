@@ -31,7 +31,10 @@
         <%= cause_of_death_label(this_case.cause_of_death) %>
       </p>
 
-      <p class="meta">Last updated: <%= format_time(this_case.updated_at) %></p>
+      <p class="meta">
+        Last updated: <%= format_time(this_case.updated_at) %>
+        · <a href="/cases/<%= this_case.slug %>/history">History</a>
+      </p>
 
       <section>
         <h2>Overview</h2>
