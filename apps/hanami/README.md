@@ -1,16 +1,29 @@
 # EBWiki Hanami public site
 
-Hanami 3 reads the existing Postgres schema. Rails still owns writes, identity, and PaperTrail inserts.
+Hanami 3 reads and writes the existing Postgres schema. Rails still owns
+mail delivery, CarrierWave/S3 object keys, and production cutover.
 
 | Method | Path |
 | --- | --- |
 | `GET` | `/`, `/cases` |
-| `GET` | `/cases/:slug` |
-| `GET` | `/cases/:slug/history` (reads `versions`) |
+| `GET/POST` | `/cases/new`, `/cases` |
+| `GET/PATCH` | `/cases/:slug`, `/cases/:slug/edit` |
+| `GET` | `/cases/:slug/history` |
+| `POST` | `/cases/:slug/history/:id/revert` |
+| `POST` | `/cases/:slug/comments`, `/comments/:id/delete` |
+| `POST` | `/cases/:slug/follows`, `/cases/:slug/unfollow` |
 | `GET` | `/search?query=` |
-| `GET` | `/agencies`, `/agencies/:slug` |
+| `GET/POST` | `/agencies`, `/agencies/new` |
+| `GET/PATCH` | `/agencies/:slug`, `/agencies/:slug/edit` |
+| `GET/POST` | `/organizations`, `/organizations/new` |
+| `GET/PATCH` | `/organizations/:id`, `/organizations/:id/edit` |
 | `GET` | `/articles`, `/articles/:slug` (301) |
 | `GET` | `/about`, `/guidelines`, `/instructions`, `/get-involved`, `/how-to-help` |
+| `GET/POST` | `/login`, `/logout`, `/register` |
+| `GET` | `/users/confirmation?confirmation_token=` |
+| `GET/POST` | `/password/new`, `/password`, `/password/edit`, `/password/update` |
+| `GET/PATCH` | `/users/:id`, `/users/:id/edit` |
+| `GET/POST` | `/admin/users` |
 
 ## One site locally
 
@@ -21,12 +34,8 @@ chmod +x bin/one-site
 bin/one-site
 ```
 
-That binds **http://localhost:3000** and splits traffic:
-
-- GET of the public read paths above → Hanami (`:2300`)
-- everything else (login, case editor, follow, admin) → Rails (`:3001`)
-
-Or run the two apps on their own ports and compare slugs by hand.
+That binds **http://localhost:3000**. Public Hanami prefixes (all methods) go to
+`:2300`; everything else goes to Rails `:3001`.
 
 ## Hanami only
 
@@ -50,11 +59,13 @@ HANAMI_ENV=test bundle exec rake db:load_schema
 bundle exec rspec
 ```
 
-## Writes and identity now on Hanami
+## Writes and identity on Hanami
 
 - Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in.
-- Signed-in editors can create/edit cases (`/cases/new`, `/cases/:slug/edit`), comment, and follow.
-- Case writes insert a `versions` row (event + edit summary). Revert is still not implemented.
-- Staff at `/admin/users` can toggle `admin` / `analyst` (admin session required).
+- `/register` writes an unconfirmed user and a `confirmation_token`. `/users/confirmation` matches Devise's token path. Mailers stay on Rails.
+- Signed-in editors can create/edit cases, agencies, and organizations; comment; and follow.
+- Case writes insert a `versions` row. Updates store a YAML `object` snapshot. Revert restores those columns. Create events with no snapshot are not undone and never delete the case.
+- Staff at `/admin/users` can toggle `admin` / `analyst`.
+- Case pages embed OpenStreetMap when `latitude` / `longitude` are present. CarrierWave keys are left unchanged.
 
-Still on Rails: registration/confirm/reset mailers, maps, CarrierWave versions, history revert, follower notification emails, and the Bootstrap 3 UI.
+Still on Rails: outgoing mail, S3 avatar versions, follower notification emails, Bootstrap 3 visual parity, and deleting Rails itself.

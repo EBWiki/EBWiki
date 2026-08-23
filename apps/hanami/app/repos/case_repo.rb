@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
+require "yaml"
+
 module EbWiki
   module Repos
     class CaseRepo < EbWiki::DB::Repo
       PAGE_SIZE = 12
       RECENT_LIMIT = 10
+      YAML_PERMITTED = [Date, Time, DateTime, Symbol].freeze
+      REVERTABLE_COLUMNS = %i[
+        title date state_id city address zipcode longitude latitude
+        video_url overview community_action litigation country summary blurb
+        cause_of_death
+      ].freeze
 
       def homepage(page: 1)
         page_number = [page.to_i, 1].max
@@ -93,6 +101,21 @@ module EbWiki
         )
       end
 
+      def delete_comment(comment_id, actor:)
+        comment = comments.where(id: comment_id).one
+        return unless comment
+        return unless actor && (actor.admin || comment.user_id == actor.id)
+
+        comments.where(id: comment_id).delete
+        comment
+      end
+
+      def comment_case_slug(comment)
+        return unless comment&.commentable_type == "Case"
+
+        cases.where(id: comment.commentable_id).one&.slug
+      end
+
       def following?(case_id:, user_id:)
         !follows.where(
           followable_type: "Case",
@@ -148,6 +171,7 @@ module EbWiki
         return unless record
 
         now = Time.now.utc
+        before = snapshot_case(record)
         db.transaction do
           cases.where(id: record.id).update(
             case_row(attrs, slug: record.slug, now: now).except(:created_at, :slug)
@@ -156,7 +180,47 @@ module EbWiki
           links.where(linkable_type: "Case", linkable_id: record.id).delete
           case_agencies.where(case_id: record.id).delete
           write_children(record.id, attrs, now: now)
-          record_version(record.id, event: "update", comment: attrs[:summary], user: user, now: now)
+          record_version(
+            record.id,
+            event: "update",
+            comment: attrs[:summary],
+            user: user,
+            now: now,
+            object: dump_object(before)
+          )
+        end
+
+        cases.where(id: record.id).one
+      end
+
+      def revert_to_version(slug, version_id, user:)
+        record = cases.where(slug: slug).one
+        return unless record
+
+        version = versions
+          .where(id: Integer(version_id), item_type: "Case", item_id: record.id)
+          .one
+        return unless version
+
+        attrs = load_object(version.object)
+        return :no_snapshot unless attrs.is_a?(Hash)
+
+        now = Time.now.utc
+        updates = reverted_columns(attrs)
+        updates[:updated_at] = now
+        updates[:summary] = "Reverted to version #{version.id}"
+
+        db.transaction do
+          before = snapshot_case(cases.where(id: record.id).one)
+          cases.where(id: record.id).update(updates)
+          record_version(
+            record.id,
+            event: "update",
+            comment: "Reverted to version #{version.id}",
+            user: user,
+            now: now,
+            object: dump_object(before)
+          )
         end
 
         cases.where(id: record.id).one
@@ -230,7 +294,7 @@ module EbWiki
         end
       end
 
-      def record_version(case_id, event:, comment:, user:, now:)
+      def record_version(case_id, event:, comment:, user:, now:, object: nil)
         versions.insert(
           item_type: "Case",
           item_id: case_id,
@@ -238,8 +302,40 @@ module EbWiki
           comment: comment.to_s,
           whodunnit: user&.id&.to_s,
           author_id: user&.id,
+          object: object,
           created_at: now
         )
+      end
+
+      def snapshot_case(record)
+        REVERTABLE_COLUMNS.each_with_object({}) do |column, hash|
+          hash[column.to_s] = record.public_send(column) if record.respond_to?(column)
+        end
+      end
+
+      def dump_object(hash)
+        YAML.dump(hash)
+      end
+
+      def load_object(yaml)
+        return if yaml.to_s.strip.empty?
+
+        YAML.safe_load(
+          yaml,
+          permitted_classes: YAML_PERMITTED,
+          aliases: true
+        )
+      rescue Psych::Exception
+        nil
+      end
+
+      def reverted_columns(attrs)
+        REVERTABLE_COLUMNS.each_with_object({}) do |column, hash|
+          key = attrs.key?(column.to_s) ? column.to_s : column
+          next unless attrs.key?(key)
+
+          hash[column] = attrs[key]
+        end
       end
 
       def unique_slug(title, city, zipcode)

@@ -4,7 +4,14 @@
 module EbWiki
   module Views
     class Context < Hanami::View::Context
-      # Define your view context here. See https://hanakai.org/learn/hanami/views/context/ for details.
+      def current_user
+        return unless request?
+
+        user_id = request.session[:user_id]
+        return unless user_id
+
+        @current_user ||= Hanami.app["repos.user_repo"].by_id(user_id)
+      end
     end
   end
 end
