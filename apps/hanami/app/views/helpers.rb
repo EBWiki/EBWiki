@@ -93,6 +93,13 @@ module EbWiki
         nil
       end
 
+      def attr_of(record, key)
+        return if record.nil?
+        return record.public_send(key) if record.respond_to?(key)
+
+        record[key]
+      end
+
       def truncate_text(text, length)
         str = text.to_s
         return str if str.length <= length
