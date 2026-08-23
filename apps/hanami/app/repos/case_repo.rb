@@ -41,10 +41,6 @@ module EbWiki
         }
       end
 
-      def exists_slug?(slug)
-        !cases.where(slug: slug).one.nil?
-      end
-
       private
 
       def agencies_for(case_id)

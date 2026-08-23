@@ -44,5 +44,17 @@ jobs:
           PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE ebwiki_hanami_test;"
           bundle exec rake db:load_schema
 
+      - name: Install Node packages
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/hanami/package-lock.json
+
+      - name: Compile assets
+        run: |
+          npm ci
+          bundle exec hanami assets compile
+
       - name: Run RSpec
         run: bundle exec rspec
