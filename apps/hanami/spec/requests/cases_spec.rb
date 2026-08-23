@@ -14,7 +14,7 @@ RSpec.describe "Public case pages", :db, type: :request do
   it "lists cases on the homepage with the live count" do
     seed_walter_scott
     TestData.insert_case(
-      state_id: TestData.relations[:states].first.id,
+      state_id: TestData.relations[:states].first[:id],
       title: "Sandra Bland",
       slug: "sandra-bland",
       city: "Prairie View",
