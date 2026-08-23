@@ -59,3 +59,52 @@ jobs:
 
       - name: Run RSpec
         run: bundle exec rspec
+
+  rubocop:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/hanami
+
+    env:
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+          working-directory: apps/hanami
+
+      - name: Run Standard Ruby
+        run: bundle exec standardrb
+
+  brakeman:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/hanami
+
+    env:
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+          working-directory: apps/hanami
+
+      - name: Run bundler-audit
+        run: bundle exec bundler-audit check --update
+
+      - name: Run Brakeman
+        run: bundle exec brakeman -p ../.. -A --no-pager --no-exit-on-warn --no-exit-on-error

@@ -57,11 +57,13 @@ rspec spec/
 
 More information on how to use RSpec, shoulda-matchers, and FactoryBot can be found at the links above.
 
-We also use [Rubocop](https://github.com/bbatsov/rubocop) as part of our continous integration process in Github Actions.  To run Rubocop locally, enter
+We also use [RuboCop](https://github.com/bbatsov/rubocop) as part of our continuous integration process in Github Actions. To run RuboCop locally on Rails, enter
 
 ```
-rubocop
+bundle exec rubocop
 ```
+
+New Hanami code in [`apps/hanami`](apps/hanami) uses **[Standard Ruby](https://github.com/standardrb/standard)** as the preferred style (`bundle exec standardrb` from that directory). Rails keeps this repo-root `.rubocop.yml` until a dedicated conversion. Brakeman runs on the Rails app (`bundle exec brakeman`); the Hanami workflow also runs Brakeman against the repo root plus `bundler-audit` on Hanami gems.
 
 ### Continuous Integration (CI)
 Each time a pull request (PR) is opened or updated
