@@ -22,9 +22,9 @@
   <label>State
     <select name="agency[state_id]" required>
       <option value="">State</option>
-      <% states.each do |state| %>
-        <option value="<%= state.id %>" <%= "selected" if (values[:state_id] || agency&.state_id).to_s == state.id.to_s %>><%= state.name %></option>
-      <% end %>
+        <% states.each do |state| %>
+          <option value="<%= attr_of(state, :id) %>" <%= "selected" if (values[:state_id] || attr_of(agency, :state_id)).to_s == attr_of(state, :id).to_s %>><%= attr_of(state, :name) %></option>
+        <% end %>
     </select>
   </label>
   <label>Zipcode <input name="agency[zipcode]" value="<%= value.call(:zipcode, agency&.zipcode) %>"></label>
