@@ -338,6 +338,36 @@ RSpec.describe "Public case pages", :db, type: :request do
     expect(TestData.relations[:comments].where(id: comment[:id]).one).to be_nil
   end
 
+  it "rejects a duplicate agency name and forbids non-admins from editing an organization" do
+    state_id = TestData.insert_state
+    TestData.insert_agency(name: "Chicago Police Department", slug: "cpd")
+    org_id = TestData.insert_organization
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/agencies", {agency: {name: "Chicago Police Department", city: "Chicago", state_id: state_id}}
+    expect(last_response.status).to eq(422)
+    expect(last_response.body).to include("already exists")
+
+    get "/organizations/#{org_id}/edit"
+    expect(last_response.status).to eq(403)
+  end
+
+  it "lets a user edit their profile and lists followed cases there" do
+    seed_walter_scott
+    user_id = TestData.insert_user(email: "editor@example.com", password: "password123", name: "Editor")
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/cases/walter-scott/follows"
+    post "/users/#{user_id}", {_method: "patch", user: {name: "Editor Two", description: "Writes about cases"}}
+
+    expect(last_response.status).to eq(302)
+    get "/users/#{user_id}"
+    expect(last_response.body).to include("Editor Two")
+    expect(last_response.body).to include("Writes about cases")
+    expect(last_response.body).to include("Walter Scott")
+  end
+
   it "resets a password from a stored Devise token" do
     TestData.insert_user(email: "editor@example.com", password: "password123")
 
