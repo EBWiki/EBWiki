@@ -1,0 +1,18 @@
+# Prefer `bundle exec standardrb`. This file lets `rubocop` use the same style.
+inherit_gem:
+  standard: config/base.yml
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.4
+  Exclude:
+    - node_modules/**/*
+    - public/**/*
+    - vendor/**/*
+    - tmp/**/*
+    - log/**/*
+    - bin/**/*
+
+Style/Documentation:
+  Enabled: false

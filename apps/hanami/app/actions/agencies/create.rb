@@ -38,7 +38,6 @@ module EbWiki
             jurisdiction: raw[:jurisdiction]
           }
         end
-
       end
     end
   end

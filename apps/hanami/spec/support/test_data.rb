@@ -20,14 +20,14 @@ module TestData
   end
 
   def insert_case(state_id:, title: "Walter Scott", slug: "walter-scott", city: "North Charleston",
-                  date: Date.new(2015, 4, 4), cause_of_death: "shooting",
-                  overview: "<p>Walter Scott was shot in the back while fleeing.</p>",
-                  blurb: "Walter Scott was shot by a North Charleston police officer.",
-                  summary: "Initial case entry",
-                  latitude: nil,
-                  longitude: nil,
-                  avatar: nil,
-                  updated_at: nil)
+    date: Date.new(2015, 4, 4), cause_of_death: "shooting",
+    overview: "<p>Walter Scott was shot in the back while fleeing.</p>",
+    blurb: "Walter Scott was shot by a North Charleston police officer.",
+    summary: "Initial case entry",
+    latitude: nil,
+    longitude: nil,
+    avatar: nil,
+    updated_at: nil)
     relations[:cases].insert(
       title: title,
       slug: slug,
