@@ -28,6 +28,7 @@ AllCops:
     - 'config/routes.rb'
     - 'vendor/**/*'
     - 'spec/**/*'
+    - 'apps/hanami/**/*'
 
 # Disabled pending i18n refactor - requires moving all flash/validation messages to locale files
 Rails/I18nLocaleTexts:
