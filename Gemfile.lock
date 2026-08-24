@@ -625,7 +625,7 @@ GEM
       builder (~> 3.0)
     social-share-button (1.2.4)
       coffee-rails
-    sprockets (4.3.0)
+    sprockets (4.4.0)
       concurrent-ruby (~> 1.1)
       logger
       rack (>= 2.2.4, < 4)
@@ -788,7 +788,7 @@ DEPENDENCIES
   simplecov (~> 0.22.0)
   sitemap_generator (~> 6.1)
   social-share-button (~> 1.2)
-  sprockets (~> 4.3)
+  sprockets (~> 4.4)
   standard (>= 1.35.1)
   statistics
   twitter (~> 7.0)
