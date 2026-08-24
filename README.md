@@ -63,7 +63,7 @@ We also use [RuboCop](https://github.com/bbatsov/rubocop) as part of our continu
 bundle exec rubocop
 ```
 
-New Hanami code in [`apps/hanami`](apps/hanami) uses **[Standard Ruby](https://github.com/standardrb/standard)** as the preferred style (`bundle exec standardrb` from that directory). Rails keeps this repo-root `.rubocop.yml` until a dedicated conversion. Brakeman runs on the Rails app (`bundle exec brakeman`); the Hanami workflow also runs Brakeman against the repo root plus `bundler-audit` on Hanami gems.
+New Hanami code in [`apps/hanami`](apps/hanami) uses **[Standard Ruby](https://github.com/standardrb/standard)** as the preferred style (`bundle exec standardrb` from that directory). Rails keeps this repo-root `.rubocop.yml` until a dedicated conversion. Rails CI still runs Brakeman. The Hanami workflow runs Dawnscanner and bundler-audit against `apps/hanami`.
 
 ### Continuous Integration (CI)
 Each time a pull request (PR) is opened or updated
