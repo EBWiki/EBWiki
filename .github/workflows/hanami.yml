@@ -83,7 +83,7 @@ jobs:
       - name: Run Standard Ruby
         run: bundle exec standardrb
 
-  brakeman:
+  dawnscanner:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -106,5 +106,8 @@ jobs:
       - name: Run bundler-audit
         run: bundle exec bundler-audit check --update
 
-      - name: Run Brakeman
-        run: bundle exec brakeman -p ../.. -A --no-pager --no-exit-on-warn --no-exit-on-error
+      - name: Install Dawnscanner knowledge base
+        run: bundle exec rake security:dawn_kb
+
+      - name: Run Dawnscanner
+        run: bundle exec dawn scan .
