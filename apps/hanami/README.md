@@ -70,7 +70,7 @@ bundle exec standardrb --fix
 bundle exec rake lint
 ```
 
-Brakeman is a Rails scanner. From this app it runs against the repo root (same target as Rails CI). Hanami gems are also checked with bundler-audit:
+Hanami security scanning uses **[Dawnscanner](https://github.com/thesp0nge/dawnscanner)** plus bundler-audit. Dawnscanner reads this app’s `Gemfile.lock` and applies its knowledge base (CVE bulletins and generic Ruby checks). Rails CI still runs Brakeman on the Rails app.
 
 ```bash
 bundle exec rake security:check

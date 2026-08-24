@@ -28,7 +28,7 @@ group :development, :test do
   # Syntax highlighting SQL logs
   gem "rouge"
   gem "standard", ">= 1.35.1", require: false
-  gem "brakeman", "~> 8.0", require: false
+  gem "dawnscanner", "~> 2.2", require: false
   gem "bundler-audit", require: false
 end
 
