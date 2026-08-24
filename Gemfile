@@ -66,7 +66,7 @@ gem 'simplecov', '~> 0.22.0'
 gem 'simple_form', '5.4.1'
 gem 'sitemap_generator', '~> 6.1'
 gem 'social-share-button', '~> 1.2'
-gem 'sprockets', '~> 4.3'
+gem 'sprockets', '~> 4.4'
 gem 'statistics'
 
 gem 'twitter', '~> 7.0'
