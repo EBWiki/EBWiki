@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+bundle exec rake db:load_schema_if_needed
+bundle exec hanami db seed

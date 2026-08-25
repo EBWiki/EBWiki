@@ -51,6 +51,29 @@ http://localhost:2300
 
 Do not run `LOAD_SCHEMA=1` against the Rails database. That flag is only for an empty throwaway DB.
 
+## Railway staging
+
+The Hanami sibling deploys as its own Railway service with root directory
+`apps/hanami` (so Railway uses this Dockerfile, not the repo-root Rails image).
+It uses a **separate** Railway Postgres — never the Heroku/Rails production
+database.
+
+```bash
+# After Railway injects PORT, DATABASE_URL, SESSION_SECRET, HANAMI_ENV=production
+bin/railway-release   # load subset schema if empty, then seed demo rows
+bundle exec puma -C config/puma.rb
+```
+
+Demo accounts (confirmed; password from `STAGING_SEED_PASSWORD`, default
+`password123` only if that variable is unset):
+
+- `admin@example.com` — staff
+- `analyst@example.com` — analyst
+- `editor@example.com` — signed-in editor
+
+Seeds are skipped once `admin@example.com` exists. Do not point this release
+command at a shared Rails database.
+
 ## Tests
 
 ```bash

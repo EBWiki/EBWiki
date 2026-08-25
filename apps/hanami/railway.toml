@@ -1,0 +1,15 @@
+# Intended Railway service settings for the Hanami sibling.
+# New Railway services no longer auto-apply railway.toml; the staging service
+# is configured with the same values via the Railway API (root apps/hanami).
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+preDeployCommand = ["bin/railway-release"]
+startCommand = "bundle exec puma -C config/puma.rb"
+healthcheckPath = "/"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
