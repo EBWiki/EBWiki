@@ -74,6 +74,9 @@ Demo accounts (confirmed; password from `STAGING_SEED_PASSWORD`, default
 Seeds are skipped once `admin@example.com` exists. Do not point this release
 command at a shared Rails database.
 
+Set `HTTP_BASIC_AUTH_USER` and `HTTP_BASIC_AUTH_PASSWORD` to require a browser
+login before the site. `/up` stays unauthenticated for Railway healthchecks.
+
 ## Tests
 
 ```bash
