@@ -3,7 +3,8 @@
 #
 # Environment and port
 #
-port ENV.fetch("HANAMI_PORT", 2300)
+# Railway (and most PaaS hosts) inject PORT. Keep HANAMI_PORT for local `bin/dev`.
+port ENV.fetch("PORT") { ENV.fetch("HANAMI_PORT", 2300) }
 environment ENV.fetch("HANAMI_ENV", "development")
 
 #
