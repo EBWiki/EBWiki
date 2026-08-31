@@ -4,20 +4,11 @@ source ./dev_provisions/environment.sh
 chown postgres ./db/structure.sql
 cp -v ./dev_provisions/database.yml ./config
 
-for i in postgresql redis-server elasticsearch;
+for i in postgresql redis-server;
 do
     echo "## Starting $i"
     service $i start
 done
-
-
-echo -n "## Waiting for elasticsearch..."
-until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:9200) -eq 200 ];
-do
-    echo -n ".";
-    sleep 1;
-done
-echo
 
 echo "## Create DB user"
 runuser -l postgres -c "psql -c \"CREATE USER blackops WITH PASSWORD '${BLACKOPS_DATABASE_PASSWORD}';\""
@@ -43,7 +34,6 @@ echo "npm     = $(npm -v)"
 echo "java    = $(java -version 2>&1 | grep version)"
 echo "psql    = $(psql --version)"
 echo "redis   = $(redis-server --version | awk '{print $3}')"
-echo "elastic = $(curl -sX GET 'http://localhost:9200')"
 echo '#########################################################'
 
 echo "## Starting the server..."
