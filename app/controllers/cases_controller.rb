@@ -78,6 +78,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   def destroy
     begin
       @this_case = Case.friendly.find(params[:id])
+      authorize @this_case
       @this_case.destroy
       flash[:success] = 'Case was removed!'
       CaseMailer.send_deletion_email(users: @this_case.followers,

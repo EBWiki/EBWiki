@@ -1,0 +1,32 @@
+<h1>Staff tools</h1>
+<p>Search and update users. Case, agency, and organization edits stay on the public site; admins can delete from those pages.</p>
+
+<%= form_tag admin_users_path, method: :get, class: 'form-inline', style: 'margin-bottom: 15px;' do %>
+  <%= text_field_tag :q, params[:q], class: 'form-control', placeholder: 'Name or email' %>
+  <%= submit_tag 'Search', class: 'btn btn-primary' %>
+<% end %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Admin</th>
+      <th>Analyst</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.admin? ? 'Yes' : 'No' %></td>
+        <td><%= user.analyst? ? 'Yes' : 'No' %></td>
+        <td><%= link_to 'Edit', admin_user_path(user) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @users %>

@@ -2,6 +2,8 @@
 
 # Organizations controller
 class OrganizationsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
+
   # GET /organizations
   def index
     @organizations = Organization.all
@@ -43,6 +45,14 @@ class OrganizationsController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    @organization = Organization.find(params[:id])
+    authorize @organization
+    @organization.destroy
+    flash[:notice] = 'Organization was successfully destroyed.'
+    redirect_to organizations_url
   end
 
   def after_sign_up_path_for(resource)
