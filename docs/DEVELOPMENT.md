@@ -11,6 +11,7 @@ you'll find links, notes, HOWTOs and other useful information about developing f
 * [Third-Party Services](#third-party-services)
 * [Recaptcha](#recaptcha)
 * [Annotate](#annotate)
+* [Framework notes](#framework-notes)
 
 ## General Timeline for Contributing to EBWiki
 
@@ -81,3 +82,7 @@ The hook runs `rubocop` directly and `rake pre_commit:ci`, which executes:
 - **RSpec** – Full test suite
 
 To bypass the hook in exceptional cases (e.g., WIP commits), use `git commit -n`.
+
+## Framework notes
+
+EBWiki is a Rails 8.1 application. A feasibility study of what a Hanami rewrite would involve is in [HANAMI_MIGRATION.md](HANAMI_MIGRATION.md). It is analysis only; we are not migrating.
