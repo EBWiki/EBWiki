@@ -56,7 +56,15 @@ rubocop
 ### Continuous Integration (CI)
 Each time a pull request (PR) is opened or updated
 
-The full test suite will be run, to ensure that submitted changes do not break functionality elsewhere in the app.  Brakeman, Rubocop, and a link checker will also be run on the submitted changes.
+EBWiki uses a two-agent process with deterministic CI as the source of truth:
+- **Coding agent:** authors code changes
+- **Review agent:** provides advisory feedback (`Agent Review / Droid` and `Agent Assist / Droid Tag`)
+- **Required deterministic CI:** validates completion with measurable pass/fail checks (Ruby tests/lint/security, docs link checks, and config/dependabot validation based on changed paths)
+
+Checks run proportionally to changed files:
+- Ruby/app/runtime changes run `CI / Ruby / RSpec`, `CI / Ruby / RuboCop`, and `CI / Security / Brakeman`
+- Docs-only changes run `CI / Docs / Markdown links`
+- `.github/**` and Dependabot config changes run config validation checks, including `CI / Config / Dependabot policy`
 
 As noted in our development guide, your PR is expected to pass all checks before a maintainer will merge it.  If your PR is failing one of the checks, refer to our development guide for tips on how to address the failure(s).
 
