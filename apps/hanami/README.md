@@ -60,8 +60,21 @@ database.
 
 ```bash
 # After Railway injects PORT, DATABASE_URL, SESSION_SECRET, HANAMI_ENV=production
-bin/railway-release   # load subset schema if empty, then seed demo rows
+bin/railway-release   # optional dump restore, then schema if empty, then seed
 bundle exec puma -C config/puma.rb
+```
+
+`latest.dump` is a Heroku custom-format snapshot from **2020-09-01**. It was
+committed as `latest.dump` and later deleted from `main`; the blob is still at
+commit `592560514b263c8956d039bdd25c9c8b7fb2a81f`. Set `RESTORE_DUMP=1` on a
+**throwaway** database (Railway Postgres16) to download that file, `pg_restore`
+it, rename `cases.cause_of_death_name` → `cause_of_death`, and add `cases.tsv`.
+Unset `RESTORE_DUMP` after the first successful restore so later deploys do not
+wipe writes.
+
+```bash
+# Local throwaway DB only — never the Rails/shared database
+RESTORE_DUMP=1 DUMP_PATH=/tmp/latest.dump bin/restore-dump
 ```
 
 Demo accounts (confirmed; password from `STAGING_SEED_PASSWORD`, default
