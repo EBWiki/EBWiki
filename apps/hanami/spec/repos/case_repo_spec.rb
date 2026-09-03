@@ -27,6 +27,8 @@ RSpec.describe EbWiki::Repos::CaseRepo, :db do
   end
 
   it "picks the newest row when a slug is duplicated" do
+    Hanami.app["db.rom"].gateways[:default].connection
+      .run("DROP INDEX IF EXISTS index_cases_on_slug")
     state_id = TestData.insert_state
     TestData.insert_case(state_id: state_id, title: "Older Scott", slug: "walter-scott")
     newer_id = TestData.insert_case(state_id: state_id, title: "Newer Scott", slug: "walter-scott")
