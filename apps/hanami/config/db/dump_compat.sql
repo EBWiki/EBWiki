@@ -31,6 +31,8 @@ ALTER TABLE public.cases
 
 CREATE INDEX IF NOT EXISTS index_cases_on_tsv ON public.cases USING gin (tsv);
 
+-- The 2020 dump can contain duplicate ids (pg_restore skipped PKs). Keep the
+-- newest physical row per id so ROM associations can use a real primary key.
 DO $$
 DECLARE
   tbl text;
@@ -40,6 +42,16 @@ BEGIN
     'users', 'comments', 'follows', 'links', 'organizations', 'versions'
   ]
   LOOP
+    IF EXISTS (
+      SELECT 1 FROM information_schema.tables
+      WHERE table_schema = 'public' AND tables.table_name = tbl
+    ) THEN
+      EXECUTE format(
+        'DELETE FROM public.%I a USING public.%I b WHERE a.id = b.id AND a.ctid < b.ctid',
+        tbl, tbl
+      );
+    END IF;
+
     IF EXISTS (
       SELECT 1 FROM information_schema.tables
       WHERE table_schema = 'public' AND tables.table_name = tbl
