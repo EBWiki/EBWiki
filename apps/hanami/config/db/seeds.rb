@@ -7,12 +7,32 @@ require "bcrypt"
 require "date"
 
 users = Hanami.app["relations.users"]
+now = Time.now.utc
+password = ENV.fetch("STAGING_SEED_PASSWORD", "password123")
+encrypted_password = BCrypt::Password.create(password)
 
-unless users.where(email: "admin@example.com").exist?
-  now = Time.now.utc
-  password = ENV.fetch("STAGING_SEED_PASSWORD", "password123")
-  encrypted_password = BCrypt::Password.create(password)
+[
+  {email: "admin@example.com", name: "Staging Admin", admin: true, analyst: false, slug: "staging-admin"},
+  {email: "analyst@example.com", name: "Staging Analyst", admin: false, analyst: true, slug: "staging-analyst"},
+  {email: "editor@example.com", name: "Staging Editor", admin: false, analyst: false, slug: "staging-editor"}
+].each do |attrs|
+  next if users.where(email: attrs[:email]).exist?
 
+  users.insert(
+    email: attrs[:email],
+    encrypted_password: encrypted_password,
+    name: attrs[:name],
+    admin: attrs[:admin],
+    analyst: attrs[:analyst],
+    slug: attrs[:slug],
+    confirmed_at: now,
+    created_at: now,
+    updated_at: now,
+    sign_in_count: 0
+  )
+end
+
+if Hanami.app["relations.cases"].count.zero?
   state_id = Hanami.app["relations.states"].insert(
     name: "South Carolina",
     ansi_code: "SC",
@@ -20,25 +40,6 @@ unless users.where(email: "admin@example.com").exist?
     created_at: now,
     updated_at: now
   )
-
-  [
-    {email: "admin@example.com", name: "Staging Admin", admin: true, analyst: false, slug: "staging-admin"},
-    {email: "analyst@example.com", name: "Staging Analyst", admin: false, analyst: true, slug: "staging-analyst"},
-    {email: "editor@example.com", name: "Staging Editor", admin: false, analyst: false, slug: "staging-editor"}
-  ].each do |attrs|
-    users.insert(
-      email: attrs[:email],
-      encrypted_password: encrypted_password,
-      name: attrs[:name],
-      admin: attrs[:admin],
-      analyst: attrs[:analyst],
-      slug: attrs[:slug],
-      confirmed_at: now,
-      created_at: now,
-      updated_at: now,
-      sign_in_count: 0
-    )
-  end
 
   case_id = Hanami.app["relations.cases"].insert(
     title: "Walter Scott",

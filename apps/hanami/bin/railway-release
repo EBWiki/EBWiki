@@ -2,5 +2,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+if [ "${RESTORE_DUMP:-}" = "1" ]; then
+  bundle exec rake db:restore_dump
+fi
 bundle exec rake db:load_schema_if_needed
 bundle exec hanami db seed
