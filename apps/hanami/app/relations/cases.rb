@@ -5,6 +5,8 @@ module EbWiki
     class Cases < EbWiki::DB::Relation
       schema :cases, infer: true do
         # Generated tsvector is not inferred by ROM; search uses it when present.
+        attribute :id, Types::Integer
+        primary_key :id
         attribute :tsv, Types::String.optional
         associations do
           # `cases.state` is a leftover string column; the FK is state_id.
