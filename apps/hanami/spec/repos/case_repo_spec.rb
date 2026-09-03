@@ -26,6 +26,17 @@ RSpec.describe EbWiki::Repos::CaseRepo, :db do
     expect(repo.find_page("missing")).to be_nil
   end
 
+  it "picks the newest row when a slug is duplicated" do
+    state_id = TestData.insert_state
+    TestData.insert_case(state_id: state_id, title: "Older Scott", slug: "walter-scott")
+    newer_id = TestData.insert_case(state_id: state_id, title: "Newer Scott", slug: "walter-scott")
+
+    page = repo.find_page("walter-scott")
+
+    expect(page[:record].id).to eq(newer_id)
+    expect(page[:record].title).to eq("Newer Scott")
+  end
+
   it "restores case columns from a YAML version snapshot" do
     state_id = TestData.insert_state
     case_id = TestData.insert_case(state_id: state_id, city: "Charleston")
