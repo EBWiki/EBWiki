@@ -30,3 +30,26 @@ ALTER TABLE public.cases
   ) STORED;
 
 CREATE INDEX IF NOT EXISTS index_cases_on_tsv ON public.cases USING gin (tsv);
+
+DO $$
+DECLARE
+  tbl text;
+BEGIN
+  FOREACH tbl IN ARRAY ARRAY[
+    'cases', 'subjects', 'states', 'case_agencies', 'agencies',
+    'users', 'comments', 'follows', 'links', 'organizations', 'versions'
+  ]
+  LOOP
+    IF EXISTS (
+      SELECT 1 FROM information_schema.tables
+      WHERE table_schema = 'public' AND tables.table_name = tbl
+    ) AND NOT EXISTS (
+      SELECT 1 FROM information_schema.table_constraints
+      WHERE table_schema = 'public'
+        AND table_constraints.table_name = tbl
+        AND constraint_type = 'PRIMARY KEY'
+    ) THEN
+      EXECUTE format('ALTER TABLE public.%I ADD PRIMARY KEY (id)', tbl);
+    END IF;
+  END LOOP;
+END $$;

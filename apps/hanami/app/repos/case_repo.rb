@@ -34,7 +34,7 @@ module EbWiki
       end
 
       def find_page(slug)
-        record = cases.where(slug: slug).one
+        record = find_by_slug(slug)
         return unless record
 
         {
@@ -71,7 +71,7 @@ module EbWiki
       end
 
       def history_for(slug)
-        record = cases.where(slug: slug).one
+        record = find_by_slug(slug)
         return unless record
 
         versions = self.versions
@@ -178,7 +178,7 @@ module EbWiki
       end
 
       def update_with_children(slug, attrs, user:)
-        record = cases.where(slug: slug).one
+        record = find_by_slug(slug)
         return unless record
 
         now = Time.now.utc
@@ -205,7 +205,7 @@ module EbWiki
       end
 
       def revert_to_version(slug, version_id, user:)
-        record = cases.where(slug: slug).one
+        record = find_by_slug(slug)
         return unless record
 
         version = versions
@@ -238,6 +238,10 @@ module EbWiki
       end
 
       private
+
+      def find_by_slug(slug)
+        cases.where(slug: slug).order(cases[:id].desc).limit(1).one
+      end
 
       def db
         cases.dataset.db
