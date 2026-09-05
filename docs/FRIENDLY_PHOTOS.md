@@ -33,7 +33,7 @@ bundle exec rake photos:search_friendly LIMIT=10 FORMAT=json
 
 | Source | What we take | What we refuse |
 | --- | --- | --- |
-| Wikimedia Commons + English Wikipedia | HTTPS uploads with license metadata | Queries already exclude mugshot/booking/inmate terms |
+| Wikimedia Commons + English Wikipedia | HTTPS jpeg/png/gif/webp with license metadata | Mugshot/booking/inmate terms, PDF/DjVu scans |
 | Openverse (CC0, CC BY, CC BY-SA, PDM) | Flickr/Wikimedia-hosted images with a license URL | Mugshot-farm hosts and booking-database text |
 | News sites, social networks, arrest DBs | Nothing. We do not scrape them. | Primary source |
 
@@ -73,9 +73,20 @@ Against the Playwright seed (`e2e-missing-photo` / Jordan Doe) with
 - **E2E booking mugshot** — shown as flagged, apply hidden
 - Searching a person with only booking-photo hits shows **None found**
 
-A live Commons/Openverse search for a well-documented subject such as
-Walter Scott should return at least one licensed portrait or an explicit
-none-found message. Do not attach anything until a person reviews it.
+Live Wikimedia/Openverse (2026-09-05, no attach):
+
+- **Walter Scott** (name only) hits Sir Walter Scott portraits on Commons.
+  That is expected name collision. A person must reject the wrong face.
+- **Killing of Walter Scott** exists on Wikipedia but has **no page image**.
+  Commons + city still returns unrelated scans. Honest result: **none found**
+  for a verified portrait of that subject.
+- **George Floyd portrait** on Commons returns licensed stills (CC BY / BY-SA),
+  including murals and protest photos. Those are review candidates, not
+  auto-attach. Protest/incident language is downranked vs family/portrait.
+- Queries also try `Killing of {name}` and `Shooting of {name}`. Commons
+  drops mugshot/booking/inmate terms plus PDF/DjVu scans.
+
+Do not attach anything until a person reviews it. Never invent a face.
 
 ## Agent routine
 

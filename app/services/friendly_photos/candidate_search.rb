@@ -23,7 +23,7 @@ module FriendlyPhotos
     attr_reader :client, :openverse
 
     def subject_names(this_case)
-      names = this_case.subjects.filter_map { |subject| subject.name.presence }
+      names = this_case.subjects.reload.filter_map { |subject| subject.name.presence }
       names << this_case.title if names.empty?
       names.uniq
     end
@@ -46,7 +46,9 @@ module FriendlyPhotos
         name,
         [name, this_case.city].compact.join(' '),
         [name, year].compact.join(' '),
-        "#{name} portrait"
+        "#{name} portrait",
+        "Killing of #{name}",
+        "Shooting of #{name}"
       ].uniq
     end
 
