@@ -49,4 +49,24 @@ RSpec.describe FriendlyPhotos::ApplyCandidate do
     expect(result.success).to be false
     expect(candidate.reload).to be_pending
   end
+
+  it 'refuses candidates without a license or rights URL' do
+    candidate.update!(license: nil, license_url: nil)
+
+    result = described_class.call(this_case: this_case, candidate: candidate)
+
+    expect(result.success).to be false
+    expect(result.error).to include('license')
+    expect(candidate.reload).to be_pending
+  end
+
+  it 'refuses images from hosts outside the Wikimedia/Openverse allowlist' do
+    candidate.update!(image_url: 'https://example.com/portrait.jpg')
+
+    result = described_class.call(this_case: this_case, candidate: candidate)
+
+    expect(result.success).to be false
+    expect(result.error).to include('allowed')
+    expect(candidate.reload).to be_pending
+  end
 end

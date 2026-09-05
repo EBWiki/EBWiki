@@ -17,7 +17,7 @@ RSpec.describe FriendlyPhotos::CaseLookup do
   end
 
   it 'finds a case by subject name' do
-    results = described_class.call(filter: 'needs_photo', q: 'Jordan')
+    results = described_class.call(filter: 'needs_photo', query: 'Jordan')
 
     expect(results).to include(jordan)
     expect(results).not_to include(riley)
