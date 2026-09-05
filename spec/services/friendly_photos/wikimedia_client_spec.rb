@@ -26,6 +26,7 @@ RSpec.describe FriendlyPhotos::WikimediaClient do
                 url: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/portrait.jpg',
                 thumburl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/portrait.jpg',
                 descriptionurl: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_portrait.jpg',
+                mime: 'image/jpeg',
                 extmetadata: {
                   LicenseShortName: { value: 'CC BY-SA 4.0' },
                   Artist: { value: '<a href="https://example.com">Pat</a>' },

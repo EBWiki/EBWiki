@@ -90,4 +90,13 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
 
     expect(client).to have_received(:search).with(query: this_case.title)
   end
+
+  it 'also searches killing-of and shooting-of titles for the subject' do
+    name = subject_record.name
+    search
+
+    expect(client).to have_received(:search).with(query: "Killing of #{name}")
+    expect(client).to have_received(:search).with(query: "Shooting of #{name}")
+    expect(client).to have_received(:search).with(query: "#{name} Albany")
+  end
 end

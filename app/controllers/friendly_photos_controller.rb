@@ -57,6 +57,10 @@ class FriendlyPhotosController < ApplicationController
 
   def assign_search_params
     @filter = params[:filter].presence || 'needs_photo'
+    assign_lookup_fields
+  end
+
+  def assign_lookup_fields
     @query = params[:q].to_s.strip
     @location = params[:location].to_s.strip
     @date = params[:date].to_s.strip
