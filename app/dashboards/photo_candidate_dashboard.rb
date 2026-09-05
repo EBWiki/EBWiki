@@ -17,6 +17,7 @@ class PhotoCandidateDashboard < Administrate::BaseDashboard
     image_url: Field::String,
     page_url: Field::String,
     license: Field::String,
+    license_url: Field::String,
     author: Field::String,
     score: Field::Number,
     status: Field::Select.with_options(
@@ -48,6 +49,7 @@ class PhotoCandidateDashboard < Administrate::BaseDashboard
     image_url
     page_url
     license
+    license_url
     author
     score
     status
@@ -65,6 +67,7 @@ class PhotoCandidateDashboard < Administrate::BaseDashboard
     image_url
     page_url
     license
+    license_url
     author
     score
     status

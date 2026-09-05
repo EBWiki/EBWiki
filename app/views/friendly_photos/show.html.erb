@@ -4,8 +4,9 @@
   &middot; <%= @this_case.city %><%= ", #{@this_case.state.name}" if @this_case.state %>
 </p>
 <p>
-  Only openly licensed Wikimedia images are searched. Booking photos, inmate
-  lookup images, and other mugshots are flagged and cannot be applied.
+  Wikimedia and Openverse are searched for openly licensed portraits.
+  Mugshot farms and booking databases are never queried. A person must
+  review and approve a candidate before it is attached.
 </p>
 
 <div class="row">
@@ -29,10 +30,10 @@
       <%= submit_tag 'Update photo type', class: 'btn btn-default', data: { testid: 'update-photo-type' } %>
     <% end %>
     <div data-testid="search-wikimedia-wrap" style="margin-top: 1.5em;">
-      <%= button_to 'Search Wikimedia for a friendly photo',
+      <%= button_to 'Search Wikimedia and Openverse',
                     search_friendly_photo_path(@this_case),
                     class: 'btn btn-warning',
-                    data: { confirm: 'Search Wikimedia Commons and Wikipedia for portraits of this person?',
+                    data: { confirm: 'Search Wikimedia and Openverse for openly licensed portraits of this person?',
                             testid: 'search-wikimedia' } %>
     </div>
     <p style="margin-top: 1em;">
@@ -42,7 +43,14 @@
   </div>
 
   <div class="col-md-8">
-    <h3>Wikimedia candidates</h3>
+    <h3>Review candidates</h3>
+    <% friendly_count = @candidates.count(&:friendly?) %>
+    <% if @candidates.any? && friendly_count.zero? %>
+      <p class="text-warning" data-testid="none-found">
+        None found: every stored result was flagged as a mugshot or booking
+        photo and cannot be applied.
+      </p>
+    <% end %>
 
     <% if @candidates.any? %>
       <div class="row" style="margin-top: 1.5em;">
@@ -57,7 +65,7 @@
                 <h4><%= candidate.title %></h4>
                 <p>
                   <%= candidate.subject_name %> &middot; <%= candidate.source.humanize %><br>
-                  <%= candidate.license.presence || 'License unknown' %>
+                  <%= friendly_photo_license_label(candidate) %>
                   <% if candidate.author.present? %>
                     &middot; <%= candidate.author %>
                   <% end %>
@@ -80,7 +88,7 @@
                                 apply_friendly_photo_path(@this_case),
                                 params: { photo_candidate_id: candidate.id },
                                 class: 'btn btn-success btn-sm',
-                                data: { confirm: 'Replace the case photo with this Wikimedia portrait?',
+                                data: { confirm: 'Attach this reviewed, non-mugshot portrait to the case?',
                                         testid: 'apply-photo' } %>
                 <% end %>
                 <% if candidate.pending? %>
@@ -96,7 +104,10 @@
         <% end %>
       </div>
     <% else %>
-      <p style="margin-top: 1em;">No candidates yet. Run a Wikimedia search to look for portraits.</p>
+      <p style="margin-top: 1em;" data-testid="none-found">
+        None found yet. Search Wikimedia and Openverse for a portrait, or
+        leave this case without a new photo.
+      </p>
     <% end %>
   </div>
 </div>

@@ -19,6 +19,17 @@ RSpec.describe FriendlyPhotos::MugshotClassifier do
       expect(result.score).to be_positive
     end
 
+    it 'ranks portraits above news stills and mugshots' do
+      portrait = described_class.call(text: 'Family photo portrait of Jordan smiling')
+      news = described_class.call(text: 'Bodycam incident photo from a protest')
+      mugshot = described_class.call(text: 'County jail booking photo mugshot')
+
+      expect(portrait.score).to be > news.score
+      expect(news.score).to be > mugshot.score
+      expect(news.likely_mugshot).to be false
+      expect(mugshot.likely_mugshot).to be true
+    end
+
     it 'accepts an array of metadata fields' do
       result = described_class.call(
         text: ['Yearbook photograph of', 'https://example.com/portrait.jpg']

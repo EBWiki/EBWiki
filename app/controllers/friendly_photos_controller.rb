@@ -7,9 +7,15 @@ class FriendlyPhotosController < ApplicationController
 
   def index
     @filter = params[:filter].presence || 'needs_photo'
-    @cases = filtered_cases.includes(:subjects, :state, :photo_candidates)
-                           .order(updated_at: :desc)
-                           .page(params[:page]).per(20)
+    @query = params[:q].to_s.strip
+    @location = params[:location].to_s.strip
+    @date = params[:date].to_s.strip
+    @case_id = params[:case_id].to_s.strip
+    @cases = FriendlyPhotos::CaseLookup.call(
+      filter: @filter, q: @query, location: @location, date: @date, case_id: @case_id
+    ).includes(:subjects, :state, :photo_candidates)
+     .order(updated_at: :desc)
+     .page(params[:page]).per(20)
   end
 
   def show
@@ -58,18 +64,15 @@ class FriendlyPhotosController < ApplicationController
     @this_case = Case.friendly.find(params[:id])
   end
 
-  def filtered_cases
-    case @filter
-    when 'mugshot' then Case.mugshot
-    when 'missing' then Case.where(avatar: [nil, ''])
-    when 'unclassified' then Case.unclassified
-    when 'portrait' then Case.portrait
-    else Case.needing_friendly_photo
-    end
-  end
-
   def search_flash(candidates)
     friendly = candidates.count(&:friendly?)
-    "Found #{candidates.size} images (#{friendly} not flagged as mugshots)."
+    if candidates.empty?
+      'None found: Wikimedia and Openverse returned no openly licensed images.'
+    elsif friendly.zero?
+      "None found: #{candidates.size} images were mugshots or booking photos " \
+        'and cannot be applied.'
+    else
+      "Found #{candidates.size} images (#{friendly} not flagged as mugshots)."
+    end
   end
 end

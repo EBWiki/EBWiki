@@ -5,7 +5,8 @@ class PhotoCandidate < ApplicationRecord
 
   enum :source, {
     wikimedia_commons: 'wikimedia_commons',
-    wikipedia: 'wikipedia'
+    wikipedia: 'wikipedia',
+    openverse: 'openverse'
   }
 
   enum :status, {
@@ -28,13 +29,13 @@ class PhotoCandidate < ApplicationRecord
   private
 
   def urls_use_allowed_hosts
-    if image_url.present? && !FriendlyPhotos::WikimediaClient.allowed_image_url?(image_url)
-      errors.add(:image_url, 'must be a Wikimedia HTTPS image URL')
+    if image_url.present? && !FriendlyPhotos::SourcePolicy.allowed_image_url?(image_url)
+      errors.add(:image_url, 'must be an allowed Wikimedia or Openverse HTTPS image URL')
     end
     return if page_url.blank?
-    return if FriendlyPhotos::WikimediaClient.allowed_page_url?(page_url)
+    return if FriendlyPhotos::SourcePolicy.allowed_page_url?(page_url)
 
-    errors.add(:page_url, 'must be a Wikimedia or Wikipedia HTTPS URL')
+    errors.add(:page_url, 'must be an allowed Wikimedia, Wikipedia, or Openverse HTTPS URL')
   end
 end
 
@@ -47,6 +48,7 @@ end
 #  image_url      :string           not null
 #  likely_mugshot :boolean          default(FALSE), not null
 #  license        :string
+#  license_url    :string
 #  notes          :text
 #  page_url       :string
 #  score          :integer          default(0), not null

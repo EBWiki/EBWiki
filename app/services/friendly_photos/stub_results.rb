@@ -23,8 +23,23 @@ module FriendlyPhotos
       description: 'County jail booking photo'
     ).freeze
 
+    OPENVERSE_PORTRAIT = WikimediaClient::Hit.new(
+      source: 'openverse',
+      title: 'E2E openverse portrait',
+      image_url: 'https://live.staticflickr.com/e2e/e2e-openverse-portrait.jpg',
+      page_url: 'https://www.flickr.com/photos/e2e/e2e-openverse-portrait',
+      license: 'CC BY 4.0',
+      license_url: 'https://creativecommons.org/licenses/by/4.0/',
+      author: 'E2E Flickr',
+      description: 'Family photo portrait from Openverse'
+    ).freeze
+
     def self.for(_query)
       [PORTRAIT, MUGSHOT]
+    end
+
+    def self.openverse_for(_query)
+      [OPENVERSE_PORTRAIT]
     end
   end
 end

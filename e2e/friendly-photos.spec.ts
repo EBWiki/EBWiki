@@ -111,8 +111,9 @@ test.describe('Friendly photos', () => {
     await expect(page.getByText(/Found \d+ images/)).toBeVisible();
     await expect(page.getByText('E2E family portrait')).toBeVisible();
     await expect(page.getByText('E2E booking mugshot')).toBeVisible();
+    await expect(page.getByText('E2E openverse portrait')).toBeVisible();
     await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
-    await expect(page.getByTestId('apply-photo')).toHaveCount(2);
+    await expect(page.getByTestId('apply-photo')).toHaveCount(3);
   });
 });
 

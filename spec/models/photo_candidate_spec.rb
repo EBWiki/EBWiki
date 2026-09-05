@@ -7,7 +7,7 @@ RSpec.describe PhotoCandidate do
     candidate = build(:photo_candidate, image_url: 'https://mugshots.com/photo.jpg')
 
     expect(candidate).not_to be_valid
-    expect(candidate.errors[:image_url]).to include('must be a Wikimedia HTTPS image URL')
+    expect(candidate.errors[:image_url].join).to include('Wikimedia or Openverse')
   end
 
   it 'is unique per case and image URL' do
