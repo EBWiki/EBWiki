@@ -61,12 +61,12 @@ RSpec.describe FriendlyPhotos::WikimediaClient do
     end
 
     before do
-      stub_request(:get, %r{commons.wikimedia.org/w/api.php})
+      stub_request(:get, %r{\Ahttps://commons\.wikimedia\.org/w/api\.php})
         .to_return(status: 200, body: commons_body.to_json, headers: { 'Content-Type' => 'application/json' })
-      stub_request(:get, %r{en.wikipedia.org/w/api.php})
+      stub_request(:get, %r{\Ahttps://en\.wikipedia\.org/w/api\.php})
         .with(query: hash_including('list' => 'search'))
         .to_return(status: 200, body: wikipedia_search_body.to_json, headers: { 'Content-Type' => 'application/json' })
-      stub_request(:get, %r{en.wikipedia.org/w/api.php})
+      stub_request(:get, %r{\Ahttps://en\.wikipedia\.org/w/api\.php})
         .with(query: hash_including('prop' => 'pageimages|info'))
         .to_return(status: 200, body: wikipedia_image_body.to_json, headers: { 'Content-Type' => 'application/json' })
     end
@@ -85,7 +85,7 @@ RSpec.describe FriendlyPhotos::WikimediaClient do
       hits = described_class.new.search(query: 'Jordan Doe')
 
       expect(hits.map(&:source)).to contain_exactly('wikipedia', 'wikimedia_commons')
-      expect(hits.map(&:image_url)).to all(match(%r{\Ahttps://upload.wikimedia.org/}))
+      expect(hits.map(&:image_url)).to all(match(%r{\Ahttps://upload\.wikimedia\.org/}))
       expect(hits.find { |hit| hit.source == 'wikimedia_commons' }.author).to eq('Pat')
     end
   end
