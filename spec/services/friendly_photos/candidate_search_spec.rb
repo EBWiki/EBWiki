@@ -12,6 +12,7 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
       image_url: 'https://upload.wikimedia.org/wikipedia/commons/w/ws/portrait.jpg',
       page_url: 'https://commons.wikimedia.org/wiki/File:Walter_Scott_portrait.jpg',
       license: 'CC BY-SA 4.0',
+      license_url: 'https://creativecommons.org/licenses/by-sa/4.0/',
       author: 'Family',
       description: 'Family photo of Walter Scott'
     )
@@ -27,30 +28,65 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
       description: 'Booking photo'
     )
   end
+  let(:farm_hit) do
+    FriendlyPhotos::WikimediaClient::Hit.new(
+      source: 'openverse',
+      title: 'Walter Scott portrait',
+      image_url: 'https://mugshots.com/walter.jpg',
+      page_url: 'https://mugshots.com/walter',
+      license: 'Unknown',
+      author: 'Sheriff',
+      description: 'Inmate lookup'
+    )
+  end
   let(:client) { instance_double(FriendlyPhotos::WikimediaClient) }
+  let(:openverse) { instance_double(FriendlyPhotos::OpenverseClient, search: []) }
 
   before do
     allow(client).to receive(:search).and_return([portrait_hit, mugshot_hit])
   end
 
+  def search
+    described_class.new(client: client, openverse: openverse).call(this_case: this_case)
+  end
+
   it 'persists friendly and flagged candidates without overwriting reviews' do
-    records = described_class.new(client: client).call(this_case: this_case)
+    records = search
 
     expect(records.size).to eq(2)
     expect(this_case.photo_candidates.friendly.pending.size).to eq(1)
     expect(this_case.photo_candidates.where(likely_mugshot: true).size).to eq(1)
+    expect(this_case.photo_candidates.friendly.first.license_url).to include('creativecommons.org')
 
     accepted = this_case.photo_candidates.friendly.first
     accepted.accepted!
-    described_class.new(client: client).call(this_case: this_case)
+    search
     expect(accepted.reload).to be_accepted
+  end
+
+  it 'excludes mugshot-farm hosts instead of storing them' do
+    allow(openverse).to receive(:search).and_return([farm_hit])
+
+    search
+
+    urls = this_case.photo_candidates.pluck(:image_url)
+    expect(urls).not_to include('https://mugshots.com/walter.jpg')
+  end
+
+  it 'ranks portraits above news stills and mugshots' do
+    search
+    ranked = this_case.photo_candidates.ranked
+
+    expect(ranked.first).to be_friendly
+    expect(ranked.first.score).to be > ranked.last.score
+    expect(ranked.last).to be_likely_mugshot
   end
 
   it 'uses the case title when a case has no subjects' do
     subject_record.destroy
     this_case.subjects.reload
 
-    described_class.new(client: client).call(this_case: this_case)
+    search
 
     expect(client).to have_received(:search).with(query: this_case.title)
   end

@@ -2,9 +2,17 @@
 
 module FriendlyPhotosHelper
   def friendly_photo_source_link(candidate)
-    return unless FriendlyPhotos::WikimediaClient.allowed_page_url?(candidate.page_url)
+    return unless FriendlyPhotos::SourcePolicy.allowed_page_url?(candidate.page_url)
 
     link_to 'Source page', candidate.page_url, target: '_blank', rel: 'noopener'
+  end
+
+  def friendly_photo_license_label(candidate)
+    text = candidate.license.presence || 'License unknown'
+    return text if candidate.license_url.blank?
+    return text unless FriendlyPhotos::SourcePolicy.allowed_page_url?(candidate.license_url)
+
+    link_to text, candidate.license_url, target: '_blank', rel: 'noopener'
   end
 
   def pending_friendly_photo_count(this_case)

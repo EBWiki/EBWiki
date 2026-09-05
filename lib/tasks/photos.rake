@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :photos do
-  desc 'Search Wikimedia for non-mugshot portraits of people in the database'
+  desc 'Search Wikimedia and Openverse for non-mugshot portraits'
   task search_friendly: :environment do
     results = FriendlyPhotos::BatchSearch.call
     if ENV['FORMAT'] == 'json'

@@ -20,7 +20,14 @@ RSpec.describe 'Friendly photos', type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('Walter Scott')
-      expect(response.body).to include('Find photos')
+      expect(response.body).to include('Review photos')
+    end
+
+    it 'finds a case by name' do
+      sign_in user
+      get friendly_photos_path, params: { q: 'Walter Scott' }
+
+      expect(response.body).to include('Walter Scott')
     end
   end
 
@@ -30,7 +37,7 @@ RSpec.describe 'Friendly photos', type: :request do
       get friendly_photo_path(this_case)
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include('Search Wikimedia for a friendly photo')
+      expect(response.body).to include('Search Wikimedia and Openverse')
       expect(response.body).to include('Walter Scott')
     end
   end
@@ -47,6 +54,18 @@ RSpec.describe 'Friendly photos', type: :request do
       expect(response).to redirect_to(friendly_photo_path(this_case))
       follow_redirect!
       expect(response.body).to include('Found 1 images')
+    end
+
+    it 'says none found when every hit is a mugshot' do
+      sign_in user
+      mugshot = create(:photo_candidate, case: this_case, likely_mugshot: true,
+                                         title: 'Booking photo')
+      allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return([mugshot])
+
+      post search_friendly_photo_path(this_case)
+      follow_redirect!
+
+      expect(response.body).to include('None found')
     end
   end
 

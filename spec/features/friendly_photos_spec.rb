@@ -25,6 +25,7 @@ feature 'Friendly photos' do
     visit friendly_photos_path
 
     expect(page).to have_content('Friendly photos')
+    expect(page).to have_css('[data-testid="case-search-form"]')
     expect(page).to have_content('Jordan Doe')
     expect(page).to have_content('Riley Mugshot')
     expect(page).not_to have_content('Casey Portrait')
@@ -107,6 +108,16 @@ feature 'Friendly photos' do
     expect(friendly.reload).to be_accepted
   end
 
+  scenario 'an editor finds a case by name' do
+    sign_in user
+    visit friendly_photos_path
+    fill_in 'q', with: 'Jordan Doe'
+    click_button 'Find case'
+
+    expect(page).to have_content('Jordan Doe')
+    expect(page).not_to have_content('Riley Mugshot')
+  end
+
   scenario 'searching stores stubbed Wikimedia hits' do
     sign_in user
     allow(FriendlyPhotos::CandidateSearch).to receive(:call) do |this_case:|
@@ -115,7 +126,7 @@ feature 'Friendly photos' do
     end
 
     visit friendly_photo_path(missing_case)
-    click_button 'Search Wikimedia for a friendly photo'
+    click_button 'Search Wikimedia and Openverse'
 
     expect(page).to have_content('Found 1 images')
     expect(page).to have_content('Stubbed portrait')

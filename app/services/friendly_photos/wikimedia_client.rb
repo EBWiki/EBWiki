@@ -18,8 +18,8 @@ module FriendlyPhotos
     default_timeout TIMEOUT
 
     Hit = Struct.new(
-      :source, :title, :image_url, :page_url, :license, :author, :description,
-      keyword_init: true
+      :source, :title, :image_url, :page_url, :license, :license_url, :author,
+      :description, keyword_init: true
     )
 
     def search(query:, limit: 8)
@@ -35,11 +35,11 @@ module FriendlyPhotos
     end
 
     def self.allowed_image_url?(url)
-      allowed_https_url?(url, ALLOWED_HOSTS)
+      SourcePolicy.allowed_image_url?(url)
     end
 
     def self.allowed_page_url?(url)
-      allowed_https_url?(url, ALLOWED_PAGE_HOSTS)
+      SourcePolicy.allowed_page_url?(url)
     end
 
     def self.allowed_https_url?(url, hosts)
@@ -50,3 +50,4 @@ module FriendlyPhotos
     end
   end
 end
+

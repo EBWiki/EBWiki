@@ -740,6 +740,7 @@ CREATE TABLE public.photo_candidates (
     image_url character varying NOT NULL,
     page_url character varying,
     license character varying,
+    license_url character varying,
     author character varying,
     score integer DEFAULT 0 NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
@@ -1866,6 +1867,7 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260905220000'),
 ('20260815120000'),
 ('20260428201731'),
 ('20260428164616'),

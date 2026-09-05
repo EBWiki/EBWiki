@@ -31,6 +31,13 @@ module FriendlyPhotos
       /headshot/i,
       /photograph of/i
     ].freeze
+    NEWS_STILL_PATTERNS = [
+      /body.?cam/i,
+      /crime\s*scene/i,
+      /incident(\s*photo)?/i,
+      /surveillance/i,
+      /protest\s*photo/i
+    ].freeze
 
     Result = Struct.new(:likely_mugshot, :reasons, :score, keyword_init: true)
 
@@ -38,11 +45,12 @@ module FriendlyPhotos
       haystack = Array(text).compact.join(' ')
       mugshot_hits = matching_labels(haystack, MUGSHOT_PATTERNS)
       portrait_hits = matching_labels(haystack, PORTRAIT_PATTERNS)
-      score = (portrait_hits.size * 3) - (mugshot_hits.size * 5)
+      news_hits = matching_labels(haystack, NEWS_STILL_PATTERNS)
+      score = (portrait_hits.size * 3) - (mugshot_hits.size * 5) - news_hits.size
 
       Result.new(
         likely_mugshot: mugshot_hits.any?,
-        reasons: mugshot_hits,
+        reasons: mugshot_hits + news_hits,
         score: score
       )
     end

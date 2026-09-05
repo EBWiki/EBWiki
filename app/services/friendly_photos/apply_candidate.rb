@@ -23,9 +23,12 @@ module FriendlyPhotos
     def rejection_reason(this_case, candidate)
       return 'Candidate does not belong to this case.' if candidate.case_id != this_case.id
       return 'Mugshot candidates cannot be applied.' if candidate.likely_mugshot?
-      return if WikimediaClient.allowed_image_url?(candidate.image_url)
+      if candidate.license.blank? && candidate.license_url.blank?
+        return 'That candidate has no recorded license or rights path.'
+      end
+      return if SourcePolicy.allowed_attach_url?(candidate.image_url)
 
-      'That image is not from an allowed Wikimedia host.'
+      'That image is not from an allowed Wikimedia or Openverse host.'
     end
 
     def stub_apply(this_case, candidate)
@@ -48,7 +51,8 @@ module FriendlyPhotos
     end
 
     def apply_summary(candidate)
-      "Applied Wikimedia portrait '#{candidate.title}' as a non-mugshot case photo."
+      "Applied reviewed portrait '#{candidate.title}' (#{candidate.license}) " \
+        'as a non-mugshot case photo.'
     end
 
     def failure(message)

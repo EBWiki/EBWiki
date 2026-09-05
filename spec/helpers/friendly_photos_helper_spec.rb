@@ -13,7 +13,7 @@ RSpec.describe FriendlyPhotosHelper do
       expect(helper.friendly_photo_source_link(candidate)).to include('Source page')
     end
 
-    it 'omits non-Wikimedia pages' do
+    it 'omits mugshot-farm pages' do
       candidate = build(:photo_candidate, page_url: 'https://mugshots.com/photo')
 
       expect(helper.friendly_photo_source_link(candidate)).to be_nil

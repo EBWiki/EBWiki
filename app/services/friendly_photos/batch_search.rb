@@ -47,6 +47,7 @@ module FriendlyPhotos
         image_url: candidate.image_url,
         page_url: candidate.page_url,
         license: candidate.license,
+        license_url: candidate.license_url,
         likely_mugshot: candidate.likely_mugshot?,
         score: candidate.score,
         status: candidate.status

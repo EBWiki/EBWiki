@@ -11,6 +11,7 @@ FactoryBot.define do
     end
     page_url { 'https://commons.wikimedia.org/wiki/File:Walter_Scott.jpg' }
     license { 'CC BY-SA 4.0' }
+    license_url { 'https://creativecommons.org/licenses/by-sa/4.0/' }
     author { 'Family member' }
     score { 3 }
     status { 'pending' }
