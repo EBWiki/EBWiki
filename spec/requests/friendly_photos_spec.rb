@@ -39,7 +39,17 @@ RSpec.describe 'Friendly photos', type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('Search Wikimedia and Openverse')
       expect(response.body).to include('Walter Scott')
+      expect(response.body).to include('None found yet')
+    end
+
+    it 'stacks review cards after candidates are stored' do
+      create(:photo_candidate, case: this_case, title: 'Jordan Doe portrait')
+      sign_in user
+      get friendly_photo_path(this_case)
+
       expect(response.body).to include('friendly-photo-card')
+      expect(response.body).to include('Jordan Doe portrait')
+      expect(response.body).to include('Use this photo')
     end
   end
 
