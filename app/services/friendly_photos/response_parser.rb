@@ -27,6 +27,7 @@ module FriendlyPhotos
         source: 'wikimedia_commons', title: page['title'].to_s.delete_prefix('File:'),
         image_url: image_url, page_url: page_url(info['descriptionurl']),
         license: ext_value(metadata, 'LicenseShortName'),
+        license_url: page_url(ext_value(metadata, 'LicenseUrl')),
         author: ext_value(metadata, 'Artist'),
         description: ext_value(metadata, 'ImageDescription')
       }

@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # Finds non-mugshot Wikimedia portraits for people documented on a case.
+  # Finds non-mugshot Wikimedia and Openverse portraits for a case subject.
   class CandidateSearch
     include Service
 
-    def initialize(client: WikimediaClient.new)
+    def initialize(client: WikimediaClient.new, openverse: OpenverseClient.new)
       @client = client
+      @openverse = openverse
     end
 
     def call(this_case:, persist: true)
@@ -19,7 +20,7 @@ module FriendlyPhotos
 
     private
 
-    attr_reader :client
+    attr_reader :client, :openverse
 
     def subject_names(this_case)
       names = this_case.subjects.filter_map { |subject| subject.name.presence }
@@ -29,14 +30,22 @@ module FriendlyPhotos
 
     def search_for(name, this_case)
       queries_for(name, this_case).flat_map do |query|
-        client.search(query: query).map { |hit| decorate(hit, name) }
+        combined_hits(query).filter_map { |hit| decorate(hit, name) }
       end
     end
 
+    def combined_hits(query)
+      (client.search(query: query) + openverse.search(query: query))
+        .uniq(&:image_url)
+        .reject { |hit| SourcePolicy.excluded_hit?(hit) }
+    end
+
     def queries_for(name, this_case)
+      year = this_case.date&.year
       [
         name,
         [name, this_case.city].compact.join(' '),
+        [name, year].compact.join(' '),
         "#{name} portrait"
       ].uniq
     end

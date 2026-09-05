@@ -18,7 +18,9 @@ cannot yet prove.
 - Rejecting a pending candidate removes the apply action.
 - Applying a reviewed portrait marks the case as a portrait and hides
   **Use this photo**. Mugshot candidates stay flagged and cannot be applied.
-- Search persists candidates. In CI that search is stubbed.
+- Search persists Wikimedia and Openverse stub candidates. In CI that
+  search is stubbed. A mugshot-only result shows **None found**.
+- Operators can find a case by name, location, date, or id.
 
 ## Gaps the e2e run surfaces
 
