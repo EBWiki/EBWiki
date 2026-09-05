@@ -31,6 +31,10 @@ RSpec.describe "Public case pages", :db, type: :request do
     expect(last_response.body).to include("Walter Scott")
     expect(last_response.body).to include("/cases/walter-scott")
     expect(last_response.body).to include("Sandra Bland")
+
+    get "/cases"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("Walter Scott")
   end
 
   it "renders a case page from its FriendlyId slug" do
@@ -45,8 +49,10 @@ RSpec.describe "Public case pages", :db, type: :request do
     expect(last_response.body).to include("April 4, 2015")
     expect(last_response.body).to include("Shooting")
     expect(last_response.body).to include("North Charleston Police Department")
+    expect(last_response.body).to include('/agencies/ncpd">North Charleston Police Department</a>')
     expect(last_response.body).to include("shot in the back")
     expect(last_response.body).to include("https://example.com/walter-scott")
+    expect(last_response.body).not_to include("/cases/walter-scott/edit")
   end
 
   it "uses the CarrierWave large_avatar object key without changing S3 keys" do
