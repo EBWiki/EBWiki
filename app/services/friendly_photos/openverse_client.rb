@@ -59,7 +59,7 @@ module FriendlyPhotos
       return if raw.blank?
 
       name = raw.upcase.start_with?('CC') ? raw.upcase : "CC #{raw.upcase}"
-      [name, row['license_version']].reject(&:blank?).join(' ')
+      [name, row['license_version']].compact_blank.join(' ')
     end
   end
 end

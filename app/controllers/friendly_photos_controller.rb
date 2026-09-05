@@ -6,16 +6,11 @@ class FriendlyPhotosController < ApplicationController
   before_action :set_case, only: %i[show search classify apply reject]
 
   def index
-    @filter = params[:filter].presence || 'needs_photo'
-    @query = params[:q].to_s.strip
-    @location = params[:location].to_s.strip
-    @date = params[:date].to_s.strip
-    @case_id = params[:case_id].to_s.strip
-    @cases = FriendlyPhotos::CaseLookup.call(
-      filter: @filter, q: @query, location: @location, date: @date, case_id: @case_id
-    ).includes(:subjects, :state, :photo_candidates)
-     .order(updated_at: :desc)
-     .page(params[:page]).per(20)
+    assign_search_params
+    @cases = lookup_cases
+             .includes(:subjects, :state, :photo_candidates)
+             .order(updated_at: :desc)
+             .page(params[:page]).per(20)
   end
 
   def show
@@ -59,6 +54,24 @@ class FriendlyPhotosController < ApplicationController
   end
 
   private
+
+  def assign_search_params
+    @filter = params[:filter].presence || 'needs_photo'
+    @query = params[:q].to_s.strip
+    @location = params[:location].to_s.strip
+    @date = params[:date].to_s.strip
+    @case_id = params[:case_id].to_s.strip
+  end
+
+  def lookup_cases
+    FriendlyPhotos::CaseLookup.call(
+      filter: @filter,
+      query: @query,
+      location: @location,
+      date: @date,
+      case_id: @case_id
+    )
+  end
 
   def set_case
     @this_case = Case.friendly.find(params[:id])
