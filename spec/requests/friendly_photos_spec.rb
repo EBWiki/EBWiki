@@ -39,6 +39,7 @@ RSpec.describe 'Friendly photos', type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('Search Wikimedia and Openverse')
       expect(response.body).to include('Walter Scott')
+      expect(response.body).to include('friendly-photo-card')
     end
   end
 
