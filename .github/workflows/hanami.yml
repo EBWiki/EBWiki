@@ -1,0 +1,113 @@
+name: Hanami
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/hanami
+
+    env:
+      HANAMI_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/ebwiki_hanami_test
+      SESSION_SECRET: test-session-secret-not-for-production-must-be-at-least-64-characters-long
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+          working-directory: apps/hanami
+
+      - name: Create database
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE ebwiki_hanami_test;"
+          bundle exec rake db:load_schema
+
+      - name: Install Node packages
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/hanami/package-lock.json
+
+      - name: Compile assets
+        run: |
+          npm ci
+          bundle exec hanami assets compile
+
+      - name: Run RSpec
+        run: bundle exec rspec
+
+  rubocop:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/hanami
+
+    env:
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+          working-directory: apps/hanami
+
+      - name: Run Standard Ruby
+        run: bundle exec standardrb
+
+  dawnscanner:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/hanami
+
+    env:
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+          working-directory: apps/hanami
+
+      - name: Run bundler-audit
+        run: bundle exec bundler-audit check --update
+
+      - name: Install Dawnscanner knowledge base
+        run: bundle exec rake security:dawn_kb
+
+      - name: Run Dawnscanner
+        run: bundle exec dawn scan .

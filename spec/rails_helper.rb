@@ -107,11 +107,14 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 
-  # Enable PaperTrail versioning for tests that need it
+  # Enable PaperTrail versioning for tests that need it.
+  # Mailer specs disable Case versioning; re-enable here so example order cannot leak.
   config.around(:each, versioning: true) do |example|
     PaperTrail.enabled = true
     PaperTrail.request.whodunnit = 'test'
+    PaperTrail.request.enable_model(Case)
     example.run
+  ensure
     PaperTrail.enabled = false
   end
 
