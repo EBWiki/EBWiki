@@ -5,10 +5,10 @@ module FriendlyPhotos
   class CaseLookup
     include Service
 
-    def call(filter:, q: nil, location: nil, date: nil, case_id: nil)
+    def call(filter:, query: nil, location: nil, date: nil, case_id: nil)
       scope = filtered_scope(filter)
       scope = apply_case_id(scope, case_id)
-      scope = apply_query(scope, q)
+      scope = apply_query(scope, query)
       scope = apply_location(scope, location)
       apply_date(scope, date)
     end

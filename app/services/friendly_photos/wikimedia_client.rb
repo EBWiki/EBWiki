@@ -50,4 +50,3 @@ module FriendlyPhotos
     end
   end
 end
-
