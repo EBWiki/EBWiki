@@ -74,8 +74,7 @@ module FriendlyPhotos
       {
         title: title, slug: slug, overview: 'E2E overview', city: 'Albany',
         date: Date.current, state: state, summary: 'e2e seed',
-        blurb: 'E2E blurb about the case', avatar_kind: avatar_kind,
-        latitude: 42.6525793, longitude: -73.7562317
+        blurb: 'E2E blurb about the case', avatar_kind: avatar_kind
       }
     end
 

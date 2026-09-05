@@ -44,8 +44,6 @@ bower.json
 .DS_Store
 
 # Local secrets and environment files
-.env
-.env.*
 !.env.example
 
 # Local dev files and directories

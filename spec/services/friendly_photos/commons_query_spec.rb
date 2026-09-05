@@ -28,7 +28,7 @@ RSpec.describe FriendlyPhotos::CommonsQuery do
   end
 
   before do
-    stub_request(:get, %r{commons.wikimedia.org/w/api.php})
+    stub_request(:get, %r{\Ahttps://commons\.wikimedia\.org/w/api\.php})
       .to_return(status: 200, body: commons_body.to_json,
                  headers: { 'Content-Type' => 'application/json' })
   end
@@ -39,7 +39,7 @@ RSpec.describe FriendlyPhotos::CommonsQuery do
     expect(hits.size).to eq(1)
     expect(hits.first.license).to eq('CC BY-SA 4.0')
     expect(hits.first.license_url).to include('creativecommons.org')
-    expect(a_request(:get, %r{commons.wikimedia.org/w/api.php})
+    expect(a_request(:get, %r{\Ahttps://commons\.wikimedia\.org/w/api\.php})
       .with(query: hash_including(
         gsrsearch: a_string_including('-mugshot', '-booking', '-inmate',
                                       '-filemime:application/pdf')

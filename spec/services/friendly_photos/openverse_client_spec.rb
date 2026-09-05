@@ -31,7 +31,7 @@ RSpec.describe FriendlyPhotos::OpenverseClient do
   end
 
   before do
-    stub_request(:get, %r{api.openverse.org/v1/images/})
+    stub_request(:get, %r{\Ahttps://api\.openverse\.org/v1/images/})
       .to_return(status: 200, body: body.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
