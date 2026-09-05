@@ -1,113 +1,108 @@
-<h1>Friendly photos for <%= @this_case.subject_display_name %></h1>
-<p class="lead">
-  <%= link_to @this_case.title, @this_case %>
-  &middot; <%= @this_case.city %><%= ", #{@this_case.state.name}" if @this_case.state %>
-</p>
-<p>
-  Wikimedia and Openverse are searched for openly licensed portraits.
-  Mugshot farms and booking databases are never queried. A person must
-  review and approve a candidate before it is attached.
-</p>
+<div class="friendly-photos-review">
+  <h1>Friendly photos for <%= @this_case.subject_display_name %></h1>
+  <p class="lead">
+    <%= link_to @this_case.title, @this_case %>
+    &middot; <%= @this_case.city %><%= ", #{@this_case.state.name}" if @this_case.state %>
+  </p>
+  <p>
+    Wikimedia and Openverse are searched for openly licensed portraits.
+    Mugshot farms and booking databases are never queried. A person must
+    review and approve a candidate before it is attached.
+  </p>
 
-<div class="row">
-  <div class="col-md-4">
-    <h3>Current case photo</h3>
-    <% if @this_case.avatar? %>
-      <%= image_tag @this_case.avatar.large_avatar.url, class: 'img-responsive', alt: @this_case.subject_display_name %>
-    <% else %>
-      <%= image_tag 'default-user-icon.png', size: '250x250', class: 'img-responsive', alt: 'No photo' %>
-    <% end %>
-    <p style="margin-top: 1em;">
-      Photo type: <strong><%= @this_case.avatar_kind.humanize %></strong>
-    </p>
-    <%= form_with url: classify_friendly_photo_path(@this_case), method: :patch, html: { data: { testid: 'classify-form' } } do %>
-      <div class="form-group">
-        <%= select_tag :avatar_kind,
-                       options_for_select(Case.avatar_kinds.keys.map { |kind| [kind.humanize, kind] }, @this_case.avatar_kind),
-                       class: 'form-control',
-                       data: { testid: 'avatar-kind-select' } %>
-      </div>
-      <%= submit_tag 'Update photo type', class: 'btn btn-default', data: { testid: 'update-photo-type' } %>
-    <% end %>
-    <div data-testid="search-wikimedia-wrap" style="margin-top: 1.5em;">
-      <%= button_to 'Search Wikimedia and Openverse',
-                    search_friendly_photo_path(@this_case),
-                    class: 'btn btn-warning',
-                    data: { confirm: 'Search Wikimedia and Openverse for openly licensed portraits of this person?',
-                            testid: 'search-wikimedia' } %>
+  <h3>Current case photo</h3>
+  <% if @this_case.avatar? %>
+    <%= image_tag @this_case.avatar.large_avatar.url, class: 'img-responsive', alt: @this_case.subject_display_name %>
+  <% else %>
+    <%= image_tag 'default-user-icon.png', size: '250x250', class: 'img-responsive', alt: 'No photo' %>
+  <% end %>
+  <p style="margin-top: 1em;">
+    Photo type: <strong><%= @this_case.avatar_kind.humanize %></strong>
+  </p>
+  <%= form_with url: classify_friendly_photo_path(@this_case), method: :patch, html: { data: { testid: 'classify-form' } } do %>
+    <div class="form-group">
+      <%= select_tag :avatar_kind,
+                     options_for_select(Case.avatar_kinds.keys.map { |kind| [kind.humanize, kind] }, @this_case.avatar_kind),
+                     class: 'form-control',
+                     data: { testid: 'avatar-kind-select' } %>
     </div>
-    <p style="margin-top: 1em;">
-      <%= link_to 'Edit case', edit_case_path(@this_case), class: 'btn btn-primary' %>
-      <%= link_to 'Back to list', friendly_photos_path, class: 'btn btn-default' %>
+    <%= submit_tag 'Update photo type', class: 'btn btn-default', data: { testid: 'update-photo-type' } %>
+  <% end %>
+  <div data-testid="search-wikimedia-wrap" style="margin: 1.5em 0;">
+    <%= button_to 'Search Wikimedia and Openverse',
+                  search_friendly_photo_path(@this_case),
+                  class: 'btn btn-warning',
+                  data: { confirm: 'Search Wikimedia and Openverse for openly licensed portraits of this person?',
+                          testid: 'search-wikimedia' } %>
+  </div>
+  <p>
+    <%= link_to 'Edit case', edit_case_path(@this_case), class: 'btn btn-primary' %>
+    <%= link_to 'Back to list', friendly_photos_path, class: 'btn btn-default' %>
+  </p>
+
+  <h3>Review candidates</h3>
+  <% friendly_count = @candidates.count(&:friendly?) %>
+  <% if @candidates.any? && friendly_count.zero? %>
+    <p class="text-warning" data-testid="none-found">
+      None found: every stored result was flagged as a mugshot or booking
+      photo and cannot be applied.
     </p>
-  </div>
+  <% end %>
 
-  <div class="col-md-8">
-    <h3>Review candidates</h3>
-    <% friendly_count = @candidates.count(&:friendly?) %>
-    <% if @candidates.any? && friendly_count.zero? %>
-      <p class="text-warning" data-testid="none-found">
-        None found: every stored result was flagged as a mugshot or booking
-        photo and cannot be applied.
-      </p>
-    <% end %>
-
-    <% if @candidates.any? %>
-      <div class="row" style="margin-top: 1.5em;">
-        <% @candidates.each do |candidate| %>
-          <div class="col-sm-6" style="margin-bottom: 1.5em;">
-            <div class="thumbnail" data-testid="candidate-<%= candidate.id %>" data-candidate-kind="<%= candidate.likely_mugshot? ? 'mugshot' : 'friendly' %>">
-              <%= image_tag candidate.image_url,
-                            alt: candidate.title,
-                            class: 'img-responsive',
-                            style: 'max-height: 180px; object-fit: contain;' %>
-              <div class="caption">
-                <h4><%= candidate.title %></h4>
-                <p>
-                  <%= candidate.subject_name %> &middot; <%= candidate.source.humanize %><br>
-                  <%= friendly_photo_license_label(candidate) %>
-                  <% if candidate.author.present? %>
-                    &middot; <%= candidate.author %>
-                  <% end %>
-                </p>
-                <% if candidate.likely_mugshot? %>
-                  <p class="text-danger" data-testid="mugshot-flag">
-                    Flagged as a likely mugshot
-                    <%= " (#{candidate.notes})" if candidate.notes.present? %>
-                  </p>
-                <% end %>
-                <p>
-                  Status: <%= candidate.status.humanize %>
-                  <% source_link = friendly_photo_source_link(candidate) %>
-                  <% if source_link %>
-                    &middot; <%= source_link %>
-                  <% end %>
-                </p>
-                <% if candidate.pending? && candidate.friendly? %>
-                  <%= button_to 'Use this photo',
-                                apply_friendly_photo_path(@this_case),
-                                params: { photo_candidate_id: candidate.id },
-                                class: 'btn btn-success btn-sm',
-                                data: { confirm: 'Attach this reviewed, non-mugshot portrait to the case?',
-                                        testid: 'apply-photo' } %>
-                <% end %>
-                <% if candidate.pending? %>
-                  <%= button_to 'Reject',
-                                reject_friendly_photo_path(@this_case),
-                                params: { photo_candidate_id: candidate.id },
-                                class: 'btn btn-default btn-sm',
-                                data: { testid: 'reject-photo' } %>
-                <% end %>
-              </div>
-            </div>
+  <% if @candidates.any? %>
+    <ol class="friendly-photo-list">
+      <% @candidates.each do |candidate| %>
+        <li class="friendly-photo-card <%= 'is-mugshot' if candidate.likely_mugshot? %>"
+            data-testid="candidate-<%= candidate.id %>"
+            data-candidate-kind="<%= candidate.likely_mugshot? ? 'mugshot' : 'friendly' %>">
+          <%= image_tag candidate.image_url,
+                        alt: candidate.title,
+                        class: 'friendly-photo-card-image' %>
+          <div class="friendly-photo-card-body">
+            <h4><%= candidate.title %></h4>
+            <p>
+              <%= candidate.subject_name %> &middot; <%= candidate.source.humanize %><br>
+              <%= friendly_photo_license_label(candidate) %>
+              <% if candidate.author.present? %>
+                &middot; <%= candidate.author %>
+              <% end %>
+            </p>
+            <% if candidate.likely_mugshot? %>
+              <p class="text-danger" data-testid="mugshot-flag">
+                Flagged as a likely mugshot
+                <%= " (#{candidate.notes})" if candidate.notes.present? %>
+              </p>
+            <% end %>
+            <p>
+              Status: <%= candidate.status.humanize %>
+              <% source_link = friendly_photo_source_link(candidate) %>
+              <% if source_link %>
+                &middot; <%= source_link %>
+              <% end %>
+            </p>
+            <% if candidate.pending? && candidate.friendly? %>
+              <%= button_to 'Use this photo',
+                            apply_friendly_photo_path(@this_case),
+                            params: { photo_candidate_id: candidate.id },
+                            class: 'btn btn-success btn-sm',
+                            data: { confirm: 'Attach this reviewed, non-mugshot portrait to the case?',
+                                    testid: 'apply-photo' } %>
+            <% end %>
+            <% if candidate.pending? %>
+              <%= button_to 'Reject',
+                            reject_friendly_photo_path(@this_case),
+                            params: { photo_candidate_id: candidate.id },
+                            class: 'btn btn-default btn-sm',
+                            data: { testid: 'reject-photo' } %>
+            <% end %>
           </div>
-        <% end %>
-      </div>
-    <% else %>
-      <p style="margin-top: 1em;" data-testid="none-found">
-        None found yet. Search Wikimedia and Openverse for a portrait, or
-        leave this case without a new photo.
-      </p>
-    <% end %>
-  </div>
+        </li>
+      <% end %>
+    </ol>
+  <% else %>
+    <p style="margin-top: 1em;" data-testid="none-found">
+      None found yet. Search Wikimedia and Openverse for a portrait, or
+      leave this case without a new photo.
+    </p>
+  <% end %>
 </div>

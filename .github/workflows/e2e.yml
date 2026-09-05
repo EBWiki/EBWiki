@@ -28,6 +28,7 @@ on:
       - 'app/models/photo_candidate.rb'
       - 'app/models/concerns/case_friendly_photo.rb'
       - 'app/assets/javascripts/application.js'
+      - 'app/assets/stylesheets/application.scss'
       - 'config/routes.rb'
       - 'config/initializers/e2e_friendly_photos.rb'
       - 'lib/tasks/e2e.rake'
