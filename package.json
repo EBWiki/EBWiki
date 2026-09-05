@@ -8,8 +8,6 @@
     "e2e:headed": "playwright test --headed"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0",
-    "dotenv": "^8.2.0",
-    "node-fetch": "^3.3.2"
+    "@playwright/test": "^1.55.0"
   }
 }

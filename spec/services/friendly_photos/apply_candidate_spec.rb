@@ -61,7 +61,9 @@ RSpec.describe FriendlyPhotos::ApplyCandidate do
   end
 
   it 'refuses images from hosts outside the Wikimedia/Openverse allowlist' do
-    candidate.update!(image_url: 'https://example.com/portrait.jpg')
+    candidate.update_columns( # rubocop:disable Rails/SkipsModelValidations
+      image_url: 'https://example.com/portrait.jpg'
+    )
 
     result = described_class.call(this_case: this_case, candidate: candidate)
 
