@@ -20,10 +20,18 @@
           <br>
           <%= format_date(this_case.date) %>
         </p>
+        <% if this_case.blurb.to_s.strip != "" %>
+          <p class="case-blurb"><%= this_case.blurb %></p>
+        <% end %>
       </header>
 
       <% if agencies.any? %>
-        <p><strong>Agencies:</strong> <%= agencies.map(&:name).join(" | ") %></p>
+        <p><strong>Agencies:</strong>
+          <% agencies.each_with_index do |agency, index| %>
+            <% if index.positive? %> | <% end %>
+            <a href="/agencies/<%= agency.slug %>"><%= agency.name %></a>
+          <% end %>
+        </p>
       <% end %>
 
       <p>
@@ -34,7 +42,9 @@
       <p class="meta">
         Last updated: <%= format_time(this_case.updated_at) %>
         · <a href="/cases/<%= this_case.slug %>/history">History</a>
-        · <a href="/cases/<%= this_case.slug %>/edit">Edit</a>
+        <% if viewer %>
+          · <a href="/cases/<%= this_case.slug %>/edit">Edit</a>
+        <% end %>
       </p>
       <% if viewer %>
         <p>

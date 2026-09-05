@@ -58,11 +58,47 @@ The Hanami sibling deploys as its own Railway service with root directory
 It uses a **separate** Railway Postgres — never the Heroku/Rails production
 database.
 
+**Staging service:** `hanami-web-production-dd15`  
+**Public URL:** https://hanami-web-production-dd15.up.railway.app  
+**Healthcheck:** `GET /up` (no basic auth; expect `200` and body `ok`)
+
+### Required Railway variables
+
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | Railway Postgres for this service only |
+| `SESSION_SECRET` | Cookie signing (64+ chars) |
+| `HANAMI_ENV` | `production` |
+| `PORT` | Injected by Railway |
+| `HTTP_BASIC_AUTH_USER` / `HTTP_BASIC_AUTH_PASSWORD` | Optional browser gate for staging |
+| `STAGING_SEED_PASSWORD` | Demo account password when seeds run |
+| `RESTORE_DUMP` | Set to `1` once on a throwaway DB to load historic data; unset after |
+| `S3_BUCKET` / `S3_REGION` | Optional; without these, avatars use local `/uploads/...` paths |
+
+Do not copy production Heroku `DATABASE_URL` into this service.
+
+### Release and start
+
 ```bash
 # After Railway injects PORT, DATABASE_URL, SESSION_SECRET, HANAMI_ENV=production
 bin/railway-release   # optional dump restore, then schema if empty, then seed
 bundle exec puma -C config/puma.rb
 ```
+
+Railway should run `bin/railway-release` as the pre-deploy command and start
+with `bundle exec puma -C config/puma.rb` (see `railway.toml`).
+
+### Verify after deploy
+
+1. `curl -sS https://hanami-web-production-dd15.up.railway.app/up` → `200 ok`
+2. With basic auth (values from Railway variables, not committed):
+   - `/` or `/cases` → case index with live count and pagination
+   - `/cases/walter-scott` → overview, agencies (linked), cause of death, resources
+   - `/search?query=Charleston` → Walter Scott in results
+   - `/cases/does-not-exist` → `404`
+3. Demo login (`admin@example.com` / password from `STAGING_SEED_PASSWORD`) → `/admin/users`
+
+Rails production (`ebwiki.org`) is unchanged until an explicit cutover PR.
 
 `latest.dump` is a Heroku custom-format snapshot from **2020-09-01**. It was
 committed as `latest.dump` and later deleted from `main`; the blob is still at
