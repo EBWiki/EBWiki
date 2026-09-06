@@ -72,17 +72,15 @@ module FriendlyPhotos
 
     def handle_failure(hit)
       log_failure(hit)
-      if AiConfig.require_ai?
-        Result.new(
-          likely_mugshot: false,
-          reasons: ['vision API failed — cannot verify'],
-          score: -50,
-          ai_used: false,
-          failed: true
-        )
-      else
-        raise AiError, 'Vision classifier did not score this image.'
-      end
+      raise AiError, 'Vision classifier did not score this image.' unless AiConfig.require_ai?
+
+      Result.new(
+        likely_mugshot: false,
+        reasons: ['vision API failed — cannot verify'],
+        score: -50,
+        ai_used: false,
+        failed: true
+      )
     end
 
     def log_failure(hit)

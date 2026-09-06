@@ -47,4 +47,9 @@ Rails.application.configure do
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
+
+  # CI uses Postgres 17 with a host pg_dump 16. db:prepare must not dump
+  # structure.sql after migrate — that abort is what failed Playwright on
+  # d27f613a, and a PG17 dump would also inject transaction_timeout.
+  config.active_record.dump_schema_after_migration = false
 end

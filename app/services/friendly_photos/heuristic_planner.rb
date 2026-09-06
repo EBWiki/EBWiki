@@ -8,24 +8,30 @@ module FriendlyPhotos
     Result = Struct.new(:queries, :ai_used, keyword_init: true)
 
     def call(name:, city: nil, year: nil, slug: nil)
-      incident = [
-        "Killing of #{name}",
-        "Shooting of #{name}"
-      ]
-      contextual = [
+      queries = QueryPrioritizer.call(
+        queries: incident_queries(name) + contextual_queries(name, city, year, slug) +
+                 portrait_queries(name)
+      )
+      Result.new(queries: queries, ai_used: false)
+    end
+
+    private
+
+    def incident_queries(name)
+      ["Killing of #{name}", "Shooting of #{name}"]
+    end
+
+    def contextual_queries(name, city, year, slug)
+      [
         [name, city, year].compact.join(' '),
-        slug.present? ? slug.tr('-', ' ') : nil,
+        slug.presence&.tr('-', ' '),
         [name, city].compact.join(' '),
         [name, year].compact.join(' ')
       ]
-      portrait = [
-        "#{name} portrait",
-        "#{name} family photo",
-        name
-      ]
+    end
 
-      queries = QueryPrioritizer.call(queries: incident + contextual + portrait)
-      Result.new(queries: queries, ai_used: false)
+    def portrait_queries(name)
+      ["#{name} portrait", "#{name} family photo", name]
     end
   end
 end
