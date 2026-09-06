@@ -8,19 +8,24 @@ module ReviewSessionsTable
 
   def ensure!
     conn = ActiveRecord::Base.connection
+    create_table_if_missing(conn)
+    ensure_indexes(conn)
+  end
 
-    unless conn.table_exists?(:sessions)
-      conn.create_table :sessions do |t|
-        t.string :session_id, null: false
-        t.text :data
-        t.timestamps
-      end
+  def create_table_if_missing(conn)
+    return if conn.table_exists?(:sessions)
+
+    conn.create_table :sessions do |t|
+      t.string :session_id, null: false
+      t.text :data
+      t.timestamps
     end
+  end
 
+  def ensure_indexes(conn)
     unless conn.index_exists?(:sessions, :session_id)
       conn.add_index :sessions, :session_id, unique: true
     end
-
     return if conn.index_exists?(:sessions, :updated_at)
 
     conn.add_index :sessions, :updated_at
