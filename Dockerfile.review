@@ -1,0 +1,32 @@
+# Review-server image for Railway/Render PR previews (not production EBWiki).
+FROM ruby:3.4.2-slim
+
+ENV RAILS_ENV=production
+ENV BUNDLE_PATH=/usr/local/bundle
+ENV BUNDLE_WITHOUT="development:test"
+ENV RAILS_SERVE_STATIC_FILES=true
+ENV RAILS_LOG_TO_STDOUT=true
+
+RUN apt-get update -qq && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    postgresql-client \
+    curl \
+    git \
+    nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/ebwiki
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle config --global frozen 1 && \
+    bundle install
+
+COPY . .
+
+RUN mkdir -p tmp/pids log public/assets && \
+    SECRET_KEY_BASE=build-time-dummy bundle exec rails assets:precompile
+
+EXPOSE 3000
+
+CMD ["bundle", "exec", "puma", "-t", "1:1", "-p", "3000", "-e", "production"]
