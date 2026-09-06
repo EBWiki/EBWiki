@@ -17,8 +17,11 @@ RSpec.describe FriendlyPhotos::AiConfig do
     expect(described_class.enabled?).to be true
   end
 
-  it 'reports not configured without keys' do
+  it 'reports required but key missing on review servers' do
+    ENV['REVIEW_SERVER'] = '1'
     expect(described_class.enabled?).to be false
-    expect(described_class.status_label).to include('not configured')
+    expect(described_class.status_label).to include('required but key missing')
+  ensure
+    ENV.delete('REVIEW_SERVER')
   end
 end

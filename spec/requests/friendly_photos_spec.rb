@@ -56,8 +56,16 @@ RSpec.describe 'Friendly photos', type: :request do
   describe 'POST /friendly_photos/:id/search' do
     it 'stores search results and returns to the review page' do
       sign_in user
-      candidate = create(:photo_candidate, case: this_case)
-      allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return([candidate])
+      candidate = create(:photo_candidate, case: this_case, planner_ai_used: true, vision_ai_used: true)
+      allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return(
+        FriendlyPhotos::CandidateSearch::Result.new(
+          records: [candidate],
+          planner_ai_used: true,
+          vision_ai_used_count: 1,
+          vision_failed_count: 0,
+          warnings: []
+        )
+      )
 
       post search_friendly_photo_path(this_case)
 
@@ -65,13 +73,22 @@ RSpec.describe 'Friendly photos', type: :request do
       expect(response).to redirect_to(friendly_photo_path(this_case))
       follow_redirect!
       expect(response.body).to include('Found 1 images')
+      expect(response.body).to include('planner ran')
     end
 
     it 'says none found when every hit is a mugshot' do
       sign_in user
       mugshot = create(:photo_candidate, case: this_case, likely_mugshot: true,
                                          title: 'Booking photo')
-      allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return([mugshot])
+      allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return(
+        FriendlyPhotos::CandidateSearch::Result.new(
+          records: [mugshot],
+          planner_ai_used: true,
+          vision_ai_used_count: 1,
+          vision_failed_count: 0,
+          warnings: []
+        )
+      )
 
       post search_friendly_photo_path(this_case)
       follow_redirect!

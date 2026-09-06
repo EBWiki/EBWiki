@@ -21,7 +21,8 @@ RSpec.describe FriendlyPhotos::CandidateClassifier do
         likely_mugshot: false,
         reasons: ['vision portrait'],
         score: 4,
-        ai_used: true
+        ai_used: true,
+        failed: false
       )
     )
 
@@ -30,7 +31,7 @@ RSpec.describe FriendlyPhotos::CandidateClassifier do
     expect(result.likely_mugshot).to be false
     expect(result.score).to be > 4
     expect(result.reasons).to include('vision portrait')
-    expect(result.ai_used).to be true
+    expect(result.vision_ai_used).to be true
   end
 
   it 'hard-blocks when either layer flags a mugshot' do
@@ -39,7 +40,8 @@ RSpec.describe FriendlyPhotos::CandidateClassifier do
         likely_mugshot: false,
         reasons: [],
         score: 0,
-        ai_used: false
+        ai_used: false,
+        failed: false
       )
     )
     mugshot = FriendlyPhotos::WikimediaClient::Hit.new(
@@ -55,5 +57,25 @@ RSpec.describe FriendlyPhotos::CandidateClassifier do
     result = described_class.call(hit: mugshot)
 
     expect(result.likely_mugshot).to be true
+  end
+
+  it 'flags historical homonyms' do
+    allow(FriendlyPhotos::VisionClassifier).to receive(:call).and_return(
+      FriendlyPhotos::VisionClassifier.skipped_result
+    )
+    homonym = FriendlyPhotos::WikimediaClient::Hit.new(
+      source: portrait_hit.source,
+      title: 'Sir Walter Scott',
+      image_url: portrait_hit.image_url,
+      page_url: portrait_hit.page_url,
+      license: portrait_hit.license,
+      author: portrait_hit.author,
+      description: '19th century novelist'
+    )
+
+    result = described_class.call(hit: homonym, case_year: 2015)
+
+    expect(result.likely_homonym).to be true
+    expect(result.score).to be < 0
   end
 end

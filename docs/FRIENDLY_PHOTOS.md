@@ -30,17 +30,25 @@ mugshot-farm hosts. Those hosts are blocked before save.
 When `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` is set (required on the review
 server), search uses two AI layers on the allowlist above:
 
-1. **Search planner** (`SearchPlanner`) — given a person name plus optional
-   city/year, the LLM returns 4–8 name-first queries for Wikimedia Commons
-   and Openverse. It does not invent faces or licenses.
-2. **Vision classifier** (`VisionClassifier`) — scores each candidate image
-   as a friendly portrait vs mugshot/booking before Apply is offered.
-   Metadata heuristics (`MugshotClassifier`) still run; either layer can
-   hard-block a mugshot.
+1. **Search planner** (`SearchPlanner`) — given a person name plus city/year/
+   case slug, the LLM returns incident-first queries (`Killing of` / `Shooting of`
+   before bare name) to disambiguate historical homonyms. It does not invent
+   faces or licenses.
+2. **Vision classifier** (`VisionClassifier`) — scores the top N candidate
+   images (default 12) as friendly portrait vs mugshot/booking before Apply.
+   Metadata heuristics (`MugshotClassifier`, `HomonymDetector`) still run;
+   either layer can hard-block apply.
 
-With an API key configured, planner and vision **must** succeed. There is no
-silent fallback to heuristic-only search on review. If the provider errors,
-the search surfaces an error and the editor can retry.
+**Proving AI ran:** each stored candidate persists `planner_ai_used` and
+`vision_ai_used` booleans. The review page shows per-candidate badges and a
+last-search summary (`planner ran` / vision count). A configured API key alone
+does **not** count as AI used — only successful planner/vision calls set the
+flags. When `REVIEW_SERVER=1` or `FRIENDLY_PHOTOS_REQUIRE_AI=1`, search
+refuses or hard-warns if planner did not run or vision verified zero candidates.
+
+Vision failures on review are logged and marked `vision_failed` (not treated
+as clean passes). Search caps hits per query and batches vision so POST
+/search stays under request timeouts.
 
 Without an API key (local dev only), the app uses the deterministic
 `HeuristicPlanner` and metadata-only classification. CI unit tests use
@@ -54,6 +62,12 @@ Without an API key (local dev only), the app uses the deterministic
 | `FRIENDLY_PHOTOS_ANTHROPIC_MODEL` | Override Anthropic model |
 | `FRIENDLY_PHOTOS_STUB_AI=1` | Deterministic stub AI for unit tests only |
 | `E2E_STUB_WIKIMEDIA=1` | Stub Wikimedia/Openverse HTTP (CI/Playwright only) |
+| `REVIEW_SERVER=1` | Require planner + vision verification on search |
+| `FRIENDLY_PHOTOS_REQUIRE_AI=1` | Same as review-server AI requirement |
+| `FRIENDLY_PHOTOS_VISION_LIMIT` | Max vision calls per search (default 12) |
+| `FRIENDLY_PHOTOS_HIT_LIMIT` | Max hits per query (default 5) |
+| `FRIENDLY_PHOTOS_MAX_QUERIES` | Max planner queries (default 6) |
+| `FRIENDLY_PHOTOS_AI_TIMEOUT` | OpenAI/Anthropic HTTP timeout seconds (default 12) |
 
 **Default:** live Wikimedia + Openverse. Stubs are opt-in for CI/E2E only
 (`E2E_STUB_WIKIMEDIA=1`). Review servers must leave it unset or `0`.
@@ -67,7 +81,7 @@ Without an API key (local dev only), the app uses the deterministic
 | Login | `e2e@example.com` / `e2e-password` |
 | Live search | `E2E_STUB_WIKIMEDIA=0` on `ebwiki-web` (variable is present; live APIs) |
 | AI | `OPENAI_API_KEY` present on `ebwiki-web` — SearchPlanner + VisionClassifier |
-| Database | **Neon** (official review DB — not Railway Postgres) |
+| Database | **Neon** — ~4033 cases live (2020 Heroku snapshot + migrations) |
 
 Set `REVIEW_SERVER=1`. Disposable login is seeded by `rake review:seed` on
 deploy.
@@ -87,30 +101,13 @@ deploy.
 
 ### Neon review database
 
-Mark confirmed **Neon** is the review DB. Railway **ebwiki-web** stays the
-app host; `DATABASE_URL` should point at Neon (pooled URL for Puma). Do
-**not** load `latest.dump` into Railway Postgres.
+Mark confirmed **Neon** is the review DB. Railway **ebwiki-web** `DATABASE_URL`
+points at Neon (pooled URL for Puma). The 2020-09-01 Heroku snapshot is loaded;
+`SELECT COUNT(*) FROM cases` returns **~4033** on review.
 
-| Step | Action |
-| --- | --- |
-| 1 | Create Neon project **`ebwiki-review`** (or branch `review-friendly-photos`) |
-| 2 | **Check for existing data** — `SELECT COUNT(*) FROM cases;` — do not wipe without Mark confirming `FORCE=1` |
-| 3 | `pg_restore` via **DIRECT** connection (no `-pooler` host). Dump blob: commit `592560514b263c8956d039bdd25c9c8b7fb2a81f` (~69MB, 2020-09-01 Heroku snapshot) |
-| 4 | Run `db/dump_compat.sql` (rename `cause_of_death`, add `cases.tsv`, dedupe ids, add PKs) |
-| 5 | `bundle exec rails db:migrate` for friendly-photos tables |
-| 6 | Set Railway **ebwiki-web** `DATABASE_URL` → Neon **pooled** URL; keep `E2E_STUB_WIKIMEDIA=0`, `OPENAI_API_KEY`, `REVIEW_SERVER=1` |
-| 7 | Redeploy ebwiki-web; verify case count + live search on real names |
-
-Script (run when `pg_restore`/`psql` available and Neon DIRECT URL is set):
-
-```bash
-NEON_DIRECT_URL='postgres://...direct...' ./scripts/restore_ebwiki_neon_review.sh
-# Only if empty DB or Mark approved wipe:
-FORCE=1 NEON_DIRECT_URL='...' ./scripts/restore_ebwiki_neon_review.sh
-```
-
-**Status (2026-09-06):** Restore **held** pending Neon MCP auth. Dump
-verified locally; GitHub raw URL returns 200.
+Run `bundle exec rails db:migrate` after pulling for `photo_candidates` AI
+tracking columns (`planner_ai_used`, `vision_ai_used`, `vision_failed`,
+`likely_homonym`).
 
 ## How to try it
 
@@ -167,10 +164,10 @@ Signed-in editors can:
 
 Verified on the Railway review server (2026-09-06):
 
-- Review page shows **live Wikimedia + Openverse** and **AI: openai (gpt-4o-mini)**.
-- `E2E_STUB_WIKIMEDIA=0` and `OPENAI_API_KEY` are set on `ebwiki-web`.
-- Search on seeded cases returns real API hits; mugshots are flagged and
-  cannot be applied without human approval.
+- Review page shows **live Wikimedia + Openverse** (`E2E_STUB_WIKIMEDIA=0`).
+- Neon holds **~4033** real cases; search runs against live APIs + OpenAI.
+- Each candidate shows **planner: AI** / **vision: AI** badges when those
+  layers actually ran; Apply requires vision verification on review.
 
 ### Real-case sample pack (2026-09-06, no attach)
 

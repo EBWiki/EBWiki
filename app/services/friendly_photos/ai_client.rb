@@ -5,7 +5,7 @@ module FriendlyPhotos
   class AiClient
     include HTTParty
 
-    default_timeout 20
+    default_timeout ENV.fetch('FRIENDLY_PHOTOS_AI_TIMEOUT', 12).to_i
 
     OPENAI_URL = 'https://api.openai.com/v1/chat/completions'
     ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages'
@@ -13,6 +13,7 @@ module FriendlyPhotos
     def chat_json(system:, user:, image_url: nil)
       send_chat(system: system, user: user, image_url: image_url)
     rescue StandardError => e
+      Rails.logger.error("[FriendlyPhotos::AiClient] #{e.class}: #{e.message}")
       Rollbar.error(e) if defined?(Rollbar)
       nil
     end

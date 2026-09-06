@@ -23,6 +23,9 @@ module FriendlyPhotos
     def rejection_reason(this_case, candidate)
       return 'Candidate does not belong to this case.' if candidate.case_id != this_case.id
       return 'Mugshot candidates cannot be applied.' if candidate.likely_mugshot?
+      return 'Possible historical homonym — reject this candidate.' if candidate.likely_homonym?
+      return 'Vision did not verify this image.' unless candidate.vision_verified?
+      return 'Vision API failed for this image — try search again.' if candidate.vision_failed?
       if candidate.license.blank? && candidate.license_url.blank?
         return 'That candidate has no recorded license or rights path.'
       end

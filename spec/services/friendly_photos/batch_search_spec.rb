@@ -9,7 +9,15 @@ RSpec.describe FriendlyPhotos::BatchSearch do
 
   it 'searches cases that need a friendly photo' do
     candidate = create(:photo_candidate, case: this_case)
-    allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return([candidate])
+    allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return(
+      FriendlyPhotos::CandidateSearch::Result.new(
+        records: [candidate],
+        planner_ai_used: true,
+        vision_ai_used_count: 1,
+        vision_failed_count: 0,
+        warnings: []
+      )
+    )
 
     results = described_class.call(scope: Case.where(id: this_case.id))
 
