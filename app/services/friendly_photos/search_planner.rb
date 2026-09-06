@@ -28,7 +28,7 @@ module FriendlyPhotos
       ai_plan = llm_plan(name, city, year)
       return ai_plan if ai_plan
 
-      heuristic(name, city, year)
+      raise AiError, 'Search planner did not return queries from the AI provider.'
     end
 
     private

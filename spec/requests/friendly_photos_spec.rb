@@ -78,6 +78,17 @@ RSpec.describe 'Friendly photos', type: :request do
 
       expect(response.body).to include('None found')
     end
+
+    it 'surfaces AI failures instead of silently degrading' do
+      sign_in user
+      allow(FriendlyPhotos::CandidateSearch).to receive(:call)
+        .and_raise(FriendlyPhotos::AiError, 'Vision classifier did not score this image.')
+
+      post search_friendly_photo_path(this_case)
+      follow_redirect!
+
+      expect(response.body).to include('AI search failed')
+    end
   end
 
   describe 'PATCH /friendly_photos/:id/classify' do

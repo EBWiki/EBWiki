@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # Combines metadata heuristics with optional vision scoring.
+  # Combines metadata heuristics with vision scoring when AI is configured.
   class CandidateClassifier
     include Service
 
