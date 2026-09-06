@@ -25,7 +25,7 @@ module FriendlyPhotos
     }.freeze
 
     def call
-      reset_records
+      E2eSeedReset.call
       state = find_or_create_state
       cases = build_cases(state)
       attach_subjects(cases)
@@ -36,61 +36,6 @@ module FriendlyPhotos
 
     private
 
-    def reset_records
-      if substantial_existing_data?
-        clear_seed_associations
-      else
-        with_pg_pooler_retry { delete_seed_records }
-      end
-    end
-
-    def substantial_existing_data?
-      Case.count > SUBSTANTIAL_CASE_THRESHOLD
-    end
-
-    def delete_seed_records
-      seed_case_ids = Case.where(slug: SLUGS).pluck(:id)
-      return if seed_case_ids.empty?
-
-      PhotoCandidate.where(case_id: seed_case_ids).delete_all
-      Subject.where(case_id: seed_case_ids).delete_all
-      Case.where(id: seed_case_ids).delete_all
-      User.where(email: EMAIL).delete_all
-    end
-
-    def clear_seed_associations
-      seed_case_ids = Case.where(slug: SLUGS).pluck(:id)
-      return if seed_case_ids.empty?
-
-      with_pg_pooler_retry do
-        PhotoCandidate.where(case_id: seed_case_ids).delete_all
-        Subject.where(case_id: seed_case_ids).delete_all
-      end
-    end
-
-    def with_pg_pooler_retry
-      yield
-    rescue ActiveRecord::StatementInvalid => e
-      raise unless cached_plan_error?(e)
-
-      reconnect_active_record!
-      yield
-    end
-
-    def cached_plan_error?(error)
-      cause = error.cause
-      if cause.is_a?(PG::FeatureNotSupported) && cause.message.include?('cached plan')
-        return true
-      end
-      return true if error.is_a?(ActiveRecord::PreparedStatementCacheExpired)
-
-      error.message.include?('cached plan must not change result type')
-    end
-
-    def reconnect_active_record!
-      ReviewDbConnection.reset_pool!
-    end
-
     def find_or_create_state
       State.find_or_create_by!(ansi_code: 'NY') do |state|
         state.name = 'New York'
@@ -100,16 +45,18 @@ module FriendlyPhotos
 
     def upsert_user
       user = User.find_by(email: EMAIL)
-      if user
-        user.update!(
-          password: PASSWORD,
-          password_confirmation: PASSWORD,
-          confirmed_at: Time.current
-        )
-        user
-      else
-        create_user
-      end
+      return create_user unless user
+
+      reset_login!(user)
+    end
+
+    def reset_login!(user)
+      user.update!(
+        password: PASSWORD,
+        password_confirmation: PASSWORD,
+        confirmed_at: Time.current
+      )
+      user
     end
 
     def create_user
