@@ -68,6 +68,33 @@ Disposable login is seeded by `rake review:seed` on deploy.
 
 Cloud Agent MCP cannot re-attach the repo without Mark’s GitHub OAuth on Railway.
 
+### Neon review database (official — not Railway Postgres)
+
+Mark confirmed **Neon** is the review DB. Railway **ebwiki-web** stays the app host;
+`DATABASE_URL` should point at Neon (pooled URL for Puma). Do **not** load
+`latest.dump` into Railway Postgres.
+
+| Step | Action |
+| --- | --- |
+| 1 | Create Neon project **`ebwiki-review`** (or branch `review-friendly-photos`) via Neon MCP/CLI once Mark’s auth lands |
+| 2 | **Check for existing data** — `SELECT COUNT(*) FROM cases;` — do not wipe without Mark confirming `FORCE=1` |
+| 3 | `pg_restore` via **DIRECT** connection (no `-pooler` host). Dump blob: commit `592560514b263c8956d039bdd25c9c8b7fb2a81f` (~69MB, 2020-09-01 Heroku snapshot) |
+| 4 | Run `db/dump_compat.sql` (rename `cause_of_death`, add `cases.tsv`, dedupe ids, add PKs) |
+| 5 | `bundle exec rails db:migrate` for friendly-photos tables |
+| 6 | Set Railway **ebwiki-web** `DATABASE_URL` → Neon **pooled** URL; keep `E2E_STUB_WIKIMEDIA=0`, `OPENAI_API_KEY`, `REVIEW_SERVER=1` |
+| 7 | Redeploy ebwiki-web; verify case count + live search on real names |
+
+Script (run when `pg_restore`/`psql` available and Neon DIRECT URL is set):
+
+```bash
+NEON_DIRECT_URL='postgres://...direct...' ./scripts/restore_ebwiki_neon_review.sh
+# Only if empty DB or Mark approved wipe:
+FORCE=1 NEON_DIRECT_URL='...' ./scripts/restore_ebwiki_neon_review.sh
+```
+
+**Status (2026-09-06):** Restore **held** — Neon MCP needs Mark’s `org_id` auth
+(Ringleader in progress). Dump verified locally at `/tmp/latest.dump`; GitHub raw URL returns 200.
+
 ## How to try it
 
 1. Sign in as an editor.
