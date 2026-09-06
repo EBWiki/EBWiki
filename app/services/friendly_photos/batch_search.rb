@@ -8,7 +8,7 @@ module FriendlyPhotos
     def call(scope: nil)
       cases = scope || default_scope
       cases.map do |this_case|
-        candidates = CandidateSearch.call(this_case: this_case)
+        candidates = CandidateSearch.call(this_case: this_case).records
         payload(this_case, candidates)
       end
     end

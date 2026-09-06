@@ -31,6 +31,7 @@ RSpec.describe FriendlyPhotos::VisionClassifier do
     result = described_class.new(client: client).call(hit: hit)
 
     expect(result.ai_used).to be false
+    expect(result.failed).to be false
     expect(result.likely_mugshot).to be false
   end
 
@@ -49,13 +50,19 @@ RSpec.describe FriendlyPhotos::VisionClassifier do
     expect(result.reasons).to include('family portrait')
   end
 
-  it 'raises when OpenAI is configured but vision returns nothing' do
+  it 'returns a failed result on review servers instead of raising' do
     ENV['OPENAI_API_KEY'] = 'test-key'
+    ENV['REVIEW_SERVER'] = '1'
     allow(client).to receive(:chat_json).and_return(nil)
 
-    expect do
-      described_class.new(client: client).call(hit: hit)
-    end.to raise_error(FriendlyPhotos::AiError, /Vision classifier/)
+    result = described_class.new(client: client).call(hit: hit)
+
+    expect(result.failed).to be true
+    expect(result.ai_used).to be false
+    expect(result.reasons).to include('vision API failed — cannot verify')
+  ensure
+    ENV.delete('OPENAI_API_KEY')
+    ENV.delete('REVIEW_SERVER')
   end
 
   it 'returns stub vision output when FRIENDLY_PHOTOS_STUB_AI=1' do
