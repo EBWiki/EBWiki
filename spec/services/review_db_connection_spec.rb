@@ -6,6 +6,7 @@ RSpec.describe ReviewDbConnection do
   describe '.reset_pool!' do
     it 'clears caches and re-establishes the ActiveRecord connection' do
       handler = ActiveRecord::Base.connection_handler
+      expect(ActiveRecord::Base).to receive(:clear_query_caches_for_current_thread)
       expect(handler).to receive(:clear_all_connections!)
       expect(ActiveRecord::Base).to receive(:establish_connection)
 
