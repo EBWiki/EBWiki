@@ -24,9 +24,11 @@ cannot yet prove.
 
 ## Gaps the e2e run surfaces
 
-1. **Real Wikimedia and CarrierWave apply are stubbed.** Playwright sets
-   `E2E_STUB_WIKIMEDIA=1`, so CI does not download a remote image or talk
-   to Commons. A staging pass against live Wikimedia is still needed.
+1. **Real Wikimedia and CarrierWave apply are stubbed in CI only.**
+   Playwright sets `E2E_STUB_WIKIMEDIA=1`. The Railway preview
+   (`https://ebwiki-web-production.up.railway.app/friendly_photos`) uses
+   `E2E_STUB_WIKIMEDIA=0` and `OPENAI_API_KEY` for live Commons / enwiki /
+   Openverse plus SearchPlanner/VisionClassifier.
 2. **Followers are not emailed** when a portrait is applied. Apply goes
    through `FriendlyPhotos::ApplyCandidate`, not `CasesController#update`,
    so `CaseMailer.send_followers_email` never runs.

@@ -65,8 +65,8 @@ Without an API key (local dev only), the app uses the deterministic
 | URL | https://ebwiki-web-production.up.railway.app/friendly_photos |
 | Branch | `cursor/friendly-photos-search-dfb7` |
 | Login | `e2e@example.com` / `e2e-password` |
-| Live search | `E2E_STUB_WIKIMEDIA=0` (or unset) on `ebwiki-web` |
-| AI | `OPENAI_API_KEY` required on `ebwiki-web` |
+| Live search | `E2E_STUB_WIKIMEDIA=0` on `ebwiki-web` (variable is present; live APIs) |
+| AI | `OPENAI_API_KEY` present on `ebwiki-web` — SearchPlanner + VisionClassifier |
 | Database | **Neon** (official review DB — not Railway Postgres) |
 
 Set `REVIEW_SERVER=1`. Disposable login is seeded by `rake review:seed` on
@@ -168,19 +168,29 @@ Signed-in editors can:
 Verified on the Railway review server (2026-09-06):
 
 - Review page shows **live Wikimedia + Openverse** and **AI: openai (gpt-4o-mini)**.
+- `E2E_STUB_WIKIMEDIA=0` and `OPENAI_API_KEY` are set on `ebwiki-web`.
 - Search on seeded cases returns real API hits; mugshots are flagged and
   cannot be applied without human approval.
 
-Examples from live Wikimedia/Openverse (no auto-attach):
+### Real-case sample pack (2026-09-06, no attach)
 
-- **Walter Scott** (name only) hits Sir Walter Scott portraits on Commons.
-  That is expected name collision. A person must reject the wrong face.
-- **Killing of Walter Scott** exists on Wikipedia but has **no page image**.
-  Commons + city still returns unrelated scans. Honest result: **none found**
-  for a verified portrait of that subject.
-- **George Floyd portrait** on Commons returns licensed stills (CC BY / BY-SA),
-  including murals and protest photos. Those are review candidates, not
-  auto-attach. Protest/incident language is downranked vs family/portrait.
+Live Commons + English Wikipedia + Openverse only. Heuristic query list
+(name, name+city, name+year, `{name} portrait`, `{name} family photo`,
+`Killing of {name}`, `Shooting of {name}`). Metadata mugshot flags only
+(Railway vision would also run when the key is set). Nothing applied.
+Never invent a face.
+
+| Case | Hits | Friendly (review) | Mugshot rejects | Wrong-face risk | Honest result |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Walter Scott (North Charleston, 2015) | 36 | 35 | 0 | 27+ (novelist/statue) | **None found** for the EBWiki subject. Wikipedia default is Sir Walter Scott. A person must reject the novelist. |
+| George Floyd (Minneapolis, 2020) | 40 | 38 | 0 | murals/protest mix | **Candidates found** — licensed murals, memorials, protest stills. Review; downrank incident photos. Not a family portrait by default. |
+| Breonna Taylor (Louisville, 2020) | 22 | 19 | 1 (arrest-language video) | 8 (incl. unrelated people) | **Candidates found** — memorials/artwork/protest. Human must pick a dignified still and reject wrong faces. |
+| Eric Garner (New York, 2014) | 24 | 22 | 0 | 16 (crowd/protest) | **Candidates found** — RIP/cover/protest photos. High wrong-face in protest crowds. |
+| Tamir Rice (Cleveland, 2014) | 13 | 12 | 0 | 9 (Ferguson protests) | **Candidates found** — memorial icons plus many unrelated protest stills. Wikipedia page often has **no** lead image. |
+| Sandra Bland (Prairie View, 2015) | 23 | 18 | 3 (jail building) | 12 | **Candidates found** — campus memorials and marches. Jail-building photos correctly rejected. |
+
+CI stub (`e2e-missing-photo` / Jordan Doe, `E2E_STUB_WIKIMEDIA=1`) still
+shows family portrait vs booking mugshot for Playwright only.
 
 Do not attach anything until a person reviews it. Never invent a face.
 
