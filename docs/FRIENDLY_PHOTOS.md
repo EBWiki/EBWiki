@@ -39,9 +39,34 @@ classification. CI and Playwright keep stubs via `E2E_STUB_WIKIMEDIA=1`
 | `E2E_STUB_WIKIMEDIA=1` | Stub Wikimedia/Openverse (CI/Playwright only) |
 
 **Review server (Railway):** set `REVIEW_SERVER=1`, leave
-`E2E_STUB_WIKIMEDIA` unset so search hits live APIs. Add
+`E2E_STUB_WIKIMEDIA` unset (or `0`) so search hits live APIs. Add
 `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in Railway Variables for AI.
 Disposable login is seeded by `rake review:seed` on deploy.
+
+### Railway review deploy (ebwiki-friendly-photos-review)
+
+| Item | Value |
+| --- | --- |
+| URL | https://ebwiki-web-production.up.railway.app/friendly_photos |
+| Branch | `cursor/friendly-photos-search-dfb7` |
+| Login | `e2e@example.com` / `e2e-password` |
+| Live search | `E2E_STUB_WIKIMEDIA=0` (or unset) on `ebwiki-web` |
+| AI | `OPENAI_API_KEY` on `ebwiki-web` (falls back to heuristics without it) |
+
+**Redeploy after a git push** (when GitHub webhook is connected):
+
+1. Push to `cursor/friendly-photos-search-dfb7`.
+2. Railway project **ebwiki-friendly-photos-review** → service **ebwiki-web** → **Deployments** — confirm a new build for the pushed SHA.
+
+**If auto-deploy stops** (e.g. `connect-service-source` fails with “User does not have access to the repo”):
+
+1. Railway dashboard → **ebwiki-friendly-photos-review** → **ebwiki-web** → **Settings** → **Source**.
+2. **Connect GitHub** (or **Reconnect**) as Mark (`mnyon-grandkru`) with access to `EBWiki/EBWiki`.
+3. Set branch to `cursor/friendly-photos-search-dfb7`, builder **Dockerfile** = `Dockerfile.review`.
+4. **Deploy** (or push an empty commit to re-trigger the webhook).
+5. Verify **Variables**: `REVIEW_SERVER=1`, `E2E_STUB_WIKIMEDIA=0`, `OPENAI_API_KEY` set; do not point `DATABASE_URL` at production Heroku.
+
+Cloud Agent MCP cannot re-attach the repo without Mark’s GitHub OAuth on Railway.
 
 ## How to try it
 
