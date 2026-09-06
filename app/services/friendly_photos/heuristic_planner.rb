@@ -27,7 +27,7 @@ module FriendlyPhotos
         slug.presence&.tr('-', ' '),
         [name, city].compact.join(' '),
         [name, year].compact.join(' ')
-      ]
+      ].compact_blank
     end
 
     def portrait_queries(name)

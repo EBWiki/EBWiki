@@ -8,8 +8,9 @@ module FriendlyPhotos
     INCIDENT_PREFIXES = ['Killing of', 'Shooting of'].freeze
 
     def call(queries:)
-      incident, rest = Array(queries).partition { |query| incident_query?(query) }
-      (incident + rest).map(&:strip).compact_blank.uniq
+      cleaned = Array(queries).map { |query| query.to_s.strip }.compact_blank
+      incident, rest = cleaned.partition { |query| incident_query?(query) }
+      (incident + rest).uniq
     end
 
     private
