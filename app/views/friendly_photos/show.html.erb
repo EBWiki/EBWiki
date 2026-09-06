@@ -9,6 +9,11 @@
     Mugshot farms and booking databases are never queried. A person must
     review and approve a candidate before it is attached.
   </p>
+  <p class="text-muted" data-testid="ai-backend-status">
+    Search backend:
+    <strong><%= friendly_photos_search_mode_label %></strong>
+    &middot; AI: <strong><%= FriendlyPhotos::AiConfig.status_label %></strong>
+  </p>
 
   <h3>Current case photo</h3>
   <% if @this_case.avatar? %>
