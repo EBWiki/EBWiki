@@ -19,7 +19,9 @@ if [ "${REVIEW_SERVER:-}" = "1" ]; then
     if run_review_deploy_prepare; then
       echo "*** Review deploy prepare complete ***"
     else
-      echo "*** WARNING: review deploy prepare failed; continuing deploy (migrations may have applied) ***"
+      echo "*** WARNING: review deploy prepare failed; ensuring sessions table ***"
+      bundle exec rake review:ensure_sessions || true
+      echo "*** WARNING: continuing deploy (migrations may have applied) ***"
     fi
   fi
 elif bundle exec rails db:migrate; then
