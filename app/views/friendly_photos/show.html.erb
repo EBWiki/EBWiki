@@ -12,8 +12,14 @@
   <p class="text-muted" data-testid="ai-backend-status">
     Search backend:
     <strong><%= friendly_photos_search_mode_label %></strong>
-    &middot; AI: <strong><%= FriendlyPhotos::AiConfig.status_label %></strong>
+    &middot; AI config: <strong><%= FriendlyPhotos::AiConfig.status_label %></strong>
   </p>
+  <% if @last_search_ai.present? %>
+    <p class="<%= @last_search_ai[:warnings].present? ? 'text-danger' : 'text-muted' %>"
+       data-testid="last-search-ai-status">
+      <%= friendly_photo_last_search_ai_label(@last_search_ai) %>
+    </p>
+  <% end %>
 
   <h3>Current case photo</h3>
   <% if @this_case.avatar? %>
@@ -72,12 +78,21 @@
                 &middot; <%= candidate.author %>
               <% end %>
             </p>
+            <% if candidate.likely_homonym? %>
+              <p class="text-warning" data-testid="homonym-flag">
+                Possible historical homonym — reject before apply
+                <%= " (#{candidate.notes})" if candidate.notes.present? %>
+              </p>
+            <% end %>
             <% if candidate.likely_mugshot? %>
               <p class="text-danger" data-testid="mugshot-flag">
                 Flagged as a likely mugshot
                 <%= " (#{candidate.notes})" if candidate.notes.present? %>
               </p>
             <% end %>
+            <p class="text-muted" data-testid="candidate-ai-badges">
+              <%= friendly_photo_ai_badge(candidate) %>
+            </p>
             <p>
               Status: <%= candidate.status.humanize %>
               <% source_link = friendly_photo_source_link(candidate) %>
@@ -85,7 +100,7 @@
                 &middot; <%= source_link %>
               <% end %>
             </p>
-            <% if candidate.pending? && candidate.friendly? %>
+            <% if candidate_applyable?(candidate) %>
               <%= button_to 'Use this photo',
                             apply_friendly_photo_path(@this_case),
                             params: { photo_candidate_id: candidate.id },

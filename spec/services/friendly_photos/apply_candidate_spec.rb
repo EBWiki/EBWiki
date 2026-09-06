@@ -60,6 +60,40 @@ RSpec.describe FriendlyPhotos::ApplyCandidate do
     expect(candidate.reload).to be_pending
   end
 
+  it 'refuses historical homonym candidates' do
+    candidate.update!(likely_homonym: true, title: 'Sir Walter Scott')
+
+    result = described_class.call(this_case: this_case, candidate: candidate)
+
+    expect(result.success).to be false
+    expect(result.error).to include('homonym')
+    expect(candidate.reload).to be_pending
+  end
+
+  it 'refuses candidates when vision failed on review servers' do
+    ENV['REVIEW_SERVER'] = '1'
+    candidate.update!(vision_failed: true, vision_ai_used: false)
+
+    result = described_class.call(this_case: this_case, candidate: candidate)
+
+    expect(result.success).to be false
+    expect(result.error).to include('Vision')
+  ensure
+    ENV.delete('REVIEW_SERVER')
+  end
+
+  it 'refuses candidates without vision verification on review servers' do
+    ENV['REVIEW_SERVER'] = '1'
+    candidate.update!(vision_ai_used: false, vision_failed: false)
+
+    result = described_class.call(this_case: this_case, candidate: candidate)
+
+    expect(result.success).to be false
+    expect(result.error).to include('verify')
+  ensure
+    ENV.delete('REVIEW_SERVER')
+  end
+
   it 'refuses images from hosts outside the Wikimedia/Openverse allowlist' do
     candidate.update_columns( # rubocop:disable Rails/SkipsModelValidations
       image_url: 'https://example.com/portrait.jpg'

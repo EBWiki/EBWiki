@@ -16,7 +16,7 @@ module FriendlyPhotosHelper
   end
 
   def pending_friendly_photo_count(this_case)
-    this_case.photo_candidates.count { |candidate| candidate.pending? && candidate.friendly? }
+    this_case.photo_candidates.count(&:applyable?)
   end
 
   def friendly_photos_search_mode_label
@@ -25,5 +25,31 @@ module FriendlyPhotosHelper
     else
       'live Wikimedia + Openverse'
     end
+  end
+
+  def friendly_photo_ai_badge(candidate)
+    planner = candidate.planner_ai_used? ? 'planner: AI' : 'planner: no'
+    vision = if candidate.vision_ai_used?
+               'vision: AI'
+             elsif candidate.vision_failed?
+               'vision: failed'
+             else
+               'vision: no'
+             end
+    [planner, vision].join(' · ')
+  end
+
+  def friendly_photo_last_search_ai_label(last_search_ai)
+    return unless last_search_ai
+
+    planner = last_search_ai[:planner_ai_used] ? 'planner ran' : 'planner did NOT run'
+    vision = "vision verified #{last_search_ai[:vision_ai_used_count]}"
+    parts = ["Last search — #{planner}", vision]
+    parts << last_search_ai[:warnings].join(' ') if last_search_ai[:warnings].present?
+    parts.join(' · ')
+  end
+
+  def candidate_applyable?(candidate)
+    candidate.applyable?
   end
 end

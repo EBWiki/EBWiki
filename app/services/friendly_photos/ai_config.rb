@@ -11,6 +11,10 @@ module FriendlyPhotos
         provider.present? && !stubbed?
       end
 
+      def require_ai?
+        ENV['REVIEW_SERVER'] == '1' || ENV['FRIENDLY_PHOTOS_REQUIRE_AI'] == '1'
+      end
+
       def provider
         return :openai if ENV['OPENAI_API_KEY'].present?
         return :anthropic if ENV['ANTHROPIC_API_KEY'].present?
@@ -24,7 +28,8 @@ module FriendlyPhotos
 
       def status_label
         return 'stubbed (deterministic test AI)' if stubbed?
-        return "#{provider} (#{model_name})" if enabled?
+        return 'required but key missing' if require_ai? && !enabled?
+        return "#{provider} (#{model_name}) — verify per-candidate badges" if enabled?
 
         'not configured (local dev without API key)'
       end
@@ -36,6 +41,12 @@ module FriendlyPhotos
         else
           'none'
         end
+      end
+
+      def enforce_planner!(planner_ai_used)
+        return if !require_ai? || planner_ai_used || stubbed?
+
+        raise AiError, 'Search planner did not run (AI required on this server).'
       end
     end
   end

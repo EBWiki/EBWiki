@@ -15,20 +15,24 @@ module FriendlyPhotos
       mugshots unless they are clearly booking photos.
     PROMPT
 
-    Result = Struct.new(:likely_mugshot, :reasons, :score, :ai_used, keyword_init: true)
+    Result = Struct.new(:likely_mugshot, :reasons, :score, :ai_used, :failed, keyword_init: true)
 
     def initialize(client: AiClient.new)
       @client = client
     end
 
+    def self.skipped_result
+      Result.new(likely_mugshot: false, reasons: [], score: 0, ai_used: false, failed: false)
+    end
+
     def call(hit:)
       return stub_result(hit) if AiConfig.stubbed?
-      return skip unless AiConfig.enabled?
+      return self.class.skipped_result unless AiConfig.enabled?
 
       ai_result = llm_result(hit)
       return ai_result if ai_result
 
-      raise AiError, 'Vision classifier did not score this image.'
+      handle_failure(hit)
     end
 
     private
@@ -61,7 +65,30 @@ module FriendlyPhotos
         likely_mugshot: ActiveModel::Type::Boolean.new.cast(payload['likely_mugshot']),
         reasons: Array(payload['reasons']).map(&:to_s).compact_blank,
         score: payload['score'].to_i,
-        ai_used: true
+        ai_used: true,
+        failed: false
+      )
+    end
+
+    def handle_failure(hit)
+      log_failure(hit)
+      if AiConfig.require_ai?
+        Result.new(
+          likely_mugshot: false,
+          reasons: ['vision API failed — cannot verify'],
+          score: -50,
+          ai_used: false,
+          failed: true
+        )
+      else
+        raise AiError, 'Vision classifier did not score this image.'
+      end
+    end
+
+    def log_failure(hit)
+      Rails.logger.warn(
+        "[FriendlyPhotos::VisionClassifier] failed for #{hit.image_url} " \
+        "(title=#{hit.title.inspect})"
       )
     end
 
@@ -72,12 +99,9 @@ module FriendlyPhotos
         likely_mugshot: heuristic.likely_mugshot,
         reasons: heuristic.reasons + ['stub vision'],
         score: heuristic.score + 1,
-        ai_used: true
+        ai_used: true,
+        failed: false
       )
-    end
-
-    def skip
-      Result.new(likely_mugshot: false, reasons: [], score: 0, ai_used: false)
     end
   end
 end

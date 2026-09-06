@@ -1,16 +1,25 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # Combines metadata heuristics with vision scoring when AI is configured.
+  # Combines metadata heuristics with optional batched vision scoring.
   class CandidateClassifier
     include Service
 
-    Result = Struct.new(:likely_mugshot, :reasons, :score, :ai_used, keyword_init: true)
+    Result = Struct.new(
+      :likely_mugshot,
+      :likely_homonym,
+      :reasons,
+      :score,
+      :vision_ai_used,
+      :vision_failed,
+      keyword_init: true
+    )
 
-    def call(hit:)
+    def call(hit:, run_vision: true, case_year: nil)
       metadata = MugshotClassifier.call(text: hit_text(hit))
-      vision = VisionClassifier.call(hit: hit)
-      combine(metadata, vision)
+      homonym = HomonymDetector.call(text: hit_text(hit), case_year: case_year)
+      vision = vision_result(hit, run_vision)
+      combine(metadata, homonym, vision)
     end
 
     private
@@ -19,12 +28,20 @@ module FriendlyPhotos
       [hit.title, hit.description, hit.image_url, hit.page_url]
     end
 
-    def combine(metadata, vision)
+    def vision_result(hit, run_vision)
+      return VisionClassifier.skipped_result unless run_vision
+
+      VisionClassifier.call(hit: hit)
+    end
+
+    def combine(metadata, homonym, vision)
       Result.new(
         likely_mugshot: metadata.likely_mugshot || vision.likely_mugshot,
-        reasons: (metadata.reasons + vision.reasons).uniq,
-        score: metadata.score + vision.score,
-        ai_used: vision.ai_used
+        likely_homonym: homonym.likely_homonym,
+        reasons: (metadata.reasons + homonym.reasons + vision.reasons).uniq,
+        score: metadata.score + homonym.score_penalty + vision.score,
+        vision_ai_used: vision.ai_used,
+        vision_failed: vision.failed
       )
     end
   end

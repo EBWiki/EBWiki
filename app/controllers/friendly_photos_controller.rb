@@ -15,11 +15,14 @@ class FriendlyPhotosController < ApplicationController
 
   def show
     @candidates = @this_case.photo_candidates.ranked
+    @last_search_ai = session[:friendly_photos_last_search_ai]
   end
 
   def search
-    @candidates = FriendlyPhotos::CandidateSearch.call(this_case: @this_case)
-    flash[:success] = search_flash(@candidates)
+    result = FriendlyPhotos::CandidateSearch.call(this_case: @this_case)
+    @candidates = result.records
+    store_search_ai_status(result)
+    flash_message(result)
     redirect_to friendly_photo_path(@this_case)
   rescue FriendlyPhotos::AiError => e
     flash[:error] = "AI search failed: #{e.message} Check the API key and try again."
@@ -84,15 +87,30 @@ class FriendlyPhotosController < ApplicationController
     @this_case = Case.friendly.find(params[:id])
   end
 
+  def store_search_ai_status(result)
+    session[:friendly_photos_last_search_ai] = {
+      planner_ai_used: result.planner_ai_used,
+      vision_ai_used_count: result.vision_ai_used_count,
+      vision_failed_count: result.vision_failed_count,
+      warnings: result.warnings
+    }
+  end
+
+  def flash_message(result)
+    message = search_flash(result.records)
+    message = "#{message} #{result.warnings.join(' ')}" if result.warnings.any?
+    flash[result.warnings.any? ? :error : :success] = message
+  end
+
   def search_flash(candidates)
-    friendly = candidates.count(&:friendly?)
+    applyable = candidates.count(&:applyable?)
     if candidates.empty?
       'None found: Wikimedia and Openverse returned no openly licensed images.'
-    elsif friendly.zero?
-      "None found: #{candidates.size} images were mugshots or booking photos " \
-        'and cannot be applied.'
+    elsif applyable.zero?
+      "None found: #{candidates.size} images were mugshots, homonyms, unverified, " \
+        'or booking photos and cannot be applied.'
     else
-      "Found #{candidates.size} images (#{friendly} not flagged as mugshots)."
+      "Found #{candidates.size} images (#{applyable} ready for human review)."
     end
   end
 end

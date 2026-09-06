@@ -121,8 +121,14 @@ feature 'Friendly photos' do
   scenario 'searching stores stubbed Wikimedia hits' do
     sign_in user
     allow(FriendlyPhotos::CandidateSearch).to receive(:call) do |this_case:|
-      create(:photo_candidate, case: this_case, title: 'Stubbed portrait')
-      this_case.photo_candidates
+      candidate = create(:photo_candidate, case: this_case, title: 'Stubbed portrait')
+      FriendlyPhotos::CandidateSearch::Result.new(
+        records: [candidate],
+        planner_ai_used: true,
+        vision_ai_used_count: 1,
+        vision_failed_count: 0,
+        warnings: []
+      )
     end
 
     visit friendly_photo_path(missing_case)
