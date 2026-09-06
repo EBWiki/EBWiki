@@ -21,6 +21,9 @@ class FriendlyPhotosController < ApplicationController
     @candidates = FriendlyPhotos::CandidateSearch.call(this_case: @this_case)
     flash[:success] = search_flash(@candidates)
     redirect_to friendly_photo_path(@this_case)
+  rescue FriendlyPhotos::AiError => e
+    flash[:error] = "AI search failed: #{e.message} Check the API key and try again."
+    redirect_to friendly_photo_path(@this_case)
   end
 
   def classify

@@ -15,7 +15,7 @@ RSpec.describe FriendlyPhotos::SearchPlanner do
     ENV.delete('FRIENDLY_PHOTOS_STUB_AI')
   end
 
-  it 'falls back to heuristic queries without an API key' do
+  it 'uses heuristic queries without an API key (local dev only)' do
     allow(client).to receive(:chat_json)
 
     result = described_class.new(client: client).call(name: 'Jordan Doe', city: 'Albany')
@@ -37,6 +37,17 @@ RSpec.describe FriendlyPhotos::SearchPlanner do
     expect(result.queries).to eq(
       ['Jordan Doe', 'Jordan Doe portrait', 'Jordan Doe family photo']
     )
+  ensure
+    ENV.delete('OPENAI_API_KEY')
+  end
+
+  it 'raises when OpenAI is configured but the LLM returns nothing' do
+    ENV['OPENAI_API_KEY'] = 'test-key'
+    allow(client).to receive(:chat_json).and_return(nil)
+
+    expect do
+      described_class.new(client: client).call(name: 'Jordan Doe')
+    end.to raise_error(FriendlyPhotos::AiError, /Search planner/)
   ensure
     ENV.delete('OPENAI_API_KEY')
   end

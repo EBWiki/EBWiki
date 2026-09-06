@@ -26,7 +26,9 @@ module FriendlyPhotos
       return skip unless AiConfig.enabled?
 
       ai_result = llm_result(hit)
-      ai_result || skip
+      return ai_result if ai_result
+
+      raise AiError, 'Vision classifier did not score this image.'
     end
 
     private

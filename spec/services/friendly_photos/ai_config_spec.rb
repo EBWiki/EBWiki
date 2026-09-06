@@ -17,8 +17,8 @@ RSpec.describe FriendlyPhotos::AiConfig do
     expect(described_class.enabled?).to be true
   end
 
-  it 'reports heuristic fallback without keys' do
+  it 'reports not configured without keys' do
     expect(described_class.enabled?).to be false
-    expect(described_class.status_label).to include('heuristic fallback')
+    expect(described_class.status_label).to include('not configured')
   end
 end
