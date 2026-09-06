@@ -77,7 +77,7 @@ Without an API key (local dev only), the app uses the deterministic
 | Item | Value |
 | --- | --- |
 | URL | https://ebwiki-web-production.up.railway.app/friendly_photos |
-| Branch | `cursor/friendly-photos-search-dfb7` |
+| Branch | `cursor/friendly-photos-search-dfb7` (Railway must build branch tip, not a pinned older SHA) |
 | Login | `e2e@example.com` / `e2e-password` |
 | Live search | `E2E_STUB_WIKIMEDIA=0` on `ebwiki-web` (variable is present; live APIs) |
 | AI | `OPENAI_API_KEY` present on `ebwiki-web` — SearchPlanner + VisionClassifier |
