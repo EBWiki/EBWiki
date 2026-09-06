@@ -20,7 +20,9 @@ class PhotoCandidate < ApplicationRecord
   validate :urls_use_allowed_hosts
 
   scope :friendly, -> { where(likely_mugshot: false, likely_homonym: false, vision_failed: false) }
-  scope :ranked, -> { order(likely_homonym: :asc, likely_mugshot: :asc, score: :desc, created_at: :desc) }
+  scope :ranked, lambda {
+    order(likely_homonym: :asc, likely_mugshot: :asc, score: :desc, created_at: :desc)
+  }
 
   def friendly?
     !likely_mugshot? && !likely_homonym? && !vision_failed?

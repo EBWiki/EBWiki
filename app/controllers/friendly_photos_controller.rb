@@ -22,11 +22,10 @@ class FriendlyPhotosController < ApplicationController
     result = FriendlyPhotos::CandidateSearch.call(this_case: @this_case)
     @candidates = result.records
     store_search_ai_status(result)
-    flash_message(result)
-    redirect_to friendly_photo_path(@this_case)
+    redirect_to friendly_photo_path(@this_case), flash: search_flash_hash(result)
   rescue FriendlyPhotos::AiError => e
-    flash[:error] = "AI search failed: #{e.message} Check the API key and try again."
-    redirect_to friendly_photo_path(@this_case)
+    redirect_to friendly_photo_path(@this_case),
+                flash: { error: "AI search failed: #{e.message} Check the API key and try again." }
   end
 
   def classify
@@ -96,10 +95,10 @@ class FriendlyPhotosController < ApplicationController
     }
   end
 
-  def flash_message(result)
+  def search_flash_hash(result)
     message = search_flash(result.records)
     message = "#{message} #{result.warnings.join(' ')}" if result.warnings.any?
-    flash[result.warnings.any? ? :error : :success] = message
+    { result.warnings.any? ? :error : :success => message }
   end
 
   def search_flash(candidates)

@@ -97,7 +97,7 @@ jobs:
       - name: Setup database
         run: |
           cp config/database.ci.yml config/database.yml
-          bundle exec bin/rails db:prepare
+          bundle exec bin/rails db:create db:schema:load
           bundle exec rake e2e:seed_friendly_photos
 
       - name: Setup Node

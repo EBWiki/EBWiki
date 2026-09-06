@@ -38,11 +38,19 @@ module FriendlyPhotos
       Result.new(
         likely_mugshot: metadata.likely_mugshot || vision.likely_mugshot,
         likely_homonym: homonym.likely_homonym,
-        reasons: (metadata.reasons + homonym.reasons + vision.reasons).uniq,
-        score: metadata.score + homonym.score_penalty + vision.score,
+        reasons: combined_reasons(metadata, homonym, vision),
+        score: combined_score(metadata, homonym, vision),
         vision_ai_used: vision.ai_used,
         vision_failed: vision.failed
       )
+    end
+
+    def combined_reasons(metadata, homonym, vision)
+      (metadata.reasons + homonym.reasons + vision.reasons).uniq
+    end
+
+    def combined_score(metadata, homonym, vision)
+      metadata.score + homonym.score_penalty + vision.score
     end
   end
 end
