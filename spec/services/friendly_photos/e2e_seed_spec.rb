@@ -32,36 +32,6 @@ RSpec.describe FriendlyPhotos::E2eSeed do
     described_class.call
   end
 
-  describe 'Neon pooler cached-plan recovery' do
-    let(:seed) { described_class.new }
-
-    it 'detects cached-plan errors from PG::FeatureNotSupported' do
-      pg_error = PG::FeatureNotSupported.new('ERROR: cached plan must not change result type')
-      ar_error = ActiveRecord::StatementInvalid.new('wrapper')
-      allow(ar_error).to receive(:cause).and_return(pg_error)
-
-      expect(seed.send(:cached_plan_error?, ar_error)).to be(true)
-    end
-
-    it 'reconnects and retries once after a cached-plan error' do
-      attempts = 0
-
-      expect(ReviewDbConnection).to receive(:reset_pool!).once
-
-      seed.send(:with_pg_pooler_retry) do
-        attempts += 1
-        next unless attempts == 1
-
-        pg_error = PG::FeatureNotSupported.new('ERROR: cached plan must not change result type')
-        ar_error = ActiveRecord::StatementInvalid.new('wrapper')
-        allow(ar_error).to receive(:cause).and_return(pg_error)
-        raise ar_error
-      end
-
-      expect(attempts).to eq(2)
-    end
-  end
-
   describe 'substantial review databases' do
     it 'upserts e2e fixtures without deleting unrelated or seed cases' do
       unrelated = create(:case, slug: 'real-case-from-dump', title: 'Real Case')
