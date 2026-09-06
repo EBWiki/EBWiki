@@ -129,6 +129,7 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
     ranked = this_case.photo_candidates.ranked
 
     expect(ranked.first.title).to eq('Walter Scott portrait')
+    expect(ranked.map(&:title)).to include('Walter Scott mugshot', 'Sir Walter Scott')
     expect(ranked.last).to be_likely_mugshot
   end
 
