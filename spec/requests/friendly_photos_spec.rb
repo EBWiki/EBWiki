@@ -1,0 +1,147 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'Friendly photos', type: :request do
+  let(:user) { create(:user) }
+  let(:this_case) { create(:case) }
+
+  before { create(:subject, case: this_case, name: 'Walter Scott') }
+
+  describe 'GET /friendly_photos' do
+    it 'requires a signed-in editor' do
+      get friendly_photos_path
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it 'lists cases that need a better photo' do
+      sign_in user
+      get friendly_photos_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('Walter Scott')
+      expect(response.body).to include('Review photos')
+    end
+
+    it 'finds a case by name' do
+      sign_in user
+      get friendly_photos_path, params: { q: 'Walter Scott' }
+
+      expect(response.body).to include('Walter Scott')
+    end
+  end
+
+  describe 'GET /friendly_photos/:id' do
+    it 'shows the current photo and search action' do
+      sign_in user
+      get friendly_photo_path(this_case)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('Search Wikimedia and Openverse')
+      expect(response.body).to include('Walter Scott')
+      expect(response.body).to include('None found yet')
+    end
+
+    it 'stacks review cards after candidates are stored' do
+      create(:photo_candidate, case: this_case, title: 'Jordan Doe portrait')
+      sign_in user
+      get friendly_photo_path(this_case)
+
+      expect(response.body).to include('friendly-photo-card')
+      expect(response.body).to include('Jordan Doe portrait')
+      expect(response.body).to include('Use this photo')
+    end
+  end
+
+  describe 'POST /friendly_photos/:id/search' do
+    it 'stores search results and returns to the review page' do
+      sign_in user
+      candidate = create(:photo_candidate, case: this_case, planner_ai_used: true, vision_ai_used: true)
+      allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return(
+        FriendlyPhotos::CandidateSearch::Result.new(
+          records: [candidate],
+          planner_ai_used: true,
+          vision_ai_used_count: 1,
+          vision_failed_count: 0,
+          warnings: []
+        )
+      )
+
+      post search_friendly_photo_path(this_case)
+
+      expect(FriendlyPhotos::CandidateSearch).to have_received(:call).with(this_case: this_case)
+      expect(response).to redirect_to(friendly_photo_path(this_case))
+      follow_redirect!
+      expect(response.body).to include('Found 1 images')
+      expect(response.body).to include('planner ran')
+    end
+
+    it 'says none found when every hit is a mugshot' do
+      sign_in user
+      mugshot = create(:photo_candidate, case: this_case, likely_mugshot: true,
+                                         title: 'Booking photo')
+      allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return(
+        FriendlyPhotos::CandidateSearch::Result.new(
+          records: [mugshot],
+          planner_ai_used: true,
+          vision_ai_used_count: 1,
+          vision_failed_count: 0,
+          warnings: []
+        )
+      )
+
+      post search_friendly_photo_path(this_case)
+      follow_redirect!
+
+      expect(response.body).to include('None found')
+    end
+
+    it 'surfaces AI failures instead of silently degrading' do
+      sign_in user
+      allow(FriendlyPhotos::CandidateSearch).to receive(:call)
+        .and_raise(FriendlyPhotos::AiError, 'Vision classifier did not score this image.')
+
+      post search_friendly_photo_path(this_case)
+      follow_redirect!
+
+      expect(response.body).to include('AI search failed')
+    end
+  end
+
+  describe 'PATCH /friendly_photos/:id/classify' do
+    it 'marks the current photo as a mugshot' do
+      sign_in user
+      patch classify_friendly_photo_path(this_case), params: { avatar_kind: 'mugshot' }
+
+      expect(this_case.reload).to be_mugshot
+      expect(response).to redirect_to(friendly_photo_path(this_case))
+    end
+  end
+
+  describe 'POST /friendly_photos/:id/apply' do
+    it 'applies a reviewed candidate' do
+      sign_in user
+      candidate = create(:photo_candidate, case: this_case)
+      allow(FriendlyPhotos::ApplyCandidate).to receive(:call).and_return(
+        FriendlyPhotos::ApplyCandidate::Result.new(success: true, error: nil)
+      )
+
+      post apply_friendly_photo_path(this_case), params: { photo_candidate_id: candidate.id }
+
+      expect(FriendlyPhotos::ApplyCandidate).to have_received(:call)
+        .with(this_case: this_case, candidate: candidate)
+      expect(response).to redirect_to(friendly_photo_path(this_case))
+    end
+  end
+
+  describe 'POST /friendly_photos/:id/reject' do
+    it 'rejects a candidate' do
+      sign_in user
+      candidate = create(:photo_candidate, case: this_case)
+
+      post reject_friendly_photo_path(this_case), params: { photo_candidate_id: candidate.id }
+
+      expect(candidate.reload).to be_rejected
+    end
+  end
+end

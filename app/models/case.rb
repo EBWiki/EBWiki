@@ -3,6 +3,7 @@
 # Case model
 class Case < ApplicationRecord
   include CaseSearchable
+  include CaseFriendlyPhoto
 
   MAX_BLURB_CHARACTERS = 500
 
@@ -139,6 +140,7 @@ end
 #  address            :string
 #  age                :integer
 #  avatar             :string
+#  avatar_kind        :string           default("unclassified"), not null
 #  blurb              :text
 #  cause_of_death     :enum
 #  city               :string           not null
@@ -164,6 +166,7 @@ end
 #
 # Indexes
 #
-#  index_cases_on_slug   (slug) UNIQUE
-#  index_cases_on_title  (title)
+#  index_cases_on_avatar_kind  (avatar_kind)
+#  index_cases_on_slug         (slug) UNIQUE
+#  index_cases_on_title        (title)
 #

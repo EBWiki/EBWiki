@@ -24,7 +24,6 @@ config/secrets.yml
 ## Environment normalisation:
 /.bundle
 /vendor/bundle
-/.env
 
 # these should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
@@ -42,6 +41,11 @@ bower.json
 
 # Ignore DS_Store files
 .DS_Store
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
 
 # Local dev files and directories
 .vscode
@@ -69,3 +73,8 @@ yarn-debug.log*
 .yarn-integrity
 /.idea
 /config/master.key
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
+config.bat

@@ -292,6 +292,7 @@ CREATE TABLE public.cases (
     summary text NOT NULL,
     follows_count integer DEFAULT 0 NOT NULL,
     default_avatar_url character varying,
+    avatar_kind character varying DEFAULT 'unclassified'::character varying NOT NULL,
     blurb text,
     cause_of_death public.cause_of_death,
     tsv tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (((((((((COALESCE(title, ''::character varying))::text || ' '::text) || COALESCE(blurb, ''::text)) || ' '::text) || COALESCE(overview, ''::text)) || ' '::text) || (COALESCE(city, ''::character varying))::text) || ' '::text) || COALESCE(summary, ''::text)))) STORED
@@ -724,6 +725,53 @@ CREATE SEQUENCE public.organizations_id_seq
 --
 
 ALTER SEQUENCE public.organizations_id_seq OWNED BY public.organizations.id;
+
+
+--
+-- Name: photo_candidates; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.photo_candidates (
+    id bigint NOT NULL,
+    case_id integer NOT NULL,
+    subject_name character varying NOT NULL,
+    source character varying NOT NULL,
+    title character varying,
+    image_url character varying NOT NULL,
+    page_url character varying,
+    license character varying,
+    license_url character varying,
+    author character varying,
+    score integer DEFAULT 0 NOT NULL,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    likely_mugshot boolean DEFAULT false NOT NULL,
+    notes text,
+    planner_ai_used boolean DEFAULT false NOT NULL,
+    vision_ai_used boolean DEFAULT false NOT NULL,
+    vision_failed boolean DEFAULT false NOT NULL,
+    likely_homonym boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: photo_candidates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.photo_candidates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: photo_candidates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.photo_candidates_id_seq OWNED BY public.photo_candidates.id;
 
 
 --
@@ -1160,6 +1208,13 @@ ALTER TABLE ONLY public.organizations ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: photo_candidates id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.photo_candidates ALTER COLUMN id SET DEFAULT nextval('public.photo_candidates_id_seq'::regclass);
+
+
+--
 -- Name: rollout_histories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1369,6 +1424,14 @@ ALTER TABLE ONLY public.organizations
 
 
 --
+-- Name: photo_candidates photo_candidates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.photo_candidates
+    ADD CONSTRAINT photo_candidates_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: rollout_histories rollout_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1482,6 +1545,13 @@ CREATE INDEX index_calendar_events_on_owner_id ON public.calendar_events USING b
 
 
 --
+-- Name: index_cases_on_avatar_kind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cases_on_avatar_kind ON public.cases USING btree (avatar_kind);
+
+
+--
 -- Name: index_cases_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1500,6 +1570,27 @@ CREATE INDEX index_cases_on_title ON public.cases USING btree (title);
 --
 
 CREATE INDEX index_cases_on_tsv ON public.cases USING gin (tsv);
+
+
+--
+-- Name: index_photo_candidates_on_case_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_photo_candidates_on_case_id ON public.photo_candidates USING btree (case_id);
+
+
+--
+-- Name: index_photo_candidates_on_case_id_and_image_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_photo_candidates_on_case_id_and_image_url ON public.photo_candidates USING btree (case_id, image_url);
+
+
+--
+-- Name: index_photo_candidates_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_photo_candidates_on_status ON public.photo_candidates USING btree (status);
 
 
 --
@@ -1734,6 +1825,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING b
 
 
 --
+-- Name: photo_candidates fk_rails_photo_candidates_case_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.photo_candidates
+    ADD CONSTRAINT fk_rails_photo_candidates_case_id FOREIGN KEY (case_id) REFERENCES public.cases(id);
+
+
+--
 -- Name: subjects fk_rails_94f26cc552; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1772,6 +1871,9 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260906120000'),
+('20260905220000'),
+('20260815120000'),
 ('20260428201731'),
 ('20260428164616'),
 ('20240304022234'),
