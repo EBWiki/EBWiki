@@ -15,5 +15,9 @@ fi
 
 if [ "${REVIEW_SERVER:-}" = "1" ]; then
   echo "*** Seeding review server demo data ***"
-  bundle exec rake review:seed
+  if bundle exec rake review:seed; then
+    echo "*** Review seed applied ***"
+  else
+    echo "*** WARNING: review:seed failed; continuing deploy (migrations already applied) ***"
+  fi
 fi
