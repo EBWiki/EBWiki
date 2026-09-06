@@ -17,6 +17,7 @@ namespace :review do
 
   desc 'Seed disposable editor login and friendly-photo demo cases for PR preview'
   task seed: :environment do
+    ReviewSessionsTable.ensure!
     ReviewDbConnection.reset_pool!
     FriendlyPhotos::E2eSeed.call
     puts 'Review server seeded.'
