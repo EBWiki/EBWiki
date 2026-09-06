@@ -49,6 +49,15 @@ RSpec.describe FriendlyPhotos::VisionClassifier do
     expect(result.reasons).to include('family portrait')
   end
 
+  it 'raises when OpenAI is configured but vision returns nothing' do
+    ENV['OPENAI_API_KEY'] = 'test-key'
+    allow(client).to receive(:chat_json).and_return(nil)
+
+    expect do
+      described_class.new(client: client).call(hit: hit)
+    end.to raise_error(FriendlyPhotos::AiError, /Vision classifier/)
+  end
+
   it 'returns stub vision output when FRIENDLY_PHOTOS_STUB_AI=1' do
     ENV['FRIENDLY_PHOTOS_STUB_AI'] = '1'
     mugshot = FriendlyPhotos::WikimediaClient::Hit.new(

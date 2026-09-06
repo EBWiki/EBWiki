@@ -11,39 +11,54 @@ jail or prison identification photos are excluded or cannot be applied.
 
 Nothing is published automatically. A person always reviews the candidates.
 
-## AI backend
+## Where we search (locked)
 
-When `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` is set, search uses two AI
-layers on top of the same Wikimedia/Openverse allowlist:
+Friendly photo search queries **only** these sources. This scope is fixed —
+not an open design question (GKT-182 holds):
+
+| Source | Role |
+| --- | --- |
+| **Wikimedia Commons** | Primary image repository |
+| **English Wikipedia** | Article lead images and linked Commons files |
+| **Openverse** | CC0, CC BY, CC BY-SA, and PDM images (Flickr/Wikimedia hosts) |
+
+We do **not** scrape news sites, social networks, arrest databases, or
+mugshot-farm hosts. Those hosts are blocked before save.
+
+## AI backend (review path)
+
+When `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` is set (required on the review
+server), search uses two AI layers on the allowlist above:
 
 1. **Search planner** (`SearchPlanner`) — given a person name plus optional
-   city/year, an LLM returns 4–8 name-first queries for Wikimedia Commons
+   city/year, the LLM returns 4–8 name-first queries for Wikimedia Commons
    and Openverse. It does not invent faces or licenses.
 2. **Vision classifier** (`VisionClassifier`) — scores each candidate image
    as a friendly portrait vs mugshot/booking before Apply is offered.
    Metadata heuristics (`MugshotClassifier`) still run; either layer can
    hard-block a mugshot.
 
-Without an API key, or when the provider errors, the app **gracefully
-degrades** to the deterministic heuristic planner and metadata-only
-classification. CI and Playwright keep stubs via `E2E_STUB_WIKIMEDIA=1`
-(search fixtures) and never need live AI keys.
+With an API key configured, planner and vision **must** succeed. There is no
+silent fallback to heuristic-only search on review. If the provider errors,
+the search surfaces an error and the editor can retry.
+
+Without an API key (local dev only), the app uses the deterministic
+`HeuristicPlanner` and metadata-only classification. CI unit tests use
+`FRIENDLY_PHOTOS_STUB_AI=1` for deterministic stub AI.
 
 | Variable | Purpose |
 | --- | --- |
 | `OPENAI_API_KEY` | Enable OpenAI planner + vision (`gpt-4o-mini` default) |
-| `ANTHROPIC_API_KEY` | Fallback provider (`claude-3-5-haiku-latest` default) |
+| `ANTHROPIC_API_KEY` | Alternate provider (`claude-3-5-haiku-latest` default) |
 | `FRIENDLY_PHOTOS_OPENAI_MODEL` | Override OpenAI model |
 | `FRIENDLY_PHOTOS_ANTHROPIC_MODEL` | Override Anthropic model |
-| `FRIENDLY_PHOTOS_STUB_AI=1` | Deterministic stub AI for unit tests |
-| `E2E_STUB_WIKIMEDIA=1` | Stub Wikimedia/Openverse (CI/Playwright only) |
+| `FRIENDLY_PHOTOS_STUB_AI=1` | Deterministic stub AI for unit tests only |
+| `E2E_STUB_WIKIMEDIA=1` | Stub Wikimedia/Openverse HTTP (CI/Playwright only) |
 
-**Review server (Railway):** set `REVIEW_SERVER=1`, leave
-`E2E_STUB_WIKIMEDIA` unset (or `0`) so search hits live APIs. Add
-`OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in Railway Variables for AI.
-Disposable login is seeded by `rake review:seed` on deploy.
+**Default:** live Wikimedia + Openverse. Stubs are opt-in for CI/E2E only
+(`E2E_STUB_WIKIMEDIA=1`). Review servers must leave it unset or `0`.
 
-### Railway review deploy (ebwiki-friendly-photos-review)
+### Review server (Railway)
 
 | Item | Value |
 | --- | --- |
@@ -51,7 +66,11 @@ Disposable login is seeded by `rake review:seed` on deploy.
 | Branch | `cursor/friendly-photos-search-dfb7` |
 | Login | `e2e@example.com` / `e2e-password` |
 | Live search | `E2E_STUB_WIKIMEDIA=0` (or unset) on `ebwiki-web` |
-| AI | `OPENAI_API_KEY` on `ebwiki-web` (falls back to heuristics without it) |
+| AI | `OPENAI_API_KEY` required on `ebwiki-web` |
+| Database | **Neon** (official review DB — not Railway Postgres) |
+
+Set `REVIEW_SERVER=1`. Disposable login is seeded by `rake review:seed` on
+deploy.
 
 **Redeploy after a git push** (when GitHub webhook is connected):
 
@@ -64,19 +83,17 @@ Disposable login is seeded by `rake review:seed` on deploy.
 2. **Connect GitHub** (or **Reconnect**) as Mark (`mnyon-grandkru`) with access to `EBWiki/EBWiki`.
 3. Set branch to `cursor/friendly-photos-search-dfb7`, builder **Dockerfile** = `Dockerfile.review`.
 4. **Deploy** (or push an empty commit to re-trigger the webhook).
-5. Verify **Variables**: `REVIEW_SERVER=1`, `E2E_STUB_WIKIMEDIA=0`, `OPENAI_API_KEY` set; do not point `DATABASE_URL` at production Heroku.
+5. Verify **Variables**: `REVIEW_SERVER=1`, `E2E_STUB_WIKIMEDIA=0`, `OPENAI_API_KEY` set; point `DATABASE_URL` at Neon (pooled URL), not production Heroku.
 
-Cloud Agent MCP cannot re-attach the repo without Mark’s GitHub OAuth on Railway.
+### Neon review database
 
-### Neon review database (official — not Railway Postgres)
-
-Mark confirmed **Neon** is the review DB. Railway **ebwiki-web** stays the app host;
-`DATABASE_URL` should point at Neon (pooled URL for Puma). Do **not** load
-`latest.dump` into Railway Postgres.
+Mark confirmed **Neon** is the review DB. Railway **ebwiki-web** stays the
+app host; `DATABASE_URL` should point at Neon (pooled URL for Puma). Do
+**not** load `latest.dump` into Railway Postgres.
 
 | Step | Action |
 | --- | --- |
-| 1 | Create Neon project **`ebwiki-review`** (or branch `review-friendly-photos`) via Neon MCP/CLI once Mark’s auth lands |
+| 1 | Create Neon project **`ebwiki-review`** (or branch `review-friendly-photos`) |
 | 2 | **Check for existing data** — `SELECT COUNT(*) FROM cases;` — do not wipe without Mark confirming `FORCE=1` |
 | 3 | `pg_restore` via **DIRECT** connection (no `-pooler` host). Dump blob: commit `592560514b263c8956d039bdd25c9c8b7fb2a81f` (~69MB, 2020-09-01 Heroku snapshot) |
 | 4 | Run `db/dump_compat.sql` (rename `cause_of_death`, add `cases.tsv`, dedupe ids, add PKs) |
@@ -92,8 +109,8 @@ NEON_DIRECT_URL='postgres://...direct...' ./scripts/restore_ebwiki_neon_review.s
 FORCE=1 NEON_DIRECT_URL='...' ./scripts/restore_ebwiki_neon_review.sh
 ```
 
-**Status (2026-09-06):** Restore **held** — Neon MCP needs Mark’s `org_id` auth
-(Ringleader in progress). Dump verified locally at `/tmp/latest.dump`; GitHub raw URL returns 200.
+**Status (2026-09-06):** Restore **held** pending Neon MCP auth. Dump
+verified locally; GitHub raw URL returns 200.
 
 ## How to try it
 
@@ -113,7 +130,7 @@ bundle exec rake photos:search_friendly CASE=walter-scott
 bundle exec rake photos:search_friendly LIMIT=10 FORMAT=json
 ```
 
-## Source strategy
+## Source policy
 
 | Source | What we take | What we refuse |
 | --- | --- | --- |
@@ -146,18 +163,15 @@ Signed-in editors can:
 5. Apply a reviewed portrait, or upload a better file on the case edit form.
 6. Mark the current photo as **Portrait**, **Mugshot**, or **Other**.
 
-## Sample outputs
+## Live search notes
 
-Against the Playwright seed (`e2e-missing-photo` / Jordan Doe) with
-`E2E_STUB_WIKIMEDIA=1`:
+Verified on the Railway review server (2026-09-06):
 
-- **E2E family portrait** (Wikimedia, CC BY-SA 4.0) — apply allowed
-- **E2E openverse portrait** (Openverse/Flickr, CC BY 4.0 + license URL) —
-  apply allowed
-- **E2E booking mugshot** — shown as flagged, apply hidden
-- Searching a person with only booking-photo hits shows **None found**
+- Review page shows **live Wikimedia + Openverse** and **AI: openai (gpt-4o-mini)**.
+- Search on seeded cases returns real API hits; mugshots are flagged and
+  cannot be applied without human approval.
 
-Live Wikimedia/Openverse (2026-09-05, no attach):
+Examples from live Wikimedia/Openverse (no auto-attach):
 
 - **Walter Scott** (name only) hits Sir Walter Scott portraits on Commons.
   That is expected name collision. A person must reject the wrong face.
@@ -167,8 +181,6 @@ Live Wikimedia/Openverse (2026-09-05, no attach):
 - **George Floyd portrait** on Commons returns licensed stills (CC BY / BY-SA),
   including murals and protest photos. Those are review candidates, not
   auto-attach. Protest/incident language is downranked vs family/portrait.
-- Queries also try `Killing of {name}` and `Shooting of {name}`. Commons
-  drops mugshot/booking/inmate terms plus PDF/DjVu scans.
 
 Do not attach anything until a person reviews it. Never invent a face.
 
@@ -190,6 +202,9 @@ instead of clicking through the UI.
 Capybara covers the editor UI in `spec/features/friendly_photos_spec.rb`
 and runs on every PR. Playwright is a path-filtered GitHub Actions
 workflow. See `e2e/README.md` and `docs/E2E_FRIENDLY_PHOTOS.md`.
+
+CI and Playwright set `E2E_STUB_WIKIMEDIA=1` so tests never hit live APIs.
+That stub is **not** used on the review server.
 
 ```
 bundle exec rake e2e:seed_friendly_photos

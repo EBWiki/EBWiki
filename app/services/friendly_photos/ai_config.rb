@@ -26,7 +26,7 @@ module FriendlyPhotos
         return 'stubbed (deterministic test AI)' if stubbed?
         return "#{provider} (#{model_name})" if enabled?
 
-        'heuristic fallback (no AI key)'
+        'not configured (local dev without API key)'
       end
 
       def model_name
