@@ -5,6 +5,7 @@ module ReviewDbConnection
   module_function
 
   def reset_pool!
+    ActiveRecord::Base.clear_query_caches_for_current_thread
     pool = ActiveRecord::Base.connection_pool
     pool.connection.clear_cache! if pool.connected?
   rescue StandardError
