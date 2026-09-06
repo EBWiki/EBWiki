@@ -63,3 +63,5 @@ BEGIN
     END IF;
   END LOOP;
 END $$;
+
+\ir review_ensure_sessions.sql

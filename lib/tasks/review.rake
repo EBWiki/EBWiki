@@ -1,9 +1,16 @@
 # frozen_string_literal: true
 
 namespace :review do
+  desc 'Create sessions table if missing (historic dumps omit it; migration may already be recorded)'
+  task ensure_sessions: :environment do
+    ReviewSessionsTable.ensure!
+    puts 'Review sessions table ensured.'
+  end
+
   desc 'Migrate, clear stale prepared statements, and seed review fixtures (single process)'
   task deploy_prepare: :environment do
     ActiveRecord::Tasks::DatabaseTasks.migrate
+    ReviewSessionsTable.ensure!
     ReviewDbConnection.reset_pool!
     Rake::Task['review:seed'].invoke
   end

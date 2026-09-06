@@ -105,6 +105,12 @@ Mark confirmed **Neon** is the review DB. Railway **ebwiki-web** `DATABASE_URL`
 points at Neon (pooled URL for Puma). The 2020-09-01 Heroku snapshot is loaded;
 `SELECT COUNT(*) FROM cases` returns **~4033** on review.
 
+Historic dumps omit the `sessions` table while `schema_migrations` may still
+list `AddSessionsTable`, so `db:migrate` alone will not recreate it. Review
+deploys run `rake review:deploy_prepare` (migrate, `review:ensure_sessions`,
+seed). After a manual Neon restore, run the same task or
+`bundle exec rake review:ensure_sessions`.
+
 Run `bundle exec rails db:migrate` after pulling for `photo_candidates` AI
 tracking columns (`planner_ai_used`, `vision_ai_used`, `vision_failed`,
 `likely_homonym`).
