@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :review do
-  desc 'Create sessions table if missing (historic dumps omit it; migration may already be recorded)'
+  desc 'Create sessions table if a historic dump omitted it'
   task ensure_sessions: :environment do
     ReviewSessionsTable.ensure!
     puts 'Review sessions table ensured.'

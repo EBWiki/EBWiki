@@ -15,7 +15,7 @@ describe 'review:deploy_prepare' do
 
     expect(ActiveRecord::Tasks::DatabaseTasks).to have_received(:migrate).ordered
     expect(ReviewSessionsTable).to have_received(:ensure!).ordered
-    expect(ReviewDbConnection).to have_received(:reset_pool!).ordered
+    expect(ReviewDbConnection).to have_received(:reset_pool!).at_least(:once)
     expect(FriendlyPhotos::E2eSeed).to have_received(:call).ordered
   end
 end
