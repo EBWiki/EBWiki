@@ -18,4 +18,12 @@ module FriendlyPhotosHelper
   def pending_friendly_photo_count(this_case)
     this_case.photo_candidates.count { |candidate| candidate.pending? && candidate.friendly? }
   end
+
+  def friendly_photos_search_mode_label
+    if FriendlyPhotos::WikimediaClient.stubbed?
+      'stubbed (E2E fixtures only)'
+    else
+      'live Wikimedia + Openverse'
+    end
+  end
 end
