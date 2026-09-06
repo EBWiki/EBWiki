@@ -11,6 +11,38 @@ jail or prison identification photos are excluded or cannot be applied.
 
 Nothing is published automatically. A person always reviews the candidates.
 
+## AI backend
+
+When `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` is set, search uses two AI
+layers on top of the same Wikimedia/Openverse allowlist:
+
+1. **Search planner** (`SearchPlanner`) — given a person name plus optional
+   city/year, an LLM returns 4–8 name-first queries for Wikimedia Commons
+   and Openverse. It does not invent faces or licenses.
+2. **Vision classifier** (`VisionClassifier`) — scores each candidate image
+   as a friendly portrait vs mugshot/booking before Apply is offered.
+   Metadata heuristics (`MugshotClassifier`) still run; either layer can
+   hard-block a mugshot.
+
+Without an API key, or when the provider errors, the app **gracefully
+degrades** to the deterministic heuristic planner and metadata-only
+classification. CI and Playwright keep stubs via `E2E_STUB_WIKIMEDIA=1`
+(search fixtures) and never need live AI keys.
+
+| Variable | Purpose |
+| --- | --- |
+| `OPENAI_API_KEY` | Enable OpenAI planner + vision (`gpt-4o-mini` default) |
+| `ANTHROPIC_API_KEY` | Fallback provider (`claude-3-5-haiku-latest` default) |
+| `FRIENDLY_PHOTOS_OPENAI_MODEL` | Override OpenAI model |
+| `FRIENDLY_PHOTOS_ANTHROPIC_MODEL` | Override Anthropic model |
+| `FRIENDLY_PHOTOS_STUB_AI=1` | Deterministic stub AI for unit tests |
+| `E2E_STUB_WIKIMEDIA=1` | Stub Wikimedia/Openverse (CI/Playwright only) |
+
+**Review server (Railway):** set `REVIEW_SERVER=1`, leave
+`E2E_STUB_WIKIMEDIA` unset so search hits live APIs. Add
+`OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in Railway Variables for AI.
+Disposable login is seeded by `rake review:seed` on deploy.
+
 ## How to try it
 
 1. Sign in as an editor.
@@ -113,6 +145,14 @@ npm install
 npx playwright install chromium
 npm run e2e:smoke
 ```
+
+## Rate limits (live search)
+
+| API | Notes |
+| --- | --- |
+| Wikimedia Commons / Wikipedia | Public API; descriptive User-Agent. ~200 req/s per IP typical; 8s timeout per call. |
+| Openverse | Public API; may return 429 if hammered — retry later. |
+| OpenAI / Anthropic | Billed per token/image; vision runs once per new candidate image. |
 
 ## Rules
 

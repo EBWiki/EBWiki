@@ -41,13 +41,28 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
   end
   let(:client) { instance_double(FriendlyPhotos::WikimediaClient) }
   let(:openverse) { instance_double(FriendlyPhotos::OpenverseClient, search: []) }
+  let(:planner) do
+    instance_double(
+      FriendlyPhotos::SearchPlanner,
+      call: FriendlyPhotos::SearchPlanner::Result.new(
+        queries: [
+          'Walter Scott',
+          'Walter Scott Albany',
+          'Walter Scott portrait',
+          'Killing of Walter Scott',
+          'Shooting of Walter Scott'
+        ],
+        ai_used: false
+      )
+    )
+  end
 
   before do
     allow(client).to receive(:search).and_return([portrait_hit, mugshot_hit])
   end
 
   def search
-    described_class.new(client: client, openverse: openverse).call(this_case: this_case)
+    described_class.new(client: client, openverse: openverse, planner: planner).call(this_case: this_case)
   end
 
   it 'persists friendly and flagged candidates without overwriting reviews' do
@@ -85,16 +100,24 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
   it 'uses the case title when a case has no subjects' do
     subject_record.destroy
     this_case.subjects.reload
+    allow(planner).to receive(:call).and_return(
+      FriendlyPhotos::SearchPlanner::Result.new(queries: [this_case.title], ai_used: false)
+    )
 
     search
 
-    expect(client).to have_received(:search).with(query: this_case.title)
+    expect(planner).to have_received(:call).with(
+      name: this_case.title,
+      city: this_case.city,
+      year: this_case.date&.year
+    )
   end
 
-  it 'also searches killing-of and shooting-of titles for the subject' do
+  it 'plans killing-of and shooting-of queries for the subject' do
     name = subject_record.name
     search
 
+    expect(planner).to have_received(:call).with(name: name, city: this_case.city, year: this_case.date&.year)
     expect(client).to have_received(:search).with(query: "Killing of #{name}")
     expect(client).to have_received(:search).with(query: "Shooting of #{name}")
     expect(client).to have_received(:search).with(query: "#{name} Albany")

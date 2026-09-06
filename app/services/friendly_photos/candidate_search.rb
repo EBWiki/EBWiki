@@ -5,9 +5,14 @@ module FriendlyPhotos
   class CandidateSearch
     include Service
 
-    def initialize(client: WikimediaClient.new, openverse: OpenverseClient.new)
+    def initialize(
+      client: WikimediaClient.new,
+      openverse: OpenverseClient.new,
+      planner: SearchPlanner.new
+    )
       @client = client
       @openverse = openverse
+      @planner = planner
     end
 
     def call(this_case:, persist: true)
@@ -20,7 +25,7 @@ module FriendlyPhotos
 
     private
 
-    attr_reader :client, :openverse
+    attr_reader :client, :openverse, :planner
 
     def subject_names(this_case)
       names = this_case.subjects.reload.filter_map { |subject| subject.name.presence }
@@ -29,8 +34,13 @@ module FriendlyPhotos
     end
 
     def search_for(name, this_case)
-      queries_for(name, this_case).flat_map do |query|
-        combined_hits(query).filter_map { |hit| decorate(hit, name) }
+      plan = planner.call(
+        name: name,
+        city: this_case.city,
+        year: this_case.date&.year
+      )
+      plan.queries.flat_map do |query|
+        combined_hits(query).filter_map { |hit| decorate(hit, name, plan.ai_used) }
       end
     end
 
@@ -40,31 +50,21 @@ module FriendlyPhotos
         .reject { |hit| SourcePolicy.excluded_hit?(hit) }
     end
 
-    def queries_for(name, this_case)
-      year = this_case.date&.year
-      [
-        name,
-        [name, this_case.city].compact.join(' '),
-        [name, year].compact.join(' '),
-        "#{name} portrait",
-        "Killing of #{name}",
-        "Shooting of #{name}"
-      ].uniq
+    def decorate(hit, name, planner_ai_used)
+      classification = CandidateClassifier.call(hit: hit)
+      hit_to_attrs(hit, name, classification, planner_ai_used)
     end
 
-    def decorate(hit, name)
-      classification = MugshotClassifier.call(
-        text: [hit.title, hit.description, hit.image_url, hit.page_url]
-      )
-      hit_to_attrs(hit, name, classification)
-    end
+    def hit_to_attrs(hit, name, classification, planner_ai_used)
+      notes = classification.reasons.join(', ').presence
+      notes = [notes, 'AI planner'].compact.join('; ') if planner_ai_used
+      notes = [notes, 'AI vision'].compact.join('; ') if classification.ai_used
 
-    def hit_to_attrs(hit, name, classification)
       hit.to_h.merge(
         subject_name: name,
         likely_mugshot: classification.likely_mugshot,
         score: classification.score,
-        notes: classification.reasons.join(', ').presence
+        notes: notes
       ).except(:description)
     end
 
