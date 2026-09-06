@@ -21,7 +21,7 @@ class PhotoCandidate < ApplicationRecord
 
   scope :friendly, -> { where(likely_mugshot: false, likely_homonym: false, vision_failed: false) }
   scope :ranked, lambda {
-    order(likely_homonym: :asc, likely_mugshot: :asc, score: :desc, created_at: :desc)
+    order(likely_mugshot: :asc, likely_homonym: :asc, score: :desc, created_at: :desc)
   }
 
   def friendly?
