@@ -17,5 +17,11 @@ RSpec.describe FriendlyPhotos::QueryPrioritizer do
       'Killing of Walter Scott',
       'Shooting of Walter Scott'
     )
+  it 'drops nil and blank queries' do
+    queries = described_class.call(
+      queries: ['Jordan Doe', nil, ' ', 'Killing of Jordan Doe']
+    )
+
+    expect(queries).to eq(['Killing of Jordan Doe', 'Jordan Doe'])
   end
 end
