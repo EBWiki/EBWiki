@@ -4,20 +4,14 @@ module FriendlyPhotos
   # Minimal OpenAI / Anthropic HTTP client for planner and vision calls.
   class AiClient
     include HTTParty
+
     default_timeout 20
 
     OPENAI_URL = 'https://api.openai.com/v1/chat/completions'
     ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages'
 
     def chat_json(system:, user:, image_url: nil)
-      case AiConfig.provider
-      when :openai
-        openai_chat(system: system, user: user, image_url: image_url)
-      when :anthropic
-        anthropic_chat(system: system, user: user, image_url: image_url)
-      else
-        nil
-      end
+      send_chat(system: system, user: user, image_url: image_url)
     rescue StandardError => e
       Rollbar.error(e) if defined?(Rollbar)
       nil
@@ -25,51 +19,81 @@ module FriendlyPhotos
 
     private
 
+    def send_chat(system:, user:, image_url:)
+      case AiConfig.provider
+      when :openai then openai_chat(system: system, user: user, image_url: image_url)
+      when :anthropic then anthropic_chat(system: system, user: user, image_url: image_url)
+      end
+    end
+
     def openai_chat(system:, user:, image_url:)
-      user_content = image_url ? vision_user_content(user, image_url) : user
       response = self.class.post(
         OPENAI_URL,
-        headers: {
-          'Authorization' => "Bearer #{ENV.fetch('OPENAI_API_KEY')}",
-          'Content-Type' => 'application/json'
-        },
-        body: {
-          model: AiConfig::OPENAI_MODEL,
-          response_format: { type: 'json_object' },
-          messages: [
-            { role: 'system', content: system },
-            { role: 'user', content: user_content }
-          ],
-          temperature: 0.2
-        }.to_json
+        headers: openai_headers,
+        body: openai_body(system, user, image_url)
       )
-      return unless response.success?
-
-      parse_json(response.dig('choices', 0, 'message', 'content'))
+      parse_json(response.dig('choices', 0, 'message', 'content')) if response.success?
     end
 
     def anthropic_chat(system:, user:, image_url:)
-      user_blocks = [{ type: 'text', text: user }]
-      user_blocks << anthropic_image_block(image_url) if image_url.present?
       response = self.class.post(
         ANTHROPIC_URL,
-        headers: {
-          'x-api-key' => ENV.fetch('ANTHROPIC_API_KEY'),
-          'anthropic-version' => '2023-06-01',
-          'Content-Type' => 'application/json'
-        },
-        body: {
-          model: AiConfig::ANTHROPIC_MODEL,
-          max_tokens: 1024,
-          system: system,
-          messages: [{ role: 'user', content: user_blocks }],
-          temperature: 0.2
-        }.to_json
+        headers: anthropic_headers,
+        body: anthropic_body(system, user, image_url)
       )
-      return unless response.success?
+      parse_json(anthropic_text(response)) if response.success?
+    end
 
-      text = Array(response['content']).filter_map { |block| block['text'] if block['type'] == 'text' }.join
-      parse_json(text)
+    def openai_headers
+      {
+        'Authorization' => "Bearer #{ENV.fetch('OPENAI_API_KEY')}",
+        'Content-Type' => 'application/json'
+      }
+    end
+
+    def anthropic_headers
+      {
+        'x-api-key' => ENV.fetch('ANTHROPIC_API_KEY'),
+        'anthropic-version' => '2023-06-01',
+        'Content-Type' => 'application/json'
+      }
+    end
+
+    def openai_body(system, user, image_url)
+      user_content = image_url ? vision_user_content(user, image_url) : user
+      {
+        model: AiConfig::OPENAI_MODEL,
+        response_format: { type: 'json_object' },
+        messages: [
+          { role: 'system', content: system },
+          { role: 'user', content: user_content }
+        ],
+        temperature: 0.2
+      }.to_json
+    end
+
+    def anthropic_body(system, user, image_url)
+      {
+        model: AiConfig::ANTHROPIC_MODEL,
+        max_tokens: 1024,
+        system: system,
+        messages: [{ role: 'user', content: anthropic_user_blocks(user, image_url) }],
+        temperature: 0.2
+      }.to_json
+    end
+
+    def anthropic_user_blocks(user, image_url)
+      blocks = [{ type: 'text', text: user }]
+      blocks << anthropic_image_block(image_url) if image_url.present?
+      blocks
+    end
+
+    def anthropic_text(response)
+      Array(response['content']).filter_map { |block| text_block(block) }.join
+    end
+
+    def text_block(block)
+      block['text'] if block['type'] == 'text'
     end
 
     def vision_user_content(user, image_url)
