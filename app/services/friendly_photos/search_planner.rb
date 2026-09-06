@@ -36,16 +36,23 @@ module FriendlyPhotos
     attr_reader :client
 
     def llm_plan(name, city, year)
-      user = <<~USER.squish
+      payload = client.chat_json(system: SYSTEM_PROMPT, user: planner_user(name, city, year))
+      queries = extract_queries(payload)
+      return if queries.empty?
+
+      Result.new(queries: queries.first(8), ai_used: true)
+    end
+
+    def planner_user(name, city, year)
+      <<~USER.squish
         Person: #{name}
         City: #{city.presence || 'unknown'}
         Year: #{year.presence || 'unknown'}
       USER
-      payload = client.chat_json(system: SYSTEM_PROMPT, user: user)
-      queries = Array(payload&.fetch('queries', nil)).map(&:to_s).map(&:strip).reject(&:blank?).uniq
-      return if queries.empty?
+    end
 
-      Result.new(queries: queries.first(8), ai_used: true)
+    def extract_queries(payload)
+      Array(payload&.fetch('queries', nil)).map { |query| query.to_s.strip }.compact_blank.uniq
     end
 
     def heuristic(name, city, year)

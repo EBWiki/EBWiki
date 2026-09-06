@@ -16,7 +16,7 @@ module FriendlyPhotos
         "#{name} family photo",
         "Killing of #{name}",
         "Shooting of #{name}"
-      ].map(&:strip).reject(&:blank?).uniq
+      ].map(&:strip).compact_blank.uniq
 
       Result.new(queries: queries, ai_used: false)
     end

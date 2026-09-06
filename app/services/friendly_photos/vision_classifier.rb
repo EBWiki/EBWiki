@@ -34,19 +34,30 @@ module FriendlyPhotos
     attr_reader :client
 
     def llm_result(hit)
-      user = <<~USER.squish
+      payload = client.chat_json(
+        system: SYSTEM_PROMPT,
+        user: vision_user(hit),
+        image_url: hit.image_url
+      )
+      result_from_payload(payload)
+    end
+
+    def vision_user(hit)
+      <<~USER.squish
         Title: #{hit.title}
         Description: #{hit.description}
         Source: #{hit.source}
         Page: #{hit.page_url}
         Classify the image at the provided URL.
       USER
-      payload = client.chat_json(system: SYSTEM_PROMPT, user: user, image_url: hit.image_url)
+    end
+
+    def result_from_payload(payload)
       return unless payload
 
       Result.new(
         likely_mugshot: ActiveModel::Type::Boolean.new.cast(payload['likely_mugshot']),
-        reasons: Array(payload['reasons']).map(&:to_s).reject(&:blank?),
+        reasons: Array(payload['reasons']).map(&:to_s).compact_blank,
         score: payload['score'].to_i,
         ai_used: true
       )
