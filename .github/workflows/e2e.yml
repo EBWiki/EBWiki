@@ -60,6 +60,7 @@ jobs:
     env:
       RAILS_ENV: test
       E2E_STUB_WIKIMEDIA: '1'
+      FRIENDLY_PHOTOS_STUB_AI: '1'
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
       E2E_SUITE: ${{ github.event_name == 'pull_request' && 'smoke' || inputs.suite || 'full' }}
 
