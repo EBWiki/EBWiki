@@ -2,12 +2,26 @@
 
 require 'rails_helper'
 
+describe 'review:deploy_prepare' do
+  include_context 'rake'
+
+  it 'migrates, resets the db pool, then seeds in one process' do
+    allow(ActiveRecord::Tasks::DatabaseTasks).to receive(:migrate)
+    allow(ReviewDbConnection).to receive(:reset_pool!)
+    allow(FriendlyPhotos::E2eSeed).to receive(:call)
+
+    expect { subject.invoke }.to output(/Review server seeded/).to_stdout
+
+    expect(ActiveRecord::Tasks::DatabaseTasks).to have_received(:migrate).ordered
+    expect(ReviewDbConnection).to have_received(:reset_pool!).ordered
+    expect(FriendlyPhotos::E2eSeed).to have_received(:call).ordered
+  end
+end
+
 describe 'review:seed' do
   include_context 'rake'
 
-  it 'resets the db pool on review servers before seeding' do
-    allow(ENV).to receive(:[]).and_call_original
-    allow(ENV).to receive(:[]).with('REVIEW_SERVER').and_return('1')
+  it 'resets the db pool before seeding' do
     allow(ReviewDbConnection).to receive(:reset_pool!)
     allow(FriendlyPhotos::E2eSeed).to receive(:call)
 
