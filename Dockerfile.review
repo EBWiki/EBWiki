@@ -24,6 +24,8 @@ RUN bundle config --global frozen 1 && \
 
 COPY . .
 
+COPY config/database.review.yml config/database.yml
+
 RUN mkdir -p tmp/pids log public/assets && \
     SECRET_KEY_BASE=build-time-dummy bundle exec rails assets:precompile
 
