@@ -28,9 +28,6 @@ jobs:
       redis:
         image: redis
 
-      elasticsearch:
-        image: elasticsearch:6.8.13
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.7.0
