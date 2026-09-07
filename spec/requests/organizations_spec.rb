@@ -56,4 +56,20 @@ RSpec.describe 'Organizations', type: :request do
       end
     end
   end
+
+  describe 'DELETE /organizations/:id' do
+    let(:organization) { create(:organization) }
+
+    it 'does not allow a non-admin to delete' do
+      sign_in user
+      delete "/organizations/#{organization.id}"
+      expect(Organization.find_by(id: organization.id)).to eq organization
+    end
+
+    it 'allows an admin to delete' do
+      sign_in admin
+      delete "/organizations/#{organization.id}"
+      expect(Organization.find_by(id: organization.id)).to be_nil
+    end
+  end
 end

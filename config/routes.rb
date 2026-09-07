@@ -2,22 +2,13 @@
 
 Rails.application.routes.draw do
   namespace :admin do
-    resources :agencies
-    resources :calendar_events
-    resources :cases
-    resources :case_agencies
-    resources :comments
-    resources :ethnicities
-    resources :follows
-    resources :genders
-    resources :links
-    resources :organizations
-    resources :rollout_histories
+    resources :users, only: %i[index show update]
+    resources :comments, only: %i[index destroy]
     resources :states
-    resources :subjects
-    resources :users
+    resources :genders
+    resources :ethnicities
 
-    root to: 'agencies#index'
+    root to: 'users#index'
   end
   default_url_options host: 'example.com'
   root 'cases#index'
@@ -27,7 +18,7 @@ Rails.application.routes.draw do
       post 'follows', to: 'follows#create'
       delete 'follows', to: 'follows#destroy'
     end
-    resources :comments, only: %i[index create]
+    resources :comments, only: %i[index create destroy]
     scope module: 'cases' do
       post 'versions/:id/revert', to: 'versions#revert', as: :revert
     end

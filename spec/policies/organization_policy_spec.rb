@@ -24,4 +24,14 @@ describe OrganizationPolicy do
       expect(subject).to permit(admin)
     end
   end
+
+  permissions :destroy? do
+    it 'denies access current user is not admin' do
+      expect(subject).not_to permit(user)
+    end
+
+    it 'permits access if user is an admin' do
+      expect(subject).to permit(admin)
+    end
+  end
 end

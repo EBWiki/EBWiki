@@ -2,7 +2,7 @@
 
 # Case comments controller
 class CommentsController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: %i[create destroy]
 
   def index
     @commentable = load_commentable
@@ -15,6 +15,14 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     @comment.save
     redirect_to @commentable, notice: 'Comment created!'
+  end
+
+  def destroy
+    @commentable = load_commentable
+    @comment = @commentable.comments.find(params[:id])
+    authorize @comment
+    @comment.destroy
+    redirect_to @commentable, notice: 'Comment deleted.'
   end
 
   def after_sign_up_path_for(resource)

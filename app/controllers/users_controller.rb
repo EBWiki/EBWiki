@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
   def user_params
     if current_user.admin?
-      params.expect(user: [:admin])
+      params.expect(user: %i[admin analyst])
     else
       params.expect(user: %i[name email description subscribed])
     end

@@ -1,0 +1,11 @@
+<h1><%= @user.name %></h1>
+<p><%= @user.email %></p>
+<p><%= link_to 'Public profile', user_path(@user) %></p>
+
+<%= simple_form_for @user, url: admin_user_path(@user), method: :patch do |f| %>
+  <%= f.input :admin, inline_label: 'Site admin' %>
+  <%= f.input :analyst, inline_label: 'Analyst' %>
+  <%= f.button :submit, 'Save', class: 'btn btn-success' %>
+<% end %>
+
+<p><%= link_to 'Back to users', admin_users_path %></p>
