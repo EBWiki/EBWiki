@@ -60,10 +60,6 @@ class UsersController < ApplicationController
     params.expect(user: [:email])
   end
 
-  def mailbox
-    @mailbox ||= current_user.mailbox
-  end
-
   # Temporarily commented out for Rails 8.1 compatibility
   # def skip_bullet
   #   previous_value = Bullet.enable?

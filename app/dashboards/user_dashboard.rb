@@ -25,7 +25,6 @@ class UserDashboard < Administrate::BaseDashboard
     latitude: Field::Number.with_options(decimals: 2),
     linkedin: Field::String,
     longitude: Field::Number.with_options(decimals: 2),
-    messages: Field::HasMany,
     name: Field::String,
     sign_in_count: Field::Number,
     slug: Field::String,
@@ -65,7 +64,6 @@ class UserDashboard < Administrate::BaseDashboard
     linkedin
     comments
     follows
-    messages
     sign_in_count
     current_sign_in_at
     last_sign_in_at
