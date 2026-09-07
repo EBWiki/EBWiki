@@ -1,16 +1,58 @@
----
 name: CI
 
 on: [pull_request, workflow_dispatch]
 
-jobs:
-  rspec:
-    runs-on: ubuntu-latest
+permissions:
+  contents: read
 
+jobs:
+  changes:
+    name: CI / Changes
+    runs-on: ubuntu-latest
+    outputs:
+      ruby: ${{ steps.filter.outputs.ruby }}
+      docs: ${{ steps.filter.outputs.docs }}
+      config: ${{ steps.filter.outputs.config }}
+      dependabot: ${{ steps.filter.outputs.dependabot }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.6.0
+
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            ruby:
+              - app/**
+              - bin/**
+              - config/**
+              - db/**
+              - lib/**
+              - spec/**
+              - Gemfile
+              - Gemfile.lock
+              - Rakefile
+              - config.ru
+              - package.json
+              - package-lock.json
+              - yarn.lock
+            docs:
+              - docs/**
+              - '**/*.md'
+            config:
+              - .github/**
+            dependabot:
+              - .github/dependabot.yml
+
+  rspec:
+    name: CI / Ruby / RSpec
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.ruby == 'true'
+    needs: [changes]
+    runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
-
     services:
       postgres:
         image: postgres:17
@@ -24,20 +66,16 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-
       redis:
         image: redis
-
       elasticsearch:
         image: elasticsearch:6.8.13
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.7.0
 
-      - name: install dependencies
-        run: |
-          sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -53,19 +91,43 @@ jobs:
           bundle exec bin/rails db:prepare
 
       - name: Run RSpec
-        run: |
-          bundle exec rspec spec/
+        run: bundle exec rspec spec/
 
-  brakeman:
+  rubocop:
+    name: CI / Ruby / RuboCop
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.ruby == 'true'
+    needs: [changes]
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.7.0
 
-      - name: install dependencies
-        run: |
-          sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
+      - name: Install dependencies
+        run: sudo apt-get update
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+
+      - name: Install gems
+        run: bundle install
+
+      - name: Run RuboCop
+        run: bundle exec rubocop
+
+  brakeman:
+    name: CI / Security / Brakeman
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.ruby == 'true'
+    needs: [changes]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.6.0
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -76,38 +138,60 @@ jobs:
         run: bundle install
 
       - name: Run Brakeman
-        run: |
-          bundle exec brakeman -A --no-pager --no-exit-on-warn --no-exit-on-error
+        run: bundle exec brakeman -A --no-pager --no-exit-on-warn --no-exit-on-error
 
   markdown-link-checker:
+    name: CI / Docs / Markdown links
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.docs == 'true'
+    needs: [changes]
     runs-on: ubuntu-latest
-
     steps:
-      - name: Run Markdown Link Check
+      - name: Run Markdown link check
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           config-file: './.github/workflows/markdown_config.json'
           use-verbose-mode: 'yes'
           base-branch: main
 
-  rubocop:
+  yaml-validation:
+    name: CI / Config / YAML validation
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.config == 'true'
+    needs: [changes]
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.7.0
 
-      - name: install dependencies
+      - name: Validate workflow and Dependabot YAML
         run: |
-          sudo apt-get update
+          ruby - <<'RUBY'
+            require 'date'
+            require 'yaml'
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.4.2
+            paths = Dir['.github/workflows/*.{yml,yaml}'] + ['.github/dependabot.yml']
+            failures = []
 
-      - name: Install gems
-        run: bundle install
+            paths.each do |path|
+              begin
+                YAML.safe_load_file(path, permitted_classes: [Date, Time], aliases: true)
+                puts "OK #{path}"
+              rescue StandardError => e
+                failures << "#{path}: #{e.message}"
+              end
+            end
 
-      - name: Run Rubocop
-        run: bundle exec rubocop
+            abort("YAML validation failed:\n#{failures.join("\n")}") unless failures.empty?
+            puts "Parsed #{paths.size} YAML files successfully"
+          RUBY
+
+  dependabot-policy:
+    name: CI / Config / Dependabot policy
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.dependabot == 'true'
+    needs: [changes]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.6.0
+
+      - name: Validate Dependabot policy invariants
+        run: ruby .github/scripts/validate_dependabot_policy.rb
