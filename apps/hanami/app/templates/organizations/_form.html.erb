@@ -1,0 +1,24 @@
+<% if errors.any? %>
+  <div class="flash-error">
+    <p>This organization could not be saved:</p>
+    <ul>
+      <% errors.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<% value = ->(key, fallback = "") { values[key] || fallback } %>
+
+<form action="<%= action %>" method="post" class="stack-form">
+  <% if method_override %>
+    <input type="hidden" name="_method" value="<%= method_override %>">
+  <% end %>
+
+  <label>Name <input name="organization[name]" value="<%= value.call(:name, organization&.name) %>" required></label>
+  <label>Description <textarea name="organization[description]" rows="5"><%= value.call(:description, organization&.description) %></textarea></label>
+  <label>Website <input name="organization[website]" value="<%= value.call(:website, organization&.website) %>"></label>
+  <label>Telephone <input name="organization[telephone]" value="<%= value.call(:telephone, organization&.telephone) %>"></label>
+  <button type="submit">Save organization</button>
+</form>

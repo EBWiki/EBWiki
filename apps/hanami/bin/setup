@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+announce() {
+  local bold='\033[1m'
+  local reset='\033[0m'
+  printf "${bold}${1}${reset}\n"
+}
+
+announce "Running bundle install..."
+bundle check || bundle install
+
+announce "\nRunning npm install..."
+npm install
+
+if [[ "${LOAD_SCHEMA:-}" == "1" ]]; then
+  announce "\nLoading the Rails-shaped schema into DATABASE_URL..."
+  bundle exec rake db:load_schema
+else
+  announce "\nSkipping database prepare."
+  echo "This app reads the existing Rails Postgres schema."
+  echo "Point DATABASE_URL at the Rails development database, or run:"
+  echo "  LOAD_SCHEMA=1 bin/setup"
+  echo "to load config/db/existing_schema.sql into an empty database."
+fi
+
+announce "\nSetup complete."

@@ -1,0 +1,80 @@
+<section class="intro">
+  <h1>
+    EBWiki users are tracking
+    <span class="accent"><%= total_cases %></span>
+    cases of people killed by police.
+  </h1>
+  <p class="lede">
+    Public pages and signed-in writes share the existing Postgres schema. Mail delivery,
+    S3 uploads, and production cutover still go through Rails.
+  </p>
+  <form action="/search" method="get" class="search-form">
+    <label>
+      Search cases
+      <input type="search" name="query" placeholder="Name, city, or keywords">
+    </label>
+    <button type="submit">Search</button>
+  </form>
+</section>
+
+<div class="home-grid">
+  <section>
+    <% if cases.empty? %>
+      <p>No cases have been loaded into this database yet.</p>
+    <% else %>
+      <ul class="case-cards">
+        <% cases.each do |this_case| %>
+          <li class="case-card">
+            <a href="/cases/<%= this_case.slug %>">
+              <h2><%= this_case.title %></h2>
+              <p>
+                <%= format_date(this_case.date) %>
+                <% if this_case.city || this_case.us_state %>
+                  —
+                  <%= this_case.city %><% if this_case.us_state %>, <%= this_case.us_state.ansi_code || this_case.us_state.name %><% end %>
+                <% end %>
+              </p>
+              <% if this_case.subjects.any? %>
+                <p class="subjects"><%= this_case.subjects.map(&:name).join(", ") %></p>
+              <% end %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+
+      <nav class="pagination" aria-label="Pagination">
+        <% if page > 1 %>
+          <a href="/?page=<%= page - 1 %>">Previous</a>
+        <% end %>
+        <span>Page <%= page %> of <%= total_pages %></span>
+        <% if page < total_pages %>
+          <a href="/?page=<%= page + 1 %>">Next</a>
+        <% end %>
+      </nav>
+    <% end %>
+  </section>
+
+  <aside>
+    <h2>Recently updated</h2>
+    <% if recently_updated_cases.empty? %>
+      <p>None yet.</p>
+    <% else %>
+      <table>
+        <thead>
+          <tr>
+            <th>Case</th>
+            <th>Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recently_updated_cases.each do |this_case| %>
+            <tr>
+              <td><a href="/cases/<%= this_case.slug %>"><%= truncate_text(this_case.title, 25) %></a></td>
+              <td><%= format_time(this_case.updated_at) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </aside>
+</div>

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Restore the historic latest.dump into DATABASE_URL (throwaway DB only).
+# Usage: RESTORE_DUMP=1 bin/restore-dump
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+export RESTORE_DUMP="${RESTORE_DUMP:-1}"
+bundle exec rake db:restore_dump

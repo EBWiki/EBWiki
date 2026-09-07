@@ -1,0 +1,9 @@
+{
+  "name": "eb_wiki",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "esbuild": "^0.28.1",
+    "hanami-assets": "^3.0.0"
+  }
+}

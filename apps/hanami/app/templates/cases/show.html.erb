@@ -1,0 +1,145 @@
+<article class="case-page">
+  <p class="crumb"><a href="/">All cases</a></p>
+
+  <div class="case-layout">
+    <aside class="case-media">
+      <% if (image_url = case_image_url(this_case)) %>
+        <img src="<%= image_url %>" alt="" class="case-avatar">
+      <% else %>
+        <div class="case-avatar case-avatar-placeholder" aria-hidden="true">EB</div>
+      <% end %>
+    </aside>
+
+    <div class="case-body">
+      <header>
+        <h1>
+          <%= subjects.first&.name || this_case.title %><% if subjects.first&.age %>, <%= subjects.first.age %><% end %>
+        </h1>
+        <p class="lede">
+          <%= this_case.city %><% if state %>, <%= state.name %><% end %>
+          <br>
+          <%= format_date(this_case.date) %>
+        </p>
+        <% if this_case.blurb.to_s.strip != "" %>
+          <p class="case-blurb"><%= this_case.blurb %></p>
+        <% end %>
+      </header>
+
+      <% if agencies.any? %>
+        <p><strong>Agencies:</strong>
+          <% agencies.each_with_index do |agency, index| %>
+            <% if index.positive? %> | <% end %>
+            <a href="/agencies/<%= agency.slug %>"><%= agency.name %></a>
+          <% end %>
+        </p>
+      <% end %>
+
+      <p>
+        <strong>Cause of death:</strong>
+        <%= cause_of_death_label(this_case.cause_of_death) %>
+      </p>
+
+      <p class="meta">
+        Last updated: <%= format_time(this_case.updated_at) %>
+        · <a href="/cases/<%= this_case.slug %>/history">History</a>
+        <% if viewer %>
+          · <a href="/cases/<%= this_case.slug %>/edit">Edit</a>
+        <% end %>
+      </p>
+      <% if viewer %>
+        <p>
+          <% if following %>
+            <form action="/cases/<%= this_case.slug %>/unfollow" method="post" class="inline-form">
+              <button type="submit">Unfollow</button>
+            </form>
+          <% else %>
+            <form action="/cases/<%= this_case.slug %>/follows" method="post" class="inline-form">
+              <button type="submit">Follow this case</button>
+            </form>
+          <% end %>
+        </p>
+      <% end %>
+
+      <section>
+        <h2>Overview</h2>
+        <%== rich_text(this_case.overview) %>
+      </section>
+
+      <% if this_case.litigation.to_s.strip != "" %>
+        <section>
+          <h2>Legal Action</h2>
+          <%== rich_text(this_case.litigation) %>
+        </section>
+      <% end %>
+
+      <% if this_case.community_action.to_s.strip != "" %>
+        <section>
+          <h2>Community and Family Efforts</h2>
+          <%== rich_text(this_case.community_action) %>
+        </section>
+      <% end %>
+
+      <% if this_case.video_url.to_s.strip != "" %>
+        <p><a href="<%= this_case.video_url %>">Video</a></p>
+      <% end %>
+
+      <% if this_case.latitude && this_case.longitude %>
+        <section>
+          <h2>Location</h2>
+          <iframe
+            class="case-map"
+            title="Map of <%= this_case.city %>"
+            loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=<%= this_case.longitude - 0.02 %>%2C<%= this_case.latitude - 0.02 %>%2C<%= this_case.longitude + 0.02 %>%2C<%= this_case.latitude + 0.02 %>&amp;layer=mapnik&amp;marker=<%= this_case.latitude %>%2C<%= this_case.longitude %>"></iframe>
+          <p>
+            <a href="https://www.openstreetmap.org/?mlat=<%= this_case.latitude %>&amp;mlon=<%= this_case.longitude %>#map=14/<%= this_case.latitude %>/<%= this_case.longitude %>">
+              View larger map
+            </a>
+          </p>
+        </section>
+      <% end %>
+
+      <section>
+        <h2>Comments</h2>
+        <form action="/cases/<%= this_case.slug %>/comments" method="post" class="stack-form">
+          <label>Add a comment <textarea name="content" rows="3" required></textarea></label>
+          <button type="submit">Post comment</button>
+        </form>
+        <% if comments.any? %>
+          <ul>
+            <% comments.each do |comment| %>
+              <li>
+                <p><%= comment.content %></p>
+                <p class="meta">
+                  <% author = comment_authors[comment.user_id] %>
+                  <% if author %><%= author.name %> · <% end %><%= format_time(comment.created_at) %>
+                </p>
+                <% if viewer && (viewer.admin || viewer.id == comment.user_id) %>
+                  <form action="/comments/<%= comment.id %>/delete" method="post" class="inline-form">
+                    <button type="submit">Delete comment</button>
+                  </form>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </section>
+
+      <% if links.any? %>
+        <section>
+          <h2>Additional Resources</h2>
+          <ul class="resource-links">
+            <% links.each do |link| %>
+              <li>
+                <a href="<%= link.url %>" rel="noopener noreferrer" target="_blank"><%= link.url %></a>
+                <% if link.created_at %>
+                  <span class="meta">added <%= format_time(link.created_at) %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </section>
+      <% end %>
+    </div>
+  </div>
+</article>
