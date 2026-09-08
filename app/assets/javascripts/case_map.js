@@ -3,7 +3,7 @@
   'use strict';
 
   var US_CENTER = [39.8283, -98.5795];
-  var US_ZOOM = 4;
+  var US_ZOOM = 5;
   var CASE_ZOOM = 11;
   var TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
