@@ -13,6 +13,8 @@ mail delivery, CarrierWave/S3 object keys, and production cutover.
 | `POST` | `/cases/:slug/comments`, `/comments/:id/delete` |
 | `POST` | `/cases/:slug/follows`, `/cases/:slug/unfollow` |
 | `GET` | `/search?query=` |
+| `GET` | `/maps` |
+| `GET` | `/friendly_photos`, `/friendly_photos/:slug` |
 | `GET/POST` | `/agencies`, `/agencies/new` |
 | `GET/PATCH` | `/agencies/:slug`, `/agencies/:slug/edit` |
 | `GET/POST` | `/organizations`, `/organizations/new` |
@@ -25,17 +27,8 @@ mail delivery, CarrierWave/S3 object keys, and production cutover.
 | `GET/PATCH` | `/users/:id`, `/users/:id/edit` |
 | `GET/POST` | `/admin/users` |
 
-## One site locally
-
-From the repo root, with Rails already able to boot and Hanami pointed at `blackops_development`:
-
-```bash
-chmod +x bin/one-site
-bin/one-site
-```
-
-That binds **http://localhost:3000**. Public Hanami prefixes (all methods) go to
-`:2300`; everything else goes to Rails `:3001`.
+`bin/one-site` is a local debugging leftover (Hanami + Rails on one port). Do
+not use that shape on Railway. Staging is Hanami only.
 
 ## Hanami only
 
@@ -94,6 +87,8 @@ with `bundle exec puma -C config/puma.rb` (see `railway.toml`).
 2. With basic auth (values from Railway variables, not committed):
    - `/` or `/cases` → case index with live count and pagination
    - `/cases/walter-scott` → overview, agencies (linked), cause of death, resources
+   - `/maps` → Leaflet case map
+   - `/friendly_photos` → name-first portrait review
    - `/search?query=Charleston` → Walter Scott in results
    - `/cases/does-not-exist` → `404`
 3. Demo login (`admin@example.com` / password from `STAGING_SEED_PASSWORD`) → `/admin/users`

@@ -5,6 +5,9 @@ module EbWiki
     root to: "cases.index"
 
     get "/search", to: "search.show"
+    get "/maps", to: "maps.index"
+    get "/friendly_photos", to: "friendly_photos.index"
+    get "/friendly_photos/:id", to: "friendly_photos.show"
 
     get "/login", to: "sessions.new"
     post "/login", to: "sessions.create"

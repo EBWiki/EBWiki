@@ -33,6 +33,23 @@ module EbWiki
         cases.count
       end
 
+      def map_locations
+        cases
+          .select(:latitude, :longitude, :title, :slug, :city)
+          .where(Sequel.~(latitude: nil) & Sequel.~(longitude: nil))
+          .to_a
+          .filter_map { |record| location_payload(record) }
+      end
+
+      def photo_review_cases(page: 1)
+        cases
+          .combine(:subjects)
+          .order(cases[:date].desc)
+          .page([page.to_i, 1].max)
+          .per_page(PAGE_SIZE)
+          .to_a
+      end
+
       def find_page(slug)
         record = find_by_slug(slug)
         return unless record
@@ -421,6 +438,19 @@ module EbWiki
 
       def escape_like(value)
         value.gsub(/[%_\\]/) { |char| "\\#{char}" }
+      end
+
+      def location_payload(record)
+        return unless record.latitude && record.longitude
+
+        {
+          lat: record.latitude.to_f,
+          lng: record.longitude.to_f,
+          title: record.title,
+          slug: record.slug,
+          city: record.city,
+          url: "/cases/#{record.slug}"
+        }
       end
     end
   end

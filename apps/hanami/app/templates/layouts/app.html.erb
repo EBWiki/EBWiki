@@ -7,6 +7,9 @@
     <meta name="description" content="Documenting people of color killed by law enforcement.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <%= favicon_tag %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" crossorigin="">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="">
     <%= stylesheet_tag "app" %>
   </head>
   <body>
@@ -22,6 +25,8 @@
           <button type="submit" class="btn btn-default">Search</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
+          <li><a href="/maps">Map</a></li>
+          <li><a href="/friendly_photos">Photos</a></li>
           <li><a href="/agencies">Agencies</a></li>
           <li><a href="/organizations">Organizations</a></li>
           <li><a href="/about">About</a></li>
@@ -48,9 +53,11 @@
     </main>
     <footer class="site-footer">
       <div class="container">
-        <p>Hanami public site sharing the Rails Postgres schema. Rails still owns mailers, S3 uploads, and production cutover.</p>
+        <p>Hanami staging site. Mail delivery and new S3 uploads are still later slices.</p>
       </div>
     </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin=""></script>
     <%= javascript_tag "app" %>
   </body>
 </html>
