@@ -63,6 +63,8 @@ feature 'Friendly photos' do
     expect(page).to have_css('[data-testid="edit-search-friendly-photo"]')
     expect(page).to have_content('What kind of photo is this?')
     expect(page).to have_content('healthy profile picture')
+    expect(page).to have_css('img[data-content*="healthy photo of the person"]')
+    expect(page).not_to have_css('img[data-content*="mug shot"]')
   end
 
   scenario 'an editor classifies the current photo as needing a healthier photo' do
