@@ -2,6 +2,10 @@ name: Hanami
 
 on: [pull_request, workflow_dispatch]
 
+# CI uses an ephemeral local Postgres with trust auth — no password in DATABASE_URL.
+# Session and other secrets come from Doppler. Do not inject the live Rails
+# DATABASE_URL into this job (Railway ebwiki-web / Neon ebwiki-review).
+
 jobs:
   rspec:
     runs-on: ubuntu-latest
@@ -11,16 +15,16 @@ jobs:
 
     env:
       HANAMI_ENV: test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/ebwiki_hanami_test
-      SESSION_SECRET: test-session-secret-not-for-production-must-be-at-least-64-characters-long
+      DATABASE_URL: postgres://postgres@localhost:5432/ebwiki_hanami_test
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+      DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
     services:
       postgres:
         image: postgres:17
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -33,6 +37,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3.7.0
 
+      - name: Fetch secrets from Doppler
+        id: doppler
+        uses: dopplerhq/secrets-fetch-action@v2.0.0
+        with:
+          doppler-token: ${{ secrets.DOPPLER_TOKEN }}
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -41,8 +51,10 @@ jobs:
           working-directory: apps/hanami
 
       - name: Create database
+        env:
+          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: |
-          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE ebwiki_hanami_test;"
+          psql -h localhost -U postgres -c "CREATE DATABASE ebwiki_hanami_test;"
           bundle exec rake db:load_schema
 
       - name: Install Node packages
@@ -53,11 +65,15 @@ jobs:
           cache-dependency-path: apps/hanami/package-lock.json
 
       - name: Compile assets
+        env:
+          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: |
           npm ci
           bundle exec hanami assets compile
 
       - name: Run RSpec
+        env:
+          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: bundle exec rspec
 
   rubocop:

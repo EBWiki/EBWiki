@@ -34,10 +34,9 @@ not use that shape on Railway. Staging is Hanami only.
 
 ```bash
 cd apps/hanami
-bin/setup
-# apps/hanami/.env.local should match config/database.yml
-# DATABASE_URL=postgres://blackops:PASSWORD@localhost:5432/blackops_development
-bin/dev
+# Load DATABASE_URL / SESSION_SECRET from Doppler — do not put passwords in URLs.
+doppler run -- bin/setup
+doppler run -- bin/dev
 ```
 
 http://localhost:2300
