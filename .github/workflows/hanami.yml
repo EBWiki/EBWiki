@@ -3,8 +3,8 @@ name: Hanami
 on: [pull_request, workflow_dispatch]
 
 # CI uses an ephemeral local Postgres with trust auth — no password in DATABASE_URL.
-# Session and other secrets come from Doppler. Do not inject the live Rails
-# DATABASE_URL into this job (Railway ebwiki-web / Neon ebwiki-review).
+# SESSION_SECRET comes from Doppler. Do not inject the live Rails DATABASE_URL
+# into this job (Railway ebwiki-web / Neon ebwiki-review).
 
 jobs:
   rspec:
@@ -37,15 +37,12 @@ jobs:
         uses: actions/checkout@v3.7.0
 
       - name: Fetch secrets from Doppler
-        if: ${{ secrets.DOPPLER_TOKEN != '' }}
         id: doppler
         uses: dopplerhq/secrets-fetch-action@v2.0.0
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN }}
 
       - name: Guard local CI database
-        env:
-          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET || secrets.SESSION_SECRET }}
         run: |
           case "$DATABASE_URL" in
             postgres://postgres@localhost:5432/ebwiki_hanami_test|postgres://postgres@127.0.0.1:5432/ebwiki_hanami_test)
@@ -65,7 +62,7 @@ jobs:
 
       - name: Create database
         env:
-          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET || secrets.SESSION_SECRET }}
+          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: |
           psql -h localhost -U postgres -c "CREATE DATABASE ebwiki_hanami_test;"
           bundle exec rake db:load_schema
@@ -79,14 +76,14 @@ jobs:
 
       - name: Compile assets
         env:
-          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET || secrets.SESSION_SECRET }}
+          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: |
           npm ci
           bundle exec hanami assets compile
 
       - name: Run RSpec
         env:
-          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET || secrets.SESSION_SECRET }}
+          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: bundle exec rspec
 
   rubocop:
