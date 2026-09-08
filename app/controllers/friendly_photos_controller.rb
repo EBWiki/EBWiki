@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Editor workflow for finding dignified, non-mugshot photos of case subjects.
+# Editor workflow for finding healthy profile pictures of case subjects.
 class FriendlyPhotosController < ApplicationController
   before_action :authenticate_user!
   before_action :set_case, only: %i[show search classify apply reject]
@@ -36,7 +36,7 @@ class FriendlyPhotosController < ApplicationController
     end
 
     @this_case.update_column(:avatar_kind, kind) # rubocop:disable Rails/SkipsModelValidations
-    flash[:success] = "Marked the current photo as #{kind}."
+    flash[:success] = "Updated the photo type to #{Case.avatar_kind_label(kind)}."
     redirect_to friendly_photo_path(@this_case)
   end
 
@@ -47,7 +47,7 @@ class FriendlyPhotosController < ApplicationController
       candidate: candidate
     )
     flash[result.success ? :success : :error] =
-      result.success ? 'Applied the selected portrait to this case.' : result.error
+      result.success ? 'Applied the selected profile picture to this case.' : result.error
     redirect_to friendly_photo_path(@this_case)
   end
 
@@ -106,8 +106,8 @@ class FriendlyPhotosController < ApplicationController
     if candidates.empty?
       'None found: Wikimedia and Openverse returned no openly licensed images.'
     elsif applyable.zero?
-      "None found: #{candidates.size} images were mugshots, homonyms, unverified, " \
-        'or booking photos and cannot be applied.'
+      "None found: #{candidates.size} images were not healthy profile pictures " \
+        'or could not be verified, so they cannot be applied.'
     else
       "Found #{candidates.size} images (#{applyable} ready for human review)."
     end

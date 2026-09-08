@@ -6,20 +6,24 @@ cannot yet prove.
 ## Confirmed behavior
 
 - Guests cannot open `/friendly_photos`; they are sent to login.
-- Signed-in editors see a **Friendly photos** item in the desktop header.
-- The default list includes missing and mugshot cases, and excludes cases
-  already marked as a portrait with a stored filename.
-- Filters for missing, mugshot, and portrait cases work.
-- A case show page offers **Find a friendly photo** only when the case
+- Signed-in editors see a **Profile pictures** item in the desktop header.
+- The default list includes cases with no photo or a photo that needs
+  replacement, and excludes cases that already have a profile picture
+  filename.
+- Filters for no photo yet, needs a healthier photo, and has a profile
+  picture work.
+- A case show page offers **Find a profile picture** only when the case
   still needs one.
 - The case edit form exposes photo type and a Wikimedia search link.
 - Editors can classify the current photo without uploading a new file.
-- Mugshot candidates show a warning and have no **Use this photo** button.
+- Unsuitable candidates show a warning and have no **Use this photo**
+  button.
 - Rejecting a pending candidate removes the apply action.
-- Applying a reviewed portrait marks the case as a portrait and hides
-  **Use this photo**. Mugshot candidates stay flagged and cannot be applied.
+- Applying a reviewed photo marks the case as a profile picture and hides
+  **Use this photo**. Unsuitable candidates stay flagged and cannot be
+  applied.
 - Search persists Wikimedia and Openverse stub candidates. In CI that
-  search is stubbed. A mugshot-only result shows **None found**.
+  search is stubbed. An unsuitable-only result shows **None found**.
 - Operators can find a case by name, location, date, or id.
 
 ## Gaps the e2e run surfaces
@@ -32,10 +36,11 @@ cannot yet prove.
 2. **Followers are not emailed** when a portrait is applied. Apply goes
    through `FriendlyPhotos::ApplyCandidate`, not `CasesController#update`,
    so `CaseMailer.send_followers_email` never runs.
-3. **Mugshot detection is metadata-only.** A booking photo whose title is
-   "portrait" would not be flagged. There is no pixel-level check.
+3. **Suitability detection is metadata-only.** An institutional photo
+   whose title is "portrait" would not be flagged. There is no pixel-level
+   check.
 4. **Mobile nav hides the workflow.** On a phone-sized viewport the
-   Friendly photos link is inside the collapsed Bootstrap menu. Editors
+   Profile pictures link is inside the collapsed Bootstrap menu. Editors
    have to open the hamburger first. Apply, reject, and search are also
    hard to tap on a phone: the fixed header and stacked candidate cards
    intercept hits. Those mutations are covered on desktop Chromium.
@@ -52,9 +57,9 @@ cannot yet prove.
    not linked from the editor workflow.
 10. **The case edit form still has a stray `<<div`.** That is older
     markup, but Playwright will see it on the edit page.
-11. **Missing and mugshot filters overlap.** A case marked mugshot with
-    no stored file still appears under **Missing photo**, because that
-    filter only checks the avatar column.
+11. **No-photo and needs-healthier-photo filters overlap.** A case marked
+    as needing a healthier photo with no stored file still appears under
+    **No photo yet**, because that filter only checks the avatar column.
 
 ## Suggested follow-ups
 
@@ -62,8 +67,8 @@ cannot yet prove.
 - Show a flash when Wikimedia returns an error or zero hits.
 - Add a mobile entry point that does not depend on the hamburger, and
   give apply/reject/search larger tap targets below the fixed header.
-- Keep the missing-photo filter from also listing mugshot cases that
-  have no stored file, or document that overlap in the UI.
+- Keep the no-photo filter from also listing cases that need a healthier
+  photo but have no stored file, or document that overlap in the UI.
 - Run one staging apply against a real Commons portrait before relying
   on the workflow in production.
 

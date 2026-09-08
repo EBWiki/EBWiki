@@ -76,7 +76,7 @@ RSpec.describe FriendlyPhotos::WikimediaClient do
 
       hits = described_class.new.search(query: 'Jordan Doe')
 
-      expect(hits.map(&:title)).to include('E2E family portrait', 'E2E booking mugshot')
+      expect(hits.map(&:title)).to include('E2E family portrait', 'E2E institutional photo')
     ensure
       ENV.delete('E2E_STUB_WIKIMEDIA')
     end

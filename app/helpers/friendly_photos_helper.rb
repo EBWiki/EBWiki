@@ -52,4 +52,14 @@ module FriendlyPhotosHelper
   def candidate_applyable?(candidate)
     candidate.applyable?
   end
+
+  def friendly_photo_filters
+    [
+      ['needs_photo', 'Needs a profile picture'],
+      ['missing', 'No photo yet'],
+      ['mugshot', 'Needs a healthier photo'],
+      ['unclassified', 'Not yet reviewed'],
+      ['portrait', 'Has a profile picture']
+    ]
+  end
 end

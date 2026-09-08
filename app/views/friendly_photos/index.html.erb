@@ -1,8 +1,9 @@
-<h1>Friendly photos</h1>
+<h1>Profile pictures</h1>
 <p>
-  Search Wikimedia and Openverse for dignified portraits of people in the
-  EBWiki database. Mugshot and booking sources are excluded. Nothing is
-  attached until an editor reviews and approves a candidate.
+  Help every person on EBWiki have a healthy profile picture — a family
+  photo, portrait, or other image that honors them. Search Wikimedia and
+  Openverse for openly licensed photos. Nothing is attached until an
+  editor reviews and approves a candidate.
 </p>
 
 <%= form_with url: friendly_photos_path, method: :get, html: { class: 'form-inline', style: 'margin-bottom: 1em;', data: { testid: 'case-search-form' } } do %>
@@ -27,13 +28,7 @@
 <% end %>
 
 <ul class="nav nav-pills" style="margin-bottom: 1em;">
-  <% [
-    ['needs_photo', 'Needs a better photo'],
-    ['missing', 'Missing photo'],
-    ['mugshot', 'Marked mugshot'],
-    ['unclassified', 'Unclassified'],
-    ['portrait', 'Friendly portraits']
-  ].each do |value, label| %>
+  <% friendly_photo_filters.each do |value, label| %>
     <li class="<%= 'active' if @filter == value %>">
       <%= link_to label, friendly_photos_path(filter: value, q: @query, location: @location, date: @date, case_id: @case_id), data: { testid: "filter-#{value}" } %>
     </li>
@@ -68,7 +63,7 @@
           <td><%= link_to this_case.title, this_case %></td>
           <td><%= this_case.city %><%= ", #{this_case.state.name}" if this_case.state %></td>
           <td><%= this_case.date %></td>
-          <td><%= this_case.avatar_kind.humanize %></td>
+          <td><%= this_case.avatar_kind_label %></td>
           <td><%= pending_friendly_photo_count(this_case) %></td>
           <td><%= link_to 'Review photos', friendly_photo_path(this_case), class: 'btn btn-warning btn-sm', data: { testid: "find-photos-#{this_case.slug}" } %></td>
         </tr>
