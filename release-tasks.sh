@@ -17,7 +17,9 @@ else
   bundle exec rails db:migrate
 fi
 
-if [ "${REVIEW_SERVER:-}" = "1" ]; then
+# Never seed against a shared/review corpus unless explicitly requested.
+# The Neon ebwiki-review database already has the restored case set.
+if [ "${REVIEW_SEED_MAP_CASES:-}" = "1" ]; then
   echo "*** Seeding review map cases ***"
   bundle exec rake review:seed_map_cases
 fi
