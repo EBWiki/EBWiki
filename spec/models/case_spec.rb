@@ -249,6 +249,8 @@ describe 'friendly photos' do
     expect(portrait_case.needs_friendly_photo?).to be false
     expect(Case.needing_friendly_photo).to include(missing, mugshot_case)
     expect(Case.needing_friendly_photo).not_to include(portrait_case)
+    expect(mugshot_case.avatar_kind_label).to eq('Needs a healthier photo')
+    expect(portrait_case.avatar_kind_label).to eq('Profile picture')
   end
 end
 

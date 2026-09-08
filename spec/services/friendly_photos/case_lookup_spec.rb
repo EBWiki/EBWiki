@@ -13,7 +13,7 @@ RSpec.describe FriendlyPhotos::CaseLookup do
 
   before do
     create(:subject, case: jordan, name: 'Jordan Doe')
-    create(:subject, case: riley, name: 'Riley Mugshot')
+    create(:subject, case: riley, name: 'Riley Example')
   end
 
   it 'finds a case by subject name' do

@@ -13,10 +13,18 @@ RSpec.describe FriendlyPhotosHelper do
       expect(helper.friendly_photo_source_link(candidate)).to include('Source page')
     end
 
-    it 'omits mugshot-farm pages' do
+    it 'omits booking-photo host pages' do
       candidate = build(:photo_candidate, page_url: 'https://mugshots.com/photo')
 
       expect(helper.friendly_photo_source_link(candidate)).to be_nil
+    end
+  end
+
+  describe '#friendly_photo_filters' do
+    it 'uses encouraging profile-picture labels' do
+      labels = helper.friendly_photo_filters.map(&:last)
+      expect(labels).to include('Needs a profile picture', 'Has a profile picture')
+      expect(labels.join).not_to match(/mugshot/i)
     end
   end
 

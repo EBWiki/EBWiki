@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # Finds non-mugshot Wikimedia and Openverse portraits for a case subject.
+  # Finds healthy Wikimedia and Openverse profile pictures for a case subject.
   class CandidateSearch
     include Service
 

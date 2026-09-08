@@ -4,6 +4,13 @@
 module CaseFriendlyPhoto
   extend ActiveSupport::Concern
 
+  AVATAR_KIND_LABELS = {
+    'unclassified' => 'Not yet reviewed',
+    'portrait' => 'Profile picture',
+    'mugshot' => 'Needs a healthier photo',
+    'other' => 'Other'
+  }.freeze
+
   included do
     has_many :photo_candidates, dependent: :destroy
 
@@ -19,8 +26,22 @@ module CaseFriendlyPhoto
     }
   end
 
+  class_methods do
+    def avatar_kind_label(kind)
+      CaseFriendlyPhoto::AVATAR_KIND_LABELS.fetch(kind.to_s, kind.to_s.humanize)
+    end
+
+    def avatar_kind_options
+      avatar_kinds.keys.map { |kind| [avatar_kind_label(kind), kind] }
+    end
+  end
+
   def subject_display_name
     subjects.first&.name.presence || title
+  end
+
+  def avatar_kind_label
+    self.class.avatar_kind_label(avatar_kind)
   end
 
   def missing_avatar?
