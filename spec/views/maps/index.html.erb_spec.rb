@@ -3,21 +3,22 @@
 require 'rails_helper'
 
 RSpec.describe 'maps/index.html.erb', type: :view do
-  it 'displays all the articles' do
-    FactoryBot.create(:case, title: 'John Doe')
-    FactoryBot.create(
-      :case, title: 'Jimmy Doe', state: State.where(ansi_code: 'NY').first
-    )
-    assign(:cases, Kaminari.paginate_array(
-        Case.pluck(:id,
-                   :latitude,
-                   :longitude,
-                   :avatar,
-                   :title,
-                   :overview)
-      ).page(1))
+  it 'displays the case map and pin instructions' do
+    assign(:cases, [
+             {
+               lat: 42.6525793,
+               lng: -73.7562317,
+               title: 'John Doe',
+               slug: 'john-doe',
+               city: 'Albany',
+               url: '/cases/john-doe'
+             }
+           ])
+
     render
 
     expect(rendered).to match(/Click on the map pins below to learn more/m)
+    expect(rendered).to include('id="map-container"')
+    expect(rendered).to include('John Doe')
   end
 end

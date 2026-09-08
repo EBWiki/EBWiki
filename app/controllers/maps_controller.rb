@@ -12,6 +12,7 @@ class MapsController < ApplicationController
 
   def show
     @cases = fetch_cases
+    render :index
   end
 
   def after_sign_up_path_for(resource)

@@ -1,25 +1,27 @@
-<div class="container">
-    <div class="row">
-    	<div class="col-lg-12">
-	     	<% if user_signed_in? %>
-		     	Click the follow button below the image on any case on the map. We will keep you updated as these cases proceed.</p>
-			<% else %>
-		    	<%= link_to 'Login', new_user_registration_path %> and follow specific cases and we will update you as they proceed.
-			<% end %>
-			<div class="text-center">
-				<h3>
-					<%= link_to 'Back to the Main Page', root_path, class: "btn btn-warning" %>
-					<%= link_to 'Get our newsletter', "http://eepurl.com/bt5QCz", class: "btn btn-default" %>
-				</h3>
-			</div>
-			<h2 class="page-subheader">Click on the map pins below to learn more.</h2>
-			<div id="markers-on-the-map">
-	    		<div id="map page-header">
-		    		<div id="map-container"></div>
-					<!-- HERE Maps -->
-					<script type="text/javascript" async>window.CASES='<%= @cases %>';</script>
-	    		</div>
-		   	</div>
-		</div>
-	</div>
+<%= render 'maps/assets' %>
+<% content_for :full_width, true %>
+
+<div class="case-map-page">
+  <h1 class="page-header">Case Map</h1>
+  <p>
+    Each pin is a documented case. Click a pin or cluster to learn more.
+    <% if user_signed_in? %>
+      Follow any case to receive updates as it proceeds.
+    <% else %>
+      <%= link_to 'Login', new_user_session_path %> or
+      <%= link_to 'sign up', new_user_registration_path %>
+      to follow specific cases.
+    <% end %>
+  </p>
+  <p>
+    <%= link_to 'Back to the Main Page', root_path, class: 'btn btn-warning' %>
+    <%= link_to 'Get our newsletter', ENV.fetch('MAILCHIMP_LINK', 'http://eepurl.com/bt5QCz'),
+                class: 'btn btn-default' %>
+  </p>
+  <h2 class="page-subheader">Click on the map pins below to learn more.</h2>
+  <div id="map-container"
+       class="case-map-canvas"
+       role="img"
+       aria-label="Map of EBWiki cases"></div>
+  <script type="application/json" id="case-map-data"><%= raw json_escape(@cases.to_json) %></script>
 </div>
