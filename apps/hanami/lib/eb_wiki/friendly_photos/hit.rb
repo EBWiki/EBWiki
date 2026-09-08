@@ -10,8 +10,7 @@ module EbWiki
       :license,
       :author,
       :description,
-      :likely_mugshot,
-      keyword_init: true
+      :likely_mugshot
     )
   end
 end

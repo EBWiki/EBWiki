@@ -73,7 +73,7 @@ module EbWiki
       def live_hits
         query = [@name, @city].reject(&:empty?).join(" ")
         wikipedia_hits(query) + commons_hits(query) + openverse_hits(query)
-      rescue StandardError
+      rescue
         []
       end
 
