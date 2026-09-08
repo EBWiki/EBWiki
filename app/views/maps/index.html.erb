@@ -18,6 +18,9 @@
     <%= link_to 'Get our newsletter', ENV.fetch('MAILCHIMP_LINK', 'http://eepurl.com/bt5QCz'),
                 class: 'btn btn-default' %>
   </p>
+  <p class="case-map-count">
+    Showing <%= pluralize(@cases.size, 'documented case') %>.
+  </p>
   <h2 class="page-subheader">Click on the map pins below to learn more.</h2>
   <div id="map-container"
        class="case-map-canvas"

@@ -16,6 +16,7 @@ feature 'User visits case map' do
 
     expect(page).to have_content('Case Map')
     expect(page).to have_css('#map-container')
-    expect(page).to have_content('Mapped Case')
+    expect(page).to have_content('Showing 1 documented case')
+    expect(page).to have_css('#case-map-data', visible: :hidden, text: 'Mapped Case')
   end
 end

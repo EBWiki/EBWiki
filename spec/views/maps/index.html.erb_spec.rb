@@ -20,5 +20,6 @@ RSpec.describe 'maps/index.html.erb', type: :view do
     expect(rendered).to match(/Click on the map pins below to learn more/m)
     expect(rendered).to include('id="map-container"')
     expect(rendered).to include('John Doe')
+    expect(rendered).to include('Showing 1 documented case')
   end
 end

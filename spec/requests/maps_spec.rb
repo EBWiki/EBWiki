@@ -13,6 +13,7 @@ RSpec.describe 'Maps', type: :request do
       expect(response.body).to include('Case Map')
       expect(response.body).to include('map-container')
       expect(response.body).to include('case-map-data')
+      expect(response.body).to include('Showing 0 documented cases')
     end
 
     it 'includes geocoded cases in the map payload' do
