@@ -37,6 +37,7 @@
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag Ckeditor.cdn_url %>
+    <%= yield :case_map_assets %>
     <%= csrf_meta_tags %>
 
     <%= render 'application/favicon' %>
@@ -57,7 +58,7 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-md-8">
+        <div class="<%= content_for?(:full_width) ? 'col-md-12' : 'col-md-8' %>">
           <%= yield %>
         </div>
       </div>

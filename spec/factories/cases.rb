@@ -13,5 +13,11 @@ FactoryBot.define do
     summary { 'Added case' }
     blurb { 'Blurb about case' }
     video_url { 'https://example.com' }
+
+    trait :with_location do
+      latitude { 42.6525793 }
+      longitude { -73.7562317 }
+    end
   end
 end
+
