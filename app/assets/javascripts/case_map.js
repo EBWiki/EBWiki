@@ -50,6 +50,8 @@
     }
 
     var cases = parseCaseMapData();
+    // Keep the case map on the United States. Fitting to every pin zooms
+    // out to Alaska/Hawaii/territories and no longer looks like a US map.
     var map = L.map(container).setView(US_CENTER, US_ZOOM);
     addTileLayer(map);
 
@@ -58,12 +60,6 @@
       addMarker(layer, item);
     });
     map.addLayer(layer);
-
-    if (cases.length === 1 && cases[0].lat != null && cases[0].lng != null) {
-      map.setView([cases[0].lat, cases[0].lng], CASE_ZOOM);
-    } else if (cases.length > 1 && layer.getBounds && layer.getBounds().isValid()) {
-      map.fitBounds(layer.getBounds().pad(0.15));
-    }
   }
 
   function initCaseLocationMap() {
