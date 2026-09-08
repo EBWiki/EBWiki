@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'net/http'
+require_relative 'cloud_storage/settings'
 
 # Picks object storage for CarrierWave.
 # AWS S3 is primary. An S3-compatible provider (Railway, R2, etc.) is used

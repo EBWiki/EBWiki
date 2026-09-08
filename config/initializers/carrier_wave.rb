@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../../app/services/cloud_storage'
+
 CarrierWave.configure do |config|
   if Rails.env.development?
     config.storage = :file
