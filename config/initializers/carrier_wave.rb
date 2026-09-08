@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 CarrierWave.configure do |config|
-  if Rails.env.development?
+  if Rails.env.development? || ENV['REVIEW_SERVER'] == '1'
     config.storage = :file
   elsif Rails.env.test?
     config.storage = :file
