@@ -18,10 +18,11 @@ module FriendlyPhotos
     }.freeze
     MUGSHOT_CANDIDATE = {
       subject_name: 'Jordan Doe', source: 'wikimedia_commons',
-      title: 'Jordan Doe mugshot', license: 'Public domain', author: 'Sheriff',
+      title: 'Jordan Doe institutional photo', license: 'Public domain',
+      author: 'Sheriff',
       image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-seed-mugshot.jpg',
-      page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_mugshot.jpg',
-      score: -5, likely_mugshot: true, notes: 'mugshot'
+      page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_institutional.jpg',
+      score: -5, likely_mugshot: true, notes: 'not a profile picture'
     }.freeze
 
     def call
@@ -71,7 +72,7 @@ module FriendlyPhotos
 
     def build_cases(state)
       missing = upsert_case(state, 'E2E Missing Photo', 'e2e-missing-photo', 'unclassified')
-      mugshot = upsert_case(state, 'E2E Mugshot Case', 'e2e-mugshot-case', 'mugshot')
+      mugshot = upsert_case(state, 'E2E Photo Review Case', 'e2e-mugshot-case', 'mugshot')
       portrait = upsert_case(state, 'E2E Portrait Case', 'e2e-portrait-case', 'portrait')
       attach_filename(mugshot, 'uploads/case/avatar/1/booking_photo.jpg')
       attach_filename(portrait, 'uploads/case/avatar/2/family_portrait.jpg')
@@ -99,7 +100,7 @@ module FriendlyPhotos
 
     def attach_subjects(cases)
       create_subject(cases[:missing], 'Jordan Doe')
-      create_subject(cases[:mugshot], 'Riley Mugshot')
+      create_subject(cases[:mugshot], 'Riley Example')
       create_subject(cases[:portrait], 'Casey Portrait')
     end
 

@@ -15,9 +15,9 @@ module FriendlyPhotos
 
     MUGSHOT = WikimediaClient::Hit.new(
       source: 'wikimedia_commons',
-      title: 'E2E booking mugshot',
+      title: 'E2E institutional photo',
       image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-mugshot.jpg',
-      page_url: 'https://commons.wikimedia.org/wiki/File:E2E_booking_mugshot.jpg',
+      page_url: 'https://commons.wikimedia.org/wiki/File:E2E_institutional_photo.jpg',
       license: 'Public domain',
       author: 'Sheriff',
       description: 'County jail booking photo'

@@ -20,7 +20,7 @@ RSpec.describe FriendlyPhotos::E2eSeed do
     result = described_class.call
 
     expect(result[:missing].subjects.map(&:name)).to eq(['Jordan Doe'])
-    expect(result[:mugshot].subjects.map(&:name)).to eq(['Riley Mugshot'])
+    expect(result[:mugshot].subjects.map(&:name)).to eq(['Riley Example'])
   end
 
   it 'removes prior seed rows with delete_all instead of destroy callbacks' do

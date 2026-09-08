@@ -1,13 +1,11 @@
 # Friendly photo search
 
-EBWiki case pages should show a dignified photo of the person whenever one
-exists. The case form already asks editors to look beyond mugshots. This
-workflow is a curator-assist finder: it proposes openly licensed portraits
-and waits for a human to approve or reject them.
+EBWiki case pages should show a healthy profile picture of the person
+whenever one exists. This workflow is a curator-assist finder: it proposes
+openly licensed family photos, portraits, and other images that honor the
+person, then waits for a human to approve or reject them.
 
-A friendly photo is a family picture, portrait, yearbook image, or other
-non-carceral photo. Mugshots, booking photos, inmate-lookup images, and
-jail or prison identification photos are excluded or cannot be applied.
+Institutional or carceral photos are excluded or cannot be applied.
 
 Nothing is published automatically. A person always reviews the candidates.
 
@@ -23,7 +21,7 @@ not an open design question (GKT-182 holds):
 | **Openverse** | CC0, CC BY, CC BY-SA, and PDM images (Flickr/Wikimedia hosts) |
 
 We do **not** scrape news sites, social networks, arrest databases, or
-mugshot-farm hosts. Those hosts are blocked before save.
+booking-photo hosts. Those hosts are blocked before save.
 
 ## AI backend (review path)
 
@@ -35,9 +33,9 @@ server), search uses two AI layers on the allowlist above:
    before bare name) to disambiguate historical homonyms. It does not invent
    faces or licenses.
 2. **Vision classifier** (`VisionClassifier`) — scores the top N candidate
-   images (default 12) as friendly portrait vs mugshot/booking before Apply.
-   Metadata heuristics (`MugshotClassifier`, `HomonymDetector`) still run;
-   either layer can hard-block apply.
+   images (default 12) as a healthy profile picture vs an institutional
+   photo before Apply. Metadata heuristics (`MugshotClassifier`,
+   `HomonymDetector`) still run; either layer can hard-block apply.
 
 **Proving AI ran:** each stored candidate persists `planner_ai_used` and
 `vision_ai_used` booleans. The review page shows per-candidate badges and a
@@ -118,12 +116,12 @@ tracking columns (`planner_ai_used`, `vision_ai_used`, `vision_failed`,
 ## How to try it
 
 1. Sign in as an editor.
-2. Open **Friendly photos** in the header (`/friendly_photos`).
+2. Open **Profile pictures** in the header (`/friendly_photos`).
 3. Find a case by name, city/state, date, or case id/slug.
 4. Open **Review photos**.
 5. Click **Search Wikimedia and Openverse**.
-6. Approve a non-mugshot candidate with a recorded license, or reject it.
-   If there is no usable portrait, the page says **None found**.
+6. Approve a healthy profile picture with a recorded license, or reject it.
+   If there is no usable photo, the page says **None found**.
 
 Local batch / agent path:
 
@@ -137,34 +135,35 @@ bundle exec rake photos:search_friendly LIMIT=10 FORMAT=json
 
 | Source | What we take | What we refuse |
 | --- | --- | --- |
-| Wikimedia Commons + English Wikipedia | HTTPS jpeg/png/gif/webp with license metadata | Mugshot/booking/inmate terms, PDF/DjVu scans |
-| Openverse (CC0, CC BY, CC BY-SA, PDM) | Flickr/Wikimedia-hosted images with a license URL | Mugshot-farm hosts and booking-database text |
+| Wikimedia Commons + English Wikipedia | HTTPS jpeg/png/gif/webp with license metadata | Institutional/booking terms, PDF/DjVu scans |
+| Openverse (CC0, CC BY, CC BY-SA, PDM) | Flickr/Wikimedia-hosted images with a license URL | Booking-photo hosts and carceral-database text |
 | News sites, social networks, arrest DBs | Nothing. We do not scrape them. | Primary source |
 
 Ranking (higher is better):
 
 1. Portrait / family / yearbook / memorial language
 2. News-style stills (bodycam, incident, protest) — kept but downranked
-3. Mugshot / booking / jail / inmate language — hard-downranked, cannot apply
-4. Known mugshot-farm hosts (`mugshots.com`, `arrests.org`, VineLink, and
+3. Institutional / booking / jail language — hard-downranked, cannot apply
+4. Known booking-photo hosts (`mugshots.com`, `arrests.org`, VineLink, and
    similar) — excluded before save
 
 Each stored candidate keeps `license`, optional `license_url`, author,
-source, and the source page. Apply refuses mugshots, missing licenses, and
-hosts outside the Wikimedia/Openverse allowlist.
+source, and the source page. Apply refuses unsuitable photos, missing
+licenses, and hosts outside the Wikimedia/Openverse allowlist.
 
 ## In the app
 
 Signed-in editors can:
 
-1. Open **Friendly photos** in the header, or open a case and choose
-   **Search Wikimedia for a friendly photo** on the edit form.
-2. Search by name, location, date, or id, and filter missing / mugshot /
-   unclassified / portrait cases.
+1. Open **Profile pictures** in the header, or open a case and choose
+   **Search for a profile picture** on the edit form.
+2. Search by name, location, date, or id, and filter cases that need a
+   profile picture, have none yet, or already have one.
 3. Run a Wikimedia + Openverse search for that person.
-4. Reject anything that still looks like a mugshot.
-5. Apply a reviewed portrait, or upload a better file on the case edit form.
-6. Mark the current photo as **Portrait**, **Mugshot**, or **Other**.
+4. Reject anything that is not a healthy profile picture.
+5. Apply a reviewed photo, or upload a better file on the case edit form.
+6. Mark the current photo as **Profile picture**, **Needs a healthier
+   photo**, or **Other**.
 
 ## Live search notes
 
@@ -179,11 +178,11 @@ Verified on the Railway review server (2026-09-06):
 
 Live Commons + English Wikipedia + Openverse only. Heuristic query list
 (name, name+city, name+year, `{name} portrait`, `{name} family photo`,
-`Killing of {name}`, `Shooting of {name}`). Metadata mugshot flags only
+`Killing of {name}`, `Shooting of {name}`). Metadata suitability flags only
 (Railway vision would also run when the key is set). Nothing applied.
 Never invent a face.
 
-| Case | Hits | Friendly (review) | Mugshot rejects | Wrong-face risk | Honest result |
+| Case | Hits | Friendly (review) | Unsuitable rejects | Wrong-face risk | Honest result |
 | --- | ---: | ---: | ---: | ---: | --- |
 | Walter Scott (North Charleston, 2015) | 36 | 35 | 0 | 27+ (novelist/statue) | **None found** for the EBWiki subject. Wikipedia default is Sir Walter Scott. A person must reject the novelist. |
 | George Floyd (Minneapolis, 2020) | 40 | 38 | 0 | murals/protest mix | **Candidates found** — licensed murals, memorials, protest stills. Review; downrank incident photos. Not a family portrait by default. |
@@ -193,7 +192,7 @@ Never invent a face.
 | Sandra Bland (Prairie View, 2015) | 23 | 18 | 3 (jail building) | 12 | **Candidates found** — campus memorials and marches. Jail-building photos correctly rejected. |
 
 CI stub (`e2e-missing-photo` / Jordan Doe, `E2E_STUB_WIKIMEDIA=1`) still
-shows family portrait vs booking mugshot for Playwright only.
+shows family portrait vs institutional photo for Playwright only.
 
 Do not attach anything until a person reviews it. Never invent a face.
 
@@ -242,4 +241,4 @@ npm run e2e:smoke
 - Do not apply a candidate without a human review.
 - Prefer a family or community portrait over an incident or protest photo.
 - Keep the license and source page with the candidate.
-- If no friendly photo is found, leave the case unchanged.
+- If no healthy profile picture is found, leave the case unchanged.

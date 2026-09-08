@@ -26,7 +26,7 @@ module FriendlyPhotos
 
     def identity_rejection(this_case, candidate)
       return 'Candidate does not belong to this case.' if candidate.case_id != this_case.id
-      return 'Mugshot candidates cannot be applied.' if candidate.likely_mugshot?
+      return 'This is not a healthy profile picture and cannot be applied.' if candidate.likely_mugshot?
       return 'Possible historical homonym — reject this candidate.' if candidate.likely_homonym?
       return 'Vision did not verify this image.' unless candidate.vision_verified?
 
@@ -62,8 +62,8 @@ module FriendlyPhotos
     end
 
     def apply_summary(candidate)
-      "Applied reviewed portrait '#{candidate.title}' (#{candidate.license}) " \
-        'as a non-mugshot case photo.'
+      "Applied reviewed profile picture '#{candidate.title}' " \
+        "(#{candidate.license}) to this case."
     end
 
     def failure(message)

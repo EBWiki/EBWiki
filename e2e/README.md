@@ -1,21 +1,21 @@
-# Friendly photo end-to-end tests
+# Profile picture end-to-end tests
 
 These Playwright tests drive the Rails test server in a real browser. They
-confirm the editor workflow for finding non-mugshot portraits and call out
-gaps that unit tests cannot see.
+confirm the editor workflow for finding healthy profile pictures and call
+out gaps that unit tests cannot see.
 
 ## What is covered
 
 - Guests are redirected to login
-- Signed-in editors see **Friendly photos** and the cases that still need a
-  better photo
-- Filters for missing, mugshot, and portrait cases
-- Case pages only offer **Find a friendly photo** when one is needed
+- Signed-in editors see **Profile pictures** and the cases that still need
+  a healthier photo
+- Filters for missing, needs-a-healthier-photo, and profile-picture cases
+- Case pages only offer **Find a profile picture** when one is needed
 - Classifying the current photo
-- Rejecting a candidate and refusing to apply a mugshot
-- Applying a reviewed portrait through the stub
+- Rejecting a candidate and refusing to apply an unsuitable photo
+- Applying a reviewed profile picture through the stub
 - Searching Wikimedia and Openverse through the `E2E_STUB_WIKIMEDIA=1` stub
-- Mobile navbar: the Friendly photos link is behind the hamburger
+- Mobile navbar: the Profile pictures link is behind the hamburger
 
 Each test resets fixtures via `POST /e2e/friendly_photos/reset` so classify
 and apply do not leak into later cases. That route exists only when the

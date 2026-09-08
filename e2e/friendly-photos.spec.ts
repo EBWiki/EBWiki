@@ -76,7 +76,7 @@ test.describe('Friendly photos', () => {
 
     await page.getByTestId('avatar-kind-select').selectOption('mugshot');
     await clickTestId(page, 'update-photo-type');
-    await expect(page.getByText('Marked the current photo as mugshot')).toBeVisible();
+    await expect(page.getByText('Updated the photo type to Needs a healthier photo.')).toBeVisible();
 
     await clickTestId(page, 'reject-photo');
     await expect(page.getByText('Rejected that candidate')).toBeVisible();
@@ -93,8 +93,8 @@ test.describe('Friendly photos', () => {
     await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
 
     await clickTestId(page, 'apply-photo');
-    await expect(page.getByText('Applied the selected portrait to this case.')).toBeVisible();
-    await expect(page.getByText('Photo type:')).toContainText('Portrait');
+    await expect(page.getByText('Applied the selected profile picture to this case.')).toBeVisible();
+    await expect(page.getByText('Photo type:')).toContainText('Profile picture');
     await expect(page.getByTestId('apply-photo')).toHaveCount(0);
     await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
   });
@@ -110,7 +110,7 @@ test.describe('Friendly photos', () => {
 
     await expect(page.getByText(/Found \d+ images/)).toBeVisible();
     await expect(page.getByText('E2E family portrait')).toBeVisible();
-    await expect(page.getByText('E2E booking mugshot')).toBeVisible();
+    await expect(page.getByText('E2E institutional photo')).toBeVisible();
     await expect(page.getByText('E2E openverse portrait')).toBeVisible();
     await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
     await expect(page.getByTestId('apply-photo')).toHaveCount(3);

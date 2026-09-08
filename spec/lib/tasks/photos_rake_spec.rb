@@ -19,7 +19,7 @@ describe 'photos:classify_current' do
   it 'classifies current avatars' do
     allow(FriendlyPhotos::CurrentAvatarClassifier).to receive(:call).and_return(2)
 
-    expect { subject.invoke }.to output(/Marked 2 current avatars as mugshots/).to_stdout
+    expect { subject.invoke }.to output(/Marked 2 current photos as needing a healthier photo/).to_stdout
     expect(FriendlyPhotos::CurrentAvatarClassifier).to have_received(:call)
   end
 end

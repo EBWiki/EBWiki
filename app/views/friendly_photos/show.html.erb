@@ -1,13 +1,13 @@
 <div class="friendly-photos-review">
-  <h1>Friendly photos for <%= @this_case.subject_display_name %></h1>
+  <h1>Profile picture for <%= @this_case.subject_display_name %></h1>
   <p class="lead">
     <%= link_to @this_case.title, @this_case %>
     &middot; <%= @this_case.city %><%= ", #{@this_case.state.name}" if @this_case.state %>
   </p>
   <p>
-    Wikimedia and Openverse are searched for openly licensed portraits.
-    Mugshot farms and booking databases are never queried. A person must
-    review and approve a candidate before it is attached.
+    Look for a healthy, openly licensed profile picture of this person on
+    Wikimedia and Openverse. A person must review and approve a candidate
+    before it is attached.
   </p>
   <p class="text-muted" data-testid="ai-backend-status">
     Search backend:
@@ -28,12 +28,12 @@
     <%= image_tag 'default-user-icon.png', size: '250x250', class: 'img-responsive', alt: 'No photo' %>
   <% end %>
   <p style="margin-top: 1em;">
-    Photo type: <strong><%= @this_case.avatar_kind.humanize %></strong>
+    Photo type: <strong><%= @this_case.avatar_kind_label %></strong>
   </p>
   <%= form_with url: classify_friendly_photo_path(@this_case), method: :patch, html: { data: { testid: 'classify-form' } } do %>
     <div class="form-group">
       <%= select_tag :avatar_kind,
-                     options_for_select(Case.avatar_kinds.keys.map { |kind| [kind.humanize, kind] }, @this_case.avatar_kind),
+                     options_for_select(Case.avatar_kind_options, @this_case.avatar_kind),
                      class: 'form-control',
                      data: { testid: 'avatar-kind-select' } %>
     </div>
@@ -43,7 +43,7 @@
     <%= button_to 'Search Wikimedia and Openverse',
                   search_friendly_photo_path(@this_case),
                   class: 'btn btn-warning',
-                  data: { confirm: 'Search Wikimedia and Openverse for openly licensed portraits of this person?',
+                  data: { confirm: 'Search Wikimedia and Openverse for a healthy profile picture of this person?',
                           testid: 'search-wikimedia' } %>
   </div>
   <p>
@@ -55,8 +55,8 @@
   <% friendly_count = @candidates.count(&:friendly?) %>
   <% if @candidates.any? && friendly_count.zero? %>
     <p class="text-warning" data-testid="none-found">
-      None found: every stored result was flagged as a mugshot or booking
-      photo and cannot be applied.
+      None found: none of these results look like a healthy profile
+      picture we can apply.
     </p>
   <% end %>
 
@@ -86,8 +86,7 @@
             <% end %>
             <% if candidate.likely_mugshot? %>
               <p class="text-danger" data-testid="mugshot-flag">
-                Flagged as a likely mugshot
-                <%= " (#{candidate.notes})" if candidate.notes.present? %>
+                This is not a healthy profile picture
               </p>
             <% end %>
             <p class="text-muted" data-testid="candidate-ai-badges">
@@ -105,7 +104,7 @@
                             apply_friendly_photo_path(@this_case),
                             params: { photo_candidate_id: candidate.id },
                             class: 'btn btn-success btn-sm',
-                            data: { confirm: 'Attach this reviewed, non-mugshot portrait to the case?',
+                            data: { confirm: 'Use this as the profile picture for this case?',
                                     testid: 'apply-photo' } %>
             <% end %>
             <% if candidate.pending? %>
@@ -121,8 +120,8 @@
     </ol>
   <% else %>
     <p style="margin-top: 1em;" data-testid="none-found">
-      None found yet. Search Wikimedia and Openverse for a portrait, or
-      leave this case without a new photo.
+      None found yet. Search Wikimedia and Openverse for a healthy
+      profile picture, or leave this case without a new photo.
     </p>
   <% end %>
 </div>

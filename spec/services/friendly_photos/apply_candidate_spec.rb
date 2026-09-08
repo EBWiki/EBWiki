@@ -24,7 +24,7 @@ RSpec.describe FriendlyPhotos::ApplyCandidate do
     result = described_class.call(this_case: this_case, candidate: candidate)
 
     expect(result.success).to be false
-    expect(result.error).to include('Mugshot')
+    expect(result.error).to include('healthy profile picture')
     expect(candidate.reload).to be_pending
   end
 
