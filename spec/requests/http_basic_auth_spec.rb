@@ -60,6 +60,19 @@ RSpec.describe 'HTTP Basic Authentication', type: :request do
     end
   end
 
+  it 'does not challenge the healthcheck path' do
+    with_env(
+      'HTTP_BASIC_AUTH_ENABLED' => 'true',
+      'HTTP_BASIC_AUTH_USERNAME' => 'ebwiki',
+      'HTTP_BASIC_AUTH_PASSWORD' => 'secret'
+    ) do
+      get '/up'
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to eq('ok')
+    end
+  end
+
   it 'rejects requests with invalid basic auth credentials' do
     with_env(
       'HTTP_BASIC_AUTH_ENABLED' => 'true',

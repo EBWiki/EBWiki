@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
 
   before_action :store_user_location!, if: :storable_location?
   before_action :set_state_objects
-  before_action :authenticate_with_http_basic_auth, if: -> { HttpBasicAuth.required? }
+  before_action :authenticate_with_http_basic_auth,
+                if: -> { HttpBasicAuth.required? && !healthcheck_request? }
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -36,6 +37,10 @@ class ApplicationController < ActionController::Base
     authenticate_or_request_with_http_basic(HttpBasicAuth::REALM) do |username, password|
       HttpBasicAuth.credentials_match?(username, password)
     end
+  end
+
+  def healthcheck_request?
+    request.path == '/up'
   end
 
   def set_state_objects
