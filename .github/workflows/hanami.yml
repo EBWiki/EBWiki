@@ -3,8 +3,8 @@ name: Hanami
 on: [pull_request, workflow_dispatch]
 
 # CI uses an ephemeral local Postgres with trust auth — no password in DATABASE_URL.
-# SESSION_SECRET comes from Doppler. Do not inject the live Rails DATABASE_URL
-# into this job (Railway ebwiki-web / Neon ebwiki-review).
+# SESSION_SECRET comes from Doppler via the existing repo secret DOPPLER_TOKEN.
+# Do not inject the live Rails DATABASE_URL into this job.
 
 jobs:
   rspec:
