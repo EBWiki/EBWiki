@@ -42,6 +42,17 @@ jobs:
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN }}
 
+      - name: Apply session secret from Doppler
+        env:
+          FROM_DOPPLER: ${{ steps.doppler.outputs.SESSION_SECRET }}
+        run: |
+          if [ "${#FROM_DOPPLER}" -ge 64 ]; then
+            echo "SESSION_SECRET=$FROM_DOPPLER" >> "$GITHUB_ENV"
+            echo "Using SESSION_SECRET from Doppler"
+          else
+            echo "Doppler SESSION_SECRET missing or shorter than 64 characters; Hanami will use apps/hanami/.env.test"
+          fi
+
       - name: Guard local CI database
         run: |
           case "$DATABASE_URL" in
@@ -61,8 +72,6 @@ jobs:
           working-directory: apps/hanami
 
       - name: Create database
-        env:
-          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: |
           psql -h localhost -U postgres -c "CREATE DATABASE ebwiki_hanami_test;"
           bundle exec rake db:load_schema
@@ -75,15 +84,11 @@ jobs:
           cache-dependency-path: apps/hanami/package-lock.json
 
       - name: Compile assets
-        env:
-          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: |
           npm ci
           bundle exec hanami assets compile
 
       - name: Run RSpec
-        env:
-          SESSION_SECRET: ${{ steps.doppler.outputs.SESSION_SECRET }}
         run: bundle exec rspec
 
   rubocop:
