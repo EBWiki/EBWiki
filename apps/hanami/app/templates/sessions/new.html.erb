@@ -1,0 +1,16 @@
+<section>
+  <h1>Login</h1>
+  <p class="lede">
+    Uses the existing Devise <code>users.encrypted_password</code> column (bcrypt).
+    Confirmed accounts only.
+  </p>
+  <% if error %>
+    <p class="flash-error"><%= error %></p>
+  <% end %>
+  <form action="/login" method="post" class="stack-form">
+    <label>Email <input type="email" name="email" required></label>
+    <label>Password <input type="password" name="password" required></label>
+    <button type="submit">Sign in</button>
+  </form>
+  <p><a href="/register">Create an account</a> · <a href="/password/new">Forgot password</a></p>
+</section>

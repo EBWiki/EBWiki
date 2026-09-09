@@ -1,0 +1,23 @@
+<section>
+  <h1>Register</h1>
+  <p class="lede">
+    Creates a row on the existing Devise <code>users</code> table. The account stays
+    unconfirmed until you open the confirmation link. Mail delivery is still on Rails;
+    this page only writes the token.
+  </p>
+  <% if errors.any? %>
+    <div class="flash-error">
+      <ul>
+        <% errors.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <form action="/register" method="post" class="stack-form">
+    <label>Name <input name="name" value="<%= values[:name] %>" required></label>
+    <label>Email <input type="email" name="email" value="<%= values[:email] %>" required></label>
+    <label>Password <input type="password" name="password" minlength="8" required></label>
+    <button type="submit">Create account</button>
+  </form>
+</section>
