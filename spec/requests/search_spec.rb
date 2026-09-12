@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Search', type: :request do
-  let(:minnesota) { create(:state, name: 'Minnesota', ansi_code: 'MN') }
+  let(:new_york) { create(:state_ny) }
   let!(:floyd) do
     create(
       :case,
       title: 'Killing of George Floyd',
-      city: 'Minneapolis',
-      state: minnesota,
+      city: 'Albany',
+      state: new_york,
       overview: 'An overview of the case',
       blurb: 'Blurb about the case',
       summary: 'Added case'
