@@ -1,0 +1,37 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe 'review:deploy_prepare' do
+  include_context 'rake'
+
+  it 'migrates, ensures sessions, resets the db pool, then seeds in one process' do
+    allow(ActiveRecord::Tasks::DatabaseTasks).to receive(:migrate)
+    allow(ReviewSessionsTable).to receive(:ensure!)
+    allow(ReviewDbConnection).to receive(:reset_pool!)
+    allow(FriendlyPhotos::E2eSeed).to receive(:call)
+
+    expect { subject.invoke }.to output(/Review server seeded/).to_stdout
+
+    expect(ActiveRecord::Tasks::DatabaseTasks).to have_received(:migrate)
+    expect(ReviewSessionsTable).to have_received(:ensure!).at_least(:twice)
+    expect(ReviewDbConnection).to have_received(:reset_pool!).at_least(:twice)
+    expect(FriendlyPhotos::E2eSeed).to have_received(:call)
+  end
+end
+
+describe 'review:seed' do
+  include_context 'rake'
+
+  it 'ensures sessions, resets the db pool, then seeds' do
+    allow(ReviewSessionsTable).to receive(:ensure!)
+    allow(ReviewDbConnection).to receive(:reset_pool!)
+    allow(FriendlyPhotos::E2eSeed).to receive(:call)
+
+    expect { subject.invoke }.to output(/Review server seeded/).to_stdout
+
+    expect(ReviewSessionsTable).to have_received(:ensure!)
+    expect(ReviewDbConnection).to have_received(:reset_pool!)
+    expect(FriendlyPhotos::E2eSeed).to have_received(:call)
+  end
+end

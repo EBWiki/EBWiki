@@ -15,6 +15,9 @@ class CaseDashboard < Administrate::BaseDashboard
     age: Field::Number,
     agencies: Field::HasMany,
     avatar: Field::String,
+    avatar_kind: Field::Select.with_options(searchable: false, collection: lambda { |field|
+      field.resource.class.send(field.attribute.to_s.pluralize).keys
+    }),
     blurb: Field::Text,
     case_agencies: Field::HasMany,
     cause_of_death: Field::Select.with_options(searchable: false, collection: lambda { |field|
@@ -33,6 +36,7 @@ class CaseDashboard < Administrate::BaseDashboard
     litigation: Field::Text,
     longitude: Field::Number.with_options(decimals: 2),
     overview: Field::Text,
+    photo_candidates: Field::HasMany,
     remove_avatar: Field::Boolean,
     slug: Field::String,
     state: Field::BelongsTo,
@@ -84,6 +88,8 @@ class CaseDashboard < Administrate::BaseDashboard
     follows_count
     slug
     avatar
+    avatar_kind
+    photo_candidates
     created_at
     updated_at
   ].freeze
@@ -107,6 +113,7 @@ class CaseDashboard < Administrate::BaseDashboard
     litigation
     video_url
     avatar
+    avatar_kind
   ].freeze
 
   # COLLECTION_FILTERS

@@ -1,0 +1,10 @@
+[phases.setup]
+nixPkgs = ["...", "nodejs_20"]
+
+[phases.build]
+cmds = [
+  "bundle exec rails assets:precompile"
+]
+
+[start]
+cmd = "bundle exec puma -C config/puma.rb"

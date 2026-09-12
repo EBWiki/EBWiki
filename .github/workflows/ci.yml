@@ -1,7 +1,12 @@
 ---
 name: CI
 
+# Browser e2e lives in e2e.yml so unrelated PRs do not pay for Chromium.
 on: [pull_request, workflow_dispatch]
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   rspec:
@@ -50,7 +55,7 @@ jobs:
       - name: Setup database
         run: |
           cp config/database.ci.yml config/database.yml
-          bundle exec bin/rails db:prepare
+          bundle exec bin/rails db:create db:schema:load
 
       - name: Run RSpec
         run: |

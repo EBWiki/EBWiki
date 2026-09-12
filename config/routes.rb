@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     resources :states
     resources :subjects
     resources :users
+    resources :photo_candidates
 
     root to: 'agencies#index'
   end
@@ -78,4 +79,20 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine, at: '/ckeditor'
 
   resource :search, controller: 'search'
+
+  resources :friendly_photos, only: %i[index show] do
+    member do
+      post :search
+      patch :classify
+      post :apply
+      post :reject
+    end
+  end
+
+  # Playwright fixture reset. Only mounted when the Wikimedia stub is on.
+  if ENV['E2E_STUB_WIKIMEDIA'] == '1'
+    namespace :e2e do
+      post 'friendly_photos/reset', to: 'friendly_photos#reset'
+    end
+  end
 end
