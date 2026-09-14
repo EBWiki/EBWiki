@@ -25,6 +25,14 @@ module EbWiki
         organizations.where(id: record.id).one
       end
 
+      def destroy(id)
+        record = by_id(id)
+        return unless record
+
+        organizations.where(id: record.id).delete
+        record
+      end
+
       private
 
       def org_row(attrs, now:)

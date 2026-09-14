@@ -59,6 +59,14 @@ module EbWiki
         agencies.where(id: record.id).one
       end
 
+      def destroy(slug)
+        record = by_slug(slug)
+        return unless record
+
+        agencies.where(id: record.id).delete
+        record
+      end
+
       private
 
       def agency_row(attrs, slug:, now:)

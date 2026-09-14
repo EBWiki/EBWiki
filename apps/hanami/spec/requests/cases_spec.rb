@@ -53,6 +53,20 @@ RSpec.describe "Public case pages", :db, type: :request do
     expect(last_response.body).to include("shot in the back")
     expect(last_response.body).to include("https://example.com/walter-scott")
     expect(last_response.body).not_to include("/cases/walter-scott/edit")
+    expect(last_response.body).to include("/cases/walter-scott/followers")
+  end
+
+  it "lists followers for a case" do
+    seed_walter_scott
+    user_id = TestData.insert_user(email: "follower@example.com", password: "password123", name: "A Follower")
+
+    post "/login", email: "follower@example.com", password: "password123"
+    post "/cases/walter-scott/follows"
+
+    get "/cases/walter-scott/followers"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("A Follower")
+    expect(last_response.body).to include("/users/#{user_id}")
   end
 
   it "uses the CarrierWave large_avatar object key without changing S3 keys" do
@@ -169,7 +183,9 @@ RSpec.describe "Public case pages", :db, type: :request do
         blurb: "A short blurb",
         summary: "Created the case",
         cause_of_death: "shooting",
-        subjects: [{name: "Test Subject", age: "22"}],
+        latitude: "41.8781",
+        longitude: "-87.6298",
+        subjects: [{name: "Test Subject", age: "22", unarmed: "1"}],
         links: [{url: "https://example.com/source", title: "Source"}],
         agency_ids: [agency_id]
       }
@@ -181,8 +197,10 @@ RSpec.describe "Public case pages", :db, type: :request do
     get "/cases/new-test-case"
     expect(last_response.status).to eq(200)
     expect(last_response.body).to include("Test Subject")
+    expect(last_response.body).to include("unarmed")
     expect(last_response.body).to include("https://example.com/source")
     expect(last_response.body).to include("North Charleston Police Department")
+    expect(TestData.relations[:cases].where(slug: "new-test-case").one[:latitude].to_f).to be_within(0.0001).of(41.8781)
 
     get "/cases/new-test-case/history"
     expect(last_response.body).to include("Created the case")
@@ -240,6 +258,29 @@ RSpec.describe "Public case pages", :db, type: :request do
     get "/organizations"
     expect(last_response.status).to eq(200)
     expect(last_response.body).to include("Color of Change")
+  end
+
+  it "lets an admin delete a case and moderate comments" do
+    seed_walter_scott
+    TestData.insert_user(email: "admin@example.com", password: "password123", admin: true)
+    editor_id = TestData.insert_user(email: "editor@example.com", password: "password123")
+    TestData.relations[:comments].insert(
+      commentable_type: "Case",
+      commentable_id: TestData.relations[:cases].where(slug: "walter-scott").one[:id],
+      user_id: editor_id,
+      content: "Needs review",
+      created_at: Time.now.utc,
+      updated_at: Time.now.utc
+    )
+
+    post "/login", email: "admin@example.com", password: "password123"
+    get "/admin/comments"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to include("Needs review")
+
+    post "/cases/walter-scott/delete"
+    expect(last_response.status).to eq(302)
+    expect(TestData.relations[:cases].where(slug: "walter-scott").one).to be_nil
   end
 
   it "lets an admin toggle analyst on another user" do

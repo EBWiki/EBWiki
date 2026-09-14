@@ -153,6 +153,40 @@ aside th, aside td {
   height: 280px;
 }
 
+.case-map-canvas {
+  border: 1px solid var(--line);
+  width: 100%;
+  height: 32rem;
+  margin: 1rem 0 2rem;
+  background: #ddd;
+}
+
+.photo-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.photo-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.8rem;
+}
+
+.photo-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #eee;
+}
+
+.photo-card-warn {
+  border-color: #c0392b;
+}
+
 @media (max-width: 800px) {
   .home-grid,
   .case-layout {

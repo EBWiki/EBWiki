@@ -18,6 +18,8 @@ HANAMI_PREFIXES = %w[
   /cases
   /articles
   /search
+  /maps
+  /friendly_photos
   /agencies
   /organizations
   /about

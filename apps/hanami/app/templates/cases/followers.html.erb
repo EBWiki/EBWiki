@@ -1,0 +1,13 @@
+<section>
+  <p class="crumb"><a href="/cases/<%= this_case.slug %>"><%= this_case.title %></a></p>
+  <h1>People following <%= this_case.title %></h1>
+  <% if followers.empty? %>
+    <p>No one is following this case yet.</p>
+  <% else %>
+    <ul>
+      <% followers.each do |follower| %>
+        <li><a href="/users/<%= follower.id %>"><%= follower.name %></a></li>
+      <% end %>
+    </ul>
+  <% end %>
+</section>

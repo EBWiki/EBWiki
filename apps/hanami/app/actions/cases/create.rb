@@ -40,6 +40,8 @@ module EbWiki
             summary: raw[:summary],
             video_url: raw[:video_url],
             cause_of_death: raw[:cause_of_death],
+            latitude: raw[:latitude],
+            longitude: raw[:longitude],
             subjects: Array(raw[:subjects]),
             links: Array(raw[:links]),
             agency_ids: Array(raw[:agency_ids])

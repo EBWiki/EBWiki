@@ -64,4 +64,15 @@ RSpec.describe EbWiki::Repos::CaseRepo, :db do
     expect(titles.first).to eq("Newer")
     expect(titles.last).to eq("Older")
   end
+
+  it "returns map pins only for geocoded cases" do
+    state_id = TestData.insert_state
+    TestData.insert_case(state_id: state_id, latitude: 32.85, longitude: -79.97)
+    TestData.insert_case(state_id: state_id, title: "No pin", slug: "no-pin", city: "Unknown")
+
+    pins = repo.map_locations
+
+    expect(pins.map { |pin| pin[:slug] }).to eq(["walter-scott"])
+    expect(pins.first[:url]).to eq("/cases/walter-scott")
+  end
 end

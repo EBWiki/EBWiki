@@ -5,6 +5,9 @@ module EbWiki
     root to: "cases.index"
 
     get "/search", to: "search.show"
+    get "/maps", to: "maps.index"
+    get "/friendly_photos", to: "friendly_photos.index"
+    get "/friendly_photos/:id", to: "friendly_photos.show"
 
     get "/login", to: "sessions.new"
     post "/login", to: "sessions.create"
@@ -21,7 +24,9 @@ module EbWiki
     post "/users/:id", to: "users.update"
     resources :cases, only: %i[index show new create edit update]
     get "/cases/:case_slug/history", to: "cases.history"
+    get "/cases/:case_slug/followers", to: "cases.followers"
     post "/cases/:case_slug/history/:version_id/revert", to: "cases.revert"
+    post "/cases/:case_slug/delete", to: "cases.destroy"
     post "/cases/:case_id/comments", to: "comments.create"
     post "/comments/:id/delete", to: "comments.destroy"
     post "/cases/:case_id/follows", to: "follows.create"
@@ -29,8 +34,10 @@ module EbWiki
 
     resources :agencies, only: %i[index show new create edit update]
     post "/agencies/:id", to: "agencies.update"
+    post "/agencies/:id/delete", to: "agencies.destroy"
     resources :organizations, only: %i[index show new create edit update]
     post "/organizations/:id", to: "organizations.update"
+    post "/organizations/:id/delete", to: "organizations.destroy"
 
     get "/articles", to: "articles.index"
     get "/articles/:slug", to: "articles.show"
@@ -44,5 +51,6 @@ module EbWiki
     get "/admin/users", to: "admin.users.index"
     patch "/admin/users/:id", to: "admin.users.update"
     post "/admin/users/:id", to: "admin.users.update"
+    get "/admin/comments", to: "admin.comments.index"
   end
 end
