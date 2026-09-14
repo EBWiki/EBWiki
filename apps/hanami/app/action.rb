@@ -4,7 +4,7 @@
 require "hanami/action"
 require "dry/monads"
 require "eb_wiki/mailer"
-require "eb_wiki/carrierwave_avatar"
+require "eb_wiki/carrier_wave_avatar"
 require "eb_wiki/rails_session"
 
 module EbWiki
