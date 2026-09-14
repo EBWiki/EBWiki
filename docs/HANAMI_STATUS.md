@@ -43,6 +43,7 @@ Hanami 3 under `apps/hanami`, same Postgres schema as Rails.
 | Case index / show / search | Done |
 | Maps (`/maps`, Leaflet) | Done |
 | Friendly photos (`/friendly_photos`) | Done (review only; no S3 write) |
+| Case avatar writes | Done (CarrierWave keys; S3 when configured) |
 | Agencies / organizations CRUD | Done |
 | Auth (Devise bcrypt hashes) | Login + tokens + **outgoing mail** |
 | Case/agency/org writes, comments, follows | Done |
@@ -58,11 +59,16 @@ is off unless `HANAMI_SEND_MAIL=1` and `SMTP_*` (or SendGrid) are set — do
 not enable that against the 2020 staging dump. Do not dual-send the same
 follower event.
 
+Case photo uploads write the same CarrierWave keys Rails already reads
+(`uploads/case/avatar/:id/` plus `large_avatar_`, `medium_avatar_`,
+`small_avatar_`, `thumb_`). With `S3_BUCKET` and `AWS_ACCESS_KEY_ID` /
+`AWS_SECRET_KEY_ID` they go to S3; otherwise they land under `public/`.
+Do not change those keys. `/friendly_photos` still does not write S3.
+
 ## Feature-complete enough to cut over (still open)
 
 These keep the work on the long-running branch:
 
-- Writing new S3 objects with unchanged CarrierWave keys
 - Shared session or an accepted one-time logout
 - Current production dump on staging (not the 2020 snapshot)
 - Production routing / DNS / process (Hanami `puma`, not `rails server`)
