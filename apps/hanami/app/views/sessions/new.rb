@@ -5,6 +5,7 @@ module EbWiki
     module Sessions
       class New < EbWiki::View
         expose :error, default: nil
+        expose :notice, default: nil
       end
     end
   end
