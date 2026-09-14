@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v foreman >/dev/null 2>&1 && ! gem list foreman -i --silent >/dev/null 2>&1; then
+  gem install foreman --no-document
+fi
+
+exec foreman start -f Procfile.dev

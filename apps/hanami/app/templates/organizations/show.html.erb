@@ -1,0 +1,14 @@
+<article>
+  <p class="crumb"><a href="/organizations">All organizations</a></p>
+  <h1><%= organization.name %></h1>
+  <p><a href="/organizations/<%= organization.id %>/edit">Edit organization</a></p>
+  <% unless organization.description.to_s.empty? %>
+    <p><%= organization.description %></p>
+  <% end %>
+  <% unless organization.website.to_s.empty? %>
+    <p><a href="<%= organization.website %>"><%= organization.website %></a></p>
+  <% end %>
+  <% unless organization.telephone.to_s.empty? %>
+    <p><%= organization.telephone %></p>
+  <% end %>
+</article>

@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-PaperTrail.request.disable_model(Case)
+
 RSpec.describe CaseMailer, type: :mailer do
+  around do |example|
+    PaperTrail.request.disable_model(Case)
+    example.run
+  ensure
+    PaperTrail.request.enable_model(Case)
+  end
+
   before(:each) do
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
