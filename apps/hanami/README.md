@@ -3,6 +3,8 @@
 Hanami 3 reads and writes the existing Postgres schema. Rails still owns
 mail delivery, CarrierWave/S3 object keys, and production cutover.
 
+Catch-up write-up for maintainers: [`docs/HANAMI_STATUS.md`](../../docs/HANAMI_STATUS.md).
+
 | Method | Path |
 | --- | --- |
 | `GET` | `/`, `/cases` |
