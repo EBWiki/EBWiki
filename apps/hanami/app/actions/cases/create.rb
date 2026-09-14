@@ -19,6 +19,7 @@ module EbWiki
           end
 
           record = case_repo.create_with_children(attrs, user: current_user(response))
+          apply_case_avatar(record, request, case_repo)
           response.redirect_to "/cases/#{record.slug}"
         end
 
