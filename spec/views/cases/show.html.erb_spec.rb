@@ -74,3 +74,25 @@ RSpec.describe 'cases/show.html.erb', type: :view do
     expect(response.body).to match(/Community and Family/m)
   end
 end
+
+RSpec.describe 'cases/show.html.erb', type: :view do
+  before do
+    allow(view).to receive(:marker_locations_for).and_return([Case.all])
+  end
+
+  it 'displays a location map when the case is geocoded' do
+    this_case = FactoryBot.create(:case, :with_location)
+
+    assign(:this_case, this_case)
+    assign(:commentable, this_case)
+    assign(:comments, this_case.comments)
+    assign(:comment, Comment.new)
+    assign(:subjects, this_case.subjects)
+    assign(:state_objects, SortCollectionOrdinally.call(collection: State.all))
+    render
+
+    expect(rendered).to include('case-location-map')
+    expect(rendered).to include('Location')
+  end
+end
+

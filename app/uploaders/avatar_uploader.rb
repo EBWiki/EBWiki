@@ -43,4 +43,12 @@ class AvatarUploader < CarrierWave::Uploader::Base
   def default_url(*)
     ActionController::Base.helpers.asset_path('default-user-icon.png')
   end
+
+  def store!(new_file)
+    super
+  rescue StandardError => e
+    raise unless CloudStorage.switch_to_fallback(e)
+
+    super
+  end
 end
