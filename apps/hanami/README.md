@@ -84,7 +84,7 @@ database.
 | `S3_BUCKET` / `S3_REGION` | Optional; without these, avatars use local `/uploads/...` paths |
 | `HANAMI_SEND_MAIL` | Set to `1` to deliver via SMTP. Leave unset on the 2020 dump. |
 | `APP_URL` | Public origin used in mail links (e.g. the Railway URL) |
-| `SMTP_ADDRESS` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_DOMAIN` | SMTP delivery |
+| `SMTP_ADDRESS` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_DOMAIN` | SMTP via `net-smtp` |
 | `SENDGRID_USERNAME` / `SENDGRID_PASSWORD` or `SENDGRID_API_KEY` | Alternate SMTP (SendGrid) |
 
 Do not copy production Heroku `DATABASE_URL` into this service.

@@ -245,6 +245,10 @@ GEM
     mini_portile2 (2.8.9)
     mustermann (3.1.1)
     nenv (0.3.0)
+    net-protocol (0.2.2)
+      timeout
+    net-smtp (0.5.1)
+      net-protocol
     nio4r (2.7.5)
     nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
@@ -417,6 +421,7 @@ GEM
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.5.0)
     tilt (2.9.0)
+    timeout (0.6.1)
     transproc (1.1.1)
     tsort (0.2.0)
     unicode-display_width (3.2.0)
@@ -462,6 +467,7 @@ DEPENDENCIES
   hanami-view (~> 3.0.0)
   hanami-webconsole (~> 3.0.0)
   i18n (~> 1.14)
+  net-smtp
   pg
   puma (>= 7.1)
   rack-test
