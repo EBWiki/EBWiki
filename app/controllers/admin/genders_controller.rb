@@ -12,6 +12,8 @@ module Admin
       @gender = Gender.new
     end
 
+    def edit; end
+
     def create
       @gender = Gender.new(gender_params)
       if @gender.save
@@ -21,8 +23,6 @@ module Admin
         render :new
       end
     end
-
-    def edit; end
 
     def update
       if @gender.update(gender_params)

@@ -12,6 +12,8 @@ module Admin
       @ethnicity = Ethnicity.new
     end
 
+    def edit; end
+
     def create
       @ethnicity = Ethnicity.new(ethnicity_params)
       if @ethnicity.save
@@ -21,8 +23,6 @@ module Admin
         render :new
       end
     end
-
-    def edit; end
 
     def update
       if @ethnicity.update(ethnicity_params)

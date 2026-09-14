@@ -41,7 +41,7 @@ RSpec.describe 'Comments', type: :request do
   describe 'DELETE /cases/:slug/comments/:id' do
     let(:user) { create(:user) }
     let(:admin) { create(:admin) }
-    let(:comment) { create(:comment) }
+    let!(:comment) { create(:comment) }
     let(:_case) { comment.commentable }
 
     it 'does not allow a non-admin to delete' do
