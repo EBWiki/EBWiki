@@ -1,7 +1,15 @@
 <article>
   <p class="crumb"><a href="/organizations">All organizations</a></p>
   <h1><%= organization.name %></h1>
-  <p><a href="/organizations/<%= organization.id %>/edit">Edit organization</a></p>
+  <p>
+    <a href="/organizations/<%= organization.id %>/edit">Edit organization</a>
+    <% if current_user&.admin %>
+      ·
+      <form action="/organizations/<%= organization.id %>/delete" method="post" class="inline-form" onsubmit="return confirm('Delete this organization?');">
+        <button type="submit">Delete organization</button>
+      </form>
+    <% end %>
+  </p>
   <% unless organization.description.to_s.empty? %>
     <p><%= organization.description %></p>
   <% end %>

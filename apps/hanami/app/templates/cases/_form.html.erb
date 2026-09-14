@@ -38,6 +38,10 @@
         <div class="repeatable">
           <label>Name <input name="case[subjects][][name]" value="<%= subject&.name %>"></label>
           <label>Age <input type="number" name="case[subjects][][age]" value="<%= subject&.age %>"></label>
+          <label><input type="checkbox" name="case[subjects][][unarmed]" value="1" <%= "checked" if subject&.unarmed %>> Unarmed</label>
+          <label><input type="checkbox" name="case[subjects][][mentally_ill]" value="1" <%= "checked" if subject&.mentally_ill %>> Mentally ill</label>
+          <label><input type="checkbox" name="case[subjects][][veteran]" value="1" <%= "checked" if subject&.veteran %>> Veteran</label>
+          <label><input type="checkbox" name="case[subjects][][homeless]" value="1" <%= "checked" if subject&.homeless %>> Homeless</label>
         </div>
       <% end %>
     </div>
@@ -57,6 +61,9 @@
       </select>
     </label>
     <label>Zipcode <input name="case[zipcode]" value="<%= value.call(:zipcode, this_case&.zipcode) %>"></label>
+    <label>Latitude <input name="case[latitude]" value="<%= value.call(:latitude, this_case&.latitude) %>"></label>
+    <label>Longitude <input name="case[longitude]" value="<%= value.call(:longitude, this_case&.longitude) %>"></label>
+    <p class="meta">Leave coordinates blank to geocode from the address outside tests.</p>
   </fieldset>
 
   <fieldset>

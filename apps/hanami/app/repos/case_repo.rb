@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "yaml"
+require "eb_wiki/geocode"
 
 module EbWiki
   module Repos
@@ -31,6 +32,59 @@ module EbWiki
 
       def total_count
         cases.count
+      end
+
+      def map_locations
+        cases
+          .select(:latitude, :longitude, :title, :slug, :city)
+          .where(Sequel.~(latitude: nil) & Sequel.~(longitude: nil))
+          .to_a
+          .filter_map { |record| location_payload(record) }
+      end
+
+      def photo_review_cases(page: 1)
+        cases
+          .combine(:subjects)
+          .order(cases[:date].desc)
+          .page([page.to_i, 1].max)
+          .per_page(PAGE_SIZE)
+          .to_a
+      end
+
+      def followers_for(slug)
+        record = find_by_slug(slug)
+        return unless record
+
+        follower_ids = follows.where(
+          followable_type: "Case",
+          followable_id: record.id,
+          follower_type: "User",
+          blocked: false
+        ).to_a.map(&:follower_id)
+
+        {
+          record: record,
+          followers: users_by_id(follower_ids).values.sort_by { |user| user.name.to_s.downcase }
+        }
+      end
+
+      def recent_comments(limit: 50)
+        comments.order(comments[:created_at].desc).limit(limit).to_a
+      end
+
+      def destroy(slug)
+        record = find_by_slug(slug)
+        return unless record
+
+        db.transaction do
+          links.where(linkable_type: "Case", linkable_id: record.id).delete
+          comments.where(commentable_type: "Case", commentable_id: record.id).delete
+          follows.where(followable_type: "Case", followable_id: record.id).delete
+          versions.where(item_type: "Case", item_id: record.id).delete
+          cases.where(id: record.id).delete
+        end
+
+        record
       end
 
       def find_page(slug)
@@ -248,6 +302,8 @@ module EbWiki
       end
 
       def case_row(attrs, slug:, now:)
+        latitude, longitude = coordinates_for(attrs)
+
         {
           title: attrs[:title].to_s,
           slug: slug,
@@ -263,6 +319,8 @@ module EbWiki
           summary: attrs[:summary].to_s,
           video_url: attrs[:video_url].to_s,
           cause_of_death: normalize_cause(attrs[:cause_of_death]),
+          latitude: latitude,
+          longitude: longitude,
           created_at: now,
           updated_at: now
         }
@@ -277,6 +335,10 @@ module EbWiki
             case_id: case_id,
             name: name,
             age: integer_or_nil(subject[:age]),
+            unarmed: boolean_flag(subject[:unarmed]),
+            mentally_ill: boolean_flag(subject[:mentally_ill]),
+            veteran: boolean_flag(subject[:veteran]),
+            homeless: boolean_flag(subject[:homeless]),
             created_at: now,
             updated_at: now
           )
@@ -381,6 +443,44 @@ module EbWiki
         Integer(value)
       rescue ArgumentError
         nil
+      end
+
+      def float_or_nil(value)
+        return if value.to_s.strip.empty?
+
+        Float(value)
+      rescue ArgumentError
+        nil
+      end
+
+      def boolean_flag(value)
+        %w[1 true on yes].include?(value.to_s.strip.downcase)
+      end
+
+      def coordinates_for(attrs)
+        latitude = float_or_nil(attrs[:latitude])
+        longitude = float_or_nil(attrs[:longitude])
+        return [latitude, longitude] if latitude && longitude
+
+        geocoded = EbWiki::Geocode.lookup(
+          address: attrs[:address],
+          city: attrs[:city],
+          zipcode: attrs[:zipcode]
+        )
+        [geocoded&.fetch(:latitude, nil), geocoded&.fetch(:longitude, nil)]
+      end
+
+      def location_payload(record)
+        return unless record.latitude && record.longitude
+
+        {
+          lat: record.latitude.to_f,
+          lng: record.longitude.to_f,
+          title: record.title,
+          slug: record.slug,
+          city: record.city,
+          url: "/cases/#{record.slug}"
+        }
       end
 
       def normalize_cause(value)
