@@ -5,7 +5,7 @@ module EbWiki
     module Sessions
       class Destroy < EbWiki::Action
         def handle(request, response)
-          request.session[:user_id] = nil
+          sign_out!(request, response)
           response.redirect_to "/"
         end
       end

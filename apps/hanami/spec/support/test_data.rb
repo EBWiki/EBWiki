@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bcrypt"
+require "securerandom"
 
 module TestData
   module_function
@@ -101,6 +102,20 @@ module TestData
     )
   end
 
+  def insert_session(user_id:, public_id: nil, encrypted_password: nil)
+    require "eb_wiki/rails_session"
+
+    public_id ||= SecureRandom.hex(16)
+    encrypted_password ||= relations[:users].where(id: user_id).one[:encrypted_password]
+    relations[:sessions].insert(
+      session_id: EbWiki::RailsSession.private_id(public_id),
+      data: EbWiki::RailsSession.payload_for(user_id, encrypted_password),
+      created_at: now,
+      updated_at: now
+    )
+    public_id
+  end
+
   def insert_organization(name: "Color of Change", website: "https://colorofchange.org")
     relations[:organizations].insert(
       name: name,
@@ -132,7 +147,8 @@ module TestData
       users: Hanami.app["relations.users"],
       comments: Hanami.app["relations.comments"],
       follows: Hanami.app["relations.follows"],
-      organizations: Hanami.app["relations.organizations"]
+      organizations: Hanami.app["relations.organizations"],
+      sessions: Hanami.app["relations.sessions"]
     }
   end
 end

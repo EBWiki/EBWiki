@@ -5,23 +5,35 @@ require "hanami/action"
 require "dry/monads"
 require "eb_wiki/mailer"
 require "eb_wiki/carrierwave_avatar"
+require "eb_wiki/rails_session"
 
 module EbWiki
   class Action < Hanami::Action
     include Dry::Monads[:result]
-    include Deps["repos.user_repo"]
+    include Deps["repos.user_repo", "repos.session_repo"]
 
     before :set_current_user
 
     private
 
     def set_current_user(request, response)
-      user_id = request.session[:user_id]
-      response[:current_user] = user_id && user_repo.by_id(user_id)
+      response[:current_user] = EbWiki::RailsSession.current_user(
+        request,
+        user_repo: user_repo,
+        session_repo: session_repo
+      )
     end
 
     def current_user(response)
       response[:current_user]
+    end
+
+    def sign_in!(request, response, user)
+      EbWiki::RailsSession.sign_in!(request, response, user, session_repo: session_repo)
+    end
+
+    def sign_out!(request, response)
+      EbWiki::RailsSession.sign_out!(request, response, session_repo: session_repo)
     end
 
     def require_user!(response)
