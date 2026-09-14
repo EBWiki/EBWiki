@@ -1,0 +1,37 @@
+<section>
+  <h1>Friendly photos</h1>
+  <p class="lede">
+    Start with the person’s name, then search Wikimedia Commons, English Wikipedia,
+    and Openverse. Mugshot farms are blocked. Human review stays required before
+    anything is attached to a case.
+  </p>
+  <% if cases.empty? %>
+    <p>No cases are loaded in this database yet.</p>
+  <% else %>
+    <ul class="case-cards">
+      <% cases.each do |this_case| %>
+        <li class="case-card">
+          <a href="/friendly_photos/<%= this_case.slug %>">
+            <h2><%= this_case.title %></h2>
+            <p>
+              <% if this_case.subjects.any? %>
+                Search for <%= this_case.subjects.map(&:name).join(", ") %>
+              <% else %>
+                Search using the case title
+              <% end %>
+            </p>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+    <nav class="pagination" aria-label="Pagination">
+      <% if page > 1 %>
+        <a href="/friendly_photos?page=<%= page - 1 %>">Previous</a>
+      <% end %>
+      <span>Page <%= page %> of <%= total_pages %></span>
+      <% if page < total_pages %>
+        <a href="/friendly_photos?page=<%= page + 1 %>">Next</a>
+      <% end %>
+    </nav>
+  <% end %>
+</section>

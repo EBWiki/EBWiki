@@ -1,0 +1,15 @@
+<section class="case-map-page">
+  <h1>Case Map</h1>
+  <p class="lede">
+    Each pin is a documented case. Click a pin or cluster to open the Hanami case page.
+  </p>
+  <p class="case-map-count">
+    Showing <span class="accent"><%= locations.size %></span> documented cases with coordinates.
+  </p>
+  <div
+    id="map-container"
+    class="case-map-canvas"
+    role="img"
+    aria-label="Map of EBWiki cases"></div>
+  <script type="application/json" id="case-map-data"><%= locations_json %></script>
+</section>
