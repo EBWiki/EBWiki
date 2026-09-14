@@ -3,6 +3,7 @@
 
 require "hanami/action"
 require "dry/monads"
+require "eb_wiki/mailer"
 
 module EbWiki
   class Action < Hanami::Action
@@ -31,6 +32,13 @@ module EbWiki
     def require_admin!(response)
       user = current_user(response)
       halt 403 unless user&.admin
+    end
+
+    def public_base_url(request)
+      configured = ENV["APP_URL"].to_s.strip
+      return configured.chomp("/") unless configured.empty?
+
+      request.base_url.to_s.chomp("/")
     end
   end
 end

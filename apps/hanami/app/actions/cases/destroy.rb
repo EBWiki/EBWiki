@@ -13,8 +13,17 @@ module EbWiki
           require_admin!(response)
           return if response.status == 403
 
-          record = case_repo.destroy(request.params[:case_slug])
+          slug = request.params[:case_slug]
+          followers_page = case_repo.followers_for(slug)
+          halt 404 unless followers_page
+
+          record = case_repo.destroy(slug)
           halt 404 unless record
+
+          EbWiki::Mailer.send_deletion_email(
+            users: followers_page.fetch(:followers),
+            this_case: record
+          )
 
           response.redirect_to "/"
         end

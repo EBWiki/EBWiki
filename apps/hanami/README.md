@@ -1,7 +1,8 @@
 # EBWiki Hanami public site
 
 Hanami 3 reads and writes the existing Postgres schema. Rails still owns
-mail delivery, CarrierWave/S3 object keys, and production cutover.
+CarrierWave/S3 object keys and production cutover. Hanami sends
+confirmation, reset, and follower mail for events it handles.
 
 Catch-up write-up for maintainers: [`docs/HANAMI_STATUS.md`](../../docs/HANAMI_STATUS.md).
 
@@ -81,6 +82,10 @@ database.
 | `STAGING_SEED_PASSWORD` | Demo account password when seeds run |
 | `RESTORE_DUMP` | Set to `1` once on a throwaway DB to load historic data; unset after |
 | `S3_BUCKET` / `S3_REGION` | Optional; without these, avatars use local `/uploads/...` paths |
+| `HANAMI_SEND_MAIL` | Set to `1` to deliver via SMTP. Leave unset on the 2020 dump. |
+| `APP_URL` | Public origin used in mail links (e.g. the Railway URL) |
+| `SMTP_ADDRESS` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_DOMAIN` | SMTP delivery |
+| `SENDGRID_USERNAME` / `SENDGRID_PASSWORD` or `SENDGRID_API_KEY` | Alternate SMTP (SendGrid) |
 
 Do not copy production Heroku `DATABASE_URL` into this service.
 
@@ -163,15 +168,20 @@ bundle exec rake security:check
 ## Writes and identity on Hanami
 
 - Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in.
-- `/register` writes an unconfirmed user and a `confirmation_token`. `/users/confirmation` matches Devise's token path. Mailers stay on Rails.
+- `/register` writes an unconfirmed user, a `confirmation_token`, and emails
+  the Devise confirmation copy. `/users/confirmation` matches Devise's token
+  path. Password reset emails the Hanami `/password/edit` link.
+- Case update emails followers; admin delete emails followers. Rails still
+  sends those mails for Rails writes. SMTP stays off unless
+  `HANAMI_SEND_MAIL=1`.
 - Signed-in editors can create/edit cases, agencies, and organizations; comment; and follow.
 - Case writes insert a `versions` row. Updates store a YAML `object` snapshot. Revert restores those columns. Create events with no snapshot are not undone and never delete the case.
 - Staff at `/admin/users` can toggle `admin` / `analyst`. `/admin/comments` lists recent comments for moderation.
-- Admins can delete a case, agency, or organization from the public show page. Deletion emails stay on Rails.
+- Admins can delete a case, agency, or organization from the public show page. Case deletion emails followers.
 - Case pages embed OpenStreetMap when `latitude` / `longitude` are present. Create/update persist coordinates and geocode from the address outside tests.
 - `/maps` plots every geocoded case. `/friendly_photos` searches Wikimedia Commons, Wikipedia, and Openverse and flags likely mugshots.
 - CarrierWave keys are left unchanged.
 
-Still on Rails: outgoing mail (confirmation, password reset, follower notifications), writing new S3 objects, a shared Devise session cookie, and deleting Rails itself.
+Still on Rails: writing new S3 objects, a shared Devise session cookie, and deleting Rails itself.
 
 Hanami reads existing CarrierWave keys (`uploads/case/avatar/:id/large_avatar_:filename`) and, when `S3_BUCKET` is set, prefixes the bucket host. It does not change object keys. The layout uses Bootstrap 3.4 CSS from the same major version as Rails.

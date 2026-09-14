@@ -7,6 +7,7 @@ module EbWiki
         config.template = "sessions/new"
 
         expose :error, default: nil
+        expose :notice, default: nil
       end
     end
   end
