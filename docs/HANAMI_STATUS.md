@@ -44,7 +44,7 @@ Hanami 3 under `apps/hanami`, same Postgres schema as Rails.
 | Maps (`/maps`, Leaflet) | Done |
 | Friendly photos (`/friendly_photos`) | Done (review only; no S3 write) |
 | Agencies / organizations CRUD | Done |
-| Auth (Devise bcrypt hashes) | Tokens written; **mail not sent** |
+| Auth (Devise bcrypt hashes) | Login + tokens + **outgoing mail** |
 | Case/agency/org writes, comments, follows | Done |
 | History + revert | Done (PaperTrail-compatible YAML) |
 | Staff users + comment moderation + admin delete | Done |
@@ -52,11 +52,16 @@ Hanami 3 under `apps/hanami`, same Postgres schema as Rails.
 
 **Local:** `cd apps/hanami && bin/dev` (port 2300) or repo-root `bin/one-site`.
 
+Outgoing mail (confirmation, password reset, follower update, case deletion)
+is sent by Hanami for Hanami writes. Rails still sends for Rails writes. SMTP
+is off unless `HANAMI_SEND_MAIL=1` and `SMTP_*` (or SendGrid) are set — do
+not enable that against the 2020 staging dump. Do not dual-send the same
+follower event.
+
 ## Feature-complete enough to cut over (still open)
 
 These keep the work on the long-running branch:
 
-- Outgoing mail: confirmation, password reset, follower notifications (one writer)
 - Writing new S3 objects with unchanged CarrierWave keys
 - Shared session or an accepted one-time logout
 - Current production dump on staging (not the 2020 snapshot)
@@ -87,3 +92,5 @@ On Railway after an explicit redeploy of `hanami-web`:
 2. `/`, `/cases/walter-scott`, `/search?query=Charleston`
 3. `/maps`, `/friendly_photos`
 4. Demo login `admin@example.com` (password from `STAGING_SEED_PASSWORD`)
+5. Mail is covered by `bundle exec rspec spec/requests/mail_spec.rb`. Do not set
+   `HANAMI_SEND_MAIL=1` on the 2020 dump.

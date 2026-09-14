@@ -4,6 +4,9 @@
     Uses the existing Devise <code>users.encrypted_password</code> column (bcrypt).
     Confirmed accounts only.
   </p>
+  <% if notice %>
+    <p class="flash-notice"><%= notice %></p>
+  <% end %>
   <% if error %>
     <p class="flash-error"><%= error %></p>
   <% end %>
