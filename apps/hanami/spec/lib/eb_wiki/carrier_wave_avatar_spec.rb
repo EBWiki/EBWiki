@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "tempfile"
-require "eb_wiki/carrierwave_avatar"
+require "eb_wiki/carrier_wave_avatar"
 
 RSpec.describe EbWiki::CarrierWaveAvatar do
   let(:png) do

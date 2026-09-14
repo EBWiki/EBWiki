@@ -68,10 +68,16 @@ module EbWiki
     end
 
     def session_id_from_request(request)
-      raw = request.cookies[COOKIE]
+      raw = cookie_value(request.cookies)
       return nil if raw.nil? || raw.empty?
 
       CGI.unescape(raw.to_s)
+    end
+
+    def cookie_value(cookies)
+      return unless cookies
+
+      cookies[COOKIE] || cookies[COOKIE.to_sym]
     end
 
     def user_id_from_data(data)
