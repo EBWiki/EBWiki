@@ -130,7 +130,7 @@ module EbWiki
           _out, _err, status = Open3.capture3(
             "convert", source, "-resize", geometry, "-gravity", "center", "-extent", "#{w}x#{h}", dest
           )
-          return unless status.success? && File.file?(dest)
+          next unless status.success? && File.file?(dest)
 
           File.binread(dest)
         end
