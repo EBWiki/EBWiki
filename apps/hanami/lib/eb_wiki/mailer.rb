@@ -2,7 +2,6 @@
 
 require "base64"
 require "cgi"
-require "net/smtp"
 
 module EbWiki
   # Builds the same confirmation, reset, and follower emails Rails sends.
@@ -17,7 +16,7 @@ module EbWiki
     FROM_NAME = "EndBiasWiki"
     HOME_URL = "http://ebwiki.org"
 
-    Message = Struct.new(:to, :from, :subject, :html, keyword_init: true)
+    Message = Struct.new(:to, :from, :subject, :html)
 
     class << self
       def deliveries
@@ -128,12 +127,13 @@ module EbWiki
       end
 
       def transmit(message)
+        require "net/smtp"
         smtp = Net::SMTP.new(smtp_address, smtp_port)
         smtp.enable_starttls_auto if smtp_port != 25
         smtp.start(smtp_domain, smtp_user, smtp_password, smtp_auth) do |session|
           session.send_message(rfc822(message), FROM_ADDRESS, message.to)
         end
-      rescue StandardError => error
+      rescue => error
         warn "EbWiki::Mailer delivery failed: #{error.class}: #{error.message}"
       end
 
