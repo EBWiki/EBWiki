@@ -25,16 +25,17 @@
           <button type="submit" class="btn btn-default">Search</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/maps">Map</a></li>
-          <li><a href="/friendly_photos">Photos</a></li>
           <li><a href="/agencies">Agencies</a></li>
           <li><a href="/organizations">Organizations</a></li>
+          <li><a href="/maps">Maps</a></li>
+          <li><a href="/friendly_photos">Photos</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="/cases/new">Add a case</a></li>
           <% if current_user %>
             <li><a href="/users/<%= current_user.id %>"><%= current_user.name %></a></li>
             <% if current_user.admin %>
               <li><a href="/admin/users">Staff</a></li>
+              <li><a href="/admin/comments">Comments</a></li>
             <% end %>
             <li>
               <form action="/logout" method="post" class="navbar-form">
@@ -53,7 +54,7 @@
     </main>
     <footer class="site-footer">
       <div class="container">
-        <p>Hanami staging site. Mail delivery and new S3 uploads are still later slices.</p>
+        <p>Hanami public site sharing the Rails Postgres schema. New S3 uploads and production cutover still go through Rails.</p>
       </div>
     </footer>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
