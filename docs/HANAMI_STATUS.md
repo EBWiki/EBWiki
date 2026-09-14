@@ -1,67 +1,78 @@
-# EBWiki Rails → Hanami: what landed and what is left
+# EBWiki Rails → Hanami: long-running branch until cutover
 
 Read this first if you are catching up. Date: 2026-09-14.
 
-Mark authorized merge of the independent Hanami-track PRs as long as the
-changes are written down. This file is that write-down. Rails is **not**
-deleted. Production `ebwiki.org` is **not** cut over.
+`main` stays the live Rails app. Hanami accumulates on one long-running
+branch and lands on `main` only when the sibling is feature-complete enough
+to cut traffic. Railway staging is the place to click it before that.
 
-## Process (now)
+## Process
 
-1. Each slice is its own PR so it can be merged, skipped, or replaced.
-2. CI must be green on the PR head.
-3. Draft → ready for review → merge (squash unless GitHub requires otherwise).
-4. Merge order: docs → Rails cuts → Hanami sibling. Do not merge #4406 as-is
-   (Active Storage / Bootstrap 5 / mailbox rewrite would drop CarrierWave keys
-   Hanami still reads).
-5. #4419 is superseded by #4413 (maps and friendly photos now live there).
-6. After merge: rebase any leftover Hanami branches; redeploy Railway only on
-   throwaway Postgres; never point `DATABASE_URL` at Heroku production.
+1. **Long-running Hanami branch:** `cursor/hanami-first-slice-fe74`
+   ([#4413](https://github.com/EBWiki/EBWiki/pull/4413), draft). All new
+   Hanami work goes here. Rebase onto `main` when Rails moves; do not merge
+   until cutover.
+2. **Cutover PR** is that same PR (or a fast-forward of it) once the
+   still-on-Rails list below is empty or explicitly deferred with a rollback
+   plan. Cutover is: merge to `main`, point production at Hanami, then delete
+   Rails in a follow-up.
+3. **Rails-only cuts** (#4410 search, #4411 mailbox, #4412 staff tools) can
+   still merge to `main` any time — they help today’s Rails app and shrink
+   the dual-stack. They are not required to keep growing Hanami.
+4. Do **not** merge [#4406](https://github.com/EBWiki/EBWiki/pull/4406)
+   (Active Storage / Bootstrap 5 would drop CarrierWave keys Hanami reads).
+5. [#4419](https://github.com/EBWiki/EBWiki/pull/4419) is superseded; maps
+   and friendly photos live on #4413.
+6. Never point Railway `DATABASE_URL` at Heroku production. Never run
+   `LOAD_SCHEMA=1` or `RESTORE_DUMP=1` against the shared Rails database.
+   Do not dual-send follower emails.
 
-## PRs
+## Why not merge Hanami to `main` now
 
-| PR | What it is | Why merge it |
-| --- | --- | --- |
-| [#4409](https://github.com/EBWiki/EBWiki/pull/4409) | `docs/HANAMI_MIGRATION.md` feasibility study | Written SoT for constraints |
-| [#4410](https://github.com/EBWiki/EBWiki/pull/4410) | Rails `CaseSearch` → `pg_search`; drop Elasticsearch | Search works on Rails or Hanami |
-| [#4411](https://github.com/EBWiki/EBWiki/pull/4411) | Remove Mailboxer / in-app messaging | Drops a Rails-only gem; keeps follower emails |
-| [#4412](https://github.com/EBWiki/EBWiki/pull/4412) | Replace Administrate with staff tools | Matches Hanami’s small `/admin` |
-| [#4413](https://github.com/EBWiki/EBWiki/pull/4413) | Hanami sibling app in `apps/hanami` | Working public site + writes |
+Merging `apps/hanami` early does not cut over `ebwiki.org`. It only puts an
+unfinished second app on the default branch. A long-running branch keeps
+`main` the production Rails tree, lets us rebase instead of emergency-revert,
+and makes cutover one deliberate merge plus DNS/process change.
 
-## What #4413 actually ships
+## What the long-running branch already has
 
-Hanami 3 app under `apps/hanami`, same Postgres schema as Rails.
+Hanami 3 under `apps/hanami`, same Postgres schema as Rails.
 
-**Reads:** `/`, `/cases`, `/cases/:slug`, `/search`, `/maps`, `/agencies`,
-`/organizations`, static pages, `/articles` → `/cases` 301.
-
-**Writes (signed-in):** case / agency / org create+edit, comments, follows,
-PaperTrail-compatible history + revert, admin deletes.
-
-**Identity:** bcrypt against `users.encrypted_password` (Devise-compatible).
-Confirmation and reset **tokens** are written; **emails are not sent**.
-
-**Photos:** `/friendly_photos` searches Commons / Wikipedia / Openverse and
-flags likely mugshots. Existing CarrierWave S3 **keys are read, not rewritten**.
-
-**Staging:** https://hanami-web-production-dd15.up.railway.app (basic auth).
-Data there is a **2020** Heroku dump, not current production.
+| Area | Status |
+| --- | --- |
+| Case index / show / search | Done |
+| Maps (`/maps`, Leaflet) | Done |
+| Friendly photos (`/friendly_photos`) | Done (review only; no S3 write) |
+| Agencies / organizations CRUD | Done |
+| Auth (Devise bcrypt hashes) | Tokens written; **mail not sent** |
+| Case/agency/org writes, comments, follows | Done |
+| History + revert | Done (PaperTrail-compatible YAML) |
+| Staff users + comment moderation + admin delete | Done |
+| Railway staging | https://hanami-web-production-dd15.up.railway.app (2020 dump) |
 
 **Local:** `cd apps/hanami && bin/dev` (port 2300) or repo-root `bin/one-site`.
 
-## Still on Rails (later slices)
+## Feature-complete enough to cut over (still open)
 
-- Outgoing mail: confirmation, password reset, follower notifications
-- Writing new S3 objects
-- Shared session cookie with Rails (Hanami uses `ebwiki.session`)
-- Production DNS / Heroku cutover
-- Deleting the Rails app
-- A current production dump (staging is 2020)
+These keep the work on the long-running branch:
 
-Do **not** dual-send follower emails from both apps. Do **not** run
-`LOAD_SCHEMA=1` or `RESTORE_DUMP=1` against the shared Rails database.
+- Outgoing mail: confirmation, password reset, follower notifications (one writer)
+- Writing new S3 objects with unchanged CarrierWave keys
+- Shared session or an accepted one-time logout
+- Current production dump on staging (not the 2020 snapshot)
+- Production routing / DNS / process (Hanami `puma`, not `rails server`)
+- Then: delete Rails
 
-## How to verify after merge
+## Optional Rails PRs (independent of cutover)
+
+| PR | What | Merge to `main`? |
+| --- | --- | --- |
+| [#4409](https://github.com/EBWiki/EBWiki/pull/4409) | Feasibility doc | Whenever; docs only |
+| [#4410](https://github.com/EBWiki/EBWiki/pull/4410) | `pg_search`, drop Elasticsearch | Yes, anytime — Rails search is already on `tsv` |
+| [#4411](https://github.com/EBWiki/EBWiki/pull/4411) | Drop Mailboxer | Yes if you accept dropping in-app inbox (`mailboxer_*` tables go) |
+| [#4412](https://github.com/EBWiki/EBWiki/pull/4412) | Staff tools instead of Administrate | Yes if you want `/admin` smaller on Rails now |
+
+## How to verify the long-running branch
 
 ```bash
 cd apps/hanami
@@ -70,9 +81,9 @@ bundle exec rspec
 bundle exec standardrb
 ```
 
-On Railway (after an explicit redeploy of `hanami-web`):
+On Railway after an explicit redeploy of `hanami-web`:
 
 1. `GET /up` → `200 ok`
-2. `/` live case count, `/cases/walter-scott`, `/search?query=Charleston`
+2. `/`, `/cases/walter-scott`, `/search?query=Charleston`
 3. `/maps`, `/friendly_photos`
 4. Demo login `admin@example.com` (password from `STAGING_SEED_PASSWORD`)
