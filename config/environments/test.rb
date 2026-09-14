@@ -45,6 +45,10 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  # CI's pg_dump is 16; the test DB is Postgres 17. A new migration would
+  # otherwise make db:prepare dump structure.sql and abort the job.
+  config.active_record.dump_schema_after_migration = false
+
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 end
