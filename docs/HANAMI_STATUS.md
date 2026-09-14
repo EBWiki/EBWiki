@@ -49,15 +49,15 @@ Hanami 3 under `apps/hanami`, same Postgres schema as Rails.
 | Case/agency/org writes, comments, follows | Done |
 | History + revert | Done (PaperTrail-compatible YAML) |
 | Staff users + comment moderation + admin delete | Done |
-| Railway staging | https://hanami-web-production-dd15.up.railway.app (2020 dump) |
+| Railway staging | https://hanami-web-production-dd15.up.railway.app (`latest.dump`) |
 
 **Local:** `cd apps/hanami && bin/dev` (port 2300) or repo-root `bin/one-site`.
 
 Outgoing mail (confirmation, password reset, follower update, case deletion)
 is sent by Hanami for Hanami writes. Rails still sends for Rails writes. SMTP
 is off unless `HANAMI_SEND_MAIL=1` and `SMTP_*` (or SendGrid) are set — do
-not enable that against the 2020 staging dump. Do not dual-send the same
-follower event.
+not enable that against the staging dump (real addresses). Do not dual-send
+the same follower event.
 
 Case photo uploads write the same CarrierWave keys Rails already reads
 (`uploads/case/avatar/:id/` plus `large_avatar_`, `medium_avatar_`,
@@ -73,11 +73,17 @@ expect a one-time re-login after cutover if people still have a Rails
 cookie on the old host. `SECRET_KEY_BASE` is not required; the session id
 is in the cookie and the payload is in Postgres.
 
+Staging uses the PG dump already in git history: `latest.dump` at
+`592560514b263c8956d039bdd25c9c8b7fb2a81f` (2020-09-01 Heroku snapshot).
+Do not re-commit that blob. `bin/railway-release` restores it when
+`RESTORE_DUMP=1` on the throwaway Railway Postgres — never against the
+shared Rails/Heroku database. Unset `RESTORE_DUMP` after a successful
+restore so later deploys keep writes.
+
 ## Feature-complete enough to cut over (still open)
 
 These keep the work on the long-running branch:
 
-- Current production dump on staging (not the 2020 snapshot)
 - Production routing / DNS / process (Hanami `puma`, not `rails server`)
 - Then: delete Rails
 
@@ -106,5 +112,5 @@ On Railway after an explicit redeploy of `hanami-web`:
 3. `/maps`, `/friendly_photos`
 4. Demo login `admin@example.com` (password from `STAGING_SEED_PASSWORD`)
 5. Mail is covered by `bundle exec rspec spec/requests/mail_spec.rb`. Do not set
-   `HANAMI_SEND_MAIL=1` on the 2020 dump.
+   `HANAMI_SEND_MAIL=1` on the restored dump.
 6. Shared session is covered by `bundle exec rspec spec/requests/session_spec.rb`.
