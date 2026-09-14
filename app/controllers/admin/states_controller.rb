@@ -12,6 +12,8 @@ module Admin
       @state = State.new
     end
 
+    def edit; end
+
     def create
       @state = State.new(state_params)
       if @state.save
@@ -21,8 +23,6 @@ module Admin
         render :new
       end
     end
-
-    def edit; end
 
     def update
       if @state.update(state_params)

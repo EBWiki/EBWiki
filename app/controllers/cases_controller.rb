@@ -76,16 +76,10 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   # rubocop:enable Metrics/MethodLength
 
   def destroy
-    begin
-      @this_case = Case.friendly.find(params[:id])
-      authorize @this_case
-      @this_case.destroy
-      flash[:success] = 'Case was removed!'
-      CaseMailer.send_deletion_email(users: @this_case.followers,
-                                     this_case: @this_case).deliver_now
-    rescue ActiveRecord::RecordNotFound
-      flash[:notice] = I18n.t('cases_controller.case_not_found_message')
-    end
+    remove_case
+    redirect_to root_path
+  rescue ActiveRecord::RecordNotFound
+    flash[:notice] = I18n.t('cases_controller.case_not_found_message')
     redirect_to root_path
   end
 
@@ -100,6 +94,15 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   end
 
   private
+
+  def remove_case
+    @this_case = Case.friendly.find(params[:id])
+    authorize @this_case
+    @this_case.destroy
+    flash[:success] = 'Case was removed!'
+    CaseMailer.send_deletion_email(users: @this_case.followers,
+                                   this_case: @this_case).deliver_now
+  end
 
   def case_params # rubocop:todo Metrics/MethodLength
     params[:case][:date] ||= []
