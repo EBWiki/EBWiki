@@ -231,6 +231,24 @@ module EbWiki
         cases.where(id: case_id).one
       end
 
+      def set_avatar(id, filename:, default_avatar_url:)
+        cases.where(id: id).update(
+          avatar: filename,
+          default_avatar_url: default_avatar_url,
+          updated_at: Time.now.utc
+        )
+        cases.where(id: id).one
+      end
+
+      def clear_avatar(id)
+        cases.where(id: id).update(
+          avatar: nil,
+          default_avatar_url: nil,
+          updated_at: Time.now.utc
+        )
+        cases.where(id: id).one
+      end
+
       def update_with_children(slug, attrs, user:)
         record = find_by_slug(slug)
         return unless record
