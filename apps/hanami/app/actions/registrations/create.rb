@@ -22,7 +22,12 @@ module EbWiki
             return
           end
 
-          user_repo.register(email: email, password: password, name: name)
+          user = user_repo.register(email: email, password: password, name: name)
+          EbWiki::Mailer.confirmation_instructions(
+            user: user,
+            token: user.confirmation_token,
+            base_url: public_base_url(request)
+          )
           response.redirect_to "/login?registered=1"
         end
       end
