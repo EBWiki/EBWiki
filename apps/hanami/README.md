@@ -168,7 +168,7 @@ bundle exec rake security:check
 
 ## Writes and identity on Hanami
 
-- Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in.
+- Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in. It also upserts the Rails `sessions` row and sets `_eb_wiki_session`, so the same host shares login with Devise. Different hosts need a one-time re-login.
 - `/register` writes an unconfirmed user, a `confirmation_token`, and emails
   the Devise confirmation copy. `/users/confirmation` matches Devise's token
   path. Password reset emails the Hanami `/password/edit` link.
@@ -186,6 +186,7 @@ bundle exec rake security:check
   versions). S3 when `S3_BUCKET` is set; local `public/` otherwise.
 - `/friendly_photos` still does not write S3.
 
-Still on Rails: a shared Devise session cookie, and deleting Rails itself.
+Still on Rails: production routing and deleting Rails itself. Session is
+shared on the same host via `_eb_wiki_session`.
 
 Hanami reads existing CarrierWave keys (`uploads/case/avatar/:id/large_avatar_:filename`) and, when `S3_BUCKET` is set, prefixes the bucket host. It does not change object keys. The layout uses Bootstrap 3.4 CSS from the same major version as Rails.
