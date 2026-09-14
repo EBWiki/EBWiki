@@ -14,6 +14,7 @@ WORKDIR /app
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
       curl \
+      imagemagick \
       libpq5 \
       libyaml-0-2 \
       postgresql-client && \

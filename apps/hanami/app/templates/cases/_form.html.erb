@@ -11,7 +11,7 @@
 
 <% value = ->(key, fallback = "") { values[key] || fallback } %>
 
-<form action="<%= action %>" method="post" class="stack-form">
+<form action="<%= action %>" method="post" class="stack-form" enctype="multipart/form-data">
   <% if method_override %>
     <input type="hidden" name="_method" value="<%= method_override %>">
   <% end %>
@@ -28,6 +28,11 @@
       </select>
     </label>
     <label>Video URL <input name="case[video_url]" value="<%= value.call(:video_url, this_case&.video_url) %>"></label>
+    <label>Photo <input type="file" name="case[avatar]" accept="image/jpeg,image/png,image/gif"></label>
+    <% if this_case&.avatar.to_s != "" %>
+      <label><input type="checkbox" name="case[remove_avatar]" value="1"> Remove current photo</label>
+      <p class="meta">Stored as <code>uploads/case/avatar/<%= this_case.id %>/<%= this_case.avatar %></code></p>
+    <% end %>
   </fieldset>
 
   <fieldset>
