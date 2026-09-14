@@ -11,7 +11,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 gem 'active_median', '~> 0.2'
 gem 'activerecord-session_store', '~> 2.3'
 gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
-gem 'bootsnap', '~> 1.25', require: false
+gem 'bootsnap', '~> 1.26', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bullet', '~> 8.2'
@@ -45,7 +45,7 @@ gem 'newrelic_rpm', '~> 7.0'
 gem 'paper_trail'
 gem 'paper_trail-association_tracking'
 gem 'pg', '~> 1.2'
-gem 'pg_search', '~> 2.3'
+gem 'pg_search', '~> 2.4'
 gem 'puma', '~> 6.0'
 gem 'pundit', '~> 2.1'
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
