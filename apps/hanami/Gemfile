@@ -18,6 +18,7 @@ gem "rake"
 gem "pg"
 gem "sanitize", "~> 7.0"
 gem "bcrypt", "~> 3.1"
+gem "net-smtp"
 
 group :development do
   gem "hanami-webconsole", "~> 3.0.0"
