@@ -13,9 +13,7 @@ jobs:
 
     services:
       postgres:
-        # ubuntu-latest ships pg_dump 16; a new migration makes db:prepare dump
-        # structure.sql, which fails if the server is 17.
-        image: postgres:16
+        image: postgres:17
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
