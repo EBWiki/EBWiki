@@ -45,7 +45,7 @@ Hanami 3 under `apps/hanami`, same Postgres schema as Rails.
 | Friendly photos (`/friendly_photos`) | Done (review only; no S3 write) |
 | Case avatar writes | Done (CarrierWave keys; S3 when configured) |
 | Agencies / organizations CRUD | Done |
-| Auth (Devise bcrypt hashes) | Login + tokens + **outgoing mail** |
+| Auth (Devise bcrypt hashes) | Login + tokens + outgoing mail + **shared `_eb_wiki_session`** |
 | Case/agency/org writes, comments, follows | Done |
 | History + revert | Done (PaperTrail-compatible YAML) |
 | Staff users + comment moderation + admin delete | Done |
@@ -65,11 +65,18 @@ Case photo uploads write the same CarrierWave keys Rails already reads
 `AWS_SECRET_KEY_ID` they go to S3; otherwise they land under `public/`.
 Do not change those keys. `/friendly_photos` still does not write S3.
 
+Login writes the Rails `sessions` row and `_eb_wiki_session` cookie
+(activerecord-session_store Marshal payload + Devise
+`warden.user.user.key`). On the same host, Rails and Hanami share that
+login. Different hosts (ebwiki.org vs Railway) cannot share the cookie —
+expect a one-time re-login after cutover if people still have a Rails
+cookie on the old host. `SECRET_KEY_BASE` is not required; the session id
+is in the cookie and the payload is in Postgres.
+
 ## Feature-complete enough to cut over (still open)
 
 These keep the work on the long-running branch:
 
-- Shared session or an accepted one-time logout
 - Current production dump on staging (not the 2020 snapshot)
 - Production routing / DNS / process (Hanami `puma`, not `rails server`)
 - Then: delete Rails
@@ -100,3 +107,4 @@ On Railway after an explicit redeploy of `hanami-web`:
 4. Demo login `admin@example.com` (password from `STAGING_SEED_PASSWORD`)
 5. Mail is covered by `bundle exec rspec spec/requests/mail_spec.rb`. Do not set
    `HANAMI_SEND_MAIL=1` on the 2020 dump.
+6. Shared session is covered by `bundle exec rspec spec/requests/session_spec.rb`.
