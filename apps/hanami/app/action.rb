@@ -4,6 +4,7 @@
 require "hanami/action"
 require "dry/monads"
 require "eb_wiki/mailer"
+require "eb_wiki/carrierwave_avatar"
 
 module EbWiki
   class Action < Hanami::Action
@@ -39,6 +40,21 @@ module EbWiki
       return configured.chomp("/") unless configured.empty?
 
       request.base_url.to_s.chomp("/")
+    end
+
+    def apply_case_avatar(record, request, repo)
+      raw = request.params[:case] || request.params
+      remove = raw[:remove_avatar] || raw["remove_avatar"]
+      if remove.to_s == "1"
+        EbWiki::CarrierWaveAvatar.remove(record)
+        repo.clear_avatar(record.id)
+        return
+      end
+
+      stored = EbWiki::CarrierWaveAvatar.store(record: record, upload: raw[:avatar] || raw["avatar"])
+      return unless stored
+
+      repo.set_avatar(record.id, **stored)
     end
   end
 end
