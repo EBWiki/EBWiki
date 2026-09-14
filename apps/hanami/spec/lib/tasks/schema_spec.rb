@@ -34,4 +34,10 @@ RSpec.describe "db dump restore tasks", :db do
     expect(columns).not_to include(:cause_of_death_name)
     expect(columns).to include(:tsv)
   end
+
+  it "creates sessions when the dump omitted the table" do
+    db.run("DROP TABLE IF EXISTS sessions")
+    db.run(File.read(Hanami.app.root.join("config/db/dump_compat.sql")))
+    expect(db.table_exists?(:sessions)).to be(true)
+  end
 end

@@ -31,6 +31,16 @@ ALTER TABLE public.cases
 
 CREATE INDEX IF NOT EXISTS index_cases_on_tsv ON public.cases USING gin (tsv);
 
+-- Staging DBs that loaded schema before this table existed still need it so
+-- Hanami and Rails can share `_eb_wiki_session`.
+CREATE TABLE IF NOT EXISTS sessions (
+    id integer NOT NULL,
+    session_id character varying NOT NULL,
+    data text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
 -- The 2020 dump can contain duplicate ids (pg_restore skipped PKs). Keep the
 -- newest physical row per id so ROM associations can use a real primary key.
 DO $$
@@ -39,7 +49,7 @@ DECLARE
 BEGIN
   FOREACH tbl IN ARRAY ARRAY[
     'cases', 'subjects', 'states', 'case_agencies', 'agencies',
-    'users', 'comments', 'follows', 'links', 'organizations', 'versions'
+    'users', 'comments', 'follows', 'links', 'organizations', 'versions', 'sessions'
   ]
   LOOP
     IF EXISTS (
@@ -65,3 +75,6 @@ BEGIN
     END IF;
   END LOOP;
 END $$;
+
+CREATE UNIQUE INDEX IF NOT EXISTS index_sessions_on_session_id ON sessions(session_id);
+CREATE INDEX IF NOT EXISTS index_sessions_on_updated_at ON sessions(updated_at);
