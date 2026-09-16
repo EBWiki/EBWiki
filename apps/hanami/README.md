@@ -66,9 +66,13 @@ The Hanami sibling deploys as its own Railway service with root directory
 It uses a **separate** Railway Postgres — never the Heroku/Rails production
 database.
 
-**Staging service:** `hanami-web-production-dd15`  
-**Public URL:** https://hanami-web-production-dd15.up.railway.app  
+**Staging service:** `hanami-web` in Railway project `ebwiki-hanami-staging`  
+**Public URL:** https://hanami.ebwiki.org  
+**Fallback:** https://hanami-web-production-dd15.up.railway.app  
 **Healthcheck:** `GET /up` (no basic auth; expect `200` and body `ok`)
+
+Custom domain is attached on Railway. The EBWiki Cloudflare zone still
+needs a DNS-only CNAME: `hanami` → `25x7d9uh.up.railway.app`.
 
 ### Required Railway variables
 
@@ -84,7 +88,7 @@ database.
 | `S3_BUCKET` / `S3_REGION` | Avatar reads and new writes. Same keys as CarrierWave. |
 | `AWS_ACCESS_KEY_ID` / `AWS_SECRET_KEY_ID` | S3 writes (Rails uses `AWS_SECRET_KEY_ID`, not `AWS_SECRET_ACCESS_KEY`) |
 | `HANAMI_SEND_MAIL` | Set to `1` to deliver via SMTP. Leave unset on the 2020 dump. |
-| `APP_URL` | Public origin used in mail links (e.g. the Railway URL) |
+| `APP_URL` | Public origin used in mail links (`https://hanami.ebwiki.org`) |
 | `SMTP_ADDRESS` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_DOMAIN` | SMTP via `net-smtp` |
 | `SENDGRID_USERNAME` / `SENDGRID_PASSWORD` or `SENDGRID_API_KEY` | Alternate SMTP (SendGrid) |
 
@@ -103,7 +107,7 @@ with `bundle exec puma -C config/puma.rb` (see `railway.toml`).
 
 ### Verify after deploy
 
-1. `curl -sS https://hanami-web-production-dd15.up.railway.app/up` → `200 ok`
+1. `curl -sS https://hanami.ebwiki.org/up` → `200 ok` (use the Railway fallback host until the CNAME exists)
 2. With basic auth (values from Railway variables, not committed):
    - `/` or `/cases` → case index with live count and pagination
    - `/cases/walter-scott` → overview, agencies (linked), cause of death, resources
@@ -116,10 +120,10 @@ with `bundle exec puma -C config/puma.rb` (see `railway.toml`).
 Rails production (`ebwiki.org`) is unchanged until an explicit cutover PR.
 
 `latest.dump` is a Heroku custom-format snapshot from **2020-09-01**. It was
-committed as `latest.dump` and later deleted from `main`; the blob is still at
-commit `592560514b263c8956d039bdd25c9c8b7fb2a81f`. Set `RESTORE_DUMP=1` on a
-**throwaway** database (Railway Postgres16) to download that file, `pg_restore`
-it, rename `cases.cause_of_death_name` → `cause_of_death`, and add `cases.tsv`.
+committed as `latest.dump` and later deleted from `main`; the blob remains in
+git history. Set `RESTORE_DUMP=1` on a **throwaway** database (Railway
+Postgres16) to download that file, `pg_restore` it, rename
+`cases.cause_of_death_name` → `cause_of_death`, and add `cases.tsv`.
 Unset `RESTORE_DUMP` after the first successful restore so later deploys do not
 wipe writes.
 
