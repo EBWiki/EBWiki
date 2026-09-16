@@ -1,0 +1,24 @@
+<h1>Ethnicities</h1>
+<p><%= link_to 'New ethnicity', new_admin_ethnicity_path, class: 'btn btn-warning' %></p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ethnicities.each do |ethnicity| %>
+      <tr>
+        <td><%= ethnicity.title %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_ethnicity_path(ethnicity) %>
+          <%= button_to 'Delete', admin_ethnicity_path(ethnicity), method: :delete,
+                        class: 'btn btn-danger btn-xs',
+                        data: { confirm: 'Delete this ethnicity?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
