@@ -1,1 +1,3 @@
 public/assets/* linguist-generated=true
+* text=auto eol=lf
+*.{png,jpg,jpeg,gif,webp,ico,woff,woff2,eot,ttf,otf} binary
