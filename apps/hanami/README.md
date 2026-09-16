@@ -66,13 +66,11 @@ The Hanami sibling deploys as its own Railway service with root directory
 It uses a **separate** Railway Postgres — never the Heroku/Rails production
 database.
 
-**Staging service:** `hanami-web` in Railway project `ebwiki-hanami-staging`  
 **Public URL:** https://hanami.ebwiki.org  
-**Fallback:** https://hanami-web-production-dd15.up.railway.app  
 **Healthcheck:** `GET /up` (no basic auth; expect `200` and body `ok`)
 
-Custom domain is attached on Railway. The EBWiki Cloudflare zone still
-needs a DNS-only CNAME: `hanami` → `25x7d9uh.up.railway.app`.
+Custom-domain DNS and staging login details stay in the private EBWiki
+ops notes, not this public README.
 
 ### Required Railway variables
 
