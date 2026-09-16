@@ -49,7 +49,7 @@ Hanami 3 under `apps/hanami`, same Postgres schema as Rails.
 | Case/agency/org writes, comments, follows | Done |
 | History + revert | Done (PaperTrail-compatible YAML) |
 | Staff users + comment moderation + admin delete | Done |
-| Railway staging | https://hanami.ebwiki.org (CNAME pending; fallback `hanami-web-production-dd15.up.railway.app`) |
+| Railway staging | https://hanami.ebwiki.org (ops notes stay off this public repo) |
 
 **Local:** `cd apps/hanami && bin/dev` (port 2300) or repo-root `bin/one-site`.
 
@@ -73,24 +73,14 @@ the cookie — expect a one-time re-login after cutover if people still have
 a Rails cookie on the old host. `SECRET_KEY_BASE` is not required; the
 session id is in the cookie and the payload is in Postgres.
 
-Railway `hanami-web` already has the custom domain `hanami.ebwiki.org`.
-Add this **DNS-only** (grey cloud) record in the **EBWiki** Cloudflare
-zone — not the Grandkru zone:
+Custom-domain DNS, staging logins, and dump-restore steps live in the
+private EBWiki ops repo / Linear GKT-176 — not in this public tree.
 
-| Type | Name | Target |
-| --- | --- | --- |
-| CNAME | `hanami` | `25x7d9uh.up.railway.app` |
-
-`GET /up` stays unauthenticated. Browser pages use HTTP basic auth from
-the Railway `HTTP_BASIC_AUTH_*` variables, then the app login
-(`admin@example.com` / `STAGING_SEED_PASSWORD`). Do not reuse the Rails
-review-server `e2e@example.com` login here.
-
-Staging uses the historic `latest.dump` already in git history
-(2020-09-01 Heroku snapshot). Do not re-commit that blob.
-`bin/railway-release` restores it when `RESTORE_DUMP=1` on the throwaway
-Railway Postgres — never against the shared Rails/Heroku database. Unset
-`RESTORE_DUMP` after a successful restore so later deploys keep writes.
+Staging uses the historic `latest.dump` already in git history. Do not
+re-commit that blob. `bin/railway-release` restores it when
+`RESTORE_DUMP=1` on the throwaway Railway Postgres — never against the
+shared Rails/Heroku database. Unset `RESTORE_DUMP` after a successful
+restore so later deploys keep writes.
 
 ## Feature-complete enough to cut over (still open)
 
@@ -117,8 +107,7 @@ bundle exec rspec
 bundle exec standardrb
 ```
 
-On https://hanami.ebwiki.org after the CNAME resolves (or the Railway
-fallback host):
+On https://hanami.ebwiki.org:
 
 1. `GET /up` → `200 ok`
 2. `/`, `/cases/walter-scott`, `/search?query=Charleston`
