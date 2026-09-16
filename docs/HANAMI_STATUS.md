@@ -1,6 +1,6 @@
 # EBWiki Rails → Hanami: long-running branch until cutover
 
-Read this first if you are catching up. Date: 2026-09-14.
+Read this first if you are catching up. Date: 2026-09-16.
 
 `main` stays the live Rails app. Hanami accumulates on one long-running
 branch and lands on `main` only when the sibling is feature-complete enough
@@ -49,7 +49,7 @@ Hanami 3 under `apps/hanami`, same Postgres schema as Rails.
 | Case/agency/org writes, comments, follows | Done |
 | History + revert | Done (PaperTrail-compatible YAML) |
 | Staff users + comment moderation + admin delete | Done |
-| Railway staging | https://hanami-web-production-dd15.up.railway.app (`latest.dump`) |
+| Railway staging | https://hanami.ebwiki.org (CNAME pending; fallback `hanami-web-production-dd15.up.railway.app`) |
 
 **Local:** `cd apps/hanami && bin/dev` (port 2300) or repo-root `bin/one-site`.
 
@@ -68,17 +68,29 @@ Do not change those keys. `/friendly_photos` still does not write S3.
 Login writes the Rails `sessions` row and `_eb_wiki_session` cookie
 (activerecord-session_store Marshal payload + Devise
 `warden.user.user.key`). On the same host, Rails and Hanami share that
-login. Different hosts (ebwiki.org vs Railway) cannot share the cookie —
-expect a one-time re-login after cutover if people still have a Rails
-cookie on the old host. `SECRET_KEY_BASE` is not required; the session id
-is in the cookie and the payload is in Postgres.
+login. Different hosts (`ebwiki.org` vs `hanami.ebwiki.org`) cannot share
+the cookie — expect a one-time re-login after cutover if people still have
+a Rails cookie on the old host. `SECRET_KEY_BASE` is not required; the
+session id is in the cookie and the payload is in Postgres.
 
-Staging uses the PG dump already in git history: `latest.dump` at
-`592560514b263c8956d039bdd25c9c8b7fb2a81f` (2020-09-01 Heroku snapshot).
-Do not re-commit that blob. `bin/railway-release` restores it when
-`RESTORE_DUMP=1` on the throwaway Railway Postgres — never against the
-shared Rails/Heroku database. Unset `RESTORE_DUMP` after a successful
-restore so later deploys keep writes.
+Railway `hanami-web` already has the custom domain `hanami.ebwiki.org`.
+Add this **DNS-only** (grey cloud) record in the **EBWiki** Cloudflare
+zone — not the Grandkru zone:
+
+| Type | Name | Target |
+| --- | --- | --- |
+| CNAME | `hanami` | `25x7d9uh.up.railway.app` |
+
+`GET /up` stays unauthenticated. Browser pages use HTTP basic auth from
+the Railway `HTTP_BASIC_AUTH_*` variables, then the app login
+(`admin@example.com` / `STAGING_SEED_PASSWORD`). Do not reuse the Rails
+review-server `e2e@example.com` login here.
+
+Staging uses the historic `latest.dump` already in git history
+(2020-09-01 Heroku snapshot). Do not re-commit that blob.
+`bin/railway-release` restores it when `RESTORE_DUMP=1` on the throwaway
+Railway Postgres — never against the shared Rails/Heroku database. Unset
+`RESTORE_DUMP` after a successful restore so later deploys keep writes.
 
 ## Feature-complete enough to cut over (still open)
 
@@ -105,7 +117,8 @@ bundle exec rspec
 bundle exec standardrb
 ```
 
-On Railway after an explicit redeploy of `hanami-web`:
+On https://hanami.ebwiki.org after the CNAME resolves (or the Railway
+fallback host):
 
 1. `GET /up` → `200 ok`
 2. `/`, `/cases/walter-scott`, `/search?query=Charleston`
