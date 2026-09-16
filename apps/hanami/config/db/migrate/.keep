@@ -1,0 +1,2 @@
+# Schema is owned by the Rails app (db/structure.sql).
+# Do not add ROM/Sequel migrations here while both apps share one database.
