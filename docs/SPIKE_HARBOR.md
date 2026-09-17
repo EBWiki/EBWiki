@@ -53,12 +53,12 @@ EBWiki already has the pieces Harbor wants:
 | --- | --- |
 | `Dockerfile` + `make build` / `make run` | Task `environment/` or `[environment].docker_image` |
 | Published `ebwiki/ebwiki` image | Skip per-task image builds |
-| `dev_provisions/` (Postgres, Redis, Elasticsearch, FakeS3) | Sidecars in `environment/docker-compose.yaml` |
+| `dev_provisions/` (Postgres, Redis, FakeS3) | Sidecars in `environment/docker-compose.yaml` |
 | CI: RSpec, Rubocop, Brakeman | Verifiers can *call* those tools; they do not replace them |
 | `docs/DEVELOPMENT.md` contributor timeline | Task `instruction.md` for “good first issue” style work |
 | Sensitive case data | Seed data only; never production dumps in an agent sandbox |
 
-Harbor’s multi-container model matches our stack: the agent lives in a reserved Compose service named `main`; Postgres, Redis, and Elasticsearch are sidecars on the same Docker network.
+Harbor’s multi-container model matches our stack: the agent lives in a reserved Compose service named `main`; Postgres and Redis are sidecars on the same Docker network. Case search is `pg_search` on Postgres — do **not** add an Elasticsearch sidecar.
 
 ## What “attach” means (and does not)
 
@@ -88,7 +88,7 @@ harbor/
   environments/
     ebwiki-dev/
       Dockerfile                   # thin wrapper around the app image
-      docker-compose.yaml          # postgres, redis, elasticsearch sidecars
+      docker-compose.yaml          # postgres and redis sidecars (pg_search, no ES)
   tasks/
     smoke-rails-version/           # oracle + image only; no extra services
     fix-failing-spec/              # agent makes a red spec green
@@ -99,6 +99,8 @@ harbor/
 Shared Compose belongs in `harbor/environments/ebwiki-dev/`. Individual tasks can set `[environment].docker_image = "ebwiki/ebwiki:latest"` for speed, or build from `environment/Dockerfile` when the published image is the wrong shape.
 
 A starter smoke task lives at `harbor/tasks/smoke-rails-version/`.
+
+Case search is Postgres `pg_search` (`Case.search_text` / `CaseSearch`). Searchkick and Elasticsearch are out of the stack — Harbor environments must not add an ES sidecar.
 
 ## First tasks (smallest useful set)
 
@@ -116,18 +118,18 @@ Promote those four into a `registry.json` dataset named `ebwiki-dev` once the or
 The current app image is a **human-oriented** image, not an agent-eval image.
 
 1. **Test gems are omitted.** The root `Dockerfile` runs `bundle install --without test production`. Any Harbor task that runs RSpec must install the test group (or use a Harbor-specific image).
-2. **No Compose file.** `dev_provisions/entrypoint.sh` starts Postgres, Redis, and Elasticsearch *inside* one container. Harbor prefers sidecars. For evals, add `harbor/environments/ebwiki-dev/docker-compose.yaml` rather than teaching agents to `service postgresql start`.
-3. **Published image CMD is the Rails server.** Harbor overrides `main` to `sleep infinity`, which is fine, but healthchecks should wait on Postgres/Redis/ES, not on port 3000, unless the task is “the site is up.”
-4. **CI image vs local image.** GitHub Actions uses host Ruby + service containers (`postgres:17`, Redis, `elasticsearch:6.8.13`). Harbor tasks should pin the same service versions so agent results are comparable to CI.
+2. **No Compose file.** `dev_provisions/entrypoint.sh` starts Postgres and Redis *inside* one container. Harbor prefers sidecars. For evals, add `harbor/environments/ebwiki-dev/docker-compose.yaml` rather than teaching agents to `service postgresql start`.
+3. **Published image CMD is the Rails server.** Harbor overrides `main` to `sleep infinity`, which is fine, but healthchecks should wait on Postgres/Redis, not on port 3000, unless the task is “the site is up.”
+4. **CI image vs local image.** GitHub Actions uses host Ruby + service containers (`postgres:17`, Redis). Harbor tasks should pin the same service versions so agent results are comparable to CI. Search uses `pg_search`; do not add Elasticsearch.
 5. **Secrets.** Agent trials need model API keys on the *host* (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, …). Those must never be baked into `task.toml` or the image. Use Harbor’s `${VAR}` env templates and gitignore `harbor/jobs/`.
 6. **Data sensitivity.** `docs/DEVELOPMENT.md` allows restoring a production backup for analytics work. That path is out of scope for Harbor. Agents get `db/seeds.rb` only.
 
 ## Suggested first increment (after this spike)
 
-A follow-up PR, not this document:
+The Searchkick → `pg_search` cutover for `CaseSearch` is in this PR. Remaining Harbor work:
 
 1. Keep `harbor/tasks/smoke-rails-version` and run `harbor run -p harbor/tasks/smoke-rails-version -a oracle` locally (Docker required).
-2. Add `harbor/environments/ebwiki-dev/docker-compose.yaml` with Postgres 17, Redis, Elasticsearch 6.8.x to match CI.
+2. Add `harbor/environments/ebwiki-dev/docker-compose.yaml` with Postgres 17 and Redis to match CI. Case search is `pg_search` — no Elasticsearch service.
 3. Add an eval-oriented Dockerfile that includes the **test** gem group and `RAILS_ENV=test`.
 4. Add one “make this spec pass” task with `solution/solve.sh` and `tests/test.sh` wrapping `bundle exec rspec`.
 5. Document `uv tool install harbor` and the oracle command in `harbor/README.md` (already started) and link it from [DEVELOPMENT.md](DEVELOPMENT.md).
@@ -137,7 +139,7 @@ Optional later: a GitHub Actions workflow that runs the oracle (no paid models) 
 
 ## Cost, ops, and risk
 
-- **Local:** Docker CPU/RAM. A Rails + Postgres + ES trial is heavy; budget ~4 GB RAM per concurrent trial.
+- **Local:** Docker CPU/RAM. A Rails + Postgres + Redis trial is lighter than the old ES stack; budget ~2–4 GB RAM per concurrent trial.
 - **Cloud sandboxes:** faster parallelism; check which providers support Compose (Docker/Podman yes; several hosted providers use DinD; some do not support Compose at all).
 - **Paid agents:** each trial spends model tokens. Start with `-a oracle` and one cheap model on the smoke task.
 - **Network:** default Harbor network is public. Prefer `network_mode = "allowlist"` plus rubygems/GitHub hosts so agents cannot wander.
