@@ -39,4 +39,4 @@ Inspect trials with `harbor view ./jobs`.
 harbor task init smoke-example
 ```
 
-Then move the generated directory under `harbor/tasks/` and point `[environment].docker_image` at `ebwiki/ebwiki:latest` or add Compose sidecars as described in the spike.
+Then move the generated directory under `harbor/tasks/` and point `[environment].docker_image` at `ebwiki/ebwiki:latest` or add Compose sidecars (Postgres and Redis only; case search is `pg_search`).
