@@ -1,0 +1,63 @@
+# Local EBWiki stack (Compose Specification).
+# Sidecars match CI: Postgres 17 and Redis 7. Case search is pg_search — no Elasticsearch.
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUNDLE_WITHOUT: production
+    image: ebwiki/ebwiki:latest
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://blackops:ebwiki@postgres:5432/blackops_development
+      REDIS_URL: redis://redis:6379/0
+      BLACKOPS_DATABASE_PASSWORD: ebwiki
+      PGHOST: postgres
+      PGUSER: blackops
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/usr/src/ebwiki
+      - bundle:/usr/local/bundle
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: blackops
+      POSTGRES_PASSWORD: ebwiki
+      POSTGRES_DB: blackops_development
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blackops -d blackops_development"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+      start_period: 5s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  redis:
+    image: redis:7-alpine
+    expose:
+      - "6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+      start_period: 3s
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
+  bundle:

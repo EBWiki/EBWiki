@@ -1,12 +1,10 @@
 # `ebwiki-dev` Harbor environment
 
-Canonical eval image and Compose sidecars for EBWiki Harbor tasks that need
-Postgres or the test gem group.
+Canonical eval wrapper and Compose sidecars for Harbor tasks that need Postgres.
 
-- `Dockerfile` — `ebwiki/ebwiki:latest` plus `bundle install` with the test group
-- `docker-compose.yaml` — Postgres 17 and Redis 7 (same major versions as CI)
+- `Dockerfile` — `FROM ebwiki/ebwiki:latest` (build that image with `docker compose build` in the repo root; test gems are included)
+- `docker-compose.yaml` — Postgres 17 and Redis 7, same majors as repo `compose.yaml` and CI
 
-Copy both files into a task's `environment/` directory. Harbor builds `main`
-from that `environment/` folder and merges the Compose file for sidecars.
+Copy both files into a task's `environment/` directory. Harbor builds `main` from that folder and merges the Compose file for sidecars.
 
 Do **not** add Elasticsearch. Case search is `pg_search` on Postgres.
