@@ -96,7 +96,7 @@ harbor/
     docker-contributor-setup/      # “follow SETUP_LOCALLY” as a scored task
 ```
 
-Local humans use repo-root `compose.yaml`. Harbor copies the same sidecar versions into `harbor/environments/ebwiki-dev/`. Individual tasks can set `[environment].docker_image = "ebwiki/ebwiki:latest"` after `docker compose build`.
+Local humans use repo-root `compose.yaml`, which tags `ebwiki/ebwiki:dev`. Harbor copies the same sidecar versions into `harbor/environments/ebwiki-dev/` and `FROM`s `:dev` so Buildx does not pull a stale Docker Hub `latest`. Image-only smoke can still set `[environment].docker_image = "ebwiki/ebwiki:latest"` after a Hub pull or a local tag.
 
 A starter smoke task lives at `harbor/tasks/smoke-rails-version/`.
 

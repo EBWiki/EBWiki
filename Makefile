@@ -18,7 +18,7 @@ stop down:
 
 clean: down
 	$(COMPOSE) down --volumes --remove-orphans
-	-docker image rm ebwiki/ebwiki:latest
+	-docker image rm ebwiki/ebwiki:dev ebwiki/ebwiki:latest
 
 test:
 	./dev_provisions/run_tests.sh

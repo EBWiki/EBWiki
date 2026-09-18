@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
       args:
         BUNDLE_WITHOUT: production
-    image: ebwiki/ebwiki:latest
+    image: ebwiki/ebwiki:dev
     ports:
       - "3000:3000"
     environment:

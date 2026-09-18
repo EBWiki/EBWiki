@@ -1,10 +1,6 @@
-# Same image humans build with `docker compose build`.
-# Test gems are already installed (BUNDLE_WITHOUT=production).
-# Harbor sets command to `sleep infinity`. Clear the app entrypoint
-# so `db:prepare` does not race the oracle inside `main`.
-# Bake PG* defaults: Harbor exec does not always inherit Compose env,
-# and schema_format :sql shells out to psql.
-FROM ebwiki/ebwiki:latest
+# Local-only tag. FROM :latest lets Buildx pull a stale Docker Hub image
+# that does not include postgresql-client. `docker compose build` tags :dev.
+FROM ebwiki/ebwiki:dev
 ENV RAILS_ENV=test \
     DATABASE_URL=postgres://blackops:ebwiki@postgres:5432/blackops_test \
     PGHOST=postgres \
