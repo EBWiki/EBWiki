@@ -40,7 +40,7 @@ Install (developer machine or CI runner, not the Rails process):
 ```bash
 uv tool install harbor
 # requires Docker for local trials
-harbor run -p harbor/tasks/smoke-rails-version -a oracle
+harbor run --path harbor/tasks --include-task-name smoke-rails-version --agent oracle --yes
 ```
 
 `cursor-cli` is one of Harbor’s pre-integrated agents, so the same tasks can score Cursor as well as Claude Code or Codex.
@@ -53,7 +53,7 @@ EBWiki already has the pieces Harbor wants:
 | --- | --- |
 | `Dockerfile` + `make build` / `make run` | Task `environment/` or `[environment].docker_image` |
 | Published `ebwiki/ebwiki` image | Skip per-task image builds |
-| `dev_provisions/` (Postgres, Redis, FakeS3) | Sidecars in `environment/docker-compose.yaml` |
+| `compose.yaml` (Postgres 17, Redis 7) | Sidecars in `environment/docker-compose.yaml` |
 | CI: RSpec, Rubocop, Brakeman | Verifiers can *call* those tools; they do not replace them |
 | `docs/DEVELOPMENT.md` contributor timeline | Task `instruction.md` for “good first issue” style work |
 | Sensitive case data | Seed data only; never production dumps in an agent sandbox |
@@ -66,7 +66,7 @@ Attach means a `harbor/` tree in this repo (or a sibling `EBWiki/harbor-tasks` r
 
 ```bash
 harbor run --repo EBWiki/EBWiki -p harbor/tasks -a oracle
-harbor run -p harbor/tasks -a claude-code -m anthropic/claude-sonnet-5
+harbor run --path harbor/tasks --agent claude-code --model anthropic/claude-sonnet-5 --yes
 ```
 
 It does **not** mean:
@@ -121,18 +121,18 @@ The app image is the Rails process only. Sidecars are Compose.
 2. **Test gems.** The image installs development + test gems (`BUNDLE_WITHOUT=production`). Harbor RSpec tasks reuse `ebwiki/ebwiki:latest`; they do not re-bundle.
 3. **Published image CMD is the Rails server.** Harbor overrides `main` to `sleep infinity`. Compose healthchecks wait on Postgres/Redis, not on port 3000, unless the task is “the site is up.”
 4. **CI image vs local image.** GitHub Actions uses host Ruby + service containers (`postgres:17`, Redis). Harbor tasks pin the same service versions. Search uses `pg_search`; do not add Elasticsearch.
-5. **Secrets.** Agent trials need model API keys on the *host* (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, …). Those must never be baked into `task.toml` or the image. Use Harbor’s `${VAR}` env templates and gitignore `harbor/jobs/`.
+5. **Secrets.** Agent trials need model API keys on the *host* (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, …). Those must never be baked into `task.toml` or the image. Use Harbor’s `${VAR}` env templates and gitignore `jobs/` (Harbor writes that directory in the current working directory).
 6. **Data sensitivity.** `docs/DEVELOPMENT.md` allows restoring a production backup for analytics work. That path is out of scope for Harbor. Agents get `db/seeds.rb` only.
 
 ## Suggested first increment (after this spike)
 
-In-tree now: smoke task, `harbor/environments/ebwiki-dev/` (Postgres 17 + Redis 7, eval Dockerfile with the test gem group), `boot-rails`, `fix-failing-spec`, `harbor/registry.json` (`ebwiki-dev`), and a GitHub Actions job that **lints** Harbor task layout (no paid models, no `harbor run`).
+In-tree now: repo-root `compose.yaml` + modern app `Dockerfile`, smoke task, Harbor sidecars, `boot-rails`, `fix-failing-spec`, `harbor/registry.json` (`ebwiki-dev`), and a GitHub Actions job that **lints** Harbor task layout (no paid models, no `harbor run`).
 
 Still local (Docker required):
 
-1. `harbor run -p harbor/tasks/smoke-rails-version -a oracle`
-2. `harbor run -p harbor/tasks/boot-rails -a oracle`
-3. `harbor run -p harbor/tasks/fix-failing-spec -a oracle`
+1. `harbor run --path harbor/tasks --include-task-name smoke-rails-version --agent oracle --yes`
+2. `harbor run --path harbor/tasks --include-task-name boot-rails --agent oracle --yes`
+3. `harbor run --path harbor/tasks --include-task-name fix-failing-spec --agent oracle --yes`
 
 Only then try a paid agent (`-a claude-code` or `-a cursor-cli`) on the spec-fix task.
 

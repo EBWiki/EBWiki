@@ -34,6 +34,11 @@ def main() -> int:
         for rel in REQUIRED:
             if not (task / rel).is_file():
                 errors.append(f"{task.name}: missing {rel}")
+        if not (task / "environment").is_dir():
+            errors.append(
+                f"{task.name}: missing environment/ "
+                "(Harbor requires this directory even when docker_image is set)"
+            )
         for rel in EXECUTABLE:
             path = task / rel
             if not path.is_file():
