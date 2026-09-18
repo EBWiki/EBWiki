@@ -45,7 +45,7 @@ The smoke task uses `ebwiki/ebwiki:latest`. Build it locally with `docker compos
 
 ## Boot and spec-fix (oracle)
 
-These tasks start Postgres 17 + Redis 7 next to `main`. `network_mode = "allowlist"` needs Buildx so Harbor can build its egress sidecar. Oracle still needs no model key.
+These tasks start Postgres 17 + Redis 7 next to `main` with `network_mode = "public"`. Harbor allowlist cannot carry raw Postgres TCP (gost RST). Oracle still needs no model key.
 
 ```bash
 harbor run --path harbor/tasks --include-task-name boot-rails --agent oracle --yes

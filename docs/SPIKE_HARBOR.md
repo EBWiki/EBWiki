@@ -141,7 +141,7 @@ Only then try a paid agent (`-a claude-code` or `-a cursor-cli`) on the spec-fix
 - **Local:** Docker CPU/RAM. A Rails + Postgres + Redis trial is lighter than the old ES stack; budget ~2–4 GB RAM per concurrent trial.
 - **Cloud sandboxes:** faster parallelism; check which providers support Compose (Docker/Podman yes; several hosted providers use DinD; some do not support Compose at all).
 - **Paid agents:** each trial spends model tokens. Start with `-a oracle` and one cheap model on the smoke task.
-- **Network:** default Harbor network is public. Prefer `network_mode = "allowlist"` plus rubygems/GitHub hosts so agents cannot wander. Harbor 2026 builds an egress sidecar with `docker buildx`; install the Buildx plugin (`docker-buildx` on Ubuntu). Compose sidecars must be reachable: allow `postgres`, `redis`, and RFC1918 CIDRs, and pin those services to `networks: [default]`.
+- **Network:** Compose Postgres/Redis tasks use `network_mode = "public"`. Harbor 2026 `allowlist` redirects all TCP through a gost sidecar that speaks HTTP/SNI; raw Postgres connections get RST even when `postgres` and RFC1918 CIDRs are listed. Use allowlist on image-only tasks. Compose sidecars still declare `networks: [default]` so an allowlist experiment does not share the sidecar namespace with `expose`d ports. Buildx is required if you turn allowlist back on.
 - **License:** Harbor is Apache 2.0, same family as EBWiki.
 
 ## Decision
