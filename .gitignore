@@ -69,3 +69,6 @@ yarn-debug.log*
 .yarn-integrity
 /.idea
 /config/master.key
+
+# Harbor trial output (CLI writes ./jobs from the repo root)
+/jobs
