@@ -1,4 +1,4 @@
-This guide will explain the process of setting up a local development environment for EBWiki.  The guide assumes that you are using a Linux based command line prompt and either a Mac, Windows, or Linux Operating System.
+This guide sets up a local EBWiki environment with Docker Compose. Postgres 17 and Redis 7 run as sidecars. Case search is `pg_search` — there is no Elasticsearch container.
 
 # Table of Contents
 - [Prerequisites](#prerequisites)
@@ -9,12 +9,12 @@ This guide will explain the process of setting up a local development environmen
 ## Prerequisites
 Before setting up your local development environment, make sure you have the following tools installed:
 * Bash
-  * Windows: [Install Windows Subsystem for Linux](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10)
-  * MacOS: [Install homebrew](https://brew.sh/) and then `brew install bash`
+  * Windows: [Install Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install)
+  * MacOS: [Install Homebrew](https://brew.sh/) and then `brew install bash`
 * Git
   * Windows: [Download and install git](https://git-scm.com/downloads)
-  * MacOS: [Install homebrew](https://brew.sh/) and then `brew install make`
-* [Docker Desktop](https://docs.docker.com/engine/install/)
+  * MacOS: [Install Homebrew](https://brew.sh/) and then `brew install git`
+* [Docker Engine or Docker Desktop](https://docs.docker.com/engine/install/) (Compose V2 plugin: `docker compose`)
 * [Make](https://www.gnu.org/software/make/)
 
 Open a terminal and validate your environment with the following commands:
@@ -25,37 +25,18 @@ which git
 git --version
 which docker
 docker --version
+docker compose version
 which make
 make --version
 ```
 
 Output from the commands will vary based on your operating system but should be error free and similar to the following:
 ```
-$ which bash
-/usr/local/bin/bash
-
-$ bash --version
-GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin18.7.0)
-...
-
-$ which git
-/usr/local/bin/git
-
-$ git --version
-git version 2.28.0
-
-$ which docker
-/usr/local/bin/docker
-
 $ docker --version
-Docker version 19.03.12, build 48a66213fe
+Docker version 27.5.1, build e8ee312
 
-$ which make
-/usr/bin/make
-
-$ make --version
-GNU Make 4.3
-...
+$ docker compose version
+Docker Compose version v2.32.4
 ```
 
 ## Set Up
@@ -66,21 +47,34 @@ Once your tools are in place, follow these steps to download and run the EBWiki 
     git clone git@github.com:EBWiki/EBWiki.git
     cd EBWiki
     ```
-1. Download the latest `ebwiki` docker image:
-    ```
-    docker pull ebwiki/ebwiki
-    ```
-1. Start a locally running application with the following command:
+1. Build and start the stack (app image, Postgres 17, Redis 7):
     ```
     make run
     ```
 
-Note that it will take about 3-5 minutes for the server to boot up.  This is normal.
+    `make run` is `docker compose build` plus `docker compose up --detach`. The first build compiles native gems and takes several minutes.
+
+    To pull a previously published image instead of building:
+    ```
+    docker pull ebwiki/ebwiki
+    docker compose up --detach
+    ```
+
+    The published `ebwiki/ebwiki` image is the Rails app only. It does **not** include Postgres or Redis; those come from `compose.yaml`.
 
 Once you see output similar to the following, the application is running successfully:
 ```
 ## Warming up the server...
 ## Warm up is complete! Start browsing here: http://localhost:3000
+```
+
+Useful targets:
+
+```
+make logs    # follow compose logs
+make exec    # shell in the web container
+make rspec   # RSpec against Compose Postgres
+make stop    # docker compose down
 ```
 
 ## Browse the Local Site

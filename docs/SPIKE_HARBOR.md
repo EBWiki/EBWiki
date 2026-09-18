@@ -96,7 +96,7 @@ harbor/
     docker-contributor-setup/      # “follow SETUP_LOCALLY” as a scored task
 ```
 
-Shared Compose belongs in `harbor/environments/ebwiki-dev/`. Individual tasks can set `[environment].docker_image = "ebwiki/ebwiki:latest"` for speed, or build from `environment/Dockerfile` when the published image is the wrong shape.
+Local humans use repo-root `compose.yaml`. Harbor copies the same sidecar versions into `harbor/environments/ebwiki-dev/`. Individual tasks can set `[environment].docker_image = "ebwiki/ebwiki:latest"` after `docker compose build`.
 
 A starter smoke task lives at `harbor/tasks/smoke-rails-version/`.
 
@@ -115,12 +115,12 @@ Promote those four into a `registry.json` dataset named `ebwiki-dev` once the or
 
 ## Gaps we must close before this is useful
 
-The current app image is a **human-oriented** image, not an agent-eval image.
+The app image is the Rails process only. Sidecars are Compose.
 
-1. **Test gems are omitted.** The root `Dockerfile` runs `bundle install --without test production`. Any Harbor task that runs RSpec must install the test group (or use a Harbor-specific image).
-2. **No Compose file.** `dev_provisions/entrypoint.sh` starts Postgres and Redis *inside* one container. Harbor prefers sidecars. For evals, add `harbor/environments/ebwiki-dev/docker-compose.yaml` rather than teaching agents to `service postgresql start`.
-3. **Published image CMD is the Rails server.** Harbor overrides `main` to `sleep infinity`, which is fine, but healthchecks should wait on Postgres/Redis, not on port 3000, unless the task is “the site is up.”
-4. **CI image vs local image.** GitHub Actions uses host Ruby + service containers (`postgres:17`, Redis). Harbor tasks should pin the same service versions so agent results are comparable to CI. Search uses `pg_search`; do not add Elasticsearch.
+1. **App image vs sidecars.** The root `Dockerfile` is the Rails app only. Postgres 17 and Redis 7 live in repo `compose.yaml` (and the Harbor copies under `harbor/environments/ebwiki-dev/`). Do not start `service postgresql` inside `main`.
+2. **Test gems.** The image installs development + test gems (`BUNDLE_WITHOUT=production`). Harbor RSpec tasks reuse `ebwiki/ebwiki:latest`; they do not re-bundle.
+3. **Published image CMD is the Rails server.** Harbor overrides `main` to `sleep infinity`. Compose healthchecks wait on Postgres/Redis, not on port 3000, unless the task is “the site is up.”
+4. **CI image vs local image.** GitHub Actions uses host Ruby + service containers (`postgres:17`, Redis). Harbor tasks pin the same service versions. Search uses `pg_search`; do not add Elasticsearch.
 5. **Secrets.** Agent trials need model API keys on the *host* (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, …). Those must never be baked into `task.toml` or the image. Use Harbor’s `${VAR}` env templates and gitignore `harbor/jobs/`.
 6. **Data sensitivity.** `docs/DEVELOPMENT.md` allows restoring a production backup for analytics work. That path is out of scope for Harbor. Agents get `db/seeds.rb` only.
 
