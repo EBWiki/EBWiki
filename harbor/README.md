@@ -41,7 +41,7 @@ The oracle agent runs `solution/solve.sh`. This checks that Harbor, Docker, and 
 harbor run -p harbor/tasks/smoke-rails-version -a oracle
 ```
 
-The smoke task pulls `ebwiki/ebwiki:latest` and writes `bundle exec rails -v` to `/tmp/rails_version.txt`.
+The smoke task uses `ebwiki/ebwiki:latest`. Build it locally with `docker compose build` (or `make build`) so you are not depending on a stale Docker Hub image. It writes `bundle exec rails -v` to `/tmp/rails_version.txt`.
 
 ## Boot and spec-fix (oracle)
 

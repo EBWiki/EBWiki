@@ -38,7 +38,7 @@ If everything looks great on staging, then we'll push the code to production wit
 ## Getting EBWiki Up and Running Locally
 
 There are a number of guides available for running EBWiki in your local environment:
-* [Running locally using a docker container](SETUP_LOCALLY.md)
+* [Running locally with Docker Compose](SETUP_LOCALLY.md)
 * [Running locally using a text editor and terminal](SETUP_LOCALLY_FULLSTACK.md)
 * [TODO: Running EBWiki in a GitHub codespace](CODESPACE (WIP))
 * [Agent evaluation with Harbor](SPIKE_HARBOR.md) (optional; does not replace Docker or RSpec) — commands in [harbor/README.md](../harbor/README.md)
