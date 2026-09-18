@@ -141,7 +141,7 @@ Only then try a paid agent (`-a claude-code` or `-a cursor-cli`) on the spec-fix
 - **Local:** Docker CPU/RAM. A Rails + Postgres + Redis trial is lighter than the old ES stack; budget ~2–4 GB RAM per concurrent trial.
 - **Cloud sandboxes:** faster parallelism; check which providers support Compose (Docker/Podman yes; several hosted providers use DinD; some do not support Compose at all).
 - **Paid agents:** each trial spends model tokens. Start with `-a oracle` and one cheap model on the smoke task.
-- **Network:** default Harbor network is public. Prefer `network_mode = "allowlist"` plus rubygems/GitHub hosts so agents cannot wander.
+- **Network:** default Harbor network is public. Prefer `network_mode = "allowlist"` plus rubygems/GitHub hosts so agents cannot wander. Harbor 2026 builds an egress sidecar with `docker buildx`; install the Buildx plugin (`docker-buildx` on Ubuntu).
 - **License:** Harbor is Apache 2.0, same family as EBWiki.
 
 ## Decision
