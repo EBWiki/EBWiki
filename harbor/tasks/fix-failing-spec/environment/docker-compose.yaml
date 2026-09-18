@@ -1,0 +1,40 @@
+# Sidecars for Harbor. Harbor reserves `main` and merges this file
+# on top of its base compose. Case search is pg_search — no Elasticsearch.
+services:
+  main:
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/blackops_test
+      REDIS_URL: redis://redis:6379/0
+      BUNDLE_IGNORE_FUNDING_REQUESTS: "1"
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: blackops_test
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+      start_period: 5s
+
+  redis:
+    image: redis:7
+    expose:
+      - "6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+      start_period: 3s
