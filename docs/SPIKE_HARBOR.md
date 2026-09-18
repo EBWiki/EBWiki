@@ -128,7 +128,7 @@ The app image is the Rails process only. Sidecars are Compose.
 
 In-tree now: repo-root `compose.yaml` + modern app `Dockerfile`, smoke task, Harbor sidecars, `boot-rails`, `fix-failing-spec`, `harbor/registry.json` (`ebwiki-dev`), and a GitHub Actions job that **lints** Harbor task layout (no paid models, no `harbor run`).
 
-Still local (Docker required):
+Local oracle (2026 Compose + `ebwiki/ebwiki:dev`) scored **1.000** on all three:
 
 1. `harbor run --path harbor/tasks --include-task-name smoke-rails-version --agent oracle --yes`
 2. `harbor run --path harbor/tasks --include-task-name boot-rails --agent oracle --yes`
