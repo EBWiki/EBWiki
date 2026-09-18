@@ -55,9 +55,6 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
-    # and disable callbacks
-    Searchkick.disable_callbacks
-
     if config.use_transactional_fixtures?
       raise(<<-MSG)
         Delete line `config.use_transactional_fixtures = true` from rails_helper.rb
@@ -107,23 +104,20 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 
-  # Enable PaperTrail versioning for tests that need it
+  # Enable PaperTrail versioning for tests that need it.
+  # Mailer specs call PaperTrail.request.disable_model(Case) at load time;
+  # re-enable the model here so versioning: true examples stay deterministic.
   config.around(:each, versioning: true) do |example|
+    PaperTrail.request.enable_model(Case)
     PaperTrail.enabled = true
     PaperTrail.request.whodunnit = 'test'
     example.run
+  ensure
     PaperTrail.enabled = false
   end
 
   config.append_after(:each) do
     DatabaseCleaner[:active_record].clean
-  end
-
-  # Seachkick testing config
-  config.around(:each, search: true) do |example|
-    Searchkick.callbacks(true) do
-      example.run
-    end
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests
