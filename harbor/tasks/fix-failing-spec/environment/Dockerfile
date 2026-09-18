@@ -11,4 +11,7 @@ ENV RAILS_ENV=test \
     REDIS_URL=redis://redis:6379/0 \
     BUNDLE_IGNORE_FUNDING_REQUESTS=1
 WORKDIR /usr/src/ebwiki
+RUN mkdir -p /usr/src/ebwiki/spec/harbor
+COPY harbor_addition.rb /usr/src/ebwiki/lib/harbor_addition.rb
+COPY addition_spec.rb /usr/src/ebwiki/spec/harbor/addition_spec.rb
 ENTRYPOINT []
