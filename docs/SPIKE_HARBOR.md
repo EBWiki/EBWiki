@@ -126,16 +126,15 @@ The current app image is a **human-oriented** image, not an agent-eval image.
 
 ## Suggested first increment (after this spike)
 
-The Searchkick → `pg_search` cutover for `CaseSearch` is in this PR. Remaining Harbor work:
+In-tree now: smoke task, `harbor/environments/ebwiki-dev/` (Postgres 17 + Redis 7, eval Dockerfile with the test gem group), `boot-rails`, `fix-failing-spec`, `harbor/registry.json` (`ebwiki-dev`), and a GitHub Actions job that **lints** Harbor task layout (no paid models, no `harbor run`).
 
-1. Keep `harbor/tasks/smoke-rails-version` and run `harbor run -p harbor/tasks/smoke-rails-version -a oracle` locally (Docker required).
-2. Add `harbor/environments/ebwiki-dev/docker-compose.yaml` with Postgres 17 and Redis to match CI. Case search is `pg_search` — no Elasticsearch service.
-3. Add an eval-oriented Dockerfile that includes the **test** gem group and `RAILS_ENV=test`.
-4. Add one “make this spec pass” task with `solution/solve.sh` and `tests/test.sh` wrapping `bundle exec rspec`.
-5. Document `uv tool install harbor` and the oracle command in `harbor/README.md` (already started) and link it from [DEVELOPMENT.md](DEVELOPMENT.md).
-6. Only then try a paid agent (`-a claude-code` or `-a cursor-cli`) on the spec-fix task.
+Still local (Docker required):
 
-Optional later: a GitHub Actions workflow that runs the oracle (no paid models) on `harbor/tasks/**` so task bitrot is caught in PRs.
+1. `harbor run -p harbor/tasks/smoke-rails-version -a oracle`
+2. `harbor run -p harbor/tasks/boot-rails -a oracle`
+3. `harbor run -p harbor/tasks/fix-failing-spec -a oracle`
+
+Only then try a paid agent (`-a claude-code` or `-a cursor-cli`) on the spec-fix task.
 
 ## Cost, ops, and risk
 
