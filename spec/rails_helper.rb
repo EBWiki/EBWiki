@@ -104,11 +104,15 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 
-  # Enable PaperTrail versioning for tests that need it
+  # Enable PaperTrail versioning for tests that need it.
+  # Mailer specs call PaperTrail.request.disable_model(Case) at load time;
+  # re-enable the model here so versioning: true examples stay deterministic.
   config.around(:each, versioning: true) do |example|
+    PaperTrail.request.enable_model(Case)
     PaperTrail.enabled = true
     PaperTrail.request.whodunnit = 'test'
     example.run
+  ensure
     PaperTrail.enabled = false
   end
 

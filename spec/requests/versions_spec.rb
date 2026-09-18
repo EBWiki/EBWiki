@@ -1,39 +1,39 @@
-
 # frozen_string_literal: true
 
 require 'rails_helper'
 
 RSpec.describe 'Versions', type: :request, versioning: true do
   describe 'POST /revert' do
-    let(:this_case) { FactoryBot.create(:case) }
-
-    before do
-      this_case.update!(blurb: "A new blurb")
-      version_id = this_case.versions.last&.id
-      post "/cases/#{this_case.id}/versions/#{version_id}/revert",
+    def post_revert(record, version_id)
+      post "/cases/#{record.id}/versions/#{version_id}/revert",
            params: {},
            headers: {
-             "HTTP_REFERER": '/'
+             'HTTP_REFERER' => '/'
            }
     end
 
-    context 'reverts the version of the case' do
-      it 'redirects to the previous page' do
+    context 'when the case has a version' do
+      let(:this_case) { FactoryBot.create(:case) }
+
+      before do
+        this_case.update!(blurb: 'A new blurb')
+        version = this_case.versions.last
+        raise 'expected PaperTrail to record a version' if version.blank?
+
+        post_revert(this_case, version.id)
+      end
+
+      it 'redirects to the case page' do
         expect(response).to redirect_to("/cases/#{this_case.slug}")
       end
     end
 
-    context 'when the case is new' do
+    context 'when reverting a create version' do
       let(:new_case) { FactoryBot.create(:case) }
 
       before do
-        # New case has no versions; use invalid id to simulate revert of create
         version_id = new_case.versions.last&.id || 0
-        post "/cases/#{new_case.id}/versions/#{version_id}/revert",
-             params: {},
-             headers: {
-               "HTTP_REFERER": '/'
-             }
+        post_revert(new_case, version_id)
       end
 
       it 'redirects to the previous page' do
