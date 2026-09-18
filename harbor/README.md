@@ -45,7 +45,7 @@ The smoke task can use a published `ebwiki/ebwiki:latest`. Boot and spec-fix `FR
 
 ## Boot and spec-fix (oracle)
 
-These tasks start Postgres 17 + Redis 7 next to `main` with `network_mode = "public"`. Harbor allowlist cannot carry raw Postgres TCP (gost RST). Oracle still needs no model key.
+These tasks start Postgres 17 + Redis 7 next to `main` with `network_mode = "public"`. Harbor allowlist cannot carry raw Postgres TCP (gost RST). `fix-failing-spec` bakes the red example into the eval image (Harbor 2026 runs `workdir/setup.sh` only for multi-step tasks). Oracle still needs no model key.
 
 ```bash
 harbor run --path harbor/tasks --include-task-name boot-rails --agent oracle --yes
