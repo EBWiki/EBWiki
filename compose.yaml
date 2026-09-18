@@ -17,6 +17,8 @@ services:
       BLACKOPS_DATABASE_PASSWORD: ebwiki
       PGHOST: postgres
       PGUSER: blackops
+      PGPASSWORD: ebwiki
+      PGDATABASE: blackops_development
     depends_on:
       postgres:
         condition: service_healthy

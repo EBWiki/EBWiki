@@ -19,6 +19,8 @@ services:
       BLACKOPS_DATABASE_PASSWORD: ebwiki
       PGHOST: postgres
       PGUSER: blackops
+      PGPASSWORD: ebwiki
+      PGDATABASE: blackops_test
       BUNDLE_IGNORE_FUNDING_REQUESTS: "1"
 
   postgres:
