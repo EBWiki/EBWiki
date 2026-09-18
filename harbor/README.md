@@ -17,8 +17,8 @@ uv tool install harbor
 `harbor/registry.json` defines the `ebwiki-dev` dataset: smoke, boot, and spec-fix. Paths are in-repo. Run the folder or the registry:
 
 ```bash
-harbor run -p harbor/tasks -a oracle
-harbor run -p harbor/registry.json -a oracle
+harbor run --path harbor/tasks --agent oracle --yes
+harbor run --registry-path harbor/registry.json --agent oracle --yes
 ```
 
 No paid model is required for oracle.
@@ -38,7 +38,7 @@ Shared Compose and the eval Dockerfile live in [`environments/ebwiki-dev/`](envi
 The oracle agent runs `solution/solve.sh`. This checks that Harbor, Docker, and the published app image work together. No model API key is required.
 
 ```bash
-harbor run -p harbor/tasks/smoke-rails-version -a oracle
+harbor run --path harbor/tasks --include-task-name smoke-rails-version --agent oracle --yes
 ```
 
 The smoke task uses `ebwiki/ebwiki:latest`. Build it locally with `docker compose build` (or `make build`) so you are not depending on a stale Docker Hub image. It writes `bundle exec rails -v` to `/tmp/rails_version.txt`.
@@ -48,8 +48,8 @@ The smoke task uses `ebwiki/ebwiki:latest`. Build it locally with `docker compos
 These tasks build the eval image (test gem group) and start Postgres + Redis:
 
 ```bash
-harbor run -p harbor/tasks/boot-rails -a oracle
-harbor run -p harbor/tasks/fix-failing-spec -a oracle
+harbor run --path harbor/tasks --include-task-name boot-rails --agent oracle --yes
+harbor run --path harbor/tasks --include-task-name fix-failing-spec --agent oracle --yes
 ```
 
 Seeds only. Never restore a production dump into a Harbor sandbox.
@@ -62,9 +62,10 @@ Only after every oracle score is `1`:
 
 ```bash
 export ANTHROPIC_API_KEY=...
-harbor run -p harbor/tasks/fix-failing-spec \
-  -a claude-code \
-  -m anthropic/claude-sonnet-5
+harbor run --path harbor/tasks --include-task-name fix-failing-spec \
+  --agent claude-code \
+  --model anthropic/claude-sonnet-5 \
+  --yes
 ```
 
 Inspect trials with `harbor view ./jobs`.
