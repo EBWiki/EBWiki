@@ -1,5 +1,10 @@
 # Sidecars for Harbor. Harbor reserves `main` and merges this file
 # on top of its base compose. Versions match repo compose.yaml.
+#
+# Harbor allowlist sets network_mode=service:<egress-sidecar> on every
+# service that does not declare networks/network_mode. Postgres and Redis
+# must stay on the compose network (and keep their own ports), so they
+# declare `networks: [default]`. Only `main` goes through the sidecar.
 services:
   main:
     depends_on:
@@ -22,6 +27,8 @@ services:
       POSTGRES_USER: blackops
       POSTGRES_PASSWORD: ebwiki
       POSTGRES_DB: blackops_test
+    networks:
+      - default
     expose:
       - "5432"
     healthcheck:
@@ -33,6 +40,8 @@ services:
 
   redis:
     image: redis:7-alpine
+    networks:
+      - default
     expose:
       - "6379"
     healthcheck:
