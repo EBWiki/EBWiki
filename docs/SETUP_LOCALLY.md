@@ -4,6 +4,7 @@ This guide sets up a local EBWiki environment with Docker Compose. Postgres 17 a
 - [Prerequisites](#prerequisites)
 - [Set Up](#setup)
 - [Browse the Local Site](#browse)
+- [Compose services cannot reach each other](#compose-services-cannot-reach-each-other)
 - [Finish](#finish)
 
 ## Prerequisites
@@ -85,6 +86,17 @@ make stop    # docker compose down
 With the application running, you can access the application locally.
 
 Open the following link in your browser:  http://localhost:3000
+
+## Compose services cannot reach each other
+
+If `web` times out talking to Postgres (`pg_isready` from another container on the same Compose network has 100% loss), the host is likely sending bridge traffic through `iptables-legacy` while Docker 29 programs `nft`. Check with `sudo iptables-legacy -L FORWARD -n` (policy `DROP` and no live Docker rules) and:
+
+```
+sudo sysctl -w net.bridge.bridge-nf-call-iptables=0
+sudo sysctl -w net.bridge.bridge-nf-call-ip6tables=0
+```
+
+Then retry `make run`. This does not change the image; it only lets the bridge forward container-to-container packets.
 
 ## Finish
 Now you're ready to start contributing!
