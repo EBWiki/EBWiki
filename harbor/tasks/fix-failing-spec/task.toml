@@ -21,17 +21,7 @@ workdir = "/usr/src/ebwiki"
 cpus = 2
 memory_mb = 4096
 build_timeout_sec = 900.0
-network_mode = "allowlist"
-allowed_hosts = [
-  "postgres",
-  "redis",
-  "10.0.0.0/8",
-  "172.16.0.0/12",
-  "192.168.0.0/16",
-  "rubygems.org",
-  "index.rubygems.org",
-  "rubygems.global.ssl.fastly.net",
-  "github.com",
-  "objects.githubusercontent.com",
-  "codeload.github.com",
-]
+# Harbor allowlist (gost RED) RST's raw Postgres/Redis TCP even when
+# those hostnames and RFC1918 CIDRs are listed. Compose DB tasks stay
+# on public; image-only tasks can still use allowlist.
+network_mode = "public"
