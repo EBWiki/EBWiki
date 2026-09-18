@@ -25,3 +25,6 @@ build_timeout_sec = 900.0
 # those hostnames and RFC1918 CIDRs are listed. Compose DB tasks stay
 # on public; image-only tasks can still use allowlist.
 network_mode = "public"
+
+[solution]
+env = { RAILS_ENV = "test", DATABASE_URL = "postgres://blackops:ebwiki@postgres:5432/blackops_test", PGHOST = "postgres", PGUSER = "blackops", PGPASSWORD = "ebwiki", PGDATABASE = "blackops_test" }
