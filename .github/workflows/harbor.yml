@@ -7,6 +7,9 @@ on:
       - ".github/workflows/harbor.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   check-tasks:
     name: Check Harbor task layout (oracle-only, no paid models)
