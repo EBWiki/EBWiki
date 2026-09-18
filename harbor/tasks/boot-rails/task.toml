@@ -23,6 +23,11 @@ memory_mb = 4096
 build_timeout_sec = 900.0
 network_mode = "allowlist"
 allowed_hosts = [
+  "postgres",
+  "redis",
+  "10.0.0.0/8",
+  "172.16.0.0/12",
+  "192.168.0.0/16",
   "rubygems.org",
   "index.rubygems.org",
   "rubygems.global.ssl.fastly.net",
