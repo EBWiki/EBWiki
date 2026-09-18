@@ -14,7 +14,7 @@ Before setting up your local development environment, make sure you have the fol
 * Git
   * Windows: [Download and install git](https://git-scm.com/downloads)
   * MacOS: [Install Homebrew](https://brew.sh/) and then `brew install git`
-* [Docker Engine or Docker Desktop](https://docs.docker.com/engine/install/) (Compose V2 plugin: `docker compose`)
+* [Docker Engine or Docker Desktop](https://docs.docker.com/engine/install/) (Compose V2: `docker compose`; Buildx: `docker buildx`)
 * [Make](https://www.gnu.org/software/make/)
 
 Open a terminal and validate your environment with the following commands:
@@ -26,6 +26,7 @@ git --version
 which docker
 docker --version
 docker compose version
+docker buildx version
 which make
 make --version
 ```
@@ -33,10 +34,13 @@ make --version
 Output from the commands will vary based on your operating system but should be error free and similar to the following:
 ```
 $ docker --version
-Docker version 27.5.1, build e8ee312
+Docker version 29.1.3
 
 $ docker compose version
-Docker Compose version v2.32.4
+Docker Compose version v2.40.3
+
+$ docker buildx version
+github.com/docker/buildx 0.30.1
 ```
 
 ## Set Up

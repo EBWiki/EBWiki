@@ -6,7 +6,7 @@
 
 - Python 3.12+
 - [uv](https://docs.astral.sh/uv/) or pip
-- Docker (local sandbox)
+- Docker Engine 29+ with Compose V2 and Buildx (`docker compose`, `docker buildx`)
 
 ```bash
 uv tool install harbor
@@ -45,7 +45,7 @@ The smoke task uses `ebwiki/ebwiki:latest`. Build it locally with `docker compos
 
 ## Boot and spec-fix (oracle)
 
-These tasks build the eval image (test gem group) and start Postgres + Redis:
+These tasks start Postgres 17 + Redis 7 next to `main`. `network_mode = "allowlist"` needs Buildx so Harbor can build its egress sidecar. Oracle still needs no model key.
 
 ```bash
 harbor run --path harbor/tasks --include-task-name boot-rails --agent oracle --yes
