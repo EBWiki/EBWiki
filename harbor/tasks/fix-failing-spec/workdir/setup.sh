@@ -10,8 +10,8 @@ export PGUSER=blackops
 export PGPASSWORD=ebwiki
 export PGDATABASE=blackops_test
 
-pg_isready -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE"
-psql --set ON_ERROR_STOP=1 --file db/structure.sql "$DATABASE_URL"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH:-}"
+/usr/bin/psql --set ON_ERROR_STOP=1 --file db/structure.sql "$DATABASE_URL"
 
 mkdir -p spec/harbor
 
