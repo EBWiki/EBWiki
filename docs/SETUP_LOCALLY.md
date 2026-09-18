@@ -65,7 +65,7 @@ Once your tools are in place, follow these steps to download and run the EBWiki 
     docker compose up --detach
     ```
 
-    The published `ebwiki/ebwiki` image is the Rails app only. It does **not** include Postgres or Redis; those come from `compose.yaml`.
+    Local `docker compose build` tags `ebwiki/ebwiki:dev`. Harbor eval images `FROM` that tag so Buildx does not pull a stale Docker Hub `latest`. The published Hub image is `ebwiki/ebwiki:latest` (Rails app only). Postgres and Redis come from `compose.yaml`.
 
 Once you see output similar to the following, the application is running successfully:
 ```
