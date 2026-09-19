@@ -106,6 +106,9 @@ In this PR:
    `docs/DEVELOPMENT.md`. Removed dead Code Climate badges from `README.md`.
 4. Still needs a maintainer: disable Copilot automatic code review in GitHub
    repo settings. That is not a file in git.
+5. Added Copilot's `github.actor == 'dependabot[bot]'` guard to
+   `dependabot-auto-merge.yml` here so `pull_request_target` on `main`
+   skips rewritten Dependabot PRs instead of failing fetch-metadata.
 
 ### Phase 2 — settings that live outside git
 
