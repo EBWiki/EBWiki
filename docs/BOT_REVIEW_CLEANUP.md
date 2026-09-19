@@ -4,8 +4,9 @@ EBWiki currently runs several review and coding agents on the same PRs. That
 is the opposite of a high design bar: comments conflict, required Approve is
 unclear, and leftover bot drafts stay open.
 
-This spike is now the Phase 1 PR: Droid auto-review is removed, review
-docs match CodeRabbit + CI, and leftover Copilot drafts are closed.
+This spike is now the Phase 1 PR: both Factory Droid workflows are
+removed, review docs match CodeRabbit + CI, leftover Copilot drafts
+are closed, and public GitHub copy follows the design bar.
 
 ## How to set the Cursor goal
 
@@ -40,7 +41,7 @@ is quiet.
 |---|---|---|
 | CodeRabbit | Repo app; `@coderabbitai review` | Can **Approve**. This is what unblocked #4423. |
 | Factory Droid Auto Review | `droid-review.yml` on opened / ready / reopened | First-pass review. Does **not** run on `synchronize`, so a rewritten PR gets no new review. |
-| Factory Droid Tag | `droid.yml` on `@droid` | Coding agent, not an Approve gate. |
+| Factory Droid Tag | `droid.yml` on a Droid mention | Coding agent, not an Approve gate. |
 | Copilot code review | GitHub app `copilot-pull-request-reviewer` | COMMENTED / “changes recommended.” Does **not** Approve. |
 | Copilot coding agent | `copilot-swe-agent` | Opens its own PRs. Left #4424 (closed), #4387, #4399. |
 | Cursor cloud agent | This session | Implementation. Not a GitHub required reviewer. |
@@ -74,7 +75,7 @@ Turn off or stop using:
 - **Droid Auto Review** — delete `.github/workflows/droid-review.yml`. CodeRabbit already covers first-pass review and can Approve.
 - **Copilot code review** — disable the repo/org automatic Copilot review. It cannot clear `REVIEW_REQUIRED` and it cited the stale July Dependabot plan on #4421.
 - **Copilot coding agent as a default** — do not assign Copilot to issues that Cursor is already on. That is how #4424 duplicated #4421.
-- **Droid Tag** — optional. Keep `.github/workflows/droid.yml` only if someone still wants on-demand `@droid`. Otherwise delete it and drop `FACTORY_API_KEY`.
+- **Droid Tag** — delete `.github/workflows/droid.yml` and drop `FACTORY_API_KEY`. Cursor is the coding agent for this stream.
 - **Code Climate README badges** — `docs/DEVELOPMENT.md` still mentions CodeClimate. Confirm the app is gone; remove the badges if it is.
 
 ## What “high design standards” means here
@@ -100,15 +101,16 @@ Rule going forward: if a review is needed, `@coderabbitai review` only.
 
 In this PR:
 
-1. Deleted `.github/workflows/droid-review.yml`.
-2. Left `.github/workflows/droid.yml` as on-demand `@droid` only.
-3. Rewrote `docs/PROJECT_STATE.md` and the CI paragraph of
+1. Deleted `.github/workflows/droid-review.yml` and `.github/workflows/droid.yml`.
+2. Rewrote `docs/PROJECT_STATE.md` and the CI paragraph of
    `docs/DEVELOPMENT.md`. Removed dead Code Climate badges from `README.md`.
-4. Still needs a maintainer: disable Copilot automatic code review in GitHub
-   repo settings. That is not a file in git.
-5. Added Copilot's `github.actor == 'dependabot[bot]'` guard to
+3. Still needs a maintainer: disable Copilot automatic code review in GitHub
+   repo settings, and remove the `FACTORY_API_KEY` secret. Those are not
+   files in git.
+4. Added Copilot's `github.actor == 'dependabot[bot]'` guard to
    `dependabot-auto-merge.yml` here so `pull_request_target` on `main`
    skips rewritten Dependabot PRs instead of failing fetch-metadata.
+5. Documented public GitHub copy in `docs/DESIGN.md`.
 
 ### Phase 2 — settings that live outside git
 
@@ -125,14 +127,11 @@ product design work (Harbor spike #4425, Hanami drafts, staff tools).
 Those PRs use this review path and that design bar, not a new bot or a
 new CSS framework.
 
-## Decision still needed
+## Decision
 
-Keep on-demand `@droid`, or remove Factory from the repo entirely?
-
-- **Keep `@droid`:** delete only `droid-review.yml`. One coding-agent mention remains.
-- **Remove Factory:** delete both Droid workflows and the `FACTORY_API_KEY` secret.
-
-Recommendation: remove Factory. Cursor is the coding agent for this stream, CodeRabbit is the reviewer, Copilot stays available in the editor if people want it, but it should not open or review PRs by default.
+Factory is removed from git. A maintainer should delete `FACTORY_API_KEY`
+after this PR lands. Copilot may stay in the editor; it should not open
+or review pull requests by default.
 
 ## Out of scope
 

@@ -21,7 +21,7 @@ is quiet.
 - Merged #4423 (bundler-dev) and #4421 (Puma 7.2.1)
 - Closed leftover Copilot drafts #4424, #4387, #4399
 - Drafted the 239-file Doppler rewrite #4420
-- Removed Factory Droid auto-review (`droid-review.yml`) in #4435
+- Removed Factory Droid workflows (`droid-review.yml`, `droid.yml`) in #4435
 
 ## Next 3 Micro Tasks
 1. Land #4435 (this review-path PR) when CodeRabbit Approves
@@ -33,7 +33,6 @@ is quiet.
 - CodeRabbit was rate-limited on #4435; retry the review there
 
 ## Technical Notes
-- `droid.yml` remains for on-demand `@droid` only. It is not a required review.
 - Uses polymorphic `linkable_type/linkable_id` — any new model with
   `has_many :links` must use `as: :linkable`
 
@@ -43,7 +42,8 @@ is quiet.
   CodeRabbit Approve counts for the review gate.
 - **Human:** product correctness and any semver-major (Dependabot will not
   auto-merge those)
-- Do not also ping Factory Droid or request Copilot review on the same PR
+- Do not request Copilot review on the same PR
+- Public GitHub titles and descriptions follow `docs/DESIGN.md`
 
 ## Exit Criteria for This Phase
 - No leftover Dependabot or agent-draft PRs on the weekly list

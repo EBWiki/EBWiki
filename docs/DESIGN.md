@@ -66,10 +66,21 @@ A UI PR is not done at “it looks fine on my laptop.”
 
 - One advisory review voice per PR: CodeRabbit. `@coderabbitai review`
   if an Approve is needed.
-- Do not also request Copilot review or `@droid` on the same PR.
+- Do not request Copilot review or Factory Droid on the same PR.
 - Agent drafts that rewrite half the repo are closed or converted to
   draft the same week. A landing PR is the named change plus the
   smallest unlock (config, one cop, one spec helper).
+
+## Public GitHub copy
+
+Issue titles, pull request titles, descriptions, and comments are
+public project writing. They follow the same bar as product copy.
+
+- Complete sentences. Name the change, not the conversation that
+  produced it.
+- Do not quote private chat, Cursor transcripts, or first-person asides.
+- Do not publish credentials, review logins, or dump-restore steps.
+- A review request is `@coderabbitai review` only. No status chatter.
 
 ## Later, not now
 
