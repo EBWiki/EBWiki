@@ -1,41 +1,51 @@
 # PROJECT STATE
 
-_Snapshot as of 2026-04-18._
+_Snapshot as of 2026-09-19._
 
 ## Repo
 - `EBWiki/EBWiki`
 
 ## Project Type
-- # Client / Product / Internal / Experiment
+- Product (community-maintained case archive)
 
 ## Current Phase
-- Refactoring
+- Repo hygiene: one review path, leftover dependency PRs, then product drafts
 
 ## Current Goal
-Rails 8.1 modernization (Administrate, Devise 5, Sprockets 4, security) - PR #4345 in flight
-
-## Current Branch
-- main
+Leave the repo with one required CI suite, one review bot that can Approve
+(CodeRabbit), Dependabot for grouped patch/minor updates, and no leftover
+agent drafts. Visual / Hanami / Harbor work stays drafted until that path
+is quiet.
 
 ## Last Completed Step
-Dependency hygiene branch open for review (PR #4345); CodeRabbit + Factory Droid both reviewing; Droid findings applied (signed_in? helper, polymorphic CalendarEvent links)
+- Merged #4423 (bundler-dev updates + Dependabot inventory refresh)
+- Closed leftover Copilot drafts #4424, #4387, #4399
+- Removed Factory Droid auto-review (`droid-review.yml`)
 
 ## Next 3 Micro Tasks
-1. Resolve remaining Droid/CodeRabbit review feedback on #4345
-2. Run full test suite locally against Rails 8.1
-3. Merge #4345 and plan follow-up PRs for the remaining 33-file changes
+1. Land #4421 (Puma 6.6.1 → 7.2.1) once required CI runs on the current head
+2. Disable Copilot automatic PR review in GitHub repo settings
+3. Keep product drafts (Harbor #4425, Hanami, staff tools) off the weekly queue
 
 ## Blockers / Risks
-- None currently
+- #4421 is Approved but CI on the Copilot workflow-file commit is
+  `action_required` (GitHub will not run `CI` after a bot edits a workflow)
+- Copilot automatic review is a repo setting, not a file in git
 
 ## Technical Notes
-- Workflow files `droid.yml` and `droid-review.yml` in .github/workflows/ enable auto-review via Factory Droid
-- Uses polymorphic `linkable_type/linkable_id` — ensure any new model with `has_many :links` uses `as: :linkable`
+- `droid.yml` remains for on-demand `@droid` only. It is not a required review.
+- Uses polymorphic `linkable_type/linkable_id` — any new model with
+  `has_many :links` must use `as: :linkable`
 
 ## PR Review Workflow
-- Factory Droid provides automated first-pass review on every PR.
-- Human review (gktreviewer) focuses on product correctness; Droid covers correctness, security, and style surface.
-- See `docs/DEVELOPMENT_PROCESS.md` in the central /src workspace for the review handshake.
+- **Required:** `CI` (RSpec, RuboCop, Brakeman, markdown links) and CodeQL
+- **Review bot:** CodeRabbit only. `@coderabbitai review` if a pass is needed.
+  CodeRabbit Approve counts for the review gate.
+- **Human:** product correctness and any semver-major (Dependabot will not
+  auto-merge those)
+- Do not also ping Factory Droid or request Copilot review on the same PR
 
 ## Exit Criteria for This Phase
-- See `Current Goal` above. Ticket this out as the phase progresses.
+- No leftover Dependabot or agent-draft PRs on the weekly list
+- Docs and workflows describe the same review path
+- Product spikes use that path instead of adding another bot

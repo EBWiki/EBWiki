@@ -4,8 +4,8 @@ EBWiki currently runs several review and coding agents on the same PRs. That
 is the opposite of a high design bar: comments conflict, required Approve is
 unclear, and leftover bot drafts stay open.
 
-This spike records the inventory and the cleanup plan. It does not change
-workflows yet.
+This spike is now the Phase 1 PR: Droid auto-review is removed, review
+docs match CodeRabbit + CI, and leftover Copilot drafts are closed.
 
 ## How to set the Cursor goal
 
@@ -51,10 +51,8 @@ second.” That is stale and is why agents keep stacking.
 
 ### Leftover bot drafts
 
-| PR | Why it is noise |
-|---|---|
-| #4387 Copilot “exploring codebase” | Draft, 239 files. Not a landing PR. |
-| #4399 Copilot “reclassify Droid as informational” | Draft, 240 files, conflicting with `main`. The intent is right; the diff is not mergeable. Redo as a small workflow PR. |
+Closed 2026-09-19: #4424 (duplicate Puma), #4387 (239-file exploration),
+#4399 (240-file Droid-reclassify rewrite). This PR is the small redo of #4399.
 
 Human feature drafts (Hanami, Harbor, staff tools, maps) are out of scope
 here. Do not close those as part of bot cleanup.
@@ -91,20 +89,23 @@ For this repo, the design bar is a quiet review path, not more tools.
 
 ## Execution plan
 
-### Phase 0 — stop the bleeding (this week, no workflow delete required)
+### Phase 0 — stop the bleeding
 
-1. Close leftover Copilot drafts #4387 and #4399 as not-planned / superseded.
-2. Land or close the two remaining dependency PRs: #4423 (Approved) then #4421 (needs Approve).
-3. Do not `@droid` and request Copilot review on the same PR. If a review is needed, `@coderabbitai review` only.
+Done: closed #4387, #4399, #4424. Merged #4423. #4421 is Approved; required
+`CI` still needs a trusted re-run after Copilot edited a workflow file.
+
+Rule going forward: if a review is needed, `@coderabbitai review` only.
 
 ### Phase 1 — make roles explicit in git
 
-Small PR, not #4399:
+In this PR:
 
-1. Delete `.github/workflows/droid-review.yml`.
-2. Either delete `.github/workflows/droid.yml` or leave it as on-demand only (no auto trigger on `pull_request` opened).
-3. Disable Copilot automatic code review in the GitHub repo settings (Actions → Copilot / Code review). This is a UI change, not a file.
-4. Rewrite the “PR Review Workflow” section of `docs/PROJECT_STATE.md` and the CI paragraph of `docs/DEVELOPMENT.md` so they name CodeRabbit + CI, not Droid + CodeClimate.
+1. Deleted `.github/workflows/droid-review.yml`.
+2. Left `.github/workflows/droid.yml` as on-demand `@droid` only.
+3. Rewrote `docs/PROJECT_STATE.md` and the CI paragraph of
+   `docs/DEVELOPMENT.md`. Removed dead Code Climate badges from `README.md`.
+4. Still needs a maintainer: disable Copilot automatic code review in GitHub
+   repo settings. That is not a file in git.
 
 ### Phase 2 — settings that live outside git
 
