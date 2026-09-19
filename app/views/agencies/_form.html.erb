@@ -31,7 +31,7 @@
 
     <% if params[:action] == "edit" %>
       <div class="btn-group back">
-        <%= link_to 'Back to Agency', agency_path(@agency.id), class: 'btn btn-primary' %>
+        <%= link_to 'Back to Agency', agency_path(@agency), class: 'btn btn-primary' %>
       </div>
     <% else %>
         <div class="btn-group back">

@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-lg-3">
-    <%= image_tag(this_case[3], alt: ERB::Util.html_escape(this_case[4].to_s)) %>
+    <%= image_tag(this_case[3]) %>
     <br>
     <%= link_to this_case[4], case_path(id: this_case[0]) %>
   </div>
   <div class="col-lg-9">
-    <%= ERB::Util.html_escape(this_case[5].to_s) %>
+    <%= this_case[5] %>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <!-- Meta Tag Information -->
-<% content_for :meta_title, "EBWiki is tracking #{@agency.name}" %>
+<% content_for :meta_title, "EBWiki is tracking the #{@agency.name}" %>
 <% content_for :meta_description, "EBWiki is following the involvement of the #{@agency.name} in killings of people of color." %>
 <% content_for :meta_keywords, "#{@agency.name} police violence people color" %>
 
@@ -25,22 +25,19 @@
   <%= show_non_blank_fields "Website", @agency.website %>
 </p>
 
-<%= link_to 'Back to agencies', agencies_path, class: "btn-default" %>
-<%= link_to 'Edit', edit_agency_path(@agency.id), class: "btn-warning" %>
+<%= link_to 'Back', session[:previous_url], :class => "btn-default" %>
+<%= link_to 'Edit', edit_agency_path(@agency), :class => "btn-warning" %>
 
 <!-- Related Cases Row -->
 <div class="row">
   <div class="col-lg-12">
-    <h3 class="page-header">EBWiki is tracking <%= pluralize(@cases.size, "case")%> involving <%= @agency.name %>:</h3>
+    <h3 class="page-header">EBWiki is tracking <%= pluralize(@cases.size, "case")%> involving the <%= @agency.name %>:</h3>
   </div>
 </div>
 <div class="row">
   <div class="col-lg-12">
-    <% if @cases.empty? %>
-      <p>No cases are currently listed for this agency.</p>
-    <% else %>
-      <%= render partial: 'cases/thumbnail', layout: 'cases/show_thumbnail', collection: @cases, as: :this_case %>
-    <% end %>
+    <%= render partial: 'cases/thumbnail', layout: 'cases/show_thumbnail', collection: @cases, as: :this_case %>
   </div>
 </div>
 
+<%= link_to 'Back', session[:previous_url] %>

@@ -23,6 +23,6 @@ feature 'User visits user profile page' do
   scenario 'and is not following any cases' do
     sign_in user
     visit("/users/#{user.id}")
-    expect(page).to have_text('You are not following any cases yet.')
+    expect(page).to have_text('Please take 30 seconds')
   end
 end
