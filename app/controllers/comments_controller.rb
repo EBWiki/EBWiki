@@ -13,8 +13,11 @@ class CommentsController < ApplicationController
     @commentable = load_commentable
     @comment = @commentable.comments.new comment_params
     @comment.user = current_user
-    @comment.save
-    redirect_to @commentable, notice: 'Comment created!'
+    if @comment.save
+      redirect_to @commentable, notice: 'Comment added.'
+    else
+      redirect_to @commentable, alert: 'Comment could not be added. Write the comment before submitting.'
+    end
   end
 
   def after_sign_up_path_for(resource)
