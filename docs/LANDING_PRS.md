@@ -4,7 +4,7 @@ A landing pull request is **one named change** plus the **smallest unlock** that
 
 This is the rule that would have rejected a 73-file PR that mixed review-path cleanup (bot deletion, CODEOWNERS) with dozens of view and SCSS files.
 
-The always-on agent rule is `.cursor/rules/landing-pr.mdc`. It adopts the reviewability line from Cursor team kit `make-pr-easy-to-review`: if a PR is too large to make reviewable with notes, split it instead of polishing around the problem. Compound Engineering and Superpowers stay installable as plugins; this repo vendors only the landing-PR bar, not those kits.
+This is the **ship** chapter of the full model in [Software development](SOFTWARE_DEVELOPMENT.md). The always-on agent rule is `.cursor/rules/landing-pr.mdc`. It adopts the reviewability line from Cursor team kit `make-pr-easy-to-review`: if a PR is too large to make reviewable with notes, split it instead of polishing around the problem. Compound Engineering and Superpowers stay installable as plugins; this repo vendors the model, not those kits.
 
 ## One concern
 

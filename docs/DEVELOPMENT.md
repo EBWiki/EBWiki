@@ -6,6 +6,7 @@ you'll find links, notes, HOWTOs and other useful information about developing f
 
 # Table of Contents
 * [General Timeline for Contributing to EBWiki](#general-timeline-for-contributing-to-ebwiki)
+* [Software development model](SOFTWARE_DEVELOPMENT.md)
 * [Landing PRs](LANDING_PRS.md)
 * [Getting EBWiki Up and Running Locally](#getting-ebwiki-up-and-running-locally)
 * [Restoring Local Database from Production Backup](#restoring-local-database-from-production-backup)
