@@ -24,5 +24,10 @@ RSpec.describe CasesHelper, type: :helper do
       expect(helper.embed('javascript:alert(1)')).to eq('')
       expect(helper.embed('https://example.com/video.mp4')).to eq('')
     end
+
+    it 'does not treat youtube.com or vimeo.com in the path as a host' do
+      expect(helper.embed('https://evil.example/youtube.com?v=Mgn1r3_eM-s')).to eq('')
+      expect(helper.embed('https://evil.example/vimeo.com/136536466')).to eq('')
+    end
   end
 end
