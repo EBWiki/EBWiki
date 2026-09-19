@@ -1,0 +1,34 @@
+---
+description: Full software-development loop — plan, implement, debug, verify, review, ship
+alwaysApply: true
+---
+
+# Software-development loop
+
+EBWiki agents follow the Cursor / Compound Engineering / Superpowers model end to end. This file is the always-on binding. Procedures live in `.cursor/skills/`. Plugin skills on the machine are optional executors; these rules still apply.
+
+## Plan
+
+Write a plan before large or multi-area work. Independent subsystems are separate plans and separate PRs. Do not expand a named change into an invented UI sweep, restyle, or neighborhood cleanup.
+
+## Implement
+
+Change only what the named change needs. Match existing Rails style. Put non-view logic in `lib/`. Deslop your own diff. At review time, apply the thermo-nuclear questions as guidance (simpler framing, no file pushed over 1k lines, no bolted-on conditionals, logic in the canonical layer). Do not dump a 1k-line audit into every commit.
+
+## Debug
+
+No fix without a root-cause investigation. Reproduce, read the error, check recent changes, then fix the cause.
+
+## Verify
+
+No "done", "fixed", or "passing" claim without fresh command output. Ruby: relevant specs and RuboCop on touched files. UI: browser or the closest substitute, not a single screenshot. Docs-only: do not run the full Rails suite.
+
+## Review
+
+Human CODEOWNERS Approve (`@gktreviewer`) is the merge review. Do not stack CodeRabbit, Copilot, or Factory Droid. Do not self-Approve. Evaluate review comments against this codebase before implementing. Use subagents only for independent planned tasks.
+
+## Ship
+
+One named change plus the smallest unlock. Split mixed or unreviewable diffs. Public GitHub copy is project writing. No Compound branding unless repo CE config enables it.
+
+Landing-PR detail: `.cursor/rules/landing-pr.mdc`.
