@@ -15,9 +15,9 @@
   <div class="row">
     <div class="col-md-3">
       <% if @this_case.avatar? %>
-        <%= image_tag(@this_case.avatar.large_avatar.url, class: "img-responsive articleImage", alt: strip_tags(@this_case.title)) %>
+        <%= image_tag(@this_case.avatar.large_avatar.url, class: "img-responsive articleImage", alt: ERB::Util.html_escape(@this_case.title)) %>
       <% else %>
-        <%= image_tag('default-user-icon.png', size: "250x250", class: "img-responsive articleImage", alt: "No photo available for #{strip_tags(@this_case.title)}") %>
+        <%= image_tag('default-user-icon.png', size: "250x250", class: "img-responsive articleImage", alt: "No photo available for #{ERB::Util.html_escape(@this_case.title)}") %>
       <% end %>
 
       <div class="">
