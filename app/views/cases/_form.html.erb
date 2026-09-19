@@ -22,7 +22,7 @@
 				<% else %>
 					<h4>Current image showing on the case page: </h4>
 		      <% if @this_case.avatar? %>
-			      <%= image_tag(@this_case.avatar.medium_avatar.url, class: "img-responsive", alt: @this_case.title) %>
+			      <%= image_tag(@this_case.avatar.medium_avatar.url, class: "img-responsive", alt: strip_tags(@this_case.title)) %>
 			      <%= f.check_box :remove_avatar, :label => 'Remove current image' %>
 			    <% else %>
 				    <%= image_tag('default-user-icon.png', :size => "150x150", :class => "img-responsive", alt: "No photo available") %>

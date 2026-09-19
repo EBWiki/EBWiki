@@ -83,6 +83,36 @@ public project writing. They follow the same bar as product copy.
 - Do not publish credentials, review logins, or dump-restore steps.
 - A review request is `@coderabbitai review` only. No status chatter.
 
+## How we avoid missing work
+
+Overlooked items in this cleanup came from chasing the current
+blocker (one bot, one PR, one comment) instead of checking the full
+surface against this file. Mitigation is a written inventory, not
+memory of the last pass.
+
+Before a hygiene or UI PR is called done, list and check:
+
+1. **Bots and workflows** under `.github/workflows/`, not only the
+   file just deleted. On-demand hooks count.
+2. **Open pull requests** — ready vs draft, Dependabot vs agent
+   rewrite vs real feature. Ready-list noise is closed or drafted
+   the same week.
+3. **Public templates** that share the change: case show, search,
+   agency, organization, maps, header, footer, and the case form.
+   Grep is not enough if the first match is treated as the whole job.
+4. **Public GitHub copy** on the tickets this work touches: titles,
+   bodies, and comments. No chat quotes, no credentials.
+5. **Stored values in HTML attributes** (`alt`, `title`, `content`).
+   Pass them through `strip_tags` so CodeQL stored-XSS and the copy
+   bar are both met.
+6. **The quality gates above**, including empty, error, focus, and
+   a browser or request-spec check. A green markdown-link job does
+   not prove those.
+
+If a gate cannot be run (no app, no database, rate-limited review),
+say so and leave the goal open. Do not treat an incomplete check as
+a pass.
+
 ## Later, not now
 
 Harbor (#4425), Hanami drafts, staff-tools, maps/photos, and a visual
