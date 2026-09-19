@@ -46,7 +46,8 @@ A UI PR is not done at “it looks fine on my laptop.”
    ring (`bootstrap-mods.scss`, `cases.scss`). Do not add `outline: 0`
    or `outline: none` on new controls.
 6. **Copy:** case pages are about real people. No playful empty states,
-   no joke alt text.
+   no joke alt text. Editor photo help asks for a healthy photo of the
+   person, not a mug shot. Search with no matches says so plainly.
 
 ## Architecture bar
 
