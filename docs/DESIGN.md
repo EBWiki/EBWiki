@@ -31,28 +31,30 @@ Hanami cutover) stays on draft spikes until the review path in
 Do not add Tailwind, Bootstrap 5, or a second component library on a
 feature PR. That is a migration, same class as Puma 7 → 8.
 
-## What a gate is
+## What a required check is
 
-A **gate** is a required check with two outcomes: **pass** or **not
-done**. It is not a guideline, a preference, or the name of a CI job.
-The change is incomplete until every applicable gate has been run and
-has passed. “Could not run it” is **not done**.
+A **required check** has two outcomes: **pass** or **not done**. That
+is stricter than a guideline or a preference, and it is not the same
+as the name of a CI job. The change is incomplete until every
+applicable check has been run and has passed. “Could not run it” is
+**not done**.
 
 Two kinds apply here:
 
-- **Quality gates** (next section) — product checks you run: browser,
+- **Quality checks** (next section) — product checks you run: browser,
   shared state, empty/error, viewport, focus, copy.
-- **Merge gates** — required GitHub checks that block merge: `CI`
+- **Merge requirements** — GitHub checks that block merge: `CI`
   (RSpec, RuboCop, Brakeman, markdown links), CodeQL, and a CodeRabbit
-  Approve. A green markdown-link job is one merge gate, not all of them.
+  Approve. A green markdown-link job is one merge requirement, not all
+  of them.
 
-If any applicable gate has not been run, the work stays open. Do not
+If any applicable check has not been run, the work stays open. Do not
 treat an incomplete check as a pass.
 
-## Quality gates for UI changes
+## Quality checks for UI changes
 
 A UI PR is not done at “it looks fine on my laptop.” These six are the
-quality gates:
+quality checks:
 
 1. **Browser check** the changed flow end to end: click, type, submit,
    navigate. A screenshot is not enough.
@@ -125,9 +127,9 @@ Before a hygiene or UI PR is called done, list and check:
    Escape with `ERB::Util.html_escape`, or show the name as visible
    text and use an empty `alt`. `strip_tags` alone does not clear
    CodeQL stored-XSS.
-6. **The quality gates above**, including empty, error, focus, and
+6. **The quality checks above**, including empty, error, focus, and
    a browser or request-spec check. A green markdown-link job is a
-   merge gate; it does not pass the quality gates.
+   merge requirement; it does not pass the quality checks.
 
 ## Later, not now
 

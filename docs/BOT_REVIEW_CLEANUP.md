@@ -41,7 +41,7 @@ is quiet.
 |---|---|---|
 | CodeRabbit | Repo app; `@coderabbitai review` | Can **Approve**. This is what unblocked #4423. |
 | Factory Droid Auto Review | `droid-review.yml` on opened / ready / reopened | First-pass review. Does **not** run on `synchronize`, so a rewritten PR gets no new review. |
-| Factory Droid Tag | `droid.yml` on a Droid mention | Coding agent, not an Approve gate. |
+| Factory Droid Tag | `droid.yml` on a Droid mention | Coding agent, not an Approve. |
 | Copilot code review | GitHub app `copilot-pull-request-reviewer` | COMMENTED / “changes recommended.” Does **not** Approve. |
 | Copilot coding agent | `copilot-swe-agent` | Opens its own PRs. Left #4424 (closed), #4387, #4399. |
 | Cursor cloud agent | This session | Implementation. Not a GitHub required reviewer. |

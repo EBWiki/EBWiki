@@ -39,7 +39,7 @@ is quiet.
 ## PR Review Workflow
 - **Required:** `CI` (RSpec, RuboCop, Brakeman, markdown links) and CodeQL
 - **Review bot:** CodeRabbit only. `@coderabbitai review` if a pass is needed.
-  CodeRabbit Approve counts for the review gate.
+  CodeRabbit Approve counts as the required review.
 - **Human:** product correctness and any semver-major (Dependabot will not
   auto-merge those)
 - Do not request Copilot review on the same PR
