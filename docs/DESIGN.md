@@ -44,9 +44,9 @@ Two kinds apply here:
 - **Quality checks** (next section) — product checks you run: browser,
   shared state, empty/error, viewport, focus, copy.
 - **Merge requirements** — GitHub checks that block merge: `CI`
-  (RSpec, RuboCop, Brakeman, markdown links), CodeQL, and a CodeRabbit
-  Approve. A green markdown-link job is one merge requirement, not all
-  of them.
+  (RSpec, RuboCop, Brakeman, markdown links), CodeQL, and a human
+  Approve from `.github/CODEOWNERS`. A green markdown-link job is one
+  merge requirement, not all of them.
 
 If any applicable check has not been run, the work stays open. Do not
 treat an incomplete check as a pass.
@@ -82,13 +82,15 @@ quality checks:
 - Polymorphic `linkable_type` / `linkable_id`: new `has_many :links`
   must use `as: :linkable`.
 - CI (`RSpec`, `RuboCop`, `Brakeman`, markdown links) plus CodeQL is
-  merge truth. CodeRabbit is the one review bot.
+  merge truth. Required Approve is a human reviewer (`CODEOWNERS`).
 
 ## Review quality
 
-- One advisory review voice per PR: CodeRabbit. `@coderabbitai review`
-  if an Approve is needed.
-- Do not request Copilot review or Factory Droid on the same PR.
+- One required reviewer per PR: a human listed in
+  `.github/CODEOWNERS` (currently `@gktreviewer`).
+- Do not request CodeRabbit, Copilot, or Factory Droid on the same PR.
+  CodeRabbit's OSS plan rate-limits mid-review. Copilot comments do
+  not count as Approve. Droid workflows are removed.
 - Agent drafts that rewrite half the repo are closed or converted to
   draft the same week. A landing PR is the named change plus the
   smallest unlock (config, one cop, one spec helper).
@@ -102,7 +104,8 @@ public project writing. They follow the same bar as product copy.
   produced it.
 - Do not quote private chat, Cursor transcripts, or first-person asides.
 - Do not publish credentials, review logins, or dump-restore steps.
-- A review request is `@coderabbitai review` only. No status chatter.
+- A review request is a human reviewer. Do not `@coderabbitai review`.
+  No status chatter.
 
 ## How we avoid missing work
 

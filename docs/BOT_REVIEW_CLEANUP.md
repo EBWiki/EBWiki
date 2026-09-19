@@ -5,8 +5,8 @@ is the opposite of a high design bar: comments conflict, required Approve is
 unclear, and leftover bot drafts stay open.
 
 This spike is now the Phase 1 PR: both Factory Droid workflows are
-removed, review docs match CodeRabbit + CI, leftover Copilot drafts
-are closed, and public GitHub copy follows the design bar.
+removed, CodeRabbit is no longer the merge reviewer, leftover Copilot
+drafts are closed, and public GitHub copy follows the design bar.
 
 ## How to set the Cursor goal
 
@@ -16,7 +16,7 @@ instead of a one-off PR.
 
 Recommended objective:
 
-> Leave EBWiki with one required CI truth, one review bot that can Approve,
+> Leave EBWiki with one required CI truth, a human Approve via CODEOWNERS,
 > Dependabot for grouped patch/minor updates, and no leftover agent drafts.
 
 That is narrower and more useful than “meet high design standards.” Visual
@@ -34,12 +34,13 @@ is quiet.
 | Dependabot (`.github/dependabot.yml`) | Grouped weekly patch/minor + security. Ignores semver-major. |
 | Dependabot auto-merge | Patch/minor only, Dependabot actor only (landed with #4421). |
 | Publish Docker Image | Deploy artifact, not review. |
+| `.github/CODEOWNERS` | Requests `@gktreviewer`. That human Approve is the required review. |
 
 ### Overlapping review / coding agents — this is the mess
 
-| Bot | How it fires | What it actually does on #4421 |
+| Bot | How it fires | What it actually does on #4421 / #4435 |
 |---|---|---|
-| CodeRabbit | Repo app; `@coderabbitai review` | Can **Approve**. This is what unblocked #4423. |
+| CodeRabbit | Repo app; `@coderabbitai review` | Can Approve, but the OSS plan rate-limits after one included review (~1 hour). On #4435 it blocked the merge path mid-work. Replaced by `CODEOWNERS`. Auto-review is off in `.coderabbit.yaml`. |
 | Factory Droid Auto Review | `droid-review.yml` on opened / ready / reopened | First-pass review. Does **not** run on `synchronize`, so a rewritten PR gets no new review. |
 | Factory Droid Tag | `droid.yml` on a Droid mention | Coding agent, not an Approve. |
 | Copilot code review | GitHub app `copilot-pull-request-reviewer` | COMMENTED / “changes recommended.” Does **not** Approve. |
@@ -47,7 +48,7 @@ is quiet.
 | Cursor cloud agent | This session | Implementation. Not a GitHub required reviewer. |
 | github-advanced-security | Code scanning comments | Inline CodeQL notes. Fine if CodeQL stays. |
 
-`docs/PROJECT_STATE.md` (April 2026) still says “Droid first-pass, human
+`docs/PROJECT_STATE.md` (April 2026) still said “Droid first-pass, human
 second.” That is stale and is why agents keep stacking.
 
 ### Leftover bot drafts
@@ -64,7 +65,7 @@ One job per role. No second bot that comments “just in case.”
 
 ```
 CI + CodeQL     → required checks (merge truth)
-CodeRabbit      → the one review bot; Approve counts
+CODEOWNERS      → the required Approve (`@gktreviewer`)
 Dependabot      → grouped patch/minor + security PRs
 Cursor          → coding agent for this cleanup stream
 Human           → product/merge for majors and anything CI cannot see
@@ -72,17 +73,25 @@ Human           → product/merge for majors and anything CI cannot see
 
 Turn off or stop using:
 
-- **Droid Auto Review** — delete `.github/workflows/droid-review.yml`. CodeRabbit already covers first-pass review and can Approve.
+- **Droid Auto Review** — delete `.github/workflows/droid-review.yml`.
+- **CodeRabbit as the merge reviewer** — `.coderabbit.yaml` disables
+  automatic reviews. A maintainer should uninstall the GitHub App.
+  Do not `@coderabbitai review`. The OSS hourly limit is why this
+  is no longer the path.
 - **Copilot code review** — disable the repo/org automatic Copilot review. It cannot clear `REVIEW_REQUIRED` and it cited the stale July Dependabot plan on #4421.
 - **Copilot coding agent as a default** — do not assign Copilot to issues that Cursor is already on. That is how #4424 duplicated #4421.
 - **Droid Tag** — delete `.github/workflows/droid.yml` and drop `FACTORY_API_KEY`. Cursor is the coding agent for this stream.
 - **Code Climate README badges** — `docs/DEVELOPMENT.md` still mentions CodeClimate. Confirm the app is gone; remove the badges if it is.
 
+Do not replace CodeRabbit with Factory Droid or Copilot. Neither
+clears `REVIEW_REQUIRED`. Adding another hosted LLM reviewer recreates
+the pile-up.
+
 ## What “high design standards” means here
 
 For this repo, the design bar is a quiet review path, not more tools.
 
-1. A PR has one advisory review voice (CodeRabbit) and one required CI suite.
+1. A PR has one required CI suite and one human Approve.
 2. Semver-major and product changes still need a human. Bots do not auto-merge those.
 3. Agent drafts that are not the landing PR get closed the same week they appear.
 4. Docs that describe the review handshake match the workflows (`docs/PROJECT_STATE.md`, `docs/DEVELOPMENT.md`).
@@ -95,7 +104,8 @@ For this repo, the design bar is a quiet review path, not more tools.
 Done: closed #4387, #4399, #4424. Merged #4423 and #4421. No open
 Dependabot PRs remain.
 
-Rule going forward: if a review is needed, `@coderabbitai review` only.
+Rule going forward: if a review is needed, request a human from
+`CODEOWNERS`. Do not `@coderabbitai review`.
 
 ### Phase 1 — make roles explicit in git
 
@@ -105,20 +115,22 @@ In this PR:
 2. Rewrote `docs/PROJECT_STATE.md` and the CI paragraph of
    `docs/DEVELOPMENT.md`. Removed dead Code Climate badges from `README.md`.
 3. Still needs a maintainer: disable Copilot automatic code review in GitHub
-   repo settings, and remove the `FACTORY_API_KEY` secret. Those are not
-   files in git.
+   repo settings, uninstall the CodeRabbit GitHub App, and remove the
+   `FACTORY_API_KEY` secret. Those are not files in git.
 4. Added Copilot's `github.actor == 'dependabot[bot]'` guard to
    `dependabot-auto-merge.yml` here so `pull_request_target` on `main`
    skips rewritten Dependabot PRs instead of failing fetch-metadata.
 5. Documented public GitHub copy in `docs/DESIGN.md`.
+6. Added `.github/CODEOWNERS` (`@gktreviewer`) and `.coderabbit.yaml`
+   (`reviews.auto_review.enabled: false`).
 
 ### Phase 2 — settings that live outside git
 
 A maintainer with admin on `EBWiki/EBWiki` should:
 
-1. Confirm branch protection / rulesets: required checks are `CI` jobs + CodeQL only. Droid and Copilot review must not be required.
-2. Uninstall or suspend unused GitHub Apps: Factory Droid (if both workflows go), Copilot reviewer if unused, Code Climate if the badges are dead.
-3. Leave Dependabot, CodeQL, and CodeRabbit installed.
+1. Confirm branch protection / rulesets: required checks are `CI` jobs + CodeQL only. Droid, Copilot, and CodeRabbit review must not be required. Require a review from Code Owners if that setting is not already on.
+2. Uninstall or suspend unused GitHub Apps: CodeRabbit, Factory Droid, Copilot reviewer if unused, Code Climate if the badges are dead.
+3. Leave Dependabot and CodeQL installed.
 
 ### Phase 3 — after the review path is quiet
 
@@ -129,9 +141,11 @@ new CSS framework.
 
 ## Decision
 
-Factory is removed from git. A maintainer should delete `FACTORY_API_KEY`
-after this PR lands. Copilot may stay in the editor; it should not open
-or review pull requests by default.
+Factory is removed from git. CodeRabbit is not the merge reviewer.
+Required Approve is `@gktreviewer` via `CODEOWNERS`. A maintainer
+should delete `FACTORY_API_KEY` and uninstall the CodeRabbit app
+after this PR lands. Copilot may stay in the editor; it should not
+open or review pull requests by default.
 
 ## Out of scope
 
