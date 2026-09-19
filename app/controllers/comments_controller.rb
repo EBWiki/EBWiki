@@ -16,7 +16,8 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to @commentable, notice: 'Comment added.'
     else
-      redirect_to @commentable, alert: 'Comment could not be added. Write the comment before submitting.'
+      redirect_to @commentable,
+                  alert: 'Comment could not be added. Write the comment before submitting.'
     end
   end
 
