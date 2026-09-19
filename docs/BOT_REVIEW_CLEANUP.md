@@ -120,7 +120,10 @@ A maintainer with admin on `EBWiki/EBWiki` should:
 
 ### Phase 3 — after the review path is quiet
 
-Only then pick up product design work (Harbor spike #4425, Hanami drafts, staff tools). Those PRs should get the same single review path, not a new bot.
+The UI and architecture bar is in `docs/DESIGN.md`. Only then pick up
+product design work (Harbor spike #4425, Hanami drafts, staff tools).
+Those PRs use this review path and that design bar, not a new bot or a
+new CSS framework.
 
 ## Decision still needed
 
