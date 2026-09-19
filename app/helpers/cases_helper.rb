@@ -3,14 +3,21 @@
 # Helper for case page, mostly the casw show page.
 module CasesHelper
   def embed(video_url)
-    if video_url.include? 'youtube.com'
-      youtube_id = video_url.to_s.split('=').last
+    url = video_url.to_s
+    return '' if url.blank?
+
+    if url.include?('youtube.com')
+      youtube_id = url.split('=').last.to_s[/\A[\w-]+\z/]
+      return '' if youtube_id.blank?
+
       content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{youtube_id}")
-    elsif video_url.include? 'vimeo.com'
-      vimeo_id = video_url.to_s.split('.com/').last
+    elsif url.include?('vimeo.com')
+      vimeo_id = url.split('.com/').last.to_s[/\A\d+\z/]
+      return '' if vimeo_id.blank?
+
       content_tag(:iframe, nil, src: "https://player.vimeo.com/video/#{vimeo_id}")
     else
-      content_tag(:iframe, nil, src: video_url.to_s)
+      ''
     end
   end
 
