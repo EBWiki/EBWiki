@@ -7,9 +7,20 @@ RSpec.describe 'Organizations', type: :request do
   let(:admin) { create(:admin) }
 
   describe 'GET /organizations' do
-    it 'works! (now write some real specs)' do
+    it 'returns the organizations index' do
       get '/organizations'
       expect(response).to have_http_status(200)
+      expect(response.body).to include('Organizations')
+    end
+  end
+
+  describe 'GET /organizations/:id' do
+    let(:organization) { create(:organization, name: 'Example Org') }
+
+    it 'returns the organization page without raising' do
+      get "/organizations/#{organization.id}"
+      expect(response).to have_http_status(200)
+      expect(response.body).to include(organization.name)
     end
   end
 

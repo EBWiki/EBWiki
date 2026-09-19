@@ -42,9 +42,9 @@ A UI PR is not done at “it looks fine on my laptop.”
 3. **Empty and error:** blank search, failed save, unauthorized.
 4. **Viewport:** the layout is Bootstrap 3 / `col-md-8`. Check a desktop
    width and a phone width when layout or CSS changed.
-5. **Focus:** buttons use `:focus-visible` with a 3px `$color-orange`
-   ring (`bootstrap-mods.scss`, `cases.scss`). Do not add `outline: 0`
-   or `outline: none` on new controls.
+5. **Focus:** buttons, links, and form controls use `:focus-visible`
+   with a 3px `$color-orange` ring (`bootstrap-mods.scss`). Do not add
+   `outline: 0` or `outline: none` on new controls.
 6. **Copy:** case pages are about real people. No playful empty states,
    no joke alt text. Editor photo help asks for a healthy photo of the
    person, not a mug shot. Search with no matches says so plainly.

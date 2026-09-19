@@ -20,6 +20,10 @@ RSpec.describe 'Maps', type: :request do
       it 'will return the list of cases' do
         expect(response.body).to include('maps')
       end
+
+      it 'asks visitors to open a case from a map pin' do
+        expect(response.body).to include('Select a map pin to open the case.')
+      end
     end
   end
 end

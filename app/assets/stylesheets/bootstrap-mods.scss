@@ -9,7 +9,12 @@ $color-orange: #F65732;
 
 .btn:focus-visible,
 .btn:active:focus-visible,
-.btn.active:focus-visible {
+.btn.active:focus-visible,
+a:focus-visible,
+.form-control:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
     outline: 3px solid $color-orange;
     outline-offset: 2px;
 }

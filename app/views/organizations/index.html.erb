@@ -1,7 +1,10 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Organizations</h1>
+<h1>Organizations</h1>
 
+<% if @organizations.empty? %>
+  <p>No organizations are listed yet.</p>
+<% else %>
 <table>
   <thead>
     <tr>
@@ -9,7 +12,6 @@
       <th>Description</th>
       <th>Website</th>
       <th>Telephone</th>
-      <th>Avatar</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -18,6 +20,7 @@
     <%= render @organizations %>
   </tbody>
 </table>
+<% end %>
 
 <br>
 
