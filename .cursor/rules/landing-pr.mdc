@@ -1,0 +1,29 @@
+---
+description: One named change per landing PR; split mixed or oversized diffs before review
+alwaysApply: true
+---
+
+# Landing PRs
+
+A landing PR is the named change plus the smallest unlock that makes that change shippable. One concern per PR.
+
+This rule exists to block mixed landings like a 73-file PR that deleted review bots / rewrote CODEOWNERS in the same diff as dozens of views and SCSS files.
+
+## Hard bar
+
+- **One named change.** Review-path and bot/CODEOWNERS/CI hygiene, application UI (`app/views`, SCSS, Stimulus), library extracts (`lib/`), dependency bumps, and unrelated docs are separate PRs. Extra files are allowed only when they are the smallest unlock for the named change (for example a spec that proves it).
+- **Mixed-concern budget.** If `git diff --stat origin/main` spans two or more of those areas, split before opening a PR or before marking it ready.
+- **Reviewability.** If a reviewer cannot hold the diff in one pass, split. Cursor team kit `make-pr-easy-to-review`: if the PR is too large to make reviewable with notes, split instead of polishing around the problem.
+- **File-count smell.** A landing PR that crosses about 25 files, or that mixes bot/CODEOWNERS/CI deletion with application views, is already over the bar.
+
+## What is not an unlock
+
+Deleting a review bot, rewriting CODEOWNERS, restyling archive views, extracting a library, and "while I am here" SCSS are not unlocks for each other.
+
+## Before you open or mark ready
+
+1. Name the change in one sentence.
+2. List areas touched (review-path, views, lib, gems, docs).
+3. If more than one area, or the diff is too large to review, split first.
+
+Do not polish, squash, or write a longer description to hide a mixed or oversized diff. This is the ship phase of `.cursor/rules/software-development-loop.mdc`. Human copy: `docs/LANDING_PRS.md` and `docs/SOFTWARE_DEVELOPMENT.md`. If the tree is already mixed, use `.cursor/skills/splitting-oversized-prs/SKILL.md`.
