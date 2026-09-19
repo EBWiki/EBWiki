@@ -1,8 +1,11 @@
 # EBWiki design bar
 
-This is the documented bar for remaining UI and architecture work. It is not
-a redesign. New screens and refactors must fit this, or change this file in
-the same PR.
+This is the bar for the **open source project**, not a graphic redesign.
+It covers how we ship: review path, CI, leftover PRs, public tickets,
+architecture, and (when a PR actually changes a screen) the existing
+UI system. A hygiene PR that restyles pages is a misread of this file.
+
+New work must fit this, or change this file in the same PR.
 
 ## Product
 
@@ -12,7 +15,31 @@ and contributor forms. Decorative redesign (Harbor, new CSS frameworks,
 Hanami cutover) stays on draft spikes until the review path in
 `docs/BOT_REVIEW_CLEANUP.md` is the one in use.
 
-## Visual system (current, required)
+## Project design (required)
+
+This is the main bar. Graphic polish is not.
+
+- **One CI suite** on `main`: RSpec, RuboCop, Brakeman, markdown links.
+  CodeQL is the security scan. That pair is merge truth.
+- **One required Approve:** a human in `.github/CODEOWNERS` (currently
+  `@gktreviewer`). Hosted review apps do not replace that.
+- **Dependabot** for grouped patch/minor and security only. Semver-major
+  is an explicit migration PR, not a weekly bump.
+- **Ready list:** leftover Dependabot duplicates and agent rewrites are
+  closed or drafted the same week. A landing PR is the named change plus
+  the smallest unlock.
+- **Roles do not stack:** Cursor implements. Humans Approve. Do not also
+  run CodeRabbit, Copilot review, and Factory Droid on the same PR.
+- **Libraries:** URL parsing, embed allowlists, and other non-view logic
+  live in `lib/` (for example `VideoEmbed`), not in a page helper's
+  private methods.
+- **Public GitHub writing** is part of the project, same bar as product
+  copy (see below).
+
+A visual restyle, Harbor, Hanami, or a second CSS framework is a later
+phase. It does not make this project “designed.”
+
+## Visual system (keep; do not restyle in hygiene PRs)
 
 - **Framework:** Bootstrap 3 via `bootstrap-sprockets` in
   `app/assets/stylesheets/application.scss`. Simple Form uses the Bootstrap

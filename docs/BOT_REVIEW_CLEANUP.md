@@ -89,7 +89,10 @@ the pile-up.
 
 ## What “high design standards” means here
 
-For this repo, the design bar is a quiet review path, not more tools.
+“Design” here is the open source project: how PRs land, what CI means,
+what stays on the ready list, and whether docs match git. It is not
+graphic design and it is not a reason to restyle archive pages in a
+hygiene PR.
 
 1. A PR has one required CI suite and one human Approve.
 2. Semver-major and product changes still need a human. Bots do not auto-merge those.

@@ -12,9 +12,10 @@ _Snapshot as of 2026-09-19._
 - Repo hygiene: one review path, leftover dependency PRs, then product drafts
 
 ## Current Goal
-Leave the repo with one required CI suite, a human Approve via
-`CODEOWNERS`, Dependabot for grouped patch/minor updates, and no leftover
-agent drafts. Visual / Hanami / Harbor work stays drafted until that path
+Leave the open source project in good working order: one required CI
+suite, a human Approve via `CODEOWNERS`, Dependabot for grouped
+patch/minor updates, and no leftover agent drafts. That is the design
+bar. Graphic redesign, Hanami, and Harbor stay drafted until that path
 is quiet.
 
 ## Last Completed Step
