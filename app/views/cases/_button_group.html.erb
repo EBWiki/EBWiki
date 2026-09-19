@@ -1,13 +1,13 @@
 <div class = "btn-group btn-group-justified">
 	<% if user_signed_in? %>
 		<% if current_user.following?(@this_case) %>
-		  <%= button_to 'Unfollow', follows_case_path(@this_case), method: :delete, form_class: "btn case-btn", class: "case-btn", data: { confirm: "Are you sure you want to unfollow this case?" } %>
+		  <%= button_to 'Unfollow', follows_case_path(@this_case.id), method: :delete, form_class: "btn case-btn", class: "case-btn", data: { confirm: "Are you sure you want to unfollow this case?" } %>
     <% else %>
-    	<%= button_to 'Follow', follows_case_path(@this_case), form_class: "btn case-btn", class: "case-btn" %>
+    	<%= button_to 'Follow', follows_case_path(@this_case.id), form_class: "btn case-btn", class: "case-btn" %>
     <% end %>
-		<%= button_to "Edit", edit_case_path(@this_case), method: :get, form_class: "btn case-btn", class: "case-btn", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Correct this case",:content => "Edit this record so the archive stays accurate."} %>
+		<%= button_to "Edit", edit_case_path(@this_case.id), method: :get, form_class: "btn case-btn", class: "case-btn", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Correct this case",:content => "Edit this record so the archive stays accurate."} %>
 	<% else %>
-		<%= button_to 'Follow', follows_case_path(@this_case), form_class: "btn case-btn", class: "case-btn" %>
+    <%= button_to 'Follow', follows_case_path(@this_case.id), form_class: "btn case-btn", class: "case-btn" %>
 	<% end %>
-	<%= button_to "History", cases_history_path(@this_case), method: :get, form_class: "btn case-btn", class: "case-btn", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track changes",:content => "See past edits to this case."} %>
+	<%= button_to "History", cases_history_path(@this_case.id), method: :get, form_class: "btn case-btn", class: "case-btn", data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom",:title => "Track changes",:content => "See past edits to this case."} %>
 </div>

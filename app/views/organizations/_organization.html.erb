@@ -3,6 +3,6 @@
   <td><%= organization.description %></td>
   <td><%= organization.website %></td>
   <td><%= organization.telephone %></td>
-  <td><%= link_to 'Show', organization %></td>
-  <td><%= link_to 'Edit', edit_organization_path(organization) %></td>
+  <td><%= link_to 'Show', organization_path(organization.id) %></td>
+  <td><%= link_to 'Edit', edit_organization_path(organization.id) %></td>
 </tr>

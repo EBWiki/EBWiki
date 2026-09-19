@@ -44,7 +44,7 @@
       <% if @this_case.agencies.present? %>
         <p class="h5">Agencies:
           <% @this_case.agencies.each_with_index do |agency, index| %>
-            <%= link_to agency.name, agency_path(agency) %>
+            <%= link_to agency.name, agency_path(agency.id) %>
             <% unless index == @this_case.agencies.size - 1 %>
               <%= "|" %>
             <% end %>
@@ -65,19 +65,19 @@
         <% if current_user %>
           <% if current_user.following?(@this_case) %>
           <% else %>
-            <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Receive an email when this case is updated.' } %>
+            <%= link_to 'Follow This Case', follows_case_path(@this_case.id), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Receive an email when this case is updated.' } %>
           <% end %>
         <% else %>
-          <%= link_to 'Follow This Case', follows_case_path(@this_case), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Sign in to follow this case', content: 'Receive an email when this case is updated.' } %>
+          <%= link_to 'Follow This Case', follows_case_path(@this_case.id), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Sign in to follow this case', content: 'Receive an email when this case is updated.' } %>
         <% end %>
       </p>
       <hr />
       <p class="timeAgo">Last updated: <%= time_ago_in_words(@this_case.updated_at) %> ago</p>
         <% if @this_case.followers.present? %>
           <p>
-            <%= link_to 'People tracking this case', cases_followers_path(@this_case) %>: <span class="timeAgo"><%= @this_case.followers.size %></span>
+            <%= link_to 'People tracking this case', cases_followers_path(@this_case.id) %>: <span class="timeAgo"><%= @this_case.followers.size %></span>
               <% unless @this_case.followers.include?(current_user) %>
-                — <%= link_to 'Track this case', follows_case_path(@this_case), method: :post %>.
+                — <%= link_to 'Track this case', follows_case_path(@this_case.id), method: :post %>.
               <% end %>
           </p>
         <% end %>

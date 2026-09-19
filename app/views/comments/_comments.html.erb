@@ -1,12 +1,16 @@
-
-
 <div class="">
   <ul class="col-md-12">
-    <% @comments.each do |comment| %>
+    <% if @comments.blank? %>
       <li class="col-md-12">
-        <small class="timeAgo"><%= time_ago_in_words(comment.created_at) %> ago <%= link_to comment.user.name, user_path(comment.user) %></small>
-        <p><%= simple_format comment.content %></p>
+        <p>No comments have been added yet.</p>
       </li>
+    <% else %>
+      <% @comments.each do |comment| %>
+        <li class="col-md-12">
+          <small class="timeAgo"><%= time_ago_in_words(comment.created_at) %> ago <%= link_to comment.user.name, user_path(comment.user.id) %></small>
+          <p><%= simple_format comment.content %></p>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 </div>

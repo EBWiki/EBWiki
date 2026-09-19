@@ -12,6 +12,12 @@ RSpec.describe 'Organizations', type: :request do
       expect(response).to have_http_status(200)
       expect(response.body).to include('Organizations')
     end
+
+    it 'links each organization by record id' do
+      organization = create(:organization, name: 'Linked Org')
+      get '/organizations'
+      expect(response.body).to include("/organizations/#{organization.id}")
+    end
   end
 
   describe 'GET /organizations/:id' do

@@ -17,6 +17,14 @@ RSpec.describe 'Users', type: :request do
     it 'will return a user info' do
       expect(response.body).to include(user.name)
     end
+
+    it 'states plainly when the user follows no cases' do
+      expect(response.body).to include('You are not following any cases yet.')
+    end
+
+    it 'states plainly when the profile has no bio' do
+      expect(response.body).to include('This profile has no bio yet.')
+    end
   end
 
   describe 'GET /users/:id/edit' do

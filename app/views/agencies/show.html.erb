@@ -26,7 +26,7 @@
 </p>
 
 <%= link_to 'Back', session[:previous_url], :class => "btn-default" %>
-<%= link_to 'Edit', edit_agency_path(@agency), :class => "btn-warning" %>
+<%= link_to 'Edit', edit_agency_path(@agency.id), class: "btn-warning" %>
 
 <!-- Related Cases Row -->
 <div class="row">

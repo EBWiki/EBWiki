@@ -15,6 +15,12 @@ RSpec.describe 'Cases', type: :request do
         expect(response.body).to include('cases')
       end
     end
+
+    it 'links listed cases by record id' do
+      this_case = create(:case)
+      get '/cases', params: {}, headers: {}
+      expect(response.body).to include("/cases/#{this_case.id}")
+    end
   end
 
   describe 'GET /cases/:slug' do
@@ -33,6 +39,10 @@ RSpec.describe 'Cases', type: :request do
 
       it 'gives the case photo real alt text' do
         expect(response.body).to include("alt=\"#{_case.title}\"").or include('alt="No photo available')
+      end
+
+      it 'states plainly when the case has no comments' do
+        expect(response.body).to include('No comments have been added yet.')
       end
     end
   end
