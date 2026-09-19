@@ -5,6 +5,6 @@
     <%= link_to this_case[4], case_path(id: this_case[0]) %>
   </div>
   <div class="col-lg-9">
-    <%= this_case[5] %>
+    <%= ERB::Util.html_escape(this_case[5].to_s) %>
   </div>
 </div>
