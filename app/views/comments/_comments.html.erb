@@ -7,7 +7,14 @@
     <% else %>
       <% @comments.each do |comment| %>
         <li class="col-md-12">
-          <small class="timeAgo"><%= time_ago_in_words(comment.created_at) %> ago <%= link_to comment.user.name, user_path(comment.user.id) %></small>
+          <small class="timeAgo">
+            <%= time_ago_in_words(comment.created_at) %> ago
+            <% if comment.user %>
+              <%= link_to comment.user.name, user_path(comment.user.id) %>
+            <% else %>
+              Guest
+            <% end %>
+          </small>
           <p><%= simple_format comment.content %></p>
         </li>
       <% end %>

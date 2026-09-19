@@ -27,6 +27,7 @@ RSpec.describe 'Organizations', type: :request do
       get "/organizations/#{organization.id}"
       expect(response).to have_http_status(200)
       expect(response.body).to include(organization.name)
+      expect(response.body).to include('Back to organizations')
     end
   end
 
