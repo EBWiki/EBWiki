@@ -1,7 +1,7 @@
 <!-- Meta Tag Information -->
 <% content_for :meta_title, "#{@organization.name} on EBWiki" %>
-<% content_for :meta_description, @organization.description %>
-<% content_for :meta_keywords, "#{@organization.name} police violence people color" %>
+<% content_for :meta_description, "#{@this_case.description}" %>
+<% content_for :meta_keywords, "#{organization.name} police violence people color" %>
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -24,5 +24,10 @@
   <%= @organization.telephone %>
 </p>
 
-<%= link_to 'Edit', edit_organization_path(@organization.id) %> |
-<%= link_to 'Back to organizations', organizations_path %>
+<p>
+  <strong>Avatar:</strong>
+  <%= @organization.avatar %>
+</p>
+
+<%= link_to 'Edit', edit_organization_path(@organization) %> |
+<%= link_to 'Back', organizations_path %>
