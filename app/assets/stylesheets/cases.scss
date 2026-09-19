@@ -301,10 +301,13 @@ input.case-btn {
 }
 
 .btn-link {
-  outline: none;
-  border: 0px;
-  box-sizing: none;
+  border: 0;
   background-color: transparent;
+}
+
+.btn-link:focus-visible {
+  outline: 3px solid $color-orange;
+  outline-offset: 2px;
 }
 
 .form-submit {

@@ -7,8 +7,11 @@ $color-orange: #F65732;
     text-transform: uppercase;
 }
 
-.btn:focus, .btn:active:focus, .btn.active:focus {
-    outline: 0 none;
+.btn:focus-visible,
+.btn:active:focus-visible,
+.btn.active:focus-visible {
+    outline: 3px solid $color-orange;
+    outline-offset: 2px;
 }
 
 .btn-lg{

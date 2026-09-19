@@ -42,9 +42,9 @@ A UI PR is not done at “it looks fine on my laptop.”
 3. **Empty and error:** blank search, failed save, unauthorized.
 4. **Viewport:** the layout is Bootstrap 3 / `col-md-8`. Check a desktop
    width and a phone width when layout or CSS changed.
-5. **Focus:** do not copy `.btn:focus { outline: 0 }` from
-   `bootstrap-mods.scss` onto new controls. Keyboard focus must stay
-   visible.
+5. **Focus:** buttons use `:focus-visible` with a 3px `$color-orange`
+   ring (`bootstrap-mods.scss`, `cases.scss`). Do not add `outline: 0`
+   or `outline: none` on new controls.
 6. **Copy:** case pages are about real people. No playful empty states,
    no joke alt text.
 
