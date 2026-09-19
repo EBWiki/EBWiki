@@ -78,7 +78,7 @@
         <%= render 'main_content' %>
       <div class="row">
         <div class="col-md-12">
-          <% embed_html = embed(@this_case.video_url) %>
+          <% embed_html = VideoEmbed.iframe(@this_case.video_url) %>
           <% if embed_html.present? %>
             <div class="embed-container">
                 <%= embed_html %>
