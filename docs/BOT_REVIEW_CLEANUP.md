@@ -31,7 +31,7 @@ is quiet.
 | `CI` (`.github/workflows/ci.yml`) | RSpec, RuboCop, Brakeman, markdown links. This is merge truth. |
 | CodeQL (`dynamic/github-code-scanning/codeql`) | Security scan. |
 | Dependabot (`.github/dependabot.yml`) | Grouped weekly patch/minor + security. Ignores semver-major. |
-| Dependabot auto-merge | Patch/minor only, Dependabot actor only (guard lands with #4421). |
+| Dependabot auto-merge | Patch/minor only, Dependabot actor only (landed with #4421). |
 | Publish Docker Image | Deploy artifact, not review. |
 
 ### Overlapping review / coding agents — this is the mess
@@ -91,8 +91,8 @@ For this repo, the design bar is a quiet review path, not more tools.
 
 ### Phase 0 — stop the bleeding
 
-Done: closed #4387, #4399, #4424. Merged #4423. #4421 is Approved; required
-`CI` still needs a trusted re-run after Copilot edited a workflow file.
+Done: closed #4387, #4399, #4424. Merged #4423 and #4421. No open
+Dependabot PRs remain.
 
 Rule going forward: if a review is needed, `@coderabbitai review` only.
 
@@ -135,4 +135,5 @@ Recommendation: remove Factory. Cursor is the coding agent for this stream, Code
 
 - Rewriting CI into path-aware jobs (#4399). Useful later; not required to stop bot pile-up.
 - Hanami / Harbor / maps / photos drafts.
-- Semver-major gem migrations other than the in-flight Puma 7 path on #4421.
+- Semver-major gem migrations other than Puma 6 → 7 (landed in #4421).
+  Puma 7 → 8 stays deferred.

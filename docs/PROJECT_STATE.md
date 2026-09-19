@@ -18,19 +18,19 @@ agent drafts. Visual / Hanami / Harbor work stays drafted until that path
 is quiet.
 
 ## Last Completed Step
-- Merged #4423 (bundler-dev updates + Dependabot inventory refresh)
+- Merged #4423 (bundler-dev) and #4421 (Puma 7.2.1)
 - Closed leftover Copilot drafts #4424, #4387, #4399
-- Removed Factory Droid auto-review (`droid-review.yml`)
+- Drafted the 239-file Doppler rewrite #4420
+- Removed Factory Droid auto-review (`droid-review.yml`) in #4435
 
 ## Next 3 Micro Tasks
-1. Land #4421 (Puma 6.6.1 → 7.2.1) once required CI runs on the current head
+1. Land #4435 (this review-path PR) when CodeRabbit Approves
 2. Disable Copilot automatic PR review in GitHub repo settings
 3. Keep product drafts (Harbor #4425, Hanami, staff tools) off the weekly queue
 
 ## Blockers / Risks
-- #4421 is Approved but CI on the Copilot workflow-file commit is
-  `action_required` (GitHub will not run `CI` after a bot edits a workflow)
 - Copilot automatic review is a repo setting, not a file in git
+- CodeRabbit was rate-limited on #4435; retry the review there
 
 ## Technical Notes
 - `droid.yml` remains for on-demand `@droid` only. It is not a required review.
