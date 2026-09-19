@@ -26,4 +26,4 @@ Deleting a review bot, rewriting CODEOWNERS, restyling archive views, extracting
 2. List areas touched (review-path, views, lib, gems, docs).
 3. If more than one area, or the diff is too large to review, split first.
 
-Do not polish, squash, or write a longer description to hide a mixed or oversized diff. Human copy: `docs/LANDING_PRS.md`. If the tree is already mixed, use `.cursor/skills/splitting-oversized-prs/SKILL.md`.
+Do not polish, squash, or write a longer description to hide a mixed or oversized diff. This is the ship phase of `.cursor/rules/software-development-loop.mdc`. Human copy: `docs/LANDING_PRS.md` and `docs/SOFTWARE_DEVELOPMENT.md`. If the tree is already mixed, use `.cursor/skills/splitting-oversized-prs/SKILL.md`.
