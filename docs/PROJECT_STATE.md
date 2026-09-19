@@ -30,7 +30,8 @@ is quiet.
 1. Land #4435 (this review-path PR) after a human Approve
 2. Disable Copilot automatic PR review and uninstall the CodeRabbit
    GitHub App in repository settings
-3. Keep product drafts (Harbor #4425, Hanami, staff tools) off the weekly queue
+3. Continue archive UI quality as issue #4437 (separate landing PRs)
+4. Keep product drafts (Harbor #4425, Hanami, staff tools) off the weekly queue
 
 ## Blockers / Risks
 - Copilot automatic review is a repo setting, not a file in git

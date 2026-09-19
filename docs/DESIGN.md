@@ -164,6 +164,10 @@ Before a hygiene or UI PR is called done, list and check:
 
 ## Later, not now
 
+Archive UI quality on the current Bootstrap 3 system continues on
+issue #4437, in its own landing PRs. Do not fold that work back into
+the review-path PR.
+
 Harbor (#4425), Hanami drafts, staff-tools, maps/photos, and a visual
 redesign are later phases. They must use this review path and this
 Bootstrap 3 system, or they must replace this file as part of an
