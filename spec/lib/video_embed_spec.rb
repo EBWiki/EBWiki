@@ -30,5 +30,14 @@ RSpec.describe VideoEmbed do
       expect(described_class.iframe('https://evil.example/youtube.com?v=Mgn1r3_eM-s')).to eq('')
       expect(described_class.iframe('https://evil.example/vimeo.com/136536466')).to eq('')
     end
+
+    it 'reads the YouTube v parameter when other query params are present' do
+      expect(described_class.iframe("#{youtube_url}&t=30")).to eql(youtube_iframe_url)
+    end
+
+    it 'reads the Vimeo id when the path has a trailing slash or query' do
+      expect(described_class.iframe("#{vimeo_url}/")).to eql(vimeo_iframe_url)
+      expect(described_class.iframe("#{vimeo_url}?foo=1")).to eql(vimeo_iframe_url)
+    end
   end
 end

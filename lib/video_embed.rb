@@ -26,7 +26,7 @@ class VideoEmbed
   def youtube_embed
     return unless youtube_host?
 
-    youtube_id = @url.split('=').last.to_s[/\A[\w-]+\z/]
+    youtube_id = youtube_video_id
     return if youtube_id.blank?
 
     iframe_tag("//www.youtube.com/embed/#{youtube_id}")
@@ -35,10 +35,18 @@ class VideoEmbed
   def vimeo_embed
     return unless vimeo_host?
 
-    vimeo_id = @url.split('/').last.to_s[/\A\d+\z/]
+    vimeo_id = vimeo_video_id
     return if vimeo_id.blank?
 
     iframe_tag("https://player.vimeo.com/video/#{vimeo_id}")
+  end
+
+  def youtube_video_id
+    URI.decode_www_form(parsed_uri.query.to_s).to_h['v'].to_s[/\A[\w-]+\z/]
+  end
+
+  def vimeo_video_id
+    parsed_uri.path.split('/').reject(&:empty?).last.to_s[/\A\d+\z/]
   end
 
   def youtube_host?
@@ -50,7 +58,11 @@ class VideoEmbed
   end
 
   def url_host
-    URI.parse(@url).host&.downcase
+    parsed_uri&.host&.downcase
+  end
+
+  def parsed_uri
+    @parsed_uri ||= URI.parse(@url)
   rescue URI::InvalidURIError
     nil
   end
