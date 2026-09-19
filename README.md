@@ -1,4 +1,4 @@
-<p><a href="https://github.com/EBWiki/EBWiki/actions/workflows/ci.yml"><img src="https://github.com/EBWiki/EBWiki/actions/workflows/ci.yml/badge.svg" alt="CI"></a></p>
+<p><a href="https://github.com/EBWiki/EBWiki/actions/workflows/ci.yml/badge.svg"></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/gpa.svg" /></a> <a href="https://codeclimate.com/github/EBWiki/EBWiki/coverage"><img src="https://codeclimate.com/github/EBWiki/EBWiki/badges/coverage.svg" /></a></p>
 
 # EBWiki
 

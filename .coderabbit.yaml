@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
-# CodeRabbit stays installed until a maintainer uninstalls the GitHub App.
-# Automatic reviews are off so the OSS hourly limit is not consumed.
-reviews:
-  request_changes_workflow: false
-  auto_review:
-    enabled: false
-    drafts: false
