@@ -21,6 +21,8 @@ This is the main bar. Graphic polish is not.
 
 - **One CI suite** on `main`: RSpec, RuboCop, Brakeman, markdown links.
   CodeQL is the security scan. That pair is merge truth.
+- **One review bot:** GitHub Copilot leaves first-pass comments. Those
+  comments are not an Approve and cannot replace a human.
 - **One required Approve:** a human in `.github/CODEOWNERS` (currently
   `@gktreviewer`). Hosted review apps do not replace that.
 - **Dependabot** for grouped patch/minor and security only. Semver-major
@@ -28,8 +30,9 @@ This is the main bar. Graphic polish is not.
 - **Ready list:** leftover Dependabot duplicates and agent rewrites are
   closed or drafted the same week. A landing PR is the named change plus
   the smallest unlock.
-- **Roles do not stack:** Cursor implements. Humans Approve. Do not also
-  run CodeRabbit, Copilot review, and Factory Droid on the same PR.
+- **Roles do not stack:** Cursor implements. Copilot comments. Humans
+  Approve. Do not also run CodeRabbit or Factory Droid on the same PR.
+  Do not request Copilot as an Approver.
 - **Libraries:** URL parsing, embed allowlists, and other non-view logic
   live in `lib/` (for example `VideoEmbed`), not in a page helper's
   private methods.
@@ -72,7 +75,8 @@ Two kinds apply here:
   shared state, empty/error, viewport, focus, copy.
 - **Merge requirements** — GitHub checks that block merge: `CI`
   (RSpec, RuboCop, Brakeman, markdown links), CodeQL, and a human
-  Approve from `.github/CODEOWNERS`. A green markdown-link job is one
+  Approve from `.github/CODEOWNERS`. Copilot comments are review
+  notes, not a merge requirement. A green markdown-link job is one
   merge requirement, not all of them.
 
 If any applicable check has not been run, the work stays open. Do not
@@ -109,15 +113,18 @@ quality checks:
 - Polymorphic `linkable_type` / `linkable_id`: new `has_many :links`
   must use `as: :linkable`.
 - CI (`RSpec`, `RuboCop`, `Brakeman`, markdown links) plus CodeQL is
-  merge truth. Required Approve is a human reviewer (`CODEOWNERS`).
+  merge truth. Copilot may comment. Required Approve is a human
+  reviewer (`CODEOWNERS`).
 
 ## Review quality
 
-- One required reviewer per PR: a human listed in
+- One review bot per PR: GitHub Copilot, comments only. Leave it on.
+- One required Approve per PR: a human listed in
   `.github/CODEOWNERS` (currently `@gktreviewer`).
-- Do not request CodeRabbit, Copilot, or Factory Droid on the same PR.
-  CodeRabbit's OSS plan rate-limits mid-review. Copilot comments do
-  not count as Approve. Droid workflows are removed.
+- Do not request CodeRabbit or Factory Droid. CodeRabbit's OSS plan
+  rate-limits mid-review and is not the remaining bot. Droid workflows
+  are removed. Copilot comments do not count as Approve. Do not request
+  Copilot as an Approver.
 - Agent drafts that rewrite half the repo are closed or converted to
   draft the same week. A landing PR is the named change plus the
   smallest unlock (config, one cop, one spec helper).
@@ -131,8 +138,8 @@ public project writing. They follow the same bar as product copy.
   produced it.
 - Do not quote private chat, Cursor transcripts, or first-person asides.
 - Do not publish credentials, review logins, or dump-restore steps.
-- A review request is a human reviewer. Do not `@coderabbitai review`.
-  No status chatter.
+- A required review request is a human reviewer. Copilot comments on
+  its own. Do not `@coderabbitai review`. No status chatter.
 
 ## How we avoid missing work
 

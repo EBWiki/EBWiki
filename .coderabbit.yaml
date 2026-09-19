@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
-# CodeRabbit stays installed until a maintainer uninstalls the GitHub App.
-# Automatic reviews are off so the OSS hourly limit is not consumed.
+# CodeRabbit is retired as a review bot. Keep auto_review off.
+# A maintainer should uninstall the GitHub App. GitHub Copilot is the
+# remaining first-pass review bot (comments only; not an Approve).
 reviews:
   request_changes_workflow: false
   auto_review:

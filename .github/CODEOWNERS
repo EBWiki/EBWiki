@@ -1,2 +1,3 @@
-# Required review is a human maintainer. LLM review apps do not count.
+# Required Approve is a human maintainer. GitHub Copilot may leave
+# first-pass comments; those comments are not an Approve.
 * @gktreviewer
