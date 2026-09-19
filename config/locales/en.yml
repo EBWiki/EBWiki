@@ -30,7 +30,7 @@ en:
       taser: 'Taser'
       vehicular: 'Vehicular'
   cases_controller:
-    case_not_found_message: 'Case was not found!'
+    case_not_found_message: 'That case was not found.'
   cases_helper:
     youtube_helper_url: "https://www.youtube.com/watch?v=Mgn1r3_eM-s"
     vimeo_helper_url: "https://vimeo.com/136536466"

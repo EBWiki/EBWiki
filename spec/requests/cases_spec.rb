@@ -30,6 +30,10 @@ RSpec.describe 'Cases', type: :request do
       it 'will return the case page' do
         expect(response.body).to include(_case.title)
       end
+
+      it 'gives the case photo real alt text' do
+        expect(response.body).to include("alt=\"#{_case.title}\"").or include('alt="No photo available')
+      end
     end
   end
 
