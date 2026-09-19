@@ -18,7 +18,7 @@
 		    <% @this_case.followers.each do |follower| %>
 			    <div class="col-lg-2 col-md-3 col-xs-12">
           <div class="">
-            <%= link_to follower do %>
+            <%= link_to user_path(follower.id) do %>
               <%= image_tag avatar_url(follower, 200), class: "img-responsive", alt: "" %>
               <p><%= follower.name %></p>
             <% end %>

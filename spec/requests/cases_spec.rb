@@ -159,6 +159,13 @@ RSpec.describe 'Cases', type: :request do
       it 'will return a list of followers' do
         expect(response.body).to include('followers')
       end
+
+      it 'links each follower by record id and shows the name' do
+        users.each do |user|
+          expect(response.body).to include(user.name)
+          expect(response.body).to include("/users/#{user.id}")
+        end
+      end
     end
   end
 

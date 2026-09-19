@@ -123,10 +123,11 @@ Before a hygiene or UI PR is called done, list and check:
    Grep is not enough if the first match is treated as the whole job.
 4. **Public GitHub copy** on the tickets this work touches: titles,
    bodies, and comments. No chat quotes, no credentials.
-5. **Stored values in HTML attributes** (`alt`, `title`, `content`).
-   Escape with `ERB::Util.html_escape`, or show the name as visible
-   text and use an empty `alt`. `strip_tags` alone does not clear
-   CodeQL stored-XSS.
+5. **Stored values in HTML attributes** (`alt`, `title`, `content`,
+   `href`). Escape with `ERB::Util.html_escape`, or show the name as
+   visible text and use an empty `alt`. Do not pass a stored record
+   into `link_to`; use a path helper with the record id. `strip_tags`
+   alone does not clear CodeQL stored-XSS.
 6. **The quality checks above**, including empty, error, focus, and
    a browser or request-spec check. A green markdown-link job is a
    merge requirement; it does not pass the quality checks.
