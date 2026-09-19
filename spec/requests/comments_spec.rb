@@ -35,6 +35,28 @@ RSpec.describe 'Comments', type: :request do
       it 'redirect to the case page' do
         expect(response).to redirect_to case_path(_case)
       end
+
+      it 'sets a success notice' do
+        expect(flash[:notice]).to eq('Comment added.')
+      end
+    end
+
+    context 'when the comment is blank' do
+      before do
+        sign_in user
+        post "/cases/#{_case.slug}/comments", params: { comment: { content: '' } }, headers: {}
+      end
+
+      it 'does not create a comment' do
+        expect(_case.comments.count).to eq(0)
+      end
+
+      it 'redirects to the case with an alert' do
+        expect(response).to redirect_to case_path(_case)
+        expect(flash[:alert]).to eq(
+          'Comment could not be added. Write the comment before submitting.'
+        )
+      end
     end
   end
 end
