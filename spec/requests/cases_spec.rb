@@ -15,6 +15,12 @@ RSpec.describe 'Cases', type: :request do
         expect(response.body).to include('cases')
       end
     end
+
+    it 'links listed cases by record id' do
+      this_case = create(:case)
+      get '/cases', params: {}, headers: {}
+      expect(response.body).to include("/cases/#{this_case.id}")
+    end
   end
 
   describe 'GET /cases/:slug' do
@@ -29,6 +35,11 @@ RSpec.describe 'Cases', type: :request do
 
       it 'will return the case page' do
         expect(response.body).to include(_case.title)
+      end
+
+      it 'links case actions by record id' do
+        expect(response.body).to include(follows_case_path(_case.id))
+        expect(response.body).to include(cases_history_path(_case.id))
       end
     end
   end

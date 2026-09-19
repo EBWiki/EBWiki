@@ -15,6 +15,6 @@ module CasesHelper
   end
 
   def link_to_case_title(this_case, length)
-    link_to truncate(this_case.title, length: length), this_case
+    link_to truncate(this_case.title, length: length), case_path(this_case.id)
   end
 end
