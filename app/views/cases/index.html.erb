@@ -8,7 +8,11 @@
         <%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %> to follow a case or to add or update cases.
       </h3> 
       <div id='front-gallery'>
-        <%= render partial: 'thumbnail', layout: "index_thumbnail", collection: @cases, as: :this_case %>
+        <% if @cases.empty? %>
+          <p>No cases are listed yet.</p>
+        <% else %>
+          <%= render partial: 'thumbnail', layout: "index_thumbnail", collection: @cases, as: :this_case %>
+        <% end %>
       </div>
       <%= paginate @cases %>
       <p><%= page_entries_info @cases %></p>

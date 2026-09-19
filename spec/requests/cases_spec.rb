@@ -14,6 +14,10 @@ RSpec.describe 'Cases', type: :request do
       it 'will return the list of cases' do
         expect(response.body).to include('cases')
       end
+
+      it 'states plainly when no cases are listed' do
+        expect(response.body).to include('No cases are listed yet.')
+      end
     end
 
     it 'links listed cases by record id' do

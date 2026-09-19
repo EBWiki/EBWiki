@@ -33,4 +33,13 @@ module ApplicationHelper
   def link_to_case_title(this_case, length)
     link_to truncate(this_case.title, length: length), case_path(this_case.id)
   end
+
+  def link_to_http_url(url)
+    href = url.to_s
+    if href.start_with?('http://', 'https://')
+      link_to href, href, target: '_blank', rel: 'noopener noreferrer'
+    else
+      href
+    end
+  end
 end

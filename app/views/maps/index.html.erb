@@ -14,10 +14,9 @@
 			</div>
 			<h2 class="page-subheader">Select a map pin to open the case.</h2>
 			<div id="markers-on-the-map">
-	    		<div id="map page-header">
+	    		<div id="map-page-header">
 		    		<div id="map-container"></div>
-					<!-- HERE Maps -->
-					<script type="text/javascript" async>window.CASES='<%= @cases %>';</script>
+					<script type="text/javascript">window.CASES = '<%= j @cases %>';</script>
 	    		</div>
 		   	</div>
 		</div>

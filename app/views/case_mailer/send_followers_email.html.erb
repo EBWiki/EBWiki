@@ -1,6 +1,5 @@
-<h1> **ALERT** <%= @this_case.title %> update:</h1>
-<p>Case editor <%= User.find(@this_case.versions.last.whodunnit).name %>
-has updated the <%= link_to @this_case.title, url_for(@this_case) %> case on EBWiki today. To describe the update,
- <%= User.find(@this_case.versions.last.whodunnit).name %> says: "<%= @this_case.versions.last.comment%>".
-<p>
-<p> Please feel free to add any data you have on this or <%= link_to 'other cases', 'http://ebwiki.org' %>.</p>
+<% editor_name = User.find(@this_case.versions.last.whodunnit).name %>
+<h1><%= @this_case.title %> was updated</h1>
+<p><%= editor_name %> updated <%= link_to @this_case.title, case_url(@this_case.id) %> on EBWiki.</p>
+<p>Summary: "<%= @this_case.versions.last.comment %>"</p>
+<p>You can add sources on this or <%= link_to 'other cases', root_url %>.</p>

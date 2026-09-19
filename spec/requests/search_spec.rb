@@ -13,6 +13,7 @@ RSpec.describe 'Search', type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('No cases matched this search.')
+      expect(response.body).to include('Search cases')
     end
   end
 end
