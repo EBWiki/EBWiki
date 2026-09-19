@@ -28,7 +28,7 @@ RSpec.describe Devise::Mailer, type: :mailer do
     end
 
     it 'prompts the user to confirm' do
-      expect(mail.body.encoded).to include('Confirm your account')
+      expect(mail.body.encoded).to match(/click here to confirm your account/i)
     end
   end
 end

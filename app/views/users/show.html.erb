@@ -2,9 +2,11 @@
   <section class="userAvatar">
     <div class="row">
       <div class="col-md-2">
-        <%= image_tag avatar_url(@user, 200), class: "img-rounded img-responsive", alt: "" %>
-        <p><%= @user.name %></p>
-        <p>Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %></p>
+        <%= image_tag avatar_url(@user,200),  class: "img-rounded img-responsive" %>
+        <%= @user.name %>
+        <br>
+        Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
+        <br>
         <% if @user == current_user %>
           <div class="panel panel-default mailFoldershort">
             <div class="panel-body">
@@ -15,41 +17,35 @@
         <% else %>
           <%= link_to "Send a Message", new_conversation_path, class: "btn btn-success" %>
         <% end %>
+        <br>
       </div>
       <div class="col-md-10">
         <div class="alert alert-info">
+          <h2></h2>
           <div class="user-header">
             <h4><%= "#{@user.name}'s bio:" %></h4>
             <% if policy(@user).edit? %>
-              <%= link_to 'Edit profile', edit_user_path(@user.id), class: "btn btn-success btn-capitalized" %>
+              <%= link_to 'Edit profile', edit_user_path(@user), class: "btn btn-success btn-capitalized" %>
             <% end %>
           </div>
-          <% if @user.description.present? %>
-            <p class="user-description"><%= @user.description %></p>
-          <% else %>
-            <p class="user-description">This profile has no bio yet.</p>
-          <% end %>
+          <p class="user-description"><%= @user.description %></p>
         </div>
-        <% followed_cases = Array(@cases) %>
-        <% if @user == current_user %>
-          <h3 class="page-header">
-            <% if followed_cases.empty? %>
-              You are not following any cases yet. Open a case and choose Follow to get updates.
-            <% else %>
-              Cases we are tracking for you:
-            <% end %>
-          </h3>
+        <% if @user != current_user %>
+          <h3 class="page-header">Cases <%= @user.name %> follows:</h3>
         <% else %>
           <h3 class="page-header">
-            <% if followed_cases.empty? %>
-              <%= @user.name %> is not following any cases.
+            <% if @cases.size.zero? %>
+              Please take 30 seconds and <%= link_to 'pick a case', root_path %> that you want to track and click the follow button. We'll take it from there to keep you informed.
             <% else %>
-              Cases <%= @user.name %> follows:
+              <h3 class="page-header">Cases we are tracking for you:</h3>
             <% end %>
           </h3>
         <% end %>
-        <%= render partial: 'cases/thumbnail', layout: 'cases/show_thumbnail', collection: followed_cases, as: :this_case %>
+        <%= render partial: 'cases/thumbnail', layout: 'cases/show_thumbnail', collection: @cases, as: :this_case %>
       </div>
     </div>
+<!-- ROW END -->
   </section>
+  <!-- SECTION END -->
 </div>
+<!-- CONATINER END -->

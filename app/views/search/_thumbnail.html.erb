@@ -1,11 +1,11 @@
 <div class="view view-first">
   <div class="thumbnail text-center">
     <% if this_case.avatar? %>
-      <%= link_to image_tag(this_case.avatar.large_avatar.url, class: "img-responsive", alt: ERB::Util.html_escape(this_case.title)), case_path(this_case.id) %>
+      <%= link_to image_tag(this_case.avatar.large_avatar.url, class: "img-responsive"), case_path(this_case.id) %>
     <% else %>
-      <%= link_to image_tag("default-user-icon.png", class: "img-responsive", alt: "No photo available for #{ERB::Util.html_escape(this_case.title)}"), case_path(this_case.id) %>
+      <%= link_to image_tag("default-user-icon.png", class: "img-responsive"), case_path(this_case.id) %>
       <div class="caption">
-        <h4><%= this_case.subjects.first&.name %></h4>
+        <h4><%= this_case.subjects.first.name %></h4>
       </div>
     <% end %>
   </div>

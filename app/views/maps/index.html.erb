@@ -2,9 +2,9 @@
     <div class="row">
     	<div class="col-lg-12">
 	     	<% if user_signed_in? %>
-		     	<p>Follow a case from its page to receive updates as it proceeds.</p>
+		     	Click the follow button below the image on any case on the map. We will keep you updated as these cases proceed.</p>
 			<% else %>
-		    	<p><%= link_to 'Sign in', new_user_session_path %> to follow a case and receive updates as it proceeds.</p>
+		    	<%= link_to 'Login', new_user_registration_path %> and follow specific cases and we will update you as they proceed.
 			<% end %>
 			<div class="text-center">
 				<h3>
@@ -12,11 +12,12 @@
 					<%= link_to 'Get our newsletter', "http://eepurl.com/bt5QCz", class: "btn btn-default" %>
 				</h3>
 			</div>
-			<h2 class="page-subheader">Select a map pin to open the case.</h2>
+			<h2 class="page-subheader">Click on the map pins below to learn more.</h2>
 			<div id="markers-on-the-map">
-	    		<div id="map-page-header">
+	    		<div id="map page-header">
 		    		<div id="map-container"></div>
-					<script type="text/javascript">window.CASES = '<%= j @cases %>';</script>
+					<!-- HERE Maps -->
+					<script type="text/javascript" async>window.CASES='<%= @cases %>';</script>
 	    		</div>
 		   	</div>
 		</div>

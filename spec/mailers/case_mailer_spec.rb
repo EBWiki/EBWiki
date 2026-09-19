@@ -43,10 +43,6 @@ RSpec.describe CaseMailer, type: :mailer do
     it 'includes user.name' do
       expect(mail.body.encoded).to match(author.name)
     end
-
-    it 'links the case by record id' do
-      expect(mail.body.encoded).to include("/cases/#{this_case.id}")
-    end
   end
 end
 

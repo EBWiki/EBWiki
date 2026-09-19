@@ -22,7 +22,7 @@ $color-dark-gray: #4D4D4D;
 }
 
 .side-leader{
-  background: $color-orange;
+  background:#de651b;
   color:#fff!important;
   padding:10px 0;
   text-align:center;
@@ -301,13 +301,10 @@ input.case-btn {
 }
 
 .btn-link {
-  border: 0;
+  outline: none;
+  border: 0px;
+  box-sizing: none;
   background-color: transparent;
-}
-
-.btn-link:focus-visible {
-  outline: 3px solid $color-orange;
-  outline-offset: 2px;
 }
 
 .form-submit {

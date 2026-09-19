@@ -12,7 +12,6 @@ RSpec.describe 'users/show.html.erb', type: :view do
     end
 
     assign(:user, user1)
-    assign(:cases, [])
     render
 
     expect(rendered).to match(/Edit profile/m)
@@ -29,7 +28,6 @@ RSpec.describe 'users/show.html.erb', type: :view do
     end
 
     assign(:user, user1)
-    assign(:cases, [])
     render
 
     expect(rendered).not_to match(/Edit profile/m)

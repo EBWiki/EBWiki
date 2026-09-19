@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Helper for case pages.
+# Helper for case page, mostly the casw show page.
 module CasesHelper
   def embed(video_url)
     if video_url.include? 'youtube.com'

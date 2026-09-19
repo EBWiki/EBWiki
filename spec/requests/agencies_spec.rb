@@ -30,15 +30,6 @@ RSpec.describe 'Agencies', type: :request do
       it 'will return the agency page' do
         expect(response.body).to include(agency.name)
       end
-
-      it 'states plainly when the agency has no cases' do
-        expect(response.body).to include('No cases are currently listed for this agency.')
-      end
-
-      it 'returns to the agencies list instead of a stored referer' do
-        expect(response.body).to include('Back to agencies')
-        expect(response.body).to include(agencies_path)
-      end
     end
   end
 

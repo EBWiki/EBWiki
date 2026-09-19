@@ -6,12 +6,18 @@
 <!-- Page Content -->
 <div class="container">
 
+<!-- Portfolio Item Heading -->
+  <div class="row">
+  </div>
+  <!-- /.row -->
+
+  <!-- Portfolio Item Row -->
   <div class="row">
     <div class="col-md-3">
       <% if @this_case.avatar? %>
-        <%= image_tag(@this_case.avatar.large_avatar.url, class: "img-responsive articleImage", alt: ERB::Util.html_escape(@this_case.title)) %>
+        <%= image_tag(@this_case.avatar.large_avatar.url, :class => "img-responsive articleImage") %>
       <% else %>
-        <%= image_tag('default-user-icon.png', size: "250x250", class: "img-responsive articleImage", alt: "No photo available for #{ERB::Util.html_escape(@this_case.title)}") %>
+        <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
       <% end %>
 
       <div class="">
@@ -38,7 +44,7 @@
       <% if @this_case.agencies.present? %>
         <p class="h5">Agencies:
           <% @this_case.agencies.each_with_index do |agency, index| %>
-            <%= link_to agency.name, agency_path(agency.id) %>
+            <%= link_to agency.name, agency_path(agency) %>
             <% unless index == @this_case.agencies.size - 1 %>
               <%= "|" %>
             <% end %>
@@ -59,10 +65,10 @@
         <% if current_user %>
           <% if current_user.following?(@this_case) %>
           <% else %>
-            <%= link_to 'Follow This Case', follows_case_path(@this_case.id), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Receive an email when this case is updated.' } %>
+            <%= link_to 'Follow This Case', follows_case_path(@this_case.id), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', content: 'Click here to receive an email whenever this case is updated.' } %>
           <% end %>
         <% else %>
-          <%= link_to 'Follow This Case', follows_case_path(@this_case.id), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Sign in to follow this case', content: 'Receive an email when this case is updated.' } %>
+          <%= link_to 'Follow This Case', follows_case_path(@this_case.id), method: :post, class: "btn-lg btn-primary text-center", data: { toggle: 'popover', container: 'body', trigger: 'hover', placement: 'bottom', title: 'Login to Follow this case!', content: 'Click here to receive an email whenever this case is updated.' } %>
         <% end %>
       </p>
       <hr />
@@ -71,7 +77,7 @@
           <p>
             <%= link_to 'People tracking this case', cases_followers_path(@this_case.id) %>: <span class="timeAgo"><%= @this_case.followers.size %></span>
               <% unless @this_case.followers.include?(current_user) %>
-                — <%= link_to 'Track this case', follows_case_path(@this_case.id), method: :post %>.
+                -- Click here to <%= link_to 'Track this', follows_case_path(@this_case.id), :method => :post %>.
               <% end %>
           </p>
         <% end %>
