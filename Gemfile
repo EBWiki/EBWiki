@@ -86,7 +86,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'annotaterb', '~> 4.24'
+  gem 'annotaterb', '~> 4.25'
   gem 'brakeman', '~> 8.0', require: false
   gem 'derailed_benchmarks', '~> 1.8'
   gem 'listen', '~> 3.7'

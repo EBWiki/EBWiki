@@ -98,7 +98,7 @@ GEM
       actionview (>= 6.0, < 9.0)
       activerecord (>= 6.0, < 9.0)
       kaminari (~> 1.2.2)
-    annotaterb (4.24.0)
+    annotaterb (4.25.0)
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
     ast (2.4.3)
@@ -712,7 +712,7 @@ DEPENDENCIES
   activerecord-session_store (~> 2.3)
   acts_as_follower!
   administrate (~> 1.0)
-  annotaterb (~> 4.24)
+  annotaterb (~> 4.25)
   bootsnap (~> 1.26)
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails (~> 4.17)
