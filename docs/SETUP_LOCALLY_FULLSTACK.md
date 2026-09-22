@@ -24,14 +24,13 @@ Before beginning the installation and configuration of your environment, ensure 
 * [Rails v5.2.6](http://rubyonrails.org/)
 
 ## Installation
-To work on EBWiki locally you will need to have PostgreSQL, NodeJS, Redis, and Elasticsearch running on your local environment.  Information on how to install and configure these programs and services is listed below:
+To work on EBWiki locally you will need to have PostgreSQL, NodeJS, and Redis running on your local environment.  Information on how to install and configure these programs and services is listed below:
 * [PostGreSQL](https://www.postgresql.org/)
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch) - Keep in mind that Elasticsearch requires Java to run properly.  The latest Java Development Kit can be found [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 * [NodeJS](https://nodejs.org/en/) - Note: if you are using Windows Subsystem for Linux, you will need to follow the instructions to install Node within Ubuntu, not the standalone Windows version.
 * [Redis](https://redis.io/)
 
 
-It is generally recommended that you have PostGreSQL and Elasticsearch start at bootup.
+It is generally recommended that you have PostgreSQL start at bootup.
 
 ## App Configuration
 Using your command line, navigate to the location where you will store your local copy of the codebase.  Create your own personal fork of our repo, and then clone a copy of your fork to your local environment:
