@@ -13,6 +13,7 @@ module FriendlyPhotos
       mugshot arrests.org jailbase vinelink inmate-lookup offenderlookup
       capturenet booking.photo
     ].freeze
+    BLOCKED_HOST_PATTERN = Regexp.union(BLOCKED_HOST_FRAGMENTS).freeze
     BLOCKED_TEXT = /
       mugshots?\.com|arrests\.org|jailbase|vinelink|inmate.?lookup|
       offender.?lookup|booking.?database
@@ -43,7 +44,7 @@ module FriendlyPhotos
       host = https_host_name(url)
       return true if host.blank?
 
-      blocked_text?(url.to_s) || BLOCKED_HOST_FRAGMENTS.any? { |part| host.include?(part) }
+      blocked_text?(url.to_s) || host.match?(BLOCKED_HOST_PATTERN)
     end
 
     def self.blocked_text?(text)
