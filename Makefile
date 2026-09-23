@@ -5,7 +5,7 @@ build:
 
 run up start: build
 	$(COMPOSE) up --detach
-	./dev_provisions/prewarm.sh
+	./docker/prewarm.sh
 
 logs:
 	$(COMPOSE) logs --follow
