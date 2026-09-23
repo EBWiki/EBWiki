@@ -1,3 +1,8 @@
+# Rails style for this file: RuboCop + rubocop-rails + rubocop-performance.
+# Preferred style for new Hanami code is Standard Ruby (apps/hanami/.standard.yml).
+# The `standard` gem is already in the root Gemfile; do not run it against
+# app/ until a dedicated conversion. Hanami is excluded below.
+
 plugins:
   - rubocop-performance
   - rubocop-rails
@@ -28,6 +33,7 @@ AllCops:
     - 'config/routes.rb'
     - 'vendor/**/*'
     - 'spec/**/*'
+    - 'apps/hanami/**/*'
 
 # Disabled pending i18n refactor - requires moving all flash/validation messages to locale files
 Rails/I18nLocaleTexts:

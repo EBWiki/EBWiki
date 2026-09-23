@@ -1,0 +1,2 @@
+<h1>Edit <%= organization.name %></h1>
+<%= render "organizations/form", values: values, errors: errors, organization: organization, action: "/organizations/#{organization.id}", method_override: "patch" %>
