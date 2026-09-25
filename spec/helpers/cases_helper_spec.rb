@@ -19,7 +19,8 @@ INVALID_YOUTUBE_URLS = ['https://notyoutube.com/watch?v=Mgn1r3_eM-s',
                         'javascript://youtube.com/%0Aalert(1)'].freeze
 DUPLICATE_YOUTUBE_URL = 'https://www.youtube.com/watch?v=Mgn1r3_eM-s&v=ignored'
 LOOKALIKE_VIMEO_URL = 'https://evil.com/?next=vimeo.com/136536466'
-NON_VIDEO_VIMEO_URL = 'https://vimeo.com/channels/staffpicks'
+NON_VIDEO_VIMEO_URLS = ['https://vimeo.com/channels/staffpicks',
+                        'https://vimeo.com/channels/staffpicks/136536466'].freeze
 
 def passthrough_iframe(video_url)
   %(<iframe src="#{video_url}"></iframe>)
@@ -30,19 +31,15 @@ RSpec.describe CasesHelper, type: :helper do
   let(:vimeo_url) { I18n.t 'cases_helper.vimeo_helper_url' }
   let(:youtube_iframe_url) { I18n.t 'cases_helper.youtube_iframe_url' }
   let(:vimeo_iframe_url) { I18n.t 'cases_helper.vimeo_iframe_url' }
-  let(:youtube_id) { 'Mgn1r3_eM-s' }
-  let(:youtube_embed_url) { "//www.youtube.com/embed/#{youtube_id}" }
+  let(:youtube_embed_url) { '//www.youtube.com/embed/Mgn1r3_eM-s' }
   let(:youtube_embed_iframe) { %(<iframe src="#{youtube_embed_url}"></iframe>) }
-
   describe '#embed' do
     it 'returns an empty string if the video URL is blank' do
       expect(helper.embed(youtube_url)).to eql(youtube_iframe_url)
     end
-
     it 'returns a content tag if vimeo video URL is provided' do
       expect(helper.embed(vimeo_url)).to eql(vimeo_iframe_url)
     end
-
     it 'returns a content tag for a YouTube URL with duplicate video query parameters' do
       expect(helper.embed(DUPLICATE_YOUTUBE_URL)).to eql(youtube_embed_iframe)
     end
@@ -51,8 +48,10 @@ RSpec.describe CasesHelper, type: :helper do
       expect(helper.embed(LOOKALIKE_VIMEO_URL)).to eql(passthrough_iframe(LOOKALIKE_VIMEO_URL))
     end
 
-    it 'does not treat a non-video Vimeo URL as Vimeo' do
-      expect(helper.embed(NON_VIDEO_VIMEO_URL)).to eql(passthrough_iframe(NON_VIDEO_VIMEO_URL))
+    it 'does not treat non-video Vimeo URLs as Vimeo' do
+      NON_VIDEO_VIMEO_URLS.each do |non_video_vimeo_url|
+        expect(helper.embed(non_video_vimeo_url)).to eql(passthrough_iframe(non_video_vimeo_url))
+      end
     end
 
     it 'returns a YouTube embed iframe for supported query and path URL formats' do

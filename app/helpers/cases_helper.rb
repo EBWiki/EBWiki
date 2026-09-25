@@ -29,22 +29,18 @@ module CasesHelper
   private
 
   def youtube_video_id(video_url)
-    uri = URI.parse(video_url)
-    scheme = uri.scheme.to_s.downcase
-    host = uri.host.to_s.downcase
-    return unless %w[http https].include?(scheme)
-    return unless YOUTUBE_HOSTS.include?(host)
+    uri = trusted_uri(video_url, YOUTUBE_HOSTS)
+    return unless uri
 
-    youtube_query_video_id(uri) || youtube_path_video_id(uri, host)
-  rescue URI::InvalidURIError
-    nil
+    youtube_query_video_id(uri) || youtube_path_video_id(uri)
   end
 
   def youtube_query_video_id(uri)
     URI.decode_www_form(uri.query.to_s).find { |key, _value| key == 'v' }&.last
   end
 
-  def youtube_path_video_id(uri, host)
+  def youtube_path_video_id(uri)
+    host = uri.host.to_s.downcase
     path_segments = uri.path.split('/').reject(&:empty?)
     return path_segments.first if host == 'youtu.be'
     return path_segments.second if %w[embed v shorts live].include?(path_segments.first)
@@ -53,16 +49,28 @@ module CasesHelper
   end
 
   def vimeo_video_id(video_url)
+    uri = trusted_uri(video_url, VIMEO_HOSTS)
+    return unless uri
+
+    vimeo_path_video_id(uri)
+  end
+
+  def vimeo_path_video_id(uri)
+    path_segments = uri.path.split('/').reject(&:empty?)
+    video_id = path_segments.first
+    return video_id if path_segments.length == 1 && video_id&.match?(/\A\d+\z/)
+
+    nil
+  end
+
+  def trusted_uri(video_url, allowed_hosts)
     uri = URI.parse(video_url)
     scheme = uri.scheme.to_s.downcase
     host = uri.host.to_s.downcase
     return unless %w[http https].include?(scheme)
-    return unless VIMEO_HOSTS.include?(host)
+    return unless allowed_hosts.include?(host)
 
-    video_id = uri.path.split('/').reject(&:empty?).last
-    return video_id if video_id&.match?(/\A\d+\z/)
-
-    nil
+    uri
   rescue URI::InvalidURIError
     nil
   end
