@@ -68,6 +68,7 @@ module CasesHelper
     uri = URI.parse(video_url)
     scheme = uri.scheme.to_s.downcase
     host = uri.host.to_s.downcase
+    return if uri.userinfo.present?
     return unless scheme.empty? || TRUSTED_VIDEO_SCHEMES.include?(scheme)
     return unless allowed_hosts.include?(host)
 

@@ -17,6 +17,7 @@ VALID_YOUTUBE_URLS = ['https://youtube.com/watch?v=Mgn1r3_eM-s',
 INVALID_YOUTUBE_URLS = ['https://notyoutube.com/watch?v=Mgn1r3_eM-s',
                         'https://youtube.evil.com/watch?v=Mgn1r3_eM-s',
                         'https://fakeyoutu.be/Mgn1r3_eM-s',
+                        'https://evil.com@www.youtube.com/watch?v=Mgn1r3_eM-s',
                         'javascript://youtube.com/%0Aalert(1)'].freeze
 DUPLICATE_YOUTUBE_URL = 'https://www.youtube.com/watch?v=Mgn1r3_eM-s&v=ignored'
 VALID_VIMEO_URLS = [I18n.t('cases_helper.vimeo_helper_url'), '//vimeo.com/136536466'].freeze
