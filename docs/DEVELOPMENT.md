@@ -38,17 +38,17 @@ If everything looks great on staging, then we'll push the code to production wit
 ## Getting EBWiki Up and Running Locally
 
 There are a number of guides available for running EBWiki in your local environment:
-* [Running locally using a docker container](SETUP_LOCALLY.md)
+* [Running locally with Docker Compose](SETUP_LOCALLY.md)
 * [Running locally using a text editor and terminal](SETUP_LOCALLY_FULLSTACK.md)
 * [TODO: Running EBWiki in a GitHub codespace](CODESPACE (WIP))
+* [Agent evaluation with Harbor](SPIKE_HARBOR.md) (optional; does not replace Docker or RSpec) — commands in [harbor/README.md](../harbor/README.md)
 
 ## Restoring Local Database from Production Backup
 
 The EBWiki repo has a `db/seeds.rb` file that you can use to add some basic data to your local database for development purposes.  However, there may be times when you want your local database to have data similar to what you'd see in production (e.g, when working on analytics or search).  In that case, please leave a comment stating your need on your ticket and mention Rachel Green or Mark Nyon.
 
 ## Third-Party Services
-* Elasticsearch for searching cases. Elasticsearch < 7 due to licensing issues.
-* Postgres 12 or higher
+* Postgres 12 or higher, with `pg_search` for case search
 * Redis
 * Sumologic
 
