@@ -30,7 +30,9 @@ module CasesHelper
 
   def youtube_video_id(video_url)
     uri = URI.parse(video_url)
+    scheme = uri.scheme.to_s.downcase
     host = uri.host.to_s.downcase
+    return unless %w[http https].include?(scheme)
     return unless YOUTUBE_HOSTS.include?(host)
 
     URI.decode_www_form(uri.query.to_s).to_h['v'] || youtube_path_video_id(uri, host)
