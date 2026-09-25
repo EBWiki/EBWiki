@@ -11,6 +11,7 @@ module CasesHelper
     www.youtube-nocookie.com
   ].freeze
   VIMEO_HOSTS = %w[vimeo.com www.vimeo.com].freeze
+  TRUSTED_VIDEO_SCHEMES = %w[http https].freeze
 
   def embed(video_url)
     if (youtube_id = youtube_video_id(video_url.to_s))
@@ -67,7 +68,7 @@ module CasesHelper
     uri = URI.parse(video_url)
     scheme = uri.scheme.to_s.downcase
     host = uri.host.to_s.downcase
-    return unless %w[http https].include?(scheme)
+    return unless scheme.empty? || TRUSTED_VIDEO_SCHEMES.include?(scheme)
     return unless allowed_hosts.include?(host)
 
     uri
