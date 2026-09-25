@@ -10,12 +10,12 @@ module CasesHelper
     youtube-nocookie.com
     www.youtube-nocookie.com
   ].freeze
+  VIMEO_HOSTS = %w[vimeo.com www.vimeo.com].freeze
 
   def embed(video_url)
     if (youtube_id = youtube_video_id(video_url.to_s))
       content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{youtube_id}")
-    elsif video_url.include? 'vimeo.com'
-      vimeo_id = video_url.to_s.split('.com/').last
+    elsif (vimeo_id = vimeo_video_id(video_url.to_s))
       content_tag(:iframe, nil, src: "https://player.vimeo.com/video/#{vimeo_id}")
     else
       content_tag(:iframe, nil, src: video_url.to_s)
@@ -35,9 +35,13 @@ module CasesHelper
     return unless %w[http https].include?(scheme)
     return unless YOUTUBE_HOSTS.include?(host)
 
-    URI.decode_www_form(uri.query.to_s).to_h['v'] || youtube_path_video_id(uri, host)
+    youtube_query_video_id(uri) || youtube_path_video_id(uri, host)
   rescue URI::InvalidURIError
     nil
+  end
+
+  def youtube_query_video_id(uri)
+    URI.decode_www_form(uri.query.to_s).find { |key, _value| key == 'v' }&.last
   end
 
   def youtube_path_video_id(uri, host)
@@ -45,6 +49,18 @@ module CasesHelper
     return path_segments.first if host == 'youtu.be'
     return path_segments.second if %w[embed v shorts live].include?(path_segments.first)
 
+    nil
+  end
+
+  def vimeo_video_id(video_url)
+    uri = URI.parse(video_url)
+    scheme = uri.scheme.to_s.downcase
+    host = uri.host.to_s.downcase
+    return unless %w[http https].include?(scheme)
+    return unless VIMEO_HOSTS.include?(host)
+
+    uri.path.split('/').reject(&:empty?).last
+  rescue URI::InvalidURIError
     nil
   end
 end

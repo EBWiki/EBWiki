@@ -17,6 +17,12 @@ INVALID_YOUTUBE_URLS = ['https://notyoutube.com/watch?v=Mgn1r3_eM-s',
                         'https://youtube.evil.com/watch?v=Mgn1r3_eM-s',
                         'https://fakeyoutu.be/Mgn1r3_eM-s',
                         'javascript://youtube.com/%0Aalert(1)'].freeze
+DUPLICATE_YOUTUBE_URL = 'https://www.youtube.com/watch?v=Mgn1r3_eM-s&v=ignored'
+LOOKALIKE_VIMEO_URL = 'https://evil.com/?next=vimeo.com/136536466'
+
+def passthrough_iframe(video_url)
+  %(<iframe src="#{video_url}"></iframe>)
+end
 
 RSpec.describe CasesHelper, type: :helper do
   let(:youtube_url) { I18n.t 'cases_helper.youtube_helper_url' }
@@ -36,17 +42,23 @@ RSpec.describe CasesHelper, type: :helper do
       expect(helper.embed(vimeo_url)).to eql(vimeo_iframe_url)
     end
 
-    VALID_YOUTUBE_URLS.each do |valid_youtube_url|
-      it "returns a YouTube embed iframe for #{valid_youtube_url}" do
+    it 'returns a content tag for a YouTube URL with duplicate video query parameters' do
+      expect(helper.embed(DUPLICATE_YOUTUBE_URL)).to eql(youtube_embed_iframe)
+    end
+
+    it 'does not treat a lookalike Vimeo URL as Vimeo' do
+      expect(helper.embed(LOOKALIKE_VIMEO_URL)).to eql(passthrough_iframe(LOOKALIKE_VIMEO_URL))
+    end
+
+    it 'returns a YouTube embed iframe for supported query and path URL formats' do
+      VALID_YOUTUBE_URLS.each do |valid_youtube_url|
         expect(helper.embed(valid_youtube_url)).to eql(youtube_embed_iframe)
       end
     end
 
-    INVALID_YOUTUBE_URLS.each do |invalid_youtube_url|
-      it "does not treat #{invalid_youtube_url} as YouTube" do
-        expect(helper.embed(invalid_youtube_url)).to eql(
-          %(<iframe src="#{invalid_youtube_url}"></iframe>)
-        )
+    it 'does not treat lookalike or unsafe YouTube URLs as YouTube' do
+      INVALID_YOUTUBE_URLS.each do |invalid_youtube_url|
+        expect(helper.embed(invalid_youtube_url)).to eql(passthrough_iframe(invalid_youtube_url))
       end
     end
   end
