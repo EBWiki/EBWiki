@@ -19,6 +19,7 @@ INVALID_YOUTUBE_URLS = ['https://notyoutube.com/watch?v=Mgn1r3_eM-s',
                         'javascript://youtube.com/%0Aalert(1)'].freeze
 DUPLICATE_YOUTUBE_URL = 'https://www.youtube.com/watch?v=Mgn1r3_eM-s&v=ignored'
 LOOKALIKE_VIMEO_URL = 'https://evil.com/?next=vimeo.com/136536466'
+NON_VIDEO_VIMEO_URL = 'https://vimeo.com/channels/staffpicks'
 
 def passthrough_iframe(video_url)
   %(<iframe src="#{video_url}"></iframe>)
@@ -48,6 +49,10 @@ RSpec.describe CasesHelper, type: :helper do
 
     it 'does not treat a lookalike Vimeo URL as Vimeo' do
       expect(helper.embed(LOOKALIKE_VIMEO_URL)).to eql(passthrough_iframe(LOOKALIKE_VIMEO_URL))
+    end
+
+    it 'does not treat a non-video Vimeo URL as Vimeo' do
+      expect(helper.embed(NON_VIDEO_VIMEO_URL)).to eql(passthrough_iframe(NON_VIDEO_VIMEO_URL))
     end
 
     it 'returns a YouTube embed iframe for supported query and path URL formats' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Helper for case page, mostly the casw show page.
+# Helper for case page, mostly the case show page.
 module CasesHelper
   YOUTUBE_HOSTS = %w[
     youtube.com
@@ -59,7 +59,10 @@ module CasesHelper
     return unless %w[http https].include?(scheme)
     return unless VIMEO_HOSTS.include?(host)
 
-    uri.path.split('/').reject(&:empty?).last
+    video_id = uri.path.split('/').reject(&:empty?).last
+    return video_id if video_id&.match?(/\A\d+\z/)
+
+    nil
   rescue URI::InvalidURIError
     nil
   end
