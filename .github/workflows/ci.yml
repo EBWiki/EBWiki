@@ -34,6 +34,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.7.0
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v4
 
       - name: install dependencies
         run: |
@@ -48,13 +50,17 @@ jobs:
         run: bundle install
 
       - name: Setup database
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
         run: |
           cp config/database.ci.yml config/database.yml
-          bundle exec bin/rails db:prepare
+          doppler run -- bundle exec bin/rails db:prepare
 
       - name: Run RSpec
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
         run: |
-          bundle exec rspec spec/
+          doppler run -- bundle exec rspec spec/
 
   brakeman:
     runs-on: ubuntu-latest
