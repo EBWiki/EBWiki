@@ -1,67 +1,62 @@
-# EBWiki Maps:
+# EBWiki Maps
 
 ## Purpose
 
-The purpose of this document is to describe the re-implementation of 
-mapping cases on [EBWIki.org](https://ebwiki.org). We'll discuss the
-considerations behind the decisions made for the current implementation. The next
-section outlines all parts of the maps deliverable, in order to help people who
-wants to understand how all parts of the solution fit together. Finally, notable
-information and gotchas are reviewed.
+This document describes mapping cases on [EBWiki.org](https://ebwiki.org):
+the `/maps` case map and the location map on individual case pages.
 
 ### Motivations
 
-EBWiki once used Google Maps for a mapping solution, but the Gmaps4Rails plugin
-we had been using was no longer being maintained. While looking at mapping
-solutions, we decided to try [HERE Maps](https://developer.here.com) as a
-provider of mapping services. We also wanted to remove the reliance on a gem as 
-an interface to mapping solutions, having been affected by the lack of 
-maintenance on the [Gmaps4Rails](https://github.com/apneadiving/Google-Maps-for-Rails).
-While there does exist a viable alternative in [google-maps-services-ruby](https://github.com/edwardsamuel/google-maps-services-ruby) for those who want to use Google Maps, the exploration of 
-alternate mapping providers does fulfill other reqirements.
+EBWiki once used Google Maps via Gmaps4Rails, then explored
+[HERE Maps](https://developer.here.com) after that gem went unmaintained.
+The current implementation uses [Leaflet](https://leafletjs.com) with
+OpenStreetMap tiles so the map can render without a vendor API key or a
+mapping gem.
 
-### Mapping Solution
+## Mapping Solution
 
-#### HERE Maps
+### Leaflet + OpenStreetMap
 
-We incorporated the [HERE JavaScript SDK](https://developer.here.com/documentation/maps/3.1.19.0/dev_guide/index.html)
-mapping, ui and marker clustering libraries. HERE Technologies has a suite of
-mapping and geo services available that we can use if needed.
+`app/assets/javascripts/case_map.js` reads case coordinates from the page
+and draws markers. On `/maps`, markers are clustered. Clicking a pin opens
+a popup that links to the case. Case pages with latitude and longitude show
+a smaller map centered on that incident.
 
-#### Maps Cache
+### Maps Cache
 
-The Cases cache is a JSON of latitude & longitude for all cases that had
-coordinate information. Cases without that data won't be included in the JSON
-document, with a 2 hour [Time To Live (TTL)](https://en.wikipedia.org/wiki/Time_to_live). 
+`MapsHelper#fetch_cases` caches latitude, longitude, title, slug, city, and
+case URL for every geocoded case. The cache key is `case_map_locations_v2`
+with a 12 hour TTL. Cases without coordinates are omitted. A dyno or process
+restart clears the in-memory cache; Redis-backed caches expire after the TTL.
 
-#### Maps Controller
+### Maps Controller
 
-The controller gets cases from either the database or cache and then sends
-a string of coordinates that is interpreted in maps.js in order to
-display a map centered on the United States with cases clustered and numbered. The
-map also has a zoom control that changes and updates the number in the
-cluster based upon how many cases fit in the area.
+`MapsController#index` (and `#show`, which reuses the same template) loads
+cached case locations and renders a United States-centered map.
 
-#### Maps Helper
+### Maps Helper
 
-Contains `fetch_cases`, the method to get cases from the db or cache and
-creates a JSON of the case latitude & longitude. 
+`fetch_cases` reads from cache or the database. `case_has_location?` decides
+whether a case page should render its location map.
 
-#### maps.js
+## HTTP Basic Auth
 
-This contains code that gets the list of case coordinates from the cases index
-template as well as the HERE Maps API Key. The coordinates are turned into
-DataPoints which can be put into a Cluster which is then used in the Layer
-that is added to the map.
+Staging and preview apps can require HTTP Basic Auth without locking
+production:
 
-### Notes & Gotchas
+- Set `HTTP_BASIC_AUTH_USERNAME` and `HTTP_BASIC_AUTH_PASSWORD`
+  (`STAGING_USERNAME` / `STAGING_PASSWORD` still work as fallbacks).
+- Auth is on automatically in the `staging` environment, or when
+  `HOST=ebwiki-newstack.herokuapp.com`.
+- To enable it elsewhere (including production-like preview apps), also set
+  `HTTP_BASIC_AUTH_ENABLED=true`.
 
-- The MAPS API Key is stored in a Rails ENV Variable ("HERE_MAPS_API_KEY") that
-  is attached to the window object when the application template is rendered.
+Production remains public unless that flag is set.
 
-- The logic for parsing JSON sent from the controller could be improved, and 
-  I am looking into making improvements to that.
+## Notes & Gotchas
 
-- We should define a cache purging strategy and figure out whether the TTL
-  should be improved. A dyno restart will suffice to empty the cache, so 
-  the barrier to reset the cache is not high.
+- Leaflet and MarkerCluster are loaded from the unpkg CDN on map pages only.
+- Cache the richer location payload under `case_map_locations_v2` so older
+  flattened coordinate strings are not reused.
+- A dyno restart or TTL expiry is enough to refresh the cache after new
+  geocoded cases are added.

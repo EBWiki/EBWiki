@@ -1,0 +1,10 @@
+<div id="case-location-map"
+     class="case-location-map"
+     role="img"
+     aria-label="Map showing the location of <%= this_case.title %>"
+     data-lat="<%= this_case.latitude %>"
+     data-lng="<%= this_case.longitude %>"
+     data-title="<%= this_case.title %>"
+     data-city="<%= this_case.city %>"
+     data-url="<%= case_path(this_case) %>">
+</div>

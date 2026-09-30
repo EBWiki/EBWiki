@@ -4,22 +4,26 @@ require 'rails_helper'
 
 RSpec.describe 'Maps', type: :request do
   describe 'GET /maps' do
-    context 'will get a map with a list of cases marked on it' do
-      let(:redis) { MockRedis.new }
-      let(:this_case) { create(:case) }
+    before { Rails.cache.clear }
 
-      before do
-        redis.set('cases', [this_case].to_json)
-        get '/maps', params: {}, headers: {}
-      end
+    it 'returns the case map page' do
+      get '/maps'
 
-      it 'will return status code 200' do
-        expect(response).to have_http_status(200)
-      end
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('Case Map')
+      expect(response.body).to include('map-container')
+      expect(response.body).to include('case-map-data')
+      expect(response.body).to include('Showing 0 documented cases')
+    end
 
-      it 'will return the list of cases' do
-        expect(response.body).to include('maps')
-      end
+    it 'includes geocoded cases in the map payload' do
+      this_case = create(:case, title: 'Mapped Case')
+      this_case.update_columns(latitude: 42.6525793, longitude: -73.7562317)
+
+      get '/maps'
+
+      expect(response.body).to include('Mapped Case')
+      expect(response.body).to include(this_case.slug)
     end
   end
 end
