@@ -1,41 +1,31 @@
 # frozen_string_literal: true
 
-# Functionality to dynamically search cases
+# Postgres full-text search for cases (pg_search / tsv).
 class CaseSearch
   PER_PAGE = 12
+  MATCH_ALL = '*'
 
   attr_reader :query, :options
 
   def initialize(query: nil, options: {})
-    @query = query.presence || '*'
+    @query = normalize_query(query)
     @options = options
   end
 
   def call
-    constraints = {
-      page: options[:page],
-      per_page: PER_PAGE
-    }
-
-    constraints[:where] = where
-    constraints[:order] = order
-
-    Case.search(query, constraints)
+    scope = Case.all
+    scope = scope.search_text(query) if query
+    scope = scope.where(state_id: options[:state_id]) if options[:state_id].present?
+    scope = scope.order(date: :desc)
+    scope.includes(:state).page(options[:page]).per(PER_PAGE)
   end
 
-  def where
-    if options[:state_id].present?
-      { state_id: options[:state_id] }
-    else
-      {}
-    end
-  end
+  private
 
-  def order
-    if options[:state_id].present?
-      { date: :desc }
-    else
-      {}
-    end
+  def normalize_query(value)
+    text = value.to_s.strip
+    return if text.blank? || text == MATCH_ALL
+
+    text
   end
 end
