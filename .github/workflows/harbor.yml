@@ -1,0 +1,22 @@
+name: Harbor tasks
+
+on:
+  pull_request:
+    paths:
+      - "harbor/**"
+      - ".github/workflows/harbor.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-tasks:
+    name: Check Harbor task layout (oracle-only, no paid models)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Validate task directories and registry.json
+        run: python3 harbor/bin/check-tasks
