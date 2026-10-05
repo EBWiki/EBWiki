@@ -4,6 +4,7 @@ require "json"
 require "net/http"
 require "uri"
 require "eb_wiki/friendly_photos/hit"
+require "eb_wiki/friendly_photos/homonym_detector"
 require "eb_wiki/friendly_photos/source_policy"
 
 module EbWiki
@@ -17,9 +18,10 @@ module EbWiki
       MUGSHOT_TEXT = /mugshot|booking.?photo|jail|inmate|arrest|sheriff/i
       TIMEOUT = 8
 
-      def initialize(name:, city: nil)
+      def initialize(name:, city: nil, case_year: nil)
         @name = name.to_s.strip
         @city = city.to_s.strip
+        @case_year = case_year
       end
 
       def call
@@ -66,6 +68,15 @@ module EbWiki
             license: "CC BY 4.0",
             author: "E2E Flickr",
             description: "Family photo portrait from Openverse"
+          ),
+          Hit.new(
+            source: "wikimedia_commons",
+            title: "Portrait of Sir Walter Scott, novelist",
+            image_url: "https://upload.wikimedia.org/wikipedia/commons/c/cd/e2e-historical-homonym.jpg",
+            page_url: "https://commons.wikimedia.org/wiki/File:Sir_Walter_Scott_19th_century.jpg",
+            license: "Public domain",
+            author: "Unknown",
+            description: "19th century engraving of the Scottish novelist"
           )
         ]
       end
@@ -167,7 +178,10 @@ module EbWiki
       end
 
       def annotate(hit)
+        text = [hit.title, hit.description, hit.image_url, hit.page_url]
         hit.likely_mugshot = mugshot?(hit)
+        homonym = HomonymDetector.call(text: text, case_year: @case_year)
+        hit.likely_homonym = homonym.likely_homonym
         hit
       end
 
