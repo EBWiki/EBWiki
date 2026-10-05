@@ -11,6 +11,8 @@ namespace :photos do
     end
   end
 
+  # Dry-run by default; APPLY=1 writes. Production requires operator GO — see
+  # docs/runbooks/PHOTOS_CLASSIFY_CURRENT_DRY_RUN.md (APPLY=1 safety checklist).
   desc 'Classify current case avatars from filenames (dry-run unless APPLY=1)'
   task classify_current: :environment do
     apply = ActiveModel::Type::Boolean.new.cast(ENV.fetch('APPLY', '0'))
