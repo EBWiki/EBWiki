@@ -82,7 +82,7 @@ feature 'Friendly photos' do
     sign_in user
     visit friendly_photo_path(missing_case)
 
-    expect(page).to have_button('Use this photo', count: 2)
+    expect(page).to have_button('Use this photo', count: 1)
 
     within("[data-testid='candidate-#{friendly.id}']") do
       click_button 'Reject'
