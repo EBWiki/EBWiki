@@ -14,9 +14,9 @@ module FriendlyPhotos
     end
 
     def self.summary_line(row)
-      friendly = row[:candidates].count { |candidate| !candidate[:likely_mugshot] }
+      applyable = row[:candidates].count { |candidate| candidate[:score].to_i >= 0 }
       "#{row[:slug]} (#{row[:subject_name]}): #{row[:candidates].size} images, " \
-        "#{friendly} friendly"
+        "#{applyable} ranked friendly"
     end
 
     private
@@ -48,7 +48,6 @@ module FriendlyPhotos
         page_url: candidate.page_url,
         license: candidate.license,
         license_url: candidate.license_url,
-        likely_mugshot: candidate.likely_mugshot?,
         score: candidate.score,
         status: candidate.status
       }

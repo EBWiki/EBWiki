@@ -7,7 +7,6 @@ module CaseFriendlyPhoto
   AVATAR_KIND_LABELS = {
     'unclassified' => 'Not yet reviewed',
     'portrait' => 'Profile picture',
-    'mugshot' => 'Needs a healthier photo',
     'other' => 'Other'
   }.freeze
 
@@ -17,12 +16,11 @@ module CaseFriendlyPhoto
     enum :avatar_kind, {
       unclassified: 'unclassified',
       portrait: 'portrait',
-      mugshot: 'mugshot',
       other: 'other'
     }
 
     scope :needing_friendly_photo, lambda {
-      where(avatar_kind: %w[unclassified mugshot]).or(where(avatar: [nil, '']))
+      where(avatar_kind: 'unclassified').or(where(avatar: [nil, '']))
     }
   end
 
@@ -49,6 +47,6 @@ module CaseFriendlyPhoto
   end
 
   def needs_friendly_photo?
-    missing_avatar? || unclassified? || mugshot?
+    missing_avatar? || unclassified?
   end
 end

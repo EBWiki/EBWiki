@@ -17,15 +17,15 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
       description: 'Family photo of Walter Scott'
     )
   end
-  let(:mugshot_hit) do
+  let(:institutional_hit) do
     FriendlyPhotos::WikimediaClient::Hit.new(
       source: 'wikimedia_commons',
-      title: 'Walter Scott mugshot',
-      image_url: 'https://upload.wikimedia.org/wikipedia/commons/w/ws/mugshot.jpg',
-      page_url: 'https://commons.wikimedia.org/wiki/File:Walter_Scott_mugshot.jpg',
+      title: 'Walter Scott jail intake',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/w/ws/intake.jpg',
+      page_url: 'https://commons.wikimedia.org/wiki/File:Walter_Scott_intake.jpg',
       license: 'Public domain',
       author: 'Sheriff',
-      description: 'Booking photo'
+      description: 'County jail intake image'
     )
   end
   let(:homonym_hit) do
@@ -43,8 +43,8 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
     FriendlyPhotos::WikimediaClient::Hit.new(
       source: 'openverse',
       title: 'Walter Scott portrait',
-      image_url: 'https://mugshots.com/walter.jpg',
-      page_url: 'https://mugshots.com/walter',
+      image_url: 'https://arrests.org/walter.jpg',
+      page_url: 'https://arrests.org/walter',
       license: 'Unknown',
       author: 'Sheriff',
       description: 'Inmate lookup'
@@ -69,10 +69,10 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
   end
 
   before do
-    allow(client).to receive(:search).and_return([portrait_hit, mugshot_hit, homonym_hit])
+    allow(client).to receive(:search).and_return([portrait_hit, institutional_hit, homonym_hit])
     allow(FriendlyPhotos::VisionClassifier).to receive(:call).and_return(
       FriendlyPhotos::VisionClassifier::Result.new(
-        likely_mugshot: false,
+        portrait_suitable: true,
         reasons: ['vision ok'],
         score: 2,
         ai_used: true,
@@ -102,11 +102,10 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
     expect(candidate.vision_ai_used).to be true
   end
 
-  it 'persists friendly and flagged candidates without overwriting reviews' do
+  it 'persists ranked candidates without overwriting reviews' do
     records = search.records
 
     expect(records.size).to eq(3)
-    expect(this_case.photo_candidates.where(likely_mugshot: true).size).to eq(1)
     expect(this_case.photo_candidates.find_by(title: 'Sir Walter Scott')).to be_likely_homonym
 
     accepted = this_case.photo_candidates.find_by(title: 'Walter Scott portrait')
@@ -115,22 +114,22 @@ RSpec.describe FriendlyPhotos::CandidateSearch do
     expect(accepted.reload).to be_accepted
   end
 
-  it 'excludes mugshot-farm hosts instead of storing them' do
+  it 'excludes arrest-database hosts instead of storing them' do
     allow(openverse).to receive(:search).and_return([farm_hit])
 
     search
 
     urls = this_case.photo_candidates.pluck(:image_url)
-    expect(urls).not_to include('https://mugshots.com/walter.jpg')
+    expect(urls).not_to include('https://arrests.org/walter.jpg')
   end
 
-  it 'ranks portraits above homonyms and mugshots' do
+  it 'ranks portraits above homonyms and institutional hits' do
     search
     ranked = this_case.photo_candidates.ranked
 
     expect(ranked.first.title).to eq('Walter Scott portrait')
-    expect(ranked.map(&:title)).to include('Walter Scott mugshot', 'Sir Walter Scott')
-    expect(ranked.last).to be_likely_mugshot
+    expect(ranked.map(&:title)).to include('Walter Scott jail intake', 'Sir Walter Scott')
+    expect(ranked.last.score).to be < ranked.first.score
   end
 
   it 'uses the case title when a case has no subjects' do

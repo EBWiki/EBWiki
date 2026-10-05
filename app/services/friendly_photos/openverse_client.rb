@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # Creative Commons Openverse search. Does not query mugshot or booking DBs.
+  # Creative Commons Openverse search. Does not query arrest or inmate DBs.
   class OpenverseClient
     include HTTParty
 

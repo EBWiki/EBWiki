@@ -26,7 +26,6 @@ class PhotoCandidateDashboard < Administrate::BaseDashboard
         field.resource.class.send(field.attribute.to_s.pluralize).keys
       }
     ),
-    likely_mugshot: Field::Boolean,
     notes: Field::Text,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
@@ -37,7 +36,7 @@ class PhotoCandidateDashboard < Administrate::BaseDashboard
     case
     subject_name
     status
-    likely_mugshot
+    score
   ].freeze
 
   SHOW_PAGE_ATTRIBUTES = %i[
@@ -53,7 +52,6 @@ class PhotoCandidateDashboard < Administrate::BaseDashboard
     author
     score
     status
-    likely_mugshot
     notes
     created_at
     updated_at
@@ -71,7 +69,6 @@ class PhotoCandidateDashboard < Administrate::BaseDashboard
     author
     score
     status
-    likely_mugshot
     notes
   ].freeze
 

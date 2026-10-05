@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # Scores image metadata so mugshots can be filtered out of search results.
-  class MugshotClassifier
+  # Scores image metadata for ranking (portraits up, institutional sources down).
+  class MetadataScorer
     include Service
 
-    MUGSHOT_PATTERNS = [
-      /mug\s*shots?/i,
-      /booking(\s*photo)?/i,
+    INSTITUTIONAL_PATTERNS = [
+      /\bbooking\b/i,
       /\binmate\b/i,
       /\bjail\b/i,
       /\bprison\b/i,
@@ -39,18 +38,17 @@ module FriendlyPhotos
       /protest\s*photo/i
     ].freeze
 
-    Result = Struct.new(:likely_mugshot, :reasons, :score, keyword_init: true)
+    Result = Struct.new(:reasons, :score, keyword_init: true)
 
     def call(text:)
       haystack = Array(text).compact.join(' ')
-      mugshot_hits = matching_labels(haystack, MUGSHOT_PATTERNS)
+      institutional_hits = matching_labels(haystack, INSTITUTIONAL_PATTERNS)
       portrait_hits = matching_labels(haystack, PORTRAIT_PATTERNS)
       news_hits = matching_labels(haystack, NEWS_STILL_PATTERNS)
-      score = (portrait_hits.size * 3) - (mugshot_hits.size * 5) - news_hits.size
+      score = (portrait_hits.size * 3) - (institutional_hits.size * 5) - news_hits.size
 
       Result.new(
-        likely_mugshot: mugshot_hits.any?,
-        reasons: mugshot_hits + news_hits,
+        reasons: institutional_hits + news_hits,
         score: score
       )
     end

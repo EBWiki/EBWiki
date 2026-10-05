@@ -63,9 +63,9 @@
   <% if @candidates.any? %>
     <ol class="friendly-photo-list">
       <% @candidates.each do |candidate| %>
-        <li class="friendly-photo-card <%= 'is-mugshot' if candidate.likely_mugshot? %>"
+        <li class="friendly-photo-card"
             data-testid="candidate-<%= candidate.id %>"
-            data-candidate-kind="<%= candidate.likely_mugshot? ? 'mugshot' : 'friendly' %>">
+            data-candidate-kind="<%= candidate.friendly? ? 'friendly' : 'review' %>">
           <%= image_tag candidate.image_url,
                         alt: candidate.title,
                         class: 'friendly-photo-card-image' %>
@@ -82,11 +82,6 @@
               <p class="text-warning" data-testid="homonym-flag">
                 Possible historical homonym — reject before apply
                 <%= " (#{candidate.notes})" if candidate.notes.present? %>
-              </p>
-            <% end %>
-            <% if candidate.likely_mugshot? %>
-              <p class="text-danger" data-testid="mugshot-flag">
-                This is not a healthy profile picture
               </p>
             <% end %>
             <p class="text-muted" data-testid="candidate-ai-badges">

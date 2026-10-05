@@ -1,28 +1,28 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # Vision model scores a candidate image as friendly portrait vs mugshot/booking.
+  # Vision model scores a candidate image as a dignified profile portrait.
   class VisionClassifier
     include Service
 
     SYSTEM_PROMPT = <<~PROMPT.squish
-      You classify a single image for EBWiki case pages. Return JSON with:
-      "likely_mugshot" (boolean), "score" (integer, higher = more dignified portrait),
-      and "reasons" (array of short strings). Mark likely_mugshot true for booking
-      photos, jail ID photos, height charts, or police mugshots. Mark false for
+      You classify a single image for EBWiki case pages. Return JSON with
+      "portrait_suitable" (boolean), "score" (integer, higher = more dignified portrait),
+      and "reasons" (array of short strings). Mark portrait_suitable false for jail ID
+      photos, height charts, or other institutional intake images. Mark true for
       family photos, yearbook portraits, memorial photos, and dignified headshots.
-      Downrank protest/incident stills with a lower score but do not mark them
-      mugshots unless they are clearly booking photos.
+      Downrank protest/incident stills with a lower score but keep portrait_suitable
+      true unless the image is clearly an institutional intake photo.
     PROMPT
 
-    Result = Struct.new(:likely_mugshot, :reasons, :score, :ai_used, :failed, keyword_init: true)
+    Result = Struct.new(:portrait_suitable, :reasons, :score, :ai_used, :failed, keyword_init: true)
 
     def initialize(client: AiClient.new)
       @client = client
     end
 
     def self.skipped_result
-      Result.new(likely_mugshot: false, reasons: [], score: 0, ai_used: false, failed: false)
+      Result.new(portrait_suitable: true, reasons: [], score: 0, ai_used: false, failed: false)
     end
 
     def call(hit:)
@@ -62,7 +62,7 @@ module FriendlyPhotos
       return unless payload
 
       Result.new(
-        likely_mugshot: ActiveModel::Type::Boolean.new.cast(payload['likely_mugshot']),
+        portrait_suitable: ActiveModel::Type::Boolean.new.cast(payload['portrait_suitable']),
         reasons: Array(payload['reasons']).map(&:to_s).compact_blank,
         score: payload['score'].to_i,
         ai_used: true,
@@ -75,7 +75,7 @@ module FriendlyPhotos
       raise AiError, 'Vision classifier did not score this image.' unless AiConfig.require_ai?
 
       Result.new(
-        likely_mugshot: false,
+        portrait_suitable: false,
         reasons: ['vision API failed — cannot verify'],
         score: -50,
         ai_used: false,
@@ -92,9 +92,9 @@ module FriendlyPhotos
 
     def stub_result(hit)
       text = [hit.title, hit.description].compact.join(' ')
-      heuristic = MugshotClassifier.call(text: text)
+      heuristic = MetadataScorer.call(text: text)
       Result.new(
-        likely_mugshot: heuristic.likely_mugshot,
+        portrait_suitable: heuristic.score >= 0,
         reasons: heuristic.reasons + ['stub vision'],
         score: heuristic.score + 1,
         ai_used: true,

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe PhotoCandidate do
   it 'requires a Wikimedia image host' do
-    candidate = build(:photo_candidate, image_url: 'https://mugshots.com/photo.jpg')
+    candidate = build(:photo_candidate, image_url: 'https://arrests.org/photo.jpg')
 
     expect(candidate).not_to be_valid
     expect(candidate.errors[:image_url].join).to include('Wikimedia or Openverse')

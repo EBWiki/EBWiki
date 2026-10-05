@@ -9,8 +9,8 @@ RSpec.describe FriendlyPhotos::WikimediaClient do
       expect(described_class.allowed_image_url?(url)).to be true
     end
 
-    it 'rejects mugshot farms and http URLs' do
-      expect(described_class.allowed_image_url?('https://mugshots.com/a.jpg')).to be false
+    it 'rejects arrest-database hosts and http URLs' do
+      expect(described_class.allowed_image_url?('https://arrests.org/a.jpg')).to be false
       expect(described_class.allowed_image_url?('http://upload.wikimedia.org/a.jpg')).to be false
     end
   end

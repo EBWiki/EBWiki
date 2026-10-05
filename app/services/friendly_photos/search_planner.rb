@@ -14,7 +14,7 @@ module FriendlyPhotos
       memorial variants. Use the case slug and city/year to disambiguate from
       historical homonyms (e.g. Sir Walter Scott the novelist vs Walter Scott
       killed in 2015). Do NOT invent faces, licenses, or URLs. Do NOT suggest
-      mugshot, booking, jail, inmate, arrest, or news/social scrape terms.
+      jail, inmate, arrest, or news/social scrape terms.
     PROMPT
 
     Result = Struct.new(:queries, :ai_used, keyword_init: true)

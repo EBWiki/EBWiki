@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # Allowlist for openly licensed portrait hosts. Mugshot farms never qualify.
+  # Allowlist for openly licensed portrait hosts. Arrest databases never qualify.
   class SourcePolicy
     WIKIMEDIA_IMAGE_HOSTS = %w[upload.wikimedia.org commons.wikimedia.org].freeze
     PAGE_HOSTS = (
@@ -10,12 +10,12 @@ module FriendlyPhotos
          wordpress.org creativecommons.org]
     ).freeze
     BLOCKED_HOST_FRAGMENTS = %w[
-      mugshot arrests.org jailbase vinelink inmate-lookup offenderlookup
+      arrests.org jailbase vinelink inmate-lookup offenderlookup
       capturenet booking.photo
     ].freeze
     BLOCKED_HOST_PATTERN = Regexp.union(BLOCKED_HOST_FRAGMENTS).freeze
     BLOCKED_TEXT = /
-      mugshots?\.com|arrests\.org|jailbase|vinelink|inmate.?lookup|
+      arrests\.org|jailbase|vinelink|inmate.?lookup|
       offender.?lookup|booking.?database
     /ix
 

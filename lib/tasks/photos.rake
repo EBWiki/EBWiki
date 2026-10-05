@@ -10,10 +10,4 @@ namespace :photos do
       results.each { |row| puts FriendlyPhotos::BatchSearch.summary_line(row) }
     end
   end
-
-  desc 'Classify current case avatars from filenames'
-  task classify_current: :environment do
-    updated = FriendlyPhotos::CurrentAvatarClassifier.call
-    puts "\nMarked #{updated} current photos as needing a healthier photo."
-  end
 end

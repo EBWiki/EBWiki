@@ -18,16 +18,6 @@ RSpec.describe FriendlyPhotos::ApplyCandidate do
     expect(candidate.reload).to be_accepted
   end
 
-  it 'refuses mugshot candidates' do
-    candidate.update!(likely_mugshot: true, title: 'Booking photo')
-
-    result = described_class.call(this_case: this_case, candidate: candidate)
-
-    expect(result.success).to be false
-    expect(result.error).to include('healthy profile picture')
-    expect(candidate.reload).to be_pending
-  end
-
   it 'skips the remote download when e2e stubbing is on' do
     ENV['E2E_STUB_WIKIMEDIA'] = '1'
     allow(this_case).to receive(:remote_avatar_url=)

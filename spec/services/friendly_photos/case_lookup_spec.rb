@@ -8,7 +8,7 @@ RSpec.describe FriendlyPhotos::CaseLookup do
   end
   let!(:riley) do
     create(:case, title: 'Riley Case', city: 'Buffalo', date: Date.new(2018, 1, 2),
-                  avatar_kind: 'mugshot')
+                  avatar_kind: 'unclassified')
   end
 
   before do

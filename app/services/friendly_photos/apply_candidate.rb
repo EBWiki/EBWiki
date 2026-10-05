@@ -26,9 +26,6 @@ module FriendlyPhotos
 
     def identity_rejection(this_case, candidate)
       return 'Candidate does not belong to this case.' if candidate.case_id != this_case.id
-      if candidate.likely_mugshot?
-        return 'This is not a healthy profile picture and cannot be applied.'
-      end
       return 'Possible historical homonym — reject this candidate.' if candidate.likely_homonym?
       return 'Vision did not verify this image.' unless candidate.vision_verified?
 

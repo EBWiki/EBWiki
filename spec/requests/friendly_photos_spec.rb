@@ -76,16 +76,15 @@ RSpec.describe 'Friendly photos', type: :request do
       expect(response.body).to include('planner ran')
     end
 
-    it 'says none found when every hit is a mugshot' do
+    it 'says none found when every hit failed vision' do
       sign_in user
-      mugshot = create(:photo_candidate, case: this_case, likely_mugshot: true,
-                                         title: 'Booking photo')
+      failed = create(:photo_candidate, case: this_case, vision_failed: true, title: 'Unverified')
       allow(FriendlyPhotos::CandidateSearch).to receive(:call).and_return(
         FriendlyPhotos::CandidateSearch::Result.new(
-          records: [mugshot],
+          records: [failed],
           planner_ai_used: true,
-          vision_ai_used_count: 1,
-          vision_failed_count: 0,
+          vision_ai_used_count: 0,
+          vision_failed_count: 1,
           warnings: []
         )
       )
@@ -109,11 +108,11 @@ RSpec.describe 'Friendly photos', type: :request do
   end
 
   describe 'PATCH /friendly_photos/:id/classify' do
-    it 'marks the current photo as a mugshot' do
+    it 'updates the current photo type' do
       sign_in user
-      patch classify_friendly_photo_path(this_case), params: { avatar_kind: 'mugshot' }
+      patch classify_friendly_photo_path(this_case), params: { avatar_kind: 'other' }
 
-      expect(this_case.reload).to be_mugshot
+      expect(this_case.reload).to be_other
       expect(response).to redirect_to(friendly_photo_path(this_case))
     end
   end

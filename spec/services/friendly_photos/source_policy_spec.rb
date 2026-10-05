@@ -12,18 +12,18 @@ RSpec.describe FriendlyPhotos::SourcePolicy do
       expect(described_class.allowed_image_url?(flickr)).to be true
     end
 
-    it 'rejects mugshot farms and http URLs' do
-      expect(described_class.allowed_image_url?('https://mugshots.com/a.jpg')).to be false
+    it 'rejects arrest-database hosts and http URLs' do
+      expect(described_class.allowed_image_url?('https://arrests.org/a.jpg')).to be false
       expect(described_class.allowed_image_url?('http://upload.wikimedia.org/a.jpg')).to be false
     end
   end
 
   describe '.excluded_hit?' do
-    it 'excludes booking-database sources even when titled as a portrait' do
+    it 'excludes arrest-database sources even when titled as a portrait' do
       hit = FriendlyPhotos::WikimediaClient::Hit.new(
         source: 'openverse',
         title: 'Portrait',
-        image_url: 'https://mugshots.com/a.jpg',
+        image_url: 'https://arrests.org/a.jpg',
         page_url: 'https://arrests.org/a',
         license: 'Unknown',
         author: nil,

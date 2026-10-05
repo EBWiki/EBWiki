@@ -6,7 +6,6 @@ module FriendlyPhotos
     include Service
 
     Result = Struct.new(
-      :likely_mugshot,
       :likely_homonym,
       :reasons,
       :score,
@@ -16,7 +15,7 @@ module FriendlyPhotos
     )
 
     def call(hit:, run_vision: true, case_year: nil)
-      metadata = MugshotClassifier.call(text: hit_text(hit))
+      metadata = MetadataScorer.call(text: hit_text(hit))
       homonym = HomonymDetector.call(text: hit_text(hit), case_year: case_year)
       vision = vision_result(hit, run_vision)
       combine(metadata, homonym, vision)
@@ -36,7 +35,6 @@ module FriendlyPhotos
 
     def combine(metadata, homonym, vision)
       Result.new(
-        likely_mugshot: metadata.likely_mugshot || vision.likely_mugshot,
         likely_homonym: homonym.likely_homonym,
         reasons: combined_reasons(metadata, homonym, vision),
         score: combined_score(metadata, homonym, vision),

@@ -5,12 +5,12 @@ require 'rails_helper'
 feature 'Friendly photos' do
   let(:user) { create(:user) }
   let!(:missing_case) { create(:case, title: 'Missing Photo Case') }
-  let!(:mugshot_case) { create(:case, title: 'Photo Review Case', avatar_kind: 'mugshot') }
+  let!(:review_case) { create(:case, title: 'Photo Review Case', avatar_kind: 'unclassified') }
   let!(:portrait_case) { create(:case, title: 'Portrait Case', avatar_kind: 'portrait') }
 
   before do
     create(:subject, case: missing_case, name: 'Jordan Doe')
-    create(:subject, case: mugshot_case, name: 'Riley Example')
+    create(:subject, case: review_case, name: 'Riley Example')
     create(:subject, case: portrait_case, name: 'Casey Portrait')
     portrait_case.update_columns(avatar: 'uploads/case/avatar/9/family_portrait.jpg')
   end
@@ -32,17 +32,14 @@ feature 'Friendly photos' do
     expect(page).to have_css('[data-testid="friendly-photos-nav"]')
   end
 
-  scenario 'filters separate missing, mugshot, and portrait cases' do
+  scenario 'filters separate missing, unclassified, and portrait cases' do
     sign_in user
     visit friendly_photos_path(filter: 'missing')
     expect(page).to have_content('Jordan Doe')
     expect(page).not_to have_content('Casey Portrait')
-    # A mugshot case with no stored file also matches the missing filter.
-    expect(page).to have_content('Riley Example')
 
-    visit friendly_photos_path(filter: 'mugshot')
+    visit friendly_photos_path(filter: 'unclassified')
     expect(page).to have_content('Riley Example')
-    expect(page).not_to have_content('Jordan Doe')
 
     visit friendly_photos_path(filter: 'portrait')
     expect(page).to have_content('Casey Portrait')
@@ -64,30 +61,28 @@ feature 'Friendly photos' do
     expect(page).to have_content('What kind of photo is this?')
     expect(page).to have_content('healthy profile picture')
     expect(page).to have_css('img[data-content*="healthy photo of the person"]')
-    expect(page).not_to have_css('img[data-content*="mug shot"]')
   end
 
-  scenario 'an editor classifies the current photo as needing a healthier photo' do
+  scenario 'an editor classifies the current photo type' do
     sign_in user
     visit friendly_photo_path(missing_case)
-    select 'Needs a healthier photo', from: 'avatar_kind'
+    select 'Other', from: 'avatar_kind'
     click_button 'Update photo type'
 
-    expect(page).to have_content('Updated the photo type to Needs a healthier photo')
-    expect(missing_case.reload).to be_mugshot
+    expect(page).to have_content('Updated the photo type to Other')
+    expect(missing_case.reload).to be_other
   end
 
-  scenario 'an editor rejects a candidate and cannot apply an unsuitable photo' do
+  scenario 'an editor rejects a candidate' do
     friendly = create(:photo_candidate, case: missing_case, title: 'Family portrait')
-    create(:photo_candidate, case: missing_case, title: 'Booking photo',
-                             image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-booking.jpg',
-                             likely_mugshot: true)
+    create(:photo_candidate, case: missing_case, title: 'Low-ranked institutional photo',
+                             image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-institutional.jpg',
+                             score: -5)
 
     sign_in user
     visit friendly_photo_path(missing_case)
 
-    expect(page).to have_css('[data-testid="mugshot-flag"]')
-    expect(page).to have_button('Use this photo', count: 1)
+    expect(page).to have_button('Use this photo', count: 2)
 
     within("[data-testid='candidate-#{friendly.id}']") do
       click_button 'Reject'
@@ -95,7 +90,6 @@ feature 'Friendly photos' do
 
     expect(page).to have_content('Rejected that candidate')
     expect(friendly.reload).to be_rejected
-    expect(page).not_to have_button('Use this photo')
   end
 
   scenario 'an editor applies a friendly candidate' do

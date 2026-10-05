@@ -32,13 +32,13 @@ RSpec.describe FriendlyPhotos::VisionClassifier do
 
     expect(result.ai_used).to be false
     expect(result.failed).to be false
-    expect(result.likely_mugshot).to be false
+    expect(result.portrait_suitable).to be true
   end
 
   it 'uses the LLM when OpenAI is configured' do
     ENV['OPENAI_API_KEY'] = 'test-key'
     allow(client).to receive(:chat_json).and_return(
-      'likely_mugshot' => false,
+      'portrait_suitable' => true,
       'score' => 8,
       'reasons' => ['family portrait']
     )
@@ -67,20 +67,20 @@ RSpec.describe FriendlyPhotos::VisionClassifier do
 
   it 'returns stub vision output when FRIENDLY_PHOTOS_STUB_AI=1' do
     ENV['FRIENDLY_PHOTOS_STUB_AI'] = '1'
-    mugshot = FriendlyPhotos::WikimediaClient::Hit.new(
+    institutional = FriendlyPhotos::WikimediaClient::Hit.new(
       source: hit.source,
       title: hit.title,
       image_url: hit.image_url,
       page_url: hit.page_url,
       license: hit.license,
       author: hit.author,
-      description: 'County jail booking photo'
+      description: 'County jail intake image'
     )
 
-    result = described_class.new(client: client).call(hit: mugshot)
+    result = described_class.new(client: client).call(hit: institutional)
 
     expect(result.ai_used).to be true
-    expect(result.likely_mugshot).to be true
+    expect(result.portrait_suitable).to be false
     expect(result.reasons).to include('stub vision')
   end
 end

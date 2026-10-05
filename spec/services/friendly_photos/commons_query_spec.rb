@@ -41,7 +41,7 @@ RSpec.describe FriendlyPhotos::CommonsQuery do
     expect(hits.first.license_url).to include('creativecommons.org')
     expect(a_request(:get, %r{\Ahttps://commons\.wikimedia\.org/w/api\.php})
       .with(query: hash_including(
-        gsrsearch: a_string_including('-mugshot', '-booking', '-inmate',
+        gsrsearch: a_string_including('-jail', '-inmate', '-arrest',
                                       '-filemime:application/pdf')
       ))).to have_been_made
   end

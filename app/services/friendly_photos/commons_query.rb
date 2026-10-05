@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FriendlyPhotos
-  # File search against Wikimedia Commons, excluding obvious booking-photo terms.
+  # File search against Wikimedia Commons, excluding obvious institutional terms.
   class CommonsQuery
     IMAGE_MIMES = %w[image/jpeg image/png image/gif image/webp].freeze
     BASE_PARAMS = {
@@ -31,7 +31,7 @@ module FriendlyPhotos
 
     def params(query, limit)
       BASE_PARAMS.merge(
-        gsrsearch: "#{query} -mugshot -booking -inmate " \
+        gsrsearch: "#{query} -jail -inmate -arrest " \
                    '-filemime:application/pdf -filemime:image/vnd.djvu',
         gsrlimit: limit
       )

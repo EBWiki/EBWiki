@@ -7,22 +7,22 @@ module FriendlyPhotos
 
     EMAIL = 'e2e@example.com'
     PASSWORD = 'e2e-password'
-    SLUGS = %w[e2e-missing-photo e2e-mugshot-case e2e-portrait-case].freeze
+    SLUGS = %w[e2e-missing-photo e2e-other-photo-case e2e-portrait-case].freeze
     SUBSTANTIAL_CASE_THRESHOLD = 100
     FRIENDLY_CANDIDATE = {
       subject_name: 'Jordan Doe', source: 'wikimedia_commons',
       title: 'Jordan Doe portrait', license: 'CC BY-SA 4.0', author: 'Family',
       image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-seed-portrait.jpg',
       page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_portrait.jpg',
-      score: 3, likely_mugshot: false
+      score: 3
     }.freeze
-    MUGSHOT_CANDIDATE = {
+    LOW_SCORE_CANDIDATE = {
       subject_name: 'Jordan Doe', source: 'wikimedia_commons',
       title: 'Jordan Doe institutional photo', license: 'Public domain',
       author: 'Sheriff',
-      image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-seed-mugshot.jpg',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-seed-institutional.jpg',
       page_url: 'https://commons.wikimedia.org/wiki/File:Jordan_Doe_institutional.jpg',
-      score: -5, likely_mugshot: true, notes: 'not a profile picture'
+      score: -5, notes: 'not a profile picture'
     }.freeze
 
     def call
@@ -72,11 +72,11 @@ module FriendlyPhotos
 
     def build_cases(state)
       missing = upsert_case(state, 'E2E Missing Photo', 'e2e-missing-photo', 'unclassified')
-      mugshot = upsert_case(state, 'E2E Photo Review Case', 'e2e-mugshot-case', 'mugshot')
+      other = upsert_case(state, 'E2E Photo Review Case', 'e2e-other-photo-case', 'other')
       portrait = upsert_case(state, 'E2E Portrait Case', 'e2e-portrait-case', 'portrait')
-      attach_filename(mugshot, 'uploads/case/avatar/1/booking_photo.jpg')
+      attach_filename(other, 'uploads/case/avatar/1/institutional_photo.jpg')
       attach_filename(portrait, 'uploads/case/avatar/2/family_portrait.jpg')
-      { missing: missing, mugshot: mugshot, portrait: portrait }
+      { missing: missing, other: other, portrait: portrait }
     end
 
     def upsert_case(state, title, slug, avatar_kind)
@@ -100,7 +100,7 @@ module FriendlyPhotos
 
     def attach_subjects(cases)
       create_subject(cases[:missing], 'Jordan Doe')
-      create_subject(cases[:mugshot], 'Riley Example')
+      create_subject(cases[:other], 'Riley Example')
       create_subject(cases[:portrait], 'Casey Portrait')
     end
 
@@ -110,7 +110,7 @@ module FriendlyPhotos
 
     def create_candidates(this_case)
       create_candidate(this_case, FRIENDLY_CANDIDATE)
-      create_candidate(this_case, MUGSHOT_CANDIDATE)
+      create_candidate(this_case, LOW_SCORE_CANDIDATE)
     end
 
     def create_candidate(this_case, attrs)

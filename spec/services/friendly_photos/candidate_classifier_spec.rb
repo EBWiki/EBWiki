@@ -18,7 +18,7 @@ RSpec.describe FriendlyPhotos::CandidateClassifier do
   it 'combines metadata and vision signals' do
     allow(FriendlyPhotos::VisionClassifier).to receive(:call).and_return(
       FriendlyPhotos::VisionClassifier::Result.new(
-        likely_mugshot: false,
+        portrait_suitable: true,
         reasons: ['vision portrait'],
         score: 4,
         ai_used: true,
@@ -28,35 +28,34 @@ RSpec.describe FriendlyPhotos::CandidateClassifier do
 
     result = described_class.call(hit: portrait_hit)
 
-    expect(result.likely_mugshot).to be false
     expect(result.score).to be > 4
     expect(result.reasons).to include('vision portrait')
     expect(result.vision_ai_used).to be true
   end
 
-  it 'hard-blocks when either layer flags a mugshot' do
+  it 'downscores institutional metadata' do
     allow(FriendlyPhotos::VisionClassifier).to receive(:call).and_return(
       FriendlyPhotos::VisionClassifier::Result.new(
-        likely_mugshot: false,
+        portrait_suitable: true,
         reasons: [],
         score: 0,
         ai_used: false,
         failed: false
       )
     )
-    mugshot = FriendlyPhotos::WikimediaClient::Hit.new(
+    institutional = FriendlyPhotos::WikimediaClient::Hit.new(
       source: portrait_hit.source,
-      title: 'Booking mugshot',
+      title: 'County jail intake',
       image_url: portrait_hit.image_url,
       page_url: portrait_hit.page_url,
       license: portrait_hit.license,
       author: portrait_hit.author,
-      description: 'County jail booking photo'
+      description: 'County jail intake image'
     )
 
-    result = described_class.call(hit: mugshot)
+    result = described_class.call(hit: institutional)
 
-    expect(result.likely_mugshot).to be true
+    expect(result.score).to be < 0
   end
 
   it 'flags historical homonyms' do

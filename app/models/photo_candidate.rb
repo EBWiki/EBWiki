@@ -19,13 +19,13 @@ class PhotoCandidate < ApplicationRecord
   validates :image_url, uniqueness: { scope: :case_id }
   validate :urls_use_allowed_hosts
 
-  scope :friendly, -> { where(likely_mugshot: false, likely_homonym: false, vision_failed: false) }
+  scope :friendly, -> { where(likely_homonym: false, vision_failed: false) }
   scope :ranked, lambda {
-    order(likely_mugshot: :asc, likely_homonym: :asc, score: :desc, created_at: :desc)
+    order(likely_homonym: :asc, score: :desc, created_at: :desc)
   }
 
   def friendly?
-    !likely_mugshot? && !likely_homonym? && !vision_failed?
+    !likely_homonym? && !vision_failed?
   end
 
   def applyable?

@@ -57,7 +57,6 @@ module FriendlyPhotosHelper
     [
       ['needs_photo', 'Needs a profile picture'],
       ['missing', 'No photo yet'],
-      ['mugshot', 'Needs a healthier photo'],
       ['unclassified', 'Not yet reviewed'],
       ['portrait', 'Has a profile picture']
     ]

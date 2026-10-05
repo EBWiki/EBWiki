@@ -32,11 +32,11 @@ test.describe('Friendly photos', () => {
 
     await expect(page.getByTestId('friendly-photos-table')).toBeVisible();
     await expect(page.getByTestId('case-row-e2e-missing-photo')).toBeVisible();
-    await expect(page.getByTestId('case-row-e2e-mugshot-case')).toBeVisible();
+    await expect(page.getByTestId('case-row-e2e-other-photo-case')).toHaveCount(0);
     await expect(page.getByTestId('case-row-e2e-portrait-case')).toHaveCount(0);
   });
 
-  test('filters missing, mugshot, and portrait cases', async ({ page }) => {
+  test('filters missing, unclassified, and portrait cases', async ({ page }) => {
     await loginAsEditor(page);
     await page.goto('/friendly_photos');
 
@@ -45,10 +45,9 @@ test.describe('Friendly photos', () => {
     await expect(page.getByTestId('case-row-e2e-missing-photo')).toBeVisible();
     await expect(page.getByTestId('case-row-e2e-portrait-case')).toHaveCount(0);
 
-    await page.getByTestId('filter-mugshot').click();
-    await expect(page).toHaveURL(/filter=mugshot/);
-    await expect(page.getByTestId('case-row-e2e-mugshot-case')).toBeVisible();
-    await expect(page.getByTestId('case-row-e2e-missing-photo')).toHaveCount(0);
+    await page.getByTestId('filter-unclassified').click();
+    await expect(page).toHaveURL(/filter=unclassified/);
+    await expect(page.getByTestId('case-row-e2e-missing-photo')).toBeVisible();
 
     await page.getByTestId('filter-portrait').click();
     await expect(page).toHaveURL(/filter=portrait/);
@@ -64,44 +63,37 @@ test.describe('Friendly photos', () => {
     await expect(page.getByTestId('find-friendly-photo')).toHaveCount(0);
   });
 
-  test('classifies the current photo and rejects a mugshot candidate', async ({
+  test('classifies the current photo and rejects a candidate', async ({
     page,
   }, testInfo) => {
     skipMutationsOnMobile(testInfo);
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
 
-    await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
     await expect(page.getByTestId('apply-photo')).toHaveCount(1);
 
-    await page.getByTestId('avatar-kind-select').selectOption('mugshot');
+    await page.getByTestId('avatar-kind-select').selectOption('other');
     await clickTestId(page, 'update-photo-type');
-    await expect(page.getByText('Updated the photo type to Needs a healthier photo.')).toBeVisible();
+    await expect(page.getByText('Updated the photo type to Other.')).toBeVisible();
 
     await clickTestId(page, 'reject-photo');
     await expect(page.getByText('Rejected that candidate')).toBeVisible();
   });
 
-  test('applies a reviewed portrait and leaves mugshots un-applicable', async ({
-    page,
-  }, testInfo) => {
+  test('applies a reviewed portrait', async ({ page }, testInfo) => {
     skipMutationsOnMobile(testInfo);
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
 
     await expect(page.getByTestId('apply-photo')).toHaveCount(1);
-    await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
 
     await clickTestId(page, 'apply-photo');
     await expect(page.getByText('Applied the selected profile picture to this case.')).toBeVisible();
     await expect(page.getByText('Photo type:')).toContainText('Profile picture');
     await expect(page.getByTestId('apply-photo')).toHaveCount(0);
-    await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
   });
 
-  test('searches Wikimedia through the stub and keeps mugshots un-applicable', async ({
-    page,
-  }, testInfo) => {
+  test('searches Wikimedia through the stub', async ({ page }, testInfo) => {
     skipMutationsOnMobile(testInfo);
     await loginAsEditor(page);
     await page.goto('/friendly_photos/e2e-missing-photo');
@@ -112,7 +104,6 @@ test.describe('Friendly photos', () => {
     await expect(page.getByText('E2E family portrait')).toBeVisible();
     await expect(page.getByText('E2E institutional photo')).toBeVisible();
     await expect(page.getByText('E2E openverse portrait')).toBeVisible();
-    await expect(page.getByTestId('mugshot-flag').first()).toBeVisible();
     await expect(page.getByTestId('apply-photo')).toHaveCount(3);
   });
 });

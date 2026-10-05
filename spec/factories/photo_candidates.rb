@@ -15,6 +15,5 @@ FactoryBot.define do
     author { 'Family member' }
     score { 3 }
     status { 'pending' }
-    likely_mugshot { false }
   end
 end

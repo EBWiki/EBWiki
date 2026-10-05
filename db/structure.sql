@@ -744,7 +744,6 @@ CREATE TABLE public.photo_candidates (
     author character varying,
     score integer DEFAULT 0 NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
-    likely_mugshot boolean DEFAULT false NOT NULL,
     notes text,
     planner_ai_used boolean DEFAULT false NOT NULL,
     vision_ai_used boolean DEFAULT false NOT NULL,

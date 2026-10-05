@@ -13,14 +13,14 @@ module FriendlyPhotos
       description: 'Family photo portrait'
     ).freeze
 
-    MUGSHOT = WikimediaClient::Hit.new(
+    INSTITUTIONAL = WikimediaClient::Hit.new(
       source: 'wikimedia_commons',
       title: 'E2E institutional photo',
-      image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-mugshot.jpg',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-institutional.jpg',
       page_url: 'https://commons.wikimedia.org/wiki/File:E2E_institutional_photo.jpg',
       license: 'Public domain',
       author: 'Sheriff',
-      description: 'County jail booking photo'
+      description: 'County jail intake image'
     ).freeze
 
     OPENVERSE_PORTRAIT = WikimediaClient::Hit.new(
@@ -35,7 +35,7 @@ module FriendlyPhotos
     ).freeze
 
     def self.for(_query)
-      [PORTRAIT, MUGSHOT]
+      [PORTRAIT, INSTITUTIONAL]
     end
 
     def self.openverse_for(_query)

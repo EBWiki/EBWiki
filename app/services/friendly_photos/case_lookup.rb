@@ -17,7 +17,6 @@ module FriendlyPhotos
 
     def filtered_scope(filter)
       case filter
-      when 'mugshot' then Case.mugshot
       when 'missing' then Case.where(avatar: [nil, ''])
       when 'unclassified' then Case.unclassified
       when 'portrait' then Case.portrait

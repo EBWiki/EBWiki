@@ -18,13 +18,13 @@ RSpec.describe FriendlyPhotos::OpenverseClient do
           attribution: 'Pat'
         },
         {
-          title: 'Booking photo',
-          url: 'https://mugshots.com/jordan.jpg',
-          foreign_landing_url: 'https://mugshots.com/jordan',
+          title: 'Inmate intake image',
+          url: 'https://arrests.org/jordan.jpg',
+          foreign_landing_url: 'https://arrests.org/jordan',
           license: 'by',
           license_version: '2.0',
           creator: 'Sheriff',
-          source: 'mugshots'
+          source: 'arrests'
         }
       ]
     }
@@ -35,14 +35,14 @@ RSpec.describe FriendlyPhotos::OpenverseClient do
       .to_return(status: 200, body: body.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
-  it 'keeps licensed Flickr portraits and drops mugshot hosts' do
+  it 'keeps licensed Flickr portraits and drops arrest-database hosts' do
     hits = described_class.new.search(query: 'Jordan Doe')
 
     expect(hits.size).to eq(1)
     expect(hits.first.source).to eq('openverse')
     expect(hits.first.license).to include('BY-SA')
     expect(hits.first.license_url).to include('creativecommons.org')
-    expect(hits.map(&:image_url)).not_to include('https://mugshots.com/jordan.jpg')
+    expect(hits.map(&:image_url)).not_to include('https://arrests.org/jordan.jpg')
   end
 
   it 'returns fixture hits when e2e stubbing is on' do

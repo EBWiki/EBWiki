@@ -29,7 +29,7 @@ module FriendlyPhotos
 
     def metadata_score(hit, case_year)
       text = hit_text(hit)
-      MugshotClassifier.call(text: text).score +
+      MetadataScorer.call(text: text).score +
         HomonymDetector.call(text: text, case_year: case_year).score_penalty
     end
 
@@ -49,7 +49,6 @@ module FriendlyPhotos
     def hit_to_attrs(hit, name, classification, planner_ai_used)
       hit.to_h.merge(
         subject_name: name,
-        likely_mugshot: classification.likely_mugshot,
         likely_homonym: classification.likely_homonym,
         score: classification.score,
         notes: classification.reasons.join(', ').presence,

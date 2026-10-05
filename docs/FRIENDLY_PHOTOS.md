@@ -34,8 +34,8 @@ server), search uses two AI layers on the allowlist above:
    faces or licenses.
 2. **Vision classifier** (`VisionClassifier`) — scores the top N candidate
    images (default 12) as a healthy profile picture vs an institutional
-   photo before Apply. Metadata heuristics (`MugshotClassifier`,
-   `HomonymDetector`) still run; either layer can hard-block apply.
+   photo before Apply. Metadata heuristics (`MetadataScorer`,
+   `HomonymDetector`) still run; homonym matches hard-block apply.
 
 **Proving AI ran:** each stored candidate persists `planner_ai_used` and
 `vision_ai_used` booleans. The review page shows per-candidate badges and a
@@ -144,8 +144,8 @@ Ranking (higher is better):
 1. Portrait / family / yearbook / memorial language
 2. News-style stills (bodycam, incident, protest) — kept but downranked
 3. Institutional / booking / jail language — hard-downranked, cannot apply
-4. Known booking-photo hosts (`mugshots.com`, `arrests.org`, VineLink, and
-   similar) — excluded before save
+4. Known arrest-database hosts (`arrests.org`, VineLink, and similar) —
+   excluded before save
 
 Each stored candidate keeps `license`, optional `license_url`, author,
 source, and the source page. Apply refuses unsuitable photos, missing
@@ -162,8 +162,8 @@ Signed-in editors can:
 3. Run a Wikimedia + Openverse search for that person.
 4. Reject anything that is not a healthy profile picture.
 5. Apply a reviewed photo, or upload a better file on the case edit form.
-6. Mark the current photo as **Profile picture**, **Needs a healthier
-   photo**, or **Other**.
+6. Mark the current photo as **Profile picture**, **Not yet reviewed**, or
+   **Other**.
 
 ## Live search notes
 
@@ -202,12 +202,10 @@ Use this when an agent should walk the database and propose replacements
 instead of clicking through the UI.
 
 1. Load cases that still need a better photo: `Case.needing_friendly_photo`
-2. Optionally classify current filenames: `rake photos:classify_current`
-3. Search: `rake photos:search_friendly CASE=walter-scott`
-4. Drop any row whose `likely_mugshot` flag is true.
-5. Present remaining portraits with license, license URL, author, and
+2. Search: `rake photos:search_friendly CASE=walter-scott`
+3. Present remaining portraits with license, license URL, author, and
    source page. Do not apply from an agent run.
-6. After a person accepts a candidate, apply it in the app.
+4. After a person accepts a candidate, apply it in the app.
 
 ## End-to-end tests
 
