@@ -116,7 +116,7 @@ GEM
       sassc (>= 2.0.0)
     bootstrap3-datetimepicker-rails (4.17.47)
       momentjs-rails (>= 2.8.1)
-    brakeman (8.0.6)
+    brakeman (8.1.0)
       racc
     buftok (0.2.0)
     builder (3.3.0)
@@ -166,7 +166,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.7)
-    csv (3.3.5)
+    csv (3.3.6)
     database_cleaner-active_record (2.2.2)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0)
@@ -215,7 +215,7 @@ GEM
     equalizer (0.0.11)
     erb (6.0.7)
     erubi (1.13.1)
-    excon (1.7.1)
+    excon (1.7.2)
       logger
     execjs (2.10.0)
     factory_bot (6.5.6)
@@ -242,7 +242,7 @@ GEM
     ffi-compiler (1.3.2)
       ffi (>= 1.15.5)
       rake
-    fog-aws (3.33.3)
+    fog-aws (3.33.4)
       base64 (>= 0.2, < 0.4)
       fog-core (~> 2.6)
       fog-json (~> 1.1)
@@ -252,9 +252,9 @@ GEM
       excon (~> 1.0)
       formatador (>= 0.2, < 2.0)
       mime-types
-    fog-json (1.4.0)
+    fog-json (1.5.0)
       fog-core
-      json (~> 2.19)
+      json (>= 2.19, < 4)
     fog-xml (0.1.5)
       fog-core
       nokogiri (>= 1.5.11, < 2.0.0)
@@ -292,7 +292,7 @@ GEM
     http-parser (1.2.3)
       ffi-compiler (>= 1.0, < 2.0)
     http_parser.rb (0.6.0)
-    httparty (0.24.2)
+    httparty (0.24.3)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -330,14 +330,15 @@ GEM
     launchy (2.5.2)
       addressable (~> 2.8)
     lint_roller (1.1.0)
-    listen (3.10.0)
+    listen (3.10.1)
       logger
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
-    lograge (0.15.0)
+    lograge (0.15.1)
       actionpack (>= 4)
       activesupport (>= 4)
+      logger
       railties (>= 4)
       request_store (~> 1.0)
     loofah (2.25.2)
@@ -373,7 +374,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0701)
+    mime-types-data (3.2026.0929)
     mini_histogram (0.3.1)
     mini_magick (5.3.1)
       logger
@@ -389,7 +390,7 @@ GEM
       activesupport (>= 5.2, < 9)
     msgpack (1.8.5)
     multi_json (1.21.1)
-    multi_xml (0.8.1)
+    multi_xml (0.9.1)
       bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     naught (1.1.0)
@@ -517,7 +518,7 @@ GEM
       logger
       prism (>= 1.6.0)
       tsort
-    rdoc (8.0.0)
+    rdoc (8.1.0)
       erb
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
@@ -603,10 +604,9 @@ GEM
       activemodel (>= 7.2)
     securerandom (0.4.1)
     select2-rails (4.0.13)
-    selenium-webdriver (4.49.0)
+    selenium-webdriver (4.50.0)
       base64 (~> 0.2)
       logger (~> 1.4)
-      rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
     shoulda-matchers (4.5.1)
@@ -716,7 +716,7 @@ DEPENDENCIES
   bootsnap (~> 1.26)
   bootstrap-sass (>= 3.4.1)
   bootstrap3-datetimepicker-rails (~> 4.17)
-  brakeman (~> 8.0)
+  brakeman (~> 8.1)
   bullet (~> 8.2)
   capybara (~> 3.40)
   carrierwave (~> 2.2.7)
@@ -750,7 +750,7 @@ DEPENDENCIES
   json (~> 2.21)
   kaminari (~> 1.2, >= 1.2.1)
   launchy (~> 2.5)
-  listen (~> 3.7)
+  listen (~> 3.10)
   lograge (~> 0.15)
   mailboxer (~> 0.15)
   mock_redis (~> 0.55)
@@ -782,7 +782,7 @@ DEPENDENCIES
   sassc-rails (~> 2.1)
   searchkick (~> 6.1)
   select2-rails (~> 4.0)
-  selenium-webdriver (~> 4.49)
+  selenium-webdriver (~> 4.50)
   shoulda-matchers (~> 4.4, >= 4.4.1)
   simple_form (= 5.4.1)
   simplecov (~> 0.22.0)
