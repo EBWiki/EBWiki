@@ -54,7 +54,7 @@ harbor run --path harbor/tasks --include-task-name fix-failing-spec --agent orac
 
 Seeds only. Never restore a production dump into a Harbor sandbox.
 
-CI validates task layout and `registry.json` on `harbor/**` changes. It does **not** run `harbor run` (Docker + image pull) and does **not** call paid agents.
+CI validates task layout with `harbor/bin/check-tasks` and runs **oracle-only** smoke on `smoke-rails-version` (public `ebwiki/ebwiki:latest`, no model API keys). Boot and spec-fix oracle trials stay local until the eval image runway lands.
 
 ## Run a real agent (last)
 
