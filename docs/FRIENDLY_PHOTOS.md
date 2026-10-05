@@ -75,7 +75,7 @@ Without an API key (local dev only), the app uses the deterministic
 | Item | Value |
 | --- | --- |
 | URL | https://ebwiki-web-production.up.railway.app/friendly_photos |
-| Branch | `cursor/friendly-photos-search-dfb7` (Railway must build branch tip, not a pinned older SHA) |
+| Branch | `cursor/friendly-photos-clean-9ad4` ([draft PR #4450](https://github.com/EBWiki/EBWiki/pull/4450); Railway must build branch tip, not a pinned older SHA) |
 | Login | `e2e@example.com` / `e2e-password` |
 | Live search | `E2E_STUB_WIKIMEDIA=0` on `ebwiki-web` (variable is present; live APIs) |
 | AI | `OPENAI_API_KEY` present on `ebwiki-web` — SearchPlanner + VisionClassifier |
@@ -86,14 +86,18 @@ deploy.
 
 **Redeploy after a git push** (when GitHub webhook is connected):
 
-1. Push to `cursor/friendly-photos-search-dfb7`.
+1. Push to `cursor/friendly-photos-clean-9ad4` (finder source of truth: draft PR #4450).
 2. Railway project **ebwiki-friendly-photos-review** → service **ebwiki-web** → **Deployments** — confirm a new build for the pushed SHA.
+
+**Mark checklist (manual — agents do not redeploy):** If Railway still tracks the retired
+`cursor/friendly-photos-search-dfb7` branch, update **Source** branch to
+`cursor/friendly-photos-clean-9ad4`, then deploy once so review matches PR #4450 tip.
 
 **If auto-deploy stops** (e.g. `connect-service-source` fails with “User does not have access to the repo”):
 
 1. Railway dashboard → **ebwiki-friendly-photos-review** → **ebwiki-web** → **Settings** → **Source**.
 2. **Connect GitHub** (or **Reconnect**) as Mark (`mnyon-grandkru`) with access to `EBWiki/EBWiki`.
-3. Set branch to `cursor/friendly-photos-search-dfb7`, builder **Dockerfile** = `Dockerfile.review`.
+3. Set branch to `cursor/friendly-photos-clean-9ad4`, builder **Dockerfile** = `Dockerfile.review`.
 4. **Deploy** (or push an empty commit to re-trigger the webhook).
 5. Verify **Variables**: `REVIEW_SERVER=1`, `E2E_STUB_WIKIMEDIA=0`, `OPENAI_API_KEY` set; point `DATABASE_URL` at Neon (pooled URL), not production Heroku.
 
