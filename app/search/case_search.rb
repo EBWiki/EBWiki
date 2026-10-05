@@ -16,7 +16,7 @@ class CaseSearch
     scope = Case.all
     scope = scope.search_text(query) if query
     scope = scope.where(state_id: options[:state_id]) if options[:state_id].present?
-    scope = scope.order(date: :desc)
+    scope = scope.reorder(date: :desc)
     scope.includes(:state).page(options[:page]).per(PER_PAGE)
   end
 
