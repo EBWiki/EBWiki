@@ -1,0 +1,13 @@
+# Railway staging for EBWiki on main. Service settings mirror ebwiki-web on
+# ebwiki-friendly-photos-review (Dockerfile builder, Puma, release tasks, /up).
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile.railway"
+
+[deploy]
+preDeployCommand = ["bash release-tasks.sh"]
+startCommand = "bundle exec puma -C config/puma.rb"
+healthcheckPath = "/up"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
