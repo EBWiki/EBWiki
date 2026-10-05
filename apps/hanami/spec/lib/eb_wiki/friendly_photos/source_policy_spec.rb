@@ -62,6 +62,45 @@ RSpec.describe EbWiki::FriendlyPhotos::SourcePolicy do
     end
   end
 
+  describe ".allowed_hit?" do
+    it "requires both allowed image and page URLs" do
+      expect(described_class.allowed_hit?(hit(
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/a/ab/portrait.jpg",
+        page_url: "https://commons.wikimedia.org/wiki/File:Portrait.jpg"
+      ))).to be(true)
+    end
+
+    it "rejects when either URL fails the allow helpers" do
+      expect(described_class.allowed_hit?(hit(
+        image_url: "https://mugshots.com/photo.jpg",
+        page_url: "https://commons.wikimedia.org/wiki/File:Portrait.jpg"
+      ))).to be(false)
+
+      expect(described_class.allowed_hit?(hit(
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/a/ab/portrait.jpg",
+        page_url: "https://arrests.org/person"
+      ))).to be(false)
+    end
+
+    it "keeps hits with booking-database text when URLs are on the allowlist" do
+      expect(described_class.excluded_hit?(hit(
+        source: "openverse",
+        image_url: "https://live.staticflickr.com/65535/example.jpg",
+        page_url: "https://www.flickr.com/photos/example/1",
+        title: "Portrait",
+        description: "inmate lookup"
+      ))).to be(true)
+
+      expect(described_class.allowed_hit?(hit(
+        source: "openverse",
+        image_url: "https://live.staticflickr.com/65535/example.jpg",
+        page_url: "https://www.flickr.com/photos/example/1",
+        title: "Portrait",
+        description: "inmate lookup"
+      ))).to be(true)
+    end
+  end
+
   describe ".excluded_hit?" do
     it "allows Wikimedia Commons images" do
       expect(described_class.excluded_hit?(hit(

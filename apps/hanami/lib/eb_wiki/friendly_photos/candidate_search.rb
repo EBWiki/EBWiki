@@ -28,7 +28,7 @@ module EbWiki
         hits = stubbed? ? stub_hits : live_hits
         hits
           .uniq(&:image_url)
-          .reject { |hit| SourcePolicy.excluded_hit?(hit) }
+          .select { |hit| SourcePolicy.allowed_hit?(hit) }
           .map { |hit| annotate(hit) }
       end
 
