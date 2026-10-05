@@ -2,7 +2,7 @@
 
 # Expose deploy revision on /up JSON for live SHA checks (Railway sets
 # RAILWAY_GIT_COMMIT_SHA; operators may override with DEPLOY_REV).
-Rails.application.config.to_prepare do
+Rails.application.config.after_initialize do
   Rails::HealthController.class_eval do
     private
 
