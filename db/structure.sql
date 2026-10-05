@@ -1870,6 +1870,7 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261005120000'),
 ('20260906120000'),
 ('20260905220000'),
 ('20260815120000'),
