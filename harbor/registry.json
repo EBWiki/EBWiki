@@ -2,7 +2,7 @@
   {
     "name": "ebwiki-dev",
     "version": "0.1.0",
-    "description": "Oracle-solvable EBWiki Harbor tasks. Smoke, boot, spec-fix, and docker-contributor-setup stub. No paid models.",
+    "description": "Oracle-solvable EBWiki Harbor tasks. Smoke, boot, spec-fix, add-model-annotation stub, and docker-contributor-setup stub. No paid models.",
     "tasks": [
       {
         "name": "smoke-rails-version",
@@ -15,6 +15,10 @@
       {
         "name": "fix-failing-spec",
         "path": "harbor/tasks/fix-failing-spec"
+      },
+      {
+        "name": "add-model-annotation",
+        "path": "harbor/tasks/add-model-annotation"
       },
       {
         "name": "docker-contributor-setup",
