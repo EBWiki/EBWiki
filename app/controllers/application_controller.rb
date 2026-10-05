@@ -11,11 +11,11 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # rubocop:disable Rails/UnknownEnv -- staging is a valid custom environment
-  if Rails.env.staging? || ENV['HOST'] == 'ebwiki-newstack.herokuapp.com'
-    http_basic_authenticate_with name: ENV.fetch('STAGING_USERNAME', nil),
-                                 password: ENV.fetch(
-                                   'STAGING_PASSWORD', nil
-                                 )
+  staging_basic_auth = ENV['STAGING_USERNAME'].present? && ENV['STAGING_PASSWORD'].present?
+  if staging_basic_auth &&
+     (Rails.env.staging? || ENV['HOST'] == 'ebwiki-newstack.herokuapp.com')
+    http_basic_authenticate_with name: ENV.fetch('STAGING_USERNAME'),
+                                 password: ENV.fetch('STAGING_PASSWORD')
   end
   # rubocop:enable Rails/UnknownEnv
 

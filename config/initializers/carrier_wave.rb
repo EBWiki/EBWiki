@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 CarrierWave.configure do |config|
-  if Rails.env.development?
+  # rubocop:disable Rails/UnknownEnv -- staging is a valid custom environment
+  use_file_storage =
+    Rails.env.local? ||
+    (Rails.env.staging? &&
+      (ENV['AWS_ACCESS_KEY_ID'].blank? || ENV['AWS_SECRET_KEY_ID'].blank?))
+  # rubocop:enable Rails/UnknownEnv
+
+  if use_file_storage
     config.storage = :file
-  elsif Rails.env.test?
-    config.storage = :file
-    config.enable_processing = false
-  elsif Rails.env.staging? &&
-        (ENV['AWS_ACCESS_KEY_ID'].blank? || ENV['AWS_SECRET_KEY_ID'].blank?)
-    config.storage = :file
+    config.enable_processing = false if Rails.env.test?
   else
     config.storage = :fog
     config.fog_credentials = {
