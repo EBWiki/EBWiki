@@ -32,7 +32,8 @@ jobs:
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          uv tool install harbor
+          # Pin CLI so CI does not drift on PyPI releases (GKT-673).
+          uv tool install "harbor==0.24.0"
 
       - name: Run oracle smoke task
         run: |
