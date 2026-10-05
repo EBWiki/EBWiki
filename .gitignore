@@ -70,6 +70,9 @@ yarn-debug.log*
 /.idea
 /config/master.key
 
+# Harbor trial output (CLI writes ./jobs from the repo root)
+/jobs
+
 # Compound Engineering checkout-local config and generated artifacts
 .compound-engineering/config.local.yaml
 .compound-engineering/artifacts/
