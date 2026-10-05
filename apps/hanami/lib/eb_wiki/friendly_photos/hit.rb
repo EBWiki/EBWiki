@@ -10,7 +10,8 @@ module EbWiki
       :license,
       :author,
       :description,
-      :likely_mugshot
+      :likely_mugshot,
+      :likely_homonym
     )
   end
 end

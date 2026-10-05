@@ -14,13 +14,16 @@
   <% else %>
     <ul class="photo-grid">
       <% candidates.each do |hit| %>
-        <li class="photo-card<%= " photo-card-warn" if hit.likely_mugshot %>">
+        <li class="photo-card<%= " photo-card-warn" if hit.likely_mugshot || hit.likely_homonym %>">
           <img src="<%= hit.image_url %>" alt="<%= hit.title %>">
           <p><strong><%= hit.title %></strong></p>
           <p class="meta">
             <%= hit.source %>
             <% if hit.license %> · <%= hit.license %><% end %>
           </p>
+          <% if hit.likely_homonym %>
+            <p class="flash-error">Possible historical homonym — do not use.</p>
+          <% end %>
           <% if hit.likely_mugshot %>
             <p class="flash-error">Likely mugshot or booking photo — do not use.</p>
           <% end %>
