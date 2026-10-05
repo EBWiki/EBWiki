@@ -1,37 +1,37 @@
-# Use Ruby 3.4.2 as base image
-FROM ruby:3.4.2-slim
+# syntax=docker/dockerfile:1
+# Dev/eval image for EBWiki. Postgres and Redis are Compose sidecars, not baked in.
+# Production still deploys on Heroku; this image is for local `docker compose` and Harbor.
+FROM ruby:3.4.2-slim-bookworm
 
-# Set environment variables
-ENV RAILS_ENV=development
-ENV BUNDLE_PATH=/usr/local/bundle
-ENV BUNDLE_WITHOUT=""
+ARG BUNDLE_WITHOUT=production
+ENV RAILS_ENV=development \
+    BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_WITHOUT=${BUNDLE_WITHOUT} \
+    LANG=C.UTF-8 \
+    BUNDLE_IGNORE_FUNDING_REQUESTS=1
 
-# Install system dependencies
-RUN apt-get update -qq && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    curl \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq \
+ && apt-get install -y --no-install-recommends \
+      build-essential \
+      libpq-dev \
+      postgresql-client \
+      libyaml-dev \
+      libvips42 \
+      shared-mime-info \
+      curl \
+      git \
+ && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /usr/src/ebwiki
 
-# Copy Gemfile and Gemfile.lock
 COPY Gemfile Gemfile.lock ./
+RUN bundle config set --local without "${BUNDLE_WITHOUT}" \
+ && bundle install
 
-# Install gems
-RUN bundle config --global frozen 1 && \
-    bundle install --without test production
-
-# Copy application code
 COPY . .
+RUN mkdir -p tmp/pids log \
+ && chmod +x docker/entrypoint.sh
 
-# Create necessary directories
-RUN mkdir -p tmp/pids log
-
-# Expose port
 EXPOSE 3000
-
-# Default command
+ENTRYPOINT ["docker/entrypoint.sh"]
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
