@@ -23,7 +23,12 @@ module EbWiki
           record = case_page.fetch(:record)
           name = case_page.fetch(:subjects).first&.name.to_s.strip
           name = record.title if name.empty?
-          EbWiki::FriendlyPhotos::CandidateSearch.new(name: name, city: record.city).call
+          case_year = record.date&.year
+          EbWiki::FriendlyPhotos::CandidateSearch.new(
+            name: name,
+            city: record.city,
+            case_year: case_year
+          ).call
         end
       end
     end
