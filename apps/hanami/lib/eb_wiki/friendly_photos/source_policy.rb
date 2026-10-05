@@ -43,6 +43,10 @@ module EbWiki
         allowed_image_url?(url)
       end
 
+      def self.allowed_hit?(hit)
+        allowed_image_url?(hit.image_url) && allowed_page_url?(hit.page_url)
+      end
+
       def self.blocked_url?(url)
         host = https_host_name(url)
         return true if host.to_s.empty?
