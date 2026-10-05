@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+<<<<<<< HEAD
 # Helper for case page, mostly the case show page.
 module CasesHelper
   YOUTUBE_HOSTS = %w[
@@ -23,6 +24,10 @@ module CasesHelper
     end
   end
 
+=======
+# Helper for case pages.
+module CasesHelper
+>>>>>>> origin/main
   def link_to_case_title(this_case, length)
     link_to truncate(this_case.title, length: length), this_case
   end
