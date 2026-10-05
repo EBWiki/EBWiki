@@ -126,7 +126,8 @@ tracking columns (`planner_ai_used`, `vision_ai_used`, `vision_failed`,
 Local batch / agent path:
 
 ```
-bundle exec rake photos:classify_current
+bundle exec rake photos:classify_current          # dry-run (see docs/runbooks/PHOTOS_CLASSIFY_CURRENT_DRY_RUN.md)
+bundle exec rake photos:classify_current APPLY=1  # persist avatar_kind on mugshot filenames
 bundle exec rake photos:search_friendly CASE=walter-scott
 bundle exec rake photos:search_friendly LIMIT=10 FORMAT=json
 ```
@@ -202,7 +203,8 @@ Use this when an agent should walk the database and propose replacements
 instead of clicking through the UI.
 
 1. Load cases that still need a better photo: `Case.needing_friendly_photo`
-2. Optionally classify current filenames: `rake photos:classify_current`
+2. Optionally classify current filenames: dry-run `rake photos:classify_current`, then
+   `APPLY=1` if counts look right ([runbook](runbooks/PHOTOS_CLASSIFY_CURRENT_DRY_RUN.md))
 3. Search: `rake photos:search_friendly CASE=walter-scott`
 4. Drop any row whose `likely_mugshot` flag is true.
 5. Present remaining portraits with license, license URL, author, and
