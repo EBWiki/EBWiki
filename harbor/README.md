@@ -14,7 +14,7 @@ uv tool install harbor
 
 ## Dataset
 
-`harbor/registry.json` defines the `ebwiki-dev` dataset: smoke, boot, and spec-fix. Paths are in-repo. Run the folder or the registry:
+`harbor/registry.json` defines the `ebwiki-dev` dataset: smoke, boot, spec-fix, and the `add-model-annotation` stub. Paths are in-repo. Run the folder or the registry:
 
 ```bash
 harbor run --path harbor/tasks --agent oracle --yes
@@ -30,6 +30,7 @@ No paid model is required for oracle.
 | `tasks/smoke-rails-version` | Image pull + `rails -v`. No database. |
 | `tasks/boot-rails` | Eval image + Compose Postgres 17 / Redis 7. `rails runner` writes the app class. |
 | `tasks/fix-failing-spec` | Agent (or oracle) makes a red RSpec example green. |
+| `tasks/add-model-annotation` | Stub: tiny migration + annotaterb on a Harbor-only model (local oracle; not in CI smoke). |
 
 Shared Compose and the eval Dockerfile live in [`environments/ebwiki-dev/`](environments/ebwiki-dev/). Tasks that need sidecars copy those files into their own `environment/`. Case search is `pg_search` — do not add Elasticsearch.
 
