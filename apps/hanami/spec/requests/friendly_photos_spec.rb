@@ -34,6 +34,7 @@ RSpec.describe "Friendly photos", :db, type: :request do
     expect(last_response.body).to include("E2E family portrait")
     expect(last_response.body).to include("E2E openverse portrait")
     expect(last_response.body).to include("Likely mugshot or booking photo")
+    expect(last_response.body).to include("Possible historical homonym")
     expect(last_response.body).not_to include("arrests.org")
   end
 
