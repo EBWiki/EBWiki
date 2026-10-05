@@ -69,3 +69,7 @@ yarn-debug.log*
 .yarn-integrity
 /.idea
 /config/master.key
+
+# Compound Engineering checkout-local config and generated artifacts
+.compound-engineering/config.local.yaml
+.compound-engineering/artifacts/
