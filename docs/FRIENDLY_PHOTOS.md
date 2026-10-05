@@ -127,7 +127,7 @@ Local batch / agent path:
 
 ```
 bundle exec rake photos:classify_current          # dry-run (see docs/runbooks/PHOTOS_CLASSIFY_CURRENT_DRY_RUN.md)
-bundle exec rake photos:classify_current APPLY=1  # persist avatar_kind on mugshot filenames
+bundle exec rake photos:classify_current APPLY=1  # persist avatar_kind — checklist + no prod without GO in runbook
 bundle exec rake photos:search_friendly CASE=walter-scott
 bundle exec rake photos:search_friendly LIMIT=10 FORMAT=json
 ```
@@ -204,7 +204,7 @@ instead of clicking through the UI.
 
 1. Load cases that still need a better photo: `Case.needing_friendly_photo`
 2. Optionally classify current filenames: dry-run `rake photos:classify_current`, then
-   `APPLY=1` if counts look right ([runbook](runbooks/PHOTOS_CLASSIFY_CURRENT_DRY_RUN.md))
+   `APPLY=1` only after the runbook safety checklist ([runbook](runbooks/PHOTOS_CLASSIFY_CURRENT_DRY_RUN.md); no production without operator GO)
 3. Search: `rake photos:search_friendly CASE=walter-scott`
 4. Drop any row whose `likely_mugshot` flag is true.
 5. Present remaining portraits with license, license URL, author, and
