@@ -1,0 +1,9 @@
+# Tracked Compound Engineering defaults for EBWiki.
+# Durable process lives in AGENTS.md and .cursor/rules/. This file only
+# sets checkout-wide CE skill defaults. Do not put credentials here.
+#
+# Branding stays off. ce-commit-push-pr adds Compound branding only when a
+# run passes branding:on or this file later enables it.
+docs_root: .compound-engineering/artifacts
+pr_teaching_section: false
+auto_babysit: false
