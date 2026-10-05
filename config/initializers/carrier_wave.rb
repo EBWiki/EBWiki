@@ -6,6 +6,9 @@ CarrierWave.configure do |config|
   elsif Rails.env.test?
     config.storage = :file
     config.enable_processing = false
+  elsif Rails.env.staging? &&
+        (ENV['AWS_ACCESS_KEY_ID'].blank? || ENV['AWS_SECRET_KEY_ID'].blank?)
+    config.storage = :file
   else
     config.storage = :fog
     config.fog_credentials = {

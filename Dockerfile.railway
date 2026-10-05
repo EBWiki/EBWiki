@@ -11,10 +11,17 @@ ENV RAILS_LOG_TO_STDOUT=true
 RUN apt-get update -qq && apt-get install -y \
     build-essential \
     libpq-dev \
-    postgresql-client \
     curl \
+    ca-certificates \
+    gnupg \
     git \
     nodejs \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+      | gpg --dearmor -o /usr/share/keyrings/postgresql.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" \
+      > /etc/apt/sources.list.d/pgdg.list \
+    && apt-get update -qq \
+    && apt-get install -y postgresql-client-17 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/ebwiki

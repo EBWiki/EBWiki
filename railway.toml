@@ -5,7 +5,7 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile.railway"
 
 [deploy]
-preDeployCommand = ["bash release-tasks.sh"]
+preDeployCommand = ["bundle", "exec", "rails", "db:prepare"]
 startCommand = "bundle exec puma -C config/puma.rb"
 healthcheckPath = "/up"
 healthcheckTimeout = 300

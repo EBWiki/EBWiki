@@ -12,7 +12,9 @@ Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
 1. Merge-ready changes land on GitHub `main`.
 2. Railway watches `main` on `EBWiki/EBWiki` and builds with
    **`Dockerfile.railway`** (see `railway.toml`).
-3. **Pre-deploy:** `bash release-tasks.sh` runs `rails db:migrate`.
+3. **Pre-deploy:** `bundle exec rails db:prepare` (creates the DB schema on first
+   deploy and applies migrations afterward). Other deploy paths may still use
+   `release-tasks.sh` (`rails db:migrate`).
 4. **Start:** `bundle exec puma -C config/puma.rb`.
 5. **Health check:** HTTP `GET /up` (Rails 8.1 health endpoint). Railway must
    reach `/up` without HTTP basic auth; the rest of the site uses staging basic
@@ -28,7 +30,9 @@ The root **`Dockerfile`** is unchanged for the Docker Hub workflow
 
 Database config is **not** committed: the image copies
 `config/database.railway.yml` to `config/database.yml` at build time so staging
-boots from **`DATABASE_URL`** only.
+boots from **`DATABASE_URL`** only. The image installs **PostgreSQL client 17**
+(PGDG) so `pg_dump` matches Postgres 17 features in `db/structure.sql` (for
+example `SET transaction_timeout`).
 
 ## How this host differs from hanami.ebwiki.org
 
@@ -80,7 +84,7 @@ Set each name below in Railway (or sync from Doppler `ebwiki/stg`). Names match
 
 | Variable | Purpose |
 | --- | --- |
-| `AWS_ACCESS_KEY_ID` | S3 / CarrierWave |
+| `AWS_ACCESS_KEY_ID` | S3 / CarrierWave (optional on staging: file storage when unset) |
 | `AWS_SECRET_KEY_ID` | S3 secret (note `_KEY_ID` suffix in this app) |
 | `S3_BUCKET` | Upload bucket |
 | `FOG_DIRECTORY` | Sitemap / Fog directory name |
