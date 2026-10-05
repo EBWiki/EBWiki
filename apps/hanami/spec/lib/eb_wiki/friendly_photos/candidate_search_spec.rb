@@ -19,13 +19,22 @@ RSpec.describe EbWiki::FriendlyPhotos::CandidateSearch do
     end
 
     it "keeps stub hits on allowed Wikimedia, Flickr, and Openverse URLs" do
-      hits = described_class.new(name: "Walter Scott").call
+      hits = described_class.new(name: "Walter Scott", case_year: 2015).call
 
       expect(hits.map(&:title)).to contain_exactly(
         "E2E family portrait",
         "E2E institutional photo",
-        "E2E openverse portrait"
+        "E2E openverse portrait",
+        "Portrait of Sir Walter Scott, novelist"
       )
+    end
+
+    it "flags likely homonyms without dropping allowed-source hits" do
+      hits = described_class.new(name: "Walter Scott", case_year: 2015).call
+      homonym = hits.find { |hit| hit.title == "Portrait of Sir Walter Scott, novelist" }
+
+      expect(homonym.likely_homonym).to be(true)
+      expect(EbWiki::FriendlyPhotos::SourcePolicy.allowed_hit?(homonym)).to be(true)
     end
 
     it "flags likely mugshots without dropping allowed-source hits" do
