@@ -242,6 +242,7 @@ describe 'friendly photos' do
     missing = create(:case)
     other_case = create(:case, avatar_kind: 'other')
     portrait_case = create(:case, avatar_kind: 'portrait')
+    other_case.update_columns(avatar: 'uploads/case/avatar/8/other.jpg')
     portrait_case.update_columns(avatar: 'uploads/case/avatar/9/portrait.jpg')
 
     expect(missing.needs_friendly_photo?).to be true

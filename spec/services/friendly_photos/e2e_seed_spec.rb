@@ -8,7 +8,7 @@ RSpec.describe FriendlyPhotos::E2eSeed do
 
     expect(User.find_by(email: described_class::EMAIL)).to be_present
     expect(result[:missing].subjects.first.name).to eq('Jordan Doe')
-    expect(result[:missing].photo_candidates.friendly.pending.size).to eq(1)
+    expect(result[:missing].photo_candidates.friendly.pending.size).to eq(2)
     expect(result[:missing].photo_candidates.where('score < 0').size).to eq(1)
     expect(result[:portrait]).to be_portrait
     expect(Case.needing_friendly_photo).to include(result[:missing])

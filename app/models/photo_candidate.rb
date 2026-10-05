@@ -29,7 +29,7 @@ class PhotoCandidate < ApplicationRecord
   end
 
   def applyable?
-    pending? && friendly? && vision_verified?
+    pending? && friendly? && vision_verified? && score.to_i >= 0
   end
 
   def vision_verified?
