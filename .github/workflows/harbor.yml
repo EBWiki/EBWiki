@@ -20,3 +20,33 @@ jobs:
 
       - name: Validate task directories and registry.json
         run: python3 harbor/bin/check-tasks
+
+  smoke-rails-version:
+    name: Oracle smoke (smoke-rails-version, Hub image, no secrets)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Install Harbor CLI
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          uv tool install harbor
+
+      - name: Run oracle smoke task
+        run: |
+          set -euo pipefail
+          OUTPUT="$(harbor run \
+            --path harbor/tasks \
+            --include-task-name smoke-rails-version \
+            --agent oracle \
+            --env docker \
+            --yes 2>&1)"
+          printf '%s\n' "$OUTPUT"
+          REWARD="$(printf '%s\n' "$OUTPUT" | grep -oP 'Mean:\s+\K[0-9.]+' | tail -1 || true)"
+          if [ -z "$REWARD" ] || ! awk -v r="$REWARD" 'BEGIN { exit (r + 0 >= 1.0) ? 0 : 1 }'; then
+            echo "Oracle smoke failed: mean=${REWARD:-unknown}"
+            exit 1
+          fi
+          echo "Oracle smoke passed (mean=$REWARD)"
