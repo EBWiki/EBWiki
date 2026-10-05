@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""Validate Harbor task layout and registry.json. No Docker, no paid models."""
+
+from __future__ import annotations
+
+import json
+import stat
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+TASKS = ROOT / "tasks"
+REGISTRY = ROOT / "registry.json"
+REQUIRED = (
+    "instruction.md",
+    "task.toml",
+    "solution/solve.sh",
+    "tests/test.sh",
+)
+EXECUTABLE = (
+    "solution/solve.sh",
+    "tests/test.sh",
+    "workdir/setup.sh",
+)
+
+
+def main() -> int:
+    errors: list[str] = []
+    task_dirs = sorted(path for path in TASKS.iterdir() if path.is_dir())
+    if not task_dirs:
+        errors.append(f"no task directories under {TASKS}")
+
+    for task in task_dirs:
+        for rel in REQUIRED:
+            if not (task / rel).is_file():
+                errors.append(f"{task.name}: missing {rel}")
+        if not (task / "environment").is_dir():
+            errors.append(
+                f"{task.name}: missing environment/ "
+                "(Harbor requires this directory even when docker_image is set)"
+            )
+        for rel in EXECUTABLE:
+            path = task / rel
+            if not path.is_file():
+                continue
+            if path.stat().st_mode & stat.S_IXUSR == 0:
+                errors.append(f"{task.name}: {rel} is not executable")
+
+    if not REGISTRY.is_file():
+        errors.append("missing harbor/registry.json")
+        return _done(errors)
+
+    try:
+        payload = json.loads(REGISTRY.read_text())
+    except json.JSONDecodeError as exc:
+        errors.append(f"registry.json is not valid JSON: {exc}")
+        return _done(errors)
+
+    if not isinstance(payload, list) or not payload:
+        errors.append("registry.json must be a non-empty array")
+        return _done(errors)
+
+    dataset = payload[0]
+    names = {task.name for task in task_dirs}
+    for entry in dataset.get("tasks", []):
+        path = ROOT.parent / entry["path"]
+        if not path.is_dir():
+            errors.append(f"registry path missing: {entry['path']}")
+        elif path.name not in names:
+            errors.append(f"registry task is not a directory under harbor/tasks: {entry['path']}")
+
+    return _done(errors)
+
+
+def _done(errors: list[str]) -> int:
+    if errors:
+        print("Harbor task check failed:", file=sys.stderr)
+        for error in errors:
+            print(f"  - {error}", file=sys.stderr)
+        return 1
+    print(f"Harbor task check passed ({len(list(TASKS.iterdir()))} tasks).")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

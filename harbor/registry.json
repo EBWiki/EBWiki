@@ -1,0 +1,27 @@
+[
+  {
+    "name": "ebwiki-dev",
+    "version": "0.1.0",
+    "description": "Oracle-solvable EBWiki Harbor tasks. Smoke, boot, and spec-fix. No paid models.",
+    "tasks": [
+      {
+        "name": "smoke-rails-version",
+        "path": "harbor/tasks/smoke-rails-version"
+      },
+      {
+        "name": "boot-rails",
+        "path": "harbor/tasks/boot-rails"
+      },
+      {
+        "name": "fix-failing-spec",
+        "path": "harbor/tasks/fix-failing-spec"
+      }
+    ],
+    "metrics": [
+      {
+        "type": "mean",
+        "kwargs": {}
+      }
+    ]
+  }
+]

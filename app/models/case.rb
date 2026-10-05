@@ -103,7 +103,9 @@ class Case < ApplicationRecord
   end
 
   def self.find_by_search(query)
-    search(query)
+    return none if query.blank?
+
+    search_text(query)
   end
 
   def nearby_cases
