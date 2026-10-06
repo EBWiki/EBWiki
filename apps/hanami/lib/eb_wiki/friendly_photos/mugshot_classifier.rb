@@ -39,7 +39,7 @@ module EbWiki
         /protest\s*photo/i
       ].freeze
 
-      Result = Struct.new(:likely_mugshot, :reasons, :score, keyword_init: true)
+      Result = Struct.new(:likely_mugshot, :reasons, :score)
 
       def self.call(text:)
         new.call(text: text)
