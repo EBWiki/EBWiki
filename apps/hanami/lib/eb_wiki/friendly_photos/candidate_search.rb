@@ -4,6 +4,7 @@ require "json"
 require "net/http"
 require "uri"
 require "eb_wiki/friendly_photos/hit"
+require "eb_wiki/friendly_photos/mugshot_classifier"
 require "eb_wiki/friendly_photos/source_policy"
 
 module EbWiki
@@ -14,7 +15,6 @@ module EbWiki
       COMMONS_API = "https://commons.wikimedia.org/w/api.php"
       WIKIPEDIA_API = "https://en.wikipedia.org/w/api.php"
       OPENVERSE_API = "https://api.openverse.org/v1/images/"
-      MUGSHOT_TEXT = /mugshot|booking.?photo|jail|inmate|arrest|sheriff/i
       TIMEOUT = 8
 
       def initialize(name:, city: nil)
@@ -167,12 +167,10 @@ module EbWiki
       end
 
       def annotate(hit)
-        hit.likely_mugshot = mugshot?(hit)
+        hit.likely_mugshot = MugshotClassifier.call(
+          text: [hit.title, hit.description, hit.author]
+        ).likely_mugshot
         hit
-      end
-
-      def mugshot?(hit)
-        [hit.title, hit.description, hit.author].join(" ").match?(MUGSHOT_TEXT)
       end
     end
   end
