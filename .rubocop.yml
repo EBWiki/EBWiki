@@ -33,6 +33,11 @@ AllCops:
 Rails/I18nLocaleTexts:
   Enabled: false
 
+# Disabled pending a params.expect migration. rubocop-rails 2.36 flags existing
+# params[:id] / params[:case_slug] reads and blocks routine bundler-dev updates.
+Rails/StrongParametersExpect:
+  Enabled: false
+
 # Disabled - @active_page pattern is common in helpers
 Rails/HelperInstanceVariable:
   Enabled: false

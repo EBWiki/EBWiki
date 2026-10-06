@@ -107,15 +107,20 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 
-  # Enable PaperTrail versioning for tests that need it
-  config.around(:each, versioning: true) do |example|
+  # PaperTrail's RSpec helper turns versioning off in before(:each) and
+  # back on for examples tagged versioning: true. It does not clear
+  # PaperTrail.request.disable_model flags, which live in RequestStore and
+  # leak across examples (including file-load side effects in mailer specs).
+  # append_before runs after that helper so versioning examples stay enabled.
+  config.append_before(:each, versioning: true) do
     PaperTrail.enabled = true
+    PaperTrail.request.enabled = true
+    PaperTrail.request.enable_model(Case)
     PaperTrail.request.whodunnit = 'test'
-    example.run
-    PaperTrail.enabled = false
   end
 
   config.append_after(:each) do
+    PaperTrail.request.enable_model(Case)
     DatabaseCleaner[:active_record].clean
   end
 
