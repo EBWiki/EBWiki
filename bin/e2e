@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Run Playwright against a running EBWiki server.
+# Browsers stay in CI / a Cloud Agent — do not install them on a local laptop.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+if [[ ! -d node_modules/@playwright/test ]]; then
+  npm ci
+fi
+
+if [[ "${PW_CHANNEL:-}" != "chrome" && ! -d "${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}" ]]; then
+  npx playwright install chromium
+fi
+
+exec npx playwright test "$@"
