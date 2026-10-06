@@ -1,0 +1,10 @@
+<h1><%= @state.persisted? ? 'Edit state' : 'New state' %></h1>
+
+<%= simple_form_for [:admin, @state] do |f| %>
+  <%= f.input :name %>
+  <%= f.input :ansi_code %>
+  <%= f.input :iso %>
+  <%= f.button :submit, class: 'btn btn-success' %>
+<% end %>
+
+<p><%= link_to 'Back', admin_states_path %></p>

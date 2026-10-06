@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Staff tools - EBWiki</title>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
+    <%= render 'application/favicon' %>
+  </head>
+  <body>
+    <div class="container">
+      <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
+        <div class="alert alert-<%= key %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <%= value.is_a?(Array) ? '' : value %>
+        </div>
+      <% end %>
+    </div>
+    <div class="container fixed">
+      <%= render 'layouts/header' %>
+    </div>
+    <div class="container">
+      <ul class="nav nav-pills" style="margin-bottom: 20px;">
+        <li class="<%= 'active' if controller_name == 'users' %>"><%= link_to 'Users', admin_users_path %></li>
+        <li class="<%= 'active' if controller_name == 'comments' %>"><%= link_to 'Comments', admin_comments_path %></li>
+        <li class="<%= 'active' if controller_name == 'states' %>"><%= link_to 'States', admin_states_path %></li>
+        <li class="<%= 'active' if controller_name == 'genders' %>"><%= link_to 'Genders', admin_genders_path %></li>
+        <li class="<%= 'active' if controller_name == 'ethnicities' %>"><%= link_to 'Ethnicities', admin_ethnicities_path %></li>
+        <li><%= link_to 'Back to site', root_path %></li>
+      </ul>
+      <%= yield %>
+    </div>
+    <%= render 'layouts/footer' %>
+  </body>
+</html>
