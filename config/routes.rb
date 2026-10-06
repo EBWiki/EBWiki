@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     root to: 'agencies#index'
   end
   default_url_options host: 'example.com'
+  get '/up', to: proc { [200, { 'Content-Type' => 'text/plain' }, ['ok']] }
   root 'cases#index'
 
   resources :cases do

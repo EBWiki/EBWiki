@@ -40,6 +40,11 @@
           <br />
           <%= @this_case.date.to_formatted_s(:long) %>
         </p>
+        <% if @this_case.latitude.present? && @this_case.longitude.present? %>
+          <%= render 'maps/assets' %>
+          <h4 class="article_subheader">Location</h4>
+          <%= render 'maps/case_location', this_case: @this_case %>
+        <% end %>
       </h1>
       <% if @this_case.agencies.present? %>
         <p class="h5">Agencies:

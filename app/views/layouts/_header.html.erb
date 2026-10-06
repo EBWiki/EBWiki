@@ -16,6 +16,9 @@
       <%= render "search/bar" %>
       <ul class="nav navbar-nav navbar-right">
         <li>
+          <%= link_to 'Map', maps_path %>
+        </li>
+        <li>
           <%= link_to 'About',about_path %>
         </li>
         <% if user_signed_in? %>
