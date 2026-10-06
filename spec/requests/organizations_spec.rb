@@ -13,6 +13,16 @@ RSpec.describe 'Organizations', type: :request do
     end
   end
 
+  describe 'GET /organizations/:id' do
+    let(:organization) { create(:organization, name: 'Example Org') }
+
+    it 'returns the organization page' do
+      get "/organizations/#{organization.id}"
+      expect(response).to have_http_status(200)
+      expect(response.body).to include(organization.name)
+    end
+  end
+
   describe 'GET /edit' do
     let(:organization) { create(:organization) }
 
