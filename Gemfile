@@ -45,14 +45,14 @@ gem 'paper_trail'
 gem 'paper_trail-association_tracking'
 gem 'pg', '~> 1.2'
 gem 'pg_search', '~> 2.4'
-gem 'puma', '~> 6.0'
+gem 'puma', '~> 7.2'
 gem 'pundit', '~> 2.1'
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 gem 'rack-host-redirect', '~> 1.3'
 # Override action_text-trix to 2.1.17+ for XSS security fix (issue #4317)
 gem 'action_text-trix', '~> 2.1.19'
 gem 'administrate', '~> 1.0'
-gem 'rails', '~> 8.1.3'
+gem 'rails', '~> 8.1.4'
 gem 'recaptcha', '~> 5.21'
 gem 'redis', '~> 5'
 gem 'redis-namespace', '~> 1.8'
@@ -74,22 +74,22 @@ group :development, :test do
   gem 'debug', '>= 1.0.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker'
-  gem 'mock_redis', '~> 0.26'
+  gem 'mock_redis', '~> 0.55'
   gem 'pre-commit', '~> 0.39'
   gem 'rake', require: false
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.65', require: false
+  gem 'rubocop', '~> 1.88', require: false
   gem 'rubocop-performance', '~> 1.23', require: false
-  gem 'rubocop-rails', '~> 2.26', require: false
+  gem 'rubocop-rails', '~> 2.36', require: false
   gem 'standard', '>= 1.35.1', require: false
 end
 
 group :development do
-  gem 'annotaterb', '~> 4.22'
-  gem 'brakeman', '~> 8.0', require: false
+  gem 'annotaterb', '~> 4.25'
+  gem 'brakeman', '~> 8.1', require: false
   gem 'derailed_benchmarks', '~> 1.8'
-  gem 'listen', '~> 3.7'
-  gem 'rails_real_favicon', '~> 0.0.13'
+  gem 'listen', '~> 3.10'
+  gem 'rails_real_favicon', '~> 0.1.1'
   gem 'web-console', '~> 3.7'
 end
 
@@ -97,10 +97,10 @@ group :test do
   gem 'capybara', '~> 3.40'
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
-  gem 'selenium-webdriver', '~> 4.0'
+  gem 'selenium-webdriver', '~> 4.50'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
   gem 'vcr', '~> 6.0'
-  gem 'webmock', '~>3.9', '>= 3.9.1'
+  gem 'webmock', '~>3.26'
 end
 
 group :production do
