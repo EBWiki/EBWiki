@@ -72,9 +72,21 @@
 	<div class="cold-md-12">
 		<fieldset class="fsStyle">
 			<legend class="legendStyle">Main Content Fields <%= image_tag('help_icon.png', data: {:toggle => 'popover', :container => 'body', :trigger => 'hover',:placement => "bottom", :title => "Main Content Fields", :content => "These three fields constitute the body of the case and house most of the facts. The overview contains basic factual information, litigation includes facts relating to legal proceedings and investigation and community action encompasses information about family activity, protests and the like"})%></legend>
-			<%= f.input :overview, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
-			<%= f.input :litigation, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
-			<%= f.input :community_action, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Basic'} } %>
+			<div class="form-group string optional case_overview">
+				<label class="string optional" for="case_overview">Overview</label>
+				<%= f.hidden_field :overview, id: 'case_overview' %>
+				<trix-editor input="case_overview" class="trix-content"></trix-editor>
+			</div>
+			<div class="form-group string optional case_litigation">
+				<label class="string optional" for="case_litigation">Litigation</label>
+				<%= f.hidden_field :litigation, id: 'case_litigation' %>
+				<trix-editor input="case_litigation" class="trix-content"></trix-editor>
+			</div>
+			<div class="form-group string optional case_community_action">
+				<label class="string optional" for="case_community_action">Community action</label>
+				<%= f.hidden_field :community_action, id: 'case_community_action' %>
+				<trix-editor input="case_community_action" class="trix-content"></trix-editor>
+			</div>
 	  </fieldset>
 	</div>
 
