@@ -179,7 +179,7 @@ jobs:
       - name: Setup database
         run: |
           cp config/database.ci.yml config/database.yml
-          bundle exec bin/rails db:prepare db:seed
+          bundle exec bin/rails db:reset
 
       - name: Start Rails
         run: |
