@@ -11,8 +11,9 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
-  # Show full error reports.
-  config.consider_all_requests_local = true
+  # Show full error reports locally. CI e2e boots development (see ci.yml); public 404/500
+  # pages match production-style handling so Playwright not-found specs see stable copy.
+  config.consider_all_requests_local = ENV['CI'].blank?
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
