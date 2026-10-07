@@ -32,11 +32,10 @@ class AgenciesController < ApplicationController
 
   # POST /agencies
   def create
-    @back_url = session[:previous_url]
     @agency = Agency.new(agency_params)
     if @agency.save
       flash[:success] = 'Agency was successfully created.'
-      redirect_to @back_url, status: :created
+      redirect_to @agency
     else
       render 'new'
     end

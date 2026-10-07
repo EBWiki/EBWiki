@@ -82,7 +82,8 @@ RSpec.describe 'Agencies', type: :request do
 
   describe 'POST /agencies' do
     let(:user) { create(:user) }
-    let(:params) { { agency: attributes_for(:agency) } }
+    let(:state) { create(:state) }
+    let(:params) { { agency: attributes_for(:agency, state_id: state.id) } }
     let(:bad_params) { { agency: { city: 'Beaumont' } } }
 
     context 'when the agency is successfully saved' do
@@ -91,12 +92,8 @@ RSpec.describe 'Agencies', type: :request do
         post '/agencies', params: params, headers: {}
       end
 
-      it 'will return status code 200' do
-        expect(response).to have_http_status(200)
-      end
-
-      it 'will navigate to the agency show page' do
-        expect(response.body).to include(params[:agency][:name])
+      it 'will redirect to the agency show page' do
+        expect(response).to redirect_to agency_path(Agency.last)
       end
     end
 
