@@ -6,7 +6,8 @@ module Sprockets
     VERSION = '3.7.0'
 
     module Helper
-      AssetNotFound = Class.new(StandardError)
+      class AssetNotFound < StandardError
+      end
     end
   end
 end
