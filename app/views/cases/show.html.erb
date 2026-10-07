@@ -14,8 +14,8 @@
   <!-- Portfolio Item Row -->
   <div class="row">
     <div class="col-md-3">
-      <% if @this_case.avatar? %>
-        <%= image_tag(@this_case.avatar.large_avatar.url, :class => "img-responsive articleImage") %>
+      <% if @this_case.photo.attached? || @this_case.avatar? %>
+        <%= image_tag(case_photo_url(@this_case, :large), :class => "img-responsive articleImage") %>
       <% else %>
         <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
       <% end %>
