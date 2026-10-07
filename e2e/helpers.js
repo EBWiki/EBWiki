@@ -12,7 +12,9 @@ const MEMBER = {
 }
 
 const SIGN_IN_NOTICE = 'You need to sign in or sign up before continuing.'
-const NOT_FOUND = /Couldn't find|RecordNotFound|doesn't exist/i
+// Matches public/404.html, FriendlyId/AR misses, routing errors, and app flash (see GKT-957 slice B).
+const NOT_FOUND =
+  /Couldn't find|can't find record|RecordNotFound|The page you were looking for doesn't exist|Case was not found!|No route matches/i
 
 async function login(page, user = ADMIN) {
   await page.goto('/users/sign_in')
@@ -39,7 +41,7 @@ async function expectAuthRequired(page) {
 }
 
 async function expectNotFound(page) {
-  await expect(page.getByText(NOT_FOUND)).toBeVisible()
+  await expect(page.getByText(NOT_FOUND).first()).toBeVisible()
 }
 
 async function expectFlash(page, text) {
