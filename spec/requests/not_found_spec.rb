@@ -4,11 +4,15 @@ require 'rails_helper'
 
 RSpec.describe 'Not found responses', type: :request do
   around do |example|
-    previous = Rails.application.env_config['action_dispatch.show_exceptions']
-    Rails.application.env_config['action_dispatch.show_exceptions'] = :rescuable
+    config = Rails.application.config
+    previous_show = config.action_dispatch.show_exceptions
+    previous_local = config.consider_all_requests_local
+    config.action_dispatch.show_exceptions = :all
+    config.consider_all_requests_local = false
     example.run
   ensure
-    Rails.application.env_config['action_dispatch.show_exceptions'] = previous
+    config.action_dispatch.show_exceptions = previous_show
+    config.consider_all_requests_local = previous_local
   end
 
   it 'returns 404 for an unknown agency slug' do
