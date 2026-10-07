@@ -71,8 +71,6 @@ class AgencyDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    case_agencies
-    cases
     city
     email
     jurisdiction
@@ -83,7 +81,6 @@ class AgencyDashboard < Administrate::BaseDashboard
     state
     street_address
     telephone
-    versions
     website
     zipcode
   ].freeze
