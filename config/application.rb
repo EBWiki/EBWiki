@@ -21,5 +21,8 @@ module EBWiki
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # Rails 8.1 no longer maps missing records to 404 by default; restore public 404 handling.
+    config.action_dispatch.rescue_responses['ActiveRecord::RecordNotFound'] = :not_found
   end
 end
