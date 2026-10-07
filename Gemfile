@@ -69,6 +69,8 @@ gem 'simple_form', '5.4.1'
 gem 'sitemap_generator', '~> 6.1'
 gem 'social-share-button', '~> 1.2'
 gem 'statistics'
+gem 'stimulus-rails', '~> 1.3'
+gem 'turbo-rails', '~> 2.0'
 
 gem 'twitter', '~> 7.0'
 
