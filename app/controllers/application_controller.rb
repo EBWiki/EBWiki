@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :log_invalid_token_attempt
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActiveRecord::RecordNotFound, with: :render_public_not_found
 
   # rubocop:disable Rails/UnknownEnv -- staging is a valid custom environment
   if Rails.env.staging? || ENV['HOST'] == 'ebwiki-newstack.herokuapp.com'
@@ -38,6 +39,10 @@ class ApplicationController < ActionController::Base
     user_signed_in? ? current_user.id : 'Guest'
   end
 
+  def page_not_found
+    render file: Rails.public_path.join('404.html'), layout: false, status: :not_found
+  end
+
   private
 
   def set_state_objects
@@ -62,6 +67,10 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referer || root_path)
+  end
+
+  def render_public_not_found
+    render file: Rails.public_path.join('404.html'), layout: false, status: :not_found
   end
 
   protected
