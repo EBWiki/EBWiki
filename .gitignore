@@ -73,3 +73,6 @@ yarn-debug.log*
 # Compound Engineering checkout-local config and generated artifacts
 .compound-engineering/config.local.yaml
 .compound-engineering/artifacts/
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
