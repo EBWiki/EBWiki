@@ -23,7 +23,8 @@ test.describe('browse cases', () => {
 
   test('error: empty high pagination page has no cases', async ({ page }) => {
     await page.goto('/?page=999')
-    await expect(page.getByText(/No (entries|cases) found|Displaying .* 0/i)).toBeVisible()
+    await expect(page.locator('#front-gallery .view-first')).toHaveCount(0)
+    await expect(page.getByText('Displaying all 10 cases')).toBeVisible()
   })
 })
 
