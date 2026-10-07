@@ -78,4 +78,8 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine, at: '/ckeditor'
 
   resource :search, controller: 'search'
+
+  match '*path', to: 'application#page_not_found', via: :all, constraints: lambda { |req|
+    req.path.exclude?('rails/active_storage') && req.path.exclude?('rails/action_mailbox')
+  }
 end
