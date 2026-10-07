@@ -91,12 +91,8 @@ RSpec.describe 'Agencies', type: :request do
         post '/agencies', params: params, headers: {}
       end
 
-      it 'will return status code 200' do
-        expect(response).to have_http_status(200)
-      end
-
-      it 'will navigate to the agency show page' do
-        expect(response.body).to include(params[:agency][:name])
+      it 'will redirect to the agency show page' do
+        expect(response).to redirect_to agency_path(Agency.last)
       end
     end
 
