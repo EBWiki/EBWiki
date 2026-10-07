@@ -13,8 +13,9 @@ test.describe('user profile', () => {
     await login(page, ADMIN)
     await page.locator('a.dropdown-toggle', { hasText: ADMIN.email }).click()
     await page.getByRole('link', { name: 'Profile' }).click()
-    await expect(page.getByText(/John Doe/)).toBeVisible()
-    await expect(page.getByText(/bio:/)).toBeVisible()
+    const profile = page.locator('section.userAvatar')
+    await expect(profile.getByRole('heading', { name: /John Doe's bio:/ })).toBeVisible()
+    await expect(profile.locator('.col-md-2')).toContainText(ADMIN.name)
     await expect(page.getByRole('link', { name: 'Edit profile' })).toBeVisible()
   })
 

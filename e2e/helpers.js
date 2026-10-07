@@ -24,7 +24,7 @@ async function login(page, user = ADMIN) {
 
 async function logout(page, user = ADMIN) {
   await page.locator('a.dropdown-toggle', { hasText: user.email }).click()
-  await page.getByRole('button', { name: 'Log Out' }).click()
+  await page.getByRole('link', { name: 'Log Out' }).click()
   await expectSignedOut(page)
 }
 
@@ -65,7 +65,7 @@ async function fillTrix(page, inputId, text) {
 
 async function fillNewCase(page, overrides = {}) {
   const title = overrides.title || `E2E Case ${Date.now()}`
-  await page.getByLabel('Title').fill(title)
+  await page.locator('#case_title').fill(title)
   await page.locator('#case_date').fill(overrides.date || '2018-06-15')
   await page.locator('#case_cause_of_death').selectOption(overrides.cause || 'shooting')
   await page.getByRole('link', { name: 'Add a Subject' }).click()
