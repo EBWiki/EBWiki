@@ -12,30 +12,28 @@ class CaseSearch
   end
 
   def call
-    constraints = {
-      page: options[:page],
-      per_page: PER_PAGE
-    }
-
-    constraints[:where] = where
-    constraints[:order] = order
-
-    Case.search(query, constraints)
+    relation = Case.all
+    relation = apply_text_search(relation)
+    relation = apply_state_filter(relation)
+    relation = apply_order(relation)
+    relation.page(options[:page]).per(PER_PAGE)
   end
 
-  def where
-    if options[:state_id].present?
-      { state_id: options[:state_id] }
-    else
-      {}
-    end
+  private
+
+  def apply_text_search(relation)
+    return relation if @query == '*'
+
+    relation.search_text(@query)
   end
 
-  def order
-    if options[:state_id].present?
-      { date: :desc }
-    else
-      {}
-    end
+  def apply_state_filter(relation)
+    return relation if options[:state_id].blank?
+
+    relation.where(state_id: options[:state_id])
+  end
+
+  def apply_order(relation)
+    relation.order(date: :desc)
   end
 end
