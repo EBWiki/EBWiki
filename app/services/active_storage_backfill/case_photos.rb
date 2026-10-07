@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'digest/md5'
-
 module ActiveStorageBackfill
   # Copies each Case's CarrierWave avatar original into Active Storage +photo+.
-  # Read paths still use +avatar+; this task is safe to re-run (idempotent by checksum).
+  # Read paths still use +avatar+; safe to re-run (skips cases that already have +photo+ attached).
   class CasePhotos
     include Service
 
@@ -86,14 +84,18 @@ module ActiveStorageBackfill
     end
 
     def source_file(case_record)
-      path = case_record.avatar.path
-      return nil unless path && File.file?(path)
+      file = case_record.avatar.file
+      return nil unless file&.exists?
+
+      filename = file.filename.presence || File.basename(case_record.read_attribute(:avatar).to_s)
 
       {
-        bytes: File.binread(path),
-        filename: File.basename(case_record.read_attribute(:avatar)),
-        content_type: Marcel::MimeType.for(Pathname.new(path), name: File.basename(path))
+        bytes: file.read,
+        filename: filename,
+        content_type: file.content_type.presence || Marcel::MimeType.for(name: filename)
       }
+    rescue Excon::Error
+      nil
     end
 
     def log_error(case_record, error)
