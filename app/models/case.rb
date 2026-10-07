@@ -69,6 +69,7 @@ class Case < ApplicationRecord
 
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
+  has_one_attached :photo
 
   # Geocoding
   geocoded_by :full_address
