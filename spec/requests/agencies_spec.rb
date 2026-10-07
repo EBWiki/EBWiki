@@ -82,7 +82,8 @@ RSpec.describe 'Agencies', type: :request do
 
   describe 'POST /agencies' do
     let(:user) { create(:user) }
-    let(:params) { { agency: attributes_for(:agency) } }
+    let(:state) { create(:state) }
+    let(:params) { { agency: attributes_for(:agency, state_id: state.id) } }
     let(:bad_params) { { agency: { city: 'Beaumont' } } }
 
     context 'when the agency is successfully saved' do

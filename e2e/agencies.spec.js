@@ -38,7 +38,7 @@ test.describe('create agency', () => {
     await page.locator('#agency_state_id').selectOption({ label: 'Texas' })
     await page.getByRole('button', { name: 'Create Agency' }).click()
     await expectFlash(page, 'Agency was successfully created.')
-    await expect(page.getByText(name)).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1, name })).toBeVisible()
   })
 
   test('error: guest is sent to sign in', async ({ page }) => {
