@@ -78,5 +78,31 @@ RSpec.describe ActiveStorageBackfill::CasePhotos do
       expect(counts[:scanned]).to eq(1)
       expect(described_class.summary_line(counts)).to include('scanned=1', 'attached=0')
     end
+
+    it 'attaches photo when avatar bytes are read from fog storage (no local path)' do
+      case_record = create(:case)
+      case_record.update_columns(avatar: 'remote-avatar.jpg', default_avatar_url: nil)
+      fog_bytes = File.binread(image_path)
+      fog_file = instance_double(
+        CarrierWave::Storage::Fog::File,
+        exists?: true,
+        read: fog_bytes,
+        filename: 'remote-avatar.jpg',
+        content_type: 'image/jpeg'
+      )
+      allow(case_record.avatar).to receive(:file).and_return(fog_file)
+
+      relation = Case.where(id: case_record.id)
+      allow(Case).to receive(:order).with(:id).and_return(relation)
+      allow(relation).to receive(:find_each).and_yield(case_record)
+
+      counts = described_class.call
+
+      case_record.reload
+      expect(counts[:missing_file]).to eq(0)
+      expect(counts[:attached]).to eq(1)
+      expect(case_record.photo).to be_attached
+      expect(case_record.photo.blob.checksum).to eq(Digest::MD5.base64digest(fog_bytes))
+    end
   end
 end
