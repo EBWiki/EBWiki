@@ -1,4 +1,4 @@
-<li>
+<li data-show-more-target="item">
   <%= link_to link.url, "#{link.url}", target: '_blank', rel: 'noopener noreferrer' %>
   <span class="timeAgo">added <%= link.created_at.to_formatted_s(:long) %></span>
 </li>
