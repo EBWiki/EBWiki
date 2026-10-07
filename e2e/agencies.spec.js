@@ -13,7 +13,9 @@ test.describe('list and view agencies', () => {
     await page.goto('/agencies')
     await expect(page.getByRole('heading', { name: 'Agencies' })).toBeVisible()
     await page.getByRole('link', { name: /City of Houston Police Department/ }).click()
-    await expect(page.getByRole('heading', { name: /City of Houston Police Department/ })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: /City of Houston Police Department/ }).first()
+    ).toBeVisible()
     await expect(page.getByText(/Jurisdiction:/)).toBeVisible()
   })
 

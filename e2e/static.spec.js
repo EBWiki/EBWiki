@@ -12,7 +12,7 @@ test.describe('static pages', () => {
 
     await page.goto('/instructions')
     await expect(page.getByRole('heading', { name: 'Instructions:' })).toBeVisible()
-    await page.getByRole('button', { name: 'Editing a case' }).click()
+    await page.getByRole('link', { name: 'Editing a case' }).click()
     await expect(page.getByText(/Click on the Edit button beneath the image/)).toBeVisible()
 
     await page.goto('/get-involved')
@@ -29,7 +29,7 @@ test.describe('static pages', () => {
 
   test('error: guidelines is not the accordion instructions page', async ({ page }) => {
     await page.goto('/guidelines')
-    await expect(page.getByRole('button', { name: 'Editing a case' })).toHaveCount(0)
+    await expect(page.getByRole('link', { name: 'Editing a case' })).toHaveCount(0)
     await expect(page.getByRole('heading', { name: 'Instructions:' })).toHaveCount(0)
   })
 })

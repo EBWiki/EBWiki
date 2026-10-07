@@ -13,7 +13,7 @@ test.describe('browse cases', () => {
     await page.goto('/')
     await expect(page.getByRole('heading', { name: /cases of people killed by police/i })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Recently Updated' })).toBeVisible()
-    await expect(page.getByRole('link', { name: /Sven Svensson/ })).toBeVisible()
+    await expect(page.getByRole('link', { name: /Sven Svensson/ }).first()).toBeVisible()
   })
 
   test('error: unknown case slug is not found', async ({ page }) => {
@@ -93,7 +93,7 @@ test.describe('edit case', () => {
     await page.goto('/cases/sven-svensson/edit')
     const form = page.locator('form').filter({ has: page.getByRole('button', { name: 'Update Case' }) })
     await disableHtml5(form)
-    await page.getByLabel('Title').fill('')
+    await page.locator('#case_title').fill('')
     await page.getByLabel('Summary').fill('Tried to clear the title')
     await page.getByRole('button', { name: 'Update Case' }).click()
     await expect(page.locator('#error_explanation')).toContainText('Please specify a title')
@@ -103,7 +103,7 @@ test.describe('edit case', () => {
 test.describe('case history', () => {
   test('happy path: history lists versions', async ({ page }) => {
     await page.goto('/cases/sven-svensson/history')
-    await expect(page.getByRole('heading', { name: 'History' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'History' }).first()).toBeVisible()
     await expect(page.getByText('Description of changes:')).toBeVisible()
   })
 
@@ -114,7 +114,9 @@ test.describe('case history', () => {
 
   test('error: legacy article history still resolves or reports missing', async ({ page }) => {
     await page.goto('/articles/not-a-real-case/history')
-    await expect(page.getByRole('heading', { name: /History|There is no history for this case/ })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: /History|There is no history for this case/ }).first()
+    ).toBeVisible()
   })
 })
 

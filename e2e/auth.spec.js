@@ -39,7 +39,7 @@ test.describe('sign up', () => {
     await page.goto('/users/sign_up')
     await page.getByLabel('Name').fill('E2E Signup')
     await page.getByLabel('Email').fill(email)
-    await page.getByLabel('Password', { exact: true }).fill('password12')
+    await page.getByLabel('Password').fill('password12')
     await page.getByLabel('Password confirmation').fill('password12')
     await page.getByRole('button', { name: 'Sign up' }).click()
     await expect(
@@ -51,7 +51,7 @@ test.describe('sign up', () => {
     await page.goto('/users/sign_up')
     await page.getByLabel('Name').fill('E2E Mismatch')
     await page.getByLabel('Email').fill(`mismatch-${Date.now()}@example.com`)
-    await page.getByLabel('Password', { exact: true }).fill('password12')
+    await page.getByLabel('Password').fill('password12')
     await page.getByLabel('Password confirmation').fill('password99')
     await page.getByRole('button', { name: 'Sign up' }).click()
     await expect(page.getByText(/Password confirmation doesn't match Password/i)).toBeVisible()
@@ -61,7 +61,7 @@ test.describe('sign up', () => {
     await page.goto('/users/sign_up')
     await page.getByLabel('Name').fill('E2E Duplicate')
     await page.getByLabel('Email').fill(ADMIN.email)
-    await page.getByLabel('Password', { exact: true }).fill('password12')
+    await page.getByLabel('Password').fill('password12')
     await page.getByLabel('Password confirmation').fill('password12')
     await page.getByRole('button', { name: 'Sign up' }).click()
     await expect(page.getByText(/Email has already been taken/i)).toBeVisible()
@@ -76,7 +76,7 @@ test.describe('sign out', () => {
 
   test('error: guest has no log out control', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByRole('button', { name: 'Log Out' })).toHaveCount(0)
+    await expect(page.getByRole('link', { name: 'Log Out' })).toHaveCount(0)
     await expect(page.getByRole('link', { name: 'Login' }).first()).toBeVisible()
   })
 
@@ -94,7 +94,7 @@ test.describe('password reset', () => {
     await page.getByLabel('Email').fill(ADMIN.email)
     await page.getByRole('button', { name: 'Send me reset password instructions' }).click()
     await expect(
-      page.getByText(/email with instructions for how to reset your password/i)
+      page.getByText(/email with instructions on how to reset your password/i)
     ).toBeVisible()
   })
 
