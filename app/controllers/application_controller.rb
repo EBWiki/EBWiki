@@ -39,6 +39,10 @@ class ApplicationController < ActionController::Base
     user_signed_in? ? current_user.id : 'Guest'
   end
 
+  def page_not_found
+    render file: Rails.public_path.join('404.html'), layout: false, status: :not_found
+  end
+
   private
 
   def set_state_objects
@@ -67,10 +71,6 @@ class ApplicationController < ActionController::Base
 
   def render_public_not_found
     render file: Rails.public_path.join('404.html'), layout: false, status: :not_found
-  end
-
-  def page_not_found
-    render_public_not_found
   end
 
   protected
