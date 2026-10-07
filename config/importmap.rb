@@ -3,7 +3,7 @@
 # Pin npm packages by running ./bin/importmap
 
 pin 'application', preload: true
-pin 'jquery', to: 'jquery.js', preload: true
+pin 'jquery', to: 'jquery.min.js', preload: true
 pin 'jquery_ujs', to: 'jquery_ujs.js', preload: true
 pin 'bootstrap-sprockets', to: 'bootstrap-sprockets.js'
 pin 'moment', to: 'moment.js'
