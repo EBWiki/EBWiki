@@ -107,7 +107,8 @@ test.describe('password reset', () => {
       el.noValidate = true
     })
     await page.getByRole('button', { name: 'Send me reset password instructions' }).click()
-    await expect(page.getByText(/Email can't be blank/i)).toBeVisible()
+    await expect(page.getByText(/Please review the problems below:/i)).toBeVisible()
+    await expect(form.locator('.help-block')).toHaveText(/can't be blank/i)
   })
 
   test('error: invalid email format', async ({ page }) => {
@@ -120,6 +121,7 @@ test.describe('password reset', () => {
     })
     await page.getByLabel('Email').fill('not-an-email')
     await page.getByRole('button', { name: 'Send me reset password instructions' }).click()
-    await expect(page.getByText(/Email is invalid/i)).toBeVisible()
+    await expect(page.getByText(/Please review the problems below:/i)).toBeVisible()
+    await expect(form.locator('.help-block')).toHaveText(/not found/i)
   })
 })
