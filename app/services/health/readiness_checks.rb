@@ -42,9 +42,9 @@ module Health
       end
     end
 
-    def timed_check(&block)
+    def timed_check(&)
       started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      success = Timeout.timeout(CHECK_TIMEOUT_SEC, &block)
+      success = Timeout.timeout(CHECK_TIMEOUT_SEC, &)
       build_result(success, started)
     rescue StandardError
       build_result(false, started)
