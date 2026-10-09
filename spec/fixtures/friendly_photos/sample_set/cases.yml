@@ -1,0 +1,125 @@
+# Ten offline batch-search cases for GKT-1101. Each row uses a unique subject name
+# token so WebMock can return recorded Wikimedia and Openverse JSON without live HTTP.
+cases:
+  - slug: gkt1101-sample-alpha
+    subject_name: GKT1101 Jordan Alpha
+    city: Albany
+    year: 2019
+    expectation: friendly_found
+    hits:
+      - provider: commons
+        portrait: true
+        title: GKT1101 Jordan Alpha family portrait
+        file: File:GKT1101_Jordan_Alpha_portrait.jpg
+
+  - slug: gkt1101-sample-beta
+    subject_name: GKT1101 Jordan Beta
+    city: Boston
+    year: 2018
+    expectation: none_found
+    hits:
+      - provider: commons
+        portrait: false
+        title: GKT1101 Jordan Beta booking photo
+        file: File:GKT1101_Jordan_Beta_booking.jpg
+
+  - slug: gkt1101-sample-gamma
+    subject_name: GKT1101 Jordan Gamma
+    city: Chicago
+    year: 2020
+    expectation: friendly_found
+    hits:
+      - provider: commons
+        portrait: true
+        title: GKT1101 Jordan Gamma memorial portrait
+        file: File:GKT1101_Jordan_Gamma_memorial.jpg
+      - provider: commons
+        portrait: false
+        title: GKT1101 Jordan Gamma jail booking
+        file: File:GKT1101_Jordan_Gamma_booking.jpg
+
+  - slug: gkt1101-sample-delta
+    subject_name: GKT1101 Jordan Delta
+    city: Denver
+    year: 2017
+    expectation: friendly_found
+    hits:
+      - provider: openverse
+        portrait: true
+        title: GKT1101 Jordan Delta yearbook portrait
+
+  - slug: gkt1101-sample-epsilon
+    subject_name: GKT1101 Jordan Epsilon
+    city: Eugene
+    year: 2016
+    expectation: none_found
+    hits: []
+
+  - slug: gkt1101-sample-zeta
+    subject_name: GKT1101 Jordan Zeta
+    city: Fresno
+    year: 2015
+    expectation: friendly_found
+    hits:
+      - provider: commons
+        portrait: true
+        title: GKT1101 Jordan Zeta headshot
+        file: File:GKT1101_Jordan_Zeta_headshot.jpg
+      - provider: commons
+        portrait: true
+        homonym: true
+        title: Sir GKT1101 Jordan Zeta novelist portrait
+        file: File:Sir_GKT1101_Jordan_Zeta.jpg
+
+  - slug: gkt1101-sample-eta
+    subject_name: GKT1101 Jordan Eta
+    city: Houston
+    year: 2014
+    expectation: friendly_found
+    hits:
+      - provider: commons
+        portrait: true
+        title: GKT1101 Jordan Eta graduation photo
+        file: File:GKT1101_Jordan_Eta_graduation.jpg
+      - provider: openverse
+        portrait: true
+        title: GKT1101 Jordan Eta smiling portrait
+
+  - slug: gkt1101-sample-theta
+    subject_name: GKT1101 Jordan Theta
+    city: Indianapolis
+    year: 2013
+    expectation: none_found
+    hits:
+      - provider: commons
+        portrait: false
+        title: GKT1101 Jordan Theta inmate ID photo
+        file: File:GKT1101_Jordan_Theta_inmate.jpg
+      - provider: openverse
+        portrait: false
+        title: GKT1101 Jordan Theta sheriff booking photo
+
+  - slug: gkt1101-sample-iota
+    subject_name: GKT1101 Jordan Iota
+    city: Jacksonville
+    year: 2012
+    expectation: friendly_found
+    hits:
+      - provider: wikipedia
+        portrait: true
+        title: GKT1101 Jordan Iota
+        file: GKT1101_Jordan_Iota.jpg
+
+  - slug: gkt1101-sample-kappa
+    subject_name: GKT1101 Jordan Kappa
+    city: Kansas City
+    year: 2011
+    expectation: friendly_found
+    hits:
+      - provider: commons
+        portrait: true
+        title: GKT1101 Jordan Kappa community portrait
+        file: File:GKT1101_Jordan_Kappa_community.jpg
+      - provider: openverse
+        portrait: true
+        title: GKT1101 Jordan Kappa memorial photo
