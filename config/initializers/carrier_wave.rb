@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 CarrierWave.configure do |config|
-  if Rails.env.development?
+  use_file_storage =
+    Rails.env.local? ||
+    (Rails.env.staging? &&
+      (ENV['AWS_ACCESS_KEY_ID'].blank? || ENV['AWS_SECRET_KEY_ID'].blank?))
+
+  if use_file_storage
     config.storage = :file
-  elsif Rails.env.test?
-    config.storage = :file
-    config.enable_processing = false
+    config.enable_processing = false if Rails.env.test?
   else
     config.storage = :fog
     config.fog_credentials = {
