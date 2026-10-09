@@ -3,8 +3,8 @@
 CarrierWave.configure do |config|
   use_file_storage =
     Rails.env.local? ||
-    ENV['AWS_ACCESS_KEY_ID'].blank? ||
-    ENV['AWS_SECRET_KEY_ID'].blank?
+    (Rails.env.staging? &&
+      (ENV['AWS_ACCESS_KEY_ID'].blank? || ENV['AWS_SECRET_KEY_ID'].blank?))
 
   if use_file_storage
     config.storage = :file
