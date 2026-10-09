@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
-# Allow Railway-generated hostnames when RAILS_ENV=staging.
+# Staging host allow-list from HOST (custom domain) and RAILWAY_PUBLIC_DOMAIN (Railway default).
 if Rails.env.staging?
-  Rails.application.config.hosts << /.+\.up\.railway\.app/
-  Rails.application.config.hosts << /.+\.railway\.app/
-  Rails.application.config.hosts << ENV['HOST'] if ENV['HOST'].present?
+  [
+    ENV['HOST'].presence,
+    ENV['RAILWAY_PUBLIC_DOMAIN'].presence
+  ].compact.uniq.each do |host|
+    Rails.application.config.hosts << host
+  end
+
+  Rails.application.config.host_authorization = {
+    exclude: ->(request) { request.path == '/up' }
+  }
 end

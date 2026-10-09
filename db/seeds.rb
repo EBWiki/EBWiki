@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+return unless Rails.env.development? || Rails.env.test?
+
 #
 # This file should contain all the record creation needed to seed the database
 # with its default values. The data can then be loaded with the rake db:seed

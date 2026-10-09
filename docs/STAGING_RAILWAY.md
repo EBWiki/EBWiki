@@ -12,9 +12,10 @@ Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
 1. Merge-ready changes land on GitHub `main`.
 2. Railway watches `main` on `EBWiki/EBWiki` and builds with
    **`Dockerfile.railway`** (see `railway.toml`).
-3. **Pre-deploy:** `bundle exec rails db:prepare` (creates the DB schema on first
-   deploy and applies migrations afterward). Other deploy paths may still use
-   `release-tasks.sh` (`rails db:migrate`).
+3. **Pre-deploy:** `bash release-tasks.sh`, which runs **`rails db:migrate` only**
+   (same as the ebwiki-web review service). This does **not** load
+   `db/seeds.rb` (seeds are limited to development and test) and does **not**
+   create tables on an empty database.
 4. **Start:** `bundle exec puma -C config/puma.rb`.
 5. **Liveness (Railway deploy health check):** HTTP `GET /up` — fast “app booted”
    probe only (`railway.toml` `healthcheckPath`). Returns **200** when Rails is
@@ -43,13 +44,49 @@ example `SET transaction_timeout`).
 
 | | **Rails staging (this doc)** | **hanami.ebwiki.org** |
 | --- | --- | --- |
-| App | Full Rails 7 archive on `main` | Hanami 3 sibling app (`apps/hanami`) |
+| App | Full Rails 8.1 archive on `main` | Hanami 3 sibling app (`apps/hanami`) |
 | Railway project | EBWiki staging Rails service (target: staging.ebwiki.org) | `ebwiki-hanami-staging` |
 | Build file | `Dockerfile.railway` at repo root | `apps/hanami/Dockerfile` |
 | Role | Full Rails archive: cases, search, mailers, admin, etc. | Public read-focused slice; Rails still owns many write paths |
 
 Both can share Postgres patterns via `DATABASE_URL`, but they are **separate**
 Railway services and codebases.
+
+## Database on a new Postgres instance
+
+Each deploy runs **`db:migrate`** against the service’s `DATABASE_URL`. If the
+database is **empty** (no tables yet), migrate has nothing to apply and the app
+will not boot until a schema exists.
+
+**One-time setup** (pick one, as an operator with access to the Railway service
+shell or a local `DATABASE_URL` pointing at that database):
+
+- Load the committed schema: `bundle exec rails db:schema:load`
+- Or restore from a Postgres dump taken from another EBWiki environment
+
+After that, normal deploys only need `db:migrate`. Do not run `db:seed` or
+`db:setup` on staging: `db/seeds.rb` uses FactoryBot and demo users and is
+restricted to development and test.
+
+## Rollback
+
+**Redeploy an older build in Railway:** open the service → **Deployments** →
+select a previous successful deployment → **Redeploy**. That rolls the **running
+code and container image** back; it does **not** reverse migrations.
+
+**Migrations are forward-only.** Rolling code back leaves the database at the
+newer schema version. Options:
+
+- **Fix forward:** ship a new commit on `main` that corrects the problem and
+  migrate again.
+- **Manual down (rare):** run `rails db:migrate:down` (or a targeted rollback)
+  from a one-off shell against staging only when you know the exact migration to
+  reverse and accept the data risk.
+
+**Confirm what is live:** `GET /up` and `GET /health` with `Accept:
+application/json`. Check `deploy_rev` (from `DEPLOY_REV` or
+`RAILWAY_GIT_COMMIT_SHA`) matches the deployment you expect. View page source
+for `<!-- deploy_rev: … -->` in the footer when browsing the site.
 
 ## Doppler mapping (`ebwiki/stg`)
 
@@ -67,9 +104,7 @@ required vs optional) are grouped in `.env.example`.
 | `DATABASE_URL` | Postgres (sole DB config at runtime) |
 | `REDIS_URL` | Cache / Action Cable (see `config/environments/staging.rb`) |
 | `PORT` | Injected by Railway; Puma binds via `config/puma.rb` |
-| `HOST` | Public hostname (e.g. staging.ebwiki.org) for host authorization |
-| `RAILS_LOG_TO_STDOUT` | Log to Railway |
-| `RAILS_SERVE_STATIC_FILES` | Serve precompiled assets from the container |
+| `HOST` | Custom public hostname allowed in staging host authorization (with Railway’s domain; see below) |
 
 ### Deploy visibility
 
@@ -125,6 +160,12 @@ required vs optional) are grouped in `.env.example`.
 Railway adds names such as `RAILWAY_ENVIRONMENT`, `RAILWAY_PUBLIC_DOMAIN`,
 `RAILWAY_SERVICE_*`, and related `RAILWAY_*` variables. Do not duplicate them in
 Doppler unless you intentionally override; they are not part of `ebwiki/stg`.
+
+**Host authorization on staging** (`config/initializers/staging_railway_hosts.rb`)
+allows only `HOST` (when set) and `RAILWAY_PUBLIC_DOMAIN` (Railway’s default
+service URL host). It does not allow every `*.railway.app` subdomain. Railway’s
+deploy health check hits `GET /up`, which is excluded from host authorization so
+liveness probes succeed before a custom domain is attached.
 
 ## Operator checklist
 
