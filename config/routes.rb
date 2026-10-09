@@ -78,4 +78,7 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine, at: '/ckeditor'
 
   resource :search, controller: 'search'
+
+  get 'up' => 'rails/health#show', as: :rails_health_check
+  get 'health' => 'health#show'
 end
