@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-return unless Rails.env.development? || Rails.env.test?
+return unless Rails.env.local?
 
 #
 # This file should contain all the record creation needed to seed the database
