@@ -16,9 +16,7 @@ Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
    deploy and applies migrations afterward). Other deploy paths may still use
    `release-tasks.sh` (`rails db:migrate`).
 4. **Start:** `bundle exec puma -C config/puma.rb`.
-5. **Health check:** HTTP `GET /up` (Rails 8.1 health endpoint). Railway must
-   reach `/up` without HTTP basic auth; the rest of the site uses staging basic
-   auth when `RAILS_ENV=staging`.
+5. **Health check:** HTTP `GET /up` (Rails 8.1 health endpoint).
 6. **Revision check:** `/up` JSON may include `deploy_rev` when
    `DEPLOY_REV` or `RAILWAY_GIT_COMMIT_SHA` is set. Every HTML page also
    includes an HTML comment `<!-- deploy_rev: … -->` in the footer for the same
@@ -41,8 +39,7 @@ example `SET transaction_timeout`).
 | App | Full Rails 7 archive on `main` | Hanami 3 sibling app (`apps/hanami`) |
 | Railway project | EBWiki staging Rails service (target: staging.ebwiki.org) | `ebwiki-hanami-staging` |
 | Build file | `Dockerfile.railway` at repo root | `apps/hanami/Dockerfile` |
-| Basic auth env | `STAGING_USERNAME`, `STAGING_PASSWORD` | `HTTP_BASIC_AUTH_USER`, `HTTP_BASIC_AUTH_PASSWORD` |
-| Role | Parity with legacy Heroku staging: cases, search, mailers, admin, etc. | Public read-focused slice; Rails still owns many write paths |
+| Role | Full Rails archive: cases, search, mailers, admin, etc. | Public read-focused slice; Rails still owns many write paths |
 
 Both can share Postgres patterns via `DATABASE_URL`, but they are **separate**
 Railway services and codebases.
@@ -65,13 +62,6 @@ Set each name below in Railway (or sync from Doppler `ebwiki/stg`). Names match
 | `HOST` | Public hostname (e.g. staging.ebwiki.org) for host authorization |
 | `RAILS_LOG_TO_STDOUT` | Log to Railway |
 | `RAILS_SERVE_STATIC_FILES` | Serve precompiled assets from the container |
-
-### Staging access control
-
-| Variable | Purpose |
-| --- | --- |
-| `STAGING_USERNAME` | HTTP basic auth user (`ApplicationController`) |
-| `STAGING_PASSWORD` | HTTP basic auth password |
 
 ### Deploy visibility
 
@@ -133,6 +123,6 @@ Doppler unless you intentionally override; they are not part of `ebwiki/stg`.
 - [ ] Railway service: repo `EBWiki/EBWiki`, branch `main`, Dockerfile path
   `Dockerfile.railway`.
 - [ ] Variables synced from Doppler `ebwiki/stg` (names above).
-- [ ] Health check path `/up` returns **200** without basic auth credentials.
+- [ ] Health check path `/up` returns **200**.
 - [ ] After deploy, `curl -sS -H 'Accept: application/json' https://<host>/up`
   shows `deploy_rev` matching the deployed `main` commit.
