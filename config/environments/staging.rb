@@ -91,4 +91,6 @@ Rails.application.configure do
     Bullet.console = true
   end
 
+  require Rails.root.join('lib/staging_basic_auth')
+  config.middleware.insert_before 0, StagingBasicAuth
 end
