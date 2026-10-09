@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-# Readiness endpoint (GET /health). Skips ApplicationController filters.
-class HealthController < ActionController::Base # rubocop:disable Rails/ApplicationController -- skip DB-heavy before_actions
+# Readiness endpoint (GET /health). Skips ApplicationController filters that hit the DB.
+class HealthController < ApplicationController
+  skip_before_action :store_user_location!, raise: false
+  skip_before_action :set_state_objects, raise: false
+  skip_before_action :set_paper_trail_whodunnit, raise: false
+
   def show
     payload = Health::ReadinessChecks.call
     rev = deploy_revision
