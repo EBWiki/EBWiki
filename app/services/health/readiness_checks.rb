@@ -32,7 +32,7 @@ module Health
 
     def check_redis
       timed_check do
-        $redis.with { |conn| conn.ping == 'PONG' }
+        redis_pool.with { |conn| conn.ping == 'PONG' }
       end
     end
 
@@ -42,16 +42,20 @@ module Health
       end
     end
 
-    def timed_check
+    def timed_check(&block)
       started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      ok = Timeout.timeout(CHECK_TIMEOUT_SEC) { yield }
-      build_result(ok, started)
-    rescue StandardError, Timeout::Error
+      success = Timeout.timeout(CHECK_TIMEOUT_SEC, &block)
+      build_result(success, started)
+    rescue StandardError
       build_result(false, started)
     end
 
-    def build_result(ok, started)
-      { status: ok ? 'ok' : 'down', latency_ms: elapsed_ms(started) }
+    def build_result(success, started)
+      { status: success ? 'ok' : 'down', latency_ms: elapsed_ms(started) }
+    end
+
+    def redis_pool
+      $redis
     end
 
     def elapsed_ms(started)
