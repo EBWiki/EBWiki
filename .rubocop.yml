@@ -42,6 +42,13 @@ Rails/StrongParametersExpect:
 Rails/HelperInstanceVariable:
   Enabled: false
 
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - test
+    - production
+    - staging
+
 Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
 
