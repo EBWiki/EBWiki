@@ -33,5 +33,24 @@ RSpec.describe 'Rails health check', type: :request do
         ENV['DEPLOY_REV'] = original
       end
     end
+
+    it 'returns 503 when Postgres is unreachable' do
+      allow(ActiveRecord::Base.connection).to receive(:select_value)
+        .and_raise(ActiveRecord::ConnectionNotEstablished, 'connection refused')
+
+      get '/up'
+
+      expect(response).to have_http_status(:service_unavailable)
+    end
+
+    it 'returns JSON down status with 503 when the health check fails' do
+      allow(ActiveRecord::Base.connection).to receive(:select_value)
+        .and_raise(ActiveRecord::StatementInvalid, 'PG::ConnectionBad')
+
+      get '/up', headers: { 'Accept' => 'application/json' }
+
+      expect(response).to have_http_status(:service_unavailable)
+      expect(response.parsed_body['status']).to eq('down')
+    end
   end
 end

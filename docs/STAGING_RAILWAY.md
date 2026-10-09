@@ -47,7 +47,8 @@ Railway services and codebases.
 ## Doppler mapping (`ebwiki/stg`)
 
 Set each name below in Railway (or sync from Doppler `ebwiki/stg`). Names match
-1:1 unless noted.
+1:1 unless noted. For local development, the same names (with comments on
+required vs optional) are grouped in `.env.example`.
 
 ### Core runtime
 

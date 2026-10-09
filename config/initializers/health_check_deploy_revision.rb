@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
-# Expose deploy revision on /up JSON for live SHA checks (Railway sets
-# RAILWAY_GIT_COMMIT_SHA; operators may override with DEPLOY_REV).
+# /up: deploy revision in JSON, cheap Postgres check, 503 when checks fail.
 Rails.application.config.after_initialize do
   Rails::HealthController.class_eval do
+    def show
+      verify_database_connectivity!
+      render_up
+    end
+
     private
+
+    def verify_database_connectivity!
+      ActiveRecord::Base.connection.select_value('SELECT 1')
+    end
 
     def render_up
       respond_to do |format|
@@ -14,6 +22,16 @@ Rails.application.config.after_initialize do
           rev = ENV['DEPLOY_REV'].presence || ENV['RAILWAY_GIT_COMMIT_SHA'].presence
           payload[:deploy_rev] = rev if rev
           render json: payload
+        end
+      end
+    end
+
+    def render_down
+      respond_to do |format|
+        format.html { render html: html_status(color: 'red'), status: :service_unavailable }
+        format.json do
+          render json: { status: 'down', timestamp: Time.current.iso8601 },
+                 status: :service_unavailable
         end
       end
     end
