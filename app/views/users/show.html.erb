@@ -7,17 +7,6 @@
         <br>
         Last seen at <%= l(@user.last_sign_in_at, format: "%-d.%m.%Y %H:%M:%S") %>
         <br>
-        <% if @user == current_user %>
-          <div class="panel panel-default mailFoldershort">
-            <div class="panel-body">
-              Your Mailboxes:
-              <%= render 'mailbox/folders' %>
-            </div>
-          </div>
-        <% else %>
-          <%= link_to "Send a Message", new_conversation_path, class: "btn btn-success" %>
-        <% end %>
-        <br>
       </div>
       <div class="col-md-10">
         <div class="alert alert-info">

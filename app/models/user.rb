@@ -9,7 +9,6 @@ class User < ApplicationRecord
 
   has_many :comments, dependent: :destroy
   acts_as_follower
-  acts_as_messageable
   extend FriendlyId
 
   friendly_id :slug_candidates, use: %i[slugged finders]
@@ -18,14 +17,6 @@ class User < ApplicationRecord
   sanitize :email, :name, :description, :city, :facebook_url, :twitter_url, :linkedin
 
   validates :name, presence: { message: 'Please add a name.' }
-
-  def mailboxer_name
-    name
-  end
-
-  def mailboxer_email(_object)
-    email
-  end
 
   def slug_candidates
     [
