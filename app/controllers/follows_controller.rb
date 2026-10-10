@@ -15,4 +15,5 @@ class FollowsController < ApplicationController
     current_user.stop_following(@case)
     redirect_to @case
   end
+  # Both actions redirect. Do not add create/destroy templates.
 end
