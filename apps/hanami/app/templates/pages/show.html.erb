@@ -1,0 +1,13 @@
+<article class="static-page">
+  <% if page == "about" %>
+    <%= render "pages/about" %>
+  <% elsif page == "guidelines" %>
+    <%= render "pages/guidelines" %>
+  <% elsif page == "instructions" %>
+    <%= render "pages/instructions" %>
+  <% elsif page == "get-involved" %>
+    <%= render "pages/get_involved" %>
+  <% elsif page == "how-to-help" %>
+    <%= render "pages/how_to_help" %>
+  <% end %>
+</article>

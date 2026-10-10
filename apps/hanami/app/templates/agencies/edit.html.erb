@@ -1,0 +1,2 @@
+<h1>Edit <%= agency.name %></h1>
+<%= render "agencies/form", values: values, errors: errors, agency: agency, states: states, action: "/agencies/#{agency.slug}", method_override: "patch" %>

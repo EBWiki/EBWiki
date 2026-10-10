@@ -1,0 +1,25 @@
+<section>
+  <p class="crumb"><a href="/admin/users">Staff users</a></p>
+  <h1>Staff: comments</h1>
+  <% if comments.empty? %>
+    <p>No comments yet.</p>
+  <% else %>
+    <ul>
+      <% comments.each do |comment| %>
+        <li>
+          <p><%= comment.content %></p>
+          <p class="meta">
+            <% author = authors[comment.user_id] %>
+            <% if author %><%= author.name %> · <% end %><%= format_time(comment.created_at) %>
+            <% if case_slugs[comment.id] %>
+              · <a href="/cases/<%= case_slugs[comment.id] %>">Case</a>
+            <% end %>
+          </p>
+          <form action="/comments/<%= comment.id %>/delete" method="post" class="inline-form">
+            <button type="submit">Delete comment</button>
+          </form>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</section>

@@ -1,0 +1,11 @@
+<section>
+  <h1>Choose a new password</h1>
+  <% if error %>
+    <p class="flash-error"><%= error %></p>
+  <% end %>
+  <form action="/password/update" method="post" class="stack-form">
+    <input type="hidden" name="reset_password_token" value="<%= token %>">
+    <label>New password <input type="password" name="password" minlength="8" required></label>
+    <button type="submit">Update password</button>
+  </form>
+</section>

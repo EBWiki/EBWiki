@@ -1,0 +1,32 @@
+<article>
+  <p class="crumb"><a href="/cases/<%= this_case.slug %>"><%= this_case.title %></a></p>
+  <h1>History</h1>
+  <p class="lede">
+    PaperTrail <code>versions</code> for this case. Revert restores columns from a stored
+    YAML <code>object</code> snapshot. Create events with no snapshot are not undone, and
+    cases are never deleted from this page.
+  </p>
+
+  <% if versions.empty? %>
+    <p>There is no history for this case.</p>
+  <% else %>
+    <ol class="history">
+      <% versions.each_with_index do |version, index| %>
+        <li>
+          <p><strong>Date:</strong> <%= format_time(version.created_at) %></p>
+          <p>
+            <strong><%= index == versions.size - 1 ? "Added by" : "Edited by" %>:</strong>
+            <%= version_author_name(version, authors) %>
+          </p>
+          <p><strong>Description of changes:</strong></p>
+          <pre><%= version.comment.to_s.strip.empty? ? "No edit summary is available for this version." : version.comment %></pre>
+          <% unless version.object.to_s.strip.empty? %>
+            <form action="/cases/<%= this_case.slug %>/history/<%= version.id %>/revert" method="post">
+              <button type="submit">Revert to this version</button>
+            </form>
+          <% end %>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+</article>

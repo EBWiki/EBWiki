@@ -1,0 +1,26 @@
+<article>
+  <h1><%= profile.name %></h1>
+  <p class="lede"><%= profile.email %></p>
+  <% unless profile.description.to_s.empty? %>
+    <p><%= profile.description %></p>
+  <% end %>
+  <% if current_user && (current_user.id == profile.id || current_user.admin) %>
+    <p><a href="/users/<%= profile.id %>/edit">Edit profile</a></p>
+  <% end %>
+
+  <h2>Following</h2>
+  <% if followed_cases.empty? %>
+    <p>This user is not following any cases.</p>
+  <% else %>
+    <ul class="case-cards">
+      <% followed_cases.each do |this_case| %>
+        <li class="case-card">
+          <a href="/cases/<%= this_case.slug %>">
+            <h2><%= this_case.title %></h2>
+            <p><%= this_case.city %></p>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</article>
