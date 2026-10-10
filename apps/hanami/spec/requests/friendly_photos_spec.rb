@@ -68,6 +68,15 @@ RSpec.describe "Friendly photos", :db, type: :request do
 
     stored = TestData.relations[:cases].where(id: case_id).one
     expect(stored[:default_avatar_url]).to eq(portrait_url)
+    expect(stored[:summary]).to eq("Initial case entry")
+
+    version = TestData.relations[:versions]
+      .where(item_type: "Case", item_id: case_id)
+      .order(Sequel.desc(:id))
+      .first
+    expect(version[:comment]).to eq(
+      "Applied reviewed profile picture 'E2E family portrait' (CC BY-SA 4.0)."
+    )
   end
 
   it "refuses a mugshot attach and leaves the case unchanged" do

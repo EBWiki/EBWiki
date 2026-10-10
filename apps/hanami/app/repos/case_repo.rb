@@ -128,16 +128,26 @@ module EbWiki
         )
       end
 
-      def apply_reviewed_photo_url(slug:, image_url:, summary:)
+      def apply_reviewed_photo_url(slug:, image_url:, comment:, user:)
         record = find_by_slug(slug)
         return unless record
 
         now = Time.now.utc
-        cases.where(id: record.id).update(
-          default_avatar_url: image_url.to_s,
-          summary: summary.to_s,
-          updated_at: now
-        )
+        db.transaction do
+          before = snapshot_case(record)
+          cases.where(id: record.id).update(
+            default_avatar_url: image_url.to_s,
+            updated_at: now
+          )
+          record_version(
+            record.id,
+            event: "update",
+            comment: comment,
+            user: user,
+            now: now,
+            object: dump_object(before)
+          )
+        end
         cases.where(id: record.id).one
       end
 
