@@ -20,4 +20,5 @@
 //= require social-share-button
 //= require underscore
 //= require select2
+//= require trix
 //= require_tree .

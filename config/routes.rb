@@ -74,8 +74,5 @@ Rails.application.routes.draw do
     end
   end
 
-  # CKEditor
-  mount Ckeditor::Engine, at: '/ckeditor'
-
   resource :search, controller: 'search'
 end
