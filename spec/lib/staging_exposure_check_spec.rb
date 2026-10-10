@@ -141,7 +141,13 @@ RSpec.describe StagingExposureCheck do
 
     context 'when /up with service token is wrong' do
       it 'fails when service token env values are missing' do
-        http = http_stub { |_url, **_kwargs| response(code: '404') }
+        http = http_stub do |url, **_kwargs|
+          case url
+          when railway_url then response(code: '404')
+          when "#{staging_url}/" then response(code: 403)
+          else response(code: 200)
+          end
+        end
 
         expect do
           described_class.call(
