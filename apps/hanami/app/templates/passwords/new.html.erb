@@ -1,0 +1,11 @@
+<section>
+  <h1>Reset password</h1>
+  <p class="lede">
+    Writes a Devise-compatible <code>reset_password_token</code>. Sending the email is
+    still a Rails mailer until Hanami has one.
+  </p>
+  <form action="/password" method="post" class="stack-form">
+    <label>Email <input type="email" name="email" required></label>
+    <button type="submit">Request reset</button>
+  </form>
+</section>

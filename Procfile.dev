@@ -1,0 +1,4 @@
+proxy: ruby script/one_site_proxy.rb
+rails: bundle exec puma -p 3001
+hanami: bash -lc 'cd apps/hanami && bundle exec hanami server --port 2300'
+hanami-assets: bash -lc 'cd apps/hanami && bundle exec hanami assets watch'

@@ -1,0 +1,7 @@
+.env*.local
+log/*
+public/*
+!public/404.html
+!public/500.html
+node_modules/
+spec/examples.txt

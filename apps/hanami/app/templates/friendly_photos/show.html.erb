@@ -1,0 +1,32 @@
+<article>
+  <p class="crumb">
+    <a href="/friendly_photos">All photo searches</a>
+    ·
+    <a href="/cases/<%= this_case.slug %>"><%= this_case.title %></a>
+  </p>
+  <h1>Photos for <%= search_name %></h1>
+  <p class="lede">
+    Sources: Wikimedia Commons, English Wikipedia, and Openverse.
+    Flagged institutional photos stay visible so editors can reject them.
+  </p>
+  <% if candidates.empty? %>
+    <p>No allowed portraits were found for this name.</p>
+  <% else %>
+    <ul class="photo-grid">
+      <% candidates.each do |hit| %>
+        <li class="photo-card<%= " photo-card-warn" if hit.likely_mugshot %>">
+          <img src="<%= hit.image_url %>" alt="<%= hit.title %>">
+          <p><strong><%= hit.title %></strong></p>
+          <p class="meta">
+            <%= hit.source %>
+            <% if hit.license %> · <%= hit.license %><% end %>
+          </p>
+          <% if hit.likely_mugshot %>
+            <p class="flash-error">Likely mugshot or booking photo — do not use.</p>
+          <% end %>
+          <p><a href="<%= hit.page_url %>">Source page</a></p>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</article>

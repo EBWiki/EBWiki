@@ -4,6 +4,16 @@
 
 [EBWiki.org](http://ebwiki.org) is a site dedicated to documenting when people of color are killed by law enforcement officers during routine interactions.
 
+## Hanami public site
+
+A sibling Hanami 3 app lives in [`apps/hanami`](apps/hanami). It reads and writes the existing Postgres schema. Rails still owns mailers, S3 uploads, and production cutover.
+
+To run **one local site** on port 3000 (Hanami reads, Rails writes):
+
+```bash
+bin/one-site
+```
+
 ## Motivation
 
 The release of the [Walter Scott body-cam video](https://ebwiki.org/cases/walter-scott) in 2015 showed the vast discrepancy between the official report of the encounter and the video.  After seeing the video, a group of Black technologists had the idea of a site where information on each encounter could be stored and recorded. This would help show both the frequency with which this occurs as well as the way bias affects the proceedings.
@@ -47,11 +57,13 @@ rspec spec/
 
 More information on how to use RSpec, shoulda-matchers, and FactoryBot can be found at the links above.
 
-We also use [Rubocop](https://github.com/bbatsov/rubocop) as part of our continous integration process in Github Actions.  To run Rubocop locally, enter
+We also use [RuboCop](https://github.com/bbatsov/rubocop) as part of our continuous integration process in Github Actions. To run RuboCop locally on Rails, enter
 
 ```
-rubocop
+bundle exec rubocop
 ```
+
+New Hanami code in [`apps/hanami`](apps/hanami) uses **[Standard Ruby](https://github.com/standardrb/standard)** as the preferred style (`bundle exec standardrb` from that directory). Rails keeps this repo-root `.rubocop.yml` until a dedicated conversion. Rails CI still runs Brakeman. The Hanami workflow runs Dawnscanner and bundler-audit against `apps/hanami`.
 
 ### Continuous Integration (CI)
 Each time a pull request (PR) is opened or updated

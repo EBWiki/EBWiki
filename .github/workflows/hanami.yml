@@ -1,0 +1,144 @@
+name: Hanami
+
+on: [pull_request, workflow_dispatch]
+
+# CI uses an ephemeral local Postgres with trust auth — no password in DATABASE_URL.
+# SESSION_SECRET comes from Doppler via the existing repo secret DOPPLER_TOKEN.
+# Do not inject the live Rails DATABASE_URL into this job.
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/hanami
+
+    env:
+      HANAMI_ENV: test
+      DATABASE_URL: postgres://postgres@localhost:5432/ebwiki_hanami_test
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Fetch secrets from Doppler
+        id: doppler
+        uses: dopplerhq/secrets-fetch-action@v2.0.0
+        with:
+          doppler-token: ${{ secrets.DOPPLER_TOKEN }}
+
+      - name: Apply session secret from Doppler
+        env:
+          FROM_DOPPLER: ${{ steps.doppler.outputs.SESSION_SECRET }}
+        run: |
+          if [ "${#FROM_DOPPLER}" -ge 64 ]; then
+            echo "SESSION_SECRET=$FROM_DOPPLER" >> "$GITHUB_ENV"
+            echo "Using SESSION_SECRET from Doppler"
+          else
+            echo "Doppler SESSION_SECRET missing or shorter than 64 characters; Hanami will use apps/hanami/.env.test"
+          fi
+
+      - name: Guard local CI database
+        run: |
+          case "$DATABASE_URL" in
+            postgres://postgres@localhost:5432/ebwiki_hanami_test|postgres://postgres@127.0.0.1:5432/ebwiki_hanami_test)
+              ;;
+            *)
+              echo "Refusing Hanami CI against a non-local DATABASE_URL" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+          working-directory: apps/hanami
+
+      - name: Create database
+        run: |
+          psql -h localhost -U postgres -c "CREATE DATABASE ebwiki_hanami_test;"
+          bundle exec rake db:load_schema
+
+      - name: Install Node packages
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/hanami/package-lock.json
+
+      - name: Compile assets
+        run: |
+          npm ci
+          bundle exec hanami assets compile
+
+      - name: Run RSpec
+        run: bundle exec rspec
+
+  rubocop:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/hanami
+
+    env:
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+          working-directory: apps/hanami
+
+      - name: Run Standard Ruby
+        run: bundle exec standardrb
+
+  dawnscanner:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/hanami
+
+    env:
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
+          working-directory: apps/hanami
+
+      - name: Run bundler-audit
+        run: bundle exec bundler-audit check --update
+
+      - name: Install Dawnscanner knowledge base
+        run: bundle exec rake security:dawn_kb
+
+      - name: Run Dawnscanner
+        run: bundle exec dawn scan .

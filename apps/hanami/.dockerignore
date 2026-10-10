@@ -1,0 +1,10 @@
+.git
+.env*.local
+log
+node_modules
+spec
+tmp
+.standard.yml
+.rubocop.yml
+Guardfile
+spec/examples.txt

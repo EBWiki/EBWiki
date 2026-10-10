@@ -1,0 +1,19 @@
+# Standard Ruby is the preferred style for this Hanami app.
+# https://github.com/standardrb/standard
+#
+#   bundle exec standardrb
+#   bundle exec standardrb --fix
+#
+# Rails keeps the repo-root .rubocop.yml (Rails/Performance cops).
+# Do not run this config against the Rails app.
+
+ruby_version: 3.4
+parallel: true
+format: progress
+ignore:
+  - node_modules/**/*
+  - public/**/*
+  - vendor/**/*
+  - tmp/**/*
+  - log/**/*
+  - bin/**/*

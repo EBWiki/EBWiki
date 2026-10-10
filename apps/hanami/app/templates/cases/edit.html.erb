@@ -1,0 +1,2 @@
+<h1>Edit <%= this_case.title %></h1>
+<%= render "cases/form", values: values, errors: errors, agencies: agencies, states: states, this_case: this_case, subjects: subjects, links: links, selected_agency_ids: selected_agency_ids, action: "/cases/#{this_case.slug}", method_override: "patch" %>
