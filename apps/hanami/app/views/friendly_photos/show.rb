@@ -25,6 +25,14 @@ module EbWiki
           name = record.title if name.empty?
           EbWiki::FriendlyPhotos::CandidateSearch.new(name: name, city: record.city).call
         end
+
+        expose :attach_notice do |attach_notice: nil, **|
+          attach_notice
+        end
+
+        expose :attach_error do |attach_error: nil, **|
+          attach_error
+        end
       end
     end
   end
