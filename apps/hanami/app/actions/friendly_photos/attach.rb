@@ -24,7 +24,8 @@ module EbWiki
             case_repo.apply_reviewed_photo_url(
               slug: slug,
               image_url: hit.image_url,
-              summary: "Applied reviewed profile picture '#{hit.title}' (#{hit.license})."
+              comment: "Applied reviewed profile picture '#{hit.title}' (#{hit.license}).",
+              user: current_user(response)
             )
             request.session[:attach_notice] = "Applied the selected profile picture to this case."
           else
