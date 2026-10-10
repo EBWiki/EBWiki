@@ -1,0 +1,30 @@
+schema_version = "1.3"
+
+[task]
+name = "ebwiki/boot-rails"
+authors = [{ name = "EBWiki" }]
+description = "Boot Rails against Harbor Compose Postgres and print the application class."
+
+[metadata]
+category = "development"
+tags = ["boot", "rails", "postgres"]
+difficulty_explanation = "Oracle runs rails runner after db:prepare. No paid model."
+
+[verifier]
+timeout_sec = 180.0
+
+[agent]
+timeout_sec = 300.0
+
+[environment]
+workdir = "/usr/src/ebwiki"
+cpus = 2
+memory_mb = 4096
+build_timeout_sec = 900.0
+# Harbor allowlist (gost RED) RST's raw Postgres/Redis TCP even when
+# those hostnames and RFC1918 CIDRs are listed. Compose DB tasks stay
+# on public; image-only tasks can still use allowlist.
+network_mode = "public"
+
+[solution]
+env = { RAILS_ENV = "test", DATABASE_URL = "postgres://blackops:ebwiki@postgres:5432/blackops_test", PGHOST = "postgres", PGUSER = "blackops", PGPASSWORD = "ebwiki", PGDATABASE = "blackops_test" }
