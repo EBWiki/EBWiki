@@ -5,6 +5,12 @@
     <a href="/cases/<%= this_case.slug %>"><%= this_case.title %></a>
   </p>
   <h1>Photos for <%= search_name %></h1>
+  <% if attach_notice.to_s.strip != "" %>
+    <p class="flash-success"><%= attach_notice %></p>
+  <% end %>
+  <% if attach_error.to_s.strip != "" %>
+    <p class="flash-error"><%= attach_error %></p>
+  <% end %>
   <p class="lede">
     Sources: Wikimedia Commons, English Wikipedia, and Openverse.
     Flagged institutional photos stay visible so editors can reject them.
@@ -25,6 +31,19 @@
             <p class="flash-error">Likely mugshot or booking photo — do not use.</p>
           <% end %>
           <p><a href="<%= hit.page_url %>">Source page</a></p>
+          <% if current_user %>
+            <form action="/friendly_photos/<%= this_case.slug %>/attach" method="post" class="photo-attach-form">
+              <input type="hidden" name="source" value="<%= hit.source %>">
+              <input type="hidden" name="title" value="<%= hit.title %>">
+              <input type="hidden" name="image_url" value="<%= hit.image_url %>">
+              <input type="hidden" name="page_url" value="<%= hit.page_url %>">
+              <input type="hidden" name="license" value="<%= hit.license %>">
+              <input type="hidden" name="author" value="<%= hit.author %>">
+              <input type="hidden" name="description" value="<%= hit.description %>">
+              <input type="hidden" name="likely_mugshot" value="<%= hit.likely_mugshot ? "1" : "0" %>">
+              <button type="submit" class="btn btn-default">Attach to case</button>
+            </form>
+          <% end %>
         </li>
       <% end %>
     </ul>

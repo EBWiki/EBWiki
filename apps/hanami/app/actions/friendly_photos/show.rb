@@ -10,7 +10,12 @@ module EbWiki
           page = case_repo.find_page(request.params[:id])
           halt 404 unless page
 
-          response.render(view, case_page: page)
+          response.render(
+            view,
+            case_page: page,
+            attach_notice: request.session.delete(:attach_notice),
+            attach_error: request.session.delete(:attach_error)
+          )
         end
       end
     end

@@ -8,6 +8,7 @@ module EbWiki
     get "/maps", to: "maps.index"
     get "/friendly_photos", to: "friendly_photos.index"
     get "/friendly_photos/:id", to: "friendly_photos.show"
+    post "/friendly_photos/:id/attach", to: "friendly_photos.attach"
 
     get "/login", to: "sessions.new"
     post "/login", to: "sessions.create"

@@ -128,6 +128,19 @@ module EbWiki
         )
       end
 
+      def apply_reviewed_photo_url(slug:, image_url:, summary:)
+        record = find_by_slug(slug)
+        return unless record
+
+        now = Time.now.utc
+        cases.where(id: record.id).update(
+          default_avatar_url: image_url.to_s,
+          summary: summary.to_s,
+          updated_at: now
+        )
+        cases.where(id: record.id).one
+      end
+
       def delete_comment(comment_id, actor:)
         comment = comments.where(id: comment_id).one
         return unless comment
