@@ -2,17 +2,14 @@
 
 OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the existing Railway **ebwiki** project and service, points **staging.ebwiki.org** at Railway, and wires runtime **`DOPPLER_TOKEN`** on Railway.
 
-**Prerequisite:** **`make bootstrap`** so **`ebwiki/infra`** holds R2 credentials, DNS token, passphrases, and apply **`DOPPLER_TOKEN`**.
+**Prerequisite:** **`make bootstrap`** so **`ebwiki/infra`** holds R2 credentials, DNS token, passphrases, **`RAILWAY_TOKEN`**, staging basic-auth username, Postgres DB name, and apply **`DOPPLER_TOKEN`**. PR Manager runs bootstrap, plan, and apply from the PR Manager machine.
 
 ## Manual, no API
 
-1. **One-time Cloudflare bootstrap token** (dashboard) for **`make bootstrap`** only.
-2. **One-time Doppler bootstrap token** or **`doppler login`** for **`make bootstrap`** only.
-3. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap (Railway dashboard).
-4. **Railway GitHub app:** browser install if needed; else **`scripts/railway-github-access.sh`**.
-5. **Railway CLI** on the operator machine, plus an **SSH key registered** with Railway (`railway ssh keys add`) so **`railway ssh`** can run **`pg_dump` inside the Postgres service** (`postgres:17`, service name **`Postgres`** by default). This works before apply while staging still runs image **`ebwiki/ebwiki:184`** (that image has no **`pg_dump`**).
+1. **Railway GitHub app:** browser install if needed; else PR Manager runs **`scripts/railway-github-access.sh`**.
+2. **Railway CLI** on the PR Manager machine, plus an **SSH key registered** with Railway (`railway ssh keys add`) so **`railway ssh`** can run **`pg_dump` inside the Postgres service** (`postgres:17`, service name **`Postgres`** by default). This works before apply while staging still runs image **`ebwiki/ebwiki:184`** (that image has no **`pg_dump`**).
 
-Also set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`** before apply (generated password is new in Doppler **`stg`**).
+Bootstrap seeds **`RAILWAY_TOKEN`**, **`TF_VAR_staging_basic_auth_username`**, and **`STAGING_EXPECTED_POSTGRES_DB=ebwiki`** in **`ebwiki/infra`**. OpenTofu still creates **`STAGING_PASSWORD`** in **`stg`** at apply time.
 
 **`terraform.tfvars`** is written by **`scripts/write-staging-tfvars.sh`** before **`make plan`** and **`make apply`** (Railway GraphQL plus Cloudflare DNS API, using Doppler **`ebwiki/infra`**).
 
@@ -24,13 +21,15 @@ Live staging runs image **`ebwiki/ebwiki:184`** with **`db:prepare`**. Apply swi
 
 ## Commands
 
+PR Manager, from the repo root on the PR Manager machine:
+
 ```bash
 make plan
 make snapshot   # optional alone; staging-apply.sh always snapshots first
 make apply
 ```
 
-Plan runs only on Mark's machine via Doppler **`ebwiki/infra`** (not in PR CI).
+Plan and apply run on the PR Manager machine via Doppler **`ebwiki/infra`** (not in PR CI).
 
 ## Doppler secrets
 

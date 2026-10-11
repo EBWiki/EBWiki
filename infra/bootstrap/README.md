@@ -1,45 +1,55 @@
 # Bootstrap OpenTofu (run once)
 
-Creates shared infrastructure secrets in Doppler environment **`ebwiki/infra`** (its own environment, not a branch of **`prd`**). Mark runs this once with a high-privilege Cloudflare token and a one-time Doppler bootstrap token.
+Creates shared infrastructure secrets in Doppler environment **`ebwiki/infra`**. **PR Manager** runs **`make bootstrap`** once from the PR Manager machine. OpenTofu loads **`CLOUDFLARE_TOKEN_MAKER`**, **`DOPPLER_TOKEN_MAKER`**, **`CLOUDFLARE_ZONE_READ_API_TOKEN`**, and **`RAILWAY_API_TOKEN`** from Doppler **`grandkru/prd`** (via **`scripts/bootstrap.sh`**). The token maker only has **User > API Tokens: Edit**; it mints all Cloudflare API tokens. Zone and account IDs come from the zone read token lookup, not from the token maker.
 
 ## What bootstrap creates
 
-- Cloudflare **DNS Write** API token scoped to **ebwiki.org** only
-- Private **R2** bucket and bucket-scoped object read/write credentials for OpenTofu state
-- **`TF_VAR_state_passphrase`** (random) for staging and cloudflare stacks
-- Doppler **service account** with **Collaborator** on **`stg` only** (includes **Manage Service Tokens** per [Doppler project permissions](https://docs.doppler.com/docs/project-permissions)); its API key is stored as **`DOPPLER_TOKEN`** in **`infra`** for staging OpenTofu apply
-- **`TF_VAR_bootstrap_state_passphrase`** copied into **`infra`** for later bootstrap state access
+- Cloudflare **DNS Write** user API token scoped to **ebwiki.org**
+- Short-lived **Workers R2 Storage Edit** user API token (1 day) used only to create the private R2 bucket
+- Long-lived **Workers R2 Storage Bucket Item Write** user API token scoped to that bucket (OpenTofu state and snapshots)
+- Private **R2** bucket for OpenTofu state
+- **`TF_VAR_state_passphrase`** (random) for staging stacks
+- Doppler **service account** with **Collaborator** on **`stg` only**; its API key is **`DOPPLER_TOKEN`** in **`infra`** for staging apply
+- **`TF_VAR_bootstrap_state_passphrase`**, **`RAILWAY_TOKEN`**, **`TF_VAR_staging_basic_auth_username`** (generated), and **`STAGING_EXPECTED_POSTGRES_DB=ebwiki`** in **`infra`**
 - **Required:** migrates bootstrap state from local encrypted storage into R2 in the same **`make bootstrap`** run
+
+## Two apply stages
+
+**Stage 1 (`bootstrap-tokens`):** mints Cloudflare tokens (DNS, R2 admin, not bucket-scoped yet), creates **`ebwiki/infra`**, and writes Doppler secrets that do not need the bucket.
+
+**Stage 2 (`bootstrap-bucket`):** uses provider **`cloudflare.r2_admin`** (the minted admin token) to create the R2 bucket, mints the bucket-scoped state token, and writes R2 credentials to **`infra`**.
+
+Both stages run automatically from **`make bootstrap`**.
 
 ## Doppler service account and Collaborator role
 
-Bootstrap uses project role **`collaborator`** on environment **`stg`** only. Doppler documents that Collaborators may **create, roll, and delete service tokens** for configs they can access (`enclave_project_config_service_tokens`). That is the smallest built-in role that lets staging OpenTofu create **`doppler_service_token.railway_runtime`** without a user personal token.
+Bootstrap uses project role **`collaborator`** on environment **`stg` only**. Confirm the Doppler plan includes role-based access (Team or Enterprise) before bootstrap.
 
-**Confirm the Doppler plan includes role-based access** (Team or Enterprise) before bootstrap. Limiting a service account to the **`stg`** environment relies on that feature.
+## Inputs (grandkru/prd)
 
-## Inputs (Mark provides once)
-
-| Input | How |
+| Secret | Use |
 | --- | --- |
-| **`TF_VAR_bootstrap_state_passphrase`** | 16+ characters; encrypts bootstrap state (also stored in **`ebwiki/infra`**) |
-| **`TF_VAR_cloudflare_bootstrap_api_token`** | One-time Cloudflare token (create in dashboard; see manual list) |
-| **`doppler login`** or **`DOPPLER_TOKEN`** | One-time bootstrap auth to write **`ebwiki/infra`** |
+| **`CLOUDFLARE_TOKEN_MAKER`** | Provider **`cloudflare.token_maker`**; mints DNS, R2 admin, and R2 state API tokens |
+| **`CLOUDFLARE_ZONE_READ_API_TOKEN`** | Zone lookup for **`terraform.tfvars`** (account and zone IDs) |
+| **`DOPPLER_TOKEN_MAKER`** | Doppler provider; creates **`ebwiki/infra`** and secrets |
+| **`RAILWAY_API_TOKEN`** | Stored in **`infra`** as **`RAILWAY_TOKEN`** |
+| **`TF_VAR_bootstrap_state_passphrase`** | PR Manager sets locally (16+ characters) before **`make bootstrap`** |
 
 ## Manual, no API
 
-1. **One-time Cloudflare bootstrap token.** The first token needs a dashboard login, because no token exists yet to create it with.
-2. **One-time Doppler bootstrap token**, or **`doppler login`**, for the same reason.
-3. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap. Railway tokens are created in the dashboard. The OpenTofu provider cannot create them.
-4. **Railway GitHub app:** install on the EBWiki org in the browser if it is not installed yet. If it is already installed, run **`scripts/railway-github-access.sh`** to grant **EBWiki/EBWiki**.
+1. **Railway GitHub app:** browser install if needed; else PR Manager runs **`scripts/railway-github-access.sh`**.
 
-**`terraform.tfvars` for bootstrap and staging** is generated locally by **`scripts/write-bootstrap-tfvars.sh`** and **`scripts/write-staging-tfvars.sh`** (Cloudflare and Railway lookups via API). Files stay gitignored.
+**`terraform.tfvars`** (account and zone IDs only) is generated by **`scripts/write-bootstrap-tfvars.sh`**. Staging **`terraform.tfvars`** is generated before plan/apply by **`scripts/write-staging-tfvars.sh`**.
 
 ## Commands
 
+PR Manager, from the repo root ( **`make bootstrap`** re-runs **`doppler run --project grandkru --config prd`** ):
+
 ```bash
+export TF_VAR_bootstrap_state_passphrase='your-16-char-passphrase'
 make bootstrap
 ```
 
-Then complete manual steps 3 and 4 if needed, set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`**, and run **`make plan`** / **`make apply`**. **`make apply`** runs **`make snapshot`** first (Postgres dump to R2; see **`infra/staging/MIGRATIONS_ROLLBACK.md`**).
+Then run **`make plan`** and **`make apply`** using Doppler **`ebwiki/infra`**.
 
-OpenTofu **plan** for staging is **local only** (no CI plan job).
+OpenTofu **plan** for staging runs on the PR Manager machine (not in PR CI).

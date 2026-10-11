@@ -10,6 +10,12 @@ resource "random_password" "state_passphrase" {
   override_special = "-_.~"
 }
 
+resource "random_string" "staging_basic_auth_username" {
+  length  = 16
+  special = false
+  upper   = false
+}
+
 resource "doppler_service_account" "opentofu_staging" {
   name           = "ebwiki-opentofu-staging"
   workplace_role = "no_access"
@@ -71,18 +77,18 @@ resource "doppler_secret" "aws_access_key_id" {
   project = var.doppler_project
   config  = local.doppler_infra_config
   name    = "AWS_ACCESS_KEY_ID"
-  value   = cloudflare_account_token.r2_state.id
+  value   = cloudflare_api_token.r2_state.id
 
-  depends_on = [doppler_environment.infra]
+  depends_on = [doppler_environment.infra, cloudflare_api_token.r2_state]
 }
 
 resource "doppler_secret" "aws_secret_access_key" {
   project = var.doppler_project
   config  = local.doppler_infra_config
   name    = "AWS_SECRET_ACCESS_KEY"
-  value   = sha256(cloudflare_account_token.r2_state.value)
+  value   = sha256(cloudflare_api_token.r2_state.value)
 
-  depends_on = [doppler_environment.infra]
+  depends_on = [doppler_environment.infra, cloudflare_api_token.r2_state]
 }
 
 resource "doppler_secret" "r2_bucket_name" {
@@ -91,7 +97,7 @@ resource "doppler_secret" "r2_bucket_name" {
   name    = "R2_BUCKET_NAME"
   value   = local.r2_bucket_name
 
-  depends_on = [doppler_environment.infra]
+  depends_on = [doppler_environment.infra, cloudflare_r2_bucket.opentofu_state]
 }
 
 resource "doppler_secret" "cloudflare_account_id" {
@@ -117,6 +123,33 @@ resource "doppler_secret" "doppler_apply_token" {
   config  = local.doppler_infra_config
   name    = "DOPPLER_TOKEN"
   value   = doppler_service_account_token.opentofu_staging.api_key
+
+  depends_on = [doppler_environment.infra]
+}
+
+resource "doppler_secret" "railway_token" {
+  project = var.doppler_project
+  config  = local.doppler_infra_config
+  name    = "RAILWAY_TOKEN"
+  value   = var.railway_api_token
+
+  depends_on = [doppler_environment.infra]
+}
+
+resource "doppler_secret" "tf_var_staging_basic_auth_username" {
+  project = var.doppler_project
+  config  = local.doppler_infra_config
+  name    = "TF_VAR_staging_basic_auth_username"
+  value   = random_string.staging_basic_auth_username.result
+
+  depends_on = [doppler_environment.infra]
+}
+
+resource "doppler_secret" "staging_expected_postgres_db" {
+  project = var.doppler_project
+  config  = local.doppler_infra_config
+  name    = "STAGING_EXPECTED_POSTGRES_DB"
+  value   = "ebwiki"
 
   depends_on = [doppler_environment.infra]
 }

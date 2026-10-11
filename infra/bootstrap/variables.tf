@@ -4,20 +4,26 @@ variable "bootstrap_state_passphrase" {
   sensitive   = true
 }
 
-variable "cloudflare_bootstrap_api_token" {
+variable "cloudflare_token_maker" {
   type        = string
-  description = "One-time Cloudflare token with permission to create API tokens, account tokens, and R2 buckets. Set TF_VAR_cloudflare_bootstrap_api_token."
+  description = "Cloudflare user token with API Tokens Edit (Create Additional Tokens). Set from CLOUDFLARE_TOKEN_MAKER (grandkru/prd)."
   sensitive   = true
 }
 
 variable "cloudflare_account_id" {
   type        = string
-  description = "Cloudflare account ID."
+  description = "Cloudflare account ID (from zone read lookup)."
 }
 
 variable "cloudflare_zone_id" {
   type        = string
   description = "Cloudflare zone ID for ebwiki.org (DNS token scope)."
+}
+
+variable "railway_api_token" {
+  type        = string
+  description = "Railway token copied into ebwiki/infra as RAILWAY_TOKEN. Set from RAILWAY_API_TOKEN (grandkru/prd)."
+  sensitive   = true
 }
 
 variable "doppler_project" {

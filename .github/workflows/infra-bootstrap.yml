@@ -5,6 +5,8 @@ on:
     paths:
       - 'infra/bootstrap/**'
       - 'scripts/bootstrap.sh'
+      - 'scripts/write-bootstrap-tfvars.sh'
+      - 'scripts/lib/**'
       - 'scripts/infra-write-backend.sh'
       - 'scripts/railway-github-access.sh'
       - '.github/workflows/infra-bootstrap.yml'
@@ -38,7 +40,8 @@ jobs:
       - name: Validate
         env:
           TF_VAR_bootstrap_state_passphrase: ci-bootstrap-passphrase-ok
-          TF_VAR_cloudflare_bootstrap_api_token: ci-validate-only
+          TF_VAR_cloudflare_token_maker: ci-validate-only
+          TF_VAR_railway_api_token: ci-validate-only
           TF_VAR_cloudflare_account_id: "00000000000000000000000000000000"
           TF_VAR_cloudflare_zone_id: "00000000000000000000000000000000"
         run: tofu validate

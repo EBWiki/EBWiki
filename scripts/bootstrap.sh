@@ -2,12 +2,19 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [ -z "${BOOTSTRAP_MAKER_ENV_LOADED:-}" ]; then
+  export BOOTSTRAP_MAKER_ENV_LOADED=1
+  exec doppler run --project grandkru --config prd -- \
+    "$ROOT/scripts/bootstrap.sh" "$@"
+fi
+
 cd "$ROOT/infra/bootstrap"
 
-doppler me >/dev/null 2>&1 || {
-  echo "Run doppler login or export DOPPLER_TOKEN for bootstrap."
-  exit 1
-}
+export DOPPLER_TOKEN="${DOPPLER_TOKEN_MAKER:?Set DOPPLER_TOKEN_MAKER in grandkru/prd}"
+export TF_VAR_cloudflare_token_maker="${CLOUDFLARE_TOKEN_MAKER:?Set CLOUDFLARE_TOKEN_MAKER in grandkru/prd}"
+export TF_VAR_railway_api_token="${RAILWAY_API_TOKEN:?Set RAILWAY_API_TOKEN in grandkru/prd}"
+export CLOUDFLARE_ZONE_READ_API_TOKEN="${CLOUDFLARE_ZONE_READ_API_TOKEN:?Set CLOUDFLARE_ZONE_READ_API_TOKEN in grandkru/prd}"
 
 # A local state file means an earlier run stopped partway: resume it instead of refusing.
 if [ ! -f terraform.tfstate ] && \
@@ -17,7 +24,6 @@ if [ ! -f terraform.tfstate ] && \
 fi
 
 : "${TF_VAR_bootstrap_state_passphrase:?Export TF_VAR_bootstrap_state_passphrase (16+ characters)}"
-: "${TF_VAR_cloudflare_bootstrap_api_token:?Export TF_VAR_cloudflare_bootstrap_api_token}"
 
 "$ROOT/scripts/write-bootstrap-tfvars.sh"
 
@@ -32,9 +38,24 @@ terraform {
 TF
 
 tofu init -input=false -reconfigure
-tofu plan -input=false -out=bootstrap.tfplan
-tofu apply -input=false bootstrap.tfplan
-rm -f bootstrap.tfplan
+
+BOOTSTRAP_STAGE2_EXCLUDES=(
+  -exclude=cloudflare_r2_bucket.opentofu_state
+  -exclude=cloudflare_api_token.r2_state
+  -exclude=doppler_secret.aws_access_key_id
+  -exclude=doppler_secret.aws_secret_access_key
+  -exclude=doppler_secret.r2_bucket_name
+)
+
+echo "Bootstrap stage 1 (tokens and Doppler infra)..."
+tofu plan -input=false "${BOOTSTRAP_STAGE2_EXCLUDES[@]}" -out=bootstrap-stage1.tfplan
+tofu apply -input=false bootstrap-stage1.tfplan
+rm -f bootstrap-stage1.tfplan
+
+echo "Bootstrap stage 2 (R2 bucket and state credentials)..."
+tofu plan -input=false -out=bootstrap-stage2.tfplan
+tofu apply -input=false bootstrap-stage2.tfplan
+rm -f bootstrap-stage2.tfplan
 
 echo "Migrating bootstrap state into R2 (required, same run)..."
 
@@ -49,4 +70,4 @@ doppler run --project ebwiki --config infra -- \
 rm -f terraform.tfstate terraform.tfstate.backup
 
 echo "Bootstrap complete. Secrets are in Doppler ebwiki/infra."
-echo "Complete manual steps in infra/bootstrap/README.md, then: make plan && make apply"
+echo "Run make plan && make apply when ready (see infra/staging/README.md)."
