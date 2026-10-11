@@ -1,0 +1,15 @@
+{
+  "name": "ebwiki-globe",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "cesium": "^1.124.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "vite-plugin-cesium": "^1.2.23"
+  }
+}

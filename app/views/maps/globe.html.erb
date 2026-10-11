@@ -1,0 +1,47 @@
+<% content_for :head do %>
+  <script>window.CESIUM_BASE_URL = '/globe/cesium/';</script>
+  <link rel="stylesheet" href="/globe/cesium/Widgets/widgets.css" />
+  <script src="/globe/cesium/Cesium.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-clustering.js"></script>
+  <script type="text/javascript">
+    window.API_KEY = "<%= ENV.fetch('HERE_MAPS_API_KEY', '') %>";
+    window.CASES = <%= raw(fetch_cases) %>;
+  </script>
+  <%= javascript_include_tag 'maps' %>
+  <script type="module" src="/globe/globe.js"></script>
+<% end %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <%= render 'maps/view_toggle', active: :globe %>
+    <h2 class="page-subheader">Explore EBWiki cases on a 3D globe. Click a pin or cluster to open the case.</h2>
+    <div id="globe-no-webgl" class="globe-fallback alert alert-warning" hidden>
+      <p>Your browser does not support WebGL, so the 3D globe cannot run here. Use the flat map below or try another browser.</p>
+    </div>
+    <div id="globe-viewport" class="globe-viewport" aria-label="3D globe of EBWiki cases"></div>
+    <div id="globe-fallback-map" class="globe-fallback-map" hidden>
+      <h3>Flat map</h3>
+      <div id="map-container"></div>
+    </div>
+    <p class="globe-attribution text-muted small">
+      Globe code adapted from
+      <a href="https://github.com/bilawalsidhu/gods-eye-view" rel="noopener">God's Eye View</a>
+      (MIT). Imagery: Esri World Imagery with OpenStreetMap fallback.
+      © OpenStreetMap contributors where OSM is shown.
+    </p>
+  </div>
+</div>
+
+<script type="application/json" id="globe-config">
+<%= {
+  casesUrl: @cases_url,
+  flatMapUrl: @flat_map_url,
+  google3dApiKey: @google_3d_api_key,
+  cesiumIonToken: @cesium_ion_token
+}.to_json.html_safe %>
+</script>
