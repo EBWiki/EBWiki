@@ -163,9 +163,11 @@ Doppler unless you intentionally override; they are not part of `ebwiki/stg`.
 
 **Host authorization on staging** (`config/initializers/staging_railway_hosts.rb`)
 allows only `HOST` (when set) and `RAILWAY_PUBLIC_DOMAIN` (Railway’s default
-service URL host). It does not allow every `*.railway.app` subdomain. Railway’s
-deploy health check hits `GET /up`, which is excluded from host authorization so
-liveness probes succeed before a custom domain is attached.
+service URL host). It does not allow every `*.railway.app` subdomain. When neither
+variable is set, every host is denied except `GET /up` (Rails treats an empty
+allow-list as “permit all,” so staging installs a deny-all sentinel instead).
+Railway’s deploy health check hits `GET /up`, which is excluded from host
+authorization so liveness probes succeed before a custom domain is attached.
 
 ## Operator checklist
 
