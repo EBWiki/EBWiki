@@ -10,7 +10,7 @@ OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the e
 
 ## Prerequisites in ebwiki/infra
 
-After bootstrap, **`infra`** holds minted Cloudflare DNS tokens (not the token maker), R2 credentials, **`RAILWAY_TOKEN`**, **`DOPPLER_TOKEN`** for apply, passphrases, and staging username / Postgres DB name seeds.
+After bootstrap, **`infra`** holds minted Cloudflare DNS tokens (not the token maker), R2 credentials, **`RAILWAY_TOKEN`**, **`DOPPLER_TOKEN`** for apply, **`TF_VAR_staging_runtime_doppler_token`** for Railway, passphrases, and staging username / Postgres DB name seeds.
 
 ## Remaining manual steps
 

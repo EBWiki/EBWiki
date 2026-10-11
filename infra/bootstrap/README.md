@@ -37,7 +37,7 @@ Zone and account IDs in **`terraform.tfvars`** come from the **zone read** token
 - Private **R2** bucket for OpenTofu state and staging DB snapshots
 - Minted Cloudflare tokens above, stored in **`ebwiki/infra`**
 - **`TF_VAR_state_passphrase`** (random) for staging stacks
-- Doppler **service account** with **Collaborator** on **`stg` only**; its API key is **`DOPPLER_TOKEN`** in **`infra`** for staging apply
+- Config-scoped **Doppler service tokens** on **`stg` only**: read/write **`DOPPLER_TOKEN`** in **`infra`** for staging apply, and a read-only token stored as **`TF_VAR_staging_runtime_doppler_token`** for Railway
 - **`TF_VAR_bootstrap_state_passphrase`**, **`RAILWAY_TOKEN`**, **`TF_VAR_staging_basic_auth_username`** (generated), and **`STAGING_EXPECTED_POSTGRES_DB=ebwiki`** in **`infra`**
 - Migrates bootstrap state from local encrypted storage into R2 in the same **`make bootstrap`** run
 
@@ -49,9 +49,11 @@ Zone and account IDs in **`terraform.tfvars`** come from the **zone read** token
 
 Both stages run from **`make bootstrap`** (stage 1 uses OpenTofu **`-exclude`** on bucket-dependent resources).
 
-## Doppler service account
+## Resuming a partial first-time setup
 
-Bootstrap uses project role **`collaborator`** on environment **`stg` only**. Confirm the Doppler plan includes role-based access (Team or Enterprise) before bootstrap.
+If a run stopped after Cloudflare tokens and random values were written to encrypted local state, run **`make bootstrap`** again with the same **`TF_VAR_bootstrap_state_passphrase`**. OpenTofu updates existing resources instead of minting duplicate DNS tokens. Stage 2 creates a new short-lived R2 admin token whenever that token is missing from state (normal after a completed stage 2 cleanup, or if stage 2 never ran).
+
+If local state still references removed **`doppler_service_account_*`** resources from an older revision, remove those addresses with **`tofu state rm`** before resuming.
 
 ## Remaining manual steps (no Mark-specific steps)
 

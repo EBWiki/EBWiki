@@ -48,16 +48,17 @@ resource "railway_custom_domain" "staging" {
   }
 }
 
-resource "doppler_service_token" "railway_runtime" {
-  project = var.doppler_project
-  config  = var.doppler_config
-  name    = "railway-staging-runtime-readonly"
-  access  = "read"
+removed {
+  from = doppler_service_token.railway_runtime
+
+  lifecycle {
+    destroy = false
+  }
 }
 
 resource "railway_variable" "doppler_token" {
   name           = "DOPPLER_TOKEN"
-  value          = doppler_service_token.railway_runtime.key
+  value          = var.staging_runtime_doppler_token
   service_id     = railway_service.ebwiki.id
   environment_id = railway_environment.production.id
 }
