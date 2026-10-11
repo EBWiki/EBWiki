@@ -32,6 +32,7 @@ const EBWIKI_PRESERVED_VARIABLE_NAMES = [
   "RAILS_ENV",
   "RAILS_LOG_TO_STDOUT",
   "RAILS_SERVE_STATIC_FILES",
+  "RAILWAY_DOCKERFILE_PATH",
   "REDIS_URL",
   "REVIEW_SERVER",
   "S3_BUCKET",
@@ -51,12 +52,9 @@ export default defineRailway(() => {
     source: github(GITHUB_REPO, { branch: GITHUB_BRANCH }),
     build: {
       builder: "DOCKERFILE",
+      dockerfilePath: DOCKERFILE_PATH,
     },
-    env: {
-      ...preservedEbwikiEnv(),
-      // Dockerfile path via Railway variable only (not build.dockerfilePath) to avoid plan drift.
-      RAILWAY_DOCKERFILE_PATH: DOCKERFILE_PATH,
-    },
+    env: preservedEbwikiEnv(),
     preDeploy:
       "doppler run --project ebwiki --config stg -- bash release-tasks.sh",
     start:
@@ -67,7 +65,6 @@ export default defineRailway(() => {
       preDeployTimeoutSeconds: 900,
       overlapSeconds: 0,
       drainingSeconds: 0,
-      restartPolicyType: "ON_FAILURE",
       restartPolicyMaxRetries: 3,
     },
   });

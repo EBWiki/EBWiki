@@ -19,6 +19,11 @@ import {
 }
 
 import {
+  to = railway_custom_domain.staging
+  id = local.railway_custom_domain_import_id
+}
+
+import {
   to = cloudflare_dns_record.legacy_staging_ebwiki
   id = "${var.cloudflare_zone_id}/${var.cloudflare_staging_dns_record_id}"
 }
