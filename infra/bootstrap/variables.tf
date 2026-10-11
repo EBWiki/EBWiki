@@ -6,7 +6,7 @@ variable "bootstrap_state_passphrase" {
 
 variable "cloudflare_token_maker" {
   type        = string
-  description = "Cloudflare user token with API Tokens Edit (Create Additional Tokens). Set from CLOUDFLARE_TOKEN_MAKER (grandkru/prd)."
+  description = "CLOUDFLARE_TOKEN_MAKER from grandkru/prd: API Tokens Edit only. Used as cloudflare.token_maker to create final DNS/R2 API tokens (not a chain of token-creating tokens)."
   sensitive   = true
 }
 
