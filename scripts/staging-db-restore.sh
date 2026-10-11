@@ -33,7 +33,7 @@ aws s3api head-object --bucket "$R2_BUCKET_NAME" --key "$object_key" --endpoint-
 
 restore_script="$(infra_railway_remote_postgres_pg_restore_shell "$STAGING_EXPECTED_POSTGRES_DB")"
 aws s3 cp "s3://${R2_BUCKET_NAME}/${object_key}" - --endpoint-url "$R2_S3_ENDPOINT" --only-show-errors \
-  | railway ssh \
+  | infra_railway_ssh \
     --project "$project_id" \
     --environment "$environment_id" \
     --service "$db_service_id" \

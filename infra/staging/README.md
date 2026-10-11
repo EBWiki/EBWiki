@@ -15,7 +15,10 @@ After bootstrap, **`infra`** holds minted Cloudflare DNS tokens (**`CLOUDFLARE_D
 ## Remaining manual steps
 
 1. **Railway GitHub app** (browser) or **`scripts/railway-github-access.sh`**.
-2. **Railway CLI** and **SSH key** registered with Railway on the PR Manager machine for **`railway ssh`** snapshots.
+2. **Railway CLI** on the deploy machine for database snapshots and restores. One-time SSH setup:
+   - Register the deploy box public key: **`railway ssh keys add`** (while logged in with the same account token).
+   - Trust the Railway SSH host key for **`ssh.railway.com`** (accept on first **`railway ssh`**, or add to **`known_hosts`** ahead of cutover).
+   Snapshot and restore scripts pass the workspace token as **`RAILWAY_API_TOKEN`** only (the CLI treats **`RAILWAY_TOKEN`** as a project token and returns Unauthorized).
 
 OpenTofu creates **`STAGING_PASSWORD`** in **`stg`** at apply time.
 

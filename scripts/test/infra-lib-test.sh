@@ -169,6 +169,34 @@ public_domain="$(
   || fail "unexpected public domain: $public_domain"
 pass "infra_railway_public_domain reads serviceDomains from GraphQL"
 
+cat >"$tmpdir/railway" <<'RAILWAY'
+#!/usr/bin/env bash
+if [ -n "${RAILWAY_TOKEN:-}" ]; then
+  echo "railway mock: RAILWAY_TOKEN must be unset for CLI" >&2
+  exit 1
+fi
+if [ -z "${RAILWAY_API_TOKEN:-}" ]; then
+  echo "railway mock: RAILWAY_API_TOKEN must be set" >&2
+  exit 1
+fi
+if [ "$1" = "ssh" ]; then
+  exit 0
+fi
+echo "railway mock: unexpected args: $*" >&2
+exit 1
+RAILWAY
+chmod +x "$tmpdir/railway"
+export PATH="$tmpdir:$PATH"
+export RAILWAY_TOKEN="workspace-token-from-doppler"
+if (
+  source_railway
+  infra_railway_ssh --project p1 --environment e1 --service db1 -- true
+); then
+  pass "infra_railway_ssh uses RAILWAY_API_TOKEN and unsets RAILWAY_TOKEN"
+else
+  fail "infra_railway_ssh should wrap railway ssh with account token env"
+fi
+
 # Snapshot pipe + upload (no /tmp)
 export R2_BUCKET_NAME="test-bucket"
 export R2_S3_ENDPOINT="https://r2.example"

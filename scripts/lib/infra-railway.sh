@@ -60,6 +60,13 @@ infra_railway_find_postgres_service_id() {
   printf '%s' "$db_service_id"
 }
 
+# Railway CLI reads RAILWAY_API_TOKEN for account/workspace tokens. Doppler exposes the
+# same value as RAILWAY_TOKEN for GraphQL helpers; unset it before invoking the CLI.
+infra_railway_ssh() {
+  : "${RAILWAY_TOKEN:?RAILWAY_TOKEN must be set}"
+  env -u RAILWAY_TOKEN RAILWAY_API_TOKEN="$RAILWAY_TOKEN" railway ssh "$@"
+}
+
 infra_railway_public_domain() {
   local project_id="$1"
   local environment_id="$2"
