@@ -6,37 +6,25 @@ variable "state_passphrase" {
 
 variable "cloudflare_dns_api_token" {
   type        = string
-  description = "Cloudflare API token for ebwiki.org (legacy staging record and redirect rule). Set TF_VAR_cloudflare_dns_api_token from Doppler ebwiki/infra."
-  sensitive   = true
-  default     = null
-}
-
-variable "cloudflare_grandkru_dns_api_token" {
-  type        = string
-  description = "Cloudflare API token with DNS Write on grandkru.com only. Set TF_VAR_cloudflare_grandkru_dns_api_token from Doppler ebwiki/infra."
+  description = "Cloudflare API token for ebwiki.org staging DNS. Set TF_VAR_cloudflare_dns_api_token from Doppler ebwiki/infra."
   sensitive   = true
   default     = null
 }
 
 variable "cloudflare_zone_id" {
   type        = string
-  description = "Cloudflare zone ID for ebwiki.org (legacy staging.ebwiki.org)."
-}
-
-variable "cloudflare_grandkru_zone_id" {
-  type        = string
-  description = "Cloudflare zone ID for grandkru.com (ebwiki.staging.grandkru.com)."
+  description = "Cloudflare zone ID for ebwiki.org (staging.ebwiki.org)."
 }
 
 variable "cloudflare_staging_dns_record_id" {
   type        = string
-  description = "Cloudflare DNS record ID for the existing staging.ebwiki.org CNAME (adopt; content unchanged)."
+  description = "Cloudflare DNS record ID for the existing staging.ebwiki.org CNAME (adopt)."
 }
 
 variable "staging_hostname" {
   type        = string
-  description = "Public staging hostname on Railway and in Doppler HOST (<site>.staging.grandkru.com)."
-  default     = "ebwiki.staging.grandkru.com"
+  description = "Public staging hostname on Railway and in Doppler HOST."
+  default     = "staging.ebwiki.org"
 }
 
 variable "doppler_project" {
