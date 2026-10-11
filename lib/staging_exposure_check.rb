@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'staging_exposure_check/cloudflare_access'
 require_relative 'staging_exposure_check/http_client'
+require_relative 'staging_exposure_check/railway_urls'
 
 # Verifies EBWiki staging is not reachable on public Railway URLs and that
 # staging.ebwiki.org is gated by Cloudflare Access (see docs/staging-access.md).
@@ -19,18 +21,7 @@ module StagingExposureCheck
   module_function
 
   def resolve_railway_urls(argv:, env_railway_urls:)
-    return argv if argv.any?
-
-    return [DEFAULT_RAILWAY_URL] if env_railway_urls.nil?
-
-    urls = env_railway_urls.split(',').map(&:strip).reject(&:empty?)
-    if urls.empty?
-      raise CheckFailed,
-            'STAGING_EXPOSURE_RAILWAY_URLS is set but contains no URLs ' \
-            "(use a comma-separated list or unset it to use #{DEFAULT_RAILWAY_URL})"
-    end
-
-    urls
+    RailwayUrls.resolve(argv: argv, env_railway_urls: env_railway_urls)
   end
 
   def call(
@@ -64,21 +55,14 @@ module StagingExposureCheck
   def check_staging_public_gate!(staging_base_url, http)
     root = normalize_base_url(staging_base_url)
     response = http.call("#{root}/", headers: {}, method: :get, follow_redirects: false)
-
     unless response.answered?
       raise CheckFailed, "Could not reach staging hostname at #{root}/ (no response)"
     end
 
-    return if cloudflare_access_present?(response)
+    return if CloudflareAccess.present?(response)
+    return raise_app_basic_auth_failure! if CloudflareAccess.staging_app_basic_auth_only?(response)
 
-    code = response.code.to_i
-    if staging_app_basic_auth_only?(response)
-      raise CheckFailed,
-            'Staging root returned app basic auth (401) but not Cloudflare Access ' \
-            '(missing Access redirect or Cloudflare Access response markers)'
-    end
-
-    raise CheckFailed, "Staging root is not gated by Cloudflare Access (HTTP #{code})"
+    raise CheckFailed, "Staging root is not gated by Cloudflare Access (HTTP #{response.code.to_i})"
   end
 
   def check_staging_health_with_service_token!(staging_base_url, client_id, client_secret, http)
@@ -116,40 +100,16 @@ module StagingExposureCheck
           "Staging #{HEALTH_PATH} with service token did not return 200 (HTTP #{code})"
   end
 
-  def cloudflare_access_present?(response)
-    cloudflare_access_redirect?(response) || cloudflare_access_response_marker?(response)
-  end
-
   def cloudflare_access_redirect?(response)
-    code = response.code.to_i
-    return false unless [301, 302, 303, 307, 308].include?(code)
-
-    location = response.headers['location']
-    return false if location.to_s.strip.empty?
-
-    host = URI.parse(location).host.to_s
-    host.end_with?('.cloudflareaccess.com')
-  rescue URI::InvalidURIError
-    false
+    CloudflareAccess.redirect?(response)
   end
 
-  def cloudflare_access_response_marker?(response)
-    response.headers.any? do |key, _value|
-      normalized = key.to_s.downcase
-      normalized.start_with?('cf-access') || normalized == 'cf-middleware-access'
-    end || cloudflare_access_set_cookie?(response)
-  end
-
-  def cloudflare_access_set_cookie?(response)
-    cookie = response.headers['set-cookie'].to_s
-    cookie.match?(/CF_Authorization|CF_AppSession|cloudflareaccess/i)
+  def cloudflare_access_present?(response)
+    CloudflareAccess.present?(response)
   end
 
   def staging_app_basic_auth_only?(response)
-    return false unless response.code.to_i == 401
-
-    www_auth = response.headers['www-authenticate'].to_s
-    www_auth.match?(/\ABasic\b/i) && www_auth.include?('Staging')
+    CloudflareAccess.staging_app_basic_auth_only?(response)
   end
 
   def normalize_base_url(url)
@@ -162,4 +122,11 @@ module StagingExposureCheck
       CF_ACCESS_CLIENT_SECRET_HEADER => client_secret
     }
   end
+
+  def raise_app_basic_auth_failure!
+    raise CheckFailed,
+          'Staging root returned app basic auth (401) but not Cloudflare Access ' \
+          '(missing Access redirect or Cloudflare Access response markers)'
+  end
+  private_class_method :raise_app_basic_auth_failure!
 end
