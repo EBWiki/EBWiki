@@ -46,7 +46,9 @@ jobs:
         env:
           TF_VAR_state_passphrase: ci-validate-only-passphrase
           TF_VAR_cloudflare_dns_api_token: ci-validate-only
+          TF_VAR_cloudflare_grandkru_dns_api_token: ci-validate-only
           TF_VAR_cloudflare_zone_id: "00000000000000000000000000000000"
+          TF_VAR_cloudflare_grandkru_zone_id: "00000000000000000000000000000000"
           TF_VAR_cloudflare_staging_dns_record_id: "00000000000000000000000000000000"
           TF_VAR_railway_project_id: "00000000-0000-0000-0000-000000000000"
           TF_VAR_railway_service_id: "00000000-0000-0000-0000-000000000000"

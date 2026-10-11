@@ -17,7 +17,12 @@ variable "cloudflare_account_id" {
 
 variable "cloudflare_zone_id" {
   type        = string
-  description = "Cloudflare zone ID for ebwiki.org (DNS token scope)."
+  description = "Cloudflare zone ID for ebwiki.org (legacy DNS and redirect)."
+}
+
+variable "cloudflare_grandkru_zone_id" {
+  type        = string
+  description = "Cloudflare zone ID for grandkru.com (staging hostname DNS)."
 }
 
 variable "railway_api_token" {

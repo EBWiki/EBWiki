@@ -4,7 +4,7 @@ Creates shared infrastructure secrets in Doppler environment **`ebwiki/infra`**.
 
 ## What bootstrap creates
 
-- Cloudflare **DNS Write** user API token scoped to **ebwiki.org**
+- Cloudflare **DNS Write** (plus **Zone Rulesets Edit** on **ebwiki.org** for the legacy redirect) and **DNS Write** on **grandkru.com** only
 - Short-lived **Workers R2 Storage Edit** user API token (1 day) used only to create the private R2 bucket
 - Long-lived **Workers R2 Storage Bucket Item Write** user API token scoped to that bucket (OpenTofu state and snapshots)
 - Private **R2** bucket for OpenTofu state

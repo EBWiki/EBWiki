@@ -44,4 +44,5 @@ jobs:
           TF_VAR_railway_api_token: ci-validate-only
           TF_VAR_cloudflare_account_id: "00000000000000000000000000000000"
           TF_VAR_cloudflare_zone_id: "00000000000000000000000000000000"
+          TF_VAR_cloudflare_grandkru_zone_id: "00000000000000000000000000000000"
         run: tofu validate

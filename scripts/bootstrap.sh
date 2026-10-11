@@ -15,6 +15,7 @@ export DOPPLER_TOKEN="${DOPPLER_TOKEN_MAKER:?Set DOPPLER_TOKEN_MAKER in grandkru
 export TF_VAR_cloudflare_token_maker="${CLOUDFLARE_TOKEN_MAKER:?Set CLOUDFLARE_TOKEN_MAKER in grandkru/prd}"
 export TF_VAR_railway_api_token="${RAILWAY_API_TOKEN:?Set RAILWAY_API_TOKEN in grandkru/prd}"
 export CLOUDFLARE_ZONE_READ_API_TOKEN="${CLOUDFLARE_ZONE_READ_API_TOKEN:?Set CLOUDFLARE_ZONE_READ_API_TOKEN in grandkru/prd}"
+export CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN="${CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN:?Set CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN in grandkru/prd}"
 
 # A local state file means an earlier run stopped partway: resume it instead of refusing.
 if [ ! -f terraform.tfstate ] && \

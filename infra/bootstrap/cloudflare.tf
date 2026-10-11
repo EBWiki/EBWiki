@@ -16,9 +16,31 @@ data "cloudflare_api_token_permission_groups_list" "r2_bucket_item_write" {
   scope    = "com.cloudflare.edge.r2.bucket"
 }
 
-resource "cloudflare_api_token" "staging_dns" {
+data "cloudflare_api_token_permission_groups_list" "zone_rulesets_edit" {
   provider = cloudflare.token_maker
-  name     = "ebwiki-staging-dns-write"
+  name     = "Zone%20Rulesets%20Edit"
+  scope    = "com.cloudflare.api.account.zone"
+}
+
+resource "cloudflare_api_token" "staging_ebwiki_dns" {
+  provider = cloudflare.token_maker
+  name     = "ebwiki-org-staging-legacy-dns"
+
+  policies = [{
+    effect = "allow"
+    permission_groups = [
+      { id = data.cloudflare_api_token_permission_groups_list.dns_write.result[0].id },
+      { id = data.cloudflare_api_token_permission_groups_list.zone_rulesets_edit.result[0].id },
+    ]
+    resources = jsonencode({
+      "com.cloudflare.api.account.zone.${var.cloudflare_zone_id}" = "*"
+    })
+  }]
+}
+
+resource "cloudflare_api_token" "staging_grandkru_dns" {
+  provider = cloudflare.token_maker
+  name     = "grandkru-staging-dns-write"
 
   policies = [{
     effect = "allow"
@@ -26,7 +48,7 @@ resource "cloudflare_api_token" "staging_dns" {
       id = data.cloudflare_api_token_permission_groups_list.dns_write.result[0].id
     }]
     resources = jsonencode({
-      "com.cloudflare.api.account.zone.${var.cloudflare_zone_id}" = "*"
+      "com.cloudflare.api.account.zone.${var.cloudflare_grandkru_zone_id}" = "*"
     })
   }]
 }

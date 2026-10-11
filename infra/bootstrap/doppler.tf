@@ -59,7 +59,7 @@ resource "doppler_secret" "tf_var_cloudflare_dns_api_token" {
   project = var.doppler_project
   config  = local.doppler_infra_config
   name    = "TF_VAR_cloudflare_dns_api_token"
-  value   = cloudflare_api_token.staging_dns.value
+  value   = cloudflare_api_token.staging_ebwiki_dns.value
 
   depends_on = [doppler_environment.infra]
 }
@@ -68,7 +68,25 @@ resource "doppler_secret" "cloudflare_dns_api_token" {
   project = var.doppler_project
   config  = local.doppler_infra_config
   name    = "CLOUDFLARE_DNS_API_TOKEN"
-  value   = cloudflare_api_token.staging_dns.value
+  value   = cloudflare_api_token.staging_ebwiki_dns.value
+
+  depends_on = [doppler_environment.infra]
+}
+
+resource "doppler_secret" "tf_var_cloudflare_grandkru_dns_api_token" {
+  project = var.doppler_project
+  config  = local.doppler_infra_config
+  name    = "TF_VAR_cloudflare_grandkru_dns_api_token"
+  value   = cloudflare_api_token.staging_grandkru_dns.value
+
+  depends_on = [doppler_environment.infra]
+}
+
+resource "doppler_secret" "cloudflare_grandkru_zone_id" {
+  project = var.doppler_project
+  config  = local.doppler_infra_config
+  name    = "CLOUDFLARE_GRANDKRU_ZONE_ID"
+  value   = var.cloudflare_grandkru_zone_id
 
   depends_on = [doppler_environment.infra]
 }
