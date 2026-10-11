@@ -56,7 +56,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   end
 
   # rubocop:todo Metrics/MethodLength
-  def update # rubocop:todo Metrics/AbcSize
+  def update
     @this_case = Case.find(params[:id])
     @this_case.slug = nil
     if @this_case.update(case_params)

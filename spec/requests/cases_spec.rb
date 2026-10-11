@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-# rubocop:disable Metrics/BlockLength.
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'Cases', type: :request do
   describe 'GET /cases' do
     context 'will get list of cases' do
@@ -206,4 +206,4 @@ RSpec.describe 'Cases', type: :request do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength.
+# rubocop:enable Metrics/BlockLength
