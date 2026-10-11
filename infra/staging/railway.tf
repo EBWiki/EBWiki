@@ -22,7 +22,6 @@ resource "railway_service" "ebwiki" {
 
   source_repo        = var.github_repo
   source_repo_branch = var.github_branch
-  config_path        = var.railway_config_path
 
   regions = [{
     region       = "us-west2"
