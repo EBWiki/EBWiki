@@ -35,4 +35,14 @@ else
   pass "delete gate rejects destroy plan"
 fi
 
+command -v node >/dev/null 2>&1 || fail "node is required for CLI wrapper test"
+export RAILWAY_PROJECT_ID="test-project"
+export RAILWAY_ENVIRONMENT_ID="test-environment"
+env_underscore="$(env -u RAILWAY_TOKEN RAILWAY_API_TOKEN="test-token" node -p 'process.env._ || ""' 2>/dev/null || true)"
+subshell_underscore="$(infra_railway_config_run_cli "test-token" node -p 'process.env._ || ""')"
+[ "$env_underscore" = "/usr/bin/env" ] || fail "sanity: env -u should set process.env._ to /usr/bin/env (got ${env_underscore:-empty})"
+[ "$subshell_underscore" != "/usr/bin/env" ] \
+  || fail "subshell wrapper must not set process.env._ to /usr/bin/env"
+pass "subshell CLI wrapper keeps Railway SDK process.env._ usable"
+
 echo "All infra-railway-config tests passed."

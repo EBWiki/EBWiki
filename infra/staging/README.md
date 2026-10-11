@@ -39,7 +39,7 @@ Those tokens were created by bootstrap **`cloudflare.token_maker`** with DNS and
 
 Live staging runs image **`ebwiki/ebwiki:184`** with **`db:prepare`**. Apply switches the service to **main** (OpenTofu) and sets deploy settings via **`.railway/railway.ts`** (Railway Infrastructure as Code). **`scripts/staging-apply.sh`** snapshots Postgres before apply.
 
-**Railway split:** OpenTofu manages GitHub source, **`us-west2`** replicas, domains, **`RAILWAY_DOCKERFILE_PATH`**, **`DOPPLER_TOKEN`**, and the rest of the service variables. **`.railway/railway.ts`** manages pre-deploy, start, health check, and restart policy only (no IaC variables). **`make plan`** writes **`infra/staging/staging.railway-plan.json`** and fails if that plan includes any destroy/delete; **`make apply`** re-checks the saved plan before applying it, then applies OpenTofu. Install the Railway CLI and run **`npm ci`** once at the repo root. The deprecated **`config_path`** path is removed.
+**Railway split:** OpenTofu manages GitHub source, **`us-west2`** replicas, domains, **`RAILWAY_DOCKERFILE_PATH`**, and **`DOPPLER_TOKEN`**. **`.railway/railway.ts`** manages deploy settings and **`preserve()`** entries for every live service variable name (values stay on Railway). **`make plan`** writes **`infra/staging/staging.railway-plan.json`** and fails on any destroy or destructive changeSet entry; **`make apply`** re-checks before applying. The Railway CLI runs in a subshell with **`RAILWAY_API_TOKEN`** only (parent shell keeps **`RAILWAY_TOKEN`** for OpenTofu). Install the Railway CLI and run **`npm ci`** once at the repo root.
 
 ## Commands
 

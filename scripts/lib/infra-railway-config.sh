@@ -24,11 +24,12 @@ infra_railway_config_target_env() {
 infra_railway_config_run_cli() {
   local token="$1"
   shift
-  env -u RAILWAY_TOKEN \
-    RAILWAY_API_TOKEN="$token" \
-    RAILWAY_PROJECT_ID="$RAILWAY_PROJECT_ID" \
-    RAILWAY_ENVIRONMENT_ID="$RAILWAY_ENVIRONMENT_ID" \
+  (
+    unset RAILWAY_TOKEN
+    export RAILWAY_API_TOKEN="$token"
+    export RAILWAY_PROJECT_ID RAILWAY_ENVIRONMENT_ID
     "$@"
+  )
 }
 
 infra_railway_config_ensure_sdk() {
@@ -80,7 +81,18 @@ infra_railway_config_plan_destroy_count() {
       | select(test("delete|destroy|remove"; "i"))
     ] | length
   ' "$plan_file" 2>/dev/null)"
-  printf '%s' "${from_kinds:-0}"
+  if [ "${from_kinds:-0}" != "0" ]; then
+    printf '%s' "$from_kinds"
+    return 0
+  fi
+
+  from_changeset="$(jq -r '
+    [
+      .changeSet.changes[]?
+      | select(.severity == "destructive" or (.kind | test("\\.(delete|destroy)$")))
+    ] | length
+  ' "$plan_file" 2>/dev/null)"
+  printf '%s' "${from_changeset:-0}"
 }
 
 infra_railway_config_assert_plan_no_destructive() {
@@ -90,7 +102,14 @@ infra_railway_config_assert_plan_no_destructive() {
   destroys="$(infra_railway_config_plan_destroy_count "$plan_file")"
   if [ "${destroys:-0}" != "0" ]; then
     echo "Railway config plan would destroy or delete ${destroys} resource(s). Refusing to continue." >&2
-    echo "Review ${plan_file} and fix .railway/railway.ts (service variables must not be managed by IaC)." >&2
+    echo "Review ${plan_file} and fix .railway/railway.ts (preserve every live variable name; no destructive changes)." >&2
+    return 1
+  fi
+  if ! jq -e '
+    ([.changeSet.changes[]?
+      | select(.severity == "destructive" or (.kind | test("\\.(delete|destroy)$")))] | length) == 0
+  ' "$plan_file" >/dev/null 2>&1; then
+    echo "Railway config plan has destructive changeSet entries. Refusing to continue." >&2
     return 1
   fi
 }
