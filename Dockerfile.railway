@@ -1,6 +1,6 @@
 # Railway staging image for EBWiki (main branch). The root Dockerfile stays
 # unchanged for Docker Hub dev builds via publish_docker_image.yml.
-FROM ruby:3.4.2-slim
+FROMZZZ ruby:3.4.2-slim
 
 ENV RAILS_ENV=staging
 ENV BUNDLE_PATH=/usr/local/bundle
