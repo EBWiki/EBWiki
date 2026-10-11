@@ -64,7 +64,7 @@ infra_railway_public_domain() {
   local project_id="$1"
   local environment_id="$2"
   local service_id="$3"
-  local query='query($projectId: String!, $environmentId: String!, $serviceId: String!) { domains(projectId: $projectId, environmentId: $environmentId, serviceId: $serviceId) }'
+  local query='query($projectId: String!, $environmentId: String!, $serviceId: String!) { domains(projectId: $projectId, environmentId: $environmentId, serviceId: $serviceId) { serviceDomains { domain } } }'
   local vars domain
 
   vars="$(jq -n --arg p "$project_id" --arg e "$environment_id" --arg s "$service_id" \

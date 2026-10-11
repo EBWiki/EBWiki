@@ -153,6 +153,22 @@ db_id="$(
 [ "$db_id" = "db1" ] || fail "unexpected Postgres service id: $db_id"
 pass "infra_railway_find_postgres_service_id returns Postgres service id"
 
+domains_payload="$(jq -n '{
+  data: {
+    domains: {
+      serviceDomains: [{domain: "ebwiki-production.up.railway.app"}]
+    }
+  }
+}')"
+export RAILWAY_MOCK_RESPONSE="$domains_payload"
+public_domain="$(
+  source_railway
+  infra_railway_public_domain "p1" "e1" "s1"
+)" || fail "infra_railway_public_domain should succeed with serviceDomains"
+[ "$public_domain" = "ebwiki-production.up.railway.app" ] \
+  || fail "unexpected public domain: $public_domain"
+pass "infra_railway_public_domain reads serviceDomains from GraphQL"
+
 # Snapshot pipe + upload (no /tmp)
 export R2_BUCKET_NAME="test-bucket"
 export R2_S3_ENDPOINT="https://r2.example"

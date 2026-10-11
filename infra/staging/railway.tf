@@ -1,5 +1,6 @@
 resource "railway_project" "ebwiki" {
-  name = local.railway_project_name
+  name        = local.railway_project_name
+  description = "HTTP-authed Rails preview of the EBWiki case map"
 
   lifecycle {
     prevent_destroy = true
@@ -22,6 +23,11 @@ resource "railway_service" "ebwiki" {
   source_repo        = var.github_repo
   source_repo_branch = var.github_branch
   config_path        = var.railway_config_path
+
+  regions = [{
+    region       = "us-west2"
+    num_replicas = 1
+  }]
 
   lifecycle {
     prevent_destroy = true
