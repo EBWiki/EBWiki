@@ -16,7 +16,8 @@ STAGING_RECORD_NAME="${STAGING_DNS_RECORD_NAME:-staging.ebwiki.org}"
 command -v curl >/dev/null 2>&1 || { echo "curl is required."; exit 1; }
 command -v jq >/dev/null 2>&1 || { echo "jq is required."; exit 1; }
 
-read -r project_id service_id environment_id <<<"$(infra_railway_find_project_service_env)"
+ids="$(infra_railway_find_project_service_env)"
+read -r project_id service_id environment_id <<<"$ids"
 public_domain="$(infra_railway_public_domain "$project_id" "$environment_id" "$service_id")"
 
 zone_json="$(infra_cf_zone_for_name "$ZONE_NAME")"

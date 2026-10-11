@@ -10,6 +10,7 @@ OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the e
 2. **One-time Doppler bootstrap token** or **`doppler login`** for **`make bootstrap`** only.
 3. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap (Railway dashboard).
 4. **Railway GitHub app:** browser install if needed; else **`scripts/railway-github-access.sh`**.
+5. **Railway CLI** on the operator machine, plus an **SSH key registered** with Railway (`railway ssh keys add`) so **`railway ssh`** can run **`pg_dump` inside the deployed app container** (Postgres stays on the private network; no public TCP proxy).
 
 Also set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`** before apply (generated password is new in Doppler **`stg`**).
 
@@ -19,13 +20,13 @@ Also set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`** before a
 
 Live staging runs image **`ebwiki/ebwiki:184`** with **`db:prepare`**. Apply switches to **main** with **`railway.staging.toml`** (**`release-tasks.sh`**, migrate only). Root **`railway.toml`** stays unchanged so other Railway services in this repo are unaffected.
 
-**Database:** **`make apply`** runs **`make snapshot`** first ( **`pg_dump`** to R2 **`staging/db-snapshots/`** ). See **`MIGRATIONS_ROLLBACK.md`**.
+**Database:** **`scripts/staging-apply.sh`** (and **`make apply`**) runs **`staging-db-snapshot.sh`** first: **`pg_dump`** inside Railway via **`railway ssh`**, streamed to R2 **`staging/db-snapshots/`** with no local temp file. See **`MIGRATIONS_ROLLBACK.md`**.
 
 ## Commands
 
 ```bash
 make plan
-make snapshot   # optional alone; always runs before apply
+make snapshot   # optional alone; staging-apply.sh always snapshots first
 make apply
 ```
 

@@ -6,6 +6,8 @@ cd "$ROOT"
 
 doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-write-backend.sh"
 
+doppler run --project ebwiki --config infra -- "$ROOT/scripts/staging-db-snapshot.sh"
+
 doppler run --project ebwiki --config infra -- "$ROOT/scripts/write-staging-tfvars.sh"
 
 doppler run --project ebwiki --config infra -- \

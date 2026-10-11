@@ -52,7 +52,7 @@ plan:
 snapshot:
 	doppler run --project ebwiki --config infra -- ./scripts/staging-db-snapshot.sh
 
-apply: snapshot
+apply:
 	./scripts/staging-apply.sh
 
 .PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan snapshot apply
