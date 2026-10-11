@@ -79,3 +79,8 @@ Keep this list current. When the owner flags a term as jargon, add it with its p
 | em dash, arrows | period, comma, or a short sentence |
 | in order to | to |
 | leverage, robust, seamless | plain verbs and specifics |
+| bootstrap (in titles and summaries) | one-time setup, first-time infrastructure setup |
+| token maker (in titles and summaries) | automated Cloudflare API access setup |
+| two-stage R2 (in titles and summaries) | describe the steps in the deployment plan instead |
+| Doppler project or secret names in titles and summaries | "secrets store", "deploy secrets"; names only in deployment or rollback sections |
+| GKT-#### in titles and summaries | one line: "Tracked privately: …" at the end of the summary |
