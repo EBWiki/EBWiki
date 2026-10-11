@@ -13,8 +13,9 @@ source "$ROOT/scripts/lib/infra-railway.sh"
 
 command -v aws >/dev/null 2>&1 || { echo "aws CLI is required for R2 upload."; exit 1; }
 
-ids="$(infra_railway_find_project_service_env)"
-read -r project_id service_id environment_id <<<"$ids"
+ids="$(infra_railway_find_project_service_env)" || exit 1
+read -r project_id _service_id environment_id <<<"$ids"
+db_service_id="$(infra_railway_find_postgres_service_id)" || exit 1
 
 timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
 object_key="staging/db-snapshots/${timestamp}.dump"
@@ -23,21 +24,19 @@ export INFRA_SNAPSHOT_OBJECT_KEY="$object_key"
 
 infra_snapshot_stream_to_r2() {
   if [ -n "${INFRA_SNAPSHOT_PIPE_CMD:-}" ]; then
-    # Test hook: command must write dump bytes to stdout (e.g. printf or mock pg_dump).
     bash -c "$INFRA_SNAPSHOT_PIPE_CMD"
     return
   fi
 
   command -v railway >/dev/null 2>&1 || {
-    echo "Railway CLI is required. Install from https://docs.railway.com/cli (pg_dump runs inside the app service via railway ssh)." >&2
+    echo "Railway CLI is required. Install from https://docs.railway.com/cli (pg_dump runs inside the Postgres service via railway ssh)." >&2
     exit 1
   }
 
-  # pg_dump runs inside the deployed ebwiki service (private network to Postgres). stdout streams to R2.
-  infra_railway_remote_pg_dump_shell | railway ssh \
+  infra_railway_remote_postgres_pg_dump_shell | railway ssh \
     --project "$project_id" \
     --environment "$environment_id" \
-    --service "$service_id" \
+    --service "$db_service_id" \
     -- bash -s
 }
 

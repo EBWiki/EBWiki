@@ -17,30 +17,26 @@ object_key="${1:?Usage: staging-db-restore.sh staging/db-snapshots/<timestamp>.d
 command -v aws >/dev/null 2>&1 || { echo "aws CLI is required."; exit 1; }
 command -v railway >/dev/null 2>&1 || { echo "Railway CLI is required."; exit 1; }
 
-ids="$(infra_railway_find_project_service_env)"
-read -r project_id service_id environment_id <<<"$ids"
+ids="$(infra_railway_find_project_service_env)" || exit 1
+read -r project_id _service_id environment_id <<<"$ids"
+db_service_id="$(infra_railway_find_postgres_service_id)" || exit 1
 
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-auto}"
 
+echo "About to OVERWRITE Postgres in Railway project ${RAILWAY_TARGET_PROJECT_NAME} (${project_id}), environment ${RAILWAY_TARGET_ENVIRONMENT_NAME}, from ${object_key}." >&2
+[ "${CONFIRM_RESTORE:-}" = "$project_id" ] || {
+  echo "Set CONFIRM_RESTORE=${project_id} to proceed." >&2
+  exit 1
+}
+
+aws s3api head-object --bucket "$R2_BUCKET_NAME" --key "$object_key" --endpoint-url "$R2_S3_ENDPOINT" >/dev/null
+
+restore_script="$(infra_railway_remote_postgres_pg_restore_shell "$STAGING_EXPECTED_POSTGRES_DB")"
 aws s3 cp "s3://${R2_BUCKET_NAME}/${object_key}" - --endpoint-url "$R2_S3_ENDPOINT" --only-show-errors \
   | railway ssh \
     --project "$project_id" \
     --environment "$environment_id" \
-    --service "$service_id" \
-    -- ruby -e '
-require "uri"
-u = URI(ENV.fetch("DATABASE_URL"))
-raise "unsupported DATABASE_URL" unless %w[postgresql postgres].include?(u.scheme)
-db = u.path.delete_prefix("/")
-raise "missing database in DATABASE_URL" if db.empty?
-env = {
-  "PGHOST" => u.host || "localhost",
-  "PGPORT" => (u.port || 5432).to_s,
-  "PGUSER" => u.user || "postgres",
-  "PGPASSWORD" => u.password || "",
-  "PGDATABASE" => db,
-}
-exec(env, "pg_restore", "--clean", "--if-exists", "--no-owner", "--no-acl", "-d", db)
-'
+    --service "$db_service_id" \
+    -- sh -ec "$restore_script"
 
-echo "Restored ${object_key} into staging Postgres."
+echo "Restored ${object_key} into staging Postgres (${STAGING_EXPECTED_POSTGRES_DB})."

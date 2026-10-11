@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Cloudflare API helpers. Requires: curl, jq, CLOUDFLARE_API_TOKEN or first argument.
 set -euo pipefail
+shopt -s inherit_errexit 2>/dev/null || true
 
 # shellcheck source=infra-curl.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-curl.sh"
@@ -20,9 +21,8 @@ infra_cf_api_token() {
 
 infra_cf_zone_for_name() {
   local zone_name="$1"
-  local token resp
+  local token resp encoded_zone
   token="$(infra_cf_api_token "${2:-}")"
-  local encoded_zone
   encoded_zone="$(printf '%s' "$zone_name" | jq -sRr @uri)"
   resp="$(infra_curl_get "https://api.cloudflare.com/client/v4/zones?name=${encoded_zone}&status=active" "$token")"
   echo "$resp" | jq -e '.success and (.result | length == 1)' >/dev/null \

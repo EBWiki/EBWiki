@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # curl helpers that keep bearer tokens off argv (curl -K - from stdin).
 set -euo pipefail
+shopt -s inherit_errexit 2>/dev/null || true
 
 infra_curl_k() {
-  curl -fsS -K -
+  curl -fsS -K - "$@"
 }
 
 infra_curl_get() {
@@ -40,6 +41,5 @@ infra_curl_post_json() {
     printf 'header = "Content-Type: application/json"\n'
     printf 'url = "%s"\n' "$url"
     printf 'request = "POST"\n'
-    printf 'data = @-\n'
   } | infra_curl_k --data-binary "$json_body"
 }

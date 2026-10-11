@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Require exactly one non-empty line on stdin.
 set -euo pipefail
+shopt -s inherit_errexit 2>/dev/null || true
 
 infra_one() {
   local label="$1" vals n

@@ -34,38 +34,126 @@ else
   pass "infra_one rejects two values"
 fi
 
-# Railway GraphQL variables JSON (regression for ${2:-{}} brace truncation)
-query='query($projectId: String!) { project(id: $projectId) { id } }'
-vars="$(jq -n --arg p 'proj-1' '{projectId: $p}')"
-body="$(jq -n --arg q "$query" --argjson v "$vars" '{query: $q, variables: $v}')"
-echo "$body" | jq -e '.variables.projectId == "proj-1"' >/dev/null || fail "GraphQL body variables must parse"
-pass "GraphQL variables JSON encodes correctly"
-
-empty_vars=''
-[ -n "$empty_vars" ] || empty_vars='{}'
-body="$(jq -n --arg q "$query" --argjson v "$empty_vars" '{query: $q, variables: $v}')"
-echo "$body" | jq -e '.variables == {}' >/dev/null || fail "empty GraphQL variables must be {}"
-pass "GraphQL empty variables default to {}"
-
-# Simulated staging id resolution (fail closed, no empty tfvars)
-infra_railway_find_project_service_env_mock() {
-  local payload='{"data":{"projects":{"edges":[{"node":{"id":"p1","name":"ebwiki","environments":{"edges":[{"node":{"id":"e1","name":"production"}}]},"services":{"edges":[{"node":{"id":"s1","name":"ebwiki"}}]}}}]}}}'
-  local project_id service_id environment_id
-  project_id="$(echo "$payload" | jq -r '.data.projects.edges[].node | select(.name == "ebwiki") | .id' | infra_one "Railway project named ebwiki")"
-  service_id="$(echo "$payload" | jq -r '.data.projects.edges[].node | select(.name == "ebwiki") | .services.edges[].node | select(.name == "ebwiki") | .id' | infra_one "Railway service")"
-  environment_id="$(echo "$payload" | jq -r '.data.projects.edges[].node | select(.name == "ebwiki") | .environments.edges[].node | select(.name == "production") | .id' | infra_one "Railway environment")"
-  printf '%s %s %s\n' "$project_id" "$service_id" "$environment_id"
-}
-
-ids="$(infra_railway_find_project_service_env_mock)"
-read -r project_id service_id environment_id <<<"$ids"
-[ "$project_id" = "p1" ] && [ "$service_id" = "s1" ] && [ "$environment_id" = "e1" ] \
-  || fail "mock Railway id resolution"
-pass "Railway id resolution with infra_one"
-
-# Snapshot pipe + upload (no /tmp, no secrets on argv)
 tmpdir="$(mktemp -d)"
 trap 'rm -rf "$tmpdir"' EXIT
+
+cat >"$tmpdir/curl" <<'CURL'
+#!/usr/bin/env bash
+body=""
+prev=""
+for arg in "$@"; do
+  if [ "$prev" = "--data-binary" ]; then
+    body="$arg"
+  fi
+  case "$arg" in
+    -K)
+      :
+      ;;
+    -)
+      cat >/dev/null
+      ;;
+  esac
+  prev="$arg"
+done
+if [ -n "${CURL_BODY_FILE:-}" ]; then
+  printf '%s' "$body" >"$CURL_BODY_FILE"
+fi
+if [ -n "${RAILWAY_MOCK_RESPONSE:-}" ]; then
+  printf '%s' "$RAILWAY_MOCK_RESPONSE"
+  exit 0
+fi
+echo "mock curl: RAILWAY_MOCK_RESPONSE not set" >&2
+exit 1
+CURL
+chmod +x "$tmpdir/curl"
+
+export PATH="$tmpdir:${PATH}"
+export RAILWAY_TOKEN="test-token"
+export CURL_BODY_FILE="$tmpdir/last-body.json"
+
+one_project_payload="$(jq -n '{
+  data: {
+    projects: {
+      edges: [{
+        node: {
+          id: "p1", name: "ebwiki",
+          environments: {edges: [{node: {id: "e1", name: "production"}}]},
+          services: {edges: [{node: {id: "s1", name: "ebwiki"}}, {node: {id: "db1", name: "Postgres"}}]}
+        }
+      }]
+    }
+  }
+}')"
+
+two_projects_payload="$(jq -n '{
+  data: {
+    projects: {
+      edges: [
+        {node: {id: "p1", name: "ebwiki", environments: {edges: [{node: {id: "e1", name: "production"}}]}, services: {edges: [{node: {id: "s1", name: "ebwiki"}}]}}},
+        {node: {id: "p2", name: "ebwiki", environments: {edges: [{node: {id: "e2", name: "production"}}]}, services: {edges: [{node: {id: "s2", name: "ebwiki"}}]}}}
+      ]
+    }
+  }
+}')"
+
+zero_projects_payload="$(jq -n '{data: {projects: {edges: []}}}')"
+
+source_railway() {
+  # shellcheck source=../lib/infra-railway.sh
+  source "$ROOT/scripts/lib/infra-railway.sh"
+}
+
+# GraphQL POST body is sent (fix for infra_curl_k dropping args).
+export RAILWAY_MOCK_RESPONSE="$one_project_payload"
+(
+  source_railway
+  infra_railway_projects_payload >/dev/null
+)
+[ -s "$CURL_BODY_FILE" ] || fail "GraphQL POST body file empty"
+jq -e '.query and .variables' "$CURL_BODY_FILE" >/dev/null || fail "GraphQL POST body must be JSON with query and variables"
+pass "infra_curl_post_json sends request body"
+
+# Real infra_railway_find_project_service_env fails closed (zero projects).
+export RAILWAY_MOCK_RESPONSE="$zero_projects_payload"
+if (
+  source_railway
+  infra_railway_find_project_service_env
+); then
+  fail "infra_railway_find_project_service_env should fail with zero projects"
+else
+  pass "infra_railway_find_project_service_env fails with zero projects"
+fi
+
+# Real function fails with duplicate project names.
+export RAILWAY_MOCK_RESPONSE="$two_projects_payload"
+if (
+  source_railway
+  infra_railway_find_project_service_env
+); then
+  fail "infra_railway_find_project_service_env should fail with two matching projects"
+else
+  pass "infra_railway_find_project_service_env fails with two matching projects"
+fi
+
+# Real function succeeds with exactly one match.
+export RAILWAY_MOCK_RESPONSE="$one_project_payload"
+ids="$(
+  source_railway
+  infra_railway_find_project_service_env
+)" || fail "infra_railway_find_project_service_env should succeed with one project"
+read -r project_id service_id environment_id <<<"$ids"
+[ "$project_id" = "p1" ] && [ "$service_id" = "s1" ] && [ "$environment_id" = "e1" ] \
+  || fail "unexpected Railway ids: $ids"
+pass "infra_railway_find_project_service_env returns ids for one project"
+
+db_id="$(
+  source_railway
+  infra_railway_find_postgres_service_id
+)" || fail "infra_railway_find_postgres_service_id should succeed"
+[ "$db_id" = "db1" ] || fail "unexpected Postgres service id: $db_id"
+pass "infra_railway_find_postgres_service_id returns Postgres service id"
+
+# Snapshot pipe + upload (no /tmp)
 export R2_BUCKET_NAME="test-bucket"
 export R2_S3_ENDPOINT="https://r2.example"
 export AWS_ACCESS_KEY_ID="key"
@@ -84,10 +172,7 @@ chmod +x "$tmpdir/aws"
 export AWS_OUT="$tmpdir/uploaded.dump"
 export PATH="$tmpdir:$PATH"
 
-# shellcheck source=../staging-db-snapshot.sh
-# Minimal re-run of upload stanza
-INFRA_SNAPSHOT_OBJECT_KEY="staging/db-snapshots/test.dump"
-object_key="$INFRA_SNAPSHOT_OBJECT_KEY"
+object_key="staging/db-snapshots/test.dump"
 bash -c "$INFRA_SNAPSHOT_PIPE_CMD" | aws s3 cp - "s3://${R2_BUCKET_NAME}/${object_key}" --endpoint-url "$R2_S3_ENDPOINT" --only-show-errors
 [ -f "$tmpdir/uploaded.dump" ] && [ "$(cat "$tmpdir/uploaded.dump")" = "PGDMPmock" ] \
   || fail "streamed snapshot upload"
