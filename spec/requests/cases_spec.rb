@@ -167,8 +167,10 @@ RSpec.describe 'Cases', type: :request do
         expect(Rollbar).to have_received(:error).with(instance_of(StandardError))
       end
 
-      it 'logs the mail error' do
-        expect(Rails.logger).to have_received(:error).with(/follower email/i)
+      it 'logs the mail error class without the exception message' do
+        expect(Rails.logger).to have_received(:error).with(
+          "CasesController#update: follower email failed for case #{_case.id}: StandardError"
+        )
       end
     end
 

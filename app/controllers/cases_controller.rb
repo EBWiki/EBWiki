@@ -159,7 +159,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   rescue StandardError => e
     Rollbar.error(e)
     Rails.logger.error(
-      "CasesController#update: follower email failed for case #{@this_case.id}: #{e.message}"
+      "CasesController#update: follower email failed for case #{@this_case.id}: #{e.class.name}"
     )
   end
 end
