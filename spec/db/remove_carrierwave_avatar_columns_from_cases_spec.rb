@@ -7,6 +7,13 @@ RSpec.describe RemoveCarrierwaveAvatarColumnsFromCases do
   let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
 
   describe '#up' do
+    around do |example|
+      ENV['EBWIKI_RUN_SLICE_5B_COLUMN_DROP'] = '1'
+      example.run
+    ensure
+      ENV.delete('EBWIKI_RUN_SLICE_5B_COLUMN_DROP')
+    end
+
     before do
       migration.down unless column_exists?(:cases, :avatar)
     end

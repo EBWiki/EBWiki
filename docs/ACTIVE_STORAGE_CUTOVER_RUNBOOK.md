@@ -38,6 +38,8 @@ Operational steps for the CarrierWave → Active Storage photo migration. Each p
 bin/rails db:migrate
 ```
 
+Run only in staging/production (or local rehearsal) after **Mark GO**. The migration always runs the safety guard; column drops are skipped in the `test` Rails env so CI can keep CarrierWave columns until slice 5b app code lands.
+
 If the guard raises, do not force the migration. Fix backfill gaps or storage, re-run step 2 (fresh backup), then retry.
 
 ## Rollback notes
