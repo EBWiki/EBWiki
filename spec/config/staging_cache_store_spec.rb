@@ -3,16 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Staging cache store configuration' do
-  let(:redis_url) do
-    return ENV['REDIS_URL'] if ENV['REDIS_URL'].present?
-
-    # GitHub Actions maps Postgres to localhost but leaves Redis on the service hostname.
-    if ENV['GITHUB_ACTIONS'] == 'true'
-      'redis://redis:6379/1'
-    else
-      'redis://127.0.0.1:6379/1'
-    end
-  end
+  let(:redis_url) { ENV['REDIS_URL'].presence || 'redis://127.0.0.1:6379/1' }
 
   around do |example|
     WebMock.allow_net_connect!
