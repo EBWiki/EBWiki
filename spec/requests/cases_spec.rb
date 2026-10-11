@@ -73,6 +73,10 @@ RSpec.describe 'Cases', type: :request do
     let(:user) { create(:user) }
     let(:params) { { case: attributes_for(:case) } }
     let(:bad_params) { { case: { city: 'Beaumont' } } }
+    let(:html_blurb) { '<script>alert(1)</script>Hello <b>world</b>' }
+    let(:params_with_html_blurb) do
+      { case: attributes_for(:case).merge(blurb: html_blurb, state_id: create(:state).id) }
+    end
 
     context 'when the case is successfully saved' do
       before do
@@ -101,6 +105,19 @@ RSpec.describe 'Cases', type: :request do
 
       it 'will navigate to the case form' do
         expect(response.body).to include('New Case')
+      end
+    end
+
+    context 'when the blurb contains HTML' do
+      before do
+        sign_in user
+        post '/cases', params: params_with_html_blurb, headers: {}
+      end
+
+      it 'stores the blurb without HTML tags' do
+        saved_case = Case.find_by!(title: params_with_html_blurb[:case][:title])
+        expect(saved_case.blurb).to eq('alert(1)Hello world')
+        expect(saved_case.blurb).not_to match(/<[^>]+>/)
       end
     end
   end
@@ -134,6 +151,21 @@ RSpec.describe 'Cases', type: :request do
 
       it 'will navigate to the case form' do
         expect(response.body).to include('Editing')
+      end
+    end
+
+    context 'when the blurb contains HTML' do
+      let(:html_blurb) { '<script>alert(1)</script>Hello <b>world</b>' }
+      let(:params) { { case: { blurb: html_blurb, summary: 'Stripped HTML from blurb' } } }
+
+      before do
+        sign_in user
+        patch "/cases/#{_case.slug}", params: params, headers: {}
+      end
+
+      it 'stores the blurb without HTML tags' do
+        expect(_case.reload.blurb).to eq('alert(1)Hello world')
+        expect(_case.reload.blurb).not_to match(/<[^>]+>/)
       end
     end
   end
