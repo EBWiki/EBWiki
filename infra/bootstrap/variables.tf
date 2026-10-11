@@ -12,7 +12,12 @@ variable "cloudflare_token_maker" {
 
 variable "cloudflare_account_id" {
   type        = string
-  description = "Cloudflare account ID (from zone read lookup)."
+  description = "Cloudflare account ID for ebwiki.org (from zone read lookup)."
+}
+
+variable "cloudflare_r2_account_id" {
+  type        = string
+  description = "Cloudflare account ID for shared object storage (from grandkru.com zone lookup; R2 enabled)."
 }
 
 variable "cloudflare_zone_id" {

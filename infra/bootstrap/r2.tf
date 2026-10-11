@@ -4,7 +4,7 @@ resource "random_id" "bucket_suffix" {
 
 resource "cloudflare_r2_bucket" "opentofu_state" {
   provider   = cloudflare.r2_admin
-  account_id = var.cloudflare_account_id
+  account_id = var.cloudflare_r2_account_id
   name       = local.r2_bucket_name
   location   = "enam"
 

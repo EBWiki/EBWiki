@@ -106,7 +106,7 @@ resource "cloudflare_api_token" "r2_admin" {
       id = data.cloudflare_api_token_permission_groups_list.r2_storage_write.result[0].id
     }]
     resources = jsonencode({
-      "com.cloudflare.api.account.${var.cloudflare_account_id}" = "*"
+      "com.cloudflare.api.account.${var.cloudflare_r2_account_id}" = "*"
     })
   }]
 
