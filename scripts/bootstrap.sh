@@ -19,10 +19,7 @@ fi
 : "${TF_VAR_bootstrap_state_passphrase:?Export TF_VAR_bootstrap_state_passphrase (16+ characters)}"
 : "${TF_VAR_cloudflare_bootstrap_api_token:?Export TF_VAR_cloudflare_bootstrap_api_token}"
 
-if [ ! -f terraform.tfvars ]; then
-  echo "Create infra/bootstrap/terraform.tfvars from terraform.tfvars.example (account and zone IDs)."
-  exit 1
-fi
+"$ROOT/scripts/write-bootstrap-tfvars.sh"
 
 command -v tofu >/dev/null 2>&1 || { echo "Install OpenTofu 1.10+ (https://opentofu.org/docs/intro/install)"; exit 1; }
 
