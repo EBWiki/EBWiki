@@ -118,7 +118,7 @@ resource "doppler_secret" "cloudflare_account_id" {
   project = var.doppler_project
   config  = local.doppler_infra_config
   name    = "CLOUDFLARE_ACCOUNT_ID"
-  value   = var.cloudflare_account_id
+  value   = var.cloudflare_r2_account_id
 
   depends_on = [doppler_environment.infra]
 }
