@@ -36,6 +36,10 @@ A landing PR is the named change plus the smallest unlock. If the diff is mixed 
 
 PR title and body are project writing: complete sentences, name the change, no chat or first-person asides. Follow `ce-commit-push-pr` conventions when that skill is available. Do not add Compound Engineering branding unless `.compound-engineering/config.yaml` explicitly turns it on (this repo keeps it off).
 
+## Writing for people
+
+Before writing any PR title, PR description, commit message, or doc, follow `.cursor/skills/humanify/SKILL.md`.
+
 ## Do not
 
 - Vendor plugin caches or copy TypeScript-only rules (`no-inline-imports`, exhaustive-switch) unless this change actually edits TypeScript.
