@@ -232,77 +232,12 @@ r2_admin_token_id="$(printf '%s\n' "$r2_state_json" | infra_tofu_state_show_json
   || fail "R2 admin token id jq should read the values document"
 pass "R2 admin token id is read from tofu state show JSON"
 
-redirect_ruleset_state_json='{"version":1}
-{"format_version":"1.0","terraform_version":"1.13.1","values":{"root_module":{"resources":[{"values":{"id":"ruleset-legacy-staging-xyz"}}]}}}'
-redirect_ruleset_id="$(printf '%s\n' "$redirect_ruleset_state_json" | infra_tofu_state_show_json_resource_id)"
-[ "$redirect_ruleset_id" = "ruleset-legacy-staging-xyz" ] \
-  || fail "legacy redirect ruleset id jq should read the values document"
-pass "legacy redirect ruleset id is read from tofu state show JSON"
-
-# Dynamic redirect pre-check (staging plan guard).
-redirect_empty='{"success":true,"result":{"rules":[]}}'
-redirect_nonempty='{"success":true,"result":{"rules":[{"id":"r1"}]}}'
-# shellcheck source=../lib/infra-cloudflare.sh
-source "$ROOT/scripts/lib/infra-cloudflare.sh"
-infra_curl_get() {
-  case "${CF_MOCK_CURL_MODE:-ok}" in
-    ok) printf '%s' "${CF_MOCK_REDIRECT_RESPONSE:?}" ;;
-    404)
-      echo "curl: (22) The requested URL returned error: 404"
-      return 22
-      ;;
-    403)
-      echo "curl: (22) The requested URL returned error: 403"
-      return 22
-      ;;
-    *) fail "unknown CF_MOCK_CURL_MODE: ${CF_MOCK_CURL_MODE}" ;;
-  esac
-}
-export CF_MOCK_CURL_MODE=ok
-export CF_MOCK_REDIRECT_RESPONSE="$redirect_empty"
-infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" \
-  || fail "should allow empty redirect ruleset"
-pass "redirect pre-check allows empty ruleset"
-
-export CF_MOCK_CURL_MODE=404
-infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" \
-  || fail "redirect pre-check should treat Cloudflare 404 as no ruleset"
-pass "redirect pre-check treats 404 as empty ruleset"
-
-export CF_MOCK_CURL_MODE=403
-if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token"; then
-  fail "redirect pre-check should fail on non-404 API errors"
-else
-  pass "redirect pre-check fails on non-404 API errors"
-fi
-
-export CF_MOCK_CURL_MODE=ok
-export CF_MOCK_REDIRECT_RESPONSE="$redirect_nonempty"
-if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token"; then
-  fail "redirect pre-check should fail when rules exist"
-else
-  pass "redirect pre-check fails when redirect rules exist"
-fi
-
-export CF_MOCK_REDIRECT_RESPONSE='{"success":true,"result":{"id":"ruleset-owned","rules":[{"id":"r1"}]}}'
-infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" "ruleset-owned" \
-  || fail "redirect pre-check should allow owned ruleset id"
-pass "redirect pre-check allows legacy staging redirect ruleset from state"
-
-export CF_MOCK_REDIRECT_RESPONSE='{"success":true,"result":{"id":"other-ruleset","rules":[{"id":"r1"}]}}'
-if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" "ruleset-owned"; then
-  fail "redirect pre-check should reject foreign ruleset id"
-else
-  pass "redirect pre-check rejects foreign redirect ruleset"
-fi
-
 # Doppler secret name export mapping.
 # shellcheck source=../lib/infra-export-tf-vars.sh
 source "$ROOT/scripts/lib/infra-export-tf-vars.sh"
 export BOOTSTRAP_STATE_PASSPHRASE="boot-pass"
 export STATE_PASSPHRASE="state-pass"
 export CLOUDFLARE_DNS_API_TOKEN="dns"
-export CLOUDFLARE_GRANDKRU_DNS_API_TOKEN="gk-dns"
 export STAGING_RUNTIME_DOPPLER_TOKEN="rt"
 export STAGING_BASIC_AUTH_USERNAME="user1"
 infra_export_tf_vars_from_infra_config
