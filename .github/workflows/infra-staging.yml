@@ -78,5 +78,9 @@ jobs:
             echo "Skipping plan: CLOUDFLARE_DNS_API_TOKEN is not set."
             exit 0
           fi
+          if [ ! -f backend.hcl ]; then
+            echo "Skipping plan: backend.hcl is not on the runner (copy from Doppler ebwiki/infra)."
+            exit 0
+          fi
           tofu init -backend-config=backend.hcl
           tofu plan -lock=false -input=false -target=cloudflare_dns_record.staging -target=cloudflare_dns_record.staging_railway_verify
