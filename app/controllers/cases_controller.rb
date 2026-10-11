@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'case_history'
+
 # Cases controller
 class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   before_action :authenticate_user!, except: %i[index show history followers]
@@ -90,7 +92,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
 
   def history
     @this_case = Case.friendly.find(params[:case_slug])
-    @case_history = @this_case.versions.order(created_at: :desc)
+    @case_history = CaseHistory.versions_for(@this_case)
   rescue ActiveRecord::RecordNotFound # rubocop:todo Lint/SuppressedException
   end
 
