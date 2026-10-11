@@ -1,6 +1,6 @@
 # Staging cutover: migrations vs image `ebwiki/ebwiki:184`
 
-Before OpenTofu apply, **`scripts/staging-db-snapshot.sh`** streams **`pg_dump -Fc`** from **inside the Railway Postgres service** (`railway ssh` on **`Postgres`**, `postgres:17` with **`POSTGRES_*`** env). This works while the app still runs image **`ebwiki/ebwiki:184`** (no client tools there). The dump uploads to **`staging/db-snapshots/<timestamp>.dump`** on the bootstrap R2 bucket (credentials in Doppler **`ebwiki/infra`**). Nothing is written under **`/tmp`** on the operator machine. **`scripts/staging-apply.sh`** runs the snapshot script before **`tofu apply`**.
+Before OpenTofu apply, **`scripts/staging-db-snapshot.sh`** streams **`pg_dump -Fc`** from **inside the Railway Postgres service** (`railway ssh` on **`Postgres`**, `postgres:17` with **`POSTGRES_*`** env). This works while the app still runs image **`ebwiki/ebwiki:184`** (no client tools there). The dump uploads to **`staging/db-snapshots/<timestamp>.dump`** on the bootstrap R2 bucket (credentials in Doppler **`ebwiki/infra`**). Nothing is written under **`/tmp`** on the PR Manager machine. **`scripts/staging-apply.sh`** runs the snapshot script before **`tofu apply`**.
 
 After snapshot, confirm the stream is a valid archive (lists tables):
 
