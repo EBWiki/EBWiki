@@ -60,14 +60,17 @@ rm -f bootstrap-stage2.tfplan
 echo "Dropping ephemeral R2 admin token and bucket from bootstrap state..."
 # shellcheck source=lib/infra-curl.sh
 source "$ROOT/scripts/lib/infra-curl.sh"
-r2_admin_token_id="$(tofu state show -json cloudflare_api_token.r2_admin | jq -r '.values.id // empty')"
-if [ -n "$r2_admin_token_id" ]; then
-  delete_resp="$(infra_curl_delete \
-    "https://api.cloudflare.com/client/v4/user/tokens/${r2_admin_token_id}" \
-    "${CLOUDFLARE_TOKEN_MAKER}")"
-  echo "$delete_resp" | jq -e '.success' >/dev/null \
-    || { echo "Failed to delete ephemeral R2 admin API token in Cloudflare." >&2; exit 1; }
-fi
+r2_admin_token_id="$(tofu state show -json cloudflare_api_token.r2_admin \
+  | jq -r 'select(.values.root_module?) | .values.root_module.resources[0].values.id // empty')"
+[ -n "$r2_admin_token_id" ] || {
+  echo "Could not read the R2 admin token id from state; not removing it." >&2
+  exit 1
+}
+delete_resp="$(infra_curl_delete \
+  "https://api.cloudflare.com/client/v4/user/tokens/${r2_admin_token_id}" \
+  "${CLOUDFLARE_TOKEN_MAKER}")"
+echo "$delete_resp" | jq -e '.success' >/dev/null \
+  || { echo "Failed to delete ephemeral R2 admin API token in Cloudflare." >&2; exit 1; }
 tofu state rm cloudflare_api_token.r2_admin
 tofu state rm cloudflare_r2_bucket.opentofu_state
 

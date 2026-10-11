@@ -36,7 +36,11 @@ infra_cf_assert_no_dynamic_redirect_rules() {
   local rs
   rs="$(infra_curl_get \
     "https://api.cloudflare.com/client/v4/zones/${zone_id}/rulesets/phases/http_request_dynamic_redirect/entrypoint" \
-    "$token" 2>/dev/null || true)"
+    "$token" 2>&1)" || {
+    echo "$rs" | grep -q 'error: 404' && return 0
+    echo "Could not read ebwiki.org redirect rules." >&2
+    return 1
+  }
   if echo "$rs" | jq -e '.success and (.result.rules | length > 0)' >/dev/null 2>&1; then
     echo "ebwiki.org already has Single Redirect rules. Import the ruleset and copy its rules into cloudflare.tf before applying." >&2
     return 1

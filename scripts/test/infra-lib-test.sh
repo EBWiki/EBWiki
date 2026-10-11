@@ -178,19 +178,53 @@ bash -c "$INFRA_SNAPSHOT_PIPE_CMD" | aws s3 cp - "s3://${R2_BUCKET_NAME}/${objec
   || fail "streamed snapshot upload"
 pass "snapshot streams to aws s3 cp without temp dump file"
 
+# R2 admin token id from tofu state show -json (version line + values document).
+r2_state_json='{"version":1}
+{"format_version":"1.0","terraform_version":"1.13.1","values":{"root_module":{"resources":[{"values":{"id":"cf-token-id-xyz"}}]}}}'
+r2_admin_token_id="$(printf '%s\n' "$r2_state_json" \
+  | jq -r 'select(.values.root_module?) | .values.root_module.resources[0].values.id // empty')"
+[ "$r2_admin_token_id" = "cf-token-id-xyz" ] \
+  || fail "R2 admin token id jq should read the values document"
+pass "R2 admin token id is read from tofu state show JSON"
+
 # Dynamic redirect pre-check (staging plan guard).
 redirect_empty='{"success":true,"result":{"rules":[]}}'
 redirect_nonempty='{"success":true,"result":{"rules":[{"id":"r1"}]}}'
 # shellcheck source=../lib/infra-cloudflare.sh
 source "$ROOT/scripts/lib/infra-cloudflare.sh"
 infra_curl_get() {
-  printf '%s' "${CF_MOCK_REDIRECT_RESPONSE:?}"
+  case "${CF_MOCK_CURL_MODE:-ok}" in
+    ok) printf '%s' "${CF_MOCK_REDIRECT_RESPONSE:?}" ;;
+    404)
+      echo "curl: (22) The requested URL returned error: 404"
+      return 22
+      ;;
+    403)
+      echo "curl: (22) The requested URL returned error: 403"
+      return 22
+      ;;
+    *) fail "unknown CF_MOCK_CURL_MODE: ${CF_MOCK_CURL_MODE}" ;;
+  esac
 }
+export CF_MOCK_CURL_MODE=ok
 export CF_MOCK_REDIRECT_RESPONSE="$redirect_empty"
 infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" \
   || fail "should allow empty redirect ruleset"
 pass "redirect pre-check allows empty ruleset"
 
+export CF_MOCK_CURL_MODE=404
+infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" \
+  || fail "redirect pre-check should treat Cloudflare 404 as no ruleset"
+pass "redirect pre-check treats 404 as empty ruleset"
+
+export CF_MOCK_CURL_MODE=403
+if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token"; then
+  fail "redirect pre-check should fail on non-404 API errors"
+else
+  pass "redirect pre-check fails on non-404 API errors"
+fi
+
+export CF_MOCK_CURL_MODE=ok
 export CF_MOCK_REDIRECT_RESPONSE="$redirect_nonempty"
 if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token"; then
   fail "redirect pre-check should fail when rules exist"
