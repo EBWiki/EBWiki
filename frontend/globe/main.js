@@ -1,8 +1,18 @@
 // EBWiki cases globe — Cesium viewer with keyless imagery (Esri, then OSM).
 // Map stack patterns adapted from God's Eye View (MIT License, Copyright (c) 2026 Bilawal Sidhu)
 // https://github.com/bilawalsidhu/gods-eye-view
-import * as Cesium from 'cesium';
-import { applyKeylessImageryStack, tryGooglePhotoreal3D } from './mapStack.js';
+import { applyKeylessImageryStack } from './mapStack.js';
+
+async function loadCases(url) {
+  const response = await fetch(url, {
+    headers: { Accept: 'application/json' },
+    credentials: 'same-origin',
+  });
+  if (!response.ok) {
+    throw new Error(`Cases request failed (${response.status})`);
+  }
+  return response.json();
+}
 
 function readConfig() {
   const node = document.getElementById('globe-config');
@@ -26,15 +36,14 @@ function webglAvailable() {
   }
 }
 
-function showFlatMapFallback() {
+function showFlatMapFallback(config) {
   const notice = document.getElementById('globe-no-webgl');
   const viewport = document.getElementById('globe-viewport');
-  const fallbackMap = document.getElementById('globe-fallback-map');
   if (notice) notice.hidden = false;
   if (viewport) viewport.hidden = true;
-  if (fallbackMap) fallbackMap.hidden = false;
-  if (typeof window.initEbwikiFlatMap === 'function') {
-    window.initEbwikiFlatMap();
+  const link = document.getElementById('globe-flat-map-link');
+  if (link && config.flatMapUrl) {
+    link.href = config.flatMapUrl;
   }
 }
 
@@ -62,17 +71,6 @@ function locationLabel(point) {
   return parts.join(', ');
 }
 
-async function loadCases(url) {
-  const response = await fetch(url, {
-    headers: { Accept: 'application/json' },
-    credentials: 'same-origin',
-  });
-  if (!response.ok) {
-    throw new Error(`Cases request failed (${response.status})`);
-  }
-  return response.json();
-}
-
 async function addCaseEntities(viewer, cases) {
   const dataSource = new Cesium.CustomDataSource('ebwiki-cases');
   dataSource.clustering.enabled = true;
@@ -84,21 +82,11 @@ async function addCaseEntities(viewer, cases) {
       id: String(point.id),
       position: Cesium.Cartesian3.fromDegrees(point.lng, point.lat),
       point: {
-        pixelSize: 10,
+        pixelSize: 12,
         color: Cesium.Color.fromCssColorString('#F65732'),
         outlineColor: Cesium.Color.WHITE,
-        outlineWidth: 1,
-      },
-      label: {
-        text: point.name,
-        font: '12px sans-serif',
-        fillColor: Cesium.Color.WHITE,
-        outlineColor: Cesium.Color.BLACK,
         outlineWidth: 2,
-        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        show: false,
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        pixelOffset: new Cesium.Cartesian2(0, -12),
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
       },
       description: `
         <div class="globe-case-info">
@@ -127,12 +115,12 @@ async function addCaseEntities(viewer, cases) {
     cluster.label.style = Cesium.LabelStyle.FILL_AND_OUTLINE;
     cluster.label.verticalOrigin = Cesium.VerticalOrigin.CENTER;
     cluster.label.horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
-    cluster.billboard.show = true;
-    cluster.billboard.image = undefined;
+    cluster.billboard.show = false;
     cluster.point.pixelSize = 28;
-    cluster.point.color = Cesium.Color.fromCssColorString('#F65732').withAlpha(0.85);
+    cluster.point.color = Cesium.Color.fromCssColorString('#F65732').withAlpha(0.9);
     cluster.point.outlineColor = Cesium.Color.WHITE;
     cluster.point.outlineWidth = 2;
+    cluster.point.disableDepthTestDistance = Number.POSITIVE_INFINITY;
   });
 
   return dataSource;
@@ -144,11 +132,11 @@ async function bootGlobe() {
   if (!viewport) return;
 
   if (!webglAvailable()) {
-    showFlatMapFallback();
+    showFlatMapFallback(config);
     return;
   }
 
-  Cesium.Ion.defaultAccessToken = config.cesiumIonToken || '';
+  Cesium.Ion.defaultAccessToken = '';
 
   const viewer = new Cesium.Viewer(viewport, {
     animation: false,
@@ -161,32 +149,42 @@ async function bootGlobe() {
     fullscreenButton: true,
     infoBox: true,
     selectionIndicator: true,
+    baseLayer: false,
+    terrainProvider: new Cesium.EllipsoidTerrainProvider(),
   });
 
-  await applyKeylessImageryStack(viewer, { cesiumIonToken: config.cesiumIonToken });
-  await tryGooglePhotoreal3D(viewer, config.google3dApiKey);
+  await applyKeylessImageryStack(viewer);
 
-  viewer.camera.setView({
-    destination: Cesium.Cartesian3.fromDegrees(-98.58333, 39.83333, 12_000_000),
-  });
+  const cases = await loadCases(config.casesUrl);
+  const dataSource = await addCaseEntities(viewer, cases);
+  const entityCount = dataSource.entities.values.length;
 
-  try {
-    const cases = await loadCases(config.casesUrl);
-    await addCaseEntities(viewer, cases);
-  } catch (error) {
-    console.error('[EBWiki globe]', error);
+  window.__ebwikiGlobeViewer = viewer;
+  window.__ebwikiGlobeEntityCount = entityCount;
+  window.__ebwikiGlobeReady = true;
+  viewport.dataset.caseCount = String(entityCount);
+
+  if (entityCount > 0) {
+    const positions = dataSource.entities.values.map((entity) => entity.position.getValue(Cesium.JulianDate.now()));
+    const boundingSphere = Cesium.BoundingSphere.fromPoints(positions);
+    viewer.camera.flyToBoundingSphere(boundingSphere, {
+      duration: 0,
+      offset: new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-35), boundingSphere.radius * 2.5),
+    });
+  } else {
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(-98.58333, 39.83333, 8_000_000),
+    });
   }
 
-  viewer.selectedEntityChanged.addEventListener((entity) => {
-    if (!entity || !entity.properties?.caseUrl) return;
-    const url = entity.properties.caseUrl.getValue();
-    if (url) {
-      viewer.infoBox.viewModel.description = entity.description;
-    }
-  });
+  if (config.openFirstCase && entityCount > 0) {
+    viewer.selectedEntity = dataSource.entities.values[0];
+  }
 }
 
 bootGlobe().catch((error) => {
   console.error('[EBWiki globe] boot failed', error);
-  showFlatMapFallback();
+  window.__ebwikiGlobeReady = false;
+  window.__ebwikiGlobeError = String(error);
+  showFlatMapFallback(readConfig());
 });

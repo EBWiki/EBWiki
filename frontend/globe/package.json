@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "test": "node --test casesApi.test.mjs"
   },
   "dependencies": {
     "cesium": "^1.124.0"

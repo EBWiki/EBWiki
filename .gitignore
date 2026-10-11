@@ -60,10 +60,16 @@ db/schema.rb
 
 # Ignore node_modules in favor of package.json and package-lock.json
 /node_modules
+frontend/globe/node_modules
+/public/globe/*
+!/public/globe/.gitkeep
 
 /public/packs
 /public/packs-test
 /node_modules
+frontend/globe/node_modules
+/public/globe/*
+!/public/globe/.gitkeep
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity

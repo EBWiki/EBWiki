@@ -1,19 +1,16 @@
 // Adapted from God's Eye View (MIT License, Copyright (c) 2026 Bilawal Sidhu)
 // https://github.com/bilawalsidhu/gods-eye-view — src/maps/defaultSources.js (simplified)
 import * as Cesium from 'cesium';
-import { createEsriImagery, createOsmImagery } from './imagery.js';
-import { createKeylessTerrain, createWorldTerrain } from './terrain.js';
+import { createEsriImagery, createOsmImagery, ESRI_ATTRIBUTION_HTML } from './imagery.js';
+import { createKeylessTerrain } from './terrain.js';
 
 async function applyImagery(viewer, imageryProvider) {
   viewer.imageryLayers.removeAll();
   viewer.imageryLayers.addImageryProvider(await imageryProvider);
 }
 
-export async function applyKeylessImageryStack(viewer, { cesiumIonToken = '' } = {}) {
-  const ionToken = String(cesiumIonToken || '').trim();
-  const terrainResult = ionToken
-    ? await createWorldTerrain(ionToken)
-    : await createKeylessTerrain();
+export async function applyKeylessImageryStack(viewer) {
+  const terrainResult = await createKeylessTerrain();
   viewer.terrainProvider = terrainResult.provider;
 
   try {
@@ -30,21 +27,25 @@ export async function applyKeylessImageryStack(viewer, { cesiumIonToken = '' } =
       await applyImagery(viewer, createOsmImagery());
     });
   }
+
+  viewer.creditDisplay.addStaticCredit(
+    new Cesium.Credit(ESRI_ATTRIBUTION_HTML, true),
+  );
+  viewer.creditDisplay.addStaticCredit(
+    new Cesium.Credit('© OpenStreetMap contributors', true),
+  );
+
+  stripDefaultIonCredits(viewer);
 }
 
-export async function tryGooglePhotoreal3D(viewer, googleApiKey) {
-  const key = String(googleApiKey || '').trim();
-  if (!key) return false;
+function stripDefaultIonCredits(viewer) {
+  const container = viewer.cesiumWidget.creditContainer;
+  const removeIonNodes = () => {
+    container.querySelectorAll('a[href*="cesium.com"], .cesium-credit-logoContainer').forEach((node) => {
+      node.remove();
+    });
+  };
 
-  try {
-    const tileset = await Cesium.createGooglePhotorealistic3DTileset(
-      { key, onlyUsingWithGoogleGeocoder: true },
-      { asynchronouslyLoadImagery: true },
-    );
-    viewer.scene.primitives.add(tileset);
-    return true;
-  } catch (error) {
-    console.warn('[EBWiki globe] Google 3D tiles unavailable.', error);
-    return false;
-  }
+  removeIonNodes();
+  viewer.scene.postRender.addEventListener(removeIonNodes);
 }

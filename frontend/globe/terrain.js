@@ -5,21 +5,6 @@ import * as Cesium from 'cesium';
 export const KEYLESS_TERRAIN_URL =
   'https://terrain.reearth.land/cesium-mesh/ellipsoid';
 
-export async function createWorldTerrain(accessToken) {
-  const token = String(accessToken || '').trim();
-  if (!token) {
-    throw new Error('World terrain requires an explicit ion token');
-  }
-  const resource = await Cesium.IonResource.fromAssetId(1, { accessToken: token });
-  return {
-    provider: await Cesium.CesiumTerrainProvider.fromUrl(resource, {
-      requestVertexNormals: true,
-      requestWaterMask: false,
-      ellipsoid: Cesium.Ellipsoid.WGS84,
-    }),
-  };
-}
-
 export async function createKeylessTerrain() {
   try {
     return {

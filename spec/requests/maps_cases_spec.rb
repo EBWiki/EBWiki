@@ -23,7 +23,7 @@ RSpec.describe 'Maps public case points', type: :request do
         'name' => 'Public Case',
         'city' => 'Albany'
       )
-      expect(payload.first['url']).to include("/cases/#{mapped_case.slug}")
+      expect(payload.first['url']).to eq("/cases/#{mapped_case.slug}")
 
       ids = payload.pluck('id')
       expect(ids).to include(mapped_case.id)
