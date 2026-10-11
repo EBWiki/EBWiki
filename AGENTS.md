@@ -34,11 +34,11 @@ Subagent-driven development only when there is an implementation plan with mostl
 
 A landing PR is the named change plus the smallest unlock. If the diff is mixed or too large to review, split (`make-pr-easy-to-review`: do not polish around an unreviewable PR). See `.cursor/rules/landing-pr.mdc` and `.cursor/skills/splitting-oversized-prs/SKILL.md`.
 
-## PR writing
-
 PR title and body are project writing: complete sentences, name the change, no chat or first-person asides. Follow `ce-commit-push-pr` conventions when that skill is available. Do not add Compound Engineering branding unless `.compound-engineering/config.yaml` explicitly turns it on (this repo keeps it off).
 
-> PR title and Summary must be plain English that a non-engineer understands: say what changes for the site or its users. No internal shorthand (slice numbers, class or migration names, ticket jargon) and no em-dashes. Put technical detail in the test, deploy and rollback sections. Put the ticket number in the body, not the title.
+## Writing for people
+
+Before writing any PR title, PR description, commit message, or doc, follow `.cursor/skills/humanify/SKILL.md`.
 
 ## Do not
 
