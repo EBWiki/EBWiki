@@ -70,6 +70,7 @@ Style/ClassAndModuleChildren:
 Style/GlobalVars:
   AllowedVariables:
     - $rollout
+    - $redis
   Exclude:
     - 'app/helpers/maps_helper.rb'
     - 'config/initializers/redis.rb'
