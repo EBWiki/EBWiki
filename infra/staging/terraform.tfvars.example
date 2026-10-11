@@ -1,0 +1,7 @@
+# Copy to terraform.tfvars (gitignored). IDs only, never secrets or passphrases.
+
+cloudflare_zone_id                 = "YOUR_EBWIKI_ORG_ZONE_ID"
+cloudflare_staging_dns_record_id   = "YOUR_STAGING_CNAME_RECORD_ID"
+railway_project_id                 = "YOUR_RAILWAY_PROJECT_ID"
+railway_service_id                 = "YOUR_RAILWAY_SERVICE_ID"
+railway_service_domain_fqdn        = "YOUR_SERVICE.up.railway.app"

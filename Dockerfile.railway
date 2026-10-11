@@ -16,12 +16,20 @@ RUN apt-get update -qq && apt-get install -y \
     gnupg \
     git \
     nodejs \
+    apt-transport-https \
     && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
       | gpg --dearmor -o /usr/share/keyrings/postgresql.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" \
       > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update -qq \
     && apt-get install -y postgresql-client-17 \
+    && curl -sLf --retry 3 --tlsv1.2 --proto "=https" \
+      "https://packages.doppler.com/public/cli/gpg.key" \
+      | gpg --dearmor -o /usr/share/keyrings/doppler.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/doppler.gpg] https://packages.doppler.com/public/cli/deb/debian any-version main" \
+      > /etc/apt/sources.list.d/doppler-cli.list \
+    && apt-get update -qq \
+    && apt-get install -y doppler \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/ebwiki

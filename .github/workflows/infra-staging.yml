@@ -1,0 +1,48 @@
+name: Infra (staging)
+
+on:
+  pull_request:
+    paths:
+      - 'infra/staging/**'
+      - 'Dockerfile.railway'
+      - 'railway.toml'
+      - 'railway.staging.toml'
+      - '.github/workflows/infra-staging.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  opentofu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1.0.0
+        with:
+          tofu_version: 1.13.1
+
+      - name: Format check
+        run: tofu fmt -check -recursive
+
+      - name: Init (no backend)
+        run: tofu init -backend=false
+
+      - name: Validate
+        env:
+          TF_VAR_state_passphrase: ci-validate-only-passphrase
+          TF_VAR_cloudflare_dns_api_token: ci-validate-only
+          TF_VAR_cloudflare_zone_id: "00000000000000000000000000000000"
+          TF_VAR_cloudflare_staging_dns_record_id: "00000000000000000000000000000000"
+          TF_VAR_railway_project_id: "00000000-0000-0000-0000-000000000000"
+          TF_VAR_railway_service_id: "00000000-0000-0000-0000-000000000000"
+          TF_VAR_railway_service_domain_fqdn: "placeholder.up.railway.app"
+          TF_VAR_staging_basic_auth_username: ci-validate-only
+        run: tofu validate
