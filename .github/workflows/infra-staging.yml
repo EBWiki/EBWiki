@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'infra/staging/**'
+      - 'Dockerfile.railway'
+      - 'railway.toml'
       - '.github/workflows/infra-staging.yml'
   workflow_dispatch:
 
@@ -19,12 +21,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3.7.0
 
       - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1
+        uses: opentofu/setup-opentofu@v1.0.0
         with:
-          tofu_version: 1.9.0
+          tofu_version: 1.13.1
 
       - name: Format check
         run: tofu fmt -check -recursive
@@ -34,28 +36,47 @@ jobs:
 
       - name: Validate
         env:
-          TOFU_STATE_PASSPHRASE: ci-validate-only
+          TF_VAR_state_passphrase: ci-validate-only-passphrase
+          TF_VAR_cloudflare_dns_api_token: ci-validate-only
+          TF_VAR_cloudflare_zone_id: "00000000000000000000000000000000"
+          TF_VAR_cloudflare_staging_dns_record_id: "00000000000000000000000000000000"
+          TF_VAR_railway_project_id: "00000000-0000-0000-0000-000000000000"
+          TF_VAR_railway_service_id: "00000000-0000-0000-0000-000000000000"
+          TF_VAR_railway_service_domain_fqdn: "placeholder.up.railway.app"
         run: tofu validate
 
-      - name: Plan
+  opentofu-plan-dns:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: infra-staging-plan
+    defaults:
+      run:
+        working-directory: infra/staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1.0.0
+        with:
+          tofu_version: 1.13.1
+
+      - name: Plan (Cloudflare DNS read only)
         env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_state_passphrase: ${{ secrets.TF_VAR_state_passphrase }}
+          TF_VAR_cloudflare_dns_api_token: ${{ secrets.CLOUDFLARE_DNS_API_TOKEN }}
           TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
-          TOFU_STATE_PASSPHRASE: ${{ secrets.TOFU_STATE_PASSPHRASE }}
+          TF_VAR_cloudflare_staging_dns_record_id: ${{ vars.TF_VAR_cloudflare_staging_dns_record_id }}
+          TF_VAR_railway_project_id: ${{ vars.TF_VAR_railway_project_id }}
+          TF_VAR_railway_service_id: ${{ vars.TF_VAR_railway_service_id }}
+          TF_VAR_railway_service_domain_fqdn: ${{ vars.TF_VAR_railway_service_domain_fqdn }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
-          if [ -z "${DOPPLER_TOKEN:-}" ] || [ -z "${RAILWAY_TOKEN:-}" ] || [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-            echo "Skipping tofu plan: DOPPLER_TOKEN, RAILWAY_TOKEN, or CLOUDFLARE_API_TOKEN is not set."
+          if [ -z "${TF_VAR_cloudflare_dns_api_token:-}" ]; then
+            echo "Skipping plan: CLOUDFLARE_DNS_API_TOKEN is not set."
             exit 0
           fi
-          if [ -z "${TF_VAR_cloudflare_zone_id:-}" ]; then
-            echo "Skipping tofu plan: CLOUDFLARE_ZONE_ID GitHub variable is not set."
-            exit 0
-          fi
-          if [ -z "${TOFU_STATE_PASSPHRASE:-}" ]; then
-            echo "Skipping tofu plan: TOFU_STATE_PASSPHRASE is not set (needed for encrypted remote state init)."
-            exit 0
-          fi
-          tofu init -backend=false
-          tofu plan -input=false
+          tofu init -backend-config=backend.hcl
+          tofu plan -lock=false -input=false -target=cloudflare_dns_record.staging -target=cloudflare_dns_record.staging_railway_verify

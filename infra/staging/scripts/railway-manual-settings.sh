@@ -1,26 +1,21 @@
 #!/usr/bin/env bash
-# Settings the Railway Terraform provider does not expose reliably (GitHub install,
-# workspace linking). Run once after the service exists, or when plan shows drift
-# on repo connection. Requires: railway CLI, RAILWAY_TOKEN, service linked context.
+# Settings the Railway Terraform provider does not expose reliably (GitHub install).
+# Requires: railway CLI, RAILWAY_TOKEN, RAILWAY_SERVICE_ID, RAILWAY_PROJECT_ID in the environment.
 set -euo pipefail
 
-SERVICE_ID="${RAILWAY_SERVICE_ID:-745e0c67-a192-44d1-ad5e-e4dc616720b7}"
-PROJECT_ID="${RAILWAY_PROJECT_ID:-5e9fc613-b97c-4ed2-a721-966aa54490c8}"
+: "${RAILWAY_SERVICE_ID:?Set RAILWAY_SERVICE_ID}"
+: "${RAILWAY_PROJECT_ID:?Set RAILWAY_PROJECT_ID}"
 REPO="${RAILWAY_GITHUB_REPO:-EBWiki/EBWiki}"
 BRANCH="${RAILWAY_GITHUB_BRANCH:-main}"
 
-echo "Railway service ${SERVICE_ID} in project ${PROJECT_ID}"
+echo "Railway service ${RAILWAY_SERVICE_ID} in project ${RAILWAY_PROJECT_ID}"
 echo "Expected Git repo: ${REPO} @ ${BRANCH}"
-echo "Deploy settings should come from railway.toml (Dockerfile.railway, release-tasks.sh, /up)."
 echo ""
-echo "If OpenTofu cannot attach the GitHub repo, in the Railway dashboard:"
-echo "  1. Open project ebwiki-maps-preview → service ebwiki-web → Settings → Source."
-echo "  2. Connect GitHub repo ${REPO}, branch ${BRANCH}, root directory /."
-echo "  3. Confirm builder reads railway.toml (preDeployCommand: bash release-tasks.sh)."
+echo "Before apply, confirm the Railway GitHub app can access ${REPO}."
+echo "After apply, staging builds from main with railway.toml (release-tasks.sh, not db:prepare)."
 echo ""
-echo "CLI status (when linked):"
 if command -v railway >/dev/null 2>&1; then
-  railway status --service "${SERVICE_ID}" 2>/dev/null || railway service "${SERVICE_ID}" 2>/dev/null || true
+  railway status --service "${RAILWAY_SERVICE_ID}" 2>/dev/null || true
 else
-  echo "  (install Railway CLI: https://docs.railway.com/develop/cli)"
+  echo "Install Railway CLI: https://docs.railway.com/develop/cli"
 fi

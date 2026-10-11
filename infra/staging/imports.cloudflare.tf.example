@@ -1,7 +1,0 @@
-# When staging.ebwiki.org already exists in Cloudflare, copy to imports.cloudflare.tf
-# and set cloudflare_staging_dns_record_id in terraform.tfvars.
-
-import {
-  to = cloudflare_dns_record.staging
-  id = "${var.cloudflare_zone_id}/${var.cloudflare_staging_dns_record_id}"
-}

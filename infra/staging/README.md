@@ -1,91 +1,75 @@
 # Staging host OpenTofu (`staging.ebwiki.org`)
 
-OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462): Railway service **ebwiki-web** in **ebwiki-maps-preview**, Doppler **`ebwiki/stg`** basic auth secrets, and Cloudflare DNS for **staging.ebwiki.org**.
+OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the existing Railway **ebwiki** project and service, points **staging.ebwiki.org** at Railway, and wires a read-only **DOPPLER_TOKEN** for runtime config. **No apply in CI.** Mark runs **apply** locally with Doppler **`ebwiki/infra`**.
 
-This PR does **not** apply anything. Operators run **`tofu fmt`**, **`tofu validate`**, and **`tofu plan`** locally or in CI when tokens exist.
+## Behavior change (name before apply)
 
-## Layout overlap with PR #4528 (GKT-1293)
+Live staging today runs Docker image **`ebwiki/ebwiki:184`** with a custom pre-deploy **`db:prepare`**. This stack sets **`source_repo`** to **EBWiki/EBWiki** on **`main`** with **`railway.toml`**, so pre-deploy becomes **`bash release-tasks.sh`** (**`db:migrate` only**). That switch must appear in deploy, test, and rollback plans. Grant the Railway GitHub app access to **EBWiki/EBWiki** before apply.
+
+## Overlap with PR #4528 (GKT-1293)
 
 | | **`infra/staging` (this change)** | **`infra/cloudflare` (#4528)** |
 | --- | --- | --- |
-| Purpose | Staging hostname, Railway service, Doppler staging auth, DNS CNAME | Cloudflare Access on **`/health`** only |
-| Cloudflare provider | `~> 5.0`, `cloudflare_dns_record` | Same pin, Zero Trust Access resources |
-| Shared inputs | `CLOUDFLARE_API_TOKEN`, `TF_VAR_cloudflare_zone_id` | Same |
-| State | S3 key `staging/terraform.tfstate` | S3 key `cloudflare/terraform.tfstate` (recommended) |
-| CI | `.github/workflows/infra-staging.yml` | `.github/workflows/infra-cloudflare.yml` |
+| Purpose | Staging DNS, Railway service, Doppler runtime token | Cloudflare Access on **`/health`** |
+| Cloudflare token | **`CLOUDFLARE_DNS_API_TOKEN`** (Zone DNS only) | **`CLOUDFLARE_ACCESS_API_TOKEN`** (Access + service tokens) |
+| Shared input | **`CLOUDFLARE_ZONE_ID`** | Same |
+| State key | `staging/terraform.tfstate` on R2 | Use the same R2 bucket with key `cloudflare/terraform.tfstate` |
 
-Both stacks can touch **staging.ebwiki.org** (DNS here; Access path rules in #4528). Apply **staging** before or with DNS stable; Access rules are independent of the CNAME target.
+Apply **this stack first**, then **#4528**. Access rules that mention **staging.ebwiki.org** only bite after DNS points at Railway.
 
-## Remote state and encryption
+## Remote state (Cloudflare R2)
 
-**Recommendation:** private **S3** bucket + **DynamoDB** lock table (see `backend.hcl.example`), plus **OpenTofu state encryption** (`encryption` block in `versions.tf`).
+Use a **private R2 bucket** and **`use_lockfile = true`** (OpenTofu **1.10+**). See `backend.hcl.example` for shape only. Bucket name, account ID, and R2 API credentials live in **Doppler `ebwiki/infra`** or the private GKT-462 tracker, not in git.
 
 | Item | Detail |
 | --- | --- |
-| Who runs **apply** | Mark or another operator with Doppler, Railway, and Cloudflare write tokens (not CI on first landing). |
-| Where state lives | S3 object `staging/terraform.tfstate` in the team bucket (name in `backend.hcl.example`). |
-| Encryption passphrase | **`TOFU_STATE_PASSPHRASE`** in Doppler (infra config only). Never commit or log it. |
-| Why encrypt | State includes Doppler secret metadata and Railway variable material from provider reads. |
-
-```bash
-cp backend.hcl.example backend.hcl   # edit bucket/region/table
-export TOFU_STATE_PASSPHRASE='…'     # from Doppler
-tofu init -backend-config=backend.hcl
-```
+| Who runs **apply** | Mark (local only; **RAILWAY_TOKEN** never in GitHub Actions). |
+| Encryption | **`TF_VAR_state_passphrase`** (16+ characters) in Doppler **`ebwiki/infra`**. State and saved plans are **enforced** encrypted. |
+| Stale lock | OpenTofu [#4405](https://github.com/opentofu/opentofu/issues/4405): after a failed run, **`tofu force-unlock <id>`** may be needed. |
 
 ## Secrets and variables (names only)
 
-| Name | Where | Plan scope (read-only) |
+| Name | Where | Notes |
 | --- | --- | --- |
-| `DOPPLER_TOKEN` | Doppler service token | Project read; config/secret read (apply needs write) |
-| `RAILWAY_TOKEN` | Railway account/workspace token | Project/service read |
-| `CLOUDFLARE_API_TOKEN` | Cloudflare API token | Zone DNS Read |
-| `TF_VAR_cloudflare_zone_id` | GitHub var or shell | Zone ID for `ebwiki.org` |
-| `TOFU_STATE_PASSPHRASE` | Doppler / operator shell | Local only (state decrypt) |
+| **`TF_VAR_state_passphrase`** | Doppler **`ebwiki/infra`** | State/plan encryption |
+| **`RAILWAY_TOKEN`** | Doppler **`ebwiki/infra`** | Apply local only |
+| **`DOPPLER_TOKEN`** | Doppler **`ebwiki/infra`** | Apply token with write on **`stg`** for OpenTofu |
+| **`TF_VAR_cloudflare_dns_api_token`** | Doppler **`ebwiki/infra`** | Zone DNS Edit (apply); Read for optional CI plan |
+| R2 **`AWS_ACCESS_KEY_ID`** / **`AWS_SECRET_ACCESS_KEY`** | Doppler **`ebwiki/infra`** | R2 S3-compatible API for backend |
+| **`TF_VAR_railway_project_id`**, **`TF_VAR_railway_service_id`**, **`TF_VAR_railway_service_domain_fqdn`**, **`TF_VAR_cloudflare_staging_dns_record_id`** | GitHub repo variables or local **`terraform.tfvars`** | Not committed |
+| **`CLOUDFLARE_ZONE_ID`** | GitHub repo variable | Zone ID for **ebwiki.org** |
 
-Never commit token values or `terraform.tfvars` with real IDs if they are sensitive.
+Confirm Cloudflare zone SSL mode is **Full** (not Flexible) for proxied Railway.
 
-## Adopting existing resources
+## Doppler secrets
 
-Import blocks in `imports.tf` adopt the Railway **project**, **production** environment, **ebwiki-web** service, and the **public** `*.up.railway.app` hostname. Before apply, confirm `railway_service_domain_fqdn` in Railway (Settings → Networking).
+OpenTofu **adopts** existing **`STAGING_USERNAME`** and **`STAGING_PASSWORD`** in **`ebwiki/stg`** (`ignore_changes` on values). It sets **`HOST`** to **staging.ebwiki.org**. It does **not** rotate the staging password.
 
-**Cloudflare:** if `staging.ebwiki.org` already exists, add:
+Runtime: see `scripts/doppler-at-runtime.md`.
 
-```hcl
-import {
-  to = cloudflare_dns_record.staging
-  id = "<zone_id>/<dns_record_id>"
-}
-```
+## Adopting live resources
 
-**Railway custom domain:** if `staging.ebwiki.org` is already on the service, import:
-
-```shell
-tofu import railway_custom_domain.staging '<service_id>:production:staging.ebwiki.org'
-```
-
-## Doppler → Railway
-
-OpenTofu manages **`STAGING_USERNAME`**, **`STAGING_PASSWORD`** (from `random_password`), and **`HOST`** in Doppler `ebwiki/stg`. Sync the full config to Railway with the **Doppler Railway integration** (see `scripts/doppler-railway-sync.md`).
+Import blocks in **`imports.tf`** adopt Railway project, environment, service, public **`*.up.railway.app`** domain, **staging.ebwiki.org** custom domain, Cloudflare **staging** CNAME, and Doppler auth secret names. Set IDs via **`terraform.tfvars`** (gitignored) or **`TF_VAR_*`** before **`tofu plan`**.
 
 ## Commands
 
 ```bash
 cd infra/staging
 tofu fmt -recursive
-tofu init -backend=false
-export TOFU_STATE_PASSPHRASE="${TOFU_STATE_PASSPHRASE:-ci-validate-only}"
-tofu validate
 
-# Plan (credentials required)
-doppler run --project ebwiki --config prd -- \
-  env TF_VAR_cloudflare_zone_id="$CLOUDFLARE_ZONE_ID" \
-      TOFU_STATE_PASSPHRASE="$TOFU_STATE_PASSPHRASE" \
-  sh -c 'tofu init -backend-config=backend.hcl && tofu plan -input=false'
+doppler run --project ebwiki --config infra -- \
+  sh -c 'tofu init -backend-config=backend.hcl && tofu validate && tofu plan -input=false'
 ```
 
-GitHub repo connection drift: run `scripts/railway-manual-settings.sh`.
+**Apply** (Mark, same Doppler **`infra`** config, after review):
+
+```bash
+doppler run --project ebwiki --config infra -- \
+  sh -c 'tofu apply -input=false'
+```
+
+GitHub repo drift: **`scripts/railway-manual-settings.sh`**.
 
 ## Rollback pointers
 
-Revert the merge and run a planned destroy only with explicit operator approval (`prevent_destroy` guards on DNS and the Railway service). See the PR rollback section for DNS target restoration.
+Record the current Render CNAME target and image tag **`ebwiki/ebwiki:184`** in the private tracker before cutover. Revert DNS to that target to restore the old host. To restore the image, redeploy tag **184** in Railway or set **`source_image`** back in a follow-up change.

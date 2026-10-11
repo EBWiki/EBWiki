@@ -3,19 +3,9 @@ output "staging_hostname" {
   value       = var.staging_hostname
 }
 
-output "railway_service_id" {
-  description = "Railway service ID for ebwiki-web."
-  value       = railway_service.ebwiki_web.id
-}
-
-output "railway_public_domain" {
-  description = "Railway default public hostname (CNAME target for Cloudflare)."
-  value       = railway_service_domain.public.domain
-}
-
-output "railway_custom_domain_id" {
-  description = "Railway custom domain resource ID for staging.ebwiki.org."
-  value       = railway_custom_domain.staging.id
+output "railway_custom_domain_dns_target" {
+  description = "CNAME target Railway assigns for the staging custom domain."
+  value       = railway_custom_domain.staging.dns_record_value
 }
 
 output "cloudflare_staging_record_id" {

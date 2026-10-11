@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.6.0"
+  required_version = ">= 1.10.0"
 
   required_providers {
     railway = {
@@ -14,19 +14,13 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "~> 5.0"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.6"
-    }
   }
 
-  # Remote state: S3 object encryption plus OpenTofu state encryption (passphrase
-  # from Doppler, never in git). See README.md for bucket bootstrap and who applies.
   backend "s3" {}
 
   encryption {
     key_provider "pbkdf2" "default" {
-      passphrase = env("TOFU_STATE_PASSPHRASE")
+      passphrase = var.state_passphrase
     }
 
     method "aes_gcm" "default" {
@@ -34,7 +28,13 @@ terraform {
     }
 
     state {
-      method = method.aes_gcm.default
+      method   = method.aes_gcm.default
+      enforced = true
+    }
+
+    plan {
+      method   = method.aes_gcm.default
+      enforced = true
     }
   }
 }

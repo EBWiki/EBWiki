@@ -1,13 +1,11 @@
 provider "railway" {
-  # RAILWAY_TOKEN in the environment (Doppler or CI secret). Never commit token values.
+  # RAILWAY_TOKEN in the environment (Doppler ebwiki/infra only). Never in GitHub Actions.
 }
 
 provider "doppler" {
-  # DOPPLER_TOKEN in the environment. Never commit token values.
+  # DOPPLER_TOKEN in the environment (Doppler ebwiki/infra for apply). Never commit token values.
 }
 
 provider "cloudflare" {
-  # CLOUDFLARE_API_TOKEN in the environment. Never commit token values.
+  api_token = var.cloudflare_dns_api_token
 }
-
-provider "random" {}
