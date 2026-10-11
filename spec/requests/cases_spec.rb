@@ -136,6 +136,67 @@ RSpec.describe 'Cases', type: :request do
         expect(response.body).to include('Editing')
       end
     end
+
+    context 'when follower email delivery fails after a successful save' do
+      let(:params) { { case: { city: 'Buffalo' } } }
+      let(:message_delivery) { instance_double(ActionMailer::MessageDelivery) }
+
+      before do
+        allow(CaseMailer).to receive(:send_followers_email).and_return(message_delivery)
+        allow(message_delivery).to receive(:deliver_now).and_raise(StandardError, 'mail failed')
+        allow(Rollbar).to receive(:error)
+        allow(Rails.logger).to receive(:error)
+
+        sign_in user
+        patch "/cases/#{_case.slug}", params: params, headers: {}
+      end
+
+      it 'redirects to the case show page' do
+        expect(response).to redirect_to(case_path(_case))
+      end
+
+      it 'sets the success flash' do
+        expect(flash[:success]).to eq('Case was updated!')
+      end
+
+      it 'persists the update' do
+        expect(_case.reload.city).to eq('Buffalo')
+      end
+
+      it 'reports the mail error to Rollbar' do
+        expect(Rollbar).to have_received(:error).with(instance_of(StandardError))
+      end
+
+      it 'logs the mail error' do
+        expect(Rails.logger).to have_received(:error).with(/follower email/i)
+      end
+    end
+
+    context 'when updating the case raises an error' do
+      before do
+        allow_any_instance_of(Case).to receive(:update).and_raise(StandardError, 'save failed')
+        allow(Rollbar).to receive(:error)
+
+        sign_in user
+        patch "/cases/#{_case.slug}", params: params, headers: {}
+      end
+
+      it 'renders the edit form' do
+        expect(response.body).to include('Editing')
+      end
+
+      it 'returns unprocessable entity status' do
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it 'sets an error flash' do
+        expect(flash.now[:error]).to be_present
+      end
+
+      it 'reports the error to Rollbar' do
+        expect(Rollbar).to have_received(:error).with(instance_of(StandardError))
+      end
+    end
   end
 
   describe 'GET /cases/:slug/followers' do

@@ -61,17 +61,27 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     @this_case = Case.find(params[:id])
     @this_case.slug = nil
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
-    if @this_case.update(case_params)
+    updated = nil
+    save_failed = false
+    begin
+      updated = @this_case.update(case_params)
+    rescue StandardError => e
+      Rollbar.error(e)
+      set_instance_vars
+      flash.now[:error] = 'There was an error updating this case. Please try again.'
+      render 'edit', status: :unprocessable_content
+      save_failed = true
+    end
+    return if save_failed
+
+    if updated
       flash[:success] = 'Case was updated!'
-      CaseMailer.send_followers_email(users: @this_case.followers,
-                                      this_case: @this_case).deliver_now
+      deliver_followers_email
       redirect_to @this_case
     else
       set_instance_vars
       render 'edit'
     end
-  rescue StandardError => e
-    Rollbar.error(e)
   end
   # rubocop:enable Metrics/MethodLength
 
@@ -141,5 +151,15 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     @states = SortCollectionOrdinally.call(collection: State.all)
     @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
     @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')
+  end
+
+  def deliver_followers_email
+    CaseMailer.send_followers_email(users: @this_case.followers,
+                                    this_case: @this_case).deliver_now
+  rescue StandardError => e
+    Rollbar.error(e)
+    Rails.logger.error(
+      "CasesController#update: follower email failed for case #{@this_case.id}: #{e.message}"
+    )
   end
 end
