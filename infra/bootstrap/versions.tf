@@ -16,9 +16,7 @@ terraform {
     }
   }
 
-  backend "local" {
-    path = "terraform.tfstate"
-  }
+  backend "s3" {}
 
   encryption {
     key_provider "pbkdf2" "default" {

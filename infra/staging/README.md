@@ -8,7 +8,7 @@ OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the e
 
 1. **One-time Cloudflare bootstrap token** (dashboard) for **`make bootstrap`** only.
 2. **One-time Doppler bootstrap token** or **`doppler login`** for **`make bootstrap`** only.
-3. **`terraform.tfvars`** here with Railway and Cloudflare record IDs (gitignored), or matching GitHub **`TF_VAR_*`** variables.
+3. **Fill `terraform.tfvars` for bootstrap and staging** with the account, zone, record, and Railway IDs. These are inputs, not resources, and they stay out of the public repo.
 4. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap (Railway dashboard).
 5. **Railway GitHub app:** browser install if needed; else **`scripts/railway-github-access.sh`**.
 

@@ -15,20 +15,21 @@ Creates shared infrastructure secrets in Doppler environment **`ebwiki/infra`** 
 
 Bootstrap uses project role **`collaborator`** on environment **`stg`** only. Doppler documents that Collaborators may **create, roll, and delete service tokens** for configs they can access (`enclave_project_config_service_tokens`). That is the smallest built-in role that lets staging OpenTofu create **`doppler_service_token.railway_runtime`** without a user personal token.
 
+**Confirm the Doppler plan includes role-based access** (Team or Enterprise) before bootstrap. Limiting a service account to the **`stg`** environment relies on that feature.
+
 ## Inputs (Mark provides once)
 
 | Input | How |
 | --- | --- |
 | **`TF_VAR_bootstrap_state_passphrase`** | 16+ characters; encrypts bootstrap state (also stored in **`ebwiki/infra`**) |
 | **`TF_VAR_cloudflare_bootstrap_api_token`** | One-time Cloudflare token (create in dashboard; see manual list) |
-| **`DOPPLER_TOKEN`** | One-time Doppler bootstrap token, or **`doppler login`** for CLI |
-| **`terraform.tfvars`** | **`cloudflare_account_id`**, **`cloudflare_zone_id`** (gitignored) |
+| **`doppler login`** or **`DOPPLER_TOKEN`** | One-time bootstrap auth to write **`ebwiki/infra`** |
 
 ## Manual, no API
 
 1. **One-time Cloudflare bootstrap token.** The first token needs a dashboard login, because no token exists yet to create it with.
 2. **One-time Doppler bootstrap token**, or **`doppler login`**, for the same reason.
-3. **`terraform.tfvars`** in this directory with Cloudflare account and zone IDs (gitignored).
+3. **Fill `terraform.tfvars` for bootstrap and staging** with the account, zone, record, and Railway IDs. These are inputs, not resources, and they stay out of the public repo.
 4. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap. Railway tokens are created in the dashboard. The OpenTofu provider cannot create them.
 5. **Railway GitHub app:** install on the EBWiki org in the browser if it is not installed yet. If it is already installed, run **`scripts/railway-github-access.sh`** to grant **EBWiki/EBWiki**.
 
