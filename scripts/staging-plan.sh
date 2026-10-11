@@ -11,5 +11,5 @@ doppler run --project ebwiki --config infra -- "$ROOT/scripts/write-staging-tfva
 doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars.sh" bash -c "
   source \"$ROOT/scripts/lib/infra-export-tf-vars.sh\"
   infra_require_staging_tf_vars
-  cd \"$ROOT/infra/staging\" && tofu fmt -check -recursive && tofu init -backend-config=backend.hcl -input=false && tofu plan -input=false
+  cd \"$ROOT/infra/staging\" && tofu fmt -check -recursive && tofu init -backend-config=backend.hcl -input=false && tofu plan -input=false -out=staging.tfplan
 "
