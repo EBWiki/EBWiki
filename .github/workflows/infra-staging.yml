@@ -54,4 +54,5 @@ jobs:
           TF_VAR_railway_service_id: "00000000-0000-0000-0000-000000000000"
           TF_VAR_railway_service_domain_fqdn: "placeholder.up.railway.app"
           TF_VAR_staging_basic_auth_username: ci-validate-only
+          TF_VAR_staging_runtime_doppler_token: ci-validate-only
         run: tofu validate

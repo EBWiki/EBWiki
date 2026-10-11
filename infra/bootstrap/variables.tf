@@ -39,6 +39,6 @@ variable "doppler_project" {
 
 variable "doppler_stg_config" {
   type        = string
-  description = "Doppler config the OpenTofu service account may access (staging secrets and runtime tokens)."
+  description = "Doppler config for staging service tokens (stg only)."
   default     = "stg"
 }

@@ -1,7 +1,7 @@
 resource "doppler_environment" "infra" {
   project = var.doppler_project
   slug    = "infra"
-  name    = "Infra (OpenTofu operator)"
+  name    = "Infra OpenTofu operator"
 }
 
 resource "random_password" "state_passphrase" {
@@ -16,21 +16,18 @@ resource "random_string" "staging_basic_auth_username" {
   upper   = false
 }
 
-resource "doppler_service_account" "opentofu_staging" {
-  name           = "ebwiki-opentofu-staging"
-  workplace_role = "no_access"
+resource "doppler_service_token" "staging_apply" {
+  project = var.doppler_project
+  config  = var.doppler_stg_config
+  name    = "opentofu-staging-apply"
+  access  = "read/write"
 }
 
-resource "doppler_project_member_service_account" "opentofu_staging" {
-  project              = var.doppler_project
-  service_account_slug = doppler_service_account.opentofu_staging.slug
-  role                 = "collaborator"
-  environments         = [var.doppler_stg_config]
-}
-
-resource "doppler_service_account_token" "opentofu_staging" {
-  service_account_slug = doppler_service_account.opentofu_staging.slug
-  name                 = "opentofu-staging-apply"
+resource "doppler_service_token" "railway_runtime" {
+  project = var.doppler_project
+  config  = var.doppler_stg_config
+  name    = "railway-staging-runtime-readonly"
+  access  = "read"
 }
 
 locals {
@@ -140,9 +137,18 @@ resource "doppler_secret" "doppler_apply_token" {
   project = var.doppler_project
   config  = local.doppler_infra_config
   name    = "DOPPLER_TOKEN"
-  value   = doppler_service_account_token.opentofu_staging.api_key
+  value   = doppler_service_token.staging_apply.key
 
-  depends_on = [doppler_environment.infra]
+  depends_on = [doppler_environment.infra, doppler_service_token.staging_apply]
+}
+
+resource "doppler_secret" "tf_var_staging_runtime_doppler_token" {
+  project = var.doppler_project
+  config  = local.doppler_infra_config
+  name    = "TF_VAR_staging_runtime_doppler_token"
+  value   = doppler_service_token.railway_runtime.key
+
+  depends_on = [doppler_environment.infra, doppler_service_token.railway_runtime]
 }
 
 resource "doppler_secret" "railway_token" {

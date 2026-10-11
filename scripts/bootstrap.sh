@@ -52,7 +52,7 @@ tofu plan -input=false "${BOOTSTRAP_STAGE2_EXCLUDES[@]}" -out=bootstrap-stage1.t
 tofu apply -input=false bootstrap-stage1.tfplan
 rm -f bootstrap-stage1.tfplan
 
-echo "Bootstrap stage 2 (R2 bucket and state credentials)..."
+echo "Bootstrap stage 2 (R2 bucket and state credentials; mints a new R2 admin token if state has none)..."
 tofu plan -input=false -out=bootstrap-stage2.tfplan
 tofu apply -input=false bootstrap-stage2.tfplan
 rm -f bootstrap-stage2.tfplan

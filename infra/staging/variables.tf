@@ -51,6 +51,12 @@ variable "doppler_config" {
   default     = "stg"
 }
 
+variable "staging_runtime_doppler_token" {
+  type        = string
+  description = "Read-only Doppler service token for Railway (ebwiki/stg). Set TF_VAR_staging_runtime_doppler_token from ebwiki/infra after first-time setup."
+  sensitive   = true
+}
+
 variable "staging_basic_auth_username" {
   type        = string
   description = "HTTP basic auth username for staging (STAGING_USERNAME). Set TF_VAR_staging_basic_auth_username in ebwiki/infra."
