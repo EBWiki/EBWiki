@@ -4,15 +4,17 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT/infra/bootstrap"
 
-if doppler secrets get R2_BUCKET_NAME --project ebwiki --config infra --plain >/dev/null 2>&1; then
-  echo "Bootstrap already ran. Its state is in R2 under bootstrap/terraform.tfstate."
-  exit 1
-fi
-
 doppler me >/dev/null 2>&1 || {
   echo "Run doppler login or export DOPPLER_TOKEN for bootstrap."
   exit 1
 }
+
+# A local state file means an earlier run stopped partway: resume it instead of refusing.
+if [ ! -f terraform.tfstate ] && \
+  doppler secrets get R2_BUCKET_NAME --project ebwiki --config infra --plain >/dev/null 2>&1; then
+  echo "Bootstrap already ran. Its state is in R2 under bootstrap/terraform.tfstate."
+  exit 1
+fi
 
 : "${TF_VAR_bootstrap_state_passphrase:?Export TF_VAR_bootstrap_state_passphrase (16+ characters)}"
 : "${TF_VAR_cloudflare_bootstrap_api_token:?Export TF_VAR_cloudflare_bootstrap_api_token}"
@@ -32,7 +34,7 @@ terraform {
 }
 TF
 
-tofu init -input=false
+tofu init -input=false -reconfigure
 tofu plan -input=false -out=bootstrap.tfplan
 tofu apply -input=false bootstrap.tfplan
 rm -f bootstrap.tfplan
@@ -45,7 +47,7 @@ doppler run --project ebwiki --config infra -- \
 rm -f backend_override.tf
 
 doppler run --project ebwiki --config infra -- \
-  sh -c 'cd infra/bootstrap && tofu init -migrate-state -force-copy -backend-config=backend.hcl -input=false'
+  tofu init -migrate-state -force-copy -backend-config=backend.hcl -input=false
 
 rm -f terraform.tfstate terraform.tfstate.backup
 
