@@ -20,9 +20,6 @@ resource "railway_service" "ebwiki" {
   name       = local.railway_service_name
   project_id = railway_project.ebwiki.id
 
-  source_repo        = var.github_repo
-  source_repo_branch = var.github_branch
-
   regions = [{
     region       = "us-west2"
     num_replicas = 1
@@ -30,6 +27,12 @@ resource "railway_service" "ebwiki" {
 
   lifecycle {
     prevent_destroy = true
+    # GitHub source is owned by .railway/railway.ts (workspace token cannot repo-connect via provider).
+    ignore_changes = [
+      source_repo,
+      source_repo_branch,
+      source_image,
+    ]
   }
 }
 
@@ -59,13 +62,6 @@ removed {
   lifecycle {
     destroy = false
   }
-}
-
-resource "railway_variable" "dockerfile_path" {
-  name           = "RAILWAY_DOCKERFILE_PATH"
-  value          = "Dockerfile.railway"
-  service_id     = railway_service.ebwiki.id
-  environment_id = railway_environment.production.id
 }
 
 resource "railway_variable" "doppler_token" {

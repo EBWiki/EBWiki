@@ -6,14 +6,14 @@ import {
   service,
 } from "railway/iac";
 
-// Own only the staging web service deploy settings; Postgres and Redis stay out of this partial.
-// GitHub source matches OpenTofu (infra/staging/railway.tf). Variable values stay on Railway / OpenTofu.
+// Staging ebwiki web service: source, build, and deploy settings. Postgres/Redis are other partials.
 export const partial = "ebwiki-staging";
 
 const GITHUB_REPO = "EBWiki/EBWiki";
 const GITHUB_BRANCH = "main";
+const DOCKERFILE_PATH = "Dockerfile.railway";
 
-/** Public name list only (no values). Keep in sync with live staging service variables. */
+/** Public name list only (no secret values). Keep in sync with live staging service variables. */
 const EBWIKI_PRESERVED_VARIABLE_NAMES = [
   "AWS_ACCESS_KEY_ID",
   "AWS_SECRET_ACCESS_KEY",
@@ -32,7 +32,6 @@ const EBWIKI_PRESERVED_VARIABLE_NAMES = [
   "RAILS_ENV",
   "RAILS_LOG_TO_STDOUT",
   "RAILS_SERVE_STATIC_FILES",
-  "RAILWAY_DOCKERFILE_PATH",
   "REDIS_URL",
   "REVIEW_SERVER",
   "S3_BUCKET",
@@ -52,9 +51,12 @@ export default defineRailway(() => {
     source: github(GITHUB_REPO, { branch: GITHUB_BRANCH }),
     build: {
       builder: "DOCKERFILE",
-      dockerfilePath: "Dockerfile.railway",
     },
-    env: preservedEbwikiEnv(),
+    env: {
+      ...preservedEbwikiEnv(),
+      // Dockerfile path via Railway variable only (not build.dockerfilePath) to avoid plan drift.
+      RAILWAY_DOCKERFILE_PATH: DOCKERFILE_PATH,
+    },
     preDeploy:
       "doppler run --project ebwiki --config stg -- bash release-tasks.sh",
     start:
@@ -63,6 +65,8 @@ export default defineRailway(() => {
     healthcheckTimeout: 300,
     deploy: {
       preDeployTimeoutSeconds: 900,
+      overlapSeconds: 0,
+      drainingSeconds: 0,
       restartPolicyType: "ON_FAILURE",
       restartPolicyMaxRetries: 3,
     },

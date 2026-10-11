@@ -1,5 +1,5 @@
 # Railway Infrastructure as Code (staging web service)
 
-The **ebwiki** staging service deploy settings live here. GitHub source (**EBWiki/EBWiki**, **main**) and Dockerfile builder match OpenTofu so config apply never clears source or builder before OpenTofu runs. OpenTofu owns region replicas, domains, and sets `RAILWAY_DOCKERFILE_PATH` and `DOPPLER_TOKEN`. This partial owns pre-deploy (900s timeout), start, health check, and restart policy. The `env` block lists every live variable name with `preserve()` only (no values in git).
+The **ebwiki** staging service source, builder, and deploy settings live here. OpenTofu does not set GitHub source (workspace token cannot repo-connect). Dockerfile path is **`RAILWAY_DOCKERFILE_PATH`** in the env block (literal path, not duplicated in OpenTofu). Other variables use `preserve()` only. OpenTofu sets **`DOPPLER_TOKEN`** and region replicas.
 
 Plan and apply with `make plan` / `make apply` on the PR Manager machine (see `infra/staging/README.md`).

@@ -79,18 +79,6 @@ variable "railway_environment_name" {
   default     = "production"
 }
 
-variable "github_repo" {
-  type        = string
-  description = "GitHub repository connected to the Railway service."
-  default     = "EBWiki/EBWiki"
-}
-
-variable "github_branch" {
-  type        = string
-  description = "Branch Railway builds for staging."
-  default     = "main"
-}
-
 variable "railway_service_domain_fqdn" {
   type        = string
   description = "Existing Railway public hostname for import. Set TF_VAR_railway_service_domain_fqdn (not committed)."
