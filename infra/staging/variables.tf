@@ -91,12 +91,6 @@ variable "github_branch" {
   default     = "main"
 }
 
-variable "railway_config_path" {
-  type        = string
-  description = "Railway config file in the repo (pre-deploy and health check)."
-  default     = "railway.staging.toml"
-}
-
 variable "railway_service_domain_fqdn" {
   type        = string
   description = "Existing Railway public hostname for import. Set TF_VAR_railway_service_domain_fqdn (not committed)."

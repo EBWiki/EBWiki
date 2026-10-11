@@ -22,7 +22,6 @@ resource "railway_service" "ebwiki" {
 
   source_repo        = var.github_repo
   source_repo_branch = var.github_branch
-  config_path        = var.railway_config_path
 
   regions = [{
     region       = "us-west2"
@@ -60,6 +59,13 @@ removed {
   lifecycle {
     destroy = false
   }
+}
+
+resource "railway_variable" "dockerfile_path" {
+  name           = "RAILWAY_DOCKERFILE_PATH"
+  value          = "Dockerfile.railway"
+  service_id     = railway_service.ebwiki.id
+  environment_id = railway_environment.production.id
 }
 
 resource "railway_variable" "doppler_token" {

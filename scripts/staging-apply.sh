@@ -13,5 +13,7 @@ doppler run --project ebwiki --config infra -- "$ROOT/scripts/write-staging-tfva
 doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars.sh" bash -c "
   source \"$ROOT/scripts/lib/infra-export-tf-vars.sh\"
   infra_require_staging_tf_vars
+  source \"$ROOT/scripts/lib/infra-railway-config.sh\"
+  infra_railway_config_apply
   cd \"$ROOT/infra/staging\" && tofu init -backend-config=backend.hcl -input=false && tofu apply -input=false staging.tfplan
 "

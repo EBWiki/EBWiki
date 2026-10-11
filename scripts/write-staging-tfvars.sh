@@ -27,7 +27,11 @@ ebwiki_zone_json="$(infra_cf_zone_for_name "$EBWIKI_ZONE_NAME")"
 ebwiki_zone_id="$(echo "$ebwiki_zone_json" | jq -r '.id')"
 legacy_record_id="$(infra_cf_dns_record_id "$ebwiki_zone_id" "$LEGACY_RECORD_NAME")"
 
-infra_cf_assert_no_dynamic_redirect_rules "$ebwiki_zone_id" "$CLOUDFLARE_DNS_API_TOKEN"
+allowed_redirect_ruleset_id=""
+if allowed_redirect_ruleset_id="$(infra_staging_legacy_redirect_ruleset_id_from_state 2>/dev/null)"; then
+  :
+fi
+infra_cf_assert_no_dynamic_redirect_rules "$ebwiki_zone_id" "$CLOUDFLARE_DNS_API_TOKEN" "$allowed_redirect_ruleset_id"
 
 mkdir -p "$(dirname "$OUT")"
 cat >"$OUT" <<EOF

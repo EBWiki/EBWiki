@@ -222,14 +222,22 @@ bash -c "$INFRA_SNAPSHOT_PIPE_CMD" | aws s3 cp - "s3://${R2_BUCKET_NAME}/${objec
   || fail "streamed snapshot upload"
 pass "snapshot streams to aws s3 cp without temp dump file"
 
-# R2 admin token id from tofu state show -json (version line + values document).
+# tofu state show -json (version line + values document).
+# shellcheck source=../lib/infra-tofu-state.sh
+source "$ROOT/scripts/lib/infra-tofu-state.sh"
 r2_state_json='{"version":1}
 {"format_version":"1.0","terraform_version":"1.13.1","values":{"root_module":{"resources":[{"values":{"id":"cf-token-id-xyz"}}]}}}'
-r2_admin_token_id="$(printf '%s\n' "$r2_state_json" \
-  | jq -r 'select(.values.root_module?) | .values.root_module.resources[0].values.id // empty')"
+r2_admin_token_id="$(printf '%s\n' "$r2_state_json" | infra_tofu_state_show_json_resource_id)"
 [ "$r2_admin_token_id" = "cf-token-id-xyz" ] \
   || fail "R2 admin token id jq should read the values document"
 pass "R2 admin token id is read from tofu state show JSON"
+
+redirect_ruleset_state_json='{"version":1}
+{"format_version":"1.0","terraform_version":"1.13.1","values":{"root_module":{"resources":[{"values":{"id":"ruleset-legacy-staging-xyz"}}]}}}'
+redirect_ruleset_id="$(printf '%s\n' "$redirect_ruleset_state_json" | infra_tofu_state_show_json_resource_id)"
+[ "$redirect_ruleset_id" = "ruleset-legacy-staging-xyz" ] \
+  || fail "legacy redirect ruleset id jq should read the values document"
+pass "legacy redirect ruleset id is read from tofu state show JSON"
 
 # Dynamic redirect pre-check (staging plan guard).
 redirect_empty='{"success":true,"result":{"rules":[]}}'
@@ -274,6 +282,18 @@ if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token"; then
   fail "redirect pre-check should fail when rules exist"
 else
   pass "redirect pre-check fails when redirect rules exist"
+fi
+
+export CF_MOCK_REDIRECT_RESPONSE='{"success":true,"result":{"id":"ruleset-owned","rules":[{"id":"r1"}]}}'
+infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" "ruleset-owned" \
+  || fail "redirect pre-check should allow owned ruleset id"
+pass "redirect pre-check allows legacy staging redirect ruleset from state"
+
+export CF_MOCK_REDIRECT_RESPONSE='{"success":true,"result":{"id":"other-ruleset","rules":[{"id":"r1"}]}}'
+if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" "ruleset-owned"; then
+  fail "redirect pre-check should reject foreign ruleset id"
+else
+  pass "redirect pre-check rejects foreign redirect ruleset"
 fi
 
 # Doppler secret name export mapping.
