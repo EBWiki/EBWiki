@@ -1,0 +1,23 @@
+---
+name: Railway Dockerfile build
+
+on:
+  pull_request:
+    paths:
+      - Dockerfile.railway
+      - railway.toml
+      - config/database.railway.yml
+      - Gemfile
+      - Gemfile.lock
+      - .github/workflows/railway_dockerfile_build.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Build Dockerfile.railway (no push)
+        run: docker build -f Dockerfile.railway .
