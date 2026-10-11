@@ -61,6 +61,13 @@ removed {
   }
 }
 
+resource "railway_variable" "dockerfile_path" {
+  name           = "RAILWAY_DOCKERFILE_PATH"
+  value          = "Dockerfile.railway"
+  service_id     = railway_service.ebwiki.id
+  environment_id = railway_environment.production.id
+}
+
 resource "railway_variable" "doppler_token" {
   name           = "DOPPLER_TOKEN"
   value          = var.staging_runtime_doppler_token

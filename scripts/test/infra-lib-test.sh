@@ -276,6 +276,18 @@ else
   pass "redirect pre-check fails when redirect rules exist"
 fi
 
+export CF_MOCK_REDIRECT_RESPONSE='{"success":true,"result":{"id":"ruleset-owned","rules":[{"id":"r1"}]}}'
+infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" "ruleset-owned" \
+  || fail "redirect pre-check should allow owned ruleset id"
+pass "redirect pre-check allows legacy staging redirect ruleset from state"
+
+export CF_MOCK_REDIRECT_RESPONSE='{"success":true,"result":{"id":"other-ruleset","rules":[{"id":"r1"}]}}'
+if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" "ruleset-owned"; then
+  fail "redirect pre-check should reject foreign ruleset id"
+else
+  pass "redirect pre-check rejects foreign redirect ruleset"
+fi
+
 # Doppler secret name export mapping.
 # shellcheck source=../lib/infra-export-tf-vars.sh
 source "$ROOT/scripts/lib/infra-export-tf-vars.sh"
