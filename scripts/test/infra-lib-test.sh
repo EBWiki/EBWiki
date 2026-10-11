@@ -232,4 +232,21 @@ else
   pass "redirect pre-check fails when redirect rules exist"
 fi
 
+# Doppler secret name export mapping.
+# shellcheck source=../lib/infra-export-tf-vars.sh
+source "$ROOT/scripts/lib/infra-export-tf-vars.sh"
+export BOOTSTRAP_STATE_PASSPHRASE="boot-pass"
+export STATE_PASSPHRASE="state-pass"
+export CLOUDFLARE_DNS_API_TOKEN="dns"
+export CLOUDFLARE_GRANDKRU_DNS_API_TOKEN="gk-dns"
+export STAGING_RUNTIME_DOPPLER_TOKEN="rt"
+export STAGING_BASIC_AUTH_USERNAME="user1"
+infra_export_tf_vars_from_infra_config
+[ "$TF_VAR_bootstrap_state_passphrase" = "boot-pass" ] \
+  && [ "$TF_VAR_state_passphrase" = "state-pass" ] \
+  && [ "$TF_VAR_cloudflare_dns_api_token" = "dns" ] \
+  && [ "$TF_VAR_staging_runtime_doppler_token" = "rt" ] \
+  || fail "infra_export_tf_vars_from_infra_config mapping"
+pass "infra_export_tf_vars_from_infra_config maps Doppler names to TF_VAR"
+
 echo "All infra-lib tests passed."

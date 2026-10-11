@@ -13,7 +13,7 @@ LEGACY_RECORD_NAME="${LEGACY_STAGING_DNS_RECORD_NAME:-staging.ebwiki.org}"
 STAGING_HOSTNAME="${STAGING_HOSTNAME:-ebwiki.staging.grandkru.com}"
 
 : "${RAILWAY_TOKEN:?RAILWAY_TOKEN must be set (Doppler ebwiki/infra)}"
-: "${TF_VAR_cloudflare_dns_api_token:?TF_VAR_cloudflare_dns_api_token must be set (Doppler ebwiki/infra)}"
+: "${CLOUDFLARE_DNS_API_TOKEN:?CLOUDFLARE_DNS_API_TOKEN must be set (Doppler ebwiki/infra)}"
 : "${CLOUDFLARE_GRANDKRU_ZONE_ID:?CLOUDFLARE_GRANDKRU_ZONE_ID must be set (Doppler ebwiki/infra after first-time setup)}"
 
 command -v curl >/dev/null 2>&1 || { echo "curl is required."; exit 1; }
@@ -27,7 +27,7 @@ ebwiki_zone_json="$(infra_cf_zone_for_name "$EBWIKI_ZONE_NAME")"
 ebwiki_zone_id="$(echo "$ebwiki_zone_json" | jq -r '.id')"
 legacy_record_id="$(infra_cf_dns_record_id "$ebwiki_zone_id" "$LEGACY_RECORD_NAME")"
 
-infra_cf_assert_no_dynamic_redirect_rules "$ebwiki_zone_id" "$TF_VAR_cloudflare_dns_api_token"
+infra_cf_assert_no_dynamic_redirect_rules "$ebwiki_zone_id" "$CLOUDFLARE_DNS_API_TOKEN"
 
 mkdir -p "$(dirname "$OUT")"
 cat >"$OUT" <<EOF

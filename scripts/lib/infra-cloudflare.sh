@@ -11,6 +11,8 @@ infra_cf_api_token() {
     printf '%s' "$1"
   elif [ -n "${CLOUDFLARE_API_TOKEN:-}" ]; then
     printf '%s' "$CLOUDFLARE_API_TOKEN"
+  elif [ -n "${CLOUDFLARE_DNS_API_TOKEN:-}" ]; then
+    printf '%s' "$CLOUDFLARE_DNS_API_TOKEN"
   elif [ -n "${TF_VAR_cloudflare_dns_api_token:-}" ]; then
     printf '%s' "$TF_VAR_cloudflare_dns_api_token"
   else

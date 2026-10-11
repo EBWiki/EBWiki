@@ -10,5 +10,8 @@ doppler run --project ebwiki --config infra -- "$ROOT/scripts/staging-db-snapsho
 
 doppler run --project ebwiki --config infra -- "$ROOT/scripts/write-staging-tfvars.sh"
 
-doppler run --project ebwiki --config infra -- \
-  sh -c "cd infra/staging && tofu init -backend-config=backend.hcl -input=false && tofu apply -input=false"
+doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars.sh" bash -c "
+  source \"$ROOT/scripts/lib/infra-export-tf-vars.sh\"
+  infra_require_staging_tf_vars
+  cd \"$ROOT/infra/staging\" && tofu init -backend-config=backend.hcl -input=false && tofu apply -input=false
+"

@@ -81,8 +81,11 @@ doppler run --project ebwiki --config infra -- \
 
 rm -f backend_override.tf
 
-doppler run --project ebwiki --config infra -- \
-  tofu init -migrate-state -force-copy -backend-config=backend.hcl -input=false
+doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars.sh" bash -c "
+  source \"$ROOT/scripts/lib/infra-export-tf-vars.sh\"
+  infra_require_bootstrap_migrate_tf_vars
+  cd \"$ROOT/infra/bootstrap\" && tofu init -migrate-state -force-copy -backend-config=backend.hcl -input=false
+"
 
 rm -f terraform.tfstate terraform.tfstate.backup
 
