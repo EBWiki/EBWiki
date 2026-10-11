@@ -159,17 +159,78 @@ RSpec.describe 'Cases', type: :request do
   end
 
   describe 'GET /cases/:slug/history' do
-    let(:_case) { create(:case) }
-
-    before { get "/cases/#{_case.slug}/history", params: {}, headers: {} }
+    def history_list_items(body)
+      body.scan(%r{<li>\s*<b>Date:</b>.*?</li>}m)
+    end
 
     context 'will get history page' do
+      let(:_case) { create(:case) }
+
+      before { get "/cases/#{_case.slug}/history", params: {}, headers: {} }
+
       it 'will return status code 200' do
         expect(response).to have_http_status(200)
       end
 
       it 'will return the history of the case' do
         expect(response.body).to include('history')
+      end
+    end
+
+    context 'when duplicate version rows exist for one edit', versioning: true do
+      let(:_case) { create(:case) }
+      let(:edit_summary) do
+        'Added article discussing how David Silva was exonerated by testimony from two doctors'
+      end
+
+      before do
+        _case.update!(overview: 'Updated overview', summary: edit_summary)
+        source = _case.versions.where(event: 'update').last
+        PaperTrail::Version.create!(
+          item_type: 'Case',
+          item_id: _case.id,
+          event: source.event,
+          whodunnit: source.whodunnit,
+          comment: source.comment,
+          created_at: source.created_at,
+          object: source.object,
+          object_changes: source.object_changes
+        )
+      end
+
+      it 'lists each history event once' do
+        get "/cases/#{_case.slug}/history", params: {}, headers: {}
+
+        items = history_list_items(response.body)
+        matching = items.select { |item| item.include?(edit_summary) }
+
+        expect(matching.size).to eq(1)
+        expect(items.uniq.size).to eq(items.size)
+      end
+    end
+
+    context 'when a case has links and versioned edits', versioning: true do
+      let(:_case) { create(:case) }
+
+      before do
+        link = _case.links.create!(url: 'http://example.com/source', title: 'Source')
+        _case.update!(
+          overview: 'Updated overview',
+          summary: 'Added a related link',
+          links_attributes: [{
+            id: link.id,
+            url: 'http://example.com/updated',
+            title: 'Updated link'
+          }]
+        )
+      end
+
+      it 'does not duplicate history entries on the page' do
+        get "/cases/#{_case.slug}/history", params: {}, headers: {}
+
+        items = history_list_items(response.body)
+        expect(items.size).to eq(_case.reload.versions.count)
+        expect(items.uniq.size).to eq(items.size)
       end
     end
   end
