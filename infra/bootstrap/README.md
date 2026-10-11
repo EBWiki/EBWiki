@@ -1,47 +1,43 @@
 # Bootstrap OpenTofu (run once)
 
-Creates shared infrastructure secrets and stores them in Doppler **`ebwiki/infra`**. Mark runs this **once** with a high-privilege Cloudflare token and a Doppler token that can write the **`infra`** config.
+Creates shared infrastructure secrets in Doppler environment **`ebwiki/infra`** (its own environment, not a branch of **`prd`**). Mark runs this once with a high-privilege Cloudflare token and a one-time Doppler bootstrap token.
 
 ## What bootstrap creates
 
-- Cloudflare **DNS Edit** API token scoped to **ebwiki.org** only
-- Private **R2** bucket and an account token with **object read/write on that bucket only** (S3-compatible keys derived for OpenTofu)
-- **`TF_VAR_state_passphrase`** (random, 32 characters) for staging and cloudflare stacks
-- Doppler **read/write service token** for **`ebwiki/stg`** (stored in **`infra`** as **`DOPPLER_TOKEN`** for staging OpenTofu apply)
-- All of the above written into **`ebwiki/infra`**
+- Cloudflare **DNS Write** API token scoped to **ebwiki.org** only
+- Private **R2** bucket and bucket-scoped object read/write credentials for OpenTofu state
+- **`TF_VAR_state_passphrase`** (random) for staging and cloudflare stacks
+- Doppler **service account** with **Collaborator** on **`stg` only** (includes **Manage Service Tokens** per [Doppler project permissions](https://docs.doppler.com/docs/project-permissions)); its API key is stored as **`DOPPLER_TOKEN`** in **`infra`** for staging OpenTofu apply
+- **`TF_VAR_bootstrap_state_passphrase`** copied into **`infra`** for later bootstrap state access
+- **Required:** migrates bootstrap state from local encrypted storage into R2 in the same **`make bootstrap`** run
+
+## Doppler service account and Collaborator role
+
+Bootstrap uses project role **`collaborator`** on environment **`stg`** only. Doppler documents that Collaborators may **create, roll, and delete service tokens** for configs they can access (`enclave_project_config_service_tokens`). That is the smallest built-in role that lets staging OpenTofu create **`doppler_service_token.railway_runtime`** without a user personal token.
 
 ## Inputs (Mark provides once)
 
 | Input | How |
 | --- | --- |
-| **`TF_VAR_bootstrap_state_passphrase`** | 16+ characters; encrypts **local** bootstrap state only (also keep in a password manager) |
-| **`TF_VAR_cloudflare_bootstrap_api_token`** | Cloudflare token that can create API tokens, account tokens, and R2 buckets |
-| **`DOPPLER_TOKEN`** | Doppler token that can create **`infra`** config and secrets |
+| **`TF_VAR_bootstrap_state_passphrase`** | 16+ characters; encrypts bootstrap state (also stored in **`ebwiki/infra`**) |
+| **`TF_VAR_cloudflare_bootstrap_api_token`** | One-time Cloudflare token (create in dashboard; see manual list) |
+| **`DOPPLER_TOKEN`** | One-time Doppler bootstrap token, or **`doppler login`** for CLI |
 | **`terraform.tfvars`** | **`cloudflare_account_id`**, **`cloudflare_zone_id`** (gitignored) |
 
-## State
+## Manual, no API
 
-Bootstrap uses **local**, **encrypted** state in this directory (gitignored). After the first successful apply, optionally migrate bootstrap state into the new R2 bucket under key **`bootstrap/terraform.tfstate`** using the credentials now in **`ebwiki/infra`**.
-
-## Manual steps (no API)
-
-After bootstrap and before staging apply:
-
-1. **`RAILWAY_TOKEN`**: add to **`ebwiki/infra`** by hand (Railway has no read-only token API for OpenTofu).
-2. **Railway GitHub app**: grant access to **EBWiki/EBWiki** in the Railway dashboard.
+1. **One-time Cloudflare bootstrap token.** The first token needs a dashboard login, because no token exists yet to create it with.
+2. **One-time Doppler bootstrap token**, or **`doppler login`**, for the same reason.
+3. **`terraform.tfvars`** in this directory with Cloudflare account and zone IDs (gitignored).
+4. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap. Railway tokens are created in the dashboard. The OpenTofu provider cannot create them.
+5. **Railway GitHub app:** install on the EBWiki org in the browser if it is not installed yet. If it is already installed, run **`scripts/railway-github-access.sh`** to grant **EBWiki/EBWiki**.
 
 ## Commands
 
 ```bash
 make bootstrap
-# or: ./scripts/bootstrap.sh
 ```
 
-Then staging:
+Then complete manual step 4 (and 5 if needed), set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`**, take a DB snapshot (see **`infra/staging/MIGRATIONS_ROLLBACK.md`**), and run **`make plan`** / **`make apply`**.
 
-```bash
-make plan
-make apply
-```
-
-See repository **`scripts/`** helpers and **`infra/staging/README.md`**.
+OpenTofu **plan** for staging is **local only** (no CI plan job).

@@ -39,6 +39,12 @@ variable "doppler_config" {
   default     = "stg"
 }
 
+variable "staging_basic_auth_username" {
+  type        = string
+  description = "HTTP basic auth username for staging (STAGING_USERNAME). Set TF_VAR_staging_basic_auth_username in ebwiki/infra."
+  sensitive   = true
+}
+
 variable "railway_project_id" {
   type        = string
   description = "Existing Railway project ID. Set TF_VAR_railway_project_id (GitHub variable or tfvars, not committed)."
@@ -70,7 +76,7 @@ variable "github_branch" {
 variable "railway_config_path" {
   type        = string
   description = "Railway config file in the repo (pre-deploy and health check)."
-  default     = "railway.toml"
+  default     = "railway.staging.toml"
 }
 
 variable "railway_service_domain_fqdn" {

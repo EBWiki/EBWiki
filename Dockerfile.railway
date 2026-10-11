@@ -47,4 +47,4 @@ RUN mkdir -p tmp/pids log public/assets && \
 
 EXPOSE 3000
 
-CMD ["doppler", "run", "--project", "ebwiki", "--config", "stg", "--", "bundle", "exec", "puma", "-C", "config/puma.rb"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

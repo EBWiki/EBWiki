@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Write infra/staging/backend.hcl from Doppler ebwiki/infra secrets (already in env).
+# Write an OpenTofu S3/R2 backend config from Doppler ebwiki/infra secrets (already in env).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BACKEND_FILE="${1:-$ROOT/infra/staging/backend.hcl}"
+STATE_KEY="${2:-staging/terraform.tfstate}"
 
 : "${R2_BUCKET_NAME:?R2_BUCKET_NAME must be set (Doppler ebwiki/infra)}"
 : "${R2_S3_ENDPOINT:?R2_S3_ENDPOINT must be set (Doppler ebwiki/infra)}"
@@ -11,7 +12,7 @@ BACKEND_FILE="${1:-$ROOT/infra/staging/backend.hcl}"
 mkdir -p "$(dirname "$BACKEND_FILE")"
 cat >"$BACKEND_FILE" <<EOF
 bucket       = "${R2_BUCKET_NAME}"
-key          = "staging/terraform.tfstate"
+key          = "${STATE_KEY}"
 region       = "auto"
 endpoints    = { s3 = "${R2_S3_ENDPOINT}" }
 use_lockfile = true
@@ -24,4 +25,4 @@ skip_s3_checksum            = true
 use_path_style              = true
 EOF
 
-echo "Wrote ${BACKEND_FILE}"
+echo "Wrote ${BACKEND_FILE} (key=${STATE_KEY})"

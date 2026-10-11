@@ -1,47 +1,38 @@
 # Staging host OpenTofu (`staging.ebwiki.org`)
 
-OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the existing Railway **ebwiki** project and service, points **staging.ebwiki.org** at Railway, and wires a read-only **DOPPLER_TOKEN** on Railway for runtime config.
+OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the existing Railway **ebwiki** project and service, points **staging.ebwiki.org** at Railway, and wires runtime **`DOPPLER_TOKEN`** on Railway.
 
-**Prerequisite:** run **`make bootstrap`** once (`infra/bootstrap/`) so **`ebwiki/infra`** holds R2 credentials, DNS token, state passphrase, and **`DOPPLER_TOKEN`** for this stack.
+**Prerequisite:** **`make bootstrap`** so **`ebwiki/infra`** holds R2 credentials, DNS token, passphrases, and apply **`DOPPLER_TOKEN`**.
 
-## Manual steps (no API)
+## Manual, no API
 
-Only these stay outside OpenTofu:
+1. **One-time Cloudflare bootstrap token** (dashboard) for **`make bootstrap`** only.
+2. **One-time Doppler bootstrap token** or **`doppler login`** for **`make bootstrap`** only.
+3. **`terraform.tfvars`** here with Railway and Cloudflare record IDs (gitignored), or matching GitHub **`TF_VAR_*`** variables.
+4. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap (Railway dashboard).
+5. **Railway GitHub app:** browser install if needed; else **`scripts/railway-github-access.sh`**.
 
-1. **`RAILWAY_TOKEN`**: add to **`ebwiki/infra`** by hand after bootstrap (Railway has no token-creation API for OpenTofu).
-2. **Railway GitHub app**: in the Railway dashboard, grant the GitHub app access to **EBWiki/EBWiki** before switching the service to **`source_repo`**.
+Also set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`** before apply (generated password is new in Doppler **`stg`**).
 
-## Behavior change (name before apply)
+## Behavior change
 
-Live staging today runs Docker image **`ebwiki/ebwiki:184`** with pre-deploy **`db:prepare`**. This stack sets **`source_repo`** to **EBWiki/EBWiki** on **`main`** with **`railway.toml`**, so pre-deploy becomes **`bash release-tasks.sh`** (**`db:migrate` only**). That switch must appear in deploy, test, and rollback plans.
+Live staging runs image **`ebwiki/ebwiki:184`** with **`db:prepare`**. Apply switches to **main** with **`railway.staging.toml`** (**`release-tasks.sh`**, migrate only). Root **`railway.toml`** stays unchanged so other Railway services in this repo are unaffected.
+
+**Database:** snapshot before apply. See **`MIGRATIONS_ROLLBACK.md`**.
 
 ## Commands
-
-From the repository root (loads **`ebwiki/infra`** via Doppler CLI auth):
 
 ```bash
 make plan
 make apply
 ```
 
-Equivalent: **`./scripts/staging-plan.sh`** and **`./scripts/staging-apply.sh`**. These write **`backend.hcl`** from Doppler, then run OpenTofu with **`AWS_*`**, **`TF_VAR_state_passphrase`**, and provider tokens from **`infra`**.
+Plan runs only on Mark's machine via Doppler **`ebwiki/infra`** (not in PR CI).
 
-Set Railway and Cloudflare staging IDs in gitignored **`infra/staging/terraform.tfvars`** or **`TF_VAR_*`** (see **`terraform.tfvars.example`**). Do not commit real IDs.
+## Doppler secrets
 
-## Overlap with PR #4528 (GKT-1293)
+OpenTofu **creates** **`STAGING_USERNAME`** and **`STAGING_PASSWORD`** in **`ebwiki/stg`**. Runtime: **`scripts/doppler-at-runtime.md`**.
 
-Apply **this stack first**, then **#4528**. Shared R2 bucket (from bootstrap); staging state key **`staging/terraform.tfstate`**, cloudflare key **`cloudflare/terraform.tfstate`**. DNS token name **`CLOUDFLARE_DNS_API_TOKEN`** vs Access token **`CLOUDFLARE_ACCESS_API_TOKEN`** for #4528.
+## Overlap with PR #4528
 
-## Remote state
-
-R2 bucket and S3 credentials come from **`ebwiki/infra`** (bootstrap). State encryption uses **`TF_VAR_state_passphrase`** from the same config. Stale lock: **`tofu force-unlock`** (OpenTofu [#4405](https://github.com/opentofu/opentofu/issues/4405)).
-
-## Doppler
-
-OpenTofu **adopts** **`STAGING_USERNAME`** and **`STAGING_PASSWORD`** (`ignore_changes` on values). Sets **`HOST`**. Runtime: **`scripts/doppler-at-runtime.md`**.
-
-## Adopting live resources
-
-Import blocks in **`imports.tf`** adopt Railway and Cloudflare resources. Confirm **`terraform.tfvars`** IDs against live Railway and Cloudflare before apply.
-
-GitHub source drift: **`scripts/railway-manual-settings.sh`**.
+Apply **this stack first**, then **#4528**.

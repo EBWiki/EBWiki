@@ -27,13 +27,3 @@ import {
   to = cloudflare_dns_record.staging
   id = "${var.cloudflare_zone_id}/${var.cloudflare_staging_dns_record_id}"
 }
-
-import {
-  to = doppler_secret.staging_username
-  id = "${var.doppler_project}.${var.doppler_config}.STAGING_USERNAME"
-}
-
-import {
-  to = doppler_secret.staging_password
-  id = "${var.doppler_project}.${var.doppler_config}.STAGING_PASSWORD"
-}

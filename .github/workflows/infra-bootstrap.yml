@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'infra/bootstrap/**'
+      - 'scripts/bootstrap.sh'
+      - 'scripts/infra-write-backend.sh'
+      - 'scripts/railway-github-access.sh'
       - '.github/workflows/infra-bootstrap.yml'
   workflow_dispatch:
 

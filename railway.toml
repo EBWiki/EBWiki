@@ -5,8 +5,8 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile.railway"
 
 [deploy]
-preDeployCommand = ["doppler", "run", "--project", "ebwiki", "--config", "stg", "--", "bash", "release-tasks.sh"]
-startCommand = "doppler run --project ebwiki --config stg -- bundle exec puma -C config/puma.rb"
+preDeployCommand = ["bash", "release-tasks.sh"]
+startCommand = "bundle exec puma -C config/puma.rb"
 healthcheckPath = "/up"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
