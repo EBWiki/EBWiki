@@ -10,7 +10,7 @@ OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the e
 
 ## Prerequisites in ebwiki/infra
 
-After bootstrap, **`infra`** holds minted Cloudflare DNS tokens (not the token maker), R2 credentials, **`RAILWAY_TOKEN`**, **`DOPPLER_TOKEN`** for apply, **`TF_VAR_staging_runtime_doppler_token`** for Railway, passphrases, and staging username / Postgres DB name seeds.
+After bootstrap, **`infra`** holds minted Cloudflare DNS tokens (**`CLOUDFLARE_DNS_API_TOKEN`**, **`CLOUDFLARE_GRANDKRU_DNS_API_TOKEN`**), R2 credentials, **`RAILWAY_TOKEN`**, **`DOPPLER_TOKEN`** for apply, **`STAGING_RUNTIME_DOPPLER_TOKEN`** for Railway, passphrases (**`STATE_PASSPHRASE`**, **`BOOTSTRAP_STATE_PASSPHRASE`**), **`STAGING_BASIC_AUTH_USERNAME`**, and Postgres DB name seeds. Plan and apply scripts map these to **`TF_VAR_*`** before OpenTofu runs.
 
 ## Remaining manual steps
 
@@ -27,8 +27,8 @@ Staging does **not** use **`CLOUDFLARE_TOKEN_MAKER`**. It uses **minted** tokens
 
 | Alias | Secret in **`infra`** | Zone |
 | --- | --- | --- |
-| **`cloudflare.ebwiki`** | **`TF_VAR_cloudflare_dns_api_token`** | **ebwiki.org** (legacy record + redirect) |
-| **`cloudflare.grandkru`** | **`TF_VAR_cloudflare_grandkru_dns_api_token`** | **grandkru.com** (staging CNAME + Railway verify TXT) |
+| **`cloudflare.ebwiki`** | **`CLOUDFLARE_DNS_API_TOKEN`** in **`infra`** | **ebwiki.org** (legacy record + redirect) |
+| **`cloudflare.grandkru`** | **`CLOUDFLARE_GRANDKRU_DNS_API_TOKEN`** in **`infra`** | **grandkru.com** (staging CNAME + Railway verify TXT) |
 
 Those tokens were created by bootstrap **`cloudflare.token_maker`** with DNS and Dynamic URL Redirect permissions on ebwiki only.
 

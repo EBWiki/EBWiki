@@ -37,8 +37,8 @@ Zone and account IDs in **`terraform.tfvars`** come from the **zone read** token
 - Private **R2** bucket for OpenTofu state and staging DB snapshots
 - Minted Cloudflare tokens above, stored in **`ebwiki/infra`**
 - **`TF_VAR_state_passphrase`** (random) for staging stacks
-- Config-scoped **Doppler service tokens** on **`stg` only**: read/write **`DOPPLER_TOKEN`** in **`infra`** for staging apply, and a read-only token stored as **`TF_VAR_staging_runtime_doppler_token`** for Railway
-- **`TF_VAR_bootstrap_state_passphrase`**, **`RAILWAY_TOKEN`**, **`TF_VAR_staging_basic_auth_username`** (generated), and **`STAGING_EXPECTED_POSTGRES_DB=ebwiki`** in **`infra`**
+- Config-scoped **Doppler service tokens** on **`stg` only**: read/write **`DOPPLER_TOKEN`** in **`infra`** for staging apply, and a read-only **`STAGING_RUNTIME_DOPPLER_TOKEN`** for Railway
+- **`BOOTSTRAP_STATE_PASSPHRASE`**, **`STATE_PASSPHRASE`**, **`RAILWAY_TOKEN`**, **`STAGING_BASIC_AUTH_USERNAME`** (generated), Cloudflare DNS tokens, and **`STAGING_EXPECTED_POSTGRES_DB=ebwiki`** in **`infra`**. OpenTofu variables are exported from these names by **`scripts/infra-with-tf-vars.sh`** (see **`scripts/lib/infra-export-tf-vars.sh`**).
 - Migrates bootstrap state from local encrypted storage into R2 in the same **`make bootstrap`** run
 
 ## Two apply stages

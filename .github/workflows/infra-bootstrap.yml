@@ -5,7 +5,9 @@ on:
     paths:
       - 'infra/bootstrap/**'
       - 'scripts/bootstrap.sh'
+      - 'scripts/infra-with-tf-vars.sh'
       - 'scripts/write-bootstrap-tfvars.sh'
+      - 'scripts/test/infra-doppler-names-test.sh'
       - 'scripts/lib/**'
       - 'scripts/infra-write-backend.sh'
       - 'scripts/railway-github-access.sh'
@@ -25,6 +27,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.7.0
+
+      - name: Doppler secret name lint
+        working-directory: .
+        run: ./scripts/test/infra-doppler-names-test.sh
 
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@v1.0.0

@@ -37,7 +37,7 @@ locals {
 resource "doppler_secret" "tf_var_bootstrap_state_passphrase" {
   project = var.doppler_project
   config  = local.doppler_infra_config
-  name    = "TF_VAR_bootstrap_state_passphrase"
+  name    = "BOOTSTRAP_STATE_PASSPHRASE"
   value   = var.bootstrap_state_passphrase
 
   depends_on = [doppler_environment.infra]
@@ -46,7 +46,7 @@ resource "doppler_secret" "tf_var_bootstrap_state_passphrase" {
 resource "doppler_secret" "tf_var_state_passphrase" {
   project = var.doppler_project
   config  = local.doppler_infra_config
-  name    = "TF_VAR_state_passphrase"
+  name    = "STATE_PASSPHRASE"
   value   = random_password.state_passphrase.result
 
   depends_on = [doppler_environment.infra]
@@ -55,25 +55,24 @@ resource "doppler_secret" "tf_var_state_passphrase" {
 resource "doppler_secret" "tf_var_cloudflare_dns_api_token" {
   project = var.doppler_project
   config  = local.doppler_infra_config
-  name    = "TF_VAR_cloudflare_dns_api_token"
-  value   = cloudflare_api_token.staging_ebwiki_dns.value
-
-  depends_on = [doppler_environment.infra]
-}
-
-resource "doppler_secret" "cloudflare_dns_api_token" {
-  project = var.doppler_project
-  config  = local.doppler_infra_config
   name    = "CLOUDFLARE_DNS_API_TOKEN"
   value   = cloudflare_api_token.staging_ebwiki_dns.value
 
   depends_on = [doppler_environment.infra]
 }
 
+removed {
+  from = doppler_secret.cloudflare_dns_api_token
+
+  lifecycle {
+    destroy = false
+  }
+}
+
 resource "doppler_secret" "tf_var_cloudflare_grandkru_dns_api_token" {
   project = var.doppler_project
   config  = local.doppler_infra_config
-  name    = "TF_VAR_cloudflare_grandkru_dns_api_token"
+  name    = "CLOUDFLARE_GRANDKRU_DNS_API_TOKEN"
   value   = cloudflare_api_token.staging_grandkru_dns.value
 
   depends_on = [doppler_environment.infra]
@@ -145,7 +144,7 @@ resource "doppler_secret" "doppler_apply_token" {
 resource "doppler_secret" "tf_var_staging_runtime_doppler_token" {
   project = var.doppler_project
   config  = local.doppler_infra_config
-  name    = "TF_VAR_staging_runtime_doppler_token"
+  name    = "STAGING_RUNTIME_DOPPLER_TOKEN"
   value   = doppler_service_token.railway_runtime.key
 
   depends_on = [doppler_environment.infra, doppler_service_token.railway_runtime]
@@ -163,7 +162,7 @@ resource "doppler_secret" "railway_token" {
 resource "doppler_secret" "tf_var_staging_basic_auth_username" {
   project = var.doppler_project
   config  = local.doppler_infra_config
-  name    = "TF_VAR_staging_basic_auth_username"
+  name    = "STAGING_BASIC_AUTH_USERNAME"
   value   = random_string.staging_basic_auth_username.result
 
   depends_on = [doppler_environment.infra]

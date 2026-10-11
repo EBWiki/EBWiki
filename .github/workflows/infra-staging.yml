@@ -6,7 +6,9 @@ on:
       - 'infra/staging/**'
       - 'scripts/lib/**'
       - 'scripts/staging-*.sh'
+      - 'scripts/infra-with-tf-vars.sh'
       - 'scripts/test/infra-lib-test.sh'
+      - 'scripts/test/infra-doppler-names-test.sh'
       - 'Dockerfile.railway'
       - 'railway.toml'
       - 'railway.staging.toml'
@@ -30,6 +32,10 @@ jobs:
       - name: Infra helper tests
         working-directory: .
         run: ./scripts/test/infra-lib-test.sh
+
+      - name: Doppler secret name lint
+        working-directory: .
+        run: ./scripts/test/infra-doppler-names-test.sh
 
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@v1.0.0
