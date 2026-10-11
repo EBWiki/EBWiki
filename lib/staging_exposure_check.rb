@@ -9,10 +9,29 @@ module StagingExposureCheck
 
   DEFAULT_RAILWAY_URL = 'https://ebwiki-web-production-cc7e.up.railway.app'
   DEFAULT_STAGING_URL = 'https://staging.ebwiki.org'
-  CF_ACCESS_CLIENT_ID_ENV = 'CF-Access-Client-Id'
-  CF_ACCESS_CLIENT_SECRET_ENV = 'CF-Access-Client-Secret'
+  HEALTH_PATH = '/up'
+
+  CF_ACCESS_CLIENT_ID_ENV = 'CF_ACCESS_CLIENT_ID'
+  CF_ACCESS_CLIENT_SECRET_ENV = 'CF_ACCESS_CLIENT_SECRET'
+  CF_ACCESS_CLIENT_ID_HEADER = 'CF-Access-Client-Id'
+  CF_ACCESS_CLIENT_SECRET_HEADER = 'CF-Access-Client-Secret'
 
   module_function
+
+  def resolve_railway_urls(argv:, env_railway_urls:)
+    return argv if argv.any?
+
+    return [DEFAULT_RAILWAY_URL] if env_railway_urls.nil?
+
+    urls = env_railway_urls.split(',').map(&:strip).reject(&:empty?)
+    if urls.empty?
+      raise CheckFailed,
+            'STAGING_EXPOSURE_RAILWAY_URLS is set but contains no URLs ' \
+            "(use a comma-separated list or unset it to use #{DEFAULT_RAILWAY_URL})"
+    end
+
+    urls
+  end
 
   def call(
     railway_urls:,
@@ -25,7 +44,7 @@ module StagingExposureCheck
 
     Array(railway_urls).each { |url| check_railway_url!(url, http) }
     check_staging_public_gate!(staging_url, http)
-    check_staging_up_with_service_token!(
+    check_staging_health_with_service_token!(
       staging_url,
       cf_access_client_id,
       cf_access_client_secret,
@@ -50,25 +69,31 @@ module StagingExposureCheck
       raise CheckFailed, "Could not reach staging hostname at #{root}/ (no response)"
     end
 
+    return if cloudflare_access_present?(response)
+
     code = response.code.to_i
-    return if [401, 403].include?(code)
-    return if cloudflare_access_redirect?(response)
+    if staging_app_basic_auth_only?(response)
+      raise CheckFailed,
+            'Staging root returned app basic auth (401) but not Cloudflare Access ' \
+            '(missing Access redirect or Cloudflare Access response markers)'
+    end
 
     raise CheckFailed, "Staging root is not gated by Cloudflare Access (HTTP #{code})"
   end
 
-  def check_staging_up_with_service_token!(staging_base_url, client_id, client_secret, http)
+  def check_staging_health_with_service_token!(staging_base_url, client_id, client_secret, http)
     ensure_service_token_present!(client_id, client_secret)
 
     root = normalize_base_url(staging_base_url)
+    health_url = "#{root}#{HEALTH_PATH}"
     response = http.call(
-      "#{root}/up",
+      health_url,
       headers: token_headers(client_id, client_secret),
       method: :get,
       follow_redirects: false
     )
 
-    ensure_up_response!(root, response)
+    ensure_health_response!(health_url, response)
   end
 
   def ensure_service_token_present!(client_id, client_secret)
@@ -79,16 +104,20 @@ module StagingExposureCheck
           "(set #{CF_ACCESS_CLIENT_ID_ENV} and #{CF_ACCESS_CLIENT_SECRET_ENV})"
   end
 
-  def ensure_up_response!(root, response)
+  def ensure_health_response!(health_url, response)
     unless response.answered?
-      raise CheckFailed, "Could not reach #{root}/up with service token headers (no response)"
+      raise CheckFailed, "Could not reach #{health_url} with service token headers (no response)"
     end
 
     code = response.code.to_i
-    return if [200, 401].include?(code)
+    return if code == 200
 
     raise CheckFailed,
-          "Staging /up with service token did not return 200 or basic-auth 401 (HTTP #{code})"
+          "Staging #{HEALTH_PATH} with service token did not return 200 (HTTP #{code})"
+  end
+
+  def cloudflare_access_present?(response)
+    cloudflare_access_redirect?(response) || cloudflare_access_response_marker?(response)
   end
 
   def cloudflare_access_redirect?(response)
@@ -104,14 +133,33 @@ module StagingExposureCheck
     false
   end
 
+  def cloudflare_access_response_marker?(response)
+    response.headers.any? do |key, _value|
+      normalized = key.to_s.downcase
+      normalized.start_with?('cf-access') || normalized == 'cf-middleware-access'
+    end || cloudflare_access_set_cookie?(response)
+  end
+
+  def cloudflare_access_set_cookie?(response)
+    cookie = response.headers['set-cookie'].to_s
+    cookie.match?(/CF_Authorization|CF_AppSession|cloudflareaccess/i)
+  end
+
+  def staging_app_basic_auth_only?(response)
+    return false unless response.code.to_i == 401
+
+    www_auth = response.headers['www-authenticate'].to_s
+    www_auth.match?(/\ABasic\b/i) && www_auth.include?('Staging')
+  end
+
   def normalize_base_url(url)
     url.to_s.delete_suffix('/')
   end
 
   def token_headers(client_id, client_secret)
     {
-      CF_ACCESS_CLIENT_ID_ENV => client_id,
-      CF_ACCESS_CLIENT_SECRET_ENV => client_secret
+      CF_ACCESS_CLIENT_ID_HEADER => client_id,
+      CF_ACCESS_CLIENT_SECRET_HEADER => client_secret
     }
   end
 end

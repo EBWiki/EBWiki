@@ -13,8 +13,10 @@ def usage
     Staging hostname defaults to #{StagingExposureCheck::DEFAULT_STAGING_URL}
     or STAGING_EXPOSURE_STAGING_URL.
 
-    Service token headers are read from #{StagingExposureCheck::CF_ACCESS_CLIENT_ID_ENV}
+    Service token values are read from #{StagingExposureCheck::CF_ACCESS_CLIENT_ID_ENV}
     and #{StagingExposureCheck::CF_ACCESS_CLIENT_SECRET_ENV} (values are never printed).
+    Those env vars are sent as #{StagingExposureCheck::CF_ACCESS_CLIENT_ID_HEADER}
+    and #{StagingExposureCheck::CF_ACCESS_CLIENT_SECRET_HEADER} request headers.
   MSG
 end
 
@@ -24,15 +26,10 @@ if ARGV.include?('-h') || ARGV.include?('--help')
 end
 
 begin
-  railway_urls =
-    if ARGV.any?
-      ARGV
-    else
-      ENV.fetch('STAGING_EXPOSURE_RAILWAY_URLS', StagingExposureCheck::DEFAULT_RAILWAY_URL)
-         .split(',')
-         .map(&:strip)
-         .reject(&:empty?)
-    end
+  railway_urls = StagingExposureCheck.resolve_railway_urls(
+    argv: ARGV,
+    env_railway_urls: ENV.fetch('STAGING_EXPOSURE_RAILWAY_URLS', nil)
+  )
 
   staging_url = ENV.fetch('STAGING_EXPOSURE_STAGING_URL', StagingExposureCheck::DEFAULT_STAGING_URL)
 
