@@ -30,6 +30,23 @@ infra_cf_zone_for_name() {
   echo "$resp" | jq -r '.result[0]'
 }
 
+infra_cf_assert_no_dynamic_redirect_rules() {
+  local zone_id="$1"
+  local token="$2"
+  local rs
+  rs="$(infra_curl_get \
+    "https://api.cloudflare.com/client/v4/zones/${zone_id}/rulesets/phases/http_request_dynamic_redirect/entrypoint" \
+    "$token" 2>&1)" || {
+    echo "$rs" | grep -q 'error: 404' && return 0
+    echo "Could not read ebwiki.org redirect rules." >&2
+    return 1
+  }
+  if echo "$rs" | jq -e '.success and (.result.rules | length > 0)' >/dev/null 2>&1; then
+    echo "ebwiki.org already has Single Redirect rules. Import the ruleset and copy its rules into cloudflare.tf before applying." >&2
+    return 1
+  fi
+}
+
 infra_cf_dns_record_id() {
   local zone_id="$1"
   local record_name="$2"
