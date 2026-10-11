@@ -3,55 +3,59 @@
 module Cases
   # versions controller
   class VersionsController < ApplicationController
-    # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/AbcSize
+    before_action :authenticate_user!
+    before_action :set_case
+    before_action :set_version, only: [:revert]
 
     def revert
-      @case = Case.friendly.find(revert_params[:case_id])
-      version = PaperTrail::Version.find_by(id: revert_params[:id])
-      msg = "Revert case=#{@case.id} ver=#{version&.id} reified=#{version&.reify.present?}"
-      Rails.logger.debug { msg }
+      reified = @version.reify
+      log_revert_attempt(reified)
 
-      begin
-        if version&.reify
-          @case.paper_trail.previous_version
-          @case.save
-          Rails.logger.debug { "Reverted case_id=#{@case.id}" }
-          flash[:success] = 'Reverted changes' # {make_redo_link}
-          flash[:reversion] = version
-          redirect_to @case
-        else
-          # For undoing the create action
-          @case.item.destroy
-          Rails.logger.debug { "Destroyed case_id=#{@case.id}" }
-          flash[:success] = 'Case deleted'
-          redirect_to root_path
-        end
-      rescue StandardError => e
-        Rails.logger.debug { "Revert error case_id=#{@case.id}: #{e.message}" }
-        flash[:alert] = 'Failed undoing the action...'
-        redirect_back_or_to @case
+      if reified
+        complete_revert(reified)
+      else
+        revert_not_allowed
       end
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+      handle_revert_failure(e)
     end
-
-    # rubocop:enable Metrics/AbcSize
-    # rubocop:enable Metrics/MethodLength
 
     private
 
-    def save_my_previous_url
-      # session[:previous_url] is a Rails built-in variable to save last url.
-      referer_path = begin
-        request.referer.present? ? URI.parse(request.referer).path : nil
-      rescue URI::InvalidURIError
-        nil
-      end
-      Rails.logger.debug { "redirect_path=#{referer_path}" }
-      session[:previous_url] = referer_path
+    def set_case
+      @case = Case.friendly.find(params[:case_id])
     end
 
-    def revert_params
-      params.permit(:case_id, :id)
+    def set_version
+      @version = @case.versions.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = 'Version not found for this case.'
+      redirect_back_or_to @case
+    end
+
+    def log_revert_attempt(reified)
+      msg = "Revert case=#{@case.id} ver=#{@version.id} reified=#{reified.present?}"
+      Rails.logger.debug { msg }
+    end
+
+    def complete_revert(reified)
+      reified.save!
+      Rails.logger.debug { "Reverted case_id=#{@case.id}" }
+      flash[:success] = 'Reverted changes'
+      flash[:reversion] = @version
+      redirect_to @case
+    end
+
+    def revert_not_allowed
+      flash[:alert] = 'This version cannot be reverted.'
+      redirect_back_or_to @case
+    end
+
+    def handle_revert_failure(error)
+      Rails.logger.debug { "Revert error case_id=#{@case.id}: #{error.message}" }
+      Rollbar.error(error)
+      flash[:alert] = 'Failed undoing the action...'
+      redirect_back_or_to @case
     end
   end
 end
