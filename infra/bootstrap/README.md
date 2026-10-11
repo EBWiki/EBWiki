@@ -29,9 +29,10 @@ Bootstrap uses project role **`collaborator`** on environment **`stg`** only. Do
 
 1. **One-time Cloudflare bootstrap token.** The first token needs a dashboard login, because no token exists yet to create it with.
 2. **One-time Doppler bootstrap token**, or **`doppler login`**, for the same reason.
-3. **Fill `terraform.tfvars` for bootstrap and staging** with the account, zone, record, and Railway IDs. These are inputs, not resources, and they stay out of the public repo.
-4. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap. Railway tokens are created in the dashboard. The OpenTofu provider cannot create them.
-5. **Railway GitHub app:** install on the EBWiki org in the browser if it is not installed yet. If it is already installed, run **`scripts/railway-github-access.sh`** to grant **EBWiki/EBWiki**.
+3. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap. Railway tokens are created in the dashboard. The OpenTofu provider cannot create them.
+4. **Railway GitHub app:** install on the EBWiki org in the browser if it is not installed yet. If it is already installed, run **`scripts/railway-github-access.sh`** to grant **EBWiki/EBWiki**.
+
+**`terraform.tfvars` for bootstrap and staging** is generated locally by **`scripts/write-bootstrap-tfvars.sh`** and **`scripts/write-staging-tfvars.sh`** (Cloudflare and Railway lookups via API). Files stay gitignored.
 
 ## Commands
 
@@ -39,6 +40,6 @@ Bootstrap uses project role **`collaborator`** on environment **`stg`** only. Do
 make bootstrap
 ```
 
-Then complete manual step 4 (and 5 if needed), set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`**, take a DB snapshot (see **`infra/staging/MIGRATIONS_ROLLBACK.md`**), and run **`make plan`** / **`make apply`**.
+Then complete manual steps 3 and 4 if needed, set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`**, and run **`make plan`** / **`make apply`**. **`make apply`** runs **`make snapshot`** first (Postgres dump to R2; see **`infra/staging/MIGRATIONS_ROLLBACK.md`**).
 
 OpenTofu **plan** for staging is **local only** (no CI plan job).

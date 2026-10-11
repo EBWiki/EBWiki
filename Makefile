@@ -49,7 +49,10 @@ bootstrap:
 plan:
 	./scripts/staging-plan.sh
 
+snapshot:
+	doppler run --project ebwiki --config infra -- ./scripts/staging-db-snapshot.sh
+
 apply:
 	./scripts/staging-apply.sh
 
-.PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan apply
+.PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan snapshot apply

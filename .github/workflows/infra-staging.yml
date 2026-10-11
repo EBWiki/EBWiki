@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'infra/staging/**'
+      - 'scripts/lib/**'
+      - 'scripts/staging-*.sh'
+      - 'scripts/test/infra-lib-test.sh'
       - 'Dockerfile.railway'
       - 'railway.toml'
       - 'railway.staging.toml'
@@ -23,6 +26,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.7.0
+
+      - name: Infra helper tests
+        working-directory: .
+        run: ./scripts/test/infra-lib-test.sh
 
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@v1.0.0

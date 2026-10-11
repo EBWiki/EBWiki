@@ -8,22 +8,25 @@ OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the e
 
 1. **One-time Cloudflare bootstrap token** (dashboard) for **`make bootstrap`** only.
 2. **One-time Doppler bootstrap token** or **`doppler login`** for **`make bootstrap`** only.
-3. **Fill `terraform.tfvars` for bootstrap and staging** with the account, zone, record, and Railway IDs. These are inputs, not resources, and they stay out of the public repo.
-4. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap (Railway dashboard).
-5. **Railway GitHub app:** browser install if needed; else **`scripts/railway-github-access.sh`**.
+3. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap (Railway dashboard).
+4. **Railway GitHub app:** browser install if needed; else **`scripts/railway-github-access.sh`**.
+5. **Railway CLI** on the operator machine, plus an **SSH key registered** with Railway (`railway ssh keys add`) so **`railway ssh`** can run **`pg_dump` inside the Postgres service** (`postgres:17`, service name **`Postgres`** by default). This works before apply while staging still runs image **`ebwiki/ebwiki:184`** (that image has no **`pg_dump`**).
 
 Also set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`** before apply (generated password is new in Doppler **`stg`**).
+
+**`terraform.tfvars`** is written by **`scripts/write-staging-tfvars.sh`** before **`make plan`** and **`make apply`** (Railway GraphQL plus Cloudflare DNS API, using Doppler **`ebwiki/infra`**).
 
 ## Behavior change
 
 Live staging runs image **`ebwiki/ebwiki:184`** with **`db:prepare`**. Apply switches to **main** with **`railway.staging.toml`** (**`release-tasks.sh`**, migrate only). Root **`railway.toml`** stays unchanged so other Railway services in this repo are unaffected.
 
-**Database:** snapshot before apply. See **`MIGRATIONS_ROLLBACK.md`**.
+**Database:** **`scripts/staging-apply.sh`** (and **`make apply`**) runs **`staging-db-snapshot.sh`** first: **`pg_dump`** on the **Postgres** service via **`railway ssh`**, streamed to R2 **`staging/db-snapshots/`** with no local temp file. After snapshot, verify with **`pg_restore --list`** on the object (see **`MIGRATIONS_ROLLBACK.md`**). See **`MIGRATIONS_ROLLBACK.md`** for restore guards (**`CONFIRM_RESTORE`** must match the project id).
 
 ## Commands
 
 ```bash
 make plan
+make snapshot   # optional alone; staging-apply.sh always snapshots first
 make apply
 ```
 
