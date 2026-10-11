@@ -60,8 +60,10 @@ rm -f bootstrap-stage2.tfplan
 echo "Dropping ephemeral R2 admin token and bucket from bootstrap state..."
 # shellcheck source=lib/infra-curl.sh
 source "$ROOT/scripts/lib/infra-curl.sh"
+# shellcheck source=lib/infra-tofu-state.sh
+source "$ROOT/scripts/lib/infra-tofu-state.sh"
 r2_admin_token_id="$(tofu state show -json cloudflare_api_token.r2_admin \
-  | jq -r 'select(.values.root_module?) | .values.root_module.resources[0].values.id // empty')"
+  | infra_tofu_state_show_json_resource_id)"
 [ -n "$r2_admin_token_id" ] || {
   echo "Could not read the R2 admin token id from state; not removing it." >&2
   exit 1

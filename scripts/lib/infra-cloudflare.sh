@@ -5,6 +5,8 @@ shopt -s inherit_errexit 2>/dev/null || true
 
 # shellcheck source=infra-curl.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-curl.sh"
+# shellcheck source=infra-tofu-state.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-tofu-state.sh"
 
 infra_cf_api_token() {
   if [ -n "${1:-}" ]; then
@@ -65,7 +67,7 @@ infra_staging_legacy_redirect_ruleset_id_from_state() {
     cd "$staging_dir" \
       && tofu init -backend-config=backend.hcl -input=false >/dev/null 2>&1 \
       && tofu state show -json cloudflare_ruleset.legacy_staging_redirect 2>/dev/null \
-      | jq -r '.values.id // empty'
+      | infra_tofu_state_show_json_resource_id
   )" || return 1
   [ -n "$id" ] || return 1
   printf '%s' "$id"

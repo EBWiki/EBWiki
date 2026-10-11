@@ -1,8 +1,17 @@
-import { defineRailway, preserve, project, service } from "railway/iac";
+import {
+  defineRailway,
+  github,
+  preserve,
+  project,
+  service,
+} from "railway/iac";
 
 // Own only the staging web service deploy settings; Postgres and Redis stay out of this partial.
-// Variable values are set by Railway references, Doppler, and OpenTofu — IaC only preserves names.
+// GitHub source matches OpenTofu (infra/staging/railway.tf). Variable values stay on Railway / OpenTofu.
 export const partial = "ebwiki-staging";
+
+const GITHUB_REPO = "EBWiki/EBWiki";
+const GITHUB_BRANCH = "main";
 
 /** Public name list only (no values). Keep in sync with live staging service variables. */
 const EBWIKI_PRESERVED_VARIABLE_NAMES = [
@@ -40,6 +49,11 @@ function preservedEbwikiEnv() {
 
 export default defineRailway(() => {
   const ebwiki = service("ebwiki", {
+    source: github(GITHUB_REPO, { branch: GITHUB_BRANCH }),
+    build: {
+      builder: "DOCKERFILE",
+      dockerfilePath: "Dockerfile.railway",
+    },
     env: preservedEbwikiEnv(),
     preDeploy:
       "doppler run --project ebwiki --config stg -- bash release-tasks.sh",
@@ -48,6 +62,7 @@ export default defineRailway(() => {
     healthcheck: "/up",
     healthcheckTimeout: 300,
     deploy: {
+      preDeployTimeoutSeconds: 900,
       restartPolicyType: "ON_FAILURE",
       restartPolicyMaxRetries: 3,
     },
