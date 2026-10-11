@@ -1,0 +1,8 @@
+# Copy to terraform.tfvars locally (gitignored). In CI, use TF_VAR_* from GitHub secrets/vars
+# synced from Doppler (ebwiki prd or shared infra config).
+
+cloudflare_account_id = "replace-with-account-id"
+cloudflare_zone_id    = "replace-with-ebwiki-org-zone-id"
+
+# health_hosts = ["ebwiki.org", "staging.ebwiki.org"]
+# allowed_operator_email = "mark@grandkru.com"

@@ -1,0 +1,49 @@
+name: Infra (Cloudflare)
+
+on:
+  pull_request:
+    paths:
+      - 'infra/cloudflare/**'
+      - '.github/workflows/infra-cloudflare.yml'
+  workflow_dispatch:
+
+jobs:
+  opentofu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/cloudflare
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.9.0
+
+      - name: Format check
+        run: tofu fmt -check -recursive
+
+      - name: Init (no backend)
+        run: tofu init -backend=false
+
+      - name: Validate
+        run: tofu validate
+
+      - name: Plan
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_cloudflare_account_id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
+        run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "Skipping tofu plan: CLOUDFLARE_API_TOKEN is not set in GitHub Actions."
+            exit 0
+          fi
+          if [ -z "${TF_VAR_cloudflare_account_id:-}" ] || [ -z "${TF_VAR_cloudflare_zone_id:-}" ]; then
+            echo "Skipping tofu plan: CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_ZONE_ID GitHub vars are not set."
+            exit 0
+          fi
+          tofu plan -input=false
