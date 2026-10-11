@@ -115,7 +115,7 @@ resource "doppler_secret" "r2_bucket_name" {
   name    = "R2_BUCKET_NAME"
   value   = local.r2_bucket_name
 
-  depends_on = [doppler_environment.infra, cloudflare_r2_bucket.opentofu_state]
+  depends_on = [doppler_environment.infra, random_id.bucket_suffix]
 }
 
 resource "doppler_secret" "cloudflare_account_id" {

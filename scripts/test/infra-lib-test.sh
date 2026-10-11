@@ -178,4 +178,24 @@ bash -c "$INFRA_SNAPSHOT_PIPE_CMD" | aws s3 cp - "s3://${R2_BUCKET_NAME}/${objec
   || fail "streamed snapshot upload"
 pass "snapshot streams to aws s3 cp without temp dump file"
 
+# Dynamic redirect pre-check (staging plan guard).
+redirect_empty='{"success":true,"result":{"rules":[]}}'
+redirect_nonempty='{"success":true,"result":{"rules":[{"id":"r1"}]}}'
+# shellcheck source=../lib/infra-cloudflare.sh
+source "$ROOT/scripts/lib/infra-cloudflare.sh"
+infra_curl_get() {
+  printf '%s' "${CF_MOCK_REDIRECT_RESPONSE:?}"
+}
+export CF_MOCK_REDIRECT_RESPONSE="$redirect_empty"
+infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token" \
+  || fail "should allow empty redirect ruleset"
+pass "redirect pre-check allows empty ruleset"
+
+export CF_MOCK_REDIRECT_RESPONSE="$redirect_nonempty"
+if infra_cf_assert_no_dynamic_redirect_rules "zone123" "dns-token"; then
+  fail "redirect pre-check should fail when rules exist"
+else
+  pass "redirect pre-check fails when redirect rules exist"
+fi
+
 echo "All infra-lib tests passed."

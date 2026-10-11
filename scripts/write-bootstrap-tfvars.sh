@@ -9,8 +9,7 @@ OUT="${1:-$ROOT/infra/bootstrap/terraform.tfvars}"
 EBWIKI_ZONE_NAME="${CLOUDFLARE_ZONE_NAME:-ebwiki.org}"
 GRANDKRU_ZONE_NAME="${CLOUDFLARE_GRANDKRU_ZONE_NAME:-grandkru.com}"
 
-: "${CLOUDFLARE_ZONE_READ_API_TOKEN:?Set CLOUDFLARE_ZONE_READ_API_TOKEN (grandkru/prd) for ebwiki.org zone lookup}"
-: "${CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN:?Set CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN (grandkru/prd) for grandkru.com zone lookup}"
+: "${CLOUDFLARE_ZONE_READ_API_TOKEN:?Set CLOUDFLARE_ZONE_READ_API_TOKEN (grandkru/prd) for zone lookup}"
 
 command -v curl >/dev/null 2>&1 || { echo "curl is required."; exit 1; }
 command -v jq >/dev/null 2>&1 || { echo "jq is required."; exit 1; }
@@ -19,7 +18,7 @@ ebwiki_zone_json="$(infra_cf_zone_for_name "$EBWIKI_ZONE_NAME" "$CLOUDFLARE_ZONE
 ebwiki_zone_id="$(echo "$ebwiki_zone_json" | jq -r '.id')"
 account_id="$(echo "$ebwiki_zone_json" | jq -r '.account.id')"
 
-grandkru_zone_json="$(infra_cf_zone_for_name "$GRANDKRU_ZONE_NAME" "$CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN")"
+grandkru_zone_json="$(infra_cf_zone_for_name "$GRANDKRU_ZONE_NAME" "$CLOUDFLARE_ZONE_READ_API_TOKEN")"
 grandkru_zone_id="$(echo "$grandkru_zone_json" | jq -r '.id')"
 
 mkdir -p "$(dirname "$OUT")"

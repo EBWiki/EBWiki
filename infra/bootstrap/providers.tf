@@ -4,7 +4,7 @@ provider "cloudflare" {
   api_token = var.cloudflare_token_maker
 }
 
-# r2_admin: minted Workers R2 Storage Edit token (1 day), not the maker.
+# r2_admin: minted Workers R2 Storage Write token (short-lived), not the maker.
 provider "cloudflare" {
   alias     = "r2_admin"
   api_token = cloudflare_api_token.r2_admin.value

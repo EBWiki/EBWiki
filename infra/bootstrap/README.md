@@ -10,9 +10,10 @@ Creates shared infrastructure secrets in Doppler environment **`ebwiki/infra`**.
 | --- | --- |
 | **`CLOUDFLARE_TOKEN_MAKER`** | Authenticates provider **`cloudflare.token_maker`** only |
 | **`DOPPLER_TOKEN_MAKER`** | Authenticates the Doppler provider (**`DOPPLER_TOKEN`**) |
-| **`CLOUDFLARE_ZONE_READ_API_TOKEN`** | Read-only zone lookup for **ebwiki.org** (account ID + zone ID) |
-| **`CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN`** | Read-only zone lookup for **grandkru.com** (zone ID) |
+| **`CLOUDFLARE_ZONE_READ_API_TOKEN`** | Read-only zone lookup (covers **ebwiki.org** and **grandkru.com**; account ID and both zone IDs) |
 | **`RAILWAY_API_TOKEN`** | Copied into **`infra`** as **`RAILWAY_TOKEN`** |
+
+PR Manager seeds **`RAILWAY_API_TOKEN`** and **`CLOUDFLARE_ZONE_READ_API_TOKEN`** in **`grandkru/prd`** before the first **`make bootstrap`** run.
 
 **PR Manager** also exports **`TF_VAR_bootstrap_state_passphrase`** locally (16+ characters) before **`make bootstrap`**.
 
@@ -24,9 +25,9 @@ OpenTofu uses the maker as **`cloudflare.token_maker`** and creates **final** us
 
 | Minted token | Permission (summary) | Used by |
 | --- | --- | --- |
-| **`staging_ebwiki_dns`** | DNS Write + Zone Rulesets Edit on **ebwiki.org** | Staging provider **`cloudflare.ebwiki`** |
+| **`staging_ebwiki_dns`** | DNS Write, Dynamic URL Redirects Write and Read on **ebwiki.org** | Staging provider **`cloudflare.ebwiki`** |
 | **`staging_grandkru_dns`** | DNS Write on **grandkru.com** only | Staging provider **`cloudflare.grandkru`** |
-| **`r2_admin`** | Workers R2 Storage Edit on the account (expires in 1 day) | Provider **`cloudflare.r2_admin`** to create the bucket |
+| **`r2_admin`** | Workers R2 Storage Write on the account (short-lived; removed after bucket creation) | Provider **`cloudflare.r2_admin`** to create the bucket once |
 | **`r2_state`** | Workers R2 Storage Bucket Item Write on the state bucket | R2 S3 credentials in **`infra`** |
 
 Zone and account IDs in **`terraform.tfvars`** come from the **zone read** tokens, not from the token maker.
@@ -44,7 +45,7 @@ Zone and account IDs in **`terraform.tfvars`** come from the **zone read** token
 
 **Stage 1:** **`cloudflare.token_maker`** mints DNS and R2 admin tokens, creates **`ebwiki/infra`**, and writes Doppler secrets that do not need the bucket yet.
 
-**Stage 2:** **`cloudflare.r2_admin`** (the minted admin token, not the maker) creates the R2 bucket; **`cloudflare.token_maker`** mints the bucket-scoped **`r2_state`** token; R2 credentials land in **`infra`**.
+**Stage 2:** **`cloudflare.r2_admin`** (the minted admin token, not the maker) creates the R2 bucket; **`cloudflare.token_maker`** mints the bucket-scoped **`r2_state`** token; R2 credentials land in **`infra`**. Then **`scripts/bootstrap.sh`** deletes the ephemeral R2 admin token in Cloudflare and removes the admin token and bucket from bootstrap state (the bucket remains in the account). The admin token expiry is pinned after the first apply so later plans do not rotate it. Later bucket changes require minting a fresh admin token by hand.
 
 Both stages run from **`make bootstrap`** (stage 1 uses OpenTofu **`-exclude`** on bucket-dependent resources).
 

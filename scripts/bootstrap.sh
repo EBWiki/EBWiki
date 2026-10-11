@@ -15,7 +15,6 @@ export DOPPLER_TOKEN="${DOPPLER_TOKEN_MAKER:?Set DOPPLER_TOKEN_MAKER in grandkru
 export TF_VAR_cloudflare_token_maker="${CLOUDFLARE_TOKEN_MAKER:?Set CLOUDFLARE_TOKEN_MAKER in grandkru/prd}"
 export TF_VAR_railway_api_token="${RAILWAY_API_TOKEN:?Set RAILWAY_API_TOKEN in grandkru/prd}"
 export CLOUDFLARE_ZONE_READ_API_TOKEN="${CLOUDFLARE_ZONE_READ_API_TOKEN:?Set CLOUDFLARE_ZONE_READ_API_TOKEN in grandkru/prd}"
-export CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN="${CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN:?Set CLOUDFLARE_GRANDKRU_ZONE_READ_API_TOKEN in grandkru/prd}"
 
 # A local state file means an earlier run stopped partway: resume it instead of refusing.
 if [ ! -f terraform.tfstate ] && \
@@ -57,6 +56,20 @@ echo "Bootstrap stage 2 (R2 bucket and state credentials)..."
 tofu plan -input=false -out=bootstrap-stage2.tfplan
 tofu apply -input=false bootstrap-stage2.tfplan
 rm -f bootstrap-stage2.tfplan
+
+echo "Dropping ephemeral R2 admin token and bucket from bootstrap state..."
+# shellcheck source=lib/infra-curl.sh
+source "$ROOT/scripts/lib/infra-curl.sh"
+r2_admin_token_id="$(tofu state show -json cloudflare_api_token.r2_admin | jq -r '.values.id // empty')"
+if [ -n "$r2_admin_token_id" ]; then
+  delete_resp="$(infra_curl_delete \
+    "https://api.cloudflare.com/client/v4/user/tokens/${r2_admin_token_id}" \
+    "${CLOUDFLARE_TOKEN_MAKER}")"
+  echo "$delete_resp" | jq -e '.success' >/dev/null \
+    || { echo "Failed to delete ephemeral R2 admin API token in Cloudflare." >&2; exit 1; }
+fi
+tofu state rm cloudflare_api_token.r2_admin
+tofu state rm cloudflare_r2_bucket.opentofu_state
 
 echo "Migrating bootstrap state into R2 (required, same run)..."
 
