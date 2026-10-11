@@ -3,7 +3,7 @@ provider "cloudflare" {
 }
 
 provider "doppler" {
-  # DOPPLER_TOKEN in the environment (PR Manager bootstrap token with write access).
+  # DOPPLER_TOKEN in the environment (from DOPPLER_TOKEN_MAKER / grandkru/prd during bootstrap).
 }
 
 provider "random" {}

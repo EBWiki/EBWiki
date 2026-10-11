@@ -2,15 +2,13 @@
 
 OpenTofu stack for [GKT-462](https://linear.app/gkt/issue/GKT-462). Adopts the existing Railway **ebwiki** project and service, points **staging.ebwiki.org** at Railway, and wires runtime **`DOPPLER_TOKEN`** on Railway.
 
-**Prerequisite:** **`make bootstrap`** so **`ebwiki/infra`** holds R2 credentials, DNS token, passphrases, and apply **`DOPPLER_TOKEN`**. PR Manager runs bootstrap, plan, and apply from the PR Manager machine.
+**Prerequisite:** **`make bootstrap`** so **`ebwiki/infra`** holds R2 credentials, DNS token, passphrases, and apply **`DOPPLER_TOKEN`**. PR Manager runs bootstrap (using **`CLOUDFLARE_TOKEN_MAKER`** and **`DOPPLER_TOKEN_MAKER`** from **`grandkru/prd`**), plan, and apply from the PR Manager machine.
 
 ## Manual, no API
 
-1. **Mark:** one-time **Cloudflare bootstrap token** (dashboard only) for PR Manager to run **`make bootstrap`**.
-2. **PR Manager:** one-time **Doppler bootstrap token** or **`doppler login`** for **`make bootstrap`**.
-3. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap (Railway dashboard).
-4. **Railway GitHub app:** browser install if needed; else PR Manager runs **`scripts/railway-github-access.sh`**.
-5. **Railway CLI** on the PR Manager machine, plus an **SSH key registered** with Railway (`railway ssh keys add`) so **`railway ssh`** can run **`pg_dump` inside the Postgres service** (`postgres:17`, service name **`Postgres`** by default). This works before apply while staging still runs image **`ebwiki/ebwiki:184`** (that image has no **`pg_dump`**).
+1. **`RAILWAY_TOKEN`** in **`ebwiki/infra`** after bootstrap (Railway dashboard).
+2. **Railway GitHub app:** browser install if needed; else PR Manager runs **`scripts/railway-github-access.sh`**.
+3. **Railway CLI** on the PR Manager machine, plus an **SSH key registered** with Railway (`railway ssh keys add`) so **`railway ssh`** can run **`pg_dump` inside the Postgres service** (`postgres:17`, service name **`Postgres`** by default). This works before apply while staging still runs image **`ebwiki/ebwiki:184`** (that image has no **`pg_dump`**).
 
 Also set **`TF_VAR_staging_basic_auth_username`** in **`ebwiki/infra`** before apply (generated password is new in Doppler **`stg`**).
 
