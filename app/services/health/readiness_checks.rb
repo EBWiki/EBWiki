@@ -6,6 +6,7 @@ module Health
   # Readiness probes for Postgres, Redis, and Elasticsearch (used by GET /health).
   class ReadinessChecks
     CHECK_TIMEOUT_SEC = 2
+    READY_STATUSES = %w[ok skipped].freeze
 
     def self.call
       new.call
@@ -17,8 +18,7 @@ module Health
         redis: check_redis,
         elasticsearch: check_elasticsearch
       }
-      overall = checks.values.all? { |entry| entry[:status] == 'ok' } ? 'ok' : 'down'
-      { status: overall, checks: checks }
+      { status: overall_status(checks), checks: checks }
     end
 
     private
@@ -37,9 +37,19 @@ module Health
     end
 
     def check_elasticsearch
+      return { status: 'skipped' } unless search_configured?
+
       timed_check do
         Searchkick.client.ping
       end
+    end
+
+    def search_configured?
+      ENV['ELASTICSEARCH_URL'].present? || ENV['SEARCHBOX_URL'].present?
+    end
+
+    def overall_status(checks)
+      checks.values.all? { |entry| READY_STATUSES.include?(entry[:status]) } ? 'ok' : 'down'
     end
 
     def timed_check(&)
