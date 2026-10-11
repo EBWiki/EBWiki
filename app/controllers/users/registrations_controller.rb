@@ -7,8 +7,9 @@ module Users
     # POST /resource
     def create
       if verify_recaptcha
-        super
-        OnboardUser.call(resource)
+        super do |user|
+          OnboardUser.call(user) if user.persisted?
+        end
       else
         redirect_to '/users/sign_up'
       end
