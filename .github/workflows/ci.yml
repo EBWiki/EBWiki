@@ -47,6 +47,25 @@ jobs:
       - name: Install gems
         run: bundle install
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/globe/package-lock.json
+
+      - name: Build and test globe bundle
+        run: |
+          cd frontend/globe
+          npm ci
+          npm run build
+          npm test
+
+      - name: Install Chrome for system specs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+
       - name: Setup database
         run: |
           cp config/database.ci.yml config/database.yml

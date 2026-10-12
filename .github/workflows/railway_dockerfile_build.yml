@@ -9,6 +9,7 @@ on:
       - config/database.railway.yml
       - Gemfile
       - Gemfile.lock
+      - frontend/globe/**
       - .github/workflows/railway_dockerfile_build.yml
   workflow_dispatch:
 

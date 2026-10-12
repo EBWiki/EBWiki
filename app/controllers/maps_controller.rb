@@ -4,7 +4,9 @@
 class MapsController < ApplicationController
   include MapsHelper
 
-  before_action :authenticate_user!, except: %i[index show]
+  layout 'maps', only: :globe
+
+  before_action :authenticate_user!, except: %i[index show globe cases]
 
   def index
     @cases = fetch_cases
@@ -12,6 +14,17 @@ class MapsController < ApplicationController
 
   def show
     @cases = fetch_cases
+    render :index
+  end
+
+  def globe
+    @cases_url = cases_maps_path(format: :json)
+    @flat_map_url = maps_path
+    @open_first_case = params[:open_case].present?
+  end
+
+  def cases
+    render json: public_case_points
   end
 
   def after_sign_up_path_for(resource)

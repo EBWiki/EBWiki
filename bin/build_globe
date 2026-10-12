@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/../frontend/globe"
+npm ci
+npm run build
+npm test

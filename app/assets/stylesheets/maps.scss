@@ -7,3 +7,29 @@
     height: 720px;
     margin: auto
 }
+
+.maps-view-toggle {
+  margin: 1rem 0 1.5rem;
+}
+
+.maps-page-content {
+  max-width: 100%;
+}
+
+.globe-viewport {
+  width: 100%;
+  max-width: 960px;
+  height: 720px;
+  margin: auto;
+  border: 1px solid #ddd;
+}
+
+.globe-attribution {
+  max-width: 960px;
+  margin: 0.75rem auto 0;
+}
+
+.globe-fallback-map {
+  max-width: 960px;
+  margin: 1rem auto;
+}
