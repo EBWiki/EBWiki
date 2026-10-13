@@ -1,0 +1,1 @@
+# Harbor 2026 requires an environment/ directory even when [environment].docker_image is set.
