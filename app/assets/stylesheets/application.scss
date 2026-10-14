@@ -1,8 +1,9 @@
 // Vendor/gem stylesheets
+$bootstrap-sass-asset-helper: true;
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "bootstrap-datetimepicker";
-@import "social-share-button";
+@import "social_share_button";
 @import "select2";
 @import "select2-bootstrap";
 

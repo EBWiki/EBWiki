@@ -34,8 +34,8 @@
     <meta name="twitter:creator" content="<%= DEFAULT_META["twitter_account"] %>">
     <meta name="twitter:image:src" content="<%= meta_image %>">
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_importmap_tags %>
     <%= javascript_include_tag Ckeditor.cdn_url %>
     <%= csrf_meta_tags %>
 
