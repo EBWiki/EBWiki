@@ -33,3 +33,4 @@ See [SESSION_2026-03-03_PRE_COMMIT.md](SESSION_2026-03-03_PRE_COMMIT.md) for det
 - [SETUP_LOCALLY.md](SETUP_LOCALLY.md) - Docker setup
 - [SETUP_LOCALLY_FULLSTACK.md](SETUP_LOCALLY_FULLSTACK.md) - Full local setup
 - [SESSION_2026-03-03_PRE_COMMIT.md](SESSION_2026-03-03_PRE_COMMIT.md) - March 3, 2026 session summary
+- [HANAMI_MIGRATION.md](HANAMI_MIGRATION.md) - Feasibility study: what a Hanami rewrite would take (not a migration plan in progress)
