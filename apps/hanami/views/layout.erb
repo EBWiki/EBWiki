@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EBWiki photo search preview</title>
+  <link rel="stylesheet" href="/preview.css">
+</head>
+<body>
+  <header class="site-header">
+    <p class="eyebrow">GKT-1338 preview · synthetic data only</p>
+    <h1>Photo-first search</h1>
+    <p class="lede">Placeholder tiles stand in for memorial photos. No real victim images appear in this demo.</p>
+  </header>
+  <%= content %>
+  <footer class="site-footer">
+    <p>Vectors and k-NN use the same spike pattern as <code>docs/spikes/photo_first_search/</code>. Production would use SigLIP 2 and pgvector on Neon.</p>
+  </footer>
+</body>
+</html>

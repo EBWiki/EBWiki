@@ -1,0 +1,97 @@
+<section class="search-panel">
+  <form class="search-form" action="/photos/search" method="get">
+    <label for="q">Text search (name, city, agency, year)</label>
+    <div class="search-row">
+      <input id="q" name="q" type="search" value="<%= query.to_s %>" placeholder="Try Oakland or 2020">
+      <button type="submit">Search</button>
+    </div>
+  </form>
+</section>
+
+<% if mode == 'text_search' %>
+  <section class="results-banner">
+    <h2>Text search results</h2>
+    <p>Keyword matches for “<%= query %>”. Semantic ordering uses synthetic 32-d vectors (preview only).</p>
+  </section>
+  <% if results.empty? %>
+    <p class="empty">No keyword matches. Try a city name or year from the grid below.</p>
+  <% else %>
+    <div class="photo-grid">
+      <% results.each do |c| %>
+        <article class="photo-card">
+          <img src="<%= c.image_path %>" alt="<%= c.title %> placeholder">
+          <div class="meta">
+            <h3><%= c.title %></h3>
+            <p><%= c.city %>, <%= c.state %> · <%= c.year %></p>
+            <p class="agency"><%= c.agency %></p>
+            <a class="button-link" href="/photos/similar?photo_id=<%= c.id %>">Find similar</a>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  <% end %>
+  <% unless semantic_ids.empty? %>
+    <section class="semantic-hint">
+      <h3>Semantic neighbors (synthetic embedding)</h3>
+      <ul>
+        <% semantic_ids.each do |sid| %>
+          <% c = cases.find { |x| x.id == sid } %>
+          <li><%= c.title %> · <%= c.city %>, <%= c.state %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+  <section class="results-banner secondary">
+    <h2>Full grid</h2>
+  </section>
+<% end %>
+
+<% if mode == 'similar' && anchor %>
+  <section class="results-banner">
+    <h2>Similar photos (cosine k-NN)</h2>
+    <p>Neighbors of <strong><%= anchor.title %></strong> using precomputed placeholder embeddings.</p>
+  </section>
+  <div class="anchor-card">
+    <img src="<%= anchor.image_path %>" alt="Selected placeholder tile">
+    <div>
+      <h3><%= anchor.title %></h3>
+      <p><%= anchor.city %>, <%= anchor.state %> · <%= anchor.year %></p>
+      <a href="/photos">Back to grid</a>
+    </div>
+  </div>
+  <div class="photo-grid similar-grid">
+    <% results.each do |entry, distance| %>
+      <article class="photo-card">
+        <img src="<%= entry.image_path %>" alt="<%= entry.title %> placeholder">
+        <div class="meta">
+          <h3><%= entry.title %></h3>
+          <p class="distance">distance <%= '%.4f' % distance %></p>
+          <p><%= entry.city %>, <%= entry.state %></p>
+          <a class="button-link" href="/photos/similar?photo_id=<%= entry.id %>">Find similar</a>
+        </div>
+      </article>
+    <% end %>
+  </div>
+<% end %>
+
+<% if mode == 'grid' || mode == 'text_search' %>
+  <% if mode == 'grid' %>
+    <section class="results-banner">
+      <h2>Photo grid</h2>
+      <p>Select <em>Find similar</em> on any tile to run cosine nearest-neighbor search.</p>
+    </section>
+  <% end %>
+  <div class="photo-grid">
+    <% cases.each do |c| %>
+      <article class="photo-card">
+        <img src="<%= c.image_path %>" alt="<%= c.title %> placeholder">
+        <div class="meta">
+          <h3><%= c.title %></h3>
+          <p><%= c.city %>, <%= c.state %> · <%= c.year %></p>
+          <p class="agency"><%= c.agency %></p>
+          <a class="button-link" href="/photos/similar?photo_id=<%= c.id %>">Find similar</a>
+        </div>
+      </article>
+    <% end %>
+  </div>
+<% end %>

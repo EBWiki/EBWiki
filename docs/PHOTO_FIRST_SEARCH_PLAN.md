@@ -301,7 +301,21 @@ Each item is intended to become a Linear sub-issue under GKT-1338.
 
 A minimal **pgvector neighbor demo** lives under [docs/spikes/photo_first_search/](./spikes/photo_first_search/). It uses synthetic 768-dimensional vectors to prove cosine k-NN SQL against Postgres without downloading model weights. See the spike README for `DATABASE_URL` instructions.
 
-**Next spike after merge:** Docker image with `google/siglip2-base-patch16-256` that writes real embeddings for ten staging cases.
+### Interactive UI preview (Hanami-shaped)
+
+The runnable preview lives in [`apps/hanami/`](../apps/hanami/README.md):
+
+- `GET /photos` — grid of **placeholder SVG tiles** (no real victim photos)
+- `GET /photos/search?q=…` — keyword filter plus synthetic semantic neighbors
+- `GET /photos/similar?photo_id=…` — cosine k-NN over precomputed demo embeddings
+
+```bash
+cd apps/hanami && bundle install && bundle exec puma -p 9393 config.ru
+```
+
+Open http://127.0.0.1:9393/photos. A `Dockerfile` is included for a future Railway service; this planning PR does not deploy a public hostname.
+
+**Next spike after merge:** Docker image with `google/siglip2-base-patch16-256` that writes real embeddings for ten staging cases into Neon pgvector.
 
 ---
 
