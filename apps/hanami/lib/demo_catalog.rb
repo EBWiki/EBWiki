@@ -29,6 +29,7 @@ class DemoCatalog
     def case_from_row(row)
       DemoCase.new(**row.transform_keys(&:to_sym))
     end
-    private_class_method :case_from_row
+
+    private :case_from_row
   end
 end
