@@ -20,14 +20,14 @@ VECTOR_B = Array.new(VECTOR_DIM) { |i| i.even? ? 0.02 : 0.0 }
 VECTOR_C = Array.new(VECTOR_DIM) { |i| i.even? ? 0.0 : 0.01 }
 PROBE = VECTOR_B
 
-CREATE_TABLE_SQL = <<~SQL.strip
+CREATE_TABLE_SQL = <<~SQL.squish.strip
   CREATE TABLE #{TABLE} (
     case_id bigint PRIMARY KEY,
     embedding vector(#{VECTOR_DIM}) NOT NULL
   )
 SQL
 
-KNN_SQL = <<~SQL.strip
+KNN_SQL = <<~SQL.squish.strip
   SELECT case_id, (embedding <=> '#{literal_vector(PROBE)}'::vector) AS cosine_distance
   FROM #{TABLE}
   ORDER BY embedding <=> '#{literal_vector(PROBE)}'::vector

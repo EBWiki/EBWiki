@@ -2,19 +2,24 @@
 
 require 'erb'
 require_relative 'demo_catalog'
+require_relative 'photo_router'
 require_relative 'vector_search'
 
 class PhotosApp
+  PageView = Data.define(:cases, :mode, :query, :anchor, :results, :semantic_ids)
+
   def initialize(root:)
     @root = root
     @cases = DemoCatalog.load(root: root)
-    @by_id = @cases.each_with_object({}) { |c, h| h[c.id] = c }
+    # Hanami preview runs without ActiveSupport; plain Ruby to_h keeps boot working.
+    @by_id = @cases.to_h { |c| [c.id, c] } # rubocop:disable Rails/IndexBy
     @layout = ERB.new(File.read(File.join(root, 'views', 'layout.erb')))
     @index = ERB.new(File.read(File.join(root, 'views', 'index.erb')))
-    @app = build_app
+    @app = PhotoRouter.build(self, root: root)
   end
 
-  def call(env)
+  # Explicit wrapper: Hanami preview has no ActiveSupport delegate helper loaded.
+  def call(env) # rubocop:disable Rails/Delegate
     @app.call(env)
   end
 
@@ -23,43 +28,18 @@ class PhotosApp
   end
 
   def photos_index(_env)
-    render_index(cases: @cases, mode: 'grid', query: nil, anchor: nil, results: nil, semantic_ids: [])
+    render_page(grid_view)
   end
 
   def photos_search(env)
-    req = Rack::Request.new(env)
-    query = req.params['q'].to_s
-    matched = DemoCatalog.text_match(@cases, query)
-    semantic_ids = semantic_rank(query)
-    render_index(
-      cases: @cases,
-      mode: 'text_search',
-      query: query,
-      anchor: nil,
-      results: matched,
-      semantic_ids: semantic_ids
-    )
+    render_page(search_view(Rack::Request.new(env).params['q'].to_s))
   end
 
   def photos_similar(env)
-    req = Rack::Request.new(env)
-    photo_id = req.params['photo_id'].to_i
+    photo_id = Rack::Request.new(env).params['photo_id'].to_i
     return rack_response(404, 'Unknown photo', 'text/plain') unless @by_id.key?(photo_id)
 
-    neighbors = VectorSearch.nearest(
-      @by_id.transform_values(&:embedding),
-      probe_id: photo_id,
-      limit: 6
-    )
-    neighbor_cases = neighbors.map { |id, dist| [@by_id[id], dist] }
-    render_index(
-      cases: @cases,
-      mode: 'similar',
-      query: nil,
-      anchor: @by_id[photo_id],
-      results: neighbor_cases,
-      semantic_ids: []
-    )
+    render_page(similar_view(photo_id))
   end
 
   def rack_redirect(location)
@@ -68,20 +48,38 @@ class PhotosApp
 
   private
 
-  def build_app
-    app = self
-    routes = Hanami::Router.new do
-      get '/health', to: ->(_env) { app.health }
-      get '/photos', to: ->(env) { app.photos_index(env) }
-      get '/photos/search', to: ->(env) { app.photos_search(env) }
-      get '/photos/similar', to: ->(env) { app.photos_similar(env) }
-      root to: ->(_env) { app.rack_redirect('/photos') }
-    end
+  def grid_view
+    PageView.new(
+      cases: @cases, mode: 'grid', query: nil, anchor: nil, results: nil, semantic_ids: []
+    )
+  end
 
-    Rack::Builder.new do
-      use Rack::Static, urls: ['/placeholders', '/preview.css'], root: app.instance_variable_get(:@root)
-      run routes
-    end
+  def search_view(query)
+    PageView.new(
+      cases: @cases,
+      mode: 'text_search',
+      query: query,
+      anchor: nil,
+      results: DemoCatalog.text_match(@cases, query),
+      semantic_ids: semantic_rank(query)
+    )
+  end
+
+  def similar_view(photo_id)
+    PageView.new(
+      cases: @cases,
+      mode: 'similar',
+      query: nil,
+      anchor: @by_id[photo_id],
+      results: similar_neighbors(photo_id),
+      semantic_ids: []
+    )
+  end
+
+  def similar_neighbors(photo_id)
+    VectorSearch
+      .nearest(@by_id.transform_values(&:embedding), probe_id: photo_id, limit: 6)
+      .map { |id, dist| [@by_id[id], dist] }
   end
 
   def semantic_rank(query)
@@ -93,22 +91,23 @@ class PhotosApp
       .map(&:first)
   end
 
-  def render_index(cases:, mode:, query:, anchor:, results:, semantic_ids:)
-    html = @layout.result_with_hash(
-      content: @index.result_with_hash(
-        cases: cases,
-        mode: mode,
-        query: query,
-        anchor: anchor,
-        results: results,
-        semantic_ids: semantic_ids
-      )
-    )
+  def render_page(view)
+    html = @layout.result_with_hash(content: index_html(view))
     rack_response(200, html, 'text/html')
+  end
+
+  def index_html(view)
+    @index.result_with_hash(
+      cases: view.cases,
+      mode: view.mode,
+      query: view.query,
+      anchor: view.anchor,
+      results: view.results,
+      semantic_ids: view.semantic_ids
+    )
   end
 
   def rack_response(status, body, content_type)
     [status, { 'content-type' => "#{content_type}; charset=utf-8" }, [body]]
   end
-
 end

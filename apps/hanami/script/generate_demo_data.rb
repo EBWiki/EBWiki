@@ -8,21 +8,25 @@ DIM = 32
 PLACEHOLDER_DIR = File.join(ROOT, 'public', 'placeholders')
 
 def embedding_for(id)
-  Array.new(DIM) { |i| i.even? ? ((id * 3 + i) % 50) / 1000.0 : ((id * 7 + i) % 50) / 1000.0 }
+  Array.new(DIM) { |i| i.even? ? (((id * 3) + i) % 50) / 1000.0 : (((id * 7) + i) % 50) / 1000.0 }
 end
 
 CASES = [
-  ['riverside-demo-a', 'Demo case Alpha', 'Riverside', 'CA', 2019, 'Riverside PD', %w[traffic stop preview]],
+  ['riverside-demo-a', 'Demo case Alpha', 'Riverside', 'CA', 2019, 'Riverside PD',
+   %w[traffic stop preview]],
   ['oakland-demo-b', 'Demo case Bravo', 'Oakland', 'CA', 2020, 'Oakland PD', %w[downtown preview]],
-  ['sacramento-demo-c', 'Demo case Charlie', 'Sacramento', 'CA', 2018, 'Sacramento SO', %w[capitol preview]],
+  ['sacramento-demo-c', 'Demo case Charlie', 'Sacramento', 'CA', 2018, 'Sacramento SO',
+   %w[capitol preview]],
   ['fresno-demo-d', 'Demo case Delta', 'Fresno', 'CA', 2021, 'Fresno PD', %w[central preview]],
   ['san-jose-demo-e', 'Demo case Echo', 'San Jose', 'CA', 2017, 'San Jose PD', %w[silicon preview]],
-  ['bakersfield-demo-f', 'Demo case Foxtrot', 'Bakersfield', 'CA', 2022, 'Kern SO', %w[valley preview]],
+  ['bakersfield-demo-f', 'Demo case Foxtrot', 'Bakersfield', 'CA', 2022, 'Kern SO',
+   %w[valley preview]],
   ['stockton-demo-g', 'Demo case Golf', 'Stockton', 'CA', 2016, 'Stockton PD', %w[port preview]],
   ['modesto-demo-h', 'Demo case Hotel', 'Modesto', 'CA', 2023, 'Modesto PD', %w[grid preview]],
   ['chico-demo-i', 'Demo case India', 'Chico', 'CA', 2015, 'Chico PD', %w[campus preview]],
   ['redding-demo-j', 'Demo case Juliet', 'Redding', 'CA', 2014, 'Redding PD', %w[north preview]],
-  ['santa-rosa-demo-k', 'Demo case Kilo', 'Santa Rosa', 'CA', 2024, 'Santa Rosa PD', %w[wine preview]],
+  ['santa-rosa-demo-k', 'Demo case Kilo', 'Santa Rosa', 'CA', 2024, 'Santa Rosa PD',
+   %w[wine preview]],
   ['monterey-demo-l', 'Demo case Lima', 'Monterey', 'CA', 2013, 'Monterey PD', %w[coast preview]]
 ].freeze
 

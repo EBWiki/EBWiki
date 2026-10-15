@@ -14,22 +14,7 @@ class DemoCatalog
   class << self
     def load(root:)
       data_path = File.join(root, 'data', 'demo_cases.json')
-      raw = JSON.parse(File.read(data_path))
-      raw.map do |row|
-        DemoCase.new(
-          id: row['id'],
-          slug: row['slug'],
-          title: row['title'],
-          city: row['city'],
-          state: row['state'],
-          year: row['year'],
-          agency: row['agency'],
-          tags: row['tags'],
-          image_path: row['image_path'],
-          embedding: row['embedding'],
-          attribution: row['attribution']
-        )
-      end
+      JSON.parse(File.read(data_path)).map { |row| case_from_row(row) }
     end
 
     def text_match(cases, query)
@@ -40,5 +25,10 @@ class DemoCatalog
         [c.title, c.city, c.state, c.agency, c.year.to_s, *c.tags].join(' ').downcase.include?(q)
       end
     end
+
+    def case_from_row(row)
+      DemoCase.new(**row.transform_keys(&:to_sym))
+    end
+    private_class_method :case_from_row
   end
 end
