@@ -2,6 +2,8 @@
 
 require 'httparty'
 
+require_relative 'allowed_image_download'
+
 module PhotoFinder
   class OpenverseClient
     API_ENDPOINT = 'https://api.openverse.org/v1/images/'
@@ -28,14 +30,16 @@ module PhotoFinder
     end
 
     def candidate_from_row(row)
-      return if row['url'].blank?
+      image_url = row['thumbnail'].presence
+      return if image_url.blank?
+      return unless AllowedImageDownload.permitted?(image_url)
 
-      Candidate.new(**openverse_row_attributes(row))
+      Candidate.new(**openverse_row_attributes(row, image_url))
     end
 
-    def openverse_row_attributes(row)
+    def openverse_row_attributes(row, image_url)
       {
-        image_url: row['url'],
+        image_url: image_url,
         source_page_url: row['foreign_landing_url'] || row['detail_url'],
         source_name: 'openverse',
         license_label: row['license']&.upcase,

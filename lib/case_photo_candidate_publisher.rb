@@ -3,6 +3,8 @@
 require 'httparty'
 require 'tempfile'
 
+require_relative 'photo_finder/allowed_image_download'
+
 # Attaches an approved remote photo to a case after human review.
 class CasePhotoCandidatePublisher
   class Error < StandardError; end
@@ -54,12 +56,21 @@ class CasePhotoCandidatePublisher
   end
 
   def attach_avatar!
+    ensure_permitted_download_url!(@candidate.image_url)
     response = download_image
+    final_url = response.request&.last_uri&.to_s
+    ensure_permitted_download_url!(final_url) if final_url.present?
     body = response.body
     content_type = normalized_content_type(response)
     validate_download!(body, content_type)
 
     write_avatar_file(body, CONTENT_TYPE_EXTENSIONS.fetch(content_type, '.jpg'))
+  end
+
+  def ensure_permitted_download_url!(url)
+    return if PhotoFinder::AllowedImageDownload.permitted?(url)
+
+    raise Error, 'Image URL is not from an allowed Wikimedia Commons or Openverse host.'
   end
 
   def download_image
