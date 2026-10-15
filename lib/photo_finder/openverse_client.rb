@@ -24,21 +24,25 @@ module PhotoFinder
     private
 
     def parse_results(payload)
-      results = payload['results'] || []
-      results.filter_map do |row|
-        image_url = row['url']
-        next if image_url.blank?
+      (payload['results'] || []).filter_map { |row| candidate_from_row(row) }
+    end
 
-        Candidate.new(
-          image_url: image_url,
-          source_page_url: row['foreign_landing_url'] || row['detail_url'],
-          source_name: 'openverse',
-          license_label: row['license']&.upcase,
-          license_url: row['license_url'],
-          title: row['title'],
-          description: row['creator']
-        )
-      end
+    def candidate_from_row(row)
+      return if row['url'].blank?
+
+      Candidate.new(**openverse_row_attributes(row))
+    end
+
+    def openverse_row_attributes(row)
+      {
+        image_url: row['url'],
+        source_page_url: row['foreign_landing_url'] || row['detail_url'],
+        source_name: 'openverse',
+        license_label: row['license']&.upcase,
+        license_url: row['license_url'],
+        title: row['title'],
+        description: row['creator']
+      }
     end
   end
 end

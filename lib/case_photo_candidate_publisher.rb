@@ -9,6 +9,12 @@ class CasePhotoCandidatePublisher
 
   MAX_BYTES = 8.megabytes
   ALLOWED_CONTENT_TYPES = %w[image/jpeg image/png image/gif image/webp].freeze
+  CONTENT_TYPE_EXTENSIONS = {
+    'image/jpeg' => '.jpg',
+    'image/png' => '.png',
+    'image/gif' => '.gif',
+    'image/webp' => '.webp'
+  }.freeze
 
   def initialize(candidate, reviewer:)
     @candidate = candidate
@@ -21,12 +27,7 @@ class CasePhotoCandidatePublisher
 
     ActiveRecord::Base.transaction do
       attach_avatar!
-      @candidate.update!(
-        status: :approved,
-        reviewed_by: @reviewer,
-        reviewed_at: Time.current,
-        rejection_reason: nil
-      )
+      record_approval!
     end
   end
 
@@ -43,20 +44,44 @@ class CasePhotoCandidatePublisher
 
   private
 
+  def record_approval!
+    @candidate.update!(
+      status: :approved,
+      reviewed_by: @reviewer,
+      reviewed_at: Time.current,
+      rejection_reason: nil
+    )
+  end
+
   def attach_avatar!
+    response = download_image
+    body = response.body
+    content_type = normalized_content_type(response)
+    validate_download!(body, content_type)
+
+    write_avatar_file(body, CONTENT_TYPE_EXTENSIONS.fetch(content_type, '.jpg'))
+  end
+
+  def download_image
     response = HTTParty.get(@candidate.image_url, follow_redirects: true, timeout: 30)
     raise Error, 'Could not download the image.' unless response.success?
 
-    content_type = response.headers['content-type'].to_s.split(';').first.strip.downcase
+    response
+  end
+
+  def normalized_content_type(response)
+    response.headers['content-type'].to_s.split(';').first.strip.downcase
+  end
+
+  def validate_download!(body, content_type)
     unless ALLOWED_CONTENT_TYPES.include?(content_type)
       raise Error, 'Downloaded file is not a supported image type.'
     end
-
-    body = response.body
     raise Error, 'Downloaded image is empty.' if body.blank?
     raise Error, 'Downloaded image is too large.' if body.bytesize > MAX_BYTES
+  end
 
-    extension = extension_for(content_type)
+  def write_avatar_file(body, extension)
     file = Tempfile.new(['case_photo_candidate', extension])
     file.binmode
     file.write(body)
@@ -67,15 +92,5 @@ class CasePhotoCandidatePublisher
   ensure
     file&.close
     file&.unlink
-  end
-
-  def extension_for(content_type)
-    case content_type
-    when 'image/jpeg' then '.jpg'
-    when 'image/png' then '.png'
-    when 'image/gif' then '.gif'
-    when 'image/webp' then '.webp'
-    else '.jpg'
-    end
   end
 end

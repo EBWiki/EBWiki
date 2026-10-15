@@ -2,6 +2,8 @@
 
 require 'uri'
 
+require_relative 'text_fragments'
+
 module PhotoFinder
   # Drops booking photos, arrest databases, and similar sources before review.
   module MugshotFilter
@@ -37,8 +39,8 @@ module PhotoFinder
       haystack = candidate.context_text.downcase
       uri_host = host_fragment(candidate.image_url) + host_fragment(candidate.source_page_url)
 
-      BLOCKED_HOST_FRAGMENTS.any? { |fragment| uri_host.include?(fragment) } ||
-        BLOCKED_TEXT_FRAGMENTS.any? { |fragment| haystack.include?(fragment) }
+      TextFragments.haystack_includes_any?(uri_host, BLOCKED_HOST_FRAGMENTS) ||
+        TextFragments.haystack_includes_any?(haystack, BLOCKED_TEXT_FRAGMENTS)
     end
 
     def host_fragment(url)
