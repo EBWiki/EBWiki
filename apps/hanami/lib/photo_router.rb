@@ -2,9 +2,10 @@
 
 class PhotoRouter
   def self.build(app, root:)
+    routes = routes_for(app)
     Rack::Builder.new do
       use Rack::Static, urls: ['/placeholders', '/preview.css'], root: root
-      run routes_for(app)
+      run routes
     end
   end
 
