@@ -104,8 +104,7 @@ class PhotosApp
       query: view.query,
       anchor: view.anchor,
       results: view.results,
-      semantic_ids: view.semantic_ids,
-      h: HtmlEscape.method(:h)
+      semantic_ids: view.semantic_ids
     )
   end
 
