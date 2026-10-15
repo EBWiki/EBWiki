@@ -1,10 +1,8 @@
 # Photo-first search for EBWiki (private, self-hosted)
 
-Linear: [GKT-1338](https://linear.app/gkt/issue/GKT-1338/ebwiki-plan-a-private-photo-first-search-of-people-killed-by-police-on).
-
 This plan describes how EBWiki can offer a **photo-first** way to browse and search cases using **memorial and news photos** (not mugshots), with **no queries or embeddings sent to closed commercial LLM APIs** (OpenAI, Anthropic, Google Gemini, and similar). The default path is **open-weight models and storage we operate**, aligned with staging on Railway and Postgres on Neon.
 
-**Related work already in flight:** globe map (PR #4536), flat map (PR #4537), staging cache fix (PR #4540), staging hostname ([GKT-1328](https://linear.app/gkt/issue/GKT-1328)), shared staging login ([GKT-1325](https://linear.app/gkt/issue/GKT-1325)), Hanami photo finder mugshot refusal ([GKT-1102](https://linear.app/gkt/issue/GKT-1102)). Case text search today uses `pg_search` on Postgres (`CaseSearchable`) while Elasticsearch remains in the health check for legacy paths ([STAGING_RAILWAY.md](./STAGING_RAILWAY.md)).
+**Related work already in flight:** globe map (PR #4536), flat map (PR #4537), staging cache fix (PR #4540), staging hostname on **staging.ebwiki.org**, shared staging login behind Cloudflare Access, and Hanami photo finder rules that refuse mugshots. Case text search today uses `pg_search` on Postgres (`CaseSearchable`) while Elasticsearch remains in the health check for legacy paths ([STAGING_RAILWAY.md](./STAGING_RAILWAY.md)).
 
 ---
 
@@ -13,13 +11,13 @@ This plan describes how EBWiki can offer a **photo-first** way to browse and sea
 **Goals**
 
 - Let visitors start from a **grid of faces and memorial photos**, then narrow by name, place, year, and agency, and land on the existing EBWiki case page.
-- Keep **personal data and search behavior** under team control: retention limits, no sale of query logs, staging behind Cloudflare Access until [GKT-1209](https://linear.app/gkt/issue/GKT-1209) is closed.
+- Keep **personal data and search behavior** under team control: retention limits, no sale of query logs, staging behind Cloudflare Access until staging is no longer exposed on the public internet.
 - Use **image and text embeddings** from open models (SigLIP 2 or CLIP family) stored in **Postgres with pgvector** (preferred) or a self-hosted vector database if scale demands it.
 - Batch-embed photos **offline**; serve search from precomputed vectors so Railway CPU services stay responsive.
 
 **Non-goals (explicit)**
 
-- **No face recognition** and no biometric identification (no “find this person in the database from a selfie”). That keeps the project out of BIPA-style biometric regimes and matches editorial policy on dignified photos ([GKT-1102](https://linear.app/gkt/issue/GKT-1102)).
+- **No face recognition** and no biometric identification (no “find this person in the database from a selfie”). That keeps the project out of BIPA-style biometric regimes and matches editorial policy on dignified photos and Hanami mugshot refusal rules.
 - **No mugshots** in the index or UI; ingestion must reuse Hanami-style refusal rules.
 - **No dependency on ChatGPT, Claude, or Gemini APIs** for embeddings or ranking in production.
 
@@ -34,9 +32,9 @@ Do these in sequence so photo search work hits a stable staging stack.
 | 1 | Merge PR #4540 (staging cache), then #4536 and #4537 (maps) | Unblocks map + stable staging reads. |
 | 2 | Neon branch from `ebwiki-review` with **PII scrubbed** | Source copy has ~4,033 cases and real users; strip emails, tokens, and other personal fields before load. |
 | 3 | Load scrubbed schema/data into **staging `DATABASE_URL`** | One-time `db:schema:load` or restore, then normal `db:migrate` on deploy ([STAGING_RAILWAY.md](./STAGING_RAILWAY.md)). |
-| 4 | Point staging at **ebwiki.staging.grandkru.com** with Cloudflare Access | [GKT-1328](https://linear.app/gkt/issue/GKT-1328), [GKT-1325](https://linear.app/gkt/issue/GKT-1325). |
+| 4 | Point staging at **staging.ebwiki.org** with Cloudflare Access | Standard staging hostname and shared team login (see [STAGING_RAILWAY.md](./STAGING_RAILWAY.md)). |
 | 5 | Railway GitHub deploy for Rails (`Dockerfile.railway`) | Confirm `deploy_rev` on `/up` and `/health`. |
-| 6 | Close public leak | [GKT-1209](https://linear.app/gkt/issue/GKT-1209). |
+| 6 | Close public leak | Take staging off the open internet (Cloudflare tunnel or equivalent). |
 | 7 | Add **embedding worker** and object storage for photo copies | Separate Railway service or external GPU box; not on the Puma web dyno. |
 
 Photo search features should ship **only behind the same staging gate** until rights review and takedown process are documented (section 3).
@@ -93,7 +91,7 @@ flowchart LR
 | **Copy vs link** | Store **thumbnails** (max width 512 px) plus **canonical source URL** in metadata; full-size only when license clearly permits mirroring. |
 | **Attribution** | Visible credit on tile hover and on case page (“Photo: … via …”). |
 | **Terms** | Maintain a checklist per source (commercial use, modification, API vs scrape); no bulk download until terms signed off. |
-| **Mugshots** | Block at ingestion using the same signals as [GKT-1102](https://linear.app/gkt/issue/GKT-1102). |
+| **Mugshots** | Block at ingestion using the same refusal signals as the Hanami photo finder. |
 | **Family takedown** | Email contact + admin flag to detach photo, purge vectors, and retain audit log without retaining the image bytes. |
 
 **Storage**
