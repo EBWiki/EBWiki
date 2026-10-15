@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'erb'
+require_relative 'html_escape'
 require_relative 'demo_catalog'
 require_relative 'photo_router'
 require_relative 'vector_search'
@@ -103,7 +104,8 @@ class PhotosApp
       query: view.query,
       anchor: view.anchor,
       results: view.results,
-      semantic_ids: view.semantic_ids
+      semantic_ids: view.semantic_ids,
+      h: HtmlEscape.method(:h)
     )
   end
 

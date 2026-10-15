@@ -113,7 +113,7 @@ flowchart LR
 **Image similarity (optional assist, not identity)**
 
 - Use **SigLIP 2** or **OpenCLIP** embeddings to suggest “same photo already attached to case B” when ingesting from news sites.
-- Threshold tuning on a **human-labeled** set of 200–500 pairs; never auto-merge cases on similarity alone.
+- Threshold tuning on a **human-labeled** set of 200-500 pairs; never auto-merge cases on similarity alone.
 
 **Explicit prohibition**
 
@@ -130,9 +130,9 @@ Survey order: **embedding and search first**, then **LLM helpers** (captions, qu
 | Model | License | Dims | Image | Text | Notes |
 | --- | --- | --- | --- | --- | --- |
 | **SigLIP 2** (`google/siglip2-base-patch16-256`) | Apache-2.0 | 768 | Yes | Yes (short) | Default recommendation; better small-batch behavior than CLIP; multilingual variants exist. |
-| **OpenCLIP** (e.g. ViT-B/32, ViT-L/14) | MIT / Apache | 512–768 | Yes | Yes | Mature ecosystem; keep **one** checkpoint for both ingest and query. |
+| **OpenCLIP** (e.g. ViT-B/32, ViT-L/14) | MIT / Apache | 512-768 | Yes | Yes | Mature ecosystem; keep **one** checkpoint for both ingest and query. |
 | **Nomic Embed Vision** | Apache-2.0 | 768 | Yes | Partial | Strong if text-heavy; pair with a text model if queries are long. |
-| **Meta DINOv2** | Apache-2.0 | 384–1536 | Yes | No | Visual similarity only; no text-to-image search unless hybrid. |
+| **Meta DINOv2** | Apache-2.0 | 384-1536 | Yes | No | Visual similarity only; no text-to-image search unless hybrid. |
 
 **Text-only (for long case blurbs, not for cross-modal search alone)**
 
@@ -186,7 +186,7 @@ Use this section to explain why the default is self-hosted, and when a vendor mi
 
 | Option | Typical cost signal | Privacy | Railway fit |
 | --- | --- | --- | --- |
-| **OpenAI embeddings** | Per-token | Images and text leave the estate | Call from Railway over HTTPS; **reject for production** per GKT-1338 |
+| **OpenAI embeddings** | Per-token | Images and text leave the estate | Call from Railway over HTTPS; **reject for production** (private self-hosted policy) |
 | **Google Vertex multimodal** | Per image / token | Google cloud | Same |
 | **AWS Bedrock Titan Multimodal** | Per call | AWS | Same |
 | **Cohere Embed v4** | Per token | Cohere cloud | Same |
@@ -199,10 +199,10 @@ Use this section to explain why the default is self-hosted, and when a vendor mi
 | Item | Self-hosted bias | Notes |
 | --- | --- | --- |
 | Neon Postgres (staging) | Existing project | Enable pgvector; embedding table ~4k × 768 × 4 bytes ≈ 12 MB plus index |
-| Railway web (Hanami or Rails) | ~$5–20 usage | CPU only, serverless sleep OK |
-| GPU embed batch | **$0** if run on a dev machine once; **~$20–50** on a rented 24 GB GPU for a few hours/month | Railway has **no GPU** ([Railway docs](https://docs.railway.com/platform/compare-to-northflank#does-railway-support-gpu-workloads)) |
-| R2 / MinIO | ~$1–5 | Thumbnails only |
-| **Vendor embed API** (if used) | **$5–50+** at scale | Grows with re-index and query volume; privacy cost is the main blocker |
+| Railway web (Hanami or Rails) | ~$5 to $20 usage | CPU only, serverless sleep OK |
+| GPU embed batch | **$0** if run on a dev machine once; **~$20 to $50** on a rented 24 GB GPU for a few hours/month | Railway has **no GPU** ([Railway docs](https://docs.railway.com/platform/compare-to-northflank#does-railway-support-gpu-workloads)) |
+| R2 / MinIO | ~$1 to $5 | Thumbnails only |
+| **Vendor embed API** (if used) | **$5 to $50+** at scale | Grows with re-index and query volume; privacy cost is the main blocker |
 
 ---
 
@@ -270,30 +270,30 @@ flowchart TB
 | Criterion | Self-hosted SigLIP 2 + pgvector | Vendor embeddings + Pinecone |
 | --- | --- | --- |
 | **Privacy** | Best | Weaker (images/text cross network) |
-| **Cost at 4k cases** | Low | Low–medium |
+| **Cost at 4k cases** | Low | Low to medium |
 | **Cost at 500k photos** | Medium (index size, GPU batch) | High recurring |
 | **Ops burden** | Medium (GPU batch job) | Low |
 | **Railway hosting** | Excellent for web + worker | Excellent for web only |
-| **Aligns with GKT-1338** | **Yes** | No for production |
+| **Aligns with private self-hosted policy** | **Yes** | No for production |
 
-**Decision:** Default to **SigLIP 2 base (768-d)** + **pgvector on Neon** + **S3-compatible thumbnails** + **GPU batch outside Railway**. Revisit Qdrant if ANN latency or index size exceeds comfortable Postgres limits (rule of thumb: investigate past ~1–2M vectors or p95 search > 100 ms).
+**Decision:** Default to **SigLIP 2 base (768-d)** + **pgvector on Neon** + **S3-compatible thumbnails** + **GPU batch outside Railway**. Revisit Qdrant if ANN latency or index size exceeds comfortable Postgres limits (rule of thumb: investigate past ~1-2M vectors or p95 search > 100 ms).
 
 ---
 
 ## 10. First shippable slice (~one week, ticket list)
 
-Each item is intended to become a Linear sub-issue under GKT-1338.
+Each item is intended to become a follow-up issue.
 
-1. **Scrubbed Neon staging load** – script checklist, PII fields list, verification query.
-2. **pgvector migration** – `case_photo_embeddings` + provenance table; no production deploy until staging proof.
-3. **Spike embed script** – containerized FastAPI or TEI calling SigLIP 2; embed 10 fixture photos from `spec/fixtures`.
-4. **Batch rake task** – `photo_search:embed_pending` enqueues cases with approved photos.
-5. **Hanami route `/photos`** – grid + filters (name, state, year) without semantic search yet.
-6. **Semantic search API** – `GET /api/photos/search?q=…` with k-NN + filter merge.
-7. **Attribution partial** – shared ERB/Hanami component for source strings.
-8. **Takedown admin flag** – detach photo, delete vectors, CDN purge hook.
-9. **Privacy pass** – document what is logged; disable raw query logs on staging.
-10. **QA checklist** – mugshot refusal, missing photo, takedown, Cloudflare Access smoke.
+1. **Scrubbed Neon staging load:** script checklist, PII fields list, verification query.
+2. **pgvector migration:** `case_photo_embeddings` + provenance table; no production deploy until staging proof.
+3. **Spike embed script:** containerized FastAPI or TEI calling SigLIP 2; embed 10 fixture photos from `spec/fixtures`.
+4. **Batch rake task:** `photo_search:embed_pending` enqueues cases with approved photos.
+5. **Hanami route `/photos`:** grid + filters (name, state, year) without semantic search yet.
+6. **Semantic search API:** `GET /api/photos/search?q=…` with k-NN + filter merge.
+7. **Attribution partial:** shared ERB/Hanami component for source strings.
+8. **Takedown admin flag:** detach photo, delete vectors, CDN purge hook.
+9. **Privacy pass:** document what is logged; disable raw query logs on staging.
+10. **QA checklist:** mugshot refusal, missing photo, takedown, Cloudflare Access smoke.
 
 ---
 
@@ -305,9 +305,9 @@ A minimal **pgvector neighbor demo** lives under [docs/spikes/photo_first_search
 
 The runnable preview lives in [`apps/hanami/`](../apps/hanami/README.md):
 
-- `GET /photos` — grid of **placeholder SVG tiles** (no real victim photos)
-- `GET /photos/search?q=…` — keyword filter plus synthetic semantic neighbors
-- `GET /photos/similar?photo_id=…` — cosine k-NN over precomputed demo embeddings
+- `GET /photos`: grid of **placeholder SVG tiles** (no real victim photos)
+- `GET /photos/search?q=…`: keyword filter plus synthetic semantic neighbors
+- `GET /photos/similar?photo_id=…`: cosine k-NN over precomputed demo embeddings
 
 ```bash
 cd apps/hanami && bundle install && bundle exec puma -p 9393 config.ru

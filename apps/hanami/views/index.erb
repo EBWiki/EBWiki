@@ -2,7 +2,7 @@
   <form class="search-form" action="/photos/search" method="get">
     <label for="q">Text search (name, city, agency, year)</label>
     <div class="search-row">
-      <input id="q" name="q" type="search" value="<%= query.to_s %>" placeholder="Try Oakland or 2020">
+      <input id="q" name="q" type="search" value="<%= h(query) %>" placeholder="Try Oakland or 2020">
       <button type="submit">Search</button>
     </div>
   </form>
@@ -11,7 +11,7 @@
 <% if mode == 'text_search' %>
   <section class="results-banner">
     <h2>Text search results</h2>
-    <p>Keyword matches for “<%= query %>”. Semantic ordering uses synthetic 32-d vectors (preview only).</p>
+    <p>Keyword matches for “<%= h(query) %>”. Semantic ordering uses synthetic 32-d vectors (preview only).</p>
   </section>
   <% if results.empty? %>
     <p class="empty">No keyword matches. Try a city name or year from the grid below.</p>
@@ -19,11 +19,11 @@
     <div class="photo-grid">
       <% results.each do |c| %>
         <article class="photo-card">
-          <img src="<%= c.image_path %>" alt="<%= c.title %> placeholder">
+          <img src="<%= h(c.image_path) %>" alt="<%= h(c.title) %> placeholder">
           <div class="meta">
-            <h3><%= c.title %></h3>
-            <p><%= c.city %>, <%= c.state %> · <%= c.year %></p>
-            <p class="agency"><%= c.agency %></p>
+            <h3><%= h(c.title) %></h3>
+            <p><%= h(c.city) %>, <%= h(c.state) %> · <%= h(c.year) %></p>
+            <p class="agency"><%= h(c.agency) %></p>
             <a class="button-link" href="/photos/similar?photo_id=<%= c.id %>">Find similar</a>
           </div>
         </article>
@@ -36,7 +36,7 @@
       <ul>
         <% semantic_ids.each do |sid| %>
           <% c = cases.find { |x| x.id == sid } %>
-          <li><%= c.title %> · <%= c.city %>, <%= c.state %></li>
+          <li><%= h(c.title) %> · <%= h(c.city) %>, <%= h(c.state) %></li>
         <% end %>
       </ul>
     </section>
@@ -49,24 +49,24 @@
 <% if mode == 'similar' && anchor %>
   <section class="results-banner">
     <h2>Similar photos (cosine k-NN)</h2>
-    <p>Neighbors of <strong><%= anchor.title %></strong> using precomputed placeholder embeddings.</p>
+    <p>Neighbors of <strong><%= h(anchor.title) %></strong> using precomputed placeholder embeddings.</p>
   </section>
   <div class="anchor-card">
-    <img src="<%= anchor.image_path %>" alt="Selected placeholder tile">
+    <img src="<%= h(anchor.image_path) %>" alt="Selected placeholder tile">
     <div>
-      <h3><%= anchor.title %></h3>
-      <p><%= anchor.city %>, <%= anchor.state %> · <%= anchor.year %></p>
+      <h3><%= h(anchor.title) %></h3>
+      <p><%= h(anchor.city) %>, <%= h(anchor.state) %> · <%= h(anchor.year) %></p>
       <a href="/photos">Back to grid</a>
     </div>
   </div>
   <div class="photo-grid similar-grid">
     <% results.each do |entry, distance| %>
       <article class="photo-card">
-        <img src="<%= entry.image_path %>" alt="<%= entry.title %> placeholder">
+        <img src="<%= h(entry.image_path) %>" alt="<%= h(entry.title) %> placeholder">
         <div class="meta">
-          <h3><%= entry.title %></h3>
-          <p class="distance">distance <%= '%.4f' % distance %></p>
-          <p><%= entry.city %>, <%= entry.state %></p>
+          <h3><%= h(entry.title) %></h3>
+          <p class="distance">distance <%= h(format('%.4f', distance)) %></p>
+          <p><%= h(entry.city) %>, <%= h(entry.state) %></p>
           <a class="button-link" href="/photos/similar?photo_id=<%= entry.id %>">Find similar</a>
         </div>
       </article>
@@ -84,11 +84,11 @@
   <div class="photo-grid">
     <% cases.each do |c| %>
       <article class="photo-card">
-        <img src="<%= c.image_path %>" alt="<%= c.title %> placeholder">
+        <img src="<%= h(c.image_path) %>" alt="<%= h(c.title) %> placeholder">
         <div class="meta">
-          <h3><%= c.title %></h3>
-          <p><%= c.city %>, <%= c.state %> · <%= c.year %></p>
-          <p class="agency"><%= c.agency %></p>
+          <h3><%= h(c.title) %></h3>
+          <p><%= h(c.city) %>, <%= h(c.state) %> · <%= h(c.year) %></p>
+          <p class="agency"><%= h(c.agency) %></p>
           <a class="button-link" href="/photos/similar?photo_id=<%= c.id %>">Find similar</a>
         </div>
       </article>

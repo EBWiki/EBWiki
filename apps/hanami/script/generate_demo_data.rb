@@ -63,7 +63,7 @@ cases = CASES.each_with_index.map do |(slug, title, city, state, year, agency, t
     'tags' => tags,
     'image_path' => "/placeholders/#{svg_name}",
     'embedding' => embedding_for(id),
-    'attribution' => 'Synthetic preview tile for GKT-1338 (not a real case photo).'
+    'attribution' => 'Synthetic preview tile (not a real case photo).'
   }
 end
 

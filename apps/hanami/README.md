@@ -1,4 +1,4 @@
-# Hanami photo search preview (GKT-1338)
+# Hanami photo search preview
 
 Small Rack app shaped for the future Hanami staging service (`hanami.ebwiki.org`). It demonstrates the `/photos` grid, text search, and cosine “find similar” using **synthetic demo cases and placeholder SVG tiles only**.
 
