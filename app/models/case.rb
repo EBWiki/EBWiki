@@ -31,6 +31,7 @@ class Case < ApplicationRecord
 
   has_many :case_agencies, dependent: :destroy
   has_many :agencies, through: :case_agencies
+  has_many :photo_candidates, class_name: 'CasePhotoCandidate', dependent: :destroy
   accepts_nested_attributes_for :case_agencies, reject_if: :all_blank, allow_destroy: true
   # Paper Trail
   has_paper_trail ignore: [:summary], meta: { comment: :edit_summary }
@@ -94,6 +95,9 @@ class Case < ApplicationRecord
   }
   scope :with_location, lambda {
     where('latitude is not null AND longitude is not null')
+  }
+  scope :missing_custom_photo, lambda {
+    where(avatar: [nil, ''])
   }
 
   def full_address
