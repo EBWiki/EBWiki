@@ -10,12 +10,23 @@ class PhotoRouter
   end
 
   def self.routes_for(app)
-    Hanami::Router.new do
-      get '/health', to: ->(_env) { app.health }
-      get '/photos', to: ->(env) { app.photos_index(env) }
-      get '/photos/search', to: ->(env) { app.photos_search(env) }
-      get '/photos/similar', to: ->(env) { app.photos_similar(env) }
-      root to: ->(_env) { app.rack_redirect('/photos') }
-    end
+    ->(env) { dispatch(app, env) }
   end
+
+  def self.dispatch(app, env)
+    path = Rack::Request.new(env).path_info
+    handler = {
+      '/health' => -> { app.health },
+      '/photos' => -> { app.photos_index(env) },
+      '/photos/search' => -> { app.photos_search(env) },
+      '/photos/similar' => -> { app.photos_similar(env) },
+      '/' => -> { app.rack_redirect('/photos') }
+    }[path]
+    handler ? handler.call : not_found
+  end
+
+  def self.not_found
+    [404, { 'content-type' => 'text/plain' }, ['Not Found']]
+  end
+  private_class_method :not_found
 end
