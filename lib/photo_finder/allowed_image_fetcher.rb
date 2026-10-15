@@ -13,63 +13,59 @@ module PhotoFinder
     MAX_REDIRECTS = 5
     REDIRECT_STATUS = [301, 302, 303, 307, 308].freeze
 
-    module_function
-
-    def fetch(start_url, timeout: 30)
-      follow_redirects(start_url, timeout: timeout, redirects_followed: 0)
-    end
-
-    def follow_redirects(current_url, timeout:, redirects_followed:)
-      ensure_permitted!(current_url)
-      response = HTTParty.get(current_url, follow_redirects: false, timeout: timeout)
-      return response if response.success?
-      if redirect?(response)
-        return redirect_response(current_url, response, timeout, redirects_followed)
+    class << self
+      def fetch(start_url, timeout: 30)
+        follow_redirects(start_url, timeout: timeout, redirects_followed: 0)
       end
 
-      raise Error, 'Could not download the image.'
+      private
+
+      def follow_redirects(current_url, timeout:, redirects_followed:)
+        ensure_permitted!(current_url)
+        response = HTTParty.get(current_url, follow_redirects: false, timeout: timeout)
+        return response if response.success?
+        if redirect?(response)
+          return redirect_response(current_url, response, timeout, redirects_followed)
+        end
+
+        raise Error, 'Could not download the image.'
+      end
+
+      def redirect?(response)
+        REDIRECT_STATUS.include?(response.code)
+      end
+
+      def redirect_response(current_url, response, timeout, redirects_followed)
+        handle_redirect(
+          current_url,
+          response,
+          timeout: timeout,
+          redirects_followed: redirects_followed
+        )
+      end
+
+      def handle_redirect(current_url, response, timeout:, redirects_followed:)
+        redirects_followed += 1
+        raise Error, 'Too many redirects.' if redirects_followed > MAX_REDIRECTS
+
+        location = response.headers['location']
+        raise Error, 'Redirect response did not include a location.' if location.blank?
+
+        next_url = absolute_redirect_url(current_url, location)
+        follow_redirects(next_url, timeout: timeout, redirects_followed: redirects_followed)
+      end
+
+      def ensure_permitted!(url)
+        return if AllowedImageDownload.permitted?(url)
+
+        raise Error, 'Image URL is not from an allowed Wikimedia Commons or Openverse host.'
+      end
+
+      def absolute_redirect_url(base_url, location)
+        URI.join(base_url, location).to_s
+      rescue URI::InvalidURIError
+        raise Error, 'Redirect location is not a valid URL.'
+      end
     end
-    private_class_method :follow_redirects
-
-    def redirect?(response)
-      REDIRECT_STATUS.include?(response.code)
-    end
-    private_class_method :redirect?
-
-    def redirect_response(current_url, response, timeout, redirects_followed)
-      handle_redirect(
-        current_url,
-        response,
-        timeout: timeout,
-        redirects_followed: redirects_followed
-      )
-    end
-    private_class_method :redirect_response
-
-    def handle_redirect(current_url, response, timeout:, redirects_followed:)
-      redirects_followed += 1
-      raise Error, 'Too many redirects.' if redirects_followed > MAX_REDIRECTS
-
-      location = response.headers['location']
-      raise Error, 'Redirect response did not include a location.' if location.blank?
-
-      next_url = absolute_redirect_url(current_url, location)
-      follow_redirects(next_url, timeout: timeout, redirects_followed: redirects_followed)
-    end
-    private_class_method :handle_redirect
-
-    def ensure_permitted!(url)
-      return if AllowedImageDownload.permitted?(url)
-
-      raise Error, 'Image URL is not from an allowed Wikimedia Commons or Openverse host.'
-    end
-    private_class_method :ensure_permitted!
-
-    def absolute_redirect_url(base_url, location)
-      URI.join(base_url, location).to_s
-    rescue URI::InvalidURIError
-      raise Error, 'Redirect location is not a valid URL.'
-    end
-    private_class_method :absolute_redirect_url
   end
 end
