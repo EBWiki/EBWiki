@@ -16,16 +16,11 @@ class CasePhotoCandidate < ApplicationRecord
   scope :awaiting_review, -> { pending.order(created_at: :desc) }
 
   def self.create_from_photo_finder_candidate!(case_record, finder_candidate)
-    create!(
-      case: case_record,
-      image_url: finder_candidate.image_url,
-      source_page_url: finder_candidate.source_page_url,
-      source_name: finder_candidate.source_name,
-      license_label: finder_candidate.license_label,
-      license_url: finder_candidate.license_url,
-      title: finder_candidate.title,
-      description: finder_candidate.description,
-      status: :pending
-    )
+    create!(attributes_from_finder(case_record, finder_candidate))
   end
+
+  def self.attributes_from_finder(case_record, finder_candidate)
+    finder_candidate.to_h.merge(case: case_record, status: :pending)
+  end
+  private_class_method :attributes_from_finder
 end

@@ -96,10 +96,6 @@ class Case < ApplicationRecord
   scope :with_location, lambda {
     where('latitude is not null AND longitude is not null')
   }
-  scope :missing_custom_photo, lambda {
-    where(avatar: [nil, ''])
-  }
-
   def full_address
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
   end
