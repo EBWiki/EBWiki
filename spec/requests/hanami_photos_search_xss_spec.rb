@@ -11,7 +11,7 @@ RSpec.describe 'Hanami photo search preview' do
 
   it 'HTML-escapes a script tag in the search query' do
     payload = '<script>alert(1)</script>'
-    env = Rack::MockRequest.env_for("/photos/search?q=#{Rack::Utils.escape_query(payload)}")
+    env = Rack::MockRequest.env_for("/photos/search?q=#{CGI.escape(payload)}")
     status, _headers, body = app.photos_search(env)
 
     expect(status).to eq(200)
