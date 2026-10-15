@@ -2,6 +2,8 @@
 
 require 'httparty'
 
+require_relative 'allowed_image_download'
+
 module PhotoFinder
   class WikimediaCommonsClient
     API_ENDPOINT = 'https://commons.wikimedia.org/w/api.php'
@@ -52,16 +54,25 @@ module PhotoFinder
       imageinfo = page['imageinfo']&.first
       return unless imageinfo
 
-      metadata = imageinfo['extmetadata'] || {}
+      image_url = imageinfo['thumburl'] || imageinfo['url']
+      return unless AllowedImageDownload.permitted?(image_url)
+
       Candidate.new(
-        image_url: imageinfo['thumburl'] || imageinfo['url'],
-        source_page_url: wiki_page_url(page['title']),
+        **wikimedia_candidate_attributes(page['title'], imageinfo, image_url)
+      )
+    end
+
+    def wikimedia_candidate_attributes(title, imageinfo, image_url)
+      metadata = imageinfo['extmetadata'] || {}
+      {
+        image_url: image_url,
+        source_page_url: wiki_page_url(title),
         source_name: 'wikimedia_commons',
         license_label: metadata.dig('LicenseShortName', 'value'),
         license_url: metadata.dig('LicenseUrl', 'value'),
-        title: page['title'],
+        title: title,
         description: metadata.dig('ImageDescription', 'value')
-      )
+      }
     end
 
     def wiki_page_url(title)

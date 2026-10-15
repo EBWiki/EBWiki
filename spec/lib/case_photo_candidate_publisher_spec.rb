@@ -10,8 +10,11 @@ RSpec.describe CasePhotoCandidatePublisher do
     create(:subject, case: kase, name: 'Jordan Rivera')
     kase.reload
   end
+  let(:allowed_image_url) do
+    'https://api.openverse.org/v1/thumbs/610756ec-ae31-4d5e-8f03-8cc52f31b71d'
+  end
   let(:candidate) do
-    create(:case_photo_candidate, case: case_record, image_url: 'https://news.example/rivera.jpg')
+    create(:case_photo_candidate, case: case_record, image_url: allowed_image_url)
   end
 
   before do
@@ -26,6 +29,18 @@ RSpec.describe CasePhotoCandidatePublisher do
     expect(candidate.reload).to be_approved
     expect(candidate.reviewed_by).to eq(admin)
     expect(case_record.reload.avatar?).to be(true)
+  end
+
+  it 'does not download disallowed image hosts on approve' do
+    candidate.update!(image_url: 'https://evil.example/photo.jpg')
+
+    expect do
+      described_class.new(candidate, reviewer: admin).approve!
+    end.to raise_error(CasePhotoCandidatePublisher::Error, /allowed Wikimedia Commons or Openverse/)
+
+    expect(candidate.reload).to be_pending
+    expect(case_record.reload.avatar?).to be(false)
+    expect(a_request(:get, 'https://evil.example/photo.jpg')).not_to have_been_made
   end
 
   it 'rejects a pending candidate without changing the case avatar' do
