@@ -9,7 +9,6 @@ RSpec.describe ActiveStorageCutover::CaseAvatarDropGuard do
     column_drop_migration.down unless ActiveRecord::Base.connection.column_exists?(:cases, :avatar)
   end
   let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
-  let(:uploaded_file) { Rack::Test::UploadedFile.new(image_path, 'image/jpeg') }
 
   describe '.unsafe_case_count' do
     it 'counts cases with a legacy avatar and no photo attachment' do
