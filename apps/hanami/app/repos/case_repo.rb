@@ -50,6 +50,23 @@ module EbWiki
           .to_a
       end
 
+      def followers_for(slug)
+        record = find_by_slug(slug)
+        return unless record
+
+        follower_ids = follows.where(
+          followable_type: "Case",
+          followable_id: record.id,
+          follower_type: "User",
+          blocked: false
+        ).to_a.map(&:follower_id)
+
+        {
+          record: record,
+          followers: users_by_id(follower_ids).values.sort_by { |user| user.name.to_s.downcase }
+        }
+      end
+
       def find_page(slug)
         record = find_by_slug(slug)
         return unless record
