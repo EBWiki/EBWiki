@@ -35,7 +35,6 @@
             <li><a href="/users/<%= current_user.id %>"><%= current_user.name %></a></li>
             <% if current_user.admin %>
               <li><a href="/admin/users">Staff</a></li>
-              <li><a href="/admin/comments">Comments</a></li>
             <% end %>
             <li>
               <form action="/logout" method="post" class="navbar-form">

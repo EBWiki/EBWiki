@@ -1,8 +1,8 @@
 # EBWiki Hanami public site
 
 Hanami 3 reads and writes the existing Postgres schema. Rails still owns
-CarrierWave/S3 object keys and production cutover. Hanami sends
-confirmation, reset, and follower mail for events it handles.
+production cutover. Hanami sends confirmation, reset, and follower mail for
+events it handles.
 
 Catch-up write-up for maintainers: [`docs/HANAMI_STATUS.md`](../../docs/HANAMI_STATUS.md).
 
@@ -18,9 +18,6 @@ Catch-up write-up for maintainers: [`docs/HANAMI_STATUS.md`](../../docs/HANAMI_S
 | `GET` | `/search?query=` |
 | `GET` | `/maps` |
 | `GET` | `/friendly_photos`, `/friendly_photos/:slug` |
-| `GET` | `/cases/:slug/followers` |
-| `POST` | `/cases/:slug/delete`, `/agencies/:slug/delete`, `/organizations/:id/delete` |
-| `GET` | `/admin/comments` |
 | `GET/POST` | `/agencies`, `/agencies/new` |
 | `GET/PATCH` | `/agencies/:slug`, `/agencies/:slug/edit` |
 | `GET/POST` | `/organizations`, `/organizations/new` |
@@ -33,26 +30,16 @@ Catch-up write-up for maintainers: [`docs/HANAMI_STATUS.md`](../../docs/HANAMI_S
 | `GET/PATCH` | `/users/:id`, `/users/:id/edit` |
 | `GET/POST` | `/admin/users` |
 
-## One site locally
-
-From the repo root, with Rails already able to boot and Hanami pointed at `blackops_development`:
-
-```bash
-chmod +x bin/one-site
-bin/one-site
-```
-
-That binds **http://localhost:3000**. Public Hanami prefixes (all methods) go to
-`:2300`; everything else goes to Rails `:3001`.
+`bin/one-site` is a local debugging leftover (Hanami + Rails on one port). Do
+not use that shape on Railway. Staging is Hanami only.
 
 ## Hanami only
 
 ```bash
 cd apps/hanami
-bin/setup
-# apps/hanami/.env.local should match config/database.yml
-# DATABASE_URL=postgres://blackops:PASSWORD@localhost:5432/blackops_development
-bin/dev
+# Load DATABASE_URL / SESSION_SECRET from Doppler — do not put passwords in URLs.
+doppler run -- bin/setup
+doppler run -- bin/dev
 ```
 
 http://localhost:2300
@@ -107,19 +94,17 @@ with `bundle exec puma -C config/puma.rb` (see `railway.toml`).
 2. With basic auth (values from Railway variables, not committed):
    - `/` or `/cases` → case index with live count and pagination
    - `/cases/walter-scott` → overview, agencies (linked), cause of death, resources
+   - `/maps` → Leaflet case map
+   - `/friendly_photos` → name-first portrait review
    - `/search?query=Charleston` → Walter Scott in results
-   - `/maps` → Leaflet pins for cases with coordinates
-   - `/friendly_photos` → portrait review starting from a case name
    - `/cases/does-not-exist` → `404`
 3. Demo login (`admin@example.com` / password from `STAGING_SEED_PASSWORD`) → `/admin/users`
 
 Rails production (`ebwiki.org`) is unchanged until an explicit cutover PR.
 
-`latest.dump` is a Heroku custom-format snapshot from **2020-09-01**. It was
-committed as `latest.dump` and later deleted from `main`; the blob is still at
-commit `592560514b263c8956d039bdd25c9c8b7fb2a81f`. Set `RESTORE_DUMP=1` on a
-**throwaway** database (Railway Postgres16) to download that file, `pg_restore`
-it, rename `cases.cause_of_death_name` → `cause_of_death`, and add `cases.tsv`.
+The repository `latest.dump` snapshot from **2020-09-01** is the agreed Hanami
+staging dataset. Set `RESTORE_DUMP=1` on a **throwaway** Railway Postgres
+database to restore it, apply dump compatibility SQL, and add `cases.tsv`.
 Unset `RESTORE_DUMP` after the first successful restore so later deploys do not
 wipe writes.
 
@@ -169,24 +154,16 @@ bundle exec rake security:check
 ## Writes and identity on Hanami
 
 - Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in. It also upserts the Rails `sessions` row and sets `_eb_wiki_session`, so the same host shares login with Devise. Different hosts need a one-time re-login.
-- `/register` writes an unconfirmed user, a `confirmation_token`, and emails
-  the Devise confirmation copy. `/users/confirmation` matches Devise's token
-  path. Password reset emails the Hanami `/password/edit` link.
-- Case update emails followers; admin delete emails followers. Rails still
-  sends those mails for Rails writes. SMTP stays off unless
-  `HANAMI_SEND_MAIL=1`.
+- `/register` writes an unconfirmed user, a `confirmation_token`, and emails the Devise confirmation copy. `/users/confirmation` matches Devise's token path. Password reset emails the Hanami `/password/edit` link.
+- Case update can email followers when follower lookup is enabled on this branch. Rails still sends those mails for Rails writes. SMTP stays off unless `HANAMI_SEND_MAIL=1`.
 - Signed-in editors can create/edit cases, agencies, and organizations; comment; and follow.
 - Case writes insert a `versions` row. Updates store a YAML `object` snapshot. Revert restores those columns. Create events with no snapshot are not undone and never delete the case.
-- Staff at `/admin/users` can toggle `admin` / `analyst`. `/admin/comments` lists recent comments for moderation.
-- Admins can delete a case, agency, or organization from the public show page. Case deletion emails followers.
+- Staff at `/admin/users` can toggle `admin` / `analyst`.
 - Case pages embed OpenStreetMap when `latitude` / `longitude` are present. Create/update persist coordinates and geocode from the address outside tests.
 - `/maps` plots every geocoded case. `/friendly_photos` searches Wikimedia Commons, Wikipedia, and Openverse and flags likely mugshots.
-- Case create/update can upload a photo. Objects use existing CarrierWave
-  keys (`uploads/case/avatar/:id/large_avatar_:filename` and the other
-  versions). S3 when `S3_BUCKET` is set; local `public/` otherwise.
+- Case create/update can upload a photo. Objects use existing CarrierWave keys (`uploads/case/avatar/:id/large_avatar_:filename` and the other versions). S3 when `S3_BUCKET` is set; local `public/` otherwise.
 - `/friendly_photos` still does not write S3.
 
-Still on Rails: production routing and deleting Rails itself. Session is
-shared on the same host via `_eb_wiki_session`.
+Still on Rails: production routing and deleting Rails itself.
 
 Hanami reads existing CarrierWave keys (`uploads/case/avatar/:id/large_avatar_:filename`) and, when `S3_BUCKET` is set, prefixes the bucket host. It does not change object keys. The layout uses Bootstrap 3.4 CSS from the same major version as Rails.
