@@ -19,12 +19,22 @@ Operational steps for the CarrierWave → Active Storage photo migration. Each p
    ```sql
    SELECT COUNT(*)
    FROM cases c
-   WHERE NULLIF(BTRIM(c.avatar::text), '') IS NOT NULL
-     AND NOT EXISTS (
+   WHERE NOT EXISTS (
        SELECT 1 FROM active_storage_attachments a
        WHERE a.record_type = 'Case'
          AND a.record_id = c.id
          AND a.name = 'photo'
+     )
+     AND (
+       NULLIF(BTRIM(c.avatar::text), '') IS NOT NULL
+       OR NULLIF(BTRIM(c.default_avatar_url::text), '') IS NOT NULL
+       OR (
+         c.remove_avatar IS TRUE
+         AND (
+           NULLIF(BTRIM(c.avatar::text), '') IS NOT NULL
+           OR NULLIF(BTRIM(c.default_avatar_url::text), '') IS NOT NULL
+         )
+       )
      );
    ```
 
@@ -38,7 +48,7 @@ Operational steps for the CarrierWave → Active Storage photo migration. Each p
 bin/rails db:migrate
 ```
 
-Run only in staging/production (or local rehearsal) after **Mark GO**. The migration always runs the safety guard; column drops are skipped in the `test` Rails env so CI can keep CarrierWave columns until slice 5b app code lands.
+Run only in staging/production (or local rehearsal) after **Mark GO**. The migration always runs the safety guard. Column drops are skipped unless `ALLOW_CASE_AVATAR_COLUMN_DROP=1` is set (so Railway’s automatic release migrate cannot drop columns by accident). In the `test` Rails env, set `EBWIKI_RUN_SLICE_5B_COLUMN_DROP=1` in specs to exercise the real drop path.
 
 If the guard raises, do not force the migration. Fix backfill gaps or storage, re-run step 2 (fresh backup), then retry.
 

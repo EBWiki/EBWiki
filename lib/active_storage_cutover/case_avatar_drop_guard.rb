@@ -1,21 +1,31 @@
 # frozen_string_literal: true
 
 module ActiveStorageCutover
-  # Blocks slice 5b (CarrierWave avatar column drop) while any case still has a
-  # non-blank legacy +avatar+ value and no Active Storage +photo+ attachment.
+  # Blocks dropping legacy CarrierWave photo columns while any case still has
+  # unmigrated values in +avatar+, +default_avatar_url+, or +remove_avatar+.
   class CaseAvatarDropGuard
     PHOTO_ATTACHMENT_NAME = 'photo'
     RECORD_TYPE = 'Case'
     UNSAFE_COUNT_SQL = <<~SQL.squish
       SELECT COUNT(*)
       FROM cases c
-      WHERE NULLIF(BTRIM(c.avatar::text), '') IS NOT NULL
-        AND NOT EXISTS (
+      WHERE NOT EXISTS (
           SELECT 1
           FROM active_storage_attachments a
           WHERE a.record_type = '#{RECORD_TYPE}'
             AND a.record_id = c.id
             AND a.name = '#{PHOTO_ATTACHMENT_NAME}'
+        )
+        AND (
+          NULLIF(BTRIM(c.avatar::text), '') IS NOT NULL
+          OR NULLIF(BTRIM(c.default_avatar_url::text), '') IS NOT NULL
+          OR (
+            c.remove_avatar IS TRUE
+            AND (
+              NULLIF(BTRIM(c.avatar::text), '') IS NOT NULL
+              OR NULLIF(BTRIM(c.default_avatar_url::text), '') IS NOT NULL
+            )
+          )
         )
     SQL
 
@@ -32,9 +42,10 @@ module ActiveStorageCutover
 
     def self.failure_message(count)
       noun = count == 1 ? 'case' : 'cases'
-      "Refusing to drop cases.avatar: #{count} #{noun} still have a legacy avatar " \
-        'value but no Active Storage photo. Re-run active_storage:backfill_case_photos ' \
-        'or restore missing files before slice 5b. Take a database backup before retrying.'
+      'Refusing to drop legacy case photo columns (avatar, default_avatar_url, remove_avatar): ' \
+        "#{count} #{noun} still have legacy photo data but no Active Storage photo. " \
+        'Re-run active_storage:backfill_case_photos or restore missing files before dropping ' \
+        'the old photo columns. Take a database backup before retrying.'
     end
   end
 end
