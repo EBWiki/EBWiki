@@ -78,6 +78,22 @@ RSpec.describe EbWiki::Mailer do
     expect(html).to include("said &quot;hi&quot; &amp; more")
   end
 
+  it "strips control characters from subjects and recipient addresses" do
+    described_class.send_followers_email(
+      users: [{email: "follower@example.com\r\nBcc: evil@example.com", name: "Follower"}],
+      this_case: {title: "Walter\r\nScott", slug: "walter-scott"},
+      editor_name: "Editor",
+      comment: "Update",
+      base_url: "http://example.test"
+    )
+
+    mail = described_class.deliveries.last
+    expect(mail.to).to eq("follower@example.comBcc: evil@example.com")
+    expect(mail.subject).to eq("The WalterScott case has been updated on EBWiki.")
+    expect(mail.subject).not_to include("\r")
+    expect(mail.subject).not_to include("\n")
+  end
+
   it "requires an explicit send flag and SMTP settings before transmitting" do
     expect(described_class.send_mail_enabled?).to be(false)
     expect(described_class.smtp_configured?).to be(false)

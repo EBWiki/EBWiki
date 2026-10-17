@@ -58,14 +58,14 @@ module EbWiki
       end
 
       def send_followers_email(users:, this_case:, editor_name:, comment:, base_url:)
-        title = attr(this_case, :title).to_s
+        title = sanitize_header_value(attr(this_case, :title))
         slug = attr(this_case, :slug).to_s
         case_url = "#{normalize_base(base_url)}/cases/#{CGI.escape(slug)}"
         editor = escape(editor_name.to_s)
         note = escape(comment.to_s)
 
         Array(users).filter_map do |user|
-          to = attr(user, :email).to_s.strip
+          to = sanitize_header_value(attr(user, :email))
           next if to.empty?
 
           deliver(
@@ -84,10 +84,10 @@ module EbWiki
       end
 
       def send_deletion_email(users:, this_case:)
-        title = attr(this_case, :title).to_s
+        title = sanitize_header_value(attr(this_case, :title))
 
         Array(users).filter_map do |user|
-          to = attr(user, :email).to_s.strip
+          to = sanitize_header_value(attr(user, :email))
           next if to.empty?
 
           deliver(
@@ -117,9 +117,11 @@ module EbWiki
       private
 
       def deliver(to:, subject:, html:)
-        return if to.to_s.strip.empty?
+        to = sanitize_header_value(to)
+        subject = sanitize_header_value(subject)
+        return if to.empty?
 
-        message = Message.new(to: to.to_s.strip, from: FROM_ADDRESS, subject: subject, html: html)
+        message = Message.new(to: to, from: FROM_ADDRESS, subject: subject, html: html)
         deliveries << message
         log(message)
         transmit(message) if transmit?
@@ -200,6 +202,10 @@ module EbWiki
 
       def escape(value)
         CGI.escapeHTML(value.to_s)
+      end
+
+      def sanitize_header_value(value)
+        value.to_s.gsub(/[\000-\037\177]/, "").strip
       end
 
       def normalize_base(base_url)
