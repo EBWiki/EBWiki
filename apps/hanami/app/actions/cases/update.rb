@@ -22,6 +22,19 @@ module EbWiki
           record = case_repo.update_with_children(request.params[:id], attrs, user: current_user(response))
           halt 404 unless record
 
+          apply_case_avatar(record, request, case_repo)
+
+          if case_repo.respond_to?(:followers_for)
+            followers = case_repo.followers_for(record.slug)&.fetch(:followers, [])
+            EbWiki::Mailer.send_followers_email(
+              users: followers,
+              this_case: record,
+              editor_name: current_user(response)&.name,
+              comment: attrs[:summary],
+              base_url: public_base_url(request)
+            )
+          end
+
           response.redirect_to "/cases/#{record.slug}"
         end
       end

@@ -13,7 +13,7 @@ module EbWiki
           )
 
           if user
-            request.session[:user_id] = user.id
+            sign_in!(request, response, user)
             response.redirect_to "/"
           else
             response.status = 401

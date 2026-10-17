@@ -1,7 +1,10 @@
 # EBWiki Hanami public site
 
 Hanami 3 reads and writes the existing Postgres schema. Rails still owns
-mail delivery, CarrierWave/S3 object keys, and production cutover.
+production cutover. Hanami sends confirmation, reset, and follower mail for
+events it handles.
+
+Catch-up write-up for maintainers: [`docs/HANAMI_STATUS.md`](../../docs/HANAMI_STATUS.md).
 
 | Method | Path |
 | --- | --- |
@@ -65,7 +68,12 @@ database.
 | `HTTP_BASIC_AUTH_USER` / `HTTP_BASIC_AUTH_PASSWORD` | Optional browser gate for staging |
 | `STAGING_SEED_PASSWORD` | Demo account password when seeds run |
 | `RESTORE_DUMP` | Set to `1` once on a throwaway DB to load historic data; unset after |
-| `S3_BUCKET` / `S3_REGION` | Optional; without these, avatars use local `/uploads/...` paths |
+| `S3_BUCKET` / `S3_REGION` | Avatar reads and new writes. Same keys as CarrierWave. |
+| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_KEY_ID` | S3 writes (Rails uses `AWS_SECRET_KEY_ID`, not `AWS_SECRET_ACCESS_KEY`) |
+| `HANAMI_SEND_MAIL` | Set to `1` to deliver via SMTP. Leave unset on the 2020 dump. |
+| `APP_URL` | Public origin used in mail links (e.g. the Railway URL) |
+| `SMTP_ADDRESS` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_DOMAIN` | SMTP via `net-smtp` |
+| `SENDGRID_USERNAME` / `SENDGRID_PASSWORD` or `SENDGRID_API_KEY` | Alternate SMTP (SendGrid) |
 
 Do not copy production Heroku `DATABASE_URL` into this service.
 
@@ -94,11 +102,9 @@ with `bundle exec puma -C config/puma.rb` (see `railway.toml`).
 
 Rails production (`ebwiki.org`) is unchanged until an explicit cutover PR.
 
-`latest.dump` is a Heroku custom-format snapshot from **2020-09-01**. It was
-committed as `latest.dump` and later deleted from `main`; the blob is still at
-commit `592560514b263c8956d039bdd25c9c8b7fb2a81f`. Set `RESTORE_DUMP=1` on a
-**throwaway** database (Railway Postgres16) to download that file, `pg_restore`
-it, rename `cases.cause_of_death_name` → `cause_of_death`, and add `cases.tsv`.
+The repository `latest.dump` snapshot from **2020-09-01** is the agreed Hanami
+staging dataset. Set `RESTORE_DUMP=1` on a **throwaway** Railway Postgres
+database to restore it, apply dump compatibility SQL, and add `cases.tsv`.
 Unset `RESTORE_DUMP` after the first successful restore so later deploys do not
 wipe writes.
 
@@ -147,13 +153,17 @@ bundle exec rake security:check
 
 ## Writes and identity on Hanami
 
-- Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in.
-- `/register` writes an unconfirmed user and a `confirmation_token`. `/users/confirmation` matches Devise's token path. Mailers stay on Rails.
+- Login at `/login` checks `users.encrypted_password` with bcrypt (Devise-compatible). Unconfirmed accounts cannot sign in. It also upserts the Rails `sessions` row and sets `_eb_wiki_session`, so the same host shares login with Devise. Different hosts need a one-time re-login.
+- `/register` writes an unconfirmed user, a `confirmation_token`, and emails the Devise confirmation copy. `/users/confirmation` matches Devise's token path. Password reset emails the Hanami `/password/edit` link.
+- Case update can email followers when follower lookup is enabled on this branch. Rails still sends those mails for Rails writes. SMTP stays off unless `HANAMI_SEND_MAIL=1`.
 - Signed-in editors can create/edit cases, agencies, and organizations; comment; and follow.
 - Case writes insert a `versions` row. Updates store a YAML `object` snapshot. Revert restores those columns. Create events with no snapshot are not undone and never delete the case.
 - Staff at `/admin/users` can toggle `admin` / `analyst`.
-- Case pages embed OpenStreetMap when `latitude` / `longitude` are present. CarrierWave keys are left unchanged.
+- Case pages embed OpenStreetMap when `latitude` / `longitude` are present.
+- `/maps` plots cases that already have coordinates. `/friendly_photos` serves portrait review pages that were on the cutover branch before this pull request.
+- Case create/update can upload a photo. Objects use existing CarrierWave keys (`uploads/case/avatar/:id/large_avatar_:filename` and the other versions). S3 when `S3_BUCKET` is set; local `public/` otherwise.
+- `/friendly_photos` still does not write S3.
 
-Still on Rails: outgoing mail, writing new S3 objects, follower notification emails, a shared Devise session cookie, and deleting Rails itself.
+Still on Rails: production routing and deleting Rails itself.
 
 Hanami reads existing CarrierWave keys (`uploads/case/avatar/:id/large_avatar_:filename`) and, when `S3_BUCKET` is set, prefixes the bucket host. It does not change object keys. The layout uses Bootstrap 3.4 CSS from the same major version as Rails.

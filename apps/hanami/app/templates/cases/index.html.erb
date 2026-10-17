@@ -5,8 +5,9 @@
     cases of people killed by police.
   </h1>
   <p class="lede">
-    Public pages, the case map, and photo review run on Hanami.
-    Mail delivery and new S3 uploads are still later slices.
+    Public pages, maps, photo review, signed-in writes, outgoing mail, and
+    case photo uploads share the existing Postgres schema. Production cutover
+    still goes through Rails.
   </p>
   <form action="/search" method="get" class="search-form">
     <label>
