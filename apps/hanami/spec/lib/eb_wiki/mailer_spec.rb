@@ -87,8 +87,18 @@ RSpec.describe EbWiki::Mailer do
       base_url: "http://example.test"
     )
 
+    expect(described_class.deliveries).to be_empty
+
+    described_class.send_followers_email(
+      users: [{email: "follower@example.com", name: "Follower"}],
+      this_case: {title: "Walter\r\nScott", slug: "walter-scott"},
+      editor_name: "Editor",
+      comment: "Update",
+      base_url: "http://example.test"
+    )
+
     mail = described_class.deliveries.last
-    expect(mail.to).to eq("follower@example.comBcc: evil@example.com")
+    expect(mail.to).to eq("follower@example.com")
     expect(mail.subject).to eq("The WalterScott case has been updated on EBWiki.")
     expect(mail.subject).not_to include("\r")
     expect(mail.subject).not_to include("\n")

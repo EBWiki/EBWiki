@@ -7,6 +7,32 @@ RSpec.describe "Shared Rails session", :db, type: :request do
     Array(last_response.headers["Set-Cookie"] || last_response.headers["set-cookie"]).join("\n")
   end
 
+  it "rotates the session id on login when the browser sends a planted cookie" do
+    planted = SecureRandom.hex(16)
+    TestData.relations[:sessions].insert(
+      session_id: EbWiki::RailsSession.private_id(planted),
+      data: EbWiki::RailsSession.payload_for(0, "$2a$12$#{"z" * 53}"),
+      created_at: Time.now.utc,
+      updated_at: Time.now.utc
+    )
+
+    TestData.insert_user(email: "editor@example.com", password: "password123", name: "Editor")
+    clear_cookies
+    set_cookie("#{EbWiki::RailsSession::COOKIE}=#{planted}")
+
+    post "/login", email: "editor@example.com", password: "password123"
+    expect(last_response.status).to eq(302)
+
+    new_id = cookie_header[/(_eb_wiki_session=)([^;]+)/, 2]
+    expect(new_id).not_to eq(planted)
+    expect(
+      TestData.relations[:sessions].where(session_id: EbWiki::RailsSession.private_id(planted)).count
+    ).to eq(0)
+    expect(
+      TestData.relations[:sessions].where(session_id: EbWiki::RailsSession.private_id(new_id)).count
+    ).to eq(1)
+  end
+
   it "writes _eb_wiki_session and a Devise Marshal row on login" do
     user_id = TestData.insert_user(email: "editor@example.com", password: "password123", name: "Editor")
 

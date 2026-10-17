@@ -119,7 +119,7 @@ module EbWiki
       def deliver(to:, subject:, html:)
         to = sanitize_header_value(to)
         subject = sanitize_header_value(subject)
-        return if to.empty?
+        return if to.empty? || !valid_recipient?(to)
 
         message = Message.new(to: to, from: FROM_ADDRESS, subject: subject, html: html)
         deliveries << message
@@ -206,6 +206,10 @@ module EbWiki
 
       def sanitize_header_value(value)
         value.to_s.gsub(/[\000-\037\177]/, "").strip
+      end
+
+      def valid_recipient?(address)
+        address.match?(/\A[^\s@]+@[^\s@]+\z/)
       end
 
       def normalize_base(base_url)

@@ -159,8 +159,8 @@ bundle exec rake security:check
 - Signed-in editors can create/edit cases, agencies, and organizations; comment; and follow.
 - Case writes insert a `versions` row. Updates store a YAML `object` snapshot. Revert restores those columns. Create events with no snapshot are not undone and never delete the case.
 - Staff at `/admin/users` can toggle `admin` / `analyst`.
-- Case pages embed OpenStreetMap when `latitude` / `longitude` are present. Create/update persist coordinates and geocode from the address outside tests.
-- `/maps` plots every geocoded case. `/friendly_photos` searches Wikimedia Commons, Wikipedia, and Openverse and flags likely mugshots.
+- Case pages embed OpenStreetMap when `latitude` / `longitude` are present.
+- `/maps` plots cases that already have coordinates. `/friendly_photos` serves portrait review pages that were on the cutover branch before this pull request.
 - Case create/update can upload a photo. Objects use existing CarrierWave keys (`uploads/case/avatar/:id/large_avatar_:filename` and the other versions). S3 when `S3_BUCKET` is set; local `public/` otherwise.
 - `/friendly_photos` still does not write S3.
 

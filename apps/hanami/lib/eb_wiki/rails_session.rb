@@ -13,6 +13,8 @@ module EbWiki
   # (`2::<sha256(public)>`), with a fallback to the public id for older rows.
   # Payload (activerecord-session_store 2.3 default):
   #   Base64.encode64(Marshal.dump(hash))
+  # Rows are written only by this app and Rails on our Postgres; Marshal load is
+  # acceptable here because the bytes never come from the browser.
   # Devise key: "warden.user.user.key" => [[user.id], encrypted_password[0, 29]]
   module RailsSession
     COOKIE = "_eb_wiki_session"
@@ -46,23 +48,22 @@ module EbWiki
 
     def sign_in!(request, response, user, session_repo:)
       request.session[:user_id] = user.id
-      public_id = session_id_from_request(request)
-      public_id = generate_session_id unless usable_public_id?(public_id)
+      old_public_id = session_id_from_request(request)
+      delete_session_row(session_repo, old_public_id) if usable_public_id?(old_public_id)
+
+      public_id = generate_session_id
       session_repo.upsert_for_user(
         session_id: private_id(public_id),
         user_id: user.id,
         encrypted_password: user.encrypted_password
       )
-      write_cookie(response, public_id)
+      write_cookie(response, public_id, secure: cookie_secure?(request))
       public_id
     end
 
     def sign_out!(request, response, session_repo:)
       public_id = session_id_from_request(request)
-      if public_id && !public_id.empty?
-        session_repo.delete_by_session_id(private_id(public_id)) if usable_public_id?(public_id)
-        session_repo.delete_by_session_id(public_id)
-      end
+      delete_session_row(session_repo, public_id) if usable_public_id?(public_id)
       request.session[:user_id] = nil
       clear_cookie(response)
     end
@@ -146,14 +147,29 @@ module EbWiki
       repo.find_by_session_id(private_id(public_id)) || repo.find_by_session_id(public_id)
     end
 
-    def write_cookie(response, public_id)
-      response.cookies[COOKIE] = {
+    def write_cookie(response, public_id, secure: false)
+      attrs = {
         value: public_id,
         path: "/",
         httponly: true,
         same_site: "Lax",
         max_age: COOKIE_TTL
       }
+      attrs[:secure] = true if secure
+      response.cookies[COOKIE] = attrs
+    end
+
+    def delete_session_row(session_repo, public_id)
+      session_repo.delete_by_session_id(private_id(public_id))
+      session_repo.delete_by_session_id(public_id)
+    end
+
+    def cookie_secure?(request)
+      env = request.env
+      return true if env["HTTPS"] == "on"
+      return true if env["HTTP_X_FORWARDED_PROTO"].to_s.downcase.split(",").first == "https"
+
+      request.respond_to?(:scheme) && request.scheme.to_s == "https"
     end
 
     def clear_cookie(response)
