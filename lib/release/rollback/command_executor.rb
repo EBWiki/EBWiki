@@ -35,7 +35,11 @@ module Release
       end
 
       def execute_railway(command)
-        RailwayApi.perform_rollback(deployment_id: command.deployment_id)
+        RailwayApi.perform_rollback(
+          deployment_id: command.deployment_id,
+          service_name: command.service_name,
+          environment_name: command.environment_slug
+        )
         ExecutionResult.new(success: true, message: 'Railway rollback accepted')
       rescue RollbackError => e
         ExecutionResult.new(success: false, message: e.message)

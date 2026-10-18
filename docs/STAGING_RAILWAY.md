@@ -5,8 +5,6 @@ This document describes how the **Rails** EBWiki archive deploys to Railway from
 which environment variable **names** belong in Doppler config `ebwiki/stg`
 (values live only in Doppler and Railway — never commit them).
 
-Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
-
 ## Deploy path
 
 1. Merge-ready changes land on GitHub `main`.

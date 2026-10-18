@@ -51,7 +51,7 @@ RSpec.describe Release::Rollback do
     expect(executor).not_to have_received(:call)
   end
 
-  it 'cancels when the operator answers n' do
+  it 'cancels when the prompt is answered n' do
     input = StringIO.new("n\n")
     allow(input).to receive(:tty?).and_return(true)
 
@@ -105,7 +105,7 @@ RSpec.describe Release::Rollback do
       ENV['RELEASE_ROLLBACK_PLATFORM'] = 'railway'
       ENV['RAILWAY_SERVICE'] = 'ebwiki'
       ENV['RAILWAY_ENVIRONMENT'] = 'staging'
-      ENV['RAILWAY_ROLLBACK_DEPLOYMENT_ID'] = 'dep-123'
+      ENV['RAILWAY_ROLLBACK_DEPLOYMENT_ID'] = '11111111-2222-4333-8444-555555555555'
       ENV.delete('HEROKU_APP_NAME')
       example.run
     end
@@ -114,7 +114,25 @@ RSpec.describe Release::Rollback do
       described_class.run([], executor: executor, output: output, input: input)
 
       expect(output.string).to include('deploymentRollback')
-      expect(output.string).to include('dep-123')
+      expect(output.string).to include('11111111-2222-4333-8444-555555555555')
+    end
+
+    it 'requires RAILWAY_ENVIRONMENT' do
+      ENV.delete('RAILWAY_ENVIRONMENT')
+
+      result = described_class.run([], executor: executor, output: output, input: input)
+
+      expect(result.success).to be(false)
+      expect(output.string).to include('RAILWAY_ENVIRONMENT')
+    end
+
+    it 'rejects a non-UUID deployment id' do
+      ENV['RAILWAY_ROLLBACK_DEPLOYMENT_ID'] = 'dep-123'
+
+      result = described_class.run([], executor: executor, output: output, input: input)
+
+      expect(result.success).to be(false)
+      expect(output.string).to include('not a UUID')
     end
   end
 

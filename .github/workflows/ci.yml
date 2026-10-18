@@ -3,6 +3,9 @@ name: CI
 
 on: [pull_request, workflow_dispatch]
 
+permissions:
+  contents: read
+
 jobs:
   rspec:
     runs-on: ubuntu-latest
@@ -30,14 +33,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
       - name: install dependencies
         run: |
           sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
         with:
           ruby-version: 3.4.2
 
@@ -58,13 +61,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
       - name: install dependencies
         run: |
           sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
         with:
           ruby-version: 3.4.2
           cache-version: 1
@@ -81,7 +84,7 @@ jobs:
 
     steps:
       - name: Run Markdown Link Check
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        uses: gaurav-nelson/github-action-markdown-link-check@499c1e7f3637c131334fa8e937c45144f79d72d2 # v1
         with:
           config-file: './.github/workflows/markdown_config.json'
           use-verbose-mode: 'yes'
@@ -92,14 +95,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
       - name: install dependencies
         run: |
           sudo apt-get update
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
         with:
           ruby-version: 3.4.2
 

@@ -2,7 +2,7 @@
 
 module Release
   class Rollback
-    # Builds rollback commands and prints the operator plan.
+    # Builds rollback commands and prints the rollback plan.
     class Planner
       def initialize(options, output:)
         @options = options
@@ -40,15 +40,17 @@ module Release
       end
 
       def railway_command
-        deployment_id = @options.deployment_id
-        environment = @options.environment_slug || 'staging'
-        description = "Railway GraphQL deploymentRollback for deployment #{deployment_id} " \
-                      "(environment #{environment})"
         RailwayRollbackCommand.new(
-          deployment_id: deployment_id,
-          environment_slug: environment,
-          description: description
+          deployment_id: @options.deployment_id,
+          service_name: @options.service_name,
+          environment_slug: @options.environment_slug,
+          description: railway_description
         )
+      end
+
+      def railway_description
+        "Railway GraphQL deploymentRollback for deployment #{@options.deployment_id} " \
+          "(service #{@options.service_name}, environment #{@options.environment_slug})"
       end
 
       def migration_note

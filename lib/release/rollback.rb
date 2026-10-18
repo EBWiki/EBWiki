@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'plain'
+require_relative 'deployment_id'
+
 module Release
   # Plans and optionally runs a platform rollback (Heroku or Railway).
   class Rollback
@@ -51,7 +54,7 @@ module Release
     end
 
     def validate!
-      raise RollbackError, platform_help if @options.platform.blank?
+      raise RollbackError, platform_help if Plain.blank?(@options.platform)
 
       case @options.platform
       when 'heroku' then validate_heroku!
@@ -67,7 +70,7 @@ module Release
     end
 
     def validate_heroku!
-      if @options.app_name.blank?
+      if Plain.blank?(@options.app_name)
         raise RollbackError, 'Set HEROKU_APP_NAME or RELEASE_HEROKU_APP before rolling back.'
       end
 
@@ -75,14 +78,31 @@ module Release
     end
 
     def validate_railway!
-      if @options.service_name.blank?
+      validate_railway_service!
+      validate_railway_environment!
+      validate_railway_deployment!
+    end
+
+    def validate_railway_service!
+      if Plain.blank?(@options.service_name)
         raise RollbackError, 'Set RAILWAY_SERVICE before rolling back on Railway.'
       end
 
       ResourceName.validate!(@options.service_name, label: 'Railway service name')
-      return if @options.deployment_id.present?
+    end
 
-      raise RollbackError, 'Set RAILWAY_ROLLBACK_DEPLOYMENT_ID to the deployment id to restore.'
+    def validate_railway_environment!
+      return if Plain.present?(@options.environment_slug)
+
+      raise RollbackError, 'Set RAILWAY_ENVIRONMENT before rolling back on Railway.'
+    end
+
+    def validate_railway_deployment!
+      if Plain.blank?(@options.deployment_id)
+        raise RollbackError, 'Set RAILWAY_ROLLBACK_DEPLOYMENT_ID to the deployment id to restore.'
+      end
+
+      DeploymentId.validate!(@options.deployment_id)
     end
 
     def confirm!
