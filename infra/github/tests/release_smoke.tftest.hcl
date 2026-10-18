@@ -1,13 +1,13 @@
 mock_provider "github" {}
 
 variables {
-  state_passphrase                     = "ci-test-passphrase-16chars"
-  github_token                         = "ghp_ci_validate_only_token"
-  staging_username                     = "ci-staging-user"
-  staging_password                     = "ci-staging-pass"
-  rollbar_access_token                 = "ci-rollbar-token"
-  existing_release_smoke_environment   = false
-  existing_main_policy_id              = ""
+  state_passphrase                   = "ci-test-passphrase-16chars"
+  github_token                       = "ghp_ci_validate_only_token"
+  staging_username                   = "ci-staging-user"
+  staging_password                   = "ci-staging-pass"
+  rollbar_access_token               = "ci-rollbar-token"
+  existing_release_smoke_environment = false
+  existing_main_policy_id            = ""
 }
 
 run "baseline_plan" {
