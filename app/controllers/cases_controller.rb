@@ -177,7 +177,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     this_case.photo.attach(previous_blob) if previous_blob
     false
   end
-  # rubocop:enable Naming/PredicateMethod
+  # rubocop:enable Naming/PredicateMethod, Metrics/AbcSize, Metrics/MethodLength
 
   def set_instance_vars
     @agencies = SortCollectionOrdinally.call(collection: Agency.all)
