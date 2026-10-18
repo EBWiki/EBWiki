@@ -6,7 +6,7 @@ Use these commands after deploying the Postgres search change to verify behavior
 
 The smoke check hits the running site over HTTP. It confirms the home page loads, search returns results for a known term, junk search returns zero results without error, and `/health` reports Postgres and Redis only (no Elasticsearch probe).
 
-GitHub Actions runs `bin/release-smoke-check` automatically when a deployment completes successfully (see `.github/workflows/release_smoke_check.yml`). The workflow needs the repository secret `ROLLBAR_ACCESS_TOKEN` when Rollbar reporting is enabled.
+GitHub Actions can run `bin/release-smoke-check` when a GitHub **deployment** completes successfully (see `.github/workflows/release_smoke_check.yml`). Railway does not emit GitHub deployment events unless that integration is enabled in the Railway project, so the usual path is **Run workflow** in the Actions tab and choose **staging** or **production**. The workflow needs the repository secret `ROLLBAR_ACCESS_TOKEN` when Rollbar reporting is enabled.
 
 ### When to run
 
@@ -14,27 +14,21 @@ Run after every staging or production deploy that includes the pg_search search 
 
 ### Commands
 
-**Staging** (HTTP basic auth uses `STAGING_USERNAME` and `STAGING_PASSWORD`, or set `RELEASE_SMOKE_BASIC_AUTH_USERNAME` and `RELEASE_SMOKE_BASIC_AUTH_PASSWORD`):
+**Staging** (HTTP basic auth applies only to `staging.ebwiki.org`; export `STAGING_USERNAME` and `STAGING_PASSWORD` from Doppler config `ebwiki/stg`):
 
 ```bash
+export STAGING_USERNAME=...
+export STAGING_PASSWORD=...
 RELEASE_SMOKE_BASE_URL=https://staging.ebwiki.org \
   bin/release-smoke-check
 ```
 
-Or pass the URL as a rake argument:
-
-```bash
-STAGING_USERNAME=... STAGING_PASSWORD=... \
-  bin/release-smoke-check https://staging.ebwiki.org
-```
-
-Alias:
+Or pass the URL as an argument (same script as the rake task):
 
 ```bash
 bin/release-smoke-check https://staging.ebwiki.org
+bin/rails 'release:smoke_check[https://staging.ebwiki.org]'
 ```
-
-(`bin/rails release:smoke_check[URL]` remains a thin wrapper around the same script.)
 
 **Production**:
 
@@ -48,7 +42,8 @@ Optional environment variables:
 
 | Variable | Purpose |
 | --- | --- |
-| `RELEASE_SMOKE_BASE_URL` | Base URL when not passed as a rake argument |
+| `RELEASE_SMOKE_BASE_URL` | Base URL when not passed as a CLI argument |
+| `RELEASE_SMOKE_ALLOWED_HOSTS` | Comma-separated hosts permitted (default `staging.ebwiki.org,ebwiki.org`) |
 | `RELEASE_SMOKE_SEARCH_TERM` | Query that should match at least one case (default `*`) |
 | `RELEASE_SMOKE_BASIC_AUTH_*` | Override staging basic auth credentials |
 | `ROLLBAR_ACCESS_TOKEN` | Rollbar project token (required in the deployment workflow for error reporting) |
@@ -80,14 +75,14 @@ Planned command: `heroku releases:rollback -a $HEROKU_APP_NAME`
 
 ### Railway staging
 
-Set the service (`ebwiki`), target environment label, deployment id to restore, and API token. Rollback uses Railway's public GraphQL `deploymentRollback` mutation (see [Manage Deployments](https://docs.railway.com/integrations/api/manage-deployments)).
+Set the service (`ebwiki`), target environment label, deployment id to restore, and a Railway API token. Prefer a **project- or workspace-scoped** token from [Railway account tokens](https://railway.com/account/tokens) with access to the EBWiki staging project only; avoid a full account token unless no narrower scope is available. Rollback uses Railway's public GraphQL `deploymentRollback` mutation (see [Manage Deployments](https://docs.railway.com/integrations/api/manage-deployments)).
 
 ```bash
 export RELEASE_ROLLBACK_PLATFORM=railway
 export RAILWAY_SERVICE=ebwiki
 export RAILWAY_ENVIRONMENT=staging
 export RAILWAY_ROLLBACK_DEPLOYMENT_ID=<previous-deployment-id>
-export RAILWAY_TOKEN=<account-token>
+export RAILWAY_TOKEN=<project-or-workspace-token>
 bin/release-rollback
 bin/release-rollback --execute --yes
 ```

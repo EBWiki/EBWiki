@@ -59,6 +59,8 @@ RSpec.describe Release::Rollback::RailwayApi do
         token: token
       )
     end.to raise_error(Release::RollbackError, /service/)
+
+    expect(connection).to have_received(:request).once
   end
 
   it 'refuses when the deployment environment does not match' do
@@ -82,6 +84,8 @@ RSpec.describe Release::Rollback::RailwayApi do
         token: token
       )
     end.to raise_error(Release::RollbackError, /environment/)
+
+    expect(connection).to have_received(:request).once
   end
 end
 
