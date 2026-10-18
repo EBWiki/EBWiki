@@ -36,6 +36,10 @@ In general, contributors will use the following languages, frameworks, and techn
 * [NodeJS](https://nodejs.org/en/)
 
 
+### Release verification
+
+After a deploy, use the smoke check and rollback helpers documented in [docs/RELEASE.md](docs/RELEASE.md).
+
 ### Testing
 
 We use [RSpec](https://github.com/rspec/rspec-rails), [shoulda-matchers](http://matchers.shoulda.io/), and [FactoryBot](https://github.com/thoughtbot/factory_bot) for our tests.  You can run the tests locally with the following commands:
