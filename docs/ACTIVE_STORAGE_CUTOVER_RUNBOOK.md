@@ -58,7 +58,7 @@ Do not merge until steps 1 and 2 pass on staging. After deploy, cases without a 
 1. Run `bin/rails active_storage:case_avatar_drop_check` on staging (exit code 0).
 2. Spot-check case pages and uploads per the slice 5a production testing checklist in the pull request.
 
-Production follows the same **before deploy** backfill and SQL count rules, then **after deploy** rake check and spot-checks, once staging is stable.
+Production uses the same pattern: backfill and SQL count **before** deploy, then the rake check and spot-checks **after** deploy, once staging is stable.
 
 ## Before slice 5b (column drop), required
 
