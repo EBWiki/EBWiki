@@ -14,6 +14,7 @@ if ARGV.intersect?(%w[--help -h])
 end
 
 require_relative '../lib/release/plain'
+require_relative '../lib/release/smoke_check_host_allowlist'
 require_relative '../lib/release/url_sanitizer'
 require_relative '../lib/release/smoke_check_failure'
 require_relative '../lib/release/http_client'

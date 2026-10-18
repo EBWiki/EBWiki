@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'plain'
+require_relative 'smoke_check_host_allowlist'
 
 module Release
   # Runs the HTTP smoke check without booting Rails.
@@ -21,6 +22,7 @@ module Release
       RollbarSetup.configure!
       base_url = resolve_base_url
       return false if Plain.blank?(base_url)
+      return false unless SmokeCheckHostAllowlist.permitted!(base_url)
 
       Release::SmokeCheck.new(base_url: base_url).call
     end
