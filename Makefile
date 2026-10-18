@@ -43,4 +43,16 @@ prchecks: codeclimate rspec
 	rubocop
 	brakeman -A --no-pager
 
-.PHONY: run build exec stop clean all updatedb logs test rspec codeclimate
+bootstrap:
+	./scripts/bootstrap.sh
+
+plan:
+	./scripts/staging-plan.sh
+
+snapshot:
+	doppler run --project ebwiki --config infra -- ./scripts/staging-db-snapshot.sh
+
+apply:
+	./scripts/staging-apply.sh
+
+.PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan snapshot apply
