@@ -11,8 +11,11 @@ describe 'active_storage:backfill_case_photos' do
 
   before do
     case_record = create(:case)
-    case_record.avatar = Rack::Test::UploadedFile.new(image_path, 'image/jpeg')
-    case_record.save!
+    uploaded = Rack::Test::UploadedFile.new(image_path, 'image/jpeg')
+    update_legacy_case_photo_columns(case_record, avatar: uploaded.original_filename)
+    store_dir = Rails.root.join("public/uploads/case/avatar/#{case_record.id}")
+    FileUtils.mkdir_p(store_dir)
+    FileUtils.cp(uploaded.path, store_dir.join(uploaded.original_filename))
   end
 
   it 'invokes the backfill service' do

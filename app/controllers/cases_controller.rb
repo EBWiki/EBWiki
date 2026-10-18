@@ -42,7 +42,9 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   def create
     @this_case = Case.new(case_params)
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
+    photo_upload = case_photo_upload
     if @this_case.save
+      attach_case_photo(@this_case, photo_upload)
       current_user.follow(@this_case)
       flash[:success] = 'Case was created!'
       redirect_to @this_case
@@ -61,7 +63,11 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     @this_case = Case.find(params[:id])
     @this_case.slug = nil
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
+    photo_upload = case_photo_upload
+    remove_photo = remove_case_photo_requested?
     if @this_case.update(case_params)
+      purge_case_photo(@this_case) if remove_photo
+      attach_case_photo(@this_case, photo_upload)
       flash[:success] = 'Case was updated!'
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
@@ -117,8 +123,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
              :zipcode,
              :longitude,
              :latitude,
-             :avatar,
-             :remove_avatar,
+             :photo,
              :video_url,
              :summary,
              :blurb,
@@ -134,6 +139,24 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   # why did they set commentable here?
   def set_commentable
     @commentable = Case.friendly.find(params[:id])
+  end
+
+  def case_photo_upload
+    params.dig(:case, :photo)
+  end
+
+  def remove_case_photo_requested?
+    ActiveModel::Type::Boolean.new.cast(params.dig(:case, :remove_photo))
+  end
+
+  def attach_case_photo(this_case, upload)
+    return if upload.blank?
+
+    this_case.photo.attach(upload)
+  end
+
+  def purge_case_photo(this_case)
+    this_case.photo.purge if this_case.photo.attached?
   end
 
   def set_instance_vars

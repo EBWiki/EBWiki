@@ -2,7 +2,8 @@
 
 module ActiveStorageBackfill
   # Copies each Case's CarrierWave avatar original into Active Storage +photo+.
-  # Read paths still use +avatar+; safe to re-run (skips cases that already have +photo+ attached).
+  # Reads the legacy +avatar+ column directly (Case ignores those columns at the model layer).
+  # Safe to re-run (skips cases that already have +photo+ attached).
   class CasePhotos
     include Service
 
@@ -46,7 +47,7 @@ module ActiveStorageBackfill
     private
 
     def process_case(case_record, counts)
-      return skip_blank!(counts) if case_record.read_attribute(:avatar).blank?
+      return skip_blank!(counts) if legacy_avatar_identifier(case_record).blank?
 
       source = source_file(case_record)
       return skip_missing!(case_record, counts) unless source
@@ -83,11 +84,22 @@ module ActiveStorageBackfill
       counts[:attached] += 1
     end
 
+    def legacy_avatar_identifier(case_record)
+      Case.connection.select_value(
+        Case.sanitize_sql_array(['SELECT avatar FROM cases WHERE id = ?', case_record.id])
+      )
+    end
+
     def source_file(case_record)
-      file = case_record.avatar.file
+      identifier = legacy_avatar_identifier(case_record)
+      return nil if identifier.blank?
+
+      uploader = AvatarUploader.new(Case.new(id: case_record.id), :avatar)
+      uploader.retrieve_from_store!(identifier)
+      file = uploader.file
       return nil unless file&.exists?
 
-      filename = file.filename.presence || File.basename(case_record.read_attribute(:avatar).to_s)
+      filename = file.filename.presence || File.basename(identifier.to_s)
 
       {
         bytes: file.read,

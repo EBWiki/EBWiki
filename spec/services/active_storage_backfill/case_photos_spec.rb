@@ -1,22 +1,25 @@
 # frozen_string_literal: true
 
 require 'digest/md5'
+require 'fileutils'
 
 RSpec.describe ActiveStorageBackfill::CasePhotos do
   let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
   let(:uploaded_file) { Rack::Test::UploadedFile.new(image_path, 'image/jpeg') }
 
-  def attach_carrierwave_avatar(case_record)
-    case_record.avatar = uploaded_file
-    case_record.save!
-    case_record.reload
+  def seed_carrierwave_file(case_record, uploaded_file)
+    filename = uploaded_file.original_filename
+    update_legacy_case_photo_columns(case_record, avatar: filename)
+    store_dir = Rails.root.join("public/uploads/case/avatar/#{case_record.id}")
+    FileUtils.mkdir_p(store_dir)
+    FileUtils.cp(uploaded_file.path, store_dir.join(filename))
   end
 
   describe '#call' do
     it 'attaches photo with the same byte checksum as the CarrierWave avatar' do
       case_record = create(:case)
-      attach_carrierwave_avatar(case_record)
-      source_bytes = File.binread(case_record.avatar.path)
+      seed_carrierwave_file(case_record, uploaded_file)
+      source_bytes = File.binread(image_path)
       expected_checksum = Digest::MD5.base64digest(source_bytes)
 
       counts = described_class.call
@@ -30,7 +33,7 @@ RSpec.describe ActiveStorageBackfill::CasePhotos do
 
     it 'is idempotent on a second run' do
       case_record = create(:case)
-      attach_carrierwave_avatar(case_record)
+      seed_carrierwave_file(case_record, uploaded_file)
 
       described_class.call
       case_record.reload
@@ -46,7 +49,7 @@ RSpec.describe ActiveStorageBackfill::CasePhotos do
 
     it 'skips cases with a blank avatar column' do
       case_record = create(:case)
-      case_record.update_column(:avatar, nil)
+      update_legacy_case_photo_columns(case_record, avatar: nil)
 
       counts = described_class.call
 
@@ -57,7 +60,11 @@ RSpec.describe ActiveStorageBackfill::CasePhotos do
 
     it 'counts missing source files without raising' do
       case_record = create(:case)
-      case_record.update_columns(avatar: 'no-such-avatar.jpg', default_avatar_url: nil)
+      update_legacy_case_photo_columns(
+        case_record,
+        avatar: 'no-such-avatar.jpg',
+        default_avatar_url: nil
+      )
 
       counts = nil
       expect { counts = described_class.call }.not_to raise_error
@@ -68,7 +75,7 @@ RSpec.describe ActiveStorageBackfill::CasePhotos do
 
     it 'does not attach when dry_run is true' do
       case_record = create(:case)
-      attach_carrierwave_avatar(case_record)
+      seed_carrierwave_file(case_record, uploaded_file)
 
       counts = described_class.call(dry_run: true)
 
@@ -81,7 +88,11 @@ RSpec.describe ActiveStorageBackfill::CasePhotos do
 
     it 'attaches photo when avatar bytes are read from fog storage (no local path)' do
       case_record = create(:case)
-      case_record.update_columns(avatar: 'remote-avatar.jpg', default_avatar_url: nil)
+      update_legacy_case_photo_columns(
+        case_record,
+        avatar: 'remote-avatar.jpg',
+        default_avatar_url: nil
+      )
       fog_bytes = File.binread(image_path)
       fog_file = instance_double(
         CarrierWave::Storage::Fog::File,
@@ -90,7 +101,9 @@ RSpec.describe ActiveStorageBackfill::CasePhotos do
         filename: 'remote-avatar.jpg',
         content_type: 'image/jpeg'
       )
-      allow(case_record.avatar).to receive(:file).and_return(fog_file)
+      uploader = instance_double(AvatarUploader, file: fog_file)
+      allow(AvatarUploader).to receive(:new).and_return(uploader)
+      allow(uploader).to receive(:retrieve_from_store!)
 
       relation = Case.where(id: case_record.id)
       allow(Case).to receive(:order).with(:id).and_return(relation)

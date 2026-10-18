@@ -13,13 +13,23 @@ RSpec.describe ActiveStorageCutover::CaseAvatarDropGuard do
   describe '.unsafe_case_count' do
     it 'counts cases with a legacy avatar and no photo attachment' do
       blocked = create(:case)
-      blocked.update_columns(avatar: 'legacy-only.jpg', default_avatar_url: nil)
+      update_legacy_case_photo_columns(blocked, avatar: 'legacy-only.jpg', default_avatar_url: nil)
 
       safe_blank = create(:case)
-      safe_blank.update_columns(avatar: nil, default_avatar_url: nil, remove_avatar: nil)
+      update_legacy_case_photo_columns(
+        safe_blank,
+        avatar: nil,
+        default_avatar_url: nil,
+        remove_avatar: nil
+      )
 
       with_photo = create(:case)
-      with_photo.update_columns(avatar: 'migrated.jpg', default_avatar_url: nil, remove_avatar: nil)
+      update_legacy_case_photo_columns(
+        with_photo,
+        avatar: 'migrated.jpg',
+        default_avatar_url: nil,
+        remove_avatar: nil
+      )
       with_photo.photo.attach(
         io: File.open(image_path),
         filename: 'favicon.jpg',
@@ -30,13 +40,22 @@ RSpec.describe ActiveStorageCutover::CaseAvatarDropGuard do
     end
 
     it 'counts cases with only default_avatar_url set and no photo attachment' do
-      create(:case).update_columns(avatar: nil, default_avatar_url: 'http://example.com/legacy.jpg')
+      update_legacy_case_photo_columns(
+        create(:case),
+        avatar: nil,
+        default_avatar_url: 'http://example.com/legacy.jpg'
+      )
 
       expect(described_class.unsafe_case_count).to eq(1)
     end
 
     it 'does not count cases with remove_avatar true when legacy columns are blank' do
-      create(:case).update_columns(avatar: nil, default_avatar_url: nil, remove_avatar: true)
+      update_legacy_case_photo_columns(
+        create(:case),
+        avatar: nil,
+        default_avatar_url: nil,
+        remove_avatar: true
+      )
 
       expect(described_class.unsafe_case_count).to eq(0)
     end
@@ -44,7 +63,7 @@ RSpec.describe ActiveStorageCutover::CaseAvatarDropGuard do
 
   describe '.refuse_if_unsafe!' do
     it 'raises with the affected case count when any case is missing a photo' do
-      create(:case).update_columns(avatar: 'still-on-carrierwave.jpg')
+      update_legacy_case_photo_columns(create(:case), avatar: 'still-on-carrierwave.jpg')
 
       expect { described_class.refuse_if_unsafe! }
         .to raise_error(
@@ -54,7 +73,11 @@ RSpec.describe ActiveStorageCutover::CaseAvatarDropGuard do
     end
 
     it 'raises when default_avatar_url is set without a photo' do
-      create(:case).update_columns(avatar: nil, default_avatar_url: 'http://example.com/x.jpg')
+      update_legacy_case_photo_columns(
+        create(:case),
+        avatar: nil,
+        default_avatar_url: 'http://example.com/x.jpg'
+      )
 
       expect { described_class.refuse_if_unsafe! }
         .to raise_error(ActiveRecord::MigrationError, /1 case/)
@@ -62,14 +85,24 @@ RSpec.describe ActiveStorageCutover::CaseAvatarDropGuard do
 
     it 'allows the drop when every legacy avatar has a photo or avatar is blank' do
       case_with_photo = create(:case)
-      case_with_photo.update_columns(avatar: 'migrated.jpg', default_avatar_url: nil, remove_avatar: nil)
+      update_legacy_case_photo_columns(
+        case_with_photo,
+        avatar: 'migrated.jpg',
+        default_avatar_url: nil,
+        remove_avatar: nil
+      )
       case_with_photo.photo.attach(
         io: File.open(image_path),
         filename: 'favicon.jpg',
         content_type: 'image/jpeg'
       )
 
-      create(:case).update_columns(avatar: nil, default_avatar_url: nil, remove_avatar: nil)
+      update_legacy_case_photo_columns(
+        create(:case),
+        avatar: nil,
+        default_avatar_url: nil,
+        remove_avatar: nil
+      )
 
       expect { described_class.refuse_if_unsafe! }.not_to raise_error
     end
