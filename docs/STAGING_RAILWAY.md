@@ -20,12 +20,12 @@ Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
 5. **Liveness (Railway deploy health check):** HTTP `GET /up` — fast “app booted”
    probe only (`railway.toml` `healthcheckPath`). Returns **200** when Rails is
    up; **503** if the liveness handler errors. JSON may include `deploy_rev`.
-6. **Readiness (operators):** HTTP `GET /health` — checks Postgres (`SELECT 1`),
-   Redis (`PING` via `REDIS_URL`), and Elasticsearch (cluster ping via
-   `ELASTICSEARCH_URL` or legacy `SEARCHBOX_URL`). Each check uses a ~2s timeout.
-   JSON shape: `{ "status", "checks": { "postgres"|"redis"|"elasticsearch":
-   { "status", "latency_ms" } }, "deploy_rev" }`. Returns **200** when all pass,
-   **503** when any fail. Responses never include error messages or secrets.
+6. **Readiness (operators):** HTTP `GET /health` — checks Postgres (`SELECT 1`) and
+   Redis (`PING` via `REDIS_URL`). Case search uses Postgres full-text search
+   (`pg_search`); no separate search cluster. Each check uses a ~2s timeout. JSON
+   shape: `{ "status", "checks": { "postgres"|"redis": { "status", "latency_ms" }
+   }, "deploy_rev" }`. Returns **200** when all pass, **503** when any fail.
+   Responses never include error messages or secrets.
 7. **Revision in HTML:** Every page includes `<!-- deploy_rev: … -->` in the
    footer when `DEPLOY_REV` or `RAILWAY_GIT_COMMIT_SHA` is set (same SHA as
    `/up` and `/health`).
@@ -121,13 +121,6 @@ required vs optional) are grouped in `.env.example`.
 | `AWS_SECRET_KEY_ID` | S3 secret (note `_KEY_ID` suffix in this app) |
 | `S3_BUCKET` | Upload bucket |
 | `FOG_DIRECTORY` | Sitemap / Fog directory name |
-
-### Search
-
-| Variable | Purpose |
-| --- | --- |
-| `ELASTICSEARCH_URL` | Preferred Elasticsearch URL |
-| `SEARCHBOX_URL` | Legacy fallback (`config/initializers/searchbox.rb`) |
 
 ### Mail / marketing
 

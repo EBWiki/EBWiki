@@ -22,11 +22,6 @@ clean: stop
 test:
 	./dev_provisions/run_tests.sh
 
-searchkick reindex_all:
-	@echo "## Please note that searchkick requires the container to be running and"
-	@echo "## takes a while to complete"
-	docker exec ebwiki bash -c 'source dev_provisions/environment.sh && rake searchkick:reindex:all'
-
 rspec:
 	@echo "## Please note that rspec requires the container to be running and"
 	@echo "## takes a while to complete"

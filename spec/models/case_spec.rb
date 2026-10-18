@@ -237,6 +237,28 @@ describe '.search_text' do
   end
 end
 
+describe '.find_by_search' do
+  let(:texas) { FactoryBot.create(:state_texas) }
+  let!(:houston_case) do
+    FactoryBot.create(
+      :case,
+      title: 'Police shooting in Houston',
+      city: 'Houston',
+      state: texas,
+      summary: 'initial entry'
+    )
+  end
+
+  it 'delegates to search_text' do
+    expect(Case.search_text('shooting')).to include(houston_case)
+    expect(Case.find_by_search('shooting')).to match_array(Case.search_text('shooting')) # rubocop:disable Rails/DynamicFindBy
+  end
+
+  it 'returns none when the query is blank' do
+    expect(Case.find_by_search(nil)).to be_empty # rubocop:disable Rails/DynamicFindBy
+  end
+end
+
 describe 'scopes', versioning: true do
   let(:dc) { FactoryBot.create(:state_dc) }
   let(:louisiana) { FactoryBot.create(:state_louisiana) }
