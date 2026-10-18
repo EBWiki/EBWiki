@@ -105,9 +105,9 @@ quality checks:
 
 - Rails 8 on `main`. Semver-major gems are explicit migrations, not
   weekly Dependabot.
-- Search today is Elasticsearch (< 7) plus the existing case UI.
-  `pg_search` and “drop Elasticsearch” stay on draft #4410 until that
-  PR is a focused landing change, not a 100-file rewrite.
+- Search today is Postgres full-text search (`pg_search` on the existing
+  `cases.tsv` column) plus the existing case UI. There is no Elasticsearch
+  cluster in the application path.
 - Mailboxer / in-app messaging removal is draft #4411. Do not add new
   mailbox features.
 - Polymorphic `linkable_type` / `linkable_id`: new `has_many :links`

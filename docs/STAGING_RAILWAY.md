@@ -20,7 +20,7 @@ Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
 5. **Liveness (Railway deploy health check):** HTTP `GET /up` — fast “app booted”
    probe only (`railway.toml` `healthcheckPath`). Returns **200** when Rails is
    up; **503** if the liveness handler errors. JSON may include `deploy_rev`.
-6. **Readiness (operators):** HTTP `GET /health` — checks Postgres (`SELECT 1`) and
+6. **Readiness (operators):** HTTP `GET /health`: checks Postgres (`SELECT 1`) and
    Redis (`PING` via `REDIS_URL`). Case search uses Postgres full-text search
    (`pg_search`); no separate search cluster. Each check uses a ~2s timeout. JSON
    shape: `{ "status", "checks": { "postgres"|"redis": { "status", "latency_ms" }
