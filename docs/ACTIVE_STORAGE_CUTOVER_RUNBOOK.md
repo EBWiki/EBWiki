@@ -42,6 +42,24 @@ Deploy slice 5a before merging slice 5b. Slice 5b must not be on the deploy bran
 
 4. **Mark GO** for slice 5a deploy only after steps 1 through 3 pass.
 
+## Staging deploy (slice 5a, Railway staging)
+
+Staging deploys from branch `main` after this pull request merges. Use the **staging** database and staging Railway shell (or equivalent access).
+
+**Before merge to `main` (and before staging deploys the new code):**
+
+1. Run `bin/rails active_storage:backfill_case_photos` on staging (exit code 0).
+2. Run the safety count SQL from the slice 5b section below (or any equivalent query that matches the guard rule). The count must be **0**. The `active_storage:case_avatar_drop_check` task is not on staging until after this deploy, so do not wait for that task before merge.
+
+Do not merge until steps 1 and 2 pass on staging. After deploy, cases without a new photo no longer show the old fallback image.
+
+**Right after staging deploy finishes:**
+
+1. Run `bin/rails active_storage:case_avatar_drop_check` on staging (exit code 0).
+2. Spot-check case pages and uploads per the slice 5a production testing checklist in the pull request.
+
+Production follows the same **before deploy** backfill and SQL count rules, then **after deploy** rake check and spot-checks, once staging is stable.
+
 ## Before slice 5b (column drop), required
 
 1. Confirm slice 5a is deployed on that environment (case forms use `photo`, `Case.ignored_columns` includes the three legacy columns).

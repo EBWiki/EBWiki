@@ -229,6 +229,19 @@ RSpec.describe 'Cases', type: :request do
       expect(response).to have_http_status(200)
       expect(response.body).to include('New Case')
     end
+
+    it 'creates the case with an attached photo when the upload is valid' do
+      image_path = Rails.root.join('app/assets/images/favicon.jpg')
+      upload = Rack::Test::UploadedFile.new(image_path, 'image/jpeg')
+
+      expect do
+        post '/cases', params: { case: params[:case].merge(photo: upload) }
+      end.to change(Case, :count).by(1)
+
+      created = Case.order(:id).last
+      expect(response).to redirect_to("/cases/#{created.slug}")
+      expect(created.photo).to be_attached
+    end
   end
 
   describe 'PATCH /cases/:slug' do
