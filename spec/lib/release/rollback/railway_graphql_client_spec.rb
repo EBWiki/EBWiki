@@ -31,4 +31,17 @@ RSpec.describe Release::Rollback::RailwayGraphqlClient do
       hash_including(event: 'release_rollback_network')
     )
   end
+
+  it 'reports and wraps a malformed HTTP response' do
+    allow(http).to receive(:start).and_raise(Net::HTTPBadResponse, 'wrong status line')
+    allow(Release::ErrorReporter).to receive(:report)
+
+    expect do
+      client.post(token: 'token', query: '{ __typename }', variables: {})
+    end.to raise_error(Release::RollbackError, /wrong status line/)
+
+    expect(Release::ErrorReporter).to have_received(:report).with(
+      hash_including(event: 'release_rollback_network')
+    )
+  end
 end

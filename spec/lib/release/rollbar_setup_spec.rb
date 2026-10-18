@@ -31,4 +31,14 @@ RSpec.describe Release::RollbarSetup do
       described_class.configure!
     end.to output(/"event":"rollbar_setup"/).to_stderr
   end
+
+  it 'logs a JSON warning and skips Rollbar when the token is blank' do
+    ENV['ROLLBAR_ACCESS_TOKEN'] = ''
+    allow(described_class).to receive(:apply_rollbar_config)
+
+    expect do
+      described_class.configure!
+    end.to output(/"event":"rollbar_setup","level":"warn".*ROLLBAR_ACCESS_TOKEN is not set/).to_stderr
+    expect(described_class).not_to have_received(:apply_rollbar_config)
+  end
 end

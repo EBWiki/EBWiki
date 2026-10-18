@@ -1,7 +1,13 @@
 ---
 name: CI
 
-on: [pull_request, workflow_dispatch]
+# The push trigger on main lets Railway's "Wait for CI" setting hold staging
+# deploys until these checks pass.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read

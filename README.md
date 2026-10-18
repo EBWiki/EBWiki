@@ -64,7 +64,7 @@ The full test suite will be run, to ensure that submitted changes do not break f
 As noted in our development guide, your PR is expected to pass all checks before a maintainer will merge it.  If your PR is failing one of the checks, refer to our development guide for tips on how to address the failure(s).
 
 ### Deployment
-EBWiki is currently hosted on Heroku.  We have two environments - staging and production.  If you're interested in contributing but are more of a DevOps person than a developer, feel free to send us a message at info@ebwiki.org to see how you can get involved.
+EBWiki staging runs on Railway at staging.ebwiki.org, and ebwiki.org currently shows a maintenance page. See [docs/DEPLOYING.md](docs/DEPLOYING.md) for how deploys work.  If you're interested in contributing but are more of a DevOps person than a developer, feel free to send us a message at info@ebwiki.org to see how you can get involved.
 
 The staging app does require credentials to access the app.  If you need to access the staging app send us a message at info@ebwiki.org to get a copy of the credentials.
 

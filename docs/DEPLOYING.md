@@ -1,58 +1,44 @@
-This guide will explain the process of deploying the latest version of EBWiki to production.  
-
-**Important Note: If you are on a computer with the Windows Operating System, you must execute the following commands within the Windows Powershell or Command Prompt terminals, even if Windows Subsytem for Linux is installed.**
+This guide explains how EBWiki is deployed today.
 
 # Table of Contents
 
-1. [Prerequisites](#prerequisites)
-2. [Deploy to Heroku](#deploy-to-heroku)
-3. [Handling the Database](#handling-the-database)
-4. [Reindex for Search](#reindex-for-search)
+1. [Where EBWiki runs](#where-ebwiki-runs)
+2. [Deploy staging](#deploy-staging)
+3. [Gate deploys on CI](#gate-deploys-on-ci)
+4. [Handling the database](#handling-the-database)
+5. [After a deploy](#after-a-deploy)
 
-## Prerequisites
-Before getting started, install a copy of the Heroku CLI on your computer.  You can find the installation instructions at the link below:
+## Where EBWiki runs
 
-[Heroku CLI](https://devcenter.heroku.com/categories/command-line)
+- **Staging:** the Rails app runs on Railway (project **ebwiki**, service **ebwiki**) at **staging.ebwiki.org**, behind HTTP basic auth. [STAGING_RAILWAY.md](STAGING_RAILWAY.md) covers the build, health checks and the Doppler `ebwiki/stg` variable names.
+- **Production:** **ebwiki.org** serves the Cloudflare maintenance page. Moving production traffic to the Rails app is a separate release with its own review.
 
-Once you've installed the CLI, login in the terminal using the following command:
+The old Heroku app is gone. Do not use the Heroku CLI for EBWiki.
 
-```
-heroku login
-```
+## Deploy staging
 
-Enter the email and password associated with your Heroku account when prompted.  Next, either create a new ssh key or upload an existing one when prompted.
+1. Open a pull request against `main`. CI must pass and a maintainer must approve it.
+2. Merge to `main`. Railway builds `Dockerfile.railway` from `main` and deploys service **ebwiki**.
+3. Railway's pre-deploy step runs `bash release-tasks.sh`, which runs `rails db:migrate`. The deploy health check is `GET /up`.
 
-## Deploy to Heroku
-In your terminal, navigate to the EBWiki directory, and pull the latest version of the main branch.
+Staging DNS and the Railway custom domain are managed with OpenTofu in `infra/staging`. `make plan` writes plans for the staging and GitHub stacks and applies nothing. `make apply` applies the reviewed plans and needs a maintainer's go. The staging steps of both run a read-only DNS preflight first and stop when the staging record is wrong. See [RELEASE.md](RELEASE.md).
 
-If you need to add a remote to your local repository , use the following command:
+## Gate deploys on CI
 
-```
-heroku git:remote -a ebwiki
-```
+The CI workflow also runs on every push to `main`. Turn on **Wait for CI** in the Railway service settings (Settings, Source) so Railway holds each staging deploy until the GitHub Actions checks on that commit pass, and skips it when one fails. Railway does not read this setting from `railway.toml`, so it is a dashboard setting owned by a project admin.
 
-Deploy your app to Heroku using the following command:
+## Handling the database
 
-```
-git push heroku main
-```
-
-## Handling the Database
-Now that you've successfully pushed your main branch to the remote, migrate the database:
+Migrations run on every deploy through `release-tasks.sh`. Before a risky migration, take a Postgres snapshot to the R2 bucket:
 
 ```
-heroku run rake db:migrate
+make snapshot
 ```
 
-If there are any changes to the database, then it's a good time to refresh the production backup stored on the repo.  To create a new backup and download it, use the following commands:
+That runs `scripts/staging-db-snapshot.sh` under Doppler `ebwiki/infra`, so no credentials are typed by hand.
 
-```
-heroku pg:backups:capture
-heroku pg:backups:download
-```
+Case search uses Postgres full-text search (`cases.tsv`). After restoring a dump that predates that column, run `bundle exec rails db:migrate` against the restored database so the generated `tsv` column and GIN index exist. No Elasticsearch reindex is required.
 
-In another terminal, delete the old production backup and rename the latest one from `latest.dump` to `MM_YYYY.dump`, with the appropriate values filled in. 
+## After a deploy
 
-Case search uses Postgres full-text search (`cases.tsv`). After restoring a dump that predates that column, run `bundle exec rails db:migrate` against the restored database so the generated `tsv` column and GIN index exist. On Railway staging the pre-deploy step (`release-tasks.sh`) runs the same migration on every deploy. No Elasticsearch reindex is required.
-
-And with that, we're done!
+Run the post-deploy smoke check and, if needed, the one-command rollback described in [RELEASE.md](RELEASE.md).

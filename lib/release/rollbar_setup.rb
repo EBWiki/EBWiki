@@ -5,13 +5,13 @@ require 'json'
 require_relative 'plain'
 
 module Release
-  # Configures Rollbar for standalone release CLIs when a token is present.
+  # Configures Rollbar for standalone release CLIs. Logs a warning when the token is missing.
   module RollbarSetup
     module_function
 
     def configure!
       token = ENV.fetch('ROLLBAR_ACCESS_TOKEN', nil)
-      return unless Plain.present?(token)
+      return log_missing_token unless Plain.present?(token)
 
       apply_rollbar_config(token)
     rescue LoadError => e
@@ -26,6 +26,16 @@ module Release
         config.enabled = true
         config.use_async = false
       end
+    end
+
+    def log_missing_token
+      warn(
+        {
+          event: 'rollbar_setup',
+          level: 'warn',
+          message: 'ROLLBAR_ACCESS_TOKEN is not set; failures are not sent to Rollbar'
+        }.to_json
+      )
     end
 
     def log_load_error(error)

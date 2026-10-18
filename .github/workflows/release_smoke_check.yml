@@ -30,6 +30,21 @@ jobs:
       - name: Install gems
         run: bundle install
 
+      - name: Require release-smoke secrets
+        env:
+          STAGING_USERNAME: ${{ secrets.STAGING_USERNAME }}
+          STAGING_PASSWORD: ${{ secrets.STAGING_PASSWORD }}
+          ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+        run: |
+          missing=0
+          for name in STAGING_USERNAME STAGING_PASSWORD ROLLBAR_ACCESS_TOKEN; do
+            if [ -z "${!name:-}" ]; then
+              printf '{"level":"error","event":"release_smoke_secret_missing","secret":"%s"}\n' "$name" >&2
+              missing=1
+            fi
+          done
+          exit "$missing"
+
       - name: Run post-deploy smoke check
         env:
           STAGING_USERNAME: ${{ secrets.STAGING_USERNAME }}

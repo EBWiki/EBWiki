@@ -8,9 +8,9 @@ This change ships to **Railway staging only** (service **ebwiki**, public hostna
 
 ## Deploy staging (Railway)
 
-Auto-build from GitHub is declared in `.railway/railway.ts`: repository **EBWiki/EBWiki**, branch **main**, Dockerfile **Dockerfile.railway**, health check **/up**. When Railway GitHub integration is linked to that repo, a merge to **main** should trigger a new deploy of service **ebwiki**. **Unverified in this PR:** whether the linked project will pick up the next merge without a manual redeploy (last observed Railway deploy predates this branch).
+Auto-build from GitHub is declared in `.railway/railway.ts`: repository **EBWiki/EBWiki**, branch **main**, Dockerfile **Dockerfile.railway**, health check **/up**. A merge to **main** triggers a new deploy of service **ebwiki**. The CI workflow also runs on push to **main**, so the Railway **Wait for CI** service setting can hold each deploy until CI passes; see [DEPLOYING.md](DEPLOYING.md#gate-deploys-on-ci). **Unverified:** whether Wait for CI is turned on for the service.
 
-Manual redeploy if needed (from a machine with Railway CLI and project access):
+Manual redeploy if needed (from a machine with Railway CLI and project access). Use it only for a commit that already passed CI on **main**; a manual redeploy does not wait for CI:
 
 ```bash
 railway redeploy --service ebwiki
@@ -19,15 +19,15 @@ railway redeploy --service ebwiki
 OpenTofu for DNS and Railway custom domain (includes read-only DNS preflight before plan):
 
 ```bash
-make staging-plan    # writes infra/staging/staging.tfplan; does not apply
-make staging-apply   # apply only after reviewing the plan
+make plan    # staging and GitHub stacks; writes plan files, applies nothing
+make apply   # applies the reviewed plans, only after a maintainer approves
 ```
 
 Staging DNS: Cloudflare CNAME **staging.ebwiki.org** points at the Railway custom-domain target with **DNS only** (grey cloud), and the Railway verification TXT record **_railway-verify.staging.ebwiki.org** stays in place. OpenTofu sets `proxied = false` on the CNAME. DNS only lets Railway issue and renew its own certificate for the host without depending on the zone's Cloudflare SSL mode. Railway also supports the proxied setup with SSL mode Full; staging gives up Cloudflare's proxy features, which is acceptable because staging sits behind HTTP basic auth.
 
 `scripts/staging-dns-preflight.sh` is read only and fails closed. Before the plan it requires exactly one staging CNAME pointing at a Railway target, a boolean proxied flag, and the verification TXT record. After the plan, and again before apply, it requires the planned CNAME to be DNS only and to point at a Railway target.
 
-**Unverified:** why staging.ebwiki.org currently returns Railway's fallback 404. Railway returns that page when the host is not an active custom domain on a service. Confirm in the Railway dashboard that **staging.ebwiki.org** is attached to service **ebwiki** in environment **production** and shows as verified before relying on the DNS change.
+Current state, read from Railway and public DNS on 2026-10-18: **staging.ebwiki.org** is attached as a custom domain to service **ebwiki** in environment **production**, but Railway reports it as not verified, with its certificate still issuing. Railway expects the CNAME to point at its custom-domain target and sees that record as unset, because the live Cloudflare record is proxied and public DNS returns Cloudflare addresses instead. The verification TXT record is present. Requests reach Railway's edge and get its fallback 404 ("Application not found"). Making the record DNS only should let Railway see the CNAME, verify the domain and issue the certificate. **Unverified:** that the 404 clears once the DNS change is applied.
 
 ## Post-deploy smoke check
 
@@ -105,14 +105,15 @@ Rollback redeploys prior application code only. Do not run **`db:rollback`** for
 
 Railway exposes a single environment named **production** for this project (staging hostname **staging.ebwiki.org** is a custom domain on that environment). Set the service (**ebwiki**), that environment name, deployment id to restore, and a Railway **workspace** API token. Rollback uses **`Authorization: Bearer`** (see `lib/release/rollback/railway_graphql_client.rb`), matching [Railway account tokens](https://railway.com/account/tokens). Do not use Railway **project** tokens here. Rollback calls Railway GraphQL **`deploymentRollback`** (see [Manage Deployments](https://docs.railway.com/integrations/api/manage-deployments)).
 
+Run it under Doppler so the token is never typed or pasted. `RAILWAY_TOKEN` in `ebwiki/infra` must be a workspace token for this to work (**unverified** which kind of token is stored there today).
+
 ```bash
 export RELEASE_ROLLBACK_PLATFORM=railway
 export RAILWAY_SERVICE=ebwiki
 export RAILWAY_ENVIRONMENT=production
 export RAILWAY_ROLLBACK_DEPLOYMENT_ID=<previous-deployment-id>
-export RAILWAY_TOKEN=<workspace-token>
-bin/release-rollback
-bin/release-rollback --execute --yes
+doppler run --project ebwiki --config infra -- bin/release-rollback
+doppler run --project ebwiki --config infra -- bin/release-rollback --execute --yes
 ```
 
 Implementation: `lib/release/rollback.rb`, entrypoint `bin/release-rollback` (loads `lib/release` only, no full Rails boot).

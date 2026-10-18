@@ -104,8 +104,13 @@ case "$url" in
     else body='{"success":true,"result":[{"id":"txt_stub","content":"railway-verify=stub"}]}'; fi ;;
   *api.cloudflare.com/client/v4/zones/*/dns_records*type=CNAME*)
     code=200
-    body="{\"success\":true,\"result\":[{\"id\":\"rec_stub\",\"content\":\"${CF_STUB_CNAME_CONTENT-abc123.up.railway.app}\",\"proxied\":true}]}" ;;
-  *api.cloudflare.com/client/v4/zones\?*) code=200; body='{"success":true,"result":[{"id":"zone_stub"}]}' ;;
+    proxied_field=',"proxied":true'
+    [ "${CF_STUB_PROXIED_MISSING:-}" = 1 ] && proxied_field=''
+    body="{\"success\":true,\"result\":[{\"id\":\"rec_stub\",\"content\":\"${CF_STUB_CNAME_CONTENT-abc123.up.railway.app}\"${proxied_field}}]}" ;;
+  *api.cloudflare.com/client/v4/zones\?*)
+    code=200
+    if [ "${CF_STUB_ZONE_NO_ID:-}" = 1 ]; then body='{"success":true,"result":[{"name":"ebwiki.org"}]}'
+    else body='{"success":true,"result":[{"id":"zone_stub"}]}'; fi ;;
   *api.rollbar.com*) [ -z "$rollbar_token" ] || : >"$GH_STUB_STATE/rollbar_posted"; code=200; body="" ;;
   */environments/release-smoke/secrets/*) code=200; body="{}" ;;
   */environments/release-smoke) code=404; body="{}" ;;
@@ -248,19 +253,55 @@ assert_clean "staging plan failure"
 [ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "successful staging plan must not report to Rollbar"
 assert_clean "staging plan success"
 
-for mode in cname_not_railway cname_empty txt_missing planned_proxied; do
-  case "$mode" in
+dns_env_args() { # mode
+  case "$1" in
+    zone_no_id) env_args=(CF_STUB_ZONE_NO_ID=1) ;;
     cname_not_railway) env_args=(CF_STUB_CNAME_CONTENT=evil.example.com) ;;
     cname_empty) env_args=(CF_STUB_CNAME_CONTENT=) ;;
+    proxied_missing) env_args=(CF_STUB_PROXIED_MISSING=1) ;;
     txt_missing) env_args=(CF_STUB_TXT_MISSING=1) ;;
     planned_proxied) env_args=(TOFU_PLANNED_PROXIED=true) ;;
+    planned_not_railway) env_args=(TOFU_PLANNED_CNAME=evil.example.com) ;;
+    *) fail "unknown DNS mode $1" ;;
   esac
+}
+
+dns_assert_failed_closed() { # phase mode output
+  grep -Eq '"level":"error","script":"[^"]*","event":"staging_dns_(zone|cname|verify|plan)"' <<<"$3" || { echo "$3"; fail "$1 DNS $2 must log a staging_dns error event"; }
+  [ -f "$GH_STUB_STATE/rollbar_posted" ] || fail "$1 DNS $2 must report to Rollbar"
+  rm -f "$GH_STUB_STATE/rollbar_posted"
+}
+
+# Live record failures must stop the plan before tofu plan runs.
+for mode in zone_no_id cname_not_railway cname_empty proxied_missing txt_missing; do
+  dns_env_args "$mode"
   : >"$ARGV_LOG"
   out="$(env "${env_args[@]}" "$REPO/scripts/staging-plan.sh" 2>&1 >/dev/null)" && fail "staging plan must fail closed on DNS $mode"
-  grep -Eq '"level":"error","script":"[^"]*","event":"staging_dns_(cname|verify|plan)"' <<<"$out" || { echo "$out"; fail "DNS $mode must log a staging_dns event"; }
+  dns_assert_failed_closed "staging plan" "$mode" "$out"
+  grep -Eq '^tofu plan( |$)' "$ARGV_LOG" && fail "staging plan must not run tofu plan when live DNS check $mode fails"
   [ ! -f "$STAGING_PLAN" ] || fail "staging plan file must be deleted after DNS $mode"
-  rm -f "$GH_STUB_STATE/rollbar_posted"
   assert_clean "staging DNS preflight $mode"
+done
+
+# Planned record failures are caught after tofu plan, and the plan file is removed.
+for mode in planned_proxied planned_not_railway; do
+  dns_env_args "$mode"
+  : >"$ARGV_LOG"
+  out="$(env "${env_args[@]}" "$REPO/scripts/staging-plan.sh" 2>&1 >/dev/null)" && fail "staging plan must fail closed on DNS $mode"
+  dns_assert_failed_closed "staging plan" "$mode" "$out"
+  [ ! -f "$STAGING_PLAN" ] || fail "staging plan file must be deleted after DNS $mode"
+  assert_clean "staging DNS preflight $mode"
+done
+
+# Apply re-runs the DNS check on the saved plan and must never reach tofu apply.
+for mode in cname_not_railway txt_missing planned_proxied planned_not_railway; do
+  "$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass before apply DNS $mode"
+  dns_env_args "$mode"
+  : >"$ARGV_LOG"
+  out="$(env "${env_args[@]}" "$REPO/scripts/staging-apply.sh" 2>&1 >/dev/null)" && fail "staging apply must fail closed on DNS $mode"
+  dns_assert_failed_closed "staging apply" "$mode" "$out"
+  grep -Eq '^tofu apply( |$)' "$ARGV_LOG" && fail "staging apply must not run tofu apply when DNS $mode fails"
+  assert_clean "staging apply DNS preflight $mode"
 done
 "$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass again after the DNS failure cases"
 

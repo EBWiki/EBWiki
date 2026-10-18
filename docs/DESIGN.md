@@ -40,14 +40,14 @@ This is the main bar. Graphic polish is not.
   copy (see below).
 
 A visual restyle, Harbor, Hanami, or a second CSS framework is a later
-phase. It does not make this project “designed.”
+phase. It does not make this project "designed."
 
 ## Visual system (keep; do not restyle in hygiene PRs)
 
 - **Framework:** Bootstrap 3 via `bootstrap-sprockets` in
   `app/assets/stylesheets/application.scss`. Simple Form uses the Bootstrap
   wrappers in `config/initializers/simple_form_bootstrap.rb`.
-- **Layout:** `app/views/layouts/application.html.erb` — `container`,
+- **Layout:** `app/views/layouts/application.html.erb`: `container`,
   header, `col-md-8` main column, footer. New pages use this layout unless
   they are a documented embed (`embed.scss`).
 - **Color:** `$color-orange: #F65732` is the brand accent
@@ -59,21 +59,21 @@ phase. It does not make this project “designed.”
   into `scaffolds.scss`.
 
 Do not add Tailwind, Bootstrap 5, or a second component library on a
-feature PR. That is a migration, same class as Puma 7 → 8.
+feature PR. That is a migration, same class as Puma 7 to 8.
 
 ## What a required check is
 
 A **required check** has two outcomes: **pass** or **not done**. That
 is stricter than a guideline or a preference, and it is not the same
 as the name of a CI job. The change is incomplete until every
-applicable check has been run and has passed. “Could not run it” is
+applicable check has been run and has passed. "Could not run it" is
 **not done**.
 
 Two kinds apply here:
 
-- **Quality checks** (next section) — product checks you run: browser,
+- **Quality checks** (next section): product checks you run: browser,
   shared state, empty/error, viewport, focus, copy.
-- **Merge requirements** — GitHub checks that block merge: `CI`
+- **Merge requirements**: GitHub checks that block merge: `CI`
   (RSpec, RuboCop, Brakeman, markdown links), CodeQL, and a human
   Approve from `.github/CODEOWNERS`. Copilot comments are review
   notes, not a merge requirement. A green markdown-link job is one
@@ -84,7 +84,7 @@ treat an incomplete check as a pass.
 
 ## Quality checks for UI changes
 
-A UI PR is not done at “it looks fine on my laptop.” These six are the
+A UI PR is not done at "it looks fine on my laptop." These six are the
 quality checks:
 
 1. **Browser check** the changed flow end to end: click, type, submit,
@@ -152,7 +152,7 @@ Before a hygiene or UI PR is called done, list and check:
 
 1. **Bots and workflows** under `.github/workflows/`, not only the
    file just deleted. On-demand hooks count.
-2. **Open pull requests** — ready vs draft, Dependabot vs agent
+2. **Open pull requests**: ready vs draft, Dependabot vs agent
    rewrite vs real feature. Ready-list noise is closed or drafted
    the same week.
 3. **Public templates** that share the change: case show, search,

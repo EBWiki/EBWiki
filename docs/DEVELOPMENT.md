@@ -78,8 +78,8 @@ bundle exec pre-commit install
 ```
 
 The hook runs `rubocop` directly and `rake pre_commit:ci`, which executes:
-- **Rubocop** – Ruby style checker
-- **Brakeman** – Security vulnerability scanner
-- **RSpec** – Full test suite
+- **Rubocop**: Ruby style checker
+- **Brakeman**: Security vulnerability scanner
+- **RSpec**: Full test suite
 
 To bypass the hook in exceptional cases (e.g., WIP commits), use `git commit -n`.
