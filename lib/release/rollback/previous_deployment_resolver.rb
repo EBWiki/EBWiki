@@ -54,11 +54,15 @@ module Release
       end
 
       def pick_target(ids, skip_current:)
-        target = skip_current && ids.length > 1 ? ids[1] : ids.first
-        return target if Plain.present?(target)
+        if skip_current
+          if ids.length < 2
+            raise RollbackError, 'Only one successful deployment exists; ' \
+                                 'set RAILWAY_ROLLBACK_DEPLOYMENT_ID explicitly.'
+          end
+          return ids[1]
+        end
 
-        raise RollbackError, 'Only one successful deployment exists; ' \
-                             'set RAILWAY_ROLLBACK_DEPLOYMENT_ID explicitly.'
+        ids.first
       end
 
       def deployment_ids(response)

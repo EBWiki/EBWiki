@@ -27,7 +27,7 @@ Staging DNS: Cloudflare CNAME **staging.ebwiki.org** points at the Railway custo
 
 `scripts/staging-dns-preflight.sh` is read only and fails closed. Before plan it allows a non-Railway live CNAME only when `--allow-cname-repair` is set (plan path) and the saved plan fixes the target. It compares the verification TXT value, not just the count. After the plan, and again before apply, it requires the planned CNAME to be DNS only and to point at a Railway target.
 
-**Verified Railway domain state (2026-10-18):** **staging.ebwiki.org** is attached to service **ebwiki** in environment **production**, but Railway reported verification incomplete and certificate issuance in progress because the live Cloudflare CNAME was proxied. The verification TXT is present. Requests hit Railway's fallback 404 (`x-railway-fallback: true`). Applying the DNS-only CNAME plan should let Railway verify the host and finish the certificate; clearing the 404 is still labeled **unverified** until observed after apply.
+**Verified Railway domain state (2026-10-18):** **staging.ebwiki.org** is attached to service **ebwiki** in Railway's internal environment slug **`production`** (staging app only; **ebwiki.org** is not on Railway). Railway reported verification incomplete and certificate issuance in progress because the live Cloudflare CNAME was proxied. The verification TXT is present. Requests hit Railway's fallback 404 (`x-railway-fallback: true`). Applying the DNS-only CNAME plan should let Railway verify the host and finish the certificate; clearing the 404 is still labeled **unverified** until observed after apply.
 
 ## Post-deploy smoke check
 
@@ -103,9 +103,9 @@ Rollback redeploys prior application code only. Do not run **`db:rollback`** for
 
 ### Railway staging (options)
 
-Railway exposes a single environment named **production** for this project (staging hostname **staging.ebwiki.org** is a custom domain on that environment). Rollback uses Railway GraphQL **`deploymentRollback`** with a **workspace or account** token (**`RAILWAY_TOKEN`** in **ebwiki/infra**). Project tokens are rejected by the staging preflight.
+Railway uses environment slug **`production`** for this staging project (hostname **staging.ebwiki.org** is a custom domain on that environment). Rollback uses Railway GraphQL **`deploymentRollback`** with a **workspace or account** token (**`RAILWAY_TOKEN`** in **ebwiki/infra**). Project tokens are rejected by the staging preflight. Rollback picks the previous **SUCCESS** deployment from the API (live **98b66eec-8d76-4447-849a-8edb27867710** at **8278d169**; prior healthy **96ee0929-a867-4a18-8cc4-ef24cddaee0f**).
 
-**Option (a) / default one-liner:** resolves service **ebwiki**, environment **production**, and the previous successful deployment id automatically:
+**Option (a) / default one-liner:** resolves service **ebwiki**, environment slug **`production`**, and the previous **SUCCESS** deployment id automatically:
 
 ```bash
 doppler run --project ebwiki --config infra -- bin/release-rollback

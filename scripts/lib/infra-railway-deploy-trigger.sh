@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Idempotent Wait for CI (checkSuites) on the GitHub main deployment trigger.
+# Read-only GitHub autodeploy trigger checks and idempotent Wait for CI (checkSuites).
 set -euo pipefail
 
 # shellcheck source=infra-railway.sh
@@ -60,32 +60,53 @@ infra_railway_update_trigger_check_suites() {
   log_json info railway_deploy_trigger "enabled checkSuites on trigger ${trigger_id}"
 }
 
-infra_railway_assert_deployment_trigger() {
-  local ids project_id service_id environment_id trigger_json trigger_id suites
+infra_railway_preflight_github_autodeploy() {
+  local ids project_id service_id environment_id all_nodes count trigger_json trigger_id suites
 
   infra_railway_assert_workspace_or_account_token
   ids="$(infra_railway_find_project_service_env)" || return 1
   read -r project_id service_id environment_id <<<"$ids"
-  trigger_json="$(infra_railway_deployment_trigger_nodes "$project_id" "$environment_id" "$service_id" \
-    | infra_railway_pick_main_github_trigger)"
-  [[ -n "$trigger_json" ]] || die railway_deploy_trigger "no GitHub trigger for ${RAILWAY_DEPLOY_REPO}@${RAILWAY_DEPLOY_BRANCH}"
+  all_nodes="$(infra_railway_deployment_trigger_nodes "$project_id" "$environment_id" "$service_id")"
+  count="$(jq -s 'length' <<<"$all_nodes")"
+  trigger_json="$(jq -s --arg repo "$RAILWAY_DEPLOY_REPO" --arg branch "$RAILWAY_DEPLOY_BRANCH" '
+    [.[] | select(.provider == "github" and .branch == $branch and .repository == $repo)][0] // empty
+  ' <<<"$all_nodes")"
+
+  if [[ -z "$trigger_json" ]]; then
+    if [[ "$count" -eq 0 ]]; then
+      die railway_deploy_trigger_missing \
+        "GitHub autodeploy trigger missing; connect EBWiki/EBWiki on main in Railway Source (GitHub App)"
+    fi
+    die railway_deploy_trigger_repo \
+      "GitHub autodeploy trigger is not set to ${RAILWAY_DEPLOY_REPO}@${RAILWAY_DEPLOY_BRANCH}"
+  fi
+
   trigger_id="$(jq -r '.id' <<<"$trigger_json")"
   suites="$(jq -r '.checkSuites' <<<"$trigger_json")"
   if [[ "$suites" != true ]]; then
-    die railway_deploy_trigger "deployment trigger ${trigger_id} has checkSuites=${suites}; run make apply to fix"
+    die railway_deploy_trigger_disabled \
+      "GitHub autodeploy trigger ${trigger_id} has checkSuites=${suites}; run make apply to enable Wait for CI"
   fi
-  log_json info railway_deploy_trigger "trigger ${trigger_id} has checkSuites=true"
+  log_json info railway_deploy_trigger_ok "trigger ${trigger_id} is ${RAILWAY_DEPLOY_REPO}@${RAILWAY_DEPLOY_BRANCH} with checkSuites=true"
+}
+
+infra_railway_assert_deployment_trigger() {
+  infra_railway_preflight_github_autodeploy
 }
 
 infra_railway_ensure_deployment_trigger() {
-  local ids project_id service_id environment_id trigger_json trigger_id suites
+  local ids project_id service_id environment_id all_nodes trigger_json trigger_id suites
 
   infra_railway_assert_workspace_or_account_token
   ids="$(infra_railway_find_project_service_env)" || return 1
   read -r project_id service_id environment_id <<<"$ids"
-  trigger_json="$(infra_railway_deployment_trigger_nodes "$project_id" "$environment_id" "$service_id" \
-    | infra_railway_pick_main_github_trigger)"
-  [[ -n "$trigger_json" ]] || die railway_deploy_trigger "no GitHub trigger for ${RAILWAY_DEPLOY_REPO}@${RAILWAY_DEPLOY_BRANCH}"
+  all_nodes="$(infra_railway_deployment_trigger_nodes "$project_id" "$environment_id" "$service_id")"
+  trigger_json="$(jq -s --arg repo "$RAILWAY_DEPLOY_REPO" --arg branch "$RAILWAY_DEPLOY_BRANCH" '
+    [.[] | select(.provider == "github" and .branch == $branch and .repository == $repo)][0] // empty
+  ' <<<"$all_nodes")"
+  [[ -n "$trigger_json" ]] || die railway_deploy_trigger_missing \
+    "GitHub autodeploy trigger missing; connect EBWiki/EBWiki on main in Railway Source (GitHub App)"
+
   trigger_id="$(jq -r '.id' <<<"$trigger_json")"
   suites="$(jq -r '.checkSuites' <<<"$trigger_json")"
   if [[ "$suites" == true ]]; then
