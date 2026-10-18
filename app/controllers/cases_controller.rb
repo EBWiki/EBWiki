@@ -170,6 +170,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     this_case.photo.purge
     false
   end
+  # rubocop:enable Naming/PredicateMethod
 
   def set_instance_vars
     @agencies = SortCollectionOrdinally.call(collection: Agency.all)
