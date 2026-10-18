@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'plain'
-require_relative 'deployment_id'
+require_relative 'resource_name'
+require_relative 'rollback_railway_validator'
 
 module Release
   # Plans and optionally runs a platform rollback (Heroku or Railway).
@@ -76,7 +77,7 @@ module Release
 
       case @options.platform
       when 'heroku' then validate_heroku!
-      when 'railway' then validate_railway!
+      when 'railway' then RollbackRailwayValidator.validate!(@options)
       else
         raise RollbackError, "Unsupported platform #{@options.platform.inspect}"
       end
@@ -93,34 +94,6 @@ module Release
       end
 
       ResourceName.validate!(@options.app_name, label: 'Heroku app name')
-    end
-
-    def validate_railway!
-      validate_railway_service!
-      validate_railway_environment!
-      validate_railway_deployment!
-    end
-
-    def validate_railway_service!
-      if Plain.blank?(@options.service_name)
-        raise RollbackError, 'Set RAILWAY_SERVICE before rolling back on Railway.'
-      end
-
-      ResourceName.validate!(@options.service_name, label: 'Railway service name')
-    end
-
-    def validate_railway_environment!
-      return if Plain.present?(@options.environment_slug)
-
-      raise RollbackError, 'Set RAILWAY_ENVIRONMENT before rolling back on Railway.'
-    end
-
-    def validate_railway_deployment!
-      if Plain.blank?(@options.deployment_id)
-        raise RollbackError, 'Set RAILWAY_ROLLBACK_DEPLOYMENT_ID to the deployment id to restore.'
-      end
-
-      DeploymentId.validate!(@options.deployment_id)
     end
 
     def confirm!
