@@ -42,7 +42,6 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
     @this_case = Case.new(case_params)
-    @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     photo_upload = case_photo_upload
     if photo_upload.present?
       @this_case.photo.attach(photo_upload)
@@ -69,10 +68,9 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   end
 
   # rubocop:todo Metrics/MethodLength
-  def update # rubocop:todo Metrics/AbcSize
+  def update
     @this_case = Case.find(params[:id])
     @this_case.slug = nil
-    @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     photo_upload = case_photo_upload
     remove_photo = remove_case_photo_requested?
     if @this_case.update(case_params)

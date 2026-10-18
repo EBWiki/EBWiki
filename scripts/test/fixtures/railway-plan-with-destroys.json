@@ -1,0 +1,12 @@
+{
+  "summary": "Plan: 0 to add, 4 to change, 22 to destroy",
+  "changeSet": {
+    "changes": [
+      {
+        "kind": "variable.delete",
+        "severity": "destructive",
+        "address": "service.ebwiki.variables.DATABASE_URL"
+      }
+    ]
+  }
+}

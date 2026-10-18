@@ -69,6 +69,8 @@ class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates :blurb, length: { maximum: MAX_BLURB_CHARACTERS }
   validates :blurb, presence: { message: 'A blurb about the case is required.' }
 
+  before_validation :strip_html_from_blurb
+
   has_one_attached :photo
 
   validate :case_photo_attachment_valid, if: -> { photo.attached? }
@@ -137,6 +139,12 @@ class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
     blob.content_type
   end
   private :detected_photo_content_type
+
+  def strip_html_from_blurb
+    return if blurb.blank?
+
+    self.blurb = ActionController::Base.helpers.strip_tags(blurb)
+  end
 
   def edit_summary
     summary
