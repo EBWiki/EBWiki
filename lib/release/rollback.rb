@@ -5,17 +5,19 @@ module Release
   class Rollback
     Result = Data.define(:success, :message, :commands)
 
-    def self.run(argv, executor: CommandExecutor.new, output: $stdout)
-      new(argv, executor: executor, output: output).run
+    def self.run(argv, executor: CommandExecutor.new, output: $stdout, input: $stdin)
+      new(argv, executor: executor, output: output, input: input).run
     end
 
-    def initialize(argv, executor:, output:)
-      @options = RollbackOptions.from_argv(argv)
+    def initialize(argv, executor:, output:, input: $stdin)
+      @argv = argv
       @executor = executor
       @output = output
+      @input = input
     end
 
     def run
+      @options = RollbackOptions.from_argv(@argv)
       validate!
       planner = Planner.new(@options, output: @output)
       commands = planner.commands
@@ -31,7 +33,7 @@ module Release
     private
 
     def execute!(commands)
-      confirm! unless @options.skip_confirm
+      confirm!
       executor_result = @executor.call(commands)
       Result.new(
         success: executor_result.success,
@@ -65,25 +67,32 @@ module Release
     end
 
     def validate_heroku!
-      return if @options.app_name.present?
+      if @options.app_name.blank?
+        raise RollbackError, 'Set HEROKU_APP_NAME or RELEASE_HEROKU_APP before rolling back.'
+      end
 
-      raise RollbackError, 'Set HEROKU_APP_NAME or RELEASE_HEROKU_APP before rolling back.'
+      ResourceName.validate!(@options.app_name, label: 'Heroku app name')
     end
 
     def validate_railway!
       if @options.service_name.blank?
         raise RollbackError, 'Set RAILWAY_SERVICE before rolling back on Railway.'
       end
+      ResourceName.validate!(@options.service_name, label: 'Railway service name')
       return if @options.deployment_id.present?
 
       raise RollbackError, 'Set RAILWAY_ROLLBACK_DEPLOYMENT_ID to the deployment id to restore.'
     end
 
     def confirm!
-      return if $stdin.tty? == false
+      return if @options.skip_confirm
+
+      unless @input.tty?
+        raise RollbackError, 'Non-interactive session: pass --yes to confirm rollback.'
+      end
 
       @output.print('Proceed with rollback? [y/N] ')
-      answer = $stdin.gets.to_s.strip.downcase
+      answer = @input.gets.to_s.strip.downcase
       raise RollbackError, 'Rollback cancelled.' unless answer == 'y'
     end
   end

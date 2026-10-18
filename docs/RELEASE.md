@@ -1,10 +1,12 @@
 # Release smoke check and rollback
 
-Use these commands after deploying the Postgres search change (PR #4410) to verify behavior and to roll back a bad release without ad hoc scripts.
+Use these commands after deploying the Postgres search change to verify behavior and to roll back a bad release without ad hoc scripts.
 
 ## Post-deploy smoke check
 
 The smoke check hits the running site over HTTP. It confirms the home page loads, search returns results for a known term, junk search returns zero results without error, and `/health` reports Postgres and Redis only (no Elasticsearch probe).
+
+GitHub Actions runs `release:smoke_check` automatically when a deployment completes successfully (see `.github/workflows/release_smoke_check.yml`).
 
 ### When to run
 
@@ -48,17 +50,17 @@ Optional environment variables:
 | `RELEASE_SMOKE_SEARCH_TERM` | Query that should match at least one case (default `*`) |
 | `RELEASE_SMOKE_BASIC_AUTH_*` | Override staging basic auth credentials |
 
-Exit code **0** means all checks passed. Failures log JSON to `Rails.logger` and report through Rollbar (and Sentry when the gem is present).
+Exit code **0** means all checks passed. Failures log JSON to `Rails.logger` and report through Rollbar when `ROLLBAR_ACCESS_TOKEN` is set.
 
 Implementation: `lib/release/smoke_check.rb`, rake task in `lib/tasks/release.rake`.
 
 ## One-command rollback
 
-`bin/release-rollback` prints a plan by default (dry run). Pass `--execute` to run commands and `--yes` to skip the confirmation prompt.
+`bin/release-rollback` prints a plan by default (dry run). Pass `--execute` to run commands and `--yes` to skip the confirmation prompt. In CI or a pipe, `--execute` alone is refused unless `--yes` is also passed.
 
-### Migrations and PR #4410
+### Migrations
 
-This pull request does not add new migrations. The `cases.tsv` column is additive and safe to leave in place when rolling back application code. Default rollback is **redeploy only**. Pass `--with-migration-down` only when you intentionally need to run `db:rollback STEP=1` before redeploying (not required for the pg_search landing).
+Rollback redeploys prior application code only. Do not run `db:rollback` for the generated `cases.tsv` column; removing it would break search.
 
 ### Heroku
 
@@ -72,24 +74,20 @@ bin/release-rollback --execute --yes
 
 Planned command: `heroku releases:rollback -a $HEROKU_APP_NAME`
 
-With migration down (unusual for this release):
-
-```bash
-bin/release-rollback --execute --yes --with-migration-down
-```
-
 ### Railway staging
 
-Set the service and the deployment id to restore (from `railway deployment list`):
+Set the service (`ebwiki`), target environment label, deployment id to restore, and API token. Rollback uses Railway's public GraphQL `deploymentRollback` mutation (see [Manage Deployments](https://docs.railway.com/integrations/api/manage-deployments)).
 
 ```bash
 export RELEASE_ROLLBACK_PLATFORM=railway
-export RAILWAY_SERVICE=ebwiki-web
+export RAILWAY_SERVICE=ebwiki
+export RAILWAY_ENVIRONMENT=staging
 export RAILWAY_ROLLBACK_DEPLOYMENT_ID=<previous-deployment-id>
+export RAILWAY_TOKEN=<account-token>
 bin/release-rollback
 bin/release-rollback --execute --yes
 ```
 
-Planned command: `railway redeploy --deployment $RAILWAY_ROLLBACK_DEPLOYMENT_ID --service $RAILWAY_SERVICE`
+`railway run` (if used for other tasks) executes on your local machine against the linked project, not inside the remote container.
 
-Implementation: `lib/release/rollback.rb`, entrypoint `bin/release-rollback`.
+Implementation: `lib/release/rollback.rb`, entrypoint `bin/release-rollback` (loads `lib/release` only, no full Rails boot).

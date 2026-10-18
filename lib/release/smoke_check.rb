@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'cgi'
+require 'json'
+require 'openssl'
 
 module Release
   # Verifies a deployed environment serves pages and Postgres-backed search.
@@ -10,6 +12,17 @@ module Release
 
     DEFAULT_SEARCH_TERM = '*'
     JUNK_SEARCH_TERM = 'ebwiki_smoke_check_no_results_xyz'
+    NETWORK_ERRORS = [
+      JSON::ParserError,
+      OpenSSL::SSL::SSLError,
+      SocketError,
+      SystemCallError,
+      Timeout::Error,
+      Net::OpenTimeout,
+      Net::ReadTimeout,
+      Errno::ECONNREFUSED,
+      Errno::ETIMEDOUT
+    ].freeze
 
     def initialize(
       base_url:,
@@ -19,6 +32,7 @@ module Release
       error_reporter: Release::ErrorReporter
     )
       @base_url = normalize_base_url(base_url)
+      @log_base_url = UrlSanitizer.for_log(@base_url)
       @http_client = http_client || default_http_client
       @search_term = search_term.presence || ENV.fetch(
         'RELEASE_SMOKE_SEARCH_TERM',
@@ -52,11 +66,15 @@ module Release
       else
         raise ArgumentError, "unknown smoke step #{step}"
       end
+    rescue *NETWORK_ERRORS => e
+      raise SmokeCheckFailure.new(step, "HTTP request failed: #{e.message}")
     end
 
-    def fetch(path)
+    def fetch(path, step:)
       url = "#{@base_url}#{path}"
       @http_client.get(url).tap { |response| log_step(path, response.status) }
+    rescue *NETWORK_ERRORS => e
+      raise SmokeCheckFailure.new(step, "HTTP request failed: #{e.message}")
     end
 
     def assert_ok!(step, response, message)
@@ -82,13 +100,13 @@ module Release
         event: 'release_smoke_check',
         step: path,
         http_status: status,
-        base_url: @base_url
+        base_url: @log_base_url
       }
       @logger.info(payload.to_json)
     end
 
     def log_success
-      @logger.info({ event: 'release_smoke_check', result: 'ok', base_url: @base_url }.to_json)
+      @logger.info({ event: 'release_smoke_check', result: 'ok', base_url: @log_base_url }.to_json)
     end
 
     def report_failure(error)
@@ -96,7 +114,7 @@ module Release
       @error_reporter.report(
         event: 'release_smoke_check_failed',
         message: message,
-        context: { step: error.step, base_url: @base_url }
+        context: { step: error.step, base_url: @log_base_url }
       )
       warn(message)
     end

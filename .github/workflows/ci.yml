@@ -108,3 +108,10 @@ jobs:
 
       - name: Run Rubocop
         run: bundle exec rubocop
+
+      - name: Zeitwerk check
+        env:
+          RAILS_ENV: test
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec bin/rails zeitwerk:check

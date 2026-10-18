@@ -5,7 +5,7 @@ module Release
     # Validates /health reflects Postgres search (no Elasticsearch probe).
     module HealthChecks
       def verify_postgres_search_path
-        response = fetch('/health')
+        response = fetch('/health', step: :postgres_search_path)
         assert_ok!(:postgres_search_path, response, '/health did not return HTTP 200')
 
         checks = JSON.parse(response.body).fetch('checks', {})

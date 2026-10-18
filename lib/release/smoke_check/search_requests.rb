@@ -5,12 +5,12 @@ module Release
     # HTTP checks for public pages and search results.
     module SearchRequests
       def verify_home_page
-        response = fetch('/')
+        response = fetch('/', step: :home_page)
         assert_ok!(:home_page, response, 'Home page did not return HTTP 200')
       end
 
       def verify_known_search
-        response = fetch(search_path(@search_term))
+        response = fetch(search_path(@search_term), step: :known_search)
         assert_ok!(:known_search, response, 'Search with a known term did not return HTTP 200')
         assert_known_search_body(response.body)
       end
@@ -21,7 +21,7 @@ module Release
       end
 
       def verify_empty_search
-        response = fetch(search_path(JUNK_SEARCH_TERM))
+        response = fetch(search_path(JUNK_SEARCH_TERM), step: :empty_search)
         assert_ok!(:empty_search, response, 'Junk search did not return HTTP 200')
         assert_includes!(
           :empty_search,

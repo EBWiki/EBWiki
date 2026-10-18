@@ -1,0 +1,42 @@
+---
+name: Release smoke check
+
+on:
+  deployment_status:
+
+jobs:
+  smoke_check:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: test
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+      RELEASE_SMOKE_BASE_URL: ${{ github.event.deployment_status.environment_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libcurl4-gnutls-dev
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+
+      - name: Install gems
+        run: bundle install
+
+      - name: Setup database
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec bin/rails db:prepare
+
+      - name: Run post-deploy smoke check
+        env:
+          STAGING_USERNAME: ${{ secrets.STAGING_USERNAME }}
+          STAGING_PASSWORD: ${{ secrets.STAGING_PASSWORD }}
+          RELEASE_SMOKE_SEARCH_TERM: ${{ vars.RELEASE_SMOKE_SEARCH_TERM }}
+        run: bundle exec bin/rails release:smoke_check

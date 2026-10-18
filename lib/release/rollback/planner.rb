@@ -2,7 +2,7 @@
 
 module Release
   class Rollback
-    # Builds rollback shell commands and prints the operator plan.
+    # Builds rollback commands and prints the operator plan.
     class Planner
       def initialize(options, output:)
         @options = options
@@ -10,10 +10,12 @@ module Release
       end
 
       def commands
-        list = []
-        list.concat(migration_commands) if @options.with_migration_down
-        list << platform_command
-        list
+        case @options.platform
+        when 'heroku' then [heroku_command]
+        when 'railway' then [railway_command]
+        else
+          []
+        end
       end
 
       def print(commands)
@@ -29,31 +31,29 @@ module Release
 
       private
 
-      def migration_commands
-        case @options.platform
-        when 'heroku'
-          ["heroku run rake db:rollback STEP=1 -a #{@options.app_name}"]
-        when 'railway'
-          ['railway run bundle exec rails db:rollback STEP=1']
-        else
-          []
-        end
+      def heroku_command
+        app = ResourceName.validate!(@options.app_name, label: 'Heroku app name')
+        ShellCommand.new(
+          argv: ['heroku', 'releases:rollback', '-a', app],
+          description: "heroku releases:rollback -a #{app}"
+        )
       end
 
-      def platform_command
-        case @options.platform
-        when 'heroku'
-          "heroku releases:rollback -a #{@options.app_name}"
-        when 'railway'
-          deployment = @options.deployment_id
-          service = @options.service_name
-          "railway redeploy --deployment #{deployment} --service #{service}"
-        end
+      def railway_command
+        deployment_id = @options.deployment_id
+        environment = @options.environment_slug || 'staging'
+        description = "Railway GraphQL deploymentRollback for deployment #{deployment_id} " \
+                      "(environment #{environment})"
+        RailwayRollbackCommand.new(
+          deployment_id: deployment_id,
+          environment_slug: environment,
+          description: description
+        )
       end
 
       def migration_note
-        '  Migration note: PR #4410 does not add migrations. The cases.tsv column is additive; ' \
-          'rollback is redeploy-only unless you pass --with-migration-down.'
+        '  Migration note: rollback redeploys prior application code only. ' \
+          'Do not run db:rollback for the cases.tsv column; it would break search.'
       end
     end
   end
