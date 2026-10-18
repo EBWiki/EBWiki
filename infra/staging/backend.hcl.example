@@ -1,0 +1,15 @@
+# Copy to backend.hcl (gitignored). Real bucket name and R2 endpoint live in
+# Doppler ebwiki/infra or the private GKT-462 tracker, not in git.
+
+bucket       = "REPLACE_WITH_BUCKET_NAME"
+key          = "staging/terraform.tfstate"
+region       = "auto"
+endpoints    = { s3 = "https://REPLACE_WITH_ACCOUNT_ID.r2.cloudflarestorage.com" }
+use_lockfile = true
+
+skip_credentials_validation = true
+skip_metadata_api_check     = true
+skip_region_validation      = true
+skip_requesting_account_id  = true
+skip_s3_checksum            = true
+use_path_style              = true

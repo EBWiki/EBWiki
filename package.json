@@ -1,0 +1,8 @@
+{
+  "name": "ebwiki-railway-iac",
+  "private": true,
+  "description": "Railway Infrastructure as Code evaluator for staging plan/apply",
+  "dependencies": {
+    "railway": "^3.12.0"
+  }
+}
