@@ -39,13 +39,16 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   end
   # rubocop:enable Metrics/AbcSize
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
     @this_case = Case.new(case_params)
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     photo_upload = case_photo_upload
     if @this_case.save
-      attach_case_photo(@this_case, photo_upload)
+      unless update_case_photo(@this_case, upload: photo_upload, remove: false)
+        set_instance_vars
+        return render 'new'
+      end
       current_user.follow(@this_case)
       flash[:success] = 'Case was created!'
       redirect_to @this_case
@@ -54,7 +57,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       render 'new'
     end
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def followers
     @this_case = Case.friendly.find(params[:case_slug])
@@ -68,8 +71,10 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     photo_upload = case_photo_upload
     remove_photo = remove_case_photo_requested?
     if @this_case.update(case_params)
-      purge_case_photo(@this_case) if remove_photo
-      attach_case_photo(@this_case, photo_upload)
+      unless update_case_photo(@this_case, upload: photo_upload, remove: remove_photo)
+        set_instance_vars
+        return render 'edit'
+      end
       flash[:success] = 'Case was updated!'
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
@@ -125,7 +130,6 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
              :zipcode,
              :longitude,
              :latitude,
-             :photo,
              :video_url,
              :summary,
              :blurb,
@@ -151,14 +155,19 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     ActiveModel::Type::Boolean.new.cast(params.dig(:case, :remove_photo))
   end
 
-  def attach_case_photo(this_case, upload)
-    return if upload.blank?
+  def update_case_photo(this_case, upload:, remove:)
+    if remove
+      this_case.photo.purge if this_case.photo.attached?
+      return true
+    end
+
+    return true if upload.blank?
 
     this_case.photo.attach(upload)
-  end
+    return true if this_case.valid?
 
-  def purge_case_photo(this_case)
-    this_case.photo.purge if this_case.photo.attached?
+    this_case.photo.purge
+    false
   end
 
   def set_instance_vars

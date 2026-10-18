@@ -168,6 +168,45 @@ describe '#nearby_cases', versioning: true do
   end
 end
 
+describe 'case photo attachment' do
+  let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
+
+  it 'accepts a JPEG within the size limit' do
+    this_case = create(:case)
+    this_case.photo.attach(
+      io: File.open(image_path),
+      filename: 'favicon.jpg',
+      content_type: 'image/jpeg'
+    )
+
+    expect(this_case).to be_valid
+  end
+
+  it 'rejects a non-image content type' do
+    this_case = create(:case)
+    this_case.photo.attach(
+      io: StringIO.new('not an image'),
+      filename: 'notes.pdf',
+      content_type: 'application/pdf'
+    )
+
+    expect(this_case).not_to be_valid
+    expect(this_case.errors[:photo]).to include('must be a JPEG, PNG, or GIF image')
+  end
+
+  it 'rejects an image larger than the cap' do
+    this_case = create(:case)
+    this_case.photo.attach(
+      io: StringIO.new('0' * (Case::MAX_CASE_PHOTO_BYTE_SIZE + 1)),
+      filename: 'huge.jpg',
+      content_type: 'image/jpeg'
+    )
+
+    expect(this_case).not_to be_valid
+    expect(this_case.errors[:photo]).to include('must be smaller than 5 MB')
+  end
+end
+
 describe '.search_text' do
   let(:texas) { FactoryBot.create(:state_texas) }
   let(:louisiana) { FactoryBot.create(:state_louisiana) }

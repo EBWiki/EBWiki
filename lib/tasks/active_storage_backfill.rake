@@ -13,4 +13,11 @@ namespace :active_storage do
     exit 1 if counts[:errors].to_i.positive?
     exit 1 if counts[:missing_file].to_i.positive? && !allow_missing
   end
+
+  desc 'Print unsafe legacy-avatar case count (exit 1 if non-zero; same rule as drop guard)'
+  task case_avatar_drop_check: :environment do
+    count = ActiveStorageCutover::CaseAvatarDropGuard.unsafe_case_count
+    puts "unsafe_case_count=#{count}"
+    exit 1 if count.positive?
+  end
 end

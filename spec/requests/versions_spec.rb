@@ -41,4 +41,27 @@ RSpec.describe 'Versions', type: :request, versioning: true do
       end
     end
   end
+
+  describe 'POST /revert with an attached photo' do
+    let(:this_case) { create(:case) }
+    let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
+
+    before do
+      this_case.photo.attach(
+        io: File.open(image_path),
+        filename: 'favicon.jpg',
+        content_type: 'image/jpeg'
+      )
+      this_case.update!(blurb: 'Blurb before revert', summary: 'Summary before revert')
+      version_id = this_case.versions.last&.id
+      post "/cases/#{this_case.id}/versions/#{version_id}/revert",
+           params: {},
+           headers: { 'HTTP_REFERER': '/' }
+    end
+
+    it 'keeps the photo attached after revert' do
+      expect(response).to redirect_to("/cases/#{this_case.slug}")
+      expect(this_case.reload.photo).to be_attached
+    end
+  end
 end

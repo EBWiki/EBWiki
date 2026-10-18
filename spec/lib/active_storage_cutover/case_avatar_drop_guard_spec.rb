@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
-require Rails.root.join('db/migrate/20261011150000_remove_carrierwave_avatar_columns_from_cases')
-
 RSpec.describe ActiveStorageCutover::CaseAvatarDropGuard do
-  let(:column_drop_migration) { RemoveCarrierwaveAvatarColumnsFromCases.new }
-
-  before do
-    column_drop_migration.down unless ActiveRecord::Base.connection.column_exists?(:cases, :avatar)
-  end
   let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
 
   describe '.unsafe_case_count' do

@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 # Case model
-class Case < ApplicationRecord
+class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include CaseSearchable
 
   MAX_BLURB_CHARACTERS = 500
+  ALLOWED_PHOTO_CONTENT_TYPES = %w[image/jpeg image/png image/gif].freeze
+  MAX_CASE_PHOTO_BYTE_SIZE = 5.megabytes
 
   enum :cause_of_death, {
     beating: 'beating',
@@ -69,6 +71,8 @@ class Case < ApplicationRecord
 
   has_one_attached :photo
 
+  validate :case_photo_attachment_valid, if: -> { photo.attached? }
+
   self.ignored_columns += %w[
     avatar
     default_avatar_url
@@ -111,6 +115,19 @@ class Case < ApplicationRecord
     errors.add(:date, 'must be present') && return if date.blank?
 
     errors.add(:date, 'must be in the past') if date > Date.current
+  end
+
+  def case_photo_attachment_valid
+    blob = photo.blob
+    return if blob.nil?
+
+    unless ALLOWED_PHOTO_CONTENT_TYPES.include?(blob.content_type)
+      errors.add(:photo, 'must be a JPEG, PNG, or GIF image')
+    end
+
+    return unless blob.byte_size > MAX_CASE_PHOTO_BYTE_SIZE
+
+    errors.add(:photo, 'must be smaller than 5 MB')
   end
 
   def edit_summary

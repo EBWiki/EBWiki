@@ -123,6 +123,55 @@ RSpec.describe 'Cases', type: :request do
     end
   end
 
+  describe 'PATCH /cases/:slug with case photo' do
+    let(:user) { create(:user) }
+    let(:_case) { create(:case) }
+    let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
+
+    before { sign_in user }
+
+    it 'attaches a photo when a JPEG is uploaded' do
+      upload = Rack::Test::UploadedFile.new(image_path, 'image/jpeg')
+
+      patch "/cases/#{_case.slug}",
+            params: { case: { photo: upload, summary: 'Attached a case photo' } }
+
+      expect(response).to redirect_to("/cases/#{_case.slug}")
+      expect(_case.reload.photo).to be_attached
+    end
+
+    it 'removes the photo when remove_photo is checked' do
+      _case.photo.attach(
+        io: File.open(image_path),
+        filename: 'favicon.jpg',
+        content_type: 'image/jpeg'
+      )
+
+      patch "/cases/#{_case.slug}",
+            params: {
+              case: { remove_photo: '1', summary: 'Removed the case photo' }
+            }
+
+      expect(response).to redirect_to("/cases/#{_case.slug}")
+      expect(_case.reload.photo).not_to be_attached
+    end
+
+    it 'rejects a non-image upload' do
+      upload = Rack::Test::UploadedFile.new(
+        StringIO.new('%PDF-1.4'),
+        'application/pdf',
+        original_filename: 'not-a-photo.pdf'
+      )
+
+      patch "/cases/#{_case.slug}",
+            params: { case: { photo: upload, summary: 'Tried a PDF photo' } }
+
+      expect(response).to have_http_status(200)
+      expect(response.body).to include('Editing')
+      expect(_case.reload.photo).not_to be_attached
+    end
+  end
+
   describe 'PATCH /cases/:slug' do
     let(:user) { create(:user) }
     let(:_case) { create(:case) }
