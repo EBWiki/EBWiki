@@ -241,6 +241,7 @@ export CLOUDFLARE_DNS_API_TOKEN="dns"
 export STAGING_RUNTIME_DOPPLER_TOKEN="rt"
 export STAGING_BASIC_AUTH_USERNAME="user1"
 infra_export_tf_vars_from_infra_config
+# shellcheck disable=SC2154 # set by infra_export_tf_vars_from_infra_config
 [ "$TF_VAR_bootstrap_state_passphrase" = "boot-pass" ] \
   && [ "$TF_VAR_state_passphrase" = "state-pass" ] \
   && [ "$TF_VAR_cloudflare_dns_api_token" = "dns" ] \

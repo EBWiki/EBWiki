@@ -18,4 +18,17 @@ RSpec.describe Release::Rollback::RailwayGraphqlClient do
       hash_including(event: 'release_rollback_network')
     )
   end
+
+  it 'reports and wraps a connection closed mid-response' do
+    allow(http).to receive(:start).and_raise(EOFError, 'end of file reached')
+    allow(Release::ErrorReporter).to receive(:report)
+
+    expect do
+      client.post(token: 'token', query: '{ __typename }', variables: {})
+    end.to raise_error(Release::RollbackError, /end of file reached/)
+
+    expect(Release::ErrorReporter).to have_received(:report).with(
+      hash_including(event: 'release_rollback_network')
+    )
+  end
 end

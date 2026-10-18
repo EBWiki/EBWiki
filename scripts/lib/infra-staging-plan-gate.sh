@@ -6,7 +6,7 @@ STAGING_ALLOWED_DESTROY_ADDRESS="cloudflare_ruleset.legacy_staging_redirect"
 
 infra_staging_assert_tofu_plan_destroys() {
   local plan_file="$1"
-  local destroys_json count address
+  local destroys_json count
 
   [ -f "$plan_file" ] || {
     echo "Missing OpenTofu plan: $plan_file" >&2

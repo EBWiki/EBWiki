@@ -40,6 +40,12 @@ RSpec.describe Release::SmokeCheck, 'basic auth credentials' do
     expect(basic_auth_for('https://ebwiki.org')).to be_nil
   end
 
+  it 'ignores RELEASE_SMOKE_STAGING_HOST and keeps credentials off https://ebwiki.org' do
+    ENV['RELEASE_SMOKE_STAGING_HOST'] = 'ebwiki.org'
+
+    expect(basic_auth_for('https://ebwiki.org')).to be_nil
+  end
+
   it 'does not send credentials over http://staging.ebwiki.org' do
     expect(basic_auth_for('http://staging.ebwiki.org')).to be_nil
   end

@@ -8,21 +8,11 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-exit-trap.sh"
 # shellcheck source=infra-curl.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-curl.sh"
 
-INFRA_GITHUB_REPO_SLUG='EBWiki/EBWiki'
+# Fixed target. A GH_REPO_SLUG from the environment is overwritten here, never used.
 GH_REPO_SLUG='EBWiki/EBWiki'
 GH_ENV_NAME="release-smoke"
 GH_TMP=""
 GH_HDR=""
-
-infra_github_require_repo_slug() {
-  if [[ -n "${GH_REPO_SLUG_OVERRIDE:-}" && "$GH_REPO_SLUG_OVERRIDE" != "$INFRA_GITHUB_REPO_SLUG" ]]; then
-    die preflight_input "refusing GH_REPO_SLUG_OVERRIDE other than ${INFRA_GITHUB_REPO_SLUG}"
-  fi
-  if [[ -n "${GH_REPO_SLUG:-}" && "$GH_REPO_SLUG" != "$INFRA_GITHUB_REPO_SLUG" ]]; then
-    die preflight_input "refusing GH_REPO_SLUG other than ${INFRA_GITHUB_REPO_SLUG}"
-  fi
-  GH_REPO_SLUG='EBWiki/EBWiki'
-}
 
 gh_api() {
   infra_curl_github_rest "$GH_HDR" "https://api.github.com$1" "$2" "${3:-GET}"
@@ -30,8 +20,6 @@ gh_api() {
 
 github_preflight() {
   local v code main_count non_main policy_id state_pass
-
-  infra_github_require_repo_slug
 
   for v in TF_VAR_state_passphrase TF_VAR_github_token TF_VAR_staging_username TF_VAR_staging_password TF_VAR_rollbar_access_token; do
     [[ -n "${!v:-}" ]] || die preflight_input "$v is empty"

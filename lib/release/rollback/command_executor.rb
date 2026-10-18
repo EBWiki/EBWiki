@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../error_reporter'
+require_relative 'railway_graphql_client'
 
 module Release
   class Rollback

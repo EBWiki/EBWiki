@@ -8,6 +8,14 @@ RSpec.describe Release::SmokeCheckHostAllowlist do
       expect(described_class.permitted!('https://staging.ebwiki.org')).to be(true)
     end
 
+    it 'refuses ebwiki.org by default' do
+      previous = ENV.fetch('RELEASE_SMOKE_ALLOWED_HOSTS', nil)
+      ENV.delete('RELEASE_SMOKE_ALLOWED_HOSTS')
+      expect(described_class.permitted!('https://ebwiki.org')).to be(false)
+    ensure
+      ENV['RELEASE_SMOKE_ALLOWED_HOSTS'] = previous unless previous.nil?
+    end
+
     it 'allows ebwiki.org when explicitly allowlisted' do
       previous = ENV.fetch('RELEASE_SMOKE_ALLOWED_HOSTS', nil)
       ENV['RELEASE_SMOKE_ALLOWED_HOSTS'] = 'staging.ebwiki.org,ebwiki.org'

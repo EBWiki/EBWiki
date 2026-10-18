@@ -13,14 +13,12 @@ module Release
       ENDPOINT = URI('https://backboard.railway.com/graphql/v2')
 
       NETWORK_ERRORS = [
+        IOError,
+        Net::HTTPBadResponse,
         OpenSSL::SSL::SSLError,
         SocketError,
         SystemCallError,
-        Timeout::Error,
-        Net::OpenTimeout,
-        Net::ReadTimeout,
-        Errno::ECONNREFUSED,
-        Errno::ETIMEDOUT
+        Timeout::Error
       ].freeze
 
       def initialize(http: Net::HTTP)

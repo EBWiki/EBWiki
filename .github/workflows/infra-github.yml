@@ -7,10 +7,12 @@ on:
       - 'scripts/github-*.sh'
       - 'scripts/lib/github-*.sh'
       - 'scripts/lib/infra-logging.sh'
+      - 'scripts/lib/infra-curl.sh'
+      - 'scripts/lib/infra-cloudflare.sh'
       - 'scripts/lib/infra-rollbar.sh'
       - 'scripts/lib/infra-exit-trap.sh'
       - 'scripts/lib/infra-export-tf-vars.sh'
-      - 'scripts/test/infra-lib-test.sh'
+      - 'scripts/test/*.sh'
       - 'scripts/test/github-infra-test.sh'
       - 'scripts/test/github-tftest-mutations.sh'
       - 'scripts/test/github-scripts-e2e-test.sh'
@@ -53,13 +55,18 @@ jobs:
 
       - name: ShellCheck infra scripts
         working-directory: .
+        env:
+          SHELLCHECK_VERSION: v0.10.0
+          SHELLCHECK_SHA256: 6c881ab0698e4e6ea235245f22832860544f17ba386442fe7e9d629f8cbedf87
         run: |
-          shellcheck --version
-          shellcheck -S warning scripts/github-plan.sh scripts/github-apply.sh scripts/github-delete-repo-secrets.sh \
-            scripts/staging-plan.sh scripts/staging-apply.sh scripts/staging-dns-preflight.sh \
-            scripts/lib/github-preflight.sh scripts/lib/github-delete-repo-secrets.sh \
-            scripts/lib/infra-curl.sh scripts/lib/infra-logging.sh scripts/lib/infra-rollbar.sh \
-            scripts/lib/infra-exit-trap.sh
+          sc_dir="$(mktemp -d)"
+          curl -fsSL -o "$sc_dir/shellcheck.tar.xz" \
+            "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz"
+          echo "${SHELLCHECK_SHA256}  $sc_dir/shellcheck.tar.xz" | sha256sum -c -
+          tar -xJf "$sc_dir/shellcheck.tar.xz" -C "$sc_dir"
+          sc="$sc_dir/shellcheck-${SHELLCHECK_VERSION}/shellcheck"
+          "$sc" --version
+          "$sc" -S warning scripts/*.sh scripts/lib/*.sh scripts/test/*.sh infra/staging/scripts/*.sh
 
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@9d84900f3238fab8cd84ce47d658d25dd008be2f # v1.0.8

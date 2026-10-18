@@ -23,7 +23,11 @@ make staging-plan    # writes infra/staging/staging.tfplan; does not apply
 make staging-apply   # apply only after reviewing the plan
 ```
 
-Staging DNS: Cloudflare CNAME **staging.ebwiki.org** must point at the Railway custom-domain target with **DNS only** (grey cloud). OpenTofu sets `proxied = false` on that record.
+Staging DNS: Cloudflare CNAME **staging.ebwiki.org** points at the Railway custom-domain target with **DNS only** (grey cloud), and the Railway verification TXT record **_railway-verify.staging.ebwiki.org** stays in place. OpenTofu sets `proxied = false` on the CNAME. DNS only lets Railway issue and renew its own certificate for the host without depending on the zone's Cloudflare SSL mode. Railway also supports the proxied setup with SSL mode Full; staging gives up Cloudflare's proxy features, which is acceptable because staging sits behind HTTP basic auth.
+
+`scripts/staging-dns-preflight.sh` is read only and fails closed. Before the plan it requires exactly one staging CNAME pointing at a Railway target, a boolean proxied flag, and the verification TXT record. After the plan, and again before apply, it requires the planned CNAME to be DNS only and to point at a Railway target.
+
+**Unverified:** why staging.ebwiki.org currently returns Railway's fallback 404. Railway returns that page when the host is not an active custom domain on a service. Confirm in the Railway dashboard that **staging.ebwiki.org** is attached to service **ebwiki** in environment **production** and shows as verified before relying on the DNS change.
 
 ## Post-deploy smoke check
 

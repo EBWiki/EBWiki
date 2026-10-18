@@ -26,4 +26,5 @@ doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars
   tofu init -backend-config=backend.hcl -input=false
   tofu plan -input=false -out=staging.tfplan
   infra_staging_assert_tofu_plan_destroys staging.tfplan
+  \"$ROOT/scripts/staging-dns-preflight.sh\" --plan \"$ROOT/infra/staging/staging.tfplan\"
 "

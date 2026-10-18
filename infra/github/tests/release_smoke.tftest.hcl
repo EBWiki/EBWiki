@@ -51,7 +51,7 @@ run "baseline_plan" {
   }
 
   assert {
-    condition     = contains(github_repository_environment.release_smoke.reviewers[0].users, 5750239)
+    condition     = contains(flatten([for r in github_repository_environment.release_smoke.reviewers : r.users]), 5750239)
     error_message = "release-smoke must include reviewer user id 5750239"
   }
 }

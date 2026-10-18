@@ -99,4 +99,13 @@ run_mutant environment_name_changed "smoke secrets must use the release-smoke en
 run_mutant import_to_typo "release_smoke_main_typo" \
   sed -i 's/release_smoke_main/release_smoke_main_typo/' "$WORK/stack/imports.tf"
 
+run_mutant admins_can_bypass "release-smoke must set can_admins_bypass to false" \
+  sed -i 's/can_admins_bypass = false/can_admins_bypass = true/' "$WORK/stack/release_smoke.tf"
+
+run_mutant reviewer_id_changed "release-smoke must include reviewer user id 5750239" \
+  sed -i 's/users = \[5750239\]/users = [1]/' "$WORK/stack/release_smoke.tf"
+
+run_mutant reviewers_removed "release-smoke must include reviewer user id 5750239" \
+  bash -c 'sed -i "/^  reviewers {/,/^  }/d" "$1/release_smoke.tf"' _ "$WORK/stack"
+
 echo "All GitHub tftest mutations passed."

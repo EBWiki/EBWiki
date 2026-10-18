@@ -58,3 +58,17 @@ infra_cf_dns_cname_record() {
     || { echo "Expected exactly one Cloudflare CNAME record named ${record_name}." >&2; return 1; }
   echo "$resp" | jq -c '.result[0]'
 }
+
+infra_cf_dns_txt_count() {
+  local zone_id="$1"
+  local record_name="$2"
+  local token resp encoded_name
+  token="$(infra_cf_api_token "${3:-}")"
+  encoded_name="$(printf '%s' "$record_name" | jq -sRr @uri)"
+  resp="$(infra_curl_get \
+    "https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records?name=${encoded_name}&type=TXT" \
+    "$token")"
+  echo "$resp" | jq -e '.success' >/dev/null \
+    || { echo "Cloudflare TXT lookup for ${record_name} failed." >&2; return 1; }
+  echo "$resp" | jq -r '.result | length'
+}

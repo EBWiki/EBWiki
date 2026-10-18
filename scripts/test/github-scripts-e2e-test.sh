@@ -22,7 +22,8 @@ export ARGV_LOG="$TMP/argv.log" GH_STUB_STATE="$TMP/state"
 : >"$ARGV_LOG"
 mkdir -p "$GH_STUB_STATE"
 
-SECRETS=(ghp_e2e_token_sentinel stg_user_sentinel stg_pass_sentinel rollbar_e2e_sentinel state_pass_sentinel_0123)
+SECRETS=(ghp_e2e_token_sentinel stg_user_sentinel stg_pass_sentinel rollbar_e2e_sentinel state_pass_sentinel_0123
+  cf_e2e_sentinel dp_e2e_sentinel railway_e2e_sentinel awssec_e2e_sentinel)
 
 fail() { echo "FAIL: $*" >&2; exit 1; }
 pass() { echo "PASS: $*"; }
@@ -67,7 +68,7 @@ case "$1" in
     for a in "$@"; do case "$a" in -out=*) : >"${a#-out=}" ;; esac; done
     [ "${TOFU_FAIL:-}" = plan ] && exit 1 ;;
   apply) [ "${TOFU_FAIL:-}" = apply ] && exit 1 ;;
-  show) echo "{\"resource_changes\":[]}" ;;
+  show) printf "%s\n" "{\"resource_changes\":[],\"planned_values\":{\"root_module\":{\"resources\":[{\"address\":\"cloudflare_dns_record.legacy_staging_ebwiki\",\"values\":{\"content\":\"${TOFU_PLANNED_CNAME:-abc123.up.railway.app}\",\"proxied\":${TOFU_PLANNED_PROXIED:-false}}}]}}}" ;;
 esac
 exit 0'
 cat >"$BIN/curl" <<'CURLSTUB'
@@ -97,8 +98,14 @@ while [ $# -gt 0 ]; do
   esac
 done
 case "$url" in
-  *api.cloudflare.com/client/v4/zones*) code=200; body='{"success":true,"result":[{"id":"zone_stub"}]}' ;;
-  *api.cloudflare.com/client/v4/zones/*/dns_records*) code=200; body='{"success":true,"result":[{"id":"rec_stub","content":"cname.stub.railway.app","proxied":false}]}' ;;
+  *api.cloudflare.com/client/v4/zones/*/dns_records*type=TXT*)
+    code=200
+    if [ "${CF_STUB_TXT_MISSING:-}" = 1 ]; then body='{"success":true,"result":[]}'
+    else body='{"success":true,"result":[{"id":"txt_stub","content":"railway-verify=stub"}]}'; fi ;;
+  *api.cloudflare.com/client/v4/zones/*/dns_records*type=CNAME*)
+    code=200
+    body="{\"success\":true,\"result\":[{\"id\":\"rec_stub\",\"content\":\"${CF_STUB_CNAME_CONTENT-abc123.up.railway.app}\",\"proxied\":true}]}" ;;
+  *api.cloudflare.com/client/v4/zones\?*) code=200; body='{"success":true,"result":[{"id":"zone_stub"}]}' ;;
   *api.rollbar.com*) [ -z "$rollbar_token" ] || : >"$GH_STUB_STATE/rollbar_posted"; code=200; body="" ;;
   */environments/release-smoke/secrets/*) code=200; body="{}" ;;
   */environments/release-smoke) code=404; body="{}" ;;
@@ -165,8 +172,8 @@ RAILWAY_STUB
 
 export PATH="$BIN:$PATH" TMPDIR="$LEAK_TMP"
 export STATE_PASSPHRASE=state_pass_sentinel_0123 GITHUB_TOKEN=ghp_e2e_token_sentinel
-export R2_BUCKET_NAME=b R2_S3_ENDPOINT=https://r2.example CLOUDFLARE_DNS_API_TOKEN=cf_e2e STAGING_RUNTIME_DOPPLER_TOKEN=dp_e2e STAGING_BASIC_AUTH_USERNAME=bu_e2e
-export RAILWAY_TOKEN=railway_e2e AWS_ACCESS_KEY_ID=awskey_e2e AWS_SECRET_ACCESS_KEY=awssec_e2e
+export R2_BUCKET_NAME=b R2_S3_ENDPOINT=https://r2.example CLOUDFLARE_DNS_API_TOKEN=cf_e2e_sentinel STAGING_RUNTIME_DOPPLER_TOKEN=dp_e2e_sentinel STAGING_BASIC_AUTH_USERNAME=bu_e2e
+export RAILWAY_TOKEN=railway_e2e_sentinel AWS_ACCESS_KEY_ID=awskey_e2e AWS_SECRET_ACCESS_KEY=awssec_e2e_sentinel
 PLAN="$REPO/infra/github/github.tfplan"
 STAGING_PLAN="$REPO/infra/staging/staging.tfplan"
 
@@ -208,6 +215,12 @@ out="$("$REPO/scripts/github-delete-repo-secrets.sh" </dev/null 2>&1 || true)"; 
 grep -q 'DELETE' "$ARGV_LOG" && fail "dry run must not DELETE"
 assert_clean "delete dry run"
 
+: >"$ARGV_LOG"
+GH_REPO_SLUG=evil/other "$REPO/scripts/github-delete-repo-secrets.sh" </dev/null >/dev/null 2>&1 || true
+grep -q 'evil/other' "$ARGV_LOG" && fail "GH_REPO_SLUG from the environment must be ignored"
+grep -q '/repos/EBWiki/EBWiki/' "$ARGV_LOG" || fail "delete dry run must target EBWiki/EBWiki"
+assert_clean "repo slug pinned"
+
 out="$(printf 'wrong\n' | "$REPO/scripts/github-delete-repo-secrets.sh" --confirm 2>&1 >/dev/null || true)"
 grep -q delete_confirm <<<"$out" || fail "wrong phrase must log delete_confirm"
 printf 'wrong\n' | "$REPO/scripts/github-delete-repo-secrets.sh" --confirm >/dev/null 2>&1 && fail "wrong phrase must abort"
@@ -234,6 +247,22 @@ assert_clean "staging plan failure"
 [ -f "$STAGING_PLAN" ] || fail "staging plan file must exist after successful staging plan"
 [ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "successful staging plan must not report to Rollbar"
 assert_clean "staging plan success"
+
+for mode in cname_not_railway cname_empty txt_missing planned_proxied; do
+  case "$mode" in
+    cname_not_railway) env_args=(CF_STUB_CNAME_CONTENT=evil.example.com) ;;
+    cname_empty) env_args=(CF_STUB_CNAME_CONTENT=) ;;
+    txt_missing) env_args=(CF_STUB_TXT_MISSING=1) ;;
+    planned_proxied) env_args=(TOFU_PLANNED_PROXIED=true) ;;
+  esac
+  : >"$ARGV_LOG"
+  out="$(env "${env_args[@]}" "$REPO/scripts/staging-plan.sh" 2>&1 >/dev/null)" && fail "staging plan must fail closed on DNS $mode"
+  grep -Eq '"level":"error","script":"[^"]*","event":"staging_dns_(cname|verify|plan)"' <<<"$out" || { echo "$out"; fail "DNS $mode must log a staging_dns event"; }
+  [ ! -f "$STAGING_PLAN" ] || fail "staging plan file must be deleted after DNS $mode"
+  rm -f "$GH_STUB_STATE/rollbar_posted"
+  assert_clean "staging DNS preflight $mode"
+done
+"$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass again after the DNS failure cases"
 
 "$REPO/scripts/staging-apply.sh" >/dev/null 2>&1 || fail "staging apply should pass"
 [ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "successful staging apply must not report to Rollbar"
