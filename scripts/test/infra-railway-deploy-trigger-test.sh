@@ -27,7 +27,8 @@ infra_railway_gql() {
 }
 
 run_preflight() {
-  INFRA_SCRIPT_NAME=test infra_railway_preflight_github_autodeploy 2>&1
+  export INFRA_SCRIPT_NAME=test
+  infra_railway_preflight_github_autodeploy 2>&1
 }
 
 RAILWAY_STUB_TRIGGERS='[]'
