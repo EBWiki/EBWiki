@@ -5,7 +5,7 @@ require_relative 'resource_name'
 require_relative 'rollback_railway_validator'
 
 module Release
-  # Plans and optionally runs a platform rollback (Heroku or Railway).
+  # Plans and optionally runs a Railway staging rollback.
   class Rollback
     Result = Data.define(:success, :message, :commands)
 
@@ -76,7 +76,6 @@ module Release
       raise RollbackError, platform_help if Plain.blank?(@options.platform)
 
       case @options.platform
-      when 'heroku' then validate_heroku!
       when 'railway' then RollbackRailwayValidator.validate!(@options)
       else
         raise RollbackError, "Unsupported platform #{@options.platform.inspect}"
@@ -84,16 +83,8 @@ module Release
     end
 
     def platform_help
-      'Set RELEASE_ROLLBACK_PLATFORM to heroku or railway, ' \
-        'or set HEROKU_APP_NAME / RAILWAY_SERVICE.'
-    end
-
-    def validate_heroku!
-      if Plain.blank?(@options.app_name)
-        raise RollbackError, 'Set HEROKU_APP_NAME or RELEASE_HEROKU_APP before rolling back.'
-      end
-
-      ResourceName.validate!(@options.app_name, label: 'Heroku app name')
+      'Set RELEASE_ROLLBACK_PLATFORM=railway and RAILWAY_SERVICE, RAILWAY_ENVIRONMENT, ' \
+        'RAILWAY_ROLLBACK_DEPLOYMENT_ID, RAILWAY_TOKEN.'
     end
 
     def confirm!

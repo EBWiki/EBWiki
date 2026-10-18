@@ -44,4 +44,14 @@ run "baseline_plan" {
     ])
     error_message = "smoke secrets must use the release-smoke environment"
   }
+
+  assert {
+    condition     = github_repository_environment.release_smoke.can_admins_bypass == false
+    error_message = "release-smoke must set can_admins_bypass to false"
+  }
+
+  assert {
+    condition     = contains(github_repository_environment.release_smoke.reviewers[0].users, 5750239)
+    error_message = "release-smoke must include reviewer user id 5750239"
+  }
 }

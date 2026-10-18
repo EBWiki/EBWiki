@@ -6,10 +6,9 @@ RSpec.describe Release::RollbackRailwayValidator do
   def options(overrides = {})
     defaults = {
       platform: 'railway',
-      app_name: nil,
       service_name: 'ebwiki',
       deployment_id: '11111111-2222-4333-8444-555555555555',
-      environment_slug: 'staging',
+      environment_slug: 'production',
       dry_run: true,
       skip_confirm: false
     }

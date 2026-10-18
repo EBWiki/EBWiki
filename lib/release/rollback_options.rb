@@ -3,7 +3,6 @@
 module Release
   RollbackOptions = Data.define(
     :platform,
-    :app_name,
     :service_name,
     :deployment_id,
     :environment_slug,

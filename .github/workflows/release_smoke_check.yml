@@ -3,14 +3,6 @@ name: Release smoke check
 
 on:
   workflow_dispatch:
-    inputs:
-      target:
-        description: Environment to smoke test
-        required: true
-        type: choice
-        options:
-          - staging
-          - production
 
 permissions:
   contents: read
@@ -23,11 +15,8 @@ jobs:
 
     env:
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
-      RELEASE_SMOKE_BASE_URL: >-
-        ${{
-          github.event.inputs.target == 'production' && 'https://ebwiki.org' || 'https://staging.ebwiki.org'
-        }}
-      RELEASE_SMOKE_ALLOWED_HOSTS: staging.ebwiki.org,ebwiki.org
+      RELEASE_SMOKE_BASE_URL: https://staging.ebwiki.org
+      RELEASE_SMOKE_ALLOWED_HOSTS: staging.ebwiki.org
 
     steps:
       - name: Checkout code
@@ -43,9 +32,9 @@ jobs:
 
       - name: Run post-deploy smoke check
         env:
-          STAGING_USERNAME: ${{ (github.event.inputs.target == 'staging') && secrets.STAGING_USERNAME || '' }}
-          STAGING_PASSWORD: ${{ (github.event.inputs.target == 'staging') && secrets.STAGING_PASSWORD || '' }}
+          STAGING_USERNAME: ${{ secrets.STAGING_USERNAME }}
+          STAGING_PASSWORD: ${{ secrets.STAGING_PASSWORD }}
           RELEASE_SMOKE_SEARCH_TERM: ${{ vars.RELEASE_SMOKE_SEARCH_TERM }}
           ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
-          ROLLBAR_ENV: ${{ github.event.inputs.target }}
+          ROLLBAR_ENV: staging
         run: bundle exec bin/release-smoke-check

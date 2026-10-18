@@ -70,20 +70,35 @@ case "$1" in
   show) echo "{\"resource_changes\":[]}" ;;
 esac
 exit 0'
-shim curl '
-out=""; url=""; method=GET; rollbar_token=""
+cat >"$BIN/curl" <<'CURLSTUB'
+#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\n' "curl $*" >>"$ARGV_LOG"
+out=""; url=""; method=GET; rollbar_token=""; github_mode=0
+kcfg=""
 while [ $# -gt 0 ]; do
   case "$1" in
     -o) out="$2"; shift 2 ;;
+    -w) github_mode=1; shift 2 ;;
     -X) method="$2"; shift 2 ;;
-    -K) [ "${2:-}" = "-" ] && cat >/dev/null; shift 2 ;;
+    -K)
+      if [ "${2:-}" = "-" ]; then
+        kcfg="$(cat)"
+        url="$(printf "%s\n" "$kcfg" | sed -n 's/^url = //p' | tr -d '"')"
+        shift 2
+      else
+        shift 2
+      fi
+      ;;
     -H) case "$2" in @*) grep -Fq rollbar_e2e_sentinel "${2#@}" && rollbar_token=1 ;; esac; shift 2 ;;
-    -w|--data-binary) shift 2 ;;
+    --data-binary) shift 2 ;;
     https://*) url="$1"; shift ;;
     *) shift ;;
   esac
 done
 case "$url" in
+  *api.cloudflare.com/client/v4/zones*) code=200; body='{"success":true,"result":[{"id":"zone_stub"}]}' ;;
+  *api.cloudflare.com/client/v4/zones/*/dns_records*) code=200; body='{"success":true,"result":[{"id":"rec_stub","content":"cname.stub.railway.app","proxied":false}]}' ;;
   *api.rollbar.com*) [ -z "$rollbar_token" ] || : >"$GH_STUB_STATE/rollbar_posted"; code=200; body="" ;;
   */environments/release-smoke/secrets/*) code=200; body="{}" ;;
   */environments/release-smoke) code=404; body="{}" ;;
@@ -91,8 +106,14 @@ case "$url" in
   */actions/secrets/*) if [ "$method" = DELETE ]; then code=204; else code=200; fi; body="{}" ;;
   *) code=200; body="{\"permissions\":{\"admin\":${GH_ADMIN:-true}}}" ;;
 esac
-[ -n "$out" ] && printf "%s" "$body" >"$out"
-printf "%s" "$code"'
+if [ "$github_mode" = 1 ]; then
+  [ -n "$out" ] && printf "%s" "$body" >"$out"
+  printf "%s" "$code"
+else
+  printf "%s" "$body"
+fi
+CURLSTUB
+chmod +x "$BIN/curl"
 
 # Staging helpers only touch local files (no live API).
 cat >"$REPO/scripts/infra-write-backend.sh" <<'STUB'
@@ -194,8 +215,12 @@ grep -q 'DELETE' "$ARGV_LOG" && fail "wrong phrase must not DELETE"
 [ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "wrong phrase must not report to Rollbar"
 assert_clean "delete wrong phrase"
 
+: >"$ARGV_LOG"
 printf 'delete-repo-secrets\n' | "$REPO/scripts/github-delete-repo-secrets.sh" --confirm >/dev/null 2>&1 || fail "confirmed delete should pass"
-[ "$(grep -c -- '-X DELETE' "$ARGV_LOG")" = 3 ] || fail "confirmed delete must DELETE exactly 3 secrets"
+for secret in STAGING_USERNAME STAGING_PASSWORD ROLLBAR_ACCESS_TOKEN; do
+  grep -Fq -- "-X DELETE" "$ARGV_LOG" || fail "confirmed delete must use DELETE"
+  grep -Fq "/actions/secrets/${secret}" "$ARGV_LOG" || fail "confirmed delete must target ${secret}"
+done
 assert_clean "delete confirmed"
 
 [ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "Rollbar marker must be clear before the staging phases"

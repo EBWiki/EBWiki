@@ -3,8 +3,13 @@
 set -euo pipefail
 
 log_json() {
-  printf '{"ts":"%s","level":"%s","script":"%s","event":"%s","message":"%s"}\n' \
-    "$(date -u +%FT%TZ)" "$1" "${INFRA_SCRIPT_NAME:-${0##*/}}" "$2" "${3//\"/\\\"}" >&2
+  jq -nc \
+    --arg ts "$(date -u +%FT%TZ)" \
+    --arg level "$1" \
+    --arg script "${INFRA_SCRIPT_NAME:-${0##*/}}" \
+    --arg event "$2" \
+    --arg message "$3" \
+    '{ts:$ts,level:$level,script:$script,event:$event,message:$message}' >&2
 }
 
 die() {

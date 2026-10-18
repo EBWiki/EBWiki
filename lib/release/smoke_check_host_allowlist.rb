@@ -7,7 +7,7 @@ require_relative 'plain'
 module Release
   # Restricts smoke-check targets to known EBWiki HTTPS URLs.
   module SmokeCheckHostAllowlist
-    DEFAULT_HOSTS = %w[staging.ebwiki.org ebwiki.org].freeze
+    DEFAULT_HOSTS = %w[staging.ebwiki.org].freeze
 
     module_function
 

@@ -5,7 +5,7 @@ resource "cloudflare_dns_record" "legacy_staging_ebwiki" {
   name     = "staging"
   type     = "CNAME"
   content  = railway_custom_domain.staging.dns_record_value
-  proxied  = true
+  proxied  = false
   ttl      = 1
   comment  = "EBWiki staging on Railway"
 

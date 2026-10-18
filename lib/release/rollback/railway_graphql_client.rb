@@ -4,12 +4,24 @@ require 'json'
 require 'net/http'
 
 require_relative '../plain'
+require_relative '../error_reporter'
 
 module Release
   class Rollback
     # Low-level Railway GraphQL HTTP client.
     class RailwayGraphqlClient
       ENDPOINT = URI('https://backboard.railway.com/graphql/v2')
+
+      NETWORK_ERRORS = [
+        OpenSSL::SSL::SSLError,
+        SocketError,
+        SystemCallError,
+        Timeout::Error,
+        Net::OpenTimeout,
+        Net::ReadTimeout,
+        Errno::ECONNREFUSED,
+        Errno::ETIMEDOUT
+      ].freeze
 
       def initialize(http: Net::HTTP)
         @http = http
@@ -24,6 +36,13 @@ module Release
         @http.start(ENDPOINT.host, ENDPOINT.port, use_ssl: true) do |http|
           http.request(request)
         end
+      rescue *NETWORK_ERRORS => e
+        Release::ErrorReporter.report(
+          event: 'release_rollback_network',
+          message: e.message,
+          context: { client: 'RailwayGraphqlClient', step: 'post' }
+        )
+        raise RollbackError, "Railway API request failed: #{e.message}"
       end
 
       def raise_graphql_errors!(body)

@@ -8,12 +8,12 @@ if ARGV.intersect?(%w[--help -h])
     Prints a rollback plan by default (dry run). Pass --execute to run platform commands.
 
     Options:
-      --execute   Run rollback commands (Heroku CLI or Railway GraphQL)
+      --execute   Run rollback commands (Railway GraphQL)
       --yes       Skip the confirmation prompt (required with --execute when stdin is not a TTY)
       --help      Show this message
 
-    Heroku: set HEROKU_APP_NAME (or RELEASE_HEROKU_APP).
-    Railway: set RAILWAY_SERVICE, RAILWAY_ENVIRONMENT, RAILWAY_ROLLBACK_DEPLOYMENT_ID, RAILWAY_TOKEN.
+    Railway staging: set RAILWAY_SERVICE=ebwiki, RAILWAY_ENVIRONMENT=production,
+    RAILWAY_ROLLBACK_DEPLOYMENT_ID, and RAILWAY_TOKEN (workspace token).
   HELP
   exit 0
 end

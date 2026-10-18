@@ -4,7 +4,8 @@ set -Eeuo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-trap 'rc=$?; [ "$rc" -eq 0 ] || rm -f "$ROOT/infra/github/github.tfplan"' EXIT
+plan_exit=0
+trap 'plan_exit=$?; [ "$plan_exit" -eq 0 ] || rm -f "$ROOT/infra/github/github.tfplan"' EXIT
 
 doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars.sh" bash -c "
   set -Eeuo pipefail

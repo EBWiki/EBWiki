@@ -18,6 +18,7 @@ on:
       - 'scripts/infra-write-backend.sh'
       - 'scripts/staging-plan.sh'
       - 'scripts/staging-apply.sh'
+      - 'scripts/staging-dns-preflight.sh'
       - 'scripts/lib/infra-railway-config.sh'
       - 'scripts/lib/infra-staging-plan-gate.sh'
       - 'infra/staging/**'
@@ -49,6 +50,15 @@ jobs:
       - name: GitHub script end-to-end tests
         working-directory: .
         run: ./scripts/test/github-scripts-e2e-test.sh
+
+      - name: ShellCheck infra scripts
+        run: |
+          shellcheck --version
+          shellcheck -S warning scripts/github-plan.sh scripts/github-apply.sh scripts/github-delete-repo-secrets.sh \
+            scripts/staging-plan.sh scripts/staging-apply.sh scripts/staging-dns-preflight.sh \
+            scripts/lib/github-preflight.sh scripts/lib/github-delete-repo-secrets.sh \
+            scripts/lib/infra-curl.sh scripts/lib/infra-logging.sh scripts/lib/infra-rollbar.sh \
+            scripts/lib/infra-exit-trap.sh
 
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@9d84900f3238fab8cd84ce47d658d25dd008be2f # v1.0.8

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Release
-  # Validates Heroku app and Railway service names used in rollback commands.
+  # Validates Railway service names used in rollback commands.
   module ResourceName
     PATTERN = /\A[a-z][a-z0-9-]{0,62}\z/
 

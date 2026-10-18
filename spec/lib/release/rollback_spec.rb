@@ -15,9 +15,10 @@ RSpec.describe Release::Rollback do
 
   around do |example|
     @env_snapshot = ENV.to_hash
-    ENV['RELEASE_ROLLBACK_PLATFORM'] = 'heroku'
-    ENV['HEROKU_APP_NAME'] = 'ebwiki-staging'
-    ENV.delete('RAILWAY_SERVICE')
+    ENV['RELEASE_ROLLBACK_PLATFORM'] = 'railway'
+    ENV['RAILWAY_SERVICE'] = 'ebwiki'
+    ENV['RAILWAY_ENVIRONMENT'] = 'production'
+    ENV['RAILWAY_ROLLBACK_DEPLOYMENT_ID'] = '11111111-2222-4333-8444-555555555555'
     example.run
   ensure
     ENV.replace(@env_snapshot)
@@ -28,17 +29,17 @@ RSpec.describe Release::Rollback do
 
     expect(result.success).to be(true)
     expect(output.string).to include('dry run')
-    expect(output.string).to include('heroku releases:rollback -a ebwiki-staging')
+    expect(output.string).to include('deploymentRollback')
     expect(executor).not_to have_received(:call)
   end
 
-  it 'refuses to run without a Heroku app name' do
-    ENV.delete('HEROKU_APP_NAME')
+  it 'refuses to run without RAILWAY_SERVICE' do
+    ENV.delete('RAILWAY_SERVICE')
 
     result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(false)
-    expect(error_output.string).to include('HEROKU_APP_NAME')
+    expect(error_output.string).to include('RAILWAY_SERVICE')
   end
 
   it 'refuses --execute in a non-interactive session without --yes' do
@@ -66,12 +67,14 @@ RSpec.describe Release::Rollback do
     result = described_class.run(%w[--execute --yes], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(true)
-    expect(executor).to have_received(:call).with(
-      [Release::ShellCommand.new(
-        argv: %w[heroku releases:rollback -a ebwiki-staging],
-        description: 'heroku releases:rollback -a ebwiki-staging'
-      )]
-    )
+    expect(executor).to have_received(:call) do |commands|
+      expect(commands.length).to eq(1)
+      cmd = commands.first
+      expect(cmd.deployment_id).to eq('11111111-2222-4333-8444-555555555555')
+      expect(cmd.service_name).to eq('ebwiki')
+      expect(cmd.environment_slug).to eq('production')
+      expect(cmd.description).to include('deploymentRollback')
+    end
   end
 
   it 'rejects unknown flags' do
@@ -79,15 +82,6 @@ RSpec.describe Release::Rollback do
 
     expect(result.success).to be(false)
     expect(error_output.string).to include('Unknown flag')
-  end
-
-  it 'refuses when both Heroku and Railway are configured' do
-    ENV['RAILWAY_SERVICE'] = 'ebwiki'
-
-    result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
-
-    expect(result.success).to be(false)
-    expect(error_output.string).to include('Both Heroku and Railway')
   end
 
   it 'reports executor failure' do
@@ -102,40 +96,22 @@ RSpec.describe Release::Rollback do
     expect(error_output.string).to include('Command failed')
   end
 
-  context 'when Railway is configured' do
-    around do |example|
-      ENV['RELEASE_ROLLBACK_PLATFORM'] = 'railway'
-      ENV['RAILWAY_SERVICE'] = 'ebwiki'
-      ENV['RAILWAY_ENVIRONMENT'] = 'staging'
-      ENV['RAILWAY_ROLLBACK_DEPLOYMENT_ID'] = '11111111-2222-4333-8444-555555555555'
-      ENV.delete('HEROKU_APP_NAME')
-      example.run
-    end
+  it 'requires RAILWAY_ENVIRONMENT' do
+    ENV.delete('RAILWAY_ENVIRONMENT')
 
-    it 'plans a Railway GraphQL deploymentRollback' do
-      described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
+    result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
-      expect(output.string).to include('deploymentRollback')
-      expect(output.string).to include('11111111-2222-4333-8444-555555555555')
-    end
+    expect(result.success).to be(false)
+    expect(error_output.string).to include('RAILWAY_ENVIRONMENT')
+  end
 
-    it 'requires RAILWAY_ENVIRONMENT' do
-      ENV.delete('RAILWAY_ENVIRONMENT')
+  it 'rejects a non-UUID deployment id' do
+    ENV['RAILWAY_ROLLBACK_DEPLOYMENT_ID'] = 'dep-123'
 
-      result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
+    result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
-      expect(result.success).to be(false)
-      expect(error_output.string).to include('RAILWAY_ENVIRONMENT')
-    end
-
-    it 'rejects a non-UUID deployment id' do
-      ENV['RAILWAY_ROLLBACK_DEPLOYMENT_ID'] = 'dep-123'
-
-      result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
-
-      expect(result.success).to be(false)
-      expect(error_output.string).to include('not a UUID')
-    end
+    expect(result.success).to be(false)
+    expect(error_output.string).to include('not a UUID')
   end
 
   it 'rejects an unsupported platform' do

@@ -5,23 +5,40 @@ set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-logging.sh"
 # shellcheck source=infra-exit-trap.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-exit-trap.sh"
+# shellcheck source=infra-curl.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-curl.sh"
 
-GH_REPO_SLUG="${GH_REPO_SLUG:-EBWiki/EBWiki}"
+INFRA_GITHUB_REPO_SLUG='EBWiki/EBWiki'
+GH_REPO_SLUG='EBWiki/EBWiki'
 GH_ENV_NAME="release-smoke"
+GH_TMP=""
+GH_HDR=""
+
+infra_github_require_repo_slug() {
+  if [[ -n "${GH_REPO_SLUG_OVERRIDE:-}" && "$GH_REPO_SLUG_OVERRIDE" != "$INFRA_GITHUB_REPO_SLUG" ]]; then
+    die preflight_input "refusing GH_REPO_SLUG_OVERRIDE other than ${INFRA_GITHUB_REPO_SLUG}"
+  fi
+  if [[ -n "${GH_REPO_SLUG:-}" && "$GH_REPO_SLUG" != "$INFRA_GITHUB_REPO_SLUG" ]]; then
+    die preflight_input "refusing GH_REPO_SLUG other than ${INFRA_GITHUB_REPO_SLUG}"
+  fi
+  GH_REPO_SLUG='EBWiki/EBWiki'
+}
 
 gh_api() {
-  curl -sS -o "$2" -w '%{http_code}' -H @"$GH_HDR" -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' \
-    "https://api.github.com$1"
+  infra_curl_github_rest "$GH_HDR" "https://api.github.com$1" "$2" "${3:-GET}"
 }
 
 github_preflight() {
-  local v code main_count non_main policy_id
+  local v code main_count non_main policy_id state_pass
+
+  infra_github_require_repo_slug
 
   for v in TF_VAR_state_passphrase TF_VAR_github_token TF_VAR_staging_username TF_VAR_staging_password TF_VAR_rollbar_access_token; do
     [[ -n "${!v:-}" ]] || die preflight_input "$v is empty"
     [[ "${!v}" != *$'\n'* ]] || die preflight_input "$v contains a newline"
   done
-  if ((${#TF_VAR_state_passphrase} < 16)); then
+  state_pass="${TF_VAR_state_passphrase:-}"
+  if ((${#state_pass} < 16)); then
     die preflight_input "state passphrase is shorter than 16 characters"
   fi
 
@@ -34,7 +51,9 @@ github_preflight() {
   chmod 700 "$GH_TMP"
   infra_exit_trap_push 'rm -rf "${GH_TMP:-}"'
   GH_HDR="$GH_TMP/hdr"
-  ( umask 077; printf 'Authorization: Bearer %s\n' "$TF_VAR_github_token" >"$GH_HDR" )
+  local github_token="${TF_VAR_github_token:?}"
+  ( umask 077; printf 'Authorization: Bearer %s\nAccept: application/vnd.github+json\nX-GitHub-Api-Version: 2022-11-28\n' \
+    "$github_token" >"$GH_HDR" )
 
   code="$(gh_api "/repos/$GH_REPO_SLUG" "$GH_TMP/repo.json")"
   [[ "$code" == 200 ]] || die preflight_token "GET repo returned HTTP $code"

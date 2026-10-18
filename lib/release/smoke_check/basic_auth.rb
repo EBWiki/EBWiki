@@ -37,7 +37,7 @@ module Release
       end
 
       def staging_host_name
-        ENV.fetch('RELEASE_SMOKE_STAGING_HOST', STAGING_HOST)
+        STAGING_HOST
       end
     end
   end

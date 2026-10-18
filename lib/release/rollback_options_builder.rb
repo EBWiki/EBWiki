@@ -17,7 +17,6 @@ module Release
 
     def build
       reject_unknown_flags!
-      detect_platform_conflict!
 
       RollbackOptions.new(**options_hash)
     end
@@ -28,7 +27,6 @@ module Release
       flags = parse_flags(@argv)
       {
         platform: ENV.fetch('RELEASE_ROLLBACK_PLATFORM', detect_platform),
-        app_name: Plain.env_presence('HEROKU_APP_NAME') || Plain.env_presence('RELEASE_HEROKU_APP'),
         service_name: Plain.env_presence('RAILWAY_SERVICE'),
         deployment_id: Plain.env_presence('RAILWAY_ROLLBACK_DEPLOYMENT_ID'),
         environment_slug: Plain.env_presence('RAILWAY_ENVIRONMENT'),
@@ -56,24 +54,9 @@ module Release
     end
 
     def detect_platform
-      heroku = Plain.present?(ENV.fetch('HEROKU_APP_NAME',
-                                        nil)) || Plain.present?(ENV.fetch('RELEASE_HEROKU_APP',
-                                                                          nil))
-      railway = Plain.present?(ENV.fetch('RAILWAY_SERVICE', nil))
-      return 'heroku' if heroku && !railway
-      return 'railway' if railway && !heroku
+      return 'railway' if Plain.present?(ENV.fetch('RAILWAY_SERVICE', nil))
 
       nil
-    end
-
-    def detect_platform_conflict!
-      heroku = Plain.present?(ENV.fetch('HEROKU_APP_NAME',
-                                        nil)) || Plain.present?(ENV.fetch('RELEASE_HEROKU_APP',
-                                                                          nil))
-      return unless heroku && Plain.present?(ENV.fetch('RAILWAY_SERVICE', nil))
-
-      raise RollbackError,
-            'Both Heroku and Railway are configured. Unset one platform before rolling back.'
     end
   end
 end

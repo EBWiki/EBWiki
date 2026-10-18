@@ -11,7 +11,6 @@ module Release
 
       def commands
         case @options.platform
-        when 'heroku' then [heroku_command]
         when 'railway' then [railway_command]
         else
           []
@@ -30,14 +29,6 @@ module Release
       end
 
       private
-
-      def heroku_command
-        app = ResourceName.validate!(@options.app_name, label: 'Heroku app name')
-        ShellCommand.new(
-          argv: ['heroku', 'releases:rollback', '-a', app],
-          description: "heroku releases:rollback -a #{app}"
-        )
-      end
 
       def railway_command
         RailwayRollbackCommand.new(

@@ -9,8 +9,7 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/github-preflight.sh"
 GITHUB_DELETE_SECRET_NAMES=(STAGING_USERNAME STAGING_PASSWORD ROLLBAR_ACCESS_TOKEN)
 
 gh_api_method() {
-  curl -sS -o "$2" -w '%{http_code}' -H @"$GH_HDR" -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' \
-    -X "${3:-GET}" "https://api.github.com$1"
+  infra_curl_github_rest "$GH_HDR" "https://api.github.com$1" "$2" "${3:-GET}"
 }
 
 github_env_secret_present() {
@@ -50,7 +49,9 @@ github_delete_repo_secrets() {
   chmod 700 "$GH_TMP"
   infra_exit_trap_push 'rm -rf "${GH_TMP:-}"'
   GH_HDR="$GH_TMP/hdr"
-  ( umask 077; printf 'Authorization: Bearer %s\n' "$TF_VAR_github_token" >"$GH_HDR" )
+  local github_token="${TF_VAR_github_token:?}"
+  ( umask 077; printf 'Authorization: Bearer %s\nAccept: application/vnd.github+json\nX-GitHub-Api-Version: 2022-11-28\n' \
+    "$github_token" >"$GH_HDR" )
 
   for name in "${GITHUB_DELETE_SECRET_NAMES[@]}"; do
     github_env_secret_present "$name" || die preflight_env "environment secret $name is missing from $GH_ENV_NAME"

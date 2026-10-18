@@ -7,7 +7,6 @@
 | 1 (once) | **`bootstrap/`** | **`grandkru/prd`** makers | R2 bucket, minted Cloudflare API tokens, **`ebwiki/infra`** |
 | 2 | **`staging/`** | **`ebwiki/infra`** | Railway + **`staging.ebwiki.org`** |
 | 3 | **`github/`** | **`ebwiki/infra`** + smoke values from **`ebwiki/stg`** | **`release-smoke`** GitHub environment and Actions secrets |
-| 4 | **`cloudflare/`** | **`ebwiki/infra`** | Cloudflare Access on **`/health`** (after staging; include new staging host) |
 
 Root **`Makefile`:** **`make bootstrap`**, **`make plan`**, **`make apply`**.
 

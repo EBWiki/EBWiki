@@ -1,6 +1,11 @@
 resource "github_repository_environment" "release_smoke" {
-  environment = local.release_smoke_environment
-  repository  = var.github_repository
+  environment       = local.release_smoke_environment
+  repository        = var.github_repository
+  can_admins_bypass = false
+
+  reviewers {
+    users = [5750239]
+  }
 
   deployment_branch_policy {
     protected_branches     = false

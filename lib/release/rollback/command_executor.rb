@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require_relative '../error_reporter'
+
 module Release
   class Rollback
     # Runs rollback commands when execute mode is enabled (stubbed in specs).
     class CommandExecutor
       ExecutionResult = Data.define(:success, :message)
+
+      NETWORK_ERRORS = RailwayGraphqlClient::NETWORK_ERRORS
 
       def call(commands)
         commands.each do |command|
@@ -43,6 +47,13 @@ module Release
         ExecutionResult.new(success: true, message: 'Railway rollback accepted')
       rescue RollbackError => e
         ExecutionResult.new(success: false, message: e.message)
+      rescue *NETWORK_ERRORS => e
+        Release::ErrorReporter.report(
+          event: 'release_rollback_network',
+          message: e.message,
+          context: { client: 'CommandExecutor', step: 'execute_railway' }
+        )
+        ExecutionResult.new(success: false, message: "Railway rollback failed: #{e.message}")
       end
     end
   end
