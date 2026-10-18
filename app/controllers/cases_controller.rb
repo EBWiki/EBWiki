@@ -68,7 +68,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   end
 
   # rubocop:todo Metrics/MethodLength
-  def update
+  def update # rubocop:todo Metrics/AbcSize
     @this_case = Case.find(params[:id])
     @this_case.slug = nil
     photo_upload = case_photo_upload
