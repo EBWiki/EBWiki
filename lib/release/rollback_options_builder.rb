@@ -72,17 +72,9 @@ module Release
     end
 
     def resolve_from_api(token, service_name, environment_slug)
-      ids = @staging_context.ids_for!(
-        token: token,
-        service_name: service_name,
-        environment_name: environment_slug
-      )
-      @deployment_resolver.resolve!(
-        token: token,
-        project_id: ids.fetch(:project_id),
-        service_id: ids.fetch(:service_id),
-        environment_id: ids.fetch(:environment_id)
-      )
+      ids = @staging_context.ids_for!(token: token, service_name: service_name,
+                                      environment_name: environment_slug)
+      @deployment_resolver.resolve!(token: token, **ids)
     end
 
     def reject_unknown_flags!

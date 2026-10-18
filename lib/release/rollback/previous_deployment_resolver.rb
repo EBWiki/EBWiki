@@ -57,8 +57,8 @@ module Release
         target = skip_current && ids.length > 1 ? ids[1] : ids.first
         return target if Plain.present?(target)
 
-        msg = 'Only one successful deployment exists; set RAILWAY_ROLLBACK_DEPLOYMENT_ID explicitly.'
-        raise RollbackError, msg
+        raise RollbackError, 'Only one successful deployment exists; ' \
+                             'set RAILWAY_ROLLBACK_DEPLOYMENT_ID explicitly.'
       end
 
       def deployment_ids(response)

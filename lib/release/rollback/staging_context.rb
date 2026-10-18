@@ -34,15 +34,19 @@ module Release
 
       def ids_for!(token:, service_name: DEFAULT_SERVICE, environment_name: DEFAULT_ENVIRONMENT,
                    project_name: DEFAULT_PROJECT)
-        response = @client.post(token: token, query: PROJECTS_QUERY, variables: {})
-        body = JSON.parse(response.body.to_s)
-        @client.raise_graphql_errors!(body)
-        project = find_project(body, project_name)
+        project = find_project(parse_projects(token), project_name)
         {
           project_id: project.fetch('id'),
           service_id: find_service(project, service_name),
           environment_id: find_environment(project, environment_name)
         }
+      end
+
+      def parse_projects(token)
+        response = @client.post(token: token, query: PROJECTS_QUERY, variables: {})
+        body = JSON.parse(response.body.to_s)
+        @client.raise_graphql_errors!(body)
+        body
       rescue JSON::ParserError => e
         raise RollbackError, "Railway API returned invalid JSON (#{e.message})"
       end
@@ -50,7 +54,9 @@ module Release
       private
 
       def project_nodes(body)
-        body.fetch('data', {}).fetch('projects', {}).fetch('edges', []).filter_map { |edge| edge['node'] }
+        body.fetch('data', {}).fetch('projects', {}).fetch('edges', []).filter_map do |edge|
+          edge['node']
+        end
       end
 
       def find_project(body, name)
@@ -61,7 +67,9 @@ module Release
       end
 
       def find_service(project, name)
-        services = project.fetch('services', {}).fetch('edges', []).filter_map { |edge| edge['node'] }
+        services = project.fetch('services', {}).fetch('edges', []).filter_map do |edge|
+          edge['node']
+        end
         id = services.find { |service| service['name'] == name }&.fetch('id', nil)
         raise RollbackError, "Railway service #{name.inspect} not found." if Plain.blank?(id)
 
@@ -69,7 +77,9 @@ module Release
       end
 
       def find_environment(project, name)
-        environments = project.fetch('environments', {}).fetch('edges', []).filter_map { |edge| edge['node'] }
+        environments = project.fetch('environments', {}).fetch('edges', []).filter_map do |edge|
+          edge['node']
+        end
         id = environments.find { |env| env['name'] == name }&.fetch('id', nil)
         raise RollbackError, "Railway environment #{name.inspect} not found." if Plain.blank?(id)
 
