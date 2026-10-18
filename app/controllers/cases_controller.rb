@@ -155,6 +155,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     ActiveModel::Type::Boolean.new.cast(params.dig(:case, :remove_photo))
   end
 
+  # rubocop:disable Naming/PredicateMethod -- returns success/failure, not a query
   def update_case_photo(this_case, upload:, remove:)
     if remove
       this_case.photo.purge if this_case.photo.attached?
