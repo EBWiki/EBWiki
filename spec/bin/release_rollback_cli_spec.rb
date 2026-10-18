@@ -5,6 +5,14 @@ require 'open3'
 RSpec.describe 'bin/release-rollback CLI' do
   let(:root) { File.expand_path('../..', __dir__) }
   let(:bin) { File.join(root, 'bin/release-rollback') }
+  let(:railway_env) do
+    {
+      'RELEASE_ROLLBACK_PLATFORM' => 'railway',
+      'RAILWAY_SERVICE' => 'ebwiki',
+      'RAILWAY_ENVIRONMENT' => 'staging',
+      'RAILWAY_ROLLBACK_DEPLOYMENT_ID' => '11111111-2222-4333-8444-555555555555'
+    }
+  end
 
   def run_cli(args, env: {})
     env = ENV.to_hash.merge('BUNDLE_GEMFILE' => '').merge(env)
@@ -26,5 +34,25 @@ RSpec.describe 'bin/release-rollback CLI' do
     expect(stdout).to include('dry run')
     expect(stdout).to include('heroku releases:rollback -a ebwiki-staging')
     expect(stderr).to be_empty
+  end
+
+  it 'prints a missing RAILWAY_TOKEN message on execute' do
+    _stdout, stderr, status = run_cli(%w[--execute --yes], env: railway_env)
+
+    expect(status.exitstatus).to eq(1)
+    expect(stderr).to include('Set RAILWAY_TOKEN')
+  end
+
+  it 'prints a service mismatch message on execute' do
+    stub = File.expand_path('railway_subprocess_service_mismatch.rb', __dir__)
+    env = railway_env.merge(
+      'RAILWAY_TOKEN' => 'token',
+      'RUBYOPT' => "-r#{stub}"
+    )
+
+    _stdout, stderr, status = run_cli(%w[--execute --yes], env: env)
+
+    expect(status.exitstatus).to eq(1)
+    expect(stderr).to match(/service/i)
   end
 end

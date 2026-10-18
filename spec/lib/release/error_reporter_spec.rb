@@ -5,8 +5,17 @@ require 'rails_helper'
 RSpec.describe Release::ErrorReporter do
   let(:logger) { instance_double(Logger, error: nil, warn: nil) }
 
+  around do |example|
+    token = ENV['ROLLBAR_ACCESS_TOKEN']
+    ENV['ROLLBAR_ACCESS_TOKEN'] = 'test-token'
+    example.run
+  ensure
+    ENV['ROLLBAR_ACCESS_TOKEN'] = token
+  end
+
   before do
     allow(Rails).to receive(:logger).and_return(logger)
+    allow(Release::RollbarSetup).to receive(:configure!)
     stub_const('Rollbar', Class.new do
       def self.error(*); end
     end)

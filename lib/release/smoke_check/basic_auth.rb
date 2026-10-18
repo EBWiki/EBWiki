@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../plain'
+
 module Release
   class SmokeCheck
     module BasicAuth
@@ -10,11 +12,11 @@ module Release
       end
 
       def basic_auth_credentials
-        username = ENV['RELEASE_SMOKE_BASIC_AUTH_USERNAME'].presence
-        username ||= ENV['STAGING_USERNAME'].presence
-        password = ENV['RELEASE_SMOKE_BASIC_AUTH_PASSWORD'].presence
-        password ||= ENV['STAGING_PASSWORD'].presence
-        return if username.blank? || password.blank?
+        username = Plain.env_presence('RELEASE_SMOKE_BASIC_AUTH_USERNAME')
+        username ||= Plain.env_presence('STAGING_USERNAME')
+        password = Plain.env_presence('RELEASE_SMOKE_BASIC_AUTH_PASSWORD')
+        password ||= Plain.env_presence('STAGING_PASSWORD')
+        return if Plain.blank?(username) || Plain.blank?(password)
 
         { username: username, password: password }
       end

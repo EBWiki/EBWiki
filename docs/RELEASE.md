@@ -6,7 +6,7 @@ Use these commands after deploying the Postgres search change to verify behavior
 
 The smoke check hits the running site over HTTP. It confirms the home page loads, search returns results for a known term, junk search returns zero results without error, and `/health` reports Postgres and Redis only (no Elasticsearch probe).
 
-GitHub Actions runs `release:smoke_check` automatically when a deployment completes successfully (see `.github/workflows/release_smoke_check.yml`).
+GitHub Actions runs `bin/release-smoke-check` automatically when a deployment completes successfully (see `.github/workflows/release_smoke_check.yml`). The workflow needs the repository secret `ROLLBAR_ACCESS_TOKEN` when Rollbar reporting is enabled.
 
 ### When to run
 
@@ -18,28 +18,30 @@ Run after every staging or production deploy that includes the pg_search search 
 
 ```bash
 RELEASE_SMOKE_BASE_URL=https://staging.ebwiki.org \
-  bin/rails release:smoke_check
+  bin/release-smoke-check
 ```
 
 Or pass the URL as a rake argument:
 
 ```bash
 STAGING_USERNAME=... STAGING_PASSWORD=... \
-  bin/rails 'release:smoke_check[https://staging.ebwiki.org]'
+  bin/release-smoke-check https://staging.ebwiki.org
 ```
 
 Alias:
 
 ```bash
-bin/rails 'search:smoke[https://staging.ebwiki.org]'
+bin/release-smoke-check https://staging.ebwiki.org
 ```
+
+(`bin/rails release:smoke_check[URL]` remains a thin wrapper around the same script.)
 
 **Production**:
 
 ```bash
 RELEASE_SMOKE_BASE_URL=https://ebwiki.org \
   RELEASE_SMOKE_SEARCH_TERM=police \
-  bin/rails release:smoke_check
+  bin/release-smoke-check
 ```
 
 Optional environment variables:
@@ -49,10 +51,12 @@ Optional environment variables:
 | `RELEASE_SMOKE_BASE_URL` | Base URL when not passed as a rake argument |
 | `RELEASE_SMOKE_SEARCH_TERM` | Query that should match at least one case (default `*`) |
 | `RELEASE_SMOKE_BASIC_AUTH_*` | Override staging basic auth credentials |
+| `ROLLBAR_ACCESS_TOKEN` | Rollbar project token (required in the deployment workflow for error reporting) |
+| `ROLLBAR_ENV` | Rollbar environment name (the GitHub deployment environment in CI) |
 
-Exit code **0** means all checks passed. Failures log JSON to `Rails.logger` and report through Rollbar when `ROLLBAR_ACCESS_TOKEN` is set.
+Exit code **0** means all checks passed. Failures log JSON to stderr and report through Rollbar when `ROLLBAR_ACCESS_TOKEN` is set.
 
-Implementation: `lib/release/smoke_check.rb`, rake task in `lib/tasks/release.rake`.
+Implementation: `lib/release/smoke_check.rb`, entrypoint `bin/release-smoke-check`, rake wrapper in `lib/tasks/release.rake`.
 
 ## One-command rollback
 

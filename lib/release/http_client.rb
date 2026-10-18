@@ -3,6 +3,8 @@
 require 'net/http'
 require 'json'
 
+require_relative 'plain'
+
 module Release
   # Minimal HTTP GET client for post-deploy smoke checks.
   class HttpClient
@@ -46,7 +48,7 @@ module Release
     end
 
     def apply_basic_auth(request)
-      return if @basic_auth.blank?
+      return if Plain.blank?(@basic_auth)
 
       request.basic_auth(@basic_auth.fetch(:username), @basic_auth.fetch(:password))
     end

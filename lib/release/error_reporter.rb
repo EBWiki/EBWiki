@@ -2,6 +2,9 @@
 
 require 'logger'
 
+require_relative 'plain'
+require_relative 'rollbar_setup'
+
 module Release
   # Sends smoke-check failures to logs and Rollbar when configured.
   class ErrorReporter
@@ -17,6 +20,7 @@ module Release
         timestamp: timestamp
       }
       logger.error(payload.to_json)
+      RollbarSetup.configure!
       notify_rollbar(payload)
     end
 
@@ -29,14 +33,11 @@ module Release
     end
 
     def timestamp
-      if defined?(Time) && Time.respond_to?(:current)
-        Time.current.utc.iso8601
-      else
-        Time.now.utc.iso8601
-      end
+      Time.now.utc.iso8601
     end
 
     def notify_rollbar(payload)
+      return unless Plain.present?(ENV.fetch('ROLLBAR_ACCESS_TOKEN', nil))
       return unless defined?(Rollbar) && Rollbar.respond_to?(:error)
 
       Rollbar.error(payload[:message], payload)

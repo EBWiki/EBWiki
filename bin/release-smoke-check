@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+if ARGV.intersect?(%w[--help -h])
+  puts <<~HELP
+    Usage: bin/release-smoke-check [BASE_URL]
+
+    HTTP post-deploy smoke check (no Rails boot). BASE_URL may also come from
+    RELEASE_SMOKE_BASE_URL. Optional: RELEASE_SMOKE_SEARCH_TERM, staging basic
+    auth via STAGING_USERNAME and STAGING_PASSWORD, Rollbar via ROLLBAR_ACCESS_TOKEN
+    and ROLLBAR_ENV.
+  HELP
+  exit 0
+end
+
+require_relative '../lib/release/plain'
+require_relative '../lib/release/url_sanitizer'
+require_relative '../lib/release/smoke_check_failure'
+require_relative '../lib/release/http_client'
+require_relative '../lib/release/rollbar_setup'
+require_relative '../lib/release/error_reporter'
+require_relative '../lib/release/smoke_check/basic_auth'
+require_relative '../lib/release/smoke_check/failure_reporting'
+require_relative '../lib/release/smoke_check/health_checks'
+require_relative '../lib/release/smoke_check/search_requests'
+require_relative '../lib/release/smoke_check'
+require_relative '../lib/release/smoke_check_cli'
+
+success = Release::SmokeCheckCli.run(ARGV)
+exit(success ? 0 : 1)

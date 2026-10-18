@@ -2,7 +2,10 @@
 
 require 'cgi'
 require 'json'
+require 'logger'
 require 'openssl'
+
+require_relative 'plain'
 
 module Release
   # Verifies a deployed environment serves pages and Postgres-backed search.
@@ -30,17 +33,17 @@ module Release
       base_url:,
       http_client: nil,
       search_term: nil,
-      logger: Rails.logger,
+      logger: nil,
       error_reporter: Release::ErrorReporter
     )
       @base_url = normalize_base_url(base_url)
       @log_base_url = UrlSanitizer.for_log(@base_url)
       @http_client = http_client || default_http_client
-      @search_term = search_term.presence || ENV.fetch(
+      @search_term = Plain.presence(search_term) || ENV.fetch(
         'RELEASE_SMOKE_SEARCH_TERM',
         DEFAULT_SEARCH_TERM
       )
-      @logger = logger
+      @logger = logger || Logger.new($stderr)
       @error_reporter = error_reporter
     end
 
@@ -99,7 +102,7 @@ module Release
 
     def normalize_base_url(url)
       normalized = url.to_s.strip.chomp('/')
-      raise ArgumentError, 'base URL is required' if normalized.blank?
+      raise ArgumentError, 'base URL is required' if Plain.blank?(normalized)
 
       normalized
     end

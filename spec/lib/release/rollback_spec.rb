@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Release::Rollback do
   let(:output) { StringIO.new }
+  let(:error_output) { StringIO.new }
   let(:input) { StringIO.new }
   let(:executor) do
     instance_double(Release::Rollback::CommandExecutor).tap do |dbl|
@@ -23,7 +24,7 @@ RSpec.describe Release::Rollback do
   end
 
   it 'prints a dry-run plan by default' do
-    result = described_class.run([], executor: executor, output: output, input: input)
+    result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(true)
     expect(output.string).to include('dry run')
@@ -34,20 +35,20 @@ RSpec.describe Release::Rollback do
   it 'refuses to run without a Heroku app name' do
     ENV.delete('HEROKU_APP_NAME')
 
-    result = described_class.run([], executor: executor, output: output, input: input)
+    result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(false)
-    expect(output.string).to include('HEROKU_APP_NAME')
+    expect(error_output.string).to include('HEROKU_APP_NAME')
   end
 
   it 'refuses --execute in a non-interactive session without --yes' do
     input = StringIO.new
     allow(input).to receive(:tty?).and_return(false)
 
-    result = described_class.run(['--execute'], executor: executor, output: output, input: input)
+    result = described_class.run(['--execute'], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(false)
-    expect(output.string).to include('--yes')
+    expect(error_output.string).to include('--yes')
     expect(executor).not_to have_received(:call)
   end
 
@@ -55,14 +56,14 @@ RSpec.describe Release::Rollback do
     input = StringIO.new("n\n")
     allow(input).to receive(:tty?).and_return(true)
 
-    result = described_class.run(['--execute'], executor: executor, output: output, input: input)
+    result = described_class.run(['--execute'], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(false)
-    expect(output.string).to include('cancelled')
+    expect(error_output.string).to include('cancelled')
   end
 
   it 'executes commands when --execute and --yes are passed' do
-    result = described_class.run(%w[--execute --yes], executor: executor, output: output, input: input)
+    result = described_class.run(%w[--execute --yes], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(true)
     expect(executor).to have_received(:call).with(
@@ -74,19 +75,19 @@ RSpec.describe Release::Rollback do
   end
 
   it 'rejects unknown flags' do
-    result = described_class.run(['--with-migration-down'], executor: executor, output: output, input: input)
+    result = described_class.run(['--with-migration-down'], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(false)
-    expect(output.string).to include('Unknown flag')
+    expect(error_output.string).to include('Unknown flag')
   end
 
   it 'refuses when both Heroku and Railway are configured' do
     ENV['RAILWAY_SERVICE'] = 'ebwiki'
 
-    result = described_class.run([], executor: executor, output: output, input: input)
+    result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(false)
-    expect(output.string).to include('Both Heroku and Railway')
+    expect(error_output.string).to include('Both Heroku and Railway')
   end
 
   it 'reports executor failure' do
@@ -94,10 +95,11 @@ RSpec.describe Release::Rollback do
       Release::Rollback::CommandExecutor::ExecutionResult.new(success: false, message: 'Command failed')
     )
 
-    result = described_class.run(%w[--execute --yes], executor: executor, output: output, input: input)
+    result = described_class.run(%w[--execute --yes], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(false)
     expect(result.message).to include('Command failed')
+    expect(error_output.string).to include('Command failed')
   end
 
   context 'when Railway is configured' do
@@ -111,7 +113,7 @@ RSpec.describe Release::Rollback do
     end
 
     it 'plans a Railway GraphQL deploymentRollback' do
-      described_class.run([], executor: executor, output: output, input: input)
+      described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
       expect(output.string).to include('deploymentRollback')
       expect(output.string).to include('11111111-2222-4333-8444-555555555555')
@@ -120,28 +122,28 @@ RSpec.describe Release::Rollback do
     it 'requires RAILWAY_ENVIRONMENT' do
       ENV.delete('RAILWAY_ENVIRONMENT')
 
-      result = described_class.run([], executor: executor, output: output, input: input)
+      result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
       expect(result.success).to be(false)
-      expect(output.string).to include('RAILWAY_ENVIRONMENT')
+      expect(error_output.string).to include('RAILWAY_ENVIRONMENT')
     end
 
     it 'rejects a non-UUID deployment id' do
       ENV['RAILWAY_ROLLBACK_DEPLOYMENT_ID'] = 'dep-123'
 
-      result = described_class.run([], executor: executor, output: output, input: input)
+      result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
       expect(result.success).to be(false)
-      expect(output.string).to include('not a UUID')
+      expect(error_output.string).to include('not a UUID')
     end
   end
 
   it 'rejects an unsupported platform' do
     ENV['RELEASE_ROLLBACK_PLATFORM'] = 'flyio'
 
-    result = described_class.run([], executor: executor, output: output, input: input)
+    result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
     expect(result.success).to be(false)
-    expect(output.string).to include('Unsupported platform')
+    expect(error_output.string).to include('Unsupported platform')
   end
 end

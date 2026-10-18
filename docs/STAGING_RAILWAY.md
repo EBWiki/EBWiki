@@ -18,7 +18,7 @@ which environment variable **names** belong in Doppler config `ebwiki/stg`
 5. **Liveness (Railway deploy health check):** HTTP `GET /up` — fast “app booted”
    probe only (`railway.toml` `healthcheckPath`). Returns **200** when Rails is
    up; **503** if the liveness handler errors. JSON may include `deploy_rev`.
-6. **Readiness (operators):** HTTP `GET /health`: checks Postgres (`SELECT 1`) and
+6. **Readiness check:** HTTP `GET /health`: checks Postgres (`SELECT 1`) and
    Redis (`PING` via `REDIS_URL`). Case search uses Postgres full-text search
    (`pg_search`); no separate search cluster. Each check uses a ~2s timeout. JSON
    shape: `{ "status", "checks": { "postgres"|"redis": { "status", "latency_ms" }
@@ -56,7 +56,7 @@ Each deploy runs **`db:migrate`** against the service’s `DATABASE_URL`. If the
 database is **empty** (no tables yet), migrate has nothing to apply and the app
 will not boot until a schema exists.
 
-**One-time setup** (pick one, as an operator with access to the Railway service
+**One-time setup** (pick one, as someone with access to the Railway service
 shell or a local `DATABASE_URL` pointing at that database):
 
 - Load the committed schema: `bundle exec rails db:schema:load`
@@ -160,7 +160,7 @@ allow-list as “permit all,” so staging installs a deny-all sentinel instead)
 Railway’s deploy health check hits `GET /up`, which is excluded from host
 authorization so liveness probes succeed before a custom domain is attached.
 
-## Operator checklist
+## Release checklist
 
 - [ ] Railway service: repo `EBWiki/EBWiki`, branch `main`, Dockerfile path
   `Dockerfile.railway`.

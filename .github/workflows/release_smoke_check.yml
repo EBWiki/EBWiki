@@ -16,15 +16,10 @@ jobs:
     env:
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
       RELEASE_SMOKE_BASE_URL: ${{ github.event.deployment_status.environment_url }}
-      RAILS_ENV: production
-      SECRET_KEY_BASE: release-smoke-check-ci
 
     steps:
       - name: Checkout code
         uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
-
-      - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y libcurl4-gnutls-dev
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
@@ -39,4 +34,6 @@ jobs:
           STAGING_USERNAME: ${{ secrets.STAGING_USERNAME }}
           STAGING_PASSWORD: ${{ secrets.STAGING_PASSWORD }}
           RELEASE_SMOKE_SEARCH_TERM: ${{ vars.RELEASE_SMOKE_SEARCH_TERM }}
-        run: bundle exec bin/rails release:smoke_check
+          ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+          ROLLBAR_ENV: ${{ github.event.deployment_status.environment }}
+        run: bundle exec bin/release-smoke-check

@@ -8,14 +8,15 @@ module Release
   class Rollback
     Result = Data.define(:success, :message, :commands)
 
-    def self.run(argv, executor: CommandExecutor.new, output: $stdout, input: $stdin)
-      new(argv, executor: executor, output: output, input: input).run
+    def self.run(argv, executor: CommandExecutor.new, output: $stdout, error_output: $stderr, input: $stdin)
+      new(argv, executor: executor, output: output, error_output: error_output, input: input).run
     end
 
-    def initialize(argv, executor:, output:, input: $stdin)
+    def initialize(argv, executor:, output:, error_output: $stderr, input: $stdin)
       @argv = argv
       @executor = executor
       @output = output
+      @error_output = error_output
       @input = input
     end
 
@@ -27,9 +28,11 @@ module Release
       planner.print(commands)
       return dry_run_result(commands) if @options.dry_run
 
-      execute!(commands)
+      result = execute!(commands)
+      report_failure(result.message) unless result.success
+      result
     rescue RollbackError => e
-      @output.puts(e.message)
+      report_failure(e.message)
       Result.new(success: false, message: e.message, commands: [])
     end
 
@@ -51,6 +54,12 @@ module Release
         message: 'Dry run only (pass --execute to run)',
         commands: commands
       )
+    end
+
+    def report_failure(message)
+      return if Plain.blank?(message)
+
+      @error_output.puts(message)
     end
 
     def validate!
