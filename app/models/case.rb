@@ -67,6 +67,8 @@ class Case < ApplicationRecord
   validates :blurb, length: { maximum: MAX_BLURB_CHARACTERS }
   validates :blurb, presence: { message: 'A blurb about the case is required.' }
 
+  before_validation :strip_html_from_blurb
+
   # Avatar uploader using carrierwave
   mount_uploader :avatar, AvatarUploader
 
@@ -114,6 +116,12 @@ class Case < ApplicationRecord
     errors.add(:date, 'must be present') && return if date.blank?
 
     errors.add(:date, 'must be in the past') if date > Date.current
+  end
+
+  def strip_html_from_blurb
+    return if blurb.blank?
+
+    self.blurb = ActionController::Base.helpers.strip_tags(blurb)
   end
 
   def edit_summary
