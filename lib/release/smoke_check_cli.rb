@@ -5,8 +5,8 @@ require_relative 'plain'
 module Release
   # Runs the HTTP smoke check without booting Rails.
   class SmokeCheckCli
-    def self.system(*args)
-      Kernel.system(*args)
+    def self.system(*)
+      Kernel.system(*)
     end
 
     def self.run(argv)
@@ -19,7 +19,10 @@ module Release
 
     def run
       RollbarSetup.configure!
-      Release::SmokeCheck.new(base_url: resolve_base_url).call
+      base_url = resolve_base_url
+      return false if Plain.blank?(base_url)
+
+      Release::SmokeCheck.new(base_url: base_url).call
     end
 
     private
@@ -30,7 +33,7 @@ module Release
       return url if Plain.present?(url)
 
       warn 'Set RELEASE_SMOKE_BASE_URL or pass the base URL as the first argument.'
-      exit 1
+      nil
     end
   end
 end

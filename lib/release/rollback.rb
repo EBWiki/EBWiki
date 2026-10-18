@@ -8,7 +8,8 @@ module Release
   class Rollback
     Result = Data.define(:success, :message, :commands)
 
-    def self.run(argv, executor: CommandExecutor.new, output: $stdout, error_output: $stderr, input: $stdin)
+    def self.run(argv, executor: CommandExecutor.new, output: $stdout, error_output: $stderr,
+                 input: $stdin)
       new(argv, executor: executor, output: output, error_output: error_output, input: input).run
     end
 
@@ -23,20 +24,28 @@ module Release
     def run
       @options = RollbackOptionsBuilder.from_argv(@argv)
       validate!
-      planner = Planner.new(@options, output: @output)
-      commands = planner.commands
-      planner.print(commands)
+      commands = print_plan
       return dry_run_result(commands) if @options.dry_run
 
-      result = execute!(commands)
-      report_failure(result.message) unless result.success
-      result
+      finalize(execute!(commands))
     rescue RollbackError => e
       report_failure(e.message)
       Result.new(success: false, message: e.message, commands: [])
     end
 
     private
+
+    def print_plan
+      planner = Planner.new(@options, output: @output)
+      commands = planner.commands
+      planner.print(commands)
+      commands
+    end
+
+    def finalize(result)
+      report_failure(result.message) unless result.success
+      result
+    end
 
     def execute!(commands)
       confirm!
