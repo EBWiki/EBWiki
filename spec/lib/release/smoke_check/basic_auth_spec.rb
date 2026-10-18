@@ -3,17 +3,19 @@
 require 'rails_helper'
 
 RSpec.describe Release::SmokeCheck, 'basic auth credentials' do
-  def basic_auth_for(base_url)
-    captured = nil
-    http = instance_double(
+  let(:http) do
+    instance_double(
       Release::HttpClient,
       get: Release::HttpClient::Response.new(status: 200, body: '', headers: {})
     )
+  end
+
+  def basic_auth_for(base_url)
+    captured = nil
     allow(Release::HttpClient).to receive(:new) do |**kwargs|
       captured = kwargs[:basic_auth]
       http
     end
-
     described_class.new(base_url: base_url)
     captured
   end
@@ -42,5 +44,4 @@ RSpec.describe Release::SmokeCheck, 'basic auth credentials' do
   it 'does not send credentials over http://staging.ebwiki.org' do
     expect(basic_auth_for('http://staging.ebwiki.org')).to be_nil
   end
-
 end

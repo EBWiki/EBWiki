@@ -18,11 +18,11 @@ module Release
          .reject(&:empty?)
     end
 
-    def permitted!(base_url)
+    def permitted!(base_url) # rubocop:disable Naming/PredicateMethod -- warns then returns boolean
       uri = parse_uri(base_url)
       return false unless uri
-      return false unless secure_https_url!(uri)
-      return false unless host_allowlisted!(uri)
+      return false unless validate_https_url(uri)
+      return false unless validate_host(uri)
 
       true
     end
@@ -40,12 +40,16 @@ module Release
         uri.port == uri.default_port
     end
 
-    def secure_https_url!(uri)
+    def embedded_credentials?(uri)
+      Plain.present?(uri.user) || Plain.present?(uri.password)
+    end
+
+    def validate_https_url(uri) # rubocop:disable Metrics/MethodLength, Naming/PredicateMethod
       unless uri.scheme == 'https'
         warn 'Smoke check requires HTTPS.'
         return false
       end
-      if Plain.present?(uri.user) || Plain.present?(uri.password)
+      if embedded_credentials?(uri)
         warn 'Smoke check URL must not include embedded credentials.'
         return false
       end
@@ -57,7 +61,7 @@ module Release
       true
     end
 
-    def host_allowlisted!(uri)
+    def validate_host(uri) # rubocop:disable Naming/PredicateMethod
       host = uri.host
       return true if Plain.present?(host) && allowed_hosts.include?(host)
 
@@ -65,5 +69,6 @@ module Release
            "Set RELEASE_SMOKE_ALLOWED_HOSTS or use #{DEFAULT_HOSTS.join(' or ')}."
       false
     end
+    private_class_method :embedded_credentials?, :validate_https_url, :validate_host
   end
 end
