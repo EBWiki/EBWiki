@@ -10,6 +10,7 @@ on:
       - 'scripts/test/infra-lib-test.sh'
       - 'scripts/test/github-infra-test.sh'
       - 'scripts/test/github-tftest-mutations.sh'
+      - 'scripts/test/github-scripts-e2e-test.sh'
       - 'scripts/infra-with-tf-vars.sh'
       - 'scripts/infra-write-backend.sh'
       - '.github/workflows/infra-github.yml'
@@ -36,6 +37,10 @@ jobs:
       - name: GitHub infra script tests
         working-directory: .
         run: ./scripts/test/github-infra-test.sh
+
+      - name: GitHub script end-to-end tests
+        working-directory: .
+        run: ./scripts/test/github-scripts-e2e-test.sh
 
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@9d84900f3238fab8cd84ce47d658d25dd008be2f # v1.0.8

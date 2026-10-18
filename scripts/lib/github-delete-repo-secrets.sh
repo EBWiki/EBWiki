@@ -71,7 +71,7 @@ github_delete_repo_secrets() {
   log_json info delete_dry_run "repository secrets present: ${present[*]}"
 
   if [[ "$confirm" != 1 ]]; then
-    log_json info delete_dry_run "re-run with --confirm to delete (requires typing delete-repo-secrets)"
+    log_json info delete_dry_run "re-run with make github-delete-repo-secrets CONFIRM=1 to delete (requires typing delete-repo-secrets)"
     github_delete_cleanup_temp
     return 0
   fi

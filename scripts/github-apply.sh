@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 GITHUB_SCRIPT_NAME="github-apply.sh"
 
-trap 'rm -f "$ROOT/infra/github/github.tfplan"; rm -rf "${GH_TMP:-}"' EXIT
+trap 'rm -f "$ROOT/infra/github/github.tfplan"' EXIT
 
 # shellcheck source=lib/github-logging.sh
 source "$ROOT/scripts/lib/github-logging.sh"
@@ -31,5 +31,7 @@ doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars
   trap github_script_err_trap ERR
   github_preflight
   umask 077
-  cd \"$ROOT/infra/github\" && tofu init -backend-config=backend.hcl -input=false && tofu apply -input=false github.tfplan
+  cd \"$ROOT/infra/github\"
+  tofu init -backend-config=backend.hcl -input=false
+  tofu apply -input=false github.tfplan
 "

@@ -53,6 +53,6 @@ apply:
 	./scripts/github-apply.sh
 
 github-delete-repo-secrets:
-	./scripts/github-delete-repo-secrets.sh $(if $(CONFIRM),--confirm,)
+	./scripts/github-delete-repo-secrets.sh $(if $(filter 1,$(CONFIRM)),--confirm,)
 
 .PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan snapshot apply github-delete-repo-secrets

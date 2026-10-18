@@ -9,5 +9,8 @@ log_json() {
 
 die() {
   log_json error "$1" "$2"
+  if declare -F github_rollbar_report_script_failure >/dev/null; then
+    github_rollbar_report_script_failure "${BASH_LINENO[0]:-0}" 1 || true
+  fi
   exit 1
 }

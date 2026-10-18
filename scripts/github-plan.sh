@@ -24,5 +24,8 @@ doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars
   trap github_script_err_trap ERR
   github_preflight
   umask 077
-  cd \"$ROOT/infra/github\" && tofu fmt -check -recursive && tofu init -backend-config=backend.hcl -input=false && tofu plan -input=false -out=github.tfplan
+  cd \"$ROOT/infra/github\"
+  tofu fmt -check -recursive
+  tofu init -backend-config=backend.hcl -input=false
+  tofu plan -input=false -out=github.tfplan
 "

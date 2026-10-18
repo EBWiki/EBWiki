@@ -36,8 +36,19 @@ infra_export_github_smoke_secrets_from_stg() {
   )"
 }
 
+# The GitHub stack gets exactly its own TF_VARs. Anything else exported by
+# infra-with-tf-vars.sh (staging, bootstrap) or the caller's shell is dropped.
+infra_scrub_tf_vars() {
+  local v
+  while read -r v; do unset "$v"; done < <(compgen -e | grep '^TF_VAR_' || true)
+}
+
 infra_require_github_tf_vars() {
-  infra_export_tf_vars_from_infra_config
+  local u="${TF_VAR_staging_username:-}" p="${TF_VAR_staging_password:-}" r="${TF_VAR_rollbar_access_token:-}"
+  infra_scrub_tf_vars
+  [ -n "${STATE_PASSPHRASE:-}" ] && export TF_VAR_state_passphrase="$STATE_PASSPHRASE"
+  [ -n "${GITHUB_TOKEN:-}" ] && export TF_VAR_github_token="$GITHUB_TOKEN"
+  export TF_VAR_staging_username="$u" TF_VAR_staging_password="$p" TF_VAR_rollbar_access_token="$r"
   : "${TF_VAR_state_passphrase:?STATE_PASSPHRASE must be set in ebwiki/infra}"
   : "${TF_VAR_github_token:?GITHUB_TOKEN must be set in ebwiki/infra}"
   : "${TF_VAR_staging_username:?TF_VAR_staging_username must be set from ebwiki/stg}"
