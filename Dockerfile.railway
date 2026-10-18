@@ -15,6 +15,7 @@ RUN apt-get update -qq && apt-get install -y \
     ca-certificates \
     gnupg \
     git \
+    imagemagick \
     nodejs \
     apt-transport-https \
     && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
