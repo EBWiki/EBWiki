@@ -4,7 +4,7 @@ module ActiveStorageBackfill
   # Copies each Case's CarrierWave avatar original into Active Storage +photo+.
   # Reads the legacy +avatar+ column directly (Case ignores those columns at the model layer).
   # Safe to re-run (skips cases that already have +photo+ attached).
-  class CasePhotos
+  class CasePhotos # rubocop:disable Metrics/ClassLength
     include Service
 
     COUNTS = %i[
