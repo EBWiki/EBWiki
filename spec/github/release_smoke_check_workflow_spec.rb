@@ -8,7 +8,7 @@ RSpec.describe 'Release smoke check workflow' do
   let(:workflow_path) { Rails.root.join('.github/workflows/release_smoke_check.yml') }
   let(:smoke_step) { 'Run post-deploy smoke check' }
   let(:require_step) { 'Require release-smoke secrets' }
-  let(:verify_step) { 'Verify release-smoke environment' }
+  let(:guard_command) { './scripts/github-require-protected-environment.sh release-smoke' }
   let(:secret_names) { %w[STAGING_USERNAME STAGING_PASSWORD ROLLBAR_ACCESS_TOKEN] }
   let(:workflow) { YAML.safe_load(File.read(workflow_path), aliases: true) }
 
@@ -20,6 +20,8 @@ RSpec.describe 'Release smoke check workflow' do
     on = workflow_triggers(doc)
     return false unless on.is_a?(Hash) && on.keys == ['workflow_dispatch']
 
+    return false unless environment_guard_first?(doc)
+
     job = doc.dig('jobs', 'smoke_check')
     return false unless job.is_a?(Hash)
     return false unless job['if'] == "github.ref == 'refs/heads/main'"
@@ -27,11 +29,9 @@ RSpec.describe 'Release smoke check workflow' do
     return false unless job.dig('env', 'RELEASE_SMOKE_BASE_URL') == 'https://staging.ebwiki.org'
 
     steps = job.fetch('steps', [])
-    verify_index = steps.index { |entry| entry['name'] == verify_step }
     smoke_index = steps.index { |entry| entry['name'] == smoke_step }
     require_index = steps.index { |entry| entry['name'] == require_step }
-    return false unless verify_index && smoke_index && require_index
-    return false unless verify_index < require_index && require_index < smoke_index
+    return false unless smoke_index && require_index && require_index < smoke_index
     return false unless secrets_mapped?(steps[require_index]['env'])
 
     env = steps[smoke_index]['env'] || {}
@@ -39,6 +39,17 @@ RSpec.describe 'Release smoke check workflow' do
     return false unless env['ROLLBAR_ENV'] == 'staging'
 
     true
+  end
+
+  # GitHub creates a missing environment, unprotected, for the job that names it,
+  # so the protection check must run in an earlier job that does not name it.
+  def environment_guard_first?(doc)
+    guard = doc.dig('jobs', 'require_environment')
+    return false unless guard.is_a?(Hash) && guard['environment'].nil?
+    return false unless guard['if'] == "github.ref == 'refs/heads/main'"
+    return false unless guard.fetch('steps', []).any? { |step| step['run'].to_s.strip == guard_command }
+
+    Array(doc.dig('jobs', 'smoke_check', 'needs')).include?('require_environment')
   end
 
   def secrets_mapped?(env)
@@ -104,6 +115,18 @@ RSpec.describe 'Release smoke check workflow' do
       step = steps.find { |s| s['name'] == 'Require release-smoke secrets' }
       steps.delete(step)
       steps.push(step)
+    },
+    'protected environment check job' => lambda { |doc|
+      doc['jobs'].delete('require_environment')
+    },
+    'smoke job dependency on the environment check' => lambda { |doc|
+      doc.dig('jobs', 'smoke_check').delete('needs')
+    },
+    'environment check outside the environment' => lambda { |doc|
+      doc.dig('jobs', 'require_environment')['environment'] = 'release-smoke'
+    },
+    'environment check command' => lambda { |doc|
+      doc.dig('jobs', 'require_environment', 'steps').each { |step| step['run'] &&= 'true' }
     },
     'Rollbar token on the required secrets step' => lambda { |doc|
       step = doc.dig('jobs', 'smoke_check', 'steps').find { |s| s['name'] == 'Require release-smoke secrets' }

@@ -6,7 +6,7 @@ This guide explains how EBWiki is deployed today.
 2. [Deploy staging](#deploy-staging)
 3. [Gate deploys on CI](#gate-deploys-on-ci)
 4. [Docker image publish on main](#docker-image-publish-on-main)
-5. [Why GitHub pushes did not deploy (verified)](#why-github-pushes-did-not-deploy-verified)
+5. [Why GitHub pushes did not deploy](#why-github-pushes-did-not-deploy)
 6. [Handling the database](#handling-the-database)
 7. [After a deploy](#after-a-deploy)
 
@@ -25,32 +25,35 @@ The old Heroku app is gone. Do not use the Heroku CLI for EBWiki.
 2. Merge to `main`. Railway should build `Dockerfile.railway` and deploy service **ebwiki** when the GitHub deployment trigger is connected and checks pass.
 3. Railway's pre-deploy step runs `bash release-tasks.sh`, which runs `rails db:migrate`. The deploy health check is `GET /up`.
 
-Staging DNS and the Railway custom domain are managed with OpenTofu in `infra/staging`. `make plan` writes plans for the GitHub and staging stacks and applies nothing. `make apply` applies the reviewed plans (GitHub stack first, then staging) and needs typed confirmation on each apply script. Staging apply runs DNS preflight before the DB snapshot and Railway config apply. See [RELEASE.md](RELEASE.md).
+Staging DNS and the Railway custom domain are managed with OpenTofu in `infra/staging`. `make plan` writes plans for the GitHub and staging stacks and applies nothing. `make apply` applies the reviewed plans (GitHub stack first, then staging) and needs typed confirmation on each apply script. Staging apply runs every read-only gate first (token type, saved-plan gates, DNS preflight) and only then takes the DB snapshot, turns on Wait for CI, applies the Railway config and runs `tofu apply`. See [RELEASE.md](RELEASE.md).
 
 ## Gate deploys on CI
 
-The **CI** workflow runs on every push to `main` (including **RSpec**). **Wait for CI** is enforced in code: staging plan runs a read-only GitHub autodeploy trigger preflight; staging apply runs **`infra_railway_ensure_deployment_trigger`**, which sets **`checkSuites: true`** on the **EBWiki/EBWiki** **main** trigger via Railway GraphQL **`deploymentTriggerUpdate`**, with read-back.
+The **CI** workflow runs on every push to `main` (including **RSpec**). Railway's **Wait for CI** setting is the `checkSuites` flag on the service's GitHub deployment trigger, and it is set in code:
 
-Only workflows that run on **push** to **main** can gate deploys. **Dependabot** auto-merge commits using the **`GITHUB_TOKEN`** do not trigger [Publish Docker Image](../.github/workflows/publish_docker_image.yml) (that workflow listens for human **`GITHUB_ACTOR`** pushes, not the Dependabot bot token).
+- `make plan` reads the trigger (read only). It fails when the trigger is missing or points at another repo or branch, and reports `checkSuites: false` as pending.
+- `make apply` calls Railway GraphQL `deploymentTriggerUpdate` with `checkSuites: true` when the flag is off, then lists the triggers again and fails unless the flag reads back true. It writes nothing when the flag is already on.
+
+With Wait for CI on, Railway holds a deploy until every GitHub check suite on that commit finishes, and skips it if one fails. Two workflows run on every push to `main`: **CI** and [Publish Docker Image](../.github/workflows/publish_docker_image.yml). A failing Docker Hub publish therefore also skips the staging deploy.
+
+GitHub does not start workflows for events made with the `GITHUB_TOKEN`. Dependabot pull requests are merged by [dependabot-auto-merge.yml](../.github/workflows/dependabot-auto-merge.yml) with that token, so those merges run no push workflows on `main`, and Railway has no check suite to wait for. **Unverified:** whether Railway then deploys such a commit at once or waits; check the next Dependabot merge.
 
 ## Docker image publish on main
 
-Every normal merge to **main** also runs [Publish Docker Image](../.github/workflows/publish_docker_image.yml), which builds and pushes **`ebwiki/ebwiki:latest`** (public on Docker Hub). That job is independent of Railway staging deploys but counts toward GitHub check suites when **Wait for CI** is enabled.
+Every push to **main** runs [Publish Docker Image](../.github/workflows/publish_docker_image.yml), which builds and pushes **`ebwiki/ebwiki:latest`** and **`ebwiki/ebwiki:<run number>`** to Docker Hub, where the image is public. Railway staging does not use that image (it builds `Dockerfile.railway`), but the workflow counts as a check suite for Wait for CI.
 
-## Why GitHub pushes did not deploy (verified)
+## Why GitHub pushes did not deploy
 
-**Symptom:** live staging **`deploy_rev`** stayed **8278d169** (deployment **98b66eec-8d76-4447-849a-8edb27867710**, 2026-10-11 6:02pm ET) while **82270bc0** and **912745b2** on **main** had green GitHub checks ([run 38265660321](https://github.com/EBWiki/EBWiki/actions/runs/38265660321), [run 38289919391](https://github.com/EBWiki/EBWiki/actions/runs/38289919391)) but **Railway created no deployment at all** (not WAITING, not SKIPPED).
+**Symptom (read from Railway on 2026-10-18):** the live staging deployment is still **98b66eec-8d76-4447-849a-8edb27867710** at **8278d169**, created 2026-10-11 6:02pm ET by a manual run, not by a push. **82270bc0** and **912745b2** reached **main** with green checks ([run 38265660321](https://github.com/EBWiki/EBWiki/actions/runs/38265660321), [run 38289919391](https://github.com/EBWiki/EBWiki/actions/runs/38289919391)), and Railway created no deployment for either, not even a WAITING or SKIPPED one.
 
-**Cause:** GitHub autodeploy never fired. Source **EBWiki/EBWiki** **main** is declared in `.railway/railway.ts`, but the service was never connected through the **Railway GitHub App** (workspace tokens cannot attach repo source; see `infra/staging/railway.tf` lifecycle ignores and PR #4545). Oct 11 deploys line up with **`railway config apply`**, not GitHub push hooks. Public-repo autodeploy also requires a project member with contributor access ([Railway docs](https://docs.railway.com/deployments/github-autodeploys)).
+**Cause (very likely):** the service config names **EBWiki/EBWiki** on **main** as its source, but that source was never connected through the Railway GitHub App, so GitHub pushes never reach Railway. The workspace token cannot connect a repo (see `infra/staging/railway.tf` and PR #4545). **Unverified:** the trigger list itself; `make plan` now reads it and fails while the trigger is missing.
 
-**One-time human step (Mark):**
+**One-time step for an EBWiki org admin:**
 
-1. Install the **Railway GitHub App** on the **EBWiki** org with access to **EBWiki/EBWiki** (or run **`scripts/railway-github-access.sh`** after install to verify org installation and repo visibility).
-2. In Railway service **ebwiki** → **Source**, connect **EBWiki/EBWiki** branch **main** (the API token cannot do this).
-3. Run **`make plan`** (read-only trigger preflight must pass) then **`make apply`** (sets **`checkSuites: true`**).
-4. Verify JSON **`/up`** on the Railway host shows **`912745b2`** (or newer), then confirm the next **main** push creates a Railway deployment.
-
-`scripts/staging-plan.sh` fails closed when the GitHub deployment trigger is missing, pointed at the wrong repo or branch, or has **`checkSuites: false`**.
+1. Install the **Railway GitHub App** on the **EBWiki** org with access to **EBWiki/EBWiki**. `scripts/railway-github-access.sh` then confirms the org installation can see the repo.
+2. In the Railway service **ebwiki**, open Settings, then Source, and connect **EBWiki/EBWiki** on branch **main**. The API token cannot do this.
+3. Run `make plan` (the trigger check must pass), then `make apply` (turns on Wait for CI).
+4. Confirm the next push to **main** creates a Railway deployment, and that `/up` on the Railway host reports that commit.
 
 ## Handling the database
 
@@ -66,4 +69,4 @@ Case search uses Postgres full-text search (`cases.tsv`). After restoring a dump
 
 ## After a deploy
 
-Run the post-deploy smoke check and, if needed, the one-command rollback described in [RELEASE.md](RELEASE.md). Apply the GitHub stack (`make apply`, GitHub step first) before using the **Release smoke check** workflow so the **`release-smoke`** environment exists.
+Run the post-deploy smoke check and, if needed, the one-command rollback described in [RELEASE.md](RELEASE.md). The **Release smoke check** and **Release tags** workflows refuse to run until `make apply` has created their protected environments (`release-smoke` and `release-tags`).

@@ -6,7 +6,7 @@ cd "$ROOT"
 
 trap 'rm -f "$ROOT/infra/github/github.tfplan"' EXIT
 
-echo "GitHub apply writes release-smoke environment secrets. Confirm with Mark before continuing." >&2
+echo "GitHub apply writes the release-smoke and release-tags environments and the release-smoke secrets." >&2
 read -r -p "Type apply-github to continue: " confirm
 if [ "$confirm" != apply-github ]; then
   echo "Aborted."
@@ -23,7 +23,7 @@ doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars
   INFRA_SCRIPT_NAME=github-apply.sh
   trap infra_script_err_trap ERR
   \"$ROOT/scripts/infra-write-backend.sh\" \"$ROOT/infra/github/backend.hcl\" github/terraform.tfstate
-  github_preflight apply
+  github_preflight
   umask 077
   cd \"$ROOT/infra/github\"
   tofu init -backend-config=backend.hcl -input=false

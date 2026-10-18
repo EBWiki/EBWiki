@@ -14,6 +14,11 @@ on:
       - 'scripts/infra-with-tf-vars.sh'
       - 'scripts/test/infra-lib-test.sh'
       - 'scripts/test/infra-railway-config-test.sh'
+      - 'scripts/test/infra-railway-deploy-trigger-test.sh'
+      - 'scripts/test/infra-railway-token-preflight-test.sh'
+      - 'scripts/test/infra-staging-plan-gate-test.sh'
+      - 'scripts/railway-github-access.sh'
+      - 'scripts/test/railway-github-access-test.sh'
       - 'scripts/test/fixtures/**'
       - 'scripts/test/infra-doppler-names-test.sh'
       - 'Dockerfile.railway'
@@ -47,6 +52,18 @@ jobs:
       - name: Staging OpenTofu plan gate tests
         working-directory: .
         run: ./scripts/test/infra-staging-plan-gate-test.sh
+
+      - name: Railway deploy trigger tests
+        working-directory: .
+        run: ./scripts/test/infra-railway-deploy-trigger-test.sh
+
+      - name: Railway token type tests
+        working-directory: .
+        run: ./scripts/test/infra-railway-token-preflight-test.sh
+
+      - name: Railway GitHub App access tests
+        working-directory: .
+        run: ./scripts/test/railway-github-access-test.sh
 
       - name: Doppler secret name lint
         working-directory: .

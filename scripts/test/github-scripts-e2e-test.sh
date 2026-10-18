@@ -35,17 +35,31 @@ assert_clean() { # phase
   for s in "${SECRETS[@]}"; do
     ! grep -Fq "$s" "$ARGV_LOG" || fail "$1: secret $s appeared in argv"
   done
-  pass "$1: no TMPDIR leftovers, no secrets in argv"
+  if grep '^curl ' "$ARGV_LOG" | grep -v -- '--connect-timeout [0-9]* --max-time [0-9]*' | grep -q .; then
+    fail "$1: a curl call has no connect and total timeout"
+  fi
+  pass "$1: no TMPDIR leftovers, no secrets in argv, every curl call bounded"
+}
+
+first_step() { # step: line number of its first entry in the order log, or fail
+  local line
+  line="$(grep -nx "$1" "$ORDER_LOG" | head -1 | cut -d: -f1)"
+  [ -n "$line" ] || fail "step $1 did not run"
+  printf '%s' "$line"
+}
+
+assert_before() { # phase earlier later
+  [ "$(first_step "$2")" -lt "$(first_step "$3")" ] || fail "$1: $2 must run before $3"
 }
 
 assert_apply_order() { # phase
-  local dns_line snapshot_line
-  grep -qx dns "$STAGING_E2E_TRACK_ORDER" || fail "$1: DNS preflight did not run"
-  grep -qx snapshot "$STAGING_E2E_TRACK_ORDER" || fail "$1: DB snapshot did not run"
-  dns_line="$(grep -nx '^dns$' "$STAGING_E2E_TRACK_ORDER" | head -1 | cut -d: -f1)"
-  snapshot_line="$(grep -nx '^snapshot$' "$STAGING_E2E_TRACK_ORDER" | head -1 | cut -d: -f1)"
-  [ "$dns_line" -lt "$snapshot_line" ] || fail "$1: DNS must run before snapshot"
-  pass "$1: DNS preflight before DB snapshot"
+  assert_before "$1" token snapshot
+  assert_before "$1" plan_gate snapshot
+  assert_before "$1" dns snapshot
+  assert_before "$1" snapshot railway_config_apply
+  assert_before "$1" railway_config_apply tofu_apply
+  [ "$(grep -cx dns "$ORDER_LOG")" -ge 1 ] || fail "$1: DNS preflight did not run"
+  pass "$1: token, plan gates and DNS preflight run before the DB snapshot, Railway config and tofu apply"
 }
 
 shim() { # name body
@@ -77,8 +91,9 @@ case "$1" in
   plan)
     for a in "$@"; do case "$a" in -out=*) : >"${a#-out=}" ;; esac; done
     [ "${TOFU_FAIL:-}" = plan ] && exit 1 ;;
-  apply) [ "${TOFU_FAIL:-}" = apply ] && exit 1 ;;
-  show) printf "%s\n" "{\"resource_changes\":[],\"planned_values\":{\"root_module\":{\"resources\":[{\"address\":\"cloudflare_dns_record.legacy_staging_ebwiki\",\"values\":{\"content\":\"${TOFU_PLANNED_CNAME:-abc123.up.railway.app}\",\"proxied\":${TOFU_PLANNED_PROXIED:-false}}}]}}}" ;;
+  apply) echo tofu_apply >>"$ORDER_LOG"; [ "${TOFU_FAIL:-}" = apply ] && exit 1 ;;
+  show) echo plan_gate >>"$ORDER_LOG"
+    printf "%s\n" "{\"resource_changes\":${TOFU_RESOURCE_CHANGES:-[]},\"planned_values\":{\"root_module\":{\"resources\":[{\"address\":\"cloudflare_dns_record.legacy_staging_ebwiki\",\"values\":{\"content\":\"${TOFU_PLANNED_CNAME:-abc123.up.railway.app}\",\"proxied\":${TOFU_PLANNED_PROXIED:-false}}},{\"address\":\"cloudflare_dns_record.staging_railway_verify\",\"values\":{\"content\":\"${TOFU_PLANNED_TXT:-railway-verify=stub}\"}}]}}}" ;;
 esac
 exit 0'
 cat >"$BIN/curl" <<'CURLSTUB'
@@ -108,17 +123,6 @@ while [ $# -gt 0 ]; do
   esac
 done
 case "$url" in
-  *backboard.railway.com/graphql/v2*)
-    code=200
-    if grep -Fq projectToken <<<"${kcfg:-$*}"; then
-      body='{"data":{"projectToken":null}}'
-    elif grep -Fq deploymentTriggerUpdate <<<"${kcfg:-$*}"; then
-      body='{"data":{"deploymentTriggerUpdate":{"id":"trig_stub","checkSuites":true}}}'
-    elif grep -Fq deploymentTriggers <<<"${kcfg:-$*}"; then
-      body='{"data":{"deploymentTriggers":{"edges":[{"node":{"id":"trig_stub","branch":"main","repository":"EBWiki/EBWiki","checkSuites":true,"provider":"github"}}]}}}'
-    elif grep -Fq 'apiToken' <<<"${kcfg:-$*}"; then
-      body='{"data":{"apiToken":{"workspaces":[{"id":"ws_stub","name":"ebwiki"}]}}}'
-    else body='{"data":{}}'; fi ;;
   *api.cloudflare.com/client/v4/zones/*/dns_records*type=TXT*)
     code=200
     if [ "${CF_STUB_TXT_MISSING:-}" = 1 ]; then body='{"success":true,"result":[]}'
@@ -126,6 +130,7 @@ case "$url" in
     else body='{"success":true,"result":[{"id":"txt_stub","content":"railway-verify=stub"}]}'; fi ;;
   *api.cloudflare.com/client/v4/zones/*/dns_records*type=CNAME*)
     code=200
+    echo dns >>"$ORDER_LOG"
     proxied_field=',"proxied":true'
     [ "${CF_STUB_PROXIED_MISSING:-}" = 1 ] && proxied_field=''
     body="{\"success\":true,\"result\":[{\"id\":\"rec_stub\",\"content\":\"${CF_STUB_CNAME_CONTENT-abc123.up.railway.app}\"${proxied_field}}]}" ;;
@@ -135,7 +140,7 @@ case "$url" in
     else body='{"success":true,"result":[{"id":"zone_stub"}]}'; fi ;;
   *api.rollbar.com*) [ -z "$rollbar_token" ] || : >"$GH_STUB_STATE/rollbar_posted"; code=200; body="" ;;
   */environments/release-smoke/secrets/*) code=200; body="{}" ;;
-  */environments/release-smoke) code=200; body="{}" ;;
+  */environments/release-smoke) code=404; body="{}" ;;
   */actions/secrets/public-key) code=200; body="{}" ;;
   */actions/secrets/*) if [ "$method" = DELETE ]; then code=204; else code=200; fi; body="{}" ;;
   *) code=200; body="{\"permissions\":{\"admin\":${GH_ADMIN:-true}}}" ;;
@@ -169,7 +174,7 @@ mkdir -p "$(dirname "$OUT")"
 STUB
 cat >"$REPO/scripts/staging-db-snapshot.sh" <<'STUB'
 #!/usr/bin/env bash
-[ -n "${STAGING_E2E_TRACK_ORDER:-}" ] && echo snapshot >>"$STAGING_E2E_TRACK_ORDER"
+echo snapshot >>"$ORDER_LOG"
 exit 0
 STUB
 chmod +x "$REPO/scripts/infra-write-backend.sh" "$REPO/scripts/write-staging-tfvars.sh" "$REPO/scripts/staging-db-snapshot.sh"
@@ -184,6 +189,7 @@ infra_railway_config_plan() {
   out="${1:-$root/$STAGING_RAILWAY_PLAN_FILE}"
   mkdir -p "$(dirname "$out")"
   [ -f "$out" ] || echo '{"changeSet":{"changes":[]}}' >"$out"
+  echo railway_config_plan >>"$ORDER_LOG"
   echo "Wrote Railway config plan: ${out#${root}/}"
 }
 
@@ -195,14 +201,15 @@ infra_railway_config_apply() {
     echo "Missing Railway config plan: $plan (run make plan first)." >&2
     return 1
   }
+  echo railway_config_apply >>"$ORDER_LOG"
 }
 
-infra_railway_assert_workspace_or_account_token() { :; }
-infra_railway_assert_deployment_trigger() { :; }
-infra_railway_ensure_deployment_trigger() { :; }
+# The token check has its own suite; here it only records that it ran.
+infra_railway_assert_workspace_or_account_token() { echo token >>"$ORDER_LOG"; }
 RAILWAY_STUB
 
-export PATH="$BIN:$PATH" TMPDIR="$LEAK_TMP" STAGING_E2E_TRACK_ORDER="$GH_STUB_STATE/apply_order"
+export PATH="$BIN:$PATH" TMPDIR="$LEAK_TMP" ORDER_LOG="$GH_STUB_STATE/order"
+: >"$ORDER_LOG"
 export STATE_PASSPHRASE=state_pass_sentinel_0123 GITHUB_TOKEN=ghp_e2e_token_sentinel
 export R2_BUCKET_NAME=b R2_S3_ENDPOINT=https://r2.example CLOUDFLARE_DNS_API_TOKEN=cf_e2e_sentinel STAGING_RUNTIME_DOPPLER_TOKEN=dp_e2e_sentinel STAGING_BASIC_AUTH_USERNAME=bu_e2e
 export RAILWAY_TOKEN=railway_e2e_sentinel AWS_ACCESS_KEY_ID=awskey_e2e AWS_SECRET_ACCESS_KEY=awssec_e2e_sentinel
@@ -275,8 +282,14 @@ TOFU_FAIL=plan "$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 && fail "staging 
 rm -f "$GH_STUB_STATE/rollbar_posted"
 assert_clean "staging plan failure"
 
+: >"$ORDER_LOG"
 "$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass"
 [ -f "$STAGING_PLAN" ] || fail "staging plan file must exist after successful staging plan"
+[ "$(stat -c %a "$STAGING_PLAN")" = 600 ] || fail "staging plan file must be mode 600 (umask 077)"
+assert_before "staging plan" dns railway_config_plan
+assert_before "staging plan" railway_config_plan plan_gate
+grep -Eqx 'tofu_apply|railway_config_apply|snapshot' "$ORDER_LOG" && fail "staging plan must never write"
+pass "staging plan: mode 600, DNS preflight and Railway config plan before the plan gates, no writes"
 [ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "successful staging plan must not report to Rollbar"
 assert_clean "staging plan success"
 
@@ -290,12 +303,15 @@ dns_env_args() { # mode
     txt_bad) env_args=(CF_STUB_TXT_BAD=1) ;;
     planned_proxied) env_args=(TOFU_PLANNED_PROXIED=true) ;;
     planned_not_railway) env_args=(TOFU_PLANNED_CNAME=evil.example.com) ;;
+    repair_not_railway) env_args=(CF_STUB_CNAME_CONTENT=evil.example.com TOFU_PLANNED_CNAME=evil.example.com) ;;
+    txt_mismatch) env_args=(TOFU_PLANNED_TXT=railway-verify=other) ;;
+    cloudflare_extra) env_args=('TOFU_RESOURCE_CHANGES=[{"address":"cloudflare_dns_record.staging_railway_verify","mode":"managed","type":"cloudflare_dns_record","change":{"actions":["update"]}}]') ;;
     *) fail "unknown DNS mode $1" ;;
   esac
 }
 
 dns_assert_failed_closed() { # phase mode output
-  grep -Eq '"level":"error","script":"[^"]*","event":"staging_dns_(zone|cname|verify|plan)"' <<<"$3" || { echo "$3"; fail "$1 DNS $2 must log a staging_dns error event"; }
+  grep -Eq '"level":"error","script":"[^"]*","event":"staging_dns_(zone|cname|verify|plan)"|unexpected Cloudflare changes' <<<"$3" || { echo "$3"; fail "$1 DNS $2 must log a staging_dns error event"; }
   [ -f "$GH_STUB_STATE/rollbar_posted" ] || fail "$1 DNS $2 must report to Rollbar"
   rm -f "$GH_STUB_STATE/rollbar_posted"
 }
@@ -314,13 +330,21 @@ done
 # Non-Railway live CNAME is allowed before plan when the plan will repair it.
 dns_env_args cname_not_railway
 : >"$ARGV_LOG"
-"$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should allow CNAME repair when plan fixes the target"
+out="$(env "${env_args[@]}" "$REPO/scripts/staging-plan.sh" 2>&1 >/dev/null)" || { echo "$out"; fail "staging plan should allow CNAME repair when plan fixes the target"; }
+grep -q '"event":"staging_dns_cname_repair"' <<<"$out" || fail "staging plan must log the CNAME repair"
 grep -Eq '^tofu plan( |$)' "$ARGV_LOG" || fail "staging plan must run tofu plan when CNAME repair is allowed"
 [ -f "$STAGING_PLAN" ] || fail "staging plan file must exist after CNAME repair plan"
 assert_clean "staging DNS preflight cname_repair"
 
+# The repair must also go through apply, or the preflight blocks its own fix.
+: >"$ARGV_LOG"
+out="$(printf 'apply-staging\n' | env "${env_args[@]}" "$REPO/scripts/staging-apply.sh" 2>&1 >/dev/null)" || { echo "$out"; fail "staging apply should apply the CNAME repair"; }
+grep -Eq '^tofu apply( |$)' "$ARGV_LOG" || fail "staging apply must run tofu apply for the CNAME repair"
+[ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "CNAME repair apply must not report to Rollbar"
+assert_clean "staging apply cname_repair"
+
 # Planned record failures are caught after tofu plan, and the plan file is removed.
-for mode in planned_proxied planned_not_railway; do
+for mode in planned_proxied planned_not_railway repair_not_railway txt_mismatch cloudflare_extra; do
   dns_env_args "$mode"
   : >"$ARGV_LOG"
   out="$(env "${env_args[@]}" "$REPO/scripts/staging-plan.sh" 2>&1 >/dev/null)" && fail "staging plan must fail closed on DNS $mode"
@@ -330,27 +354,40 @@ for mode in planned_proxied planned_not_railway; do
 done
 
 # Apply re-runs the DNS check on the saved plan and must never reach tofu apply.
-for mode in cname_not_railway txt_missing planned_proxied planned_not_railway; do
+for mode in txt_missing txt_bad planned_proxied planned_not_railway repair_not_railway txt_mismatch cloudflare_extra; do
   "$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass before apply DNS $mode"
   dns_env_args "$mode"
   : >"$ARGV_LOG"
+  : >"$ORDER_LOG"
   out="$(printf 'apply-staging\n' | env "${env_args[@]}" "$REPO/scripts/staging-apply.sh" 2>&1 >/dev/null)" && fail "staging apply must fail closed on DNS $mode"
   dns_assert_failed_closed "staging apply" "$mode" "$out"
   grep -Eq '^tofu apply( |$)' "$ARGV_LOG" && fail "staging apply must not run tofu apply when DNS $mode fails"
+  grep -qx snapshot "$ORDER_LOG" && fail "staging apply must not snapshot the database when DNS $mode fails"
+  grep -qx railway_config_apply "$ORDER_LOG" && fail "staging apply must not apply Railway config when DNS $mode fails"
   assert_clean "staging apply DNS preflight $mode"
 done
 "$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass again after the DNS failure cases"
 
-: >"$STAGING_E2E_TRACK_ORDER"
+: >"$ORDER_LOG"
+rm -f "$REPO/infra/staging/backend.hcl"
 printf 'apply-staging\n' | "$REPO/scripts/staging-apply.sh" >/dev/null 2>&1 || fail "staging apply should pass"
 [ ! -f "$STAGING_PLAN" ] || fail "staging plan file must be removed after successful apply"
+[ "$(stat -c %a "$REPO/infra/staging/backend.hcl")" = 600 ] || fail "staging apply must write backend.hcl mode 600 (umask 077)"
 [ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "successful staging apply must not report to Rollbar"
 assert_apply_order "staging apply order"
 assert_clean "staging apply success"
 
-printf 'wrong\n' | "$REPO/scripts/staging-apply.sh" >/dev/null 2>&1 && fail "staging apply must require apply-staging confirmation"
+"$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass before the confirmation test"
+for answer in wrong '' apply apply-staging-now; do
+  : >"$ARGV_LOG"
+  printf '%s\n' "$answer" | "$REPO/scripts/staging-apply.sh" >/dev/null 2>&1 && fail "staging apply must refuse confirmation '$answer'"
+  grep -vxF "bash $REPO/scripts/staging-apply.sh" "$ARGV_LOG" | grep -q . \
+    && fail "staging apply must run nothing before the typed confirmation"
+done
+"$REPO/scripts/staging-apply.sh" </dev/null >/dev/null 2>&1 && fail "staging apply must refuse when no confirmation is typed"
 assert_clean "staging apply wrong confirm"
 
+"$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass before the backend failure test"
 printf 'apply-staging\n' | BACKEND_FAIL=1 "$REPO/scripts/staging-apply.sh" >/dev/null 2>&1 && fail "staging apply should fail when the backend write fails"
 [ -f "$GH_STUB_STATE/rollbar_posted" ] || fail "failed backend write in staging apply must report to Rollbar"
 rm -f "$GH_STUB_STATE/rollbar_posted"

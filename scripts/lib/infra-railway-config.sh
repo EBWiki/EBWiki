@@ -126,8 +126,8 @@ infra_railway_config_plan() {
     echo "Railway CLI is required (https://docs.railway.com/develop/cli)." >&2
     return 1
   }
-  infra_railway_assert_workspace_or_account_token
-  infra_railway_assert_deployment_trigger
+  infra_railway_assert_workspace_or_account_token || return 1
+  infra_railway_assert_deployment_trigger || return 1
   infra_railway_config_ensure_sdk
   infra_railway_config_target_env
   token="$RAILWAY_TOKEN"
@@ -149,9 +149,9 @@ infra_railway_config_apply() {
     echo "Railway CLI is required (https://docs.railway.com/develop/cli)." >&2
     return 1
   }
-  infra_railway_config_assert_plan_no_destructive "$plan"
-  infra_railway_assert_workspace_or_account_token
-  infra_railway_ensure_deployment_trigger
+  infra_railway_config_assert_plan_no_destructive "$plan" || return 1
+  infra_railway_assert_workspace_or_account_token || return 1
+  infra_railway_ensure_deployment_trigger || return 1
   infra_railway_config_ensure_sdk
   infra_railway_config_target_env
   token="$RAILWAY_TOKEN"

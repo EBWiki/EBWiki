@@ -15,7 +15,8 @@ log_json() {
 die() {
   log_json error "$1" "$2"
   if declare -F infra_rollbar_report_script_failure >/dev/null; then
-    infra_rollbar_report_script_failure "${BASH_LINENO[0]:-0}" 1 || true
+    infra_rollbar_report_script_failure "${BASH_LINENO[0]:-0}" 1 \
+      || log_json warn rollbar_report_failed "could not report the failure to Rollbar"
   fi
   exit 1
 }

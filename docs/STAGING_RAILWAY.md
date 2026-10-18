@@ -68,8 +68,10 @@ restricted to development and test.
 
 ## Rollback
 
-**Redeploy an older build in Railway:** open the service, then **Deployments**,
-select a previous successful deployment, then **Redeploy**. That rolls the **running
+**Roll back to an older build in Railway:** run `bin/release-rollback` (see
+[RELEASE.md](RELEASE.md#one-command-rollback-railway-staging)) to see which deployment it would restore: the
+newest one older than the live deployment that Railway can roll back to. Replaced
+deployments show as removed in **Deployments**, not as successful. That rolls the **running
 code and container image** back; it does **not** reverse migrations.
 
 **Migrations are forward-only.** Rolling code back leaves the database at the

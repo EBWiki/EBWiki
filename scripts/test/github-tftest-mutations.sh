@@ -108,4 +108,13 @@ run_mutant reviewer_id_changed "release-smoke must include reviewer user id 5750
 run_mutant reviewers_removed "release-smoke must include reviewer user id 5750239" \
   bash -c 'sed -i "/^  reviewers {/,/^  }/d" "$1/release_smoke.tf"' _ "$WORK/stack"
 
+run_mutant tags_admins_can_bypass "release-tags must set can_admins_bypass to false" \
+  sed -i 's/can_admins_bypass = false/can_admins_bypass = true/' "$WORK/stack/release_tags.tf"
+
+run_mutant tags_reviewers_removed "release-tags must include reviewer user id 5750239" \
+  bash -c 'sed -i "/^  reviewers {/,/^  }/d" "$1/release_tags.tf"' _ "$WORK/stack"
+
+run_mutant tags_branch_pattern_wildcard "release-tags must deploy from main only" \
+  sed -i 's/branch_pattern = "main"/branch_pattern = "*"/' "$WORK/stack/release_tags.tf"
+
 echo "All GitHub tftest mutations passed."

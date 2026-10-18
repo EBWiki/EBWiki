@@ -165,7 +165,7 @@ preflight_with() {
   export TF_VAR_staging_username="user"
   export TF_VAR_staging_password="pass"
   export TF_VAR_rollbar_access_token="rollbar"
-  unset TF_VAR_main_branch_pattern || true
+  unset TF_VAR_main_branch_pattern
   # shellcheck source=../lib/github-preflight.sh
   source "$ROOT/scripts/lib/github-preflight.sh"
   github_preflight
@@ -190,13 +190,14 @@ else
   pass "preflight rejects short passphrase"
 fi
 
-if ( export TF_VAR_state_passphrase="0123456789abcdef" TF_VAR_github_token=x TF_VAR_staging_username=u TF_VAR_staging_password=p TF_VAR_rollbar_access_token=r TF_VAR_main_branch_pattern='*'
+if stray_err="$( (export GITHUB_STUB_SCENARIO=env_exists TF_VAR_state_passphrase="0123456789abcdef" TF_VAR_github_token=x TF_VAR_staging_username=u TF_VAR_staging_password=p TF_VAR_rollbar_access_token=r TF_VAR_main_branch_pattern='*'
      source "$ROOT/scripts/lib/github-preflight.sh"
-     github_preflight ) 2>/dev/null; then
+     github_preflight) 2>&1 >/dev/null)"; then
   fail "preflight should reject unexpected TF_VAR_main_branch_pattern"
-else
-  pass "preflight rejects stray TF_VAR"
 fi
+grep -q 'unexpected TF_VAR_main_branch_pattern in environment' <<<"$stray_err" \
+  || fail "preflight must reject the stray TF_VAR by name, got: $stray_err"
+pass "preflight rejects stray TF_VAR"
 
 if ( preflight_with non_admin ) 2>/dev/null; then
   fail "preflight should reject non-admin token"

@@ -27,15 +27,20 @@ if [ -z "${INSTALLATION_ID}" ]; then
   exit 1
 fi
 
+installation_repos() { # jq field
+  gh api "/user/installations/${INSTALLATION_ID}/repositories" --paginate --jq ".repositories[]?.$1"
+}
+
 REPO_ID="$(gh api "/repos/${REPO}" --jq .id)"
-if ! gh api "/user/installations/${INSTALLATION_ID}/repositories" --paginate --jq '.repositories[]?.id' \
-  | grep -qx "${REPO_ID}"; then
+[ -n "$REPO_ID" ] || { echo "Could not read the id of ${REPO}." >&2; exit 1; }
+visible_ids="$(installation_repos id)"
+if ! grep -qxF "${REPO_ID}" <<<"$visible_ids"; then
   echo "Railway GitHub App installation ${INSTALLATION_ID} cannot see ${REPO} yet; granting access..." >&2
   gh api -X PUT "/user/installations/${INSTALLATION_ID}/repositories/${REPO_ID}"
 fi
 
-if ! gh api "/user/installations/${INSTALLATION_ID}/repositories" --paginate --jq '.repositories[]?.full_name' \
-  | grep -Fxq "${REPO}"; then
+visible_names="$(installation_repos full_name)"
+if ! grep -Fxq "${REPO}" <<<"$visible_names"; then
   echo "Railway GitHub App still cannot read ${REPO} after grant." >&2
   exit 1
 fi

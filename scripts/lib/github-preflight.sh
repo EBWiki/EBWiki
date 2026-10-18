@@ -19,7 +19,6 @@ gh_api() {
 }
 
 github_preflight() {
-  local mode="${1:-plan}"
   local v code main_count non_main policy_id state_pass
 
   for v in TF_VAR_state_passphrase TF_VAR_github_token TF_VAR_staging_username TF_VAR_staging_password TF_VAR_rollbar_access_token; do
@@ -33,8 +32,9 @@ github_preflight() {
 
   local allowed=' TF_VAR_state_passphrase TF_VAR_github_token TF_VAR_staging_username TF_VAR_staging_password TF_VAR_rollbar_access_token TF_VAR_existing_release_smoke_environment TF_VAR_existing_main_policy_id '
   while read -r v; do
+    [[ "$v" == TF_VAR_* ]] || continue
     [[ "$allowed" == *" $v "* ]] || die preflight_input "unexpected $v in environment"
-  done < <(compgen -e | grep '^TF_VAR_' || true)
+  done < <(compgen -e)
 
   GH_TMP="$(mktemp -d)"
   chmod 700 "$GH_TMP"
@@ -77,9 +77,6 @@ github_preflight() {
       fi
       ;;
     404)
-      if [ "$mode" = apply ]; then
-        die preflight_lookup "release-smoke environment is missing; apply the GitHub stack before running smoke checks"
-      fi
       export TF_VAR_existing_release_smoke_environment=false
       export TF_VAR_existing_main_policy_id=""
       ;;

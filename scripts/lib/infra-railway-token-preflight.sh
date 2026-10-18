@@ -7,36 +7,37 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-railway.sh"
 # shellcheck source=infra-logging.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-logging.sh"
 
+# Prints empty, project, workspace, account or unknown. Never prints the token.
 infra_railway_token_type() {
   local token="$1"
-  local project_payload api_payload workspace_count
+  local payload workspace_count
 
   if [ -z "${token//[[:space:]]/}" ]; then
     printf '%s' empty
     return 0
   fi
 
-  project_payload="$(infra_railway_gql_with_token "$token" \
-    'query { projectToken { id name } }' '{}' 2>/dev/null)" || project_payload=''
-  if [ -n "$project_payload" ] \
-    && jq -e '(.errors // []) | length == 0' <<<"$project_payload" >/dev/null \
-    && jq -e '.data.projectToken.id // empty | length > 0' <<<"$project_payload" >/dev/null; then
+  if payload="$(infra_railway_gql_with_token "$token" 'query { projectToken { id name } }' '{}' 2>/dev/null)" \
+    && jq -e '((.errors // []) | length == 0) and ((.data.projectToken.id // "") | length > 0)' \
+      <<<"$payload" >/dev/null 2>&1; then
     printf '%s' project
     return 0
   fi
 
-  api_payload="$(infra_railway_gql_with_token "$token" \
-    'query { apiToken { workspaces { id name } } }' '{}' 2>/dev/null)" || api_payload=''
-  workspace_count="$(jq -r '.data.apiToken.workspaces | length // 0' <<<"${api_payload:-{}}" 2>/dev/null || printf '0')"
-  if [ "${workspace_count:-0}" -eq 0 ]; then
+  workspace_count=0
+  if payload="$(infra_railway_gql_with_token "$token" 'query { apiToken { workspaces { id name } } }' '{}' 2>/dev/null)"; then
+    workspace_count="$(jq -r 'if ((.errors // []) | length) == 0 and (.data.apiToken.workspaces | type) == "array"
+      then (.data.apiToken.workspaces | length) else 0 end' <<<"$payload" 2>/dev/null)" || workspace_count=0
+  fi
+  [[ "$workspace_count" =~ ^[0-9]+$ ]] || workspace_count=0
+
+  if ((workspace_count == 0)); then
     printf '%s' unknown
-    return 0
-  fi
-  if [ "$workspace_count" -gt 1 ]; then
+  elif ((workspace_count > 1)); then
     printf '%s' account
-    return 0
+  else
+    printf '%s' workspace
   fi
-  printf '%s' workspace
 }
 
 infra_railway_assert_workspace_or_account_token() {

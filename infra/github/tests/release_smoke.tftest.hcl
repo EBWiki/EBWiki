@@ -54,4 +54,27 @@ run "baseline_plan" {
     condition     = contains(flatten([for r in github_repository_environment.release_smoke.reviewers : r.users]), 5750239)
     error_message = "release-smoke must include reviewer user id 5750239"
   }
+
+  assert {
+    condition     = github_repository_environment.release_tags.environment == "release-tags"
+    error_message = "release-tags environment must be named release-tags"
+  }
+
+  assert {
+    condition     = github_repository_environment.release_tags.can_admins_bypass == false
+    error_message = "release-tags must set can_admins_bypass to false"
+  }
+
+  assert {
+    condition     = contains(flatten([for r in github_repository_environment.release_tags.reviewers : r.users]), 5750239)
+    error_message = "release-tags must include reviewer user id 5750239"
+  }
+
+  assert {
+    condition = (
+      github_repository_environment_deployment_policy.release_tags_main.branch_pattern == "main" &&
+      github_repository_environment.release_tags.deployment_branch_policy[0].custom_branch_policies == true
+    )
+    error_message = "release-tags must deploy from main only"
+  }
 }

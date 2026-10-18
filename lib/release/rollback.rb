@@ -85,7 +85,7 @@ module Release
     def platform_help
       'Set RAILWAY_TOKEN (workspace or account token). Service defaults to ebwiki and ' \
         'environment to production; omit RAILWAY_ROLLBACK_DEPLOYMENT_ID to use the ' \
-        'previous successful deploy.'
+        'newest earlier deployment Railway can roll back to.'
     end
 
     def confirm!

@@ -35,7 +35,9 @@ infra_export_github_smoke_secrets_from_stg() {
 # infra-with-tf-vars.sh (staging, bootstrap) or the caller's shell is dropped.
 infra_scrub_tf_vars() {
   local v
-  while read -r v; do unset "$v"; done < <(compgen -e | grep '^TF_VAR_' || true)
+  while read -r v; do
+    [[ "$v" != TF_VAR_* ]] || unset "$v"
+  done < <(compgen -e)
 }
 
 infra_require_github_tf_vars() {

@@ -14,7 +14,7 @@ if ARGV.intersect?(%w[--help -h])
 
     Railway staging: RAILWAY_TOKEN (workspace or account token) is required under Doppler ebwiki/infra.
     Service defaults to ebwiki and environment to production. When RAILWAY_ROLLBACK_DEPLOYMENT_ID is
-    unset, the previous successful deployment is chosen automatically.
+    unset, the newest deployment older than the live one that Railway can roll back to is chosen.
   HELP
   exit 0
 end

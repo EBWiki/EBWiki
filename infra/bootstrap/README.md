@@ -57,7 +57,7 @@ If a run stopped after Cloudflare tokens and random values were written to encry
 
 If local state still references removed **`doppler_service_account_*`** resources from an older revision, remove those addresses with **`tofu state rm`** before resuming.
 
-## Remaining manual steps (no Mark-specific steps)
+## Remaining manual steps
 
 These are not automated by OpenTofu:
 

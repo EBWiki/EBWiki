@@ -8,7 +8,26 @@ permissions:
   contents: read
 
 jobs:
+  # Runs before any job names the environment: GitHub would otherwise create a
+  # missing release-smoke environment without reviewers and run the smoke check.
+  require_environment:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+
+      - name: Require protected release-smoke environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/github-require-protected-environment.sh release-smoke
+
   smoke_check:
+    needs: require_environment
     if: github.ref == 'refs/heads/main'
     environment: release-smoke
     runs-on: ubuntu-latest
@@ -30,18 +49,6 @@ jobs:
 
       - name: Install gems
         run: bundle install
-
-      - name: Verify release-smoke environment
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          code="$(gh api -H "Accept: application/vnd.github+json" \
-            "/repos/${GITHUB_REPOSITORY}/environments/release-smoke" \
-            -w "%{http_code}" -o /dev/null)"
-          if [ "$code" != "200" ]; then
-            printf '{"level":"error","event":"release_smoke_environment_missing","http_code":"%s"}\n' "$code" >&2
-            exit 1
-          fi
 
       - name: Require release-smoke secrets
         env:

@@ -11,6 +11,8 @@ module Release
     # Low-level Railway GraphQL HTTP client.
     class RailwayGraphqlClient
       ENDPOINT = URI('https://backboard.railway.com/graphql/v2')
+      OPEN_TIMEOUT = 10
+      READ_TIMEOUT = 30
 
       NETWORK_ERRORS = [
         IOError,
@@ -51,7 +53,8 @@ module Release
       end
 
       def dispatch(request)
-        @http.start(ENDPOINT.host, ENDPOINT.port, use_ssl: true) do |http|
+        @http.start(ENDPOINT.host, ENDPOINT.port,
+                    use_ssl: true, open_timeout: OPEN_TIMEOUT, read_timeout: READ_TIMEOUT) do |http|
           http.request(request)
         end
       end

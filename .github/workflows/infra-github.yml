@@ -23,6 +23,10 @@ on:
       - 'scripts/staging-dns-preflight.sh'
       - 'scripts/lib/infra-railway-config.sh'
       - 'scripts/lib/infra-staging-plan-gate.sh'
+      - 'scripts/lib/infra-railway*.sh'
+      - 'scripts/github-require-protected-environment.sh'
+      - '.github/workflows/release-tags.yml'
+      - '.github/workflows/release_smoke_check.yml'
       - 'infra/staging/**'
       - '.github/workflows/infra-github.yml'
   workflow_dispatch:
@@ -33,6 +37,7 @@ permissions:
 jobs:
   opentofu:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     defaults:
       run:
         working-directory: infra/github
@@ -53,6 +58,10 @@ jobs:
         working-directory: .
         run: ./scripts/test/github-scripts-e2e-test.sh
 
+      - name: Protected environment check tests
+        working-directory: .
+        run: ./scripts/test/github-require-protected-environment-test.sh
+
       - name: ShellCheck infra scripts
         working-directory: .
         env:
@@ -60,7 +69,7 @@ jobs:
           SHELLCHECK_SHA256: 6c881ab0698e4e6ea235245f22832860544f17ba386442fe7e9d629f8cbedf87
         run: |
           sc_dir="$(mktemp -d)"
-          curl -fsSL -o "$sc_dir/shellcheck.tar.xz" \
+          curl -fsSL --connect-timeout 10 --max-time 120 -o "$sc_dir/shellcheck.tar.xz" \
             "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz"
           echo "${SHELLCHECK_SHA256}  $sc_dir/shellcheck.tar.xz" | sha256sum -c -
           tar -xJf "$sc_dir/shellcheck.tar.xz" -C "$sc_dir"
