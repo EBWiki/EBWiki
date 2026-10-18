@@ -2,7 +2,6 @@
 name: Release smoke check
 
 on:
-  deployment_status:
   workflow_dispatch:
     inputs:
       target:
@@ -18,22 +17,14 @@ permissions:
 
 jobs:
   smoke_check:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (
-        github.event_name == 'deployment_status' &&
-        github.event.deployment_status.state == 'success' &&
-        contains(fromJSON('["staging","production","ebwiki-staging"]'), github.event.deployment.environment)
-      )
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     env:
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
       RELEASE_SMOKE_BASE_URL: >-
         ${{
-          github.event_name == 'workflow_dispatch' && (
-            github.event.inputs.target == 'production' && 'https://ebwiki.org' || 'https://staging.ebwiki.org'
-          ) || github.event.deployment_status.environment_url
+          github.event.inputs.target == 'production' && 'https://ebwiki.org' || 'https://staging.ebwiki.org'
         }}
       RELEASE_SMOKE_ALLOWED_HOSTS: staging.ebwiki.org,ebwiki.org
 
@@ -51,31 +42,9 @@ jobs:
 
       - name: Run post-deploy smoke check
         env:
-          STAGING_USERNAME: >-
-            ${{
-              (
-                github.event_name == 'workflow_dispatch' &&
-                github.event.inputs.target == 'staging'
-              ) || (
-                github.event_name == 'deployment_status' &&
-                github.event.deployment.environment == 'staging'
-              ) && secrets.STAGING_USERNAME || ''
-            }}
-          STAGING_PASSWORD: >-
-            ${{
-              (
-                github.event_name == 'workflow_dispatch' &&
-                github.event.inputs.target == 'staging'
-              ) || (
-                github.event_name == 'deployment_status' &&
-                github.event.deployment.environment == 'staging'
-              ) && secrets.STAGING_PASSWORD || ''
-            }}
+          STAGING_USERNAME: ${{ (github.event.inputs.target == 'staging') && secrets.STAGING_USERNAME || '' }}
+          STAGING_PASSWORD: ${{ (github.event.inputs.target == 'staging') && secrets.STAGING_PASSWORD || '' }}
           RELEASE_SMOKE_SEARCH_TERM: ${{ vars.RELEASE_SMOKE_SEARCH_TERM }}
           ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
-          ROLLBAR_ENV: >-
-            ${{
-              github.event_name == 'workflow_dispatch' && github.event.inputs.target ||
-              github.event.deployment.environment
-            }}
+          ROLLBAR_ENV: ${{ github.event.inputs.target }}
         run: bundle exec bin/release-smoke-check

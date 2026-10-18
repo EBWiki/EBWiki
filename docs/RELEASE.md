@@ -6,7 +6,7 @@ Use these commands after deploying the Postgres search change to verify behavior
 
 The smoke check hits the running site over HTTP. It confirms the home page loads, search returns results for a known term, junk search returns zero results without error, and `/health` reports Postgres and Redis only (no Elasticsearch probe).
 
-GitHub Actions can run `bin/release-smoke-check` when a GitHub **deployment** completes successfully (see `.github/workflows/release_smoke_check.yml`). Railway does not emit GitHub deployment events unless that integration is enabled in the Railway project, so the usual path is **Run workflow** in the Actions tab and choose **staging** or **production**. The workflow needs the repository secret `ROLLBAR_ACCESS_TOKEN` when Rollbar reporting is enabled.
+After a staging or production deploy, run the **Release smoke check** workflow by hand from the GitHub Actions tab on the **`main`** branch (see `.github/workflows/release_smoke_check.yml`) and choose **staging** or **production**. The workflow needs the repository secret `ROLLBAR_ACCESS_TOKEN` when Rollbar reporting is enabled. A follow-up improvement is to store smoke-check secrets in a **main-only GitHub environment** instead of repository secrets; this PR keeps repository secrets.
 
 ### When to run
 
@@ -47,7 +47,7 @@ Optional environment variables:
 | `RELEASE_SMOKE_SEARCH_TERM` | Query that should match at least one case (default `*`) |
 | `RELEASE_SMOKE_BASIC_AUTH_*` | Override staging basic auth credentials |
 | `ROLLBAR_ACCESS_TOKEN` | Rollbar project token (required in the deployment workflow for error reporting) |
-| `ROLLBAR_ENV` | Rollbar environment name (the GitHub deployment environment in CI) |
+| `ROLLBAR_ENV` | Rollbar environment name (the workflow **target** input in CI) |
 
 Exit code **0** means all checks passed. Failures log JSON to stderr and report through Rollbar when `ROLLBAR_ACCESS_TOKEN` is set.
 
@@ -75,14 +75,14 @@ Planned command: `heroku releases:rollback -a $HEROKU_APP_NAME`
 
 ### Railway staging
 
-Set the service (`ebwiki`), target environment label, deployment id to restore, and a Railway API token. Prefer a **project- or workspace-scoped** token from [Railway account tokens](https://railway.com/account/tokens) with access to the EBWiki staging project only; avoid a full account token unless no narrower scope is available. Rollback uses Railway's public GraphQL `deploymentRollback` mutation (see [Manage Deployments](https://docs.railway.com/integrations/api/manage-deployments)).
+Set the service (`ebwiki`), target environment label, deployment id to restore, and a Railway API token. Rollback sends `Authorization: Bearer` (see `lib/release/rollback/railway_graphql_client.rb`), which matches a **workspace token** from [Railway account tokens](https://railway.com/account/tokens) (create one under the workspace that owns the EBWiki project). Do not use Railway **project** tokens here; those expect the `Project-Access-Token` header instead. Rollback uses Railway's public GraphQL `deploymentRollback` mutation (see [Manage Deployments](https://docs.railway.com/integrations/api/manage-deployments)).
 
 ```bash
 export RELEASE_ROLLBACK_PLATFORM=railway
 export RAILWAY_SERVICE=ebwiki
 export RAILWAY_ENVIRONMENT=staging
 export RAILWAY_ROLLBACK_DEPLOYMENT_ID=<previous-deployment-id>
-export RAILWAY_TOKEN=<project-or-workspace-token>
+export RAILWAY_TOKEN=<workspace-token>
 bin/release-rollback
 bin/release-rollback --execute --yes
 ```

@@ -44,7 +44,7 @@ RSpec.describe 'bin/release-smoke-check CLI' do
 
   it 'exits 1 when the smoke check fails without loading Rails' do
     stdout, stderr, status = run_cli_without_rails(
-      ['http://127.0.0.1:1'],
+      ['https://127.0.0.1'],
       env: {
         'RELEASE_SMOKE_SEARCH_TERM' => '*',
         'RELEASE_SMOKE_ALLOWED_HOSTS' => '127.0.0.1'

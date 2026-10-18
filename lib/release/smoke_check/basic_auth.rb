@@ -3,6 +3,7 @@
 require 'uri'
 
 require_relative '../plain'
+require_relative '../smoke_check_host_allowlist'
 
 module Release
   class SmokeCheck
@@ -28,10 +29,11 @@ module Release
       end
 
       def staging_host?
-        host = URI.parse(@base_url.to_s).host
-        host == staging_host_name
-      rescue URI::InvalidURIError
-        false
+        uri = SmokeCheckHostAllowlist.parse_uri(@base_url.to_s)
+        return false unless uri
+        return false unless SmokeCheckHostAllowlist.secure_https_uri?(uri)
+
+        uri.host == staging_host_name
       end
 
       def staging_host_name
