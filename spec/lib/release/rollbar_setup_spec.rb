@@ -25,7 +25,7 @@ RSpec.describe Release::RollbarSetup do
   end
 
   it 'logs a JSON warning and continues when rollbar is not installed' do
-    allow(described_class).to receive(:require_rollbar).and_raise(LoadError, 'cannot load such file')
+    allow(described_class).to receive(:apply_rollbar_config).and_raise(LoadError, 'cannot load such file')
 
     expect do
       described_class.configure!
