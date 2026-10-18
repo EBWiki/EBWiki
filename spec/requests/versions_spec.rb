@@ -61,10 +61,12 @@ RSpec.describe 'Versions', type: :request, versioning: true do
   end
 
   describe 'POST /revert with an attached photo' do
+    let(:user) { create(:user) }
     let(:this_case) { create(:case) }
     let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
 
     before do
+      sign_in user
       this_case.photo.attach(
         io: File.open(image_path),
         filename: 'favicon.jpg',

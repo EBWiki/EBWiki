@@ -250,9 +250,10 @@ RSpec.describe 'Cases', type: :request do
     it 'creates the case with an attached photo when the upload is valid' do
       image_path = Rails.root.join('app/assets/images/favicon.jpg')
       upload = Rack::Test::UploadedFile.new(image_path, 'image/jpeg')
+      case_attrs = attributes_for(:case).merge(state_id: create(:state).id)
 
       expect do
-        post '/cases', params: { case: params[:case].merge(photo: upload) }
+        post '/cases', params: { case: case_attrs.merge(photo: upload) }
       end.to change(Case, :count).by(1)
 
       created = Case.order(:id).last
