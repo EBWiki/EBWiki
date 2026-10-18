@@ -37,17 +37,27 @@ module Release
       end
 
       def perform_rollback(deployment_id:, service_name:, environment_name:, token:)
-        if Plain.blank?(token)
-          raise RollbackError, 'Set RAILWAY_TOKEN before rolling back on Railway.'
-        end
+        ensure_token!(token)
+        ensure_deployment_matches!(deployment_id, service_name, environment_name, token)
+        invoke_rollback!(deployment_id, token)
+      end
 
+      def ensure_token!(token)
+        return if Plain.present?(token)
+
+        raise RollbackError, 'Set RAILWAY_TOKEN before rolling back on Railway.'
+      end
+
+      def ensure_deployment_matches!(deployment_id, service_name, environment_name, token)
         deployment = @verifier.fetch!(deployment_id: deployment_id, token: token)
         @verifier.verify!(
           deployment,
           service_name: service_name,
           environment_name: environment_name
         )
+      end
 
+      def invoke_rollback!(deployment_id, token)
         response = @client.post(
           token: token,
           query: ROLLBACK_MUTATION,

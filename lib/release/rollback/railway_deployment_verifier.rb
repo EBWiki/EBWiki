@@ -26,7 +26,11 @@ module Release
       end
 
       def fetch!(deployment_id:, token:)
-        response = @client.post(token: token, query: DEPLOYMENT_QUERY, variables: { id: deployment_id })
+        response = @client.post(
+          token: token,
+          query: DEPLOYMENT_QUERY,
+          variables: { id: deployment_id }
+        )
         parse_deployment_response(response)
       end
 
@@ -46,19 +50,26 @@ module Release
       private
 
       def parse_deployment_response(response)
-        body = JSON.parse(response.body.to_s)
-        @client.raise_graphql_errors!(body)
+        node = deployment_node(JSON.parse(response.body.to_s))
+        record_from_node(node)
+      rescue JSON::ParserError => e
+        raise RollbackError, "Railway API returned invalid JSON (#{e.message})"
+      end
 
+      def deployment_node(body)
+        @client.raise_graphql_errors!(body)
         node = body.dig('data', 'deployment')
         raise RollbackError, 'Railway deployment not found.' if Plain.blank?(node)
 
+        node
+      end
+
+      def record_from_node(node)
         DeploymentRecord.new(
           id: node['id'],
           service_name: node.dig('service', 'name'),
           environment_name: node.dig('environment', 'name')
         )
-      rescue JSON::ParserError => e
-        raise RollbackError, "Railway API returned invalid JSON (#{e.message})"
       end
     end
   end
