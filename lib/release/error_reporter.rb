@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'logger'
+require 'time'
 
 require_relative 'plain'
 require_relative 'rollbar_setup'
