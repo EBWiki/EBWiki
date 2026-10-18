@@ -20,14 +20,13 @@ RSpec.describe Release::SmokeCheck, 'basic auth credentials' do
     captured
   end
 
-  before do
+  around do |example|
+    @env_snapshot = ENV.to_hash
     ENV['STAGING_USERNAME'] = 'smoke_user'
     ENV['STAGING_PASSWORD'] = 'smoke_secret'
-  end
-
-  after do
-    ENV.delete('STAGING_USERNAME')
-    ENV.delete('STAGING_PASSWORD')
+    example.run
+  ensure
+    ENV.replace(@env_snapshot)
   end
 
   it 'sends credentials to https://staging.ebwiki.org' do

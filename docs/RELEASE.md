@@ -6,7 +6,7 @@ Use these commands after deploying the Postgres search change to verify behavior
 
 The smoke check hits the running site over HTTP. It confirms the home page loads, search returns results for a known term, junk search returns zero results without error, and `/health` reports Postgres and Redis only (no Elasticsearch probe).
 
-After a staging or production deploy, run the **Release smoke check** workflow by hand from the GitHub Actions tab on the **`main`** branch (see `.github/workflows/release_smoke_check.yml`) and choose **staging** or **production**. The workflow needs the repository secret `ROLLBAR_ACCESS_TOKEN` when Rollbar reporting is enabled. A follow-up improvement is to store smoke-check secrets in a **main-only GitHub environment** instead of repository secrets; this PR keeps repository secrets.
+After a staging or production deploy, run the **Release smoke check** workflow by hand from the GitHub Actions tab on the **`main`** branch (see `.github/workflows/release_smoke_check.yml`) and choose **staging** or **production**. The job uses the GitHub Actions environment **`release-smoke`**, which is limited to the **`main`** branch and holds **`STAGING_USERNAME`**, **`STAGING_PASSWORD`**, and **`ROLLBAR_ACCESS_TOKEN`** (provisioned by `infra/github/`). Delete any **repository-level** copies of those secret names so the workflow cannot read them outside the environment. Repository admins can still bypass the branch policy, so treat **`main`** workflow edits as sensitive.
 
 ### When to run
 
@@ -46,7 +46,7 @@ Optional environment variables:
 | `RELEASE_SMOKE_ALLOWED_HOSTS` | Comma-separated hosts permitted (default `staging.ebwiki.org,ebwiki.org`) |
 | `RELEASE_SMOKE_SEARCH_TERM` | Query that should match at least one case (default `*`) |
 | `RELEASE_SMOKE_BASIC_AUTH_*` | Override staging basic auth credentials |
-| `ROLLBAR_ACCESS_TOKEN` | Rollbar project token (required in the deployment workflow for error reporting) |
+| `ROLLBAR_ACCESS_TOKEN` | Rollbar project token ( **`release-smoke`** environment secret in CI) |
 | `ROLLBAR_ENV` | Rollbar environment name (the workflow **target** input in CI) |
 
 Exit code **0** means all checks passed. Failures log JSON to stderr and report through Rollbar when `ROLLBAR_ACCESS_TOKEN` is set.

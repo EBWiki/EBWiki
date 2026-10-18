@@ -18,6 +18,7 @@ permissions:
 jobs:
   smoke_check:
     if: github.ref == 'refs/heads/main'
+    environment: release-smoke
     runs-on: ubuntu-latest
 
     env:
