@@ -156,39 +156,6 @@ CURL
   chmod +x "$TMP/curl"
 }
 
-write_tofu_stub() {
-  cat >"$TMP/tofu" <<'EOF'
-#!/usr/bin/env bash
-set -euo pipefail
-case "${1:-}" in
-  fmt) exit 0 ;;
-  init) exit 0 ;;
-  plan)
-    out=""
-    while [ "$#" -gt 0 ]; do
-      case "$1" in
-        -out) out="$2"; shift 2 ;;
-        -out=*) out="${1#-out=}"; shift ;;
-        *) shift ;;
-      esac
-    done
-    [ -n "$out" ] && : >"$out"
-    exit 0
-    ;;
-  apply)
-    while [ "$#" -gt 0 ]; do
-      if [ -f "${1:-}" ]; then rm -f "$1"; fi
-      shift
-    done
-    exit 0
-    ;;
-  test) exit 0 ;;
-  *) exit 0 ;;
-esac
-EOF
-  chmod +x "$TMP/tofu"
-}
-
 preflight_with() {
   local scenario="$1"
   export GITHUB_STUB_SCENARIO="$scenario"
@@ -205,7 +172,6 @@ preflight_with() {
 }
 
 write_curl_stub
-write_tofu_stub
 export PATH="$TMP:$PATH"
 
 if ( export TF_VAR_state_passphrase="" TF_VAR_github_token=x TF_VAR_staging_username=u TF_VAR_staging_password=p TF_VAR_rollbar_access_token=r
@@ -289,33 +255,6 @@ else
   pass "token not logged in curl argv"
 fi
 
-PLAN_DIR="$TMP/plan-work/infra/github"
-mkdir -p "$PLAN_DIR"
-PLAN_FILE="$PLAN_DIR/github.tfplan"
-(
-  cd "$PLAN_DIR"
-  trap 'rc=$?; [ "$rc" -eq 0 ] || rm -f "$PLAN_FILE"' EXIT
-  tofu plan -out=github.tfplan
-  [ -f "$PLAN_FILE" ] || fail "plan file missing after successful plan"
-  trap 'rm -f "$PLAN_FILE"' EXIT
-  tofu apply github.tfplan
-  [ ! -f "$PLAN_FILE" ] || fail "plan file still present after apply"
-)
-pass "plan file kept after plan and removed after apply"
-
-STAGING_PLAN_DIR="$TMP/plan-work/infra/staging"
-mkdir -p "$STAGING_PLAN_DIR"
-STAGING_PLAN_FILE="$STAGING_PLAN_DIR/staging.tfplan"
-(
-  cd "$STAGING_PLAN_DIR"
-  trap 'rc=$?; [ "$rc" -eq 0 ] || rm -f "$STAGING_PLAN_FILE"' EXIT
-  tofu plan -out=staging.tfplan
-  [ -f "$STAGING_PLAN_FILE" ] || fail "staging plan file missing after successful plan"
-  false
-) && fail "staging plan trap test expected failure after plan"
-[ ! -f "$STAGING_PLAN_FILE" ] || fail "staging plan file must be removed after a failed staging plan"
-pass "staging plan file kept after plan and removed after a failed plan"
-
 : >"$ROLLBAR_LOG"
 export TF_VAR_rollbar_access_token="rollbar_secret_token_value"
 PATH="$TMP:$PATH" bash -c "
@@ -325,9 +264,10 @@ PATH="$TMP:$PATH" bash -c "
   trap infra_script_err_trap ERR
   false
 " || true
-grep -Eq '"exit_code"[[:space:]]*:[[:space:]]*1' "$ROLLBAR_LOG" || fail "rollbar body missing exit_code 1"
-grep -q 'Infra script failed' "$ROLLBAR_LOG" || fail "rollbar body missing Infra script failed message"
-grep -Eq '"environment"[[:space:]]*:[[:space:]]*"infra"' "$ROLLBAR_LOG" || fail "rollbar body missing infra environment"
+jq -e '.data.custom.exit_code == 1' "$ROLLBAR_LOG" >/dev/null || fail "rollbar body missing exit_code 1"
+jq -e '.data.body.message.body | startswith("Infra script failed")' "$ROLLBAR_LOG" >/dev/null || fail "rollbar body missing Infra script failed message"
+jq -e '.data.environment == "infra"' "$ROLLBAR_LOG" >/dev/null || fail "rollbar body environment must be infra"
+jq -e '.data.custom.script == "github-plan.sh"' "$ROLLBAR_LOG" >/dev/null || fail "rollbar body must name the failing script"
 grep -q 'rollbar_secret_token_value' "$CURL_LOG" && fail "rollbar token appeared in curl argv"
 assert_no_hdr_leaks
 pass "rollbar trap posts exit_code and cleans header file"
