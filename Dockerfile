@@ -12,6 +12,7 @@ RUN apt-get update -qq && apt-get install -y \
     libpq-dev \
     curl \
     git \
+    imagemagick \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
