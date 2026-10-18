@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe 'Search', type: :request do
   let(:texas) { FactoryBot.create(:state_texas) }
   let(:louisiana) { FactoryBot.create(:state_louisiana) }
-  let(:subject_record) { FactoryBot.build(:subject) }
 
   let!(:houston_case) do
     FactoryBot.create(
@@ -16,7 +15,7 @@ RSpec.describe 'Search', type: :request do
       state: texas,
       date: 1.week.ago,
       summary: 'initial entry',
-      subjects: [subject_record]
+      subjects: [FactoryBot.build(:subject)]
     )
   end
   let!(:baton_rouge_case) do
@@ -53,7 +52,7 @@ RSpec.describe 'Search', type: :request do
       13.times do |index|
         FactoryBot.create(
           :case,
-          title: "Pagination filler case #{index}",
+          title: format('Pagination filler case %02d', index),
           city: 'Houston',
           state: texas,
           date: index.days.ago,
@@ -65,7 +64,8 @@ RSpec.describe 'Search', type: :request do
       get '/search', params: { page: 2 }
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include('Pagination filler case')
+      expect(response.body).to include('Pagination filler case 12')
+      expect(response.body).not_to include('Pagination filler case 00')
     end
   end
 end
