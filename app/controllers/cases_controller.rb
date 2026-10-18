@@ -44,15 +44,20 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     @this_case = Case.new(case_params)
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
     photo_upload = case_photo_upload
-    if @this_case.save
-      unless update_case_photo(@this_case, upload: photo_upload, remove: false)
+    if photo_upload.present?
+      @this_case.photo.attach(photo_upload)
+      unless @this_case.valid?
+        @this_case.photo.purge if @this_case.photo.attached?
         set_instance_vars
         return render 'new'
       end
+    end
+    if @this_case.save
       current_user.follow(@this_case)
       flash[:success] = 'Case was created!'
       redirect_to @this_case
     else
+      @this_case.photo.purge if @this_case.photo.attached?
       set_instance_vars
       render 'new'
     end
@@ -164,10 +169,12 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
 
     return true if upload.blank?
 
+    previous_blob = this_case.photo.blob if this_case.photo.attached?
     this_case.photo.attach(upload)
     return true if this_case.valid?
 
     this_case.photo.purge
+    this_case.photo.attach(previous_blob) if previous_blob
     false
   end
   # rubocop:enable Naming/PredicateMethod

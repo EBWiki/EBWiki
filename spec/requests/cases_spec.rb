@@ -170,6 +170,65 @@ RSpec.describe 'Cases', type: :request do
       expect(response.body).to include('Editing')
       expect(_case.reload.photo).not_to be_attached
     end
+
+    it 'keeps the existing photo when a replacement upload is rejected' do
+      _case.photo.attach(
+        io: File.open(image_path),
+        filename: 'favicon.jpg',
+        content_type: 'image/jpeg'
+      )
+      original_blob_id = _case.photo.blob.id
+      bad_upload = Rack::Test::UploadedFile.new(
+        StringIO.new('%PDF-1.4'),
+        'application/pdf',
+        original_filename: 'bad-replacement.pdf'
+      )
+
+      patch "/cases/#{_case.slug}",
+            params: { case: { photo: bad_upload, summary: 'Tried a bad replacement' } }
+
+      expect(response).to have_http_status(200)
+      expect(response.body).to include('Editing')
+      _case.reload
+      expect(_case.photo).to be_attached
+      expect(_case.photo.blob.id).to eq(original_blob_id)
+    end
+
+    it 'rejects a PDF renamed with a .jpg extension' do
+      upload = Rack::Test::UploadedFile.new(
+        StringIO.new('%PDF-1.4 fake'),
+        'image/jpeg',
+        original_filename: 'disguised.jpg'
+      )
+
+      patch "/cases/#{_case.slug}",
+            params: { case: { photo: upload, summary: 'Tried a disguised PDF' } }
+
+      expect(response).to have_http_status(200)
+      expect(_case.reload.photo).not_to be_attached
+    end
+  end
+
+  describe 'POST /cases with case photo' do
+    let(:user) { create(:user) }
+    let(:params) { { case: attributes_for(:case) } }
+
+    before { sign_in user }
+
+    it 'does not persist the case when the photo upload is invalid' do
+      upload = Rack::Test::UploadedFile.new(
+        StringIO.new('%PDF-1.4'),
+        'application/pdf',
+        original_filename: 'bad-on-create.pdf'
+      )
+
+      expect do
+        post '/cases', params: { case: params[:case].merge(photo: upload) }
+      end.not_to change(Case, :count)
+
+      expect(response).to have_http_status(200)
+      expect(response.body).to include('New Case')
+    end
   end
 
   describe 'PATCH /cases/:slug' do
