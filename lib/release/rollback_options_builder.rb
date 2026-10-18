@@ -33,16 +33,32 @@ module Release
 
     def options_hash
       flags = parse_flags(@argv)
-      service_name = Plain.env_presence('RAILWAY_SERVICE') || DEFAULT_SERVICE
-      environment_slug = Plain.env_presence('RAILWAY_ENVIRONMENT') || DEFAULT_ENVIRONMENT
+      service_name = service_default
+      environment_slug = environment_default
+      base_options(flags, service_name, environment_slug)
+    end
+
+    def base_options(flags, service_name, environment_slug)
       {
-        platform: Plain.env_presence('RELEASE_ROLLBACK_PLATFORM') || DEFAULT_PLATFORM,
+        platform: platform_default,
         service_name: service_name,
         deployment_id: resolve_deployment_id(service_name, environment_slug),
         environment_slug: environment_slug,
         dry_run: flags[:dry_run],
         skip_confirm: flags[:skip_confirm]
       }
+    end
+
+    def platform_default
+      Plain.env_presence('RELEASE_ROLLBACK_PLATFORM') || DEFAULT_PLATFORM
+    end
+
+    def service_default
+      Plain.env_presence('RAILWAY_SERVICE') || DEFAULT_SERVICE
+    end
+
+    def environment_default
+      Plain.env_presence('RAILWAY_ENVIRONMENT') || DEFAULT_ENVIRONMENT
     end
 
     def resolve_deployment_id(service_name, environment_slug)

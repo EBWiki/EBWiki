@@ -30,19 +30,21 @@ module Release
       private
 
       def fetch_deployments(token, project_id, service_id, environment_id)
-        @client.post(
-          token: token,
-          query: DEPLOYMENTS_QUERY,
-          variables: {
-            first: 10,
-            input: {
-              projectId: project_id,
-              serviceId: service_id,
-              environmentId: environment_id,
-              status: { in: ['SUCCESS'] }
-            }
+        @client.post(token: token, query: DEPLOYMENTS_QUERY, variables: deployment_variables(
+          project_id, service_id, environment_id
+        ))
+      end
+
+      def deployment_variables(project_id, service_id, environment_id)
+        {
+          first: 10,
+          input: {
+            projectId: project_id,
+            serviceId: service_id,
+            environmentId: environment_id,
+            status: { in: ['SUCCESS'] }
           }
-        )
+        }
       end
 
       def ensure_deployments!(ids)
@@ -55,8 +57,8 @@ module Release
         target = skip_current && ids.length > 1 ? ids[1] : ids.first
         return target if Plain.present?(target)
 
-        raise RollbackError,
-              'Only one successful deployment exists; set RAILWAY_ROLLBACK_DEPLOYMENT_ID explicitly.'
+        msg = 'Only one successful deployment exists; set RAILWAY_ROLLBACK_DEPLOYMENT_ID explicitly.'
+        raise RollbackError, msg
       end
 
       def deployment_ids(response)
