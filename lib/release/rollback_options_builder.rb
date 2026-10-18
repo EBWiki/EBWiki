@@ -33,11 +33,10 @@ module Release
 
     def options_hash
       flags = parse_flags(@argv)
-      platform = Plain.env_presence('RELEASE_ROLLBACK_PLATFORM') || DEFAULT_PLATFORM
       service_name = Plain.env_presence('RAILWAY_SERVICE') || DEFAULT_SERVICE
       environment_slug = Plain.env_presence('RAILWAY_ENVIRONMENT') || DEFAULT_ENVIRONMENT
       {
-        platform: platform,
+        platform: Plain.env_presence('RELEASE_ROLLBACK_PLATFORM') || DEFAULT_PLATFORM,
         service_name: service_name,
         deployment_id: resolve_deployment_id(service_name, environment_slug),
         environment_slug: environment_slug,
@@ -53,6 +52,10 @@ module Release
       token = Plain.env_presence('RAILWAY_TOKEN')
       return nil if Plain.blank?(token)
 
+      resolve_from_api(token, service_name, environment_slug)
+    end
+
+    def resolve_from_api(token, service_name, environment_slug)
       ids = @staging_context.ids_for!(
         token: token,
         service_name: service_name,

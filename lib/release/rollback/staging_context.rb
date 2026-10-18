@@ -49,7 +49,9 @@ module Release
       private
 
       def find_project(body, name)
-        node = body.fetch('data', {}).fetch('projects', {}).fetch('edges', []).filter_map { |e| e['node'] }
+        node = body.fetch('data', {}).fetch('projects', {}).fetch('edges', []).filter_map do |e|
+          e['node']
+        end
                    .find { |p| p['name'] == name }
         raise RollbackError, "Railway project #{name.inspect} not found." if Plain.blank?(node)
 
@@ -58,7 +60,7 @@ module Release
 
       def find_service(project, name)
         id = project.fetch('services', {}).fetch('edges', []).filter_map { |e| e['node'] }
-                    .find { |s| s['name'] == name }&.fetch('id', nil)
+                                                             .find { |s| s['name'] == name }&.fetch('id', nil)
         raise RollbackError, "Railway service #{name.inspect} not found." if Plain.blank?(id)
 
         id
@@ -66,7 +68,7 @@ module Release
 
       def find_environment(project, name)
         id = project.fetch('environments', {}).fetch('edges', []).filter_map { |e| e['node'] }
-                    .find { |env| env['name'] == name }&.fetch('id', nil)
+                                                                 .find { |env| env['name'] == name }&.fetch('id', nil)
         raise RollbackError, "Railway environment #{name.inspect} not found." if Plain.blank?(id)
 
         id

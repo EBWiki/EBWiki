@@ -22,7 +22,15 @@ module Release
       end
 
       def resolve!(token:, project_id:, service_id:, environment_id:, skip_current: true)
-        response = @client.post(
+        ids = deployment_ids(fetch_deployments(token, project_id, service_id, environment_id))
+        ensure_deployments!(ids)
+        pick_target(ids, skip_current: skip_current)
+      end
+
+      private
+
+      def fetch_deployments(token, project_id, service_id, environment_id)
+        @client.post(
           token: token,
           query: DEPLOYMENTS_QUERY,
           variables: {
@@ -35,16 +43,21 @@ module Release
             }
           }
         )
-        ids = deployment_ids(response)
-        raise RollbackError, 'No successful Railway deployments found to roll back to.' if ids.empty?
-
-        target = skip_current && ids.length > 1 ? ids[1] : ids.first
-        raise RollbackError, 'Only one successful deployment exists; set RAILWAY_ROLLBACK_DEPLOYMENT_ID explicitly.' if Plain.blank?(target)
-
-        target
       end
 
-      private
+      def ensure_deployments!(ids)
+        return if ids.any?
+
+        raise RollbackError, 'No successful Railway deployments found to roll back to.'
+      end
+
+      def pick_target(ids, skip_current:)
+        target = skip_current && ids.length > 1 ? ids[1] : ids.first
+        return target if Plain.present?(target)
+
+        raise RollbackError,
+              'Only one successful deployment exists; set RAILWAY_ROLLBACK_DEPLOYMENT_ID explicitly.'
+      end
 
       def deployment_ids(response)
         body = JSON.parse(response.body.to_s)
