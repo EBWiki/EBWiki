@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# Slice 5b: drop legacy CarrierWave case photo columns at the maintenance window.
 
 require Rails.root.join('lib/active_storage_cutover/case_avatar_drop_guard')
 
