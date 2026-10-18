@@ -259,6 +259,8 @@ preflight_with env_exists
 [[ "${TF_VAR_existing_release_smoke_environment:-}" == true ]] || fail "expected env exists"
 [[ "${TF_VAR_existing_main_policy_id:-}" == 9001 ]] || fail "expected main policy id"
 pass "preflight passes when environment exists"
+[[ "$(trap -p EXIT)" == *'rm -rf "$TMP"'* ]] || fail "preflight must restore the caller EXIT trap"
+pass "preflight restores the caller EXIT trap"
 assert_no_hdr_leaks
 
 if grep -q 'ghp_stub_token_value' "$CURL_LOG"; then
@@ -307,6 +309,8 @@ export TF_VAR_rollbar_access_token="rollbar"
 source "$ROOT/scripts/lib/github-delete-repo-secrets.sh"
 github_delete_repo_secrets 0 >/dev/null
 pass "delete dry run succeeds"
+[[ "$(trap -p EXIT)" == *'rm -rf "$TMP"'* ]] || fail "delete must restore the caller EXIT trap"
+pass "delete restores the caller EXIT trap"
 assert_no_hdr_leaks
 
 if ( printf 'wrong\n' | github_delete_repo_secrets 1 ) 2>/dev/null; then

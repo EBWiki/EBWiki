@@ -30,6 +30,7 @@ github_preflight() {
 
   GH_TMP="$(mktemp -d)"
   chmod 700 "$GH_TMP"
+  GH_PREV_EXIT_TRAP="$(trap -p EXIT)"
   trap 'rm -rf "${GH_TMP:-}"' EXIT
   GH_HDR="$GH_TMP/hdr"
   ( umask 077; printf 'Authorization: Bearer %s\n' "$TF_VAR_github_token" >"$GH_HDR" )
@@ -79,5 +80,5 @@ github_preflight() {
   rm -rf "$GH_TMP"
   GH_TMP=""
   GH_HDR=""
-  trap - EXIT
+  eval "${GH_PREV_EXIT_TRAP:-trap - EXIT}"
 }

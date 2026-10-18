@@ -37,7 +37,7 @@ github_delete_repo_secret() {
 github_delete_cleanup_temp() {
   rm -rf "${GH_TMP:-}"
   GH_TMP=""
-  trap - EXIT
+  eval "${GH_PREV_EXIT_TRAP:-trap - EXIT}"
 }
 
 github_delete_repo_secrets() {
@@ -48,6 +48,7 @@ github_delete_repo_secrets() {
 
   GH_TMP="$(mktemp -d)"
   chmod 700 "$GH_TMP"
+  GH_PREV_EXIT_TRAP="$(trap -p EXIT)"
   trap 'github_delete_cleanup_temp' EXIT
   GH_HDR="$GH_TMP/hdr"
   ( umask 077; printf 'Authorization: Bearer %s\n' "$TF_VAR_github_token" >"$GH_HDR" )
