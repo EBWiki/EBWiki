@@ -39,6 +39,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   end
   # rubocop:enable Metrics/AbcSize
 
+  # rubocop:disable Metrics/MethodLength
   def create
     @this_case = Case.new(case_params)
     @this_case.blurb = ActionController::Base.helpers.strip_tags(@this_case.blurb)
@@ -53,6 +54,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       render 'new'
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def followers
     @this_case = Case.friendly.find(params[:case_slug])

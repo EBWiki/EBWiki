@@ -44,7 +44,7 @@ module ActiveStorageCutover
       noun = count == 1 ? 'case' : 'cases'
       'Refusing to drop legacy case photo columns (avatar, default_avatar_url, remove_avatar): ' \
         "#{count} #{noun} still have legacy photo data but no Active Storage photo. " \
-        'The guard only checks that a photo attachment row exists, not that the blob file is readable. ' \
+        'The guard only checks that a photo attachment row exists; it does not verify blob files. ' \
         'Re-run active_storage:backfill_case_photos for cases with a non-blank avatar column, ' \
         'or follow the runbook for rows with only default_avatar_url set (backfill skips those). ' \
         'Restore missing files before dropping the old photo columns. ' \

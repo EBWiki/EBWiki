@@ -92,22 +92,33 @@ module ActiveStorageBackfill
 
     def source_file(case_record)
       identifier = legacy_avatar_identifier(case_record)
+      read_stored_avatar_file(case_record, identifier)
+    rescue Excon::Error
+      nil
+    end
+
+    def read_stored_avatar_file(case_record, identifier)
       return nil if identifier.blank?
 
-      uploader = AvatarUploader.new(Case.new(id: case_record.id), :avatar)
-      uploader.retrieve_from_store!(identifier)
-      file = uploader.file
+      file = open_carrierwave_file(case_record, identifier)
       return nil unless file&.exists?
 
-      filename = file.filename.presence || File.basename(identifier.to_s)
+      build_file_payload(file, identifier)
+    end
 
+    def open_carrierwave_file(case_record, identifier)
+      uploader = AvatarUploader.new(Case.new(id: case_record.id), :avatar)
+      uploader.retrieve_from_store!(identifier)
+      uploader.file
+    end
+
+    def build_file_payload(file, identifier)
+      filename = file.filename.presence || File.basename(identifier.to_s)
       {
         bytes: file.read,
         filename: filename,
         content_type: file.content_type.presence || Marcel::MimeType.for(name: filename)
       }
-    rescue Excon::Error
-      nil
     end
 
     def log_error(case_record, error)
