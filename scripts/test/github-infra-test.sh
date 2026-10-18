@@ -263,6 +263,26 @@ pass "preflight passes when environment exists"
 pass "preflight restores the caller EXIT trap"
 assert_no_hdr_leaks
 
+( preflight_with env_missing ) >/dev/null 2>&1
+[ -d "$TMP" ] || { echo "FAIL: preflight in a subshell ran the parent EXIT trap" >&2; exit 1; }
+pass "preflight in a subshell leaves the parent EXIT trap alone"
+
+caller_trap_case() { # name scenario function
+  local marker="$TMP/caller-trap-$1"
+  rm -f "$marker"
+  if GITHUB_STUB_SCENARIO="$2" bash -c '
+    trap "echo \"rc=\$?\" >\"$1\"" EXIT
+    source "$2/scripts/lib/github-delete-repo-secrets.sh"
+    $3' _ "$marker" "$ROOT" "$3" >/dev/null 2>&1; then
+    fail "$1: expected failure"
+  fi
+  [ "$(cat "$marker" 2>/dev/null)" = rc=1 ] || fail "$1: caller EXIT trap must run with exit status 1"
+  pass "$1: caller EXIT trap runs with the failing exit status"
+}
+caller_trap_case preflight-failure non_admin github_preflight
+caller_trap_case delete-failure delete_missing_env "github_delete_repo_secrets 0"
+assert_no_hdr_leaks
+
 if grep -q 'ghp_stub_token_value' "$CURL_LOG"; then
   fail "token appeared in curl log"
 else
@@ -283,16 +303,31 @@ PLAN_FILE="$PLAN_DIR/github.tfplan"
 )
 pass "plan file kept after plan and removed after apply"
 
+STAGING_PLAN_DIR="$TMP/plan-work/infra/staging"
+mkdir -p "$STAGING_PLAN_DIR"
+STAGING_PLAN_FILE="$STAGING_PLAN_DIR/staging.tfplan"
+(
+  cd "$STAGING_PLAN_DIR"
+  trap 'rc=$?; [ "$rc" -eq 0 ] || rm -f "$STAGING_PLAN_FILE"' EXIT
+  tofu plan -out=staging.tfplan
+  [ -f "$STAGING_PLAN_FILE" ] || fail "staging plan file missing after successful plan"
+  false
+) && fail "staging plan trap test expected failure after plan"
+[ ! -f "$STAGING_PLAN_FILE" ] || fail "staging plan file must be removed after a failed staging plan"
+pass "staging plan file kept after plan and removed after a failed plan"
+
 : >"$ROLLBAR_LOG"
 export TF_VAR_rollbar_access_token="rollbar_secret_token_value"
 PATH="$TMP:$PATH" bash -c "
   set -E
-  source \"$ROOT/scripts/lib/github-rollbar.sh\"
-  GITHUB_SCRIPT_NAME=github-plan.sh
-  trap github_script_err_trap ERR
+  source \"$ROOT/scripts/lib/infra-rollbar.sh\"
+  INFRA_SCRIPT_NAME=github-plan.sh
+  trap infra_script_err_trap ERR
   false
 " || true
 grep -Eq '"exit_code"[[:space:]]*:[[:space:]]*1' "$ROLLBAR_LOG" || fail "rollbar body missing exit_code 1"
+grep -q 'Infra script failed' "$ROLLBAR_LOG" || fail "rollbar body missing Infra script failed message"
+grep -Eq '"environment"[[:space:]]*:[[:space:]]*"infra"' "$ROLLBAR_LOG" || fail "rollbar body missing infra environment"
 grep -q 'rollbar_secret_token_value' "$CURL_LOG" && fail "rollbar token appeared in curl argv"
 assert_no_hdr_leaks
 pass "rollbar trap posts exit_code and cleans header file"
@@ -313,10 +348,12 @@ pass "delete dry run succeeds"
 pass "delete restores the caller EXIT trap"
 assert_no_hdr_leaks
 
-if ( printf 'wrong\n' | github_delete_repo_secrets 1 ) 2>/dev/null; then
+if wrong_out="$(printf 'wrong\n' | github_delete_repo_secrets 1 2>&1 >/dev/null)"; then
   fail "delete should reject wrong confirmation"
+elif grep -q delete_confirm <<<"$wrong_out"; then
+  pass "delete rejects wrong confirmation with delete_confirm log"
 else
-  pass "delete rejects wrong confirmation"
+  fail "delete wrong confirmation must log delete_confirm"
 fi
 
 export GITHUB_STUB_SCENARIO="delete_missing_env"

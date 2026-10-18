@@ -25,15 +25,10 @@ infra_export_tf_vars_from_infra_config() {
 
 infra_export_github_smoke_secrets_from_stg() {
   command -v doppler >/dev/null 2>&1 || { echo "doppler CLI is required." >&2; exit 1; }
-  export TF_VAR_staging_username="$(
-    doppler secrets get STAGING_USERNAME --project ebwiki --config stg --plain
-  )"
-  export TF_VAR_staging_password="$(
-    doppler secrets get STAGING_PASSWORD --project ebwiki --config stg --plain
-  )"
-  export TF_VAR_rollbar_access_token="$(
-    doppler secrets get ROLLBAR_ACCESS_TOKEN --project ebwiki --config stg --plain
-  )"
+  TF_VAR_staging_username="$(doppler secrets get STAGING_USERNAME --project ebwiki --config stg --plain)"
+  TF_VAR_staging_password="$(doppler secrets get STAGING_PASSWORD --project ebwiki --config stg --plain)"
+  TF_VAR_rollbar_access_token="$(doppler secrets get ROLLBAR_ACCESS_TOKEN --project ebwiki --config stg --plain)"
+  export TF_VAR_staging_username TF_VAR_staging_password TF_VAR_rollbar_access_token
 }
 
 # The GitHub stack gets exactly its own TF_VARs. Anything else exported by

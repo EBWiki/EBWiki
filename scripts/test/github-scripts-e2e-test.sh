@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# Runs the real github-plan.sh, github-apply.sh and github-delete-repo-secrets.sh
-# against stubbed doppler, curl, tofu, gh and logging bash and jq shims. Checks full argv
-# of every shimmed command for secrets and TMPDIR for leftovers after every phase.
+# Runs the real github-plan.sh, github-apply.sh, github-delete-repo-secrets.sh,
+# staging-plan.sh and staging-apply.sh against stubbed doppler, curl, tofu, gh, git,
+# railway, aws and npm plus logging bash and jq shims. Checks full argv of every
+# shimmed command for secrets and TMPDIR for leftovers after every phase. Rollbar
+# counts as reported only when the posted header file carries the stg token.
 set -euo pipefail
 
 SRC="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -45,6 +47,7 @@ shim() { # name body
 shim bash "exec \"$REAL_BASH\" \"\$@\""
 shim jq "exec \"$REAL_JQ\" \"\$@\""
 shim gh 'exit 0'
+shim git 'exit 0'
 shim railway 'exit 0'
 shim aws 'exit 0'
 shim npm 'exit 0'
@@ -60,26 +63,28 @@ case "$1" in
 esac'
 shim tofu '
 case "$1" in
-  plan) [ "${TOFU_FAIL:-}" = plan ] && exit 1
-        for a in "$@"; do case "$a" in -out=*) : >"${a#-out=}" ;; esac; done ;;
+  plan)
+    for a in "$@"; do case "$a" in -out=*) : >"${a#-out=}" ;; esac; done
+    [ "${TOFU_FAIL:-}" = plan ] && exit 1 ;;
   apply) [ "${TOFU_FAIL:-}" = apply ] && exit 1 ;;
   show) echo "{\"resource_changes\":[]}" ;;
 esac
 exit 0'
 shim curl '
-out=""; url=""; method=GET
+out=""; url=""; method=GET; rollbar_token=""
 while [ $# -gt 0 ]; do
   case "$1" in
     -o) out="$2"; shift 2 ;;
     -X) method="$2"; shift 2 ;;
     -K) [ "${2:-}" = "-" ] && cat >/dev/null; shift 2 ;;
-    -w|-H|--data-binary) shift 2 ;;
+    -H) case "$2" in @*) grep -Fq rollbar_e2e_sentinel "${2#@}" && rollbar_token=1 ;; esac; shift 2 ;;
+    -w|--data-binary) shift 2 ;;
     https://*) url="$1"; shift ;;
     *) shift ;;
   esac
 done
 case "$url" in
-  *api.rollbar.com*) : >"$GH_STUB_STATE/rollbar_posted"; code=200; body="" ;;
+  *api.rollbar.com*) [ -z "$rollbar_token" ] || : >"$GH_STUB_STATE/rollbar_posted"; code=200; body="" ;;
   */environments/release-smoke/secrets/*) code=200; body="{}" ;;
   */environments/release-smoke) code=404; body="{}" ;;
   */actions/secrets/public-key) code=200; body="{}" ;;
@@ -95,6 +100,7 @@ cat >"$REPO/scripts/infra-write-backend.sh" <<'STUB'
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BACKEND_FILE="${1:-$ROOT/infra/staging/backend.hcl}"
+[ -z "${BACKEND_FAIL:-}" ] || exit 1
 mkdir -p "$(dirname "$BACKEND_FILE")"
 : >"$BACKEND_FILE"
 STUB
@@ -140,7 +146,6 @@ export PATH="$BIN:$PATH" TMPDIR="$LEAK_TMP"
 export STATE_PASSPHRASE=state_pass_sentinel_0123 GITHUB_TOKEN=ghp_e2e_token_sentinel
 export R2_BUCKET_NAME=b R2_S3_ENDPOINT=https://r2.example CLOUDFLARE_DNS_API_TOKEN=cf_e2e STAGING_RUNTIME_DOPPLER_TOKEN=dp_e2e STAGING_BASIC_AUTH_USERNAME=bu_e2e
 export RAILWAY_TOKEN=railway_e2e AWS_ACCESS_KEY_ID=awskey_e2e AWS_SECRET_ACCESS_KEY=awssec_e2e
-export TF_VAR_rollbar_access_token=rollbar_e2e_sentinel
 PLAN="$REPO/infra/github/github.tfplan"
 STAGING_PLAN="$REPO/infra/staging/staging.tfplan"
 
@@ -166,6 +171,11 @@ printf 'apply-github\n' | TOFU_FAIL=apply "$REPO/scripts/github-apply.sh" >/dev/
 rm -f "$GH_STUB_STATE/rollbar_posted"
 assert_clean "apply failure"
 
+BACKEND_FAIL=1 "$REPO/scripts/github-plan.sh" >/dev/null 2>&1 && fail "plan should fail when the backend write fails"
+[ -f "$GH_STUB_STATE/rollbar_posted" ] || fail "failed backend write in plan must report to Rollbar"
+rm -f "$GH_STUB_STATE/rollbar_posted"
+assert_clean "plan backend failure"
+
 "$REPO/scripts/github-plan.sh" >/dev/null 2>&1
 printf 'apply-github\n' | GH_ADMIN=false "$REPO/scripts/github-apply.sh" >/dev/null 2>&1 && fail "apply must fail preflight"
 [ ! -f "$PLAN" ] || fail "plan file must be deleted after a failed preflight"
@@ -177,24 +187,41 @@ out="$("$REPO/scripts/github-delete-repo-secrets.sh" </dev/null 2>&1 || true)"; 
 grep -q 'DELETE' "$ARGV_LOG" && fail "dry run must not DELETE"
 assert_clean "delete dry run"
 
+out="$(printf 'wrong\n' | "$REPO/scripts/github-delete-repo-secrets.sh" --confirm 2>&1 >/dev/null || true)"
+grep -q delete_confirm <<<"$out" || fail "wrong phrase must log delete_confirm"
 printf 'wrong\n' | "$REPO/scripts/github-delete-repo-secrets.sh" --confirm >/dev/null 2>&1 && fail "wrong phrase must abort"
 grep -q 'DELETE' "$ARGV_LOG" && fail "wrong phrase must not DELETE"
+[ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "wrong phrase must not report to Rollbar"
 assert_clean "delete wrong phrase"
 
 printf 'delete-repo-secrets\n' | "$REPO/scripts/github-delete-repo-secrets.sh" --confirm >/dev/null 2>&1 || fail "confirmed delete should pass"
 [ "$(grep -c -- '-X DELETE' "$ARGV_LOG")" = 3 ] || fail "confirmed delete must DELETE exactly 3 secrets"
 assert_clean "delete confirmed"
 
+[ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "Rollbar marker must be clear before the staging phases"
 TOFU_FAIL=plan "$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 && fail "staging plan should fail"
+[ ! -f "$STAGING_PLAN" ] || fail "staging plan file must be deleted after a failed staging plan"
 [ -f "$GH_STUB_STATE/rollbar_posted" ] || fail "failed staging plan must report to Rollbar"
 rm -f "$GH_STUB_STATE/rollbar_posted"
 assert_clean "staging plan failure"
 
 "$REPO/scripts/staging-plan.sh" >/dev/null 2>&1 || fail "staging plan should pass"
 [ -f "$STAGING_PLAN" ] || fail "staging plan file must exist after successful staging plan"
+[ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "successful staging plan must not report to Rollbar"
+assert_clean "staging plan success"
+
+"$REPO/scripts/staging-apply.sh" >/dev/null 2>&1 || fail "staging apply should pass"
+[ ! -f "$GH_STUB_STATE/rollbar_posted" ] || fail "successful staging apply must not report to Rollbar"
+assert_clean "staging apply success"
+
+BACKEND_FAIL=1 "$REPO/scripts/staging-apply.sh" >/dev/null 2>&1 && fail "staging apply should fail when the backend write fails"
+[ -f "$GH_STUB_STATE/rollbar_posted" ] || fail "failed backend write in staging apply must report to Rollbar"
+rm -f "$GH_STUB_STATE/rollbar_posted"
+assert_clean "staging apply backend failure"
+
 TOFU_FAIL=apply "$REPO/scripts/staging-apply.sh" >/dev/null 2>&1 && fail "staging apply should fail"
 [ -f "$GH_STUB_STATE/rollbar_posted" ] || fail "failed staging apply must report to Rollbar"
 rm -f "$GH_STUB_STATE/rollbar_posted"
 assert_clean "staging apply failure"
 
-echo "All GitHub script end-to-end tests passed."
+echo "All infra script end-to-end tests passed."

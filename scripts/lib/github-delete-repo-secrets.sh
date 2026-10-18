@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# shellcheck source=github-logging.sh
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/github-logging.sh"
+# shellcheck source=infra-logging.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-logging.sh"
 # shellcheck source=github-preflight.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/github-preflight.sh"
 
@@ -37,7 +37,7 @@ github_delete_repo_secret() {
 github_delete_cleanup_temp() {
   rm -rf "${GH_TMP:-}"
   GH_TMP=""
-  eval "${GH_PREV_EXIT_TRAP:-trap - EXIT}"
+  infra_exit_trap_pop
 }
 
 github_delete_repo_secrets() {
@@ -48,8 +48,7 @@ github_delete_repo_secrets() {
 
   GH_TMP="$(mktemp -d)"
   chmod 700 "$GH_TMP"
-  GH_PREV_EXIT_TRAP="$(trap -p EXIT)"
-  trap 'github_delete_cleanup_temp' EXIT
+  infra_exit_trap_push 'rm -rf "${GH_TMP:-}"'
   GH_HDR="$GH_TMP/hdr"
   ( umask 077; printf 'Authorization: Bearer %s\n' "$TF_VAR_github_token" >"$GH_HDR" )
 
@@ -79,7 +78,10 @@ github_delete_repo_secrets() {
 
   local typed
   read -r -p "Type delete-repo-secrets to delete repository copies: " typed
-  [[ "$typed" == delete-repo-secrets ]] || die delete_confirm "confirmation phrase did not match"
+  if [[ "$typed" != delete-repo-secrets ]]; then
+    log_json error delete_confirm "confirmation phrase did not match"
+    exit 1
+  fi
 
   for name in "${present[@]}"; do
     github_delete_repo_secret "$name"

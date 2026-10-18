@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# shellcheck source=github-logging.sh
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/github-logging.sh"
+# shellcheck source=infra-logging.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-logging.sh"
+# shellcheck source=infra-exit-trap.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-exit-trap.sh"
 
 GH_REPO_SLUG="${GH_REPO_SLUG:-EBWiki/EBWiki}"
 GH_ENV_NAME="release-smoke"
@@ -30,8 +32,7 @@ github_preflight() {
 
   GH_TMP="$(mktemp -d)"
   chmod 700 "$GH_TMP"
-  GH_PREV_EXIT_TRAP="$(trap -p EXIT)"
-  trap 'rm -rf "${GH_TMP:-}"' EXIT
+  infra_exit_trap_push 'rm -rf "${GH_TMP:-}"'
   GH_HDR="$GH_TMP/hdr"
   ( umask 077; printf 'Authorization: Bearer %s\n' "$TF_VAR_github_token" >"$GH_HDR" )
 
@@ -80,5 +81,5 @@ github_preflight() {
   rm -rf "$GH_TMP"
   GH_TMP=""
   GH_HDR=""
-  eval "${GH_PREV_EXIT_TRAP:-trap - EXIT}"
+  infra_exit_trap_pop
 }

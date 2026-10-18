@@ -6,6 +6,9 @@ on:
       - 'infra/github/**'
       - 'scripts/github-*.sh'
       - 'scripts/lib/github-*.sh'
+      - 'scripts/lib/infra-logging.sh'
+      - 'scripts/lib/infra-rollbar.sh'
+      - 'scripts/lib/infra-exit-trap.sh'
       - 'scripts/lib/infra-export-tf-vars.sh'
       - 'scripts/test/infra-lib-test.sh'
       - 'scripts/test/github-infra-test.sh'
@@ -13,6 +16,11 @@ on:
       - 'scripts/test/github-scripts-e2e-test.sh'
       - 'scripts/infra-with-tf-vars.sh'
       - 'scripts/infra-write-backend.sh'
+      - 'scripts/staging-plan.sh'
+      - 'scripts/staging-apply.sh'
+      - 'scripts/lib/infra-railway-config.sh'
+      - 'scripts/lib/infra-staging-plan-gate.sh'
+      - 'infra/staging/**'
       - '.github/workflows/infra-github.yml'
   workflow_dispatch:
 
