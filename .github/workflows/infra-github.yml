@@ -52,6 +52,7 @@ jobs:
         run: ./scripts/test/github-scripts-e2e-test.sh
 
       - name: ShellCheck infra scripts
+        working-directory: .
         run: |
           shellcheck --version
           shellcheck -S warning scripts/github-plan.sh scripts/github-apply.sh scripts/github-delete-repo-secrets.sh \

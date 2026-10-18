@@ -28,20 +28,10 @@ module Release
       end
 
       def post(token:, query:, variables:)
-        request = Net::HTTP::Post.new(ENDPOINT)
-        request['Authorization'] = "Bearer #{token}"
-        request['Content-Type'] = 'application/json'
-        request.body = { query: query, variables: variables }.to_json
-
-        @http.start(ENDPOINT.host, ENDPOINT.port, use_ssl: true) do |http|
-          http.request(request)
-        end
+        request = build_request(token, query, variables)
+        dispatch(request)
       rescue *NETWORK_ERRORS => e
-        Release::ErrorReporter.report(
-          event: 'release_rollback_network',
-          message: e.message,
-          context: { client: 'RailwayGraphqlClient', step: 'post' }
-        )
+        report_network_error(e)
         raise RollbackError, "Railway API request failed: #{e.message}"
       end
 
@@ -50,6 +40,30 @@ module Release
 
         message = body['errors'].map { |entry| entry['message'] }.join('; ') # rubocop:disable Rails/Pluck
         raise RollbackError, "Railway API error: #{message}"
+      end
+
+      private
+
+      def build_request(token, query, variables)
+        request = Net::HTTP::Post.new(ENDPOINT)
+        request['Authorization'] = "Bearer #{token}"
+        request['Content-Type'] = 'application/json'
+        request.body = { query: query, variables: variables }.to_json
+        request
+      end
+
+      def dispatch(request)
+        @http.start(ENDPOINT.host, ENDPOINT.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+      end
+
+      def report_network_error(error)
+        Release::ErrorReporter.report(
+          event: 'release_rollback_network',
+          message: error.message,
+          context: { client: 'RailwayGraphqlClient', step: 'post' }
+        )
       end
     end
   end

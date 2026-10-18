@@ -39,21 +39,29 @@ module Release
       end
 
       def execute_railway(command)
+        perform_railway_rollback(command)
+        ExecutionResult.new(success: true, message: 'Railway rollback accepted')
+      rescue RollbackError => e
+        ExecutionResult.new(success: false, message: e.message)
+      rescue *NETWORK_ERRORS => e
+        report_railway_network_error(e)
+        ExecutionResult.new(success: false, message: "Railway rollback failed: #{e.message}")
+      end
+
+      def perform_railway_rollback(command)
         RailwayApi.perform_rollback(
           deployment_id: command.deployment_id,
           service_name: command.service_name,
           environment_name: command.environment_slug
         )
-        ExecutionResult.new(success: true, message: 'Railway rollback accepted')
-      rescue RollbackError => e
-        ExecutionResult.new(success: false, message: e.message)
-      rescue *NETWORK_ERRORS => e
+      end
+
+      def report_railway_network_error(error)
         Release::ErrorReporter.report(
           event: 'release_rollback_network',
-          message: e.message,
+          message: error.message,
           context: { client: 'CommandExecutor', step: 'execute_railway' }
         )
-        ExecutionResult.new(success: false, message: "Railway rollback failed: #{e.message}")
       end
     end
   end
