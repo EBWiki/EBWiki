@@ -378,6 +378,7 @@ CREATE TABLE public.cases (
     zipcode character varying,
     longitude double precision,
     latitude double precision,
+    avatar character varying,
     slug character varying,
     video_url character varying,
     state character varying,
@@ -386,8 +387,10 @@ CREATE TABLE public.cases (
     community_action text,
     litigation text,
     country character varying,
+    remove_avatar boolean,
     summary text NOT NULL,
     follows_count integer DEFAULT 0 NOT NULL,
+    default_avatar_url character varying,
     blurb text,
     cause_of_death public.cause_of_death,
     tsv tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (((((((((COALESCE(title, ''::character varying))::text || ' '::text) || COALESCE(blurb, ''::text)) || ' '::text) || COALESCE(overview, ''::text)) || ' '::text) || (COALESCE(city, ''::character varying))::text) || ' '::text) || COALESCE(summary, ''::text)))) STORED
@@ -1957,7 +1960,6 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20261011150000'),
 ('20261006014100'),
 ('20260428201731'),
 ('20260428164616'),
