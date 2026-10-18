@@ -12,8 +12,9 @@ if ARGV.intersect?(%w[--help -h])
       --yes       Skip the confirmation prompt (required with --execute when stdin is not a TTY)
       --help      Show this message
 
-    Railway staging: set RAILWAY_SERVICE=ebwiki, RAILWAY_ENVIRONMENT=production,
-    RAILWAY_ROLLBACK_DEPLOYMENT_ID, and RAILWAY_TOKEN (workspace token).
+    Railway staging: RAILWAY_TOKEN (workspace or account token) is required under Doppler ebwiki/infra.
+    Service defaults to ebwiki and environment to production. When RAILWAY_ROLLBACK_DEPLOYMENT_ID is
+    unset, the previous successful deployment is chosen automatically.
   HELP
   exit 0
 end
@@ -32,6 +33,8 @@ require_relative '../lib/release/rollback/railway_deployment_verifier'
 require_relative '../lib/release/rollback/railway_api'
 require_relative '../lib/release/rollback/command_executor'
 require_relative '../lib/release/rollback/planner'
+require_relative '../lib/release/rollback/staging_context'
+require_relative '../lib/release/rollback/previous_deployment_resolver'
 require_relative '../lib/release/rollback'
 
 result = Release::Rollback.run(ARGV)

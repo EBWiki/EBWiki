@@ -4,6 +4,10 @@ set -euo pipefail
 
 # shellcheck source=infra-railway.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-railway.sh"
+# shellcheck source=infra-railway-token-preflight.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-railway-token-preflight.sh"
+# shellcheck source=infra-railway-deploy-trigger.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/infra-railway-deploy-trigger.sh"
 
 STAGING_RAILWAY_PLAN_FILE="${STAGING_RAILWAY_PLAN_FILE:-infra/staging/staging.railway-plan.json}"
 
@@ -122,6 +126,8 @@ infra_railway_config_plan() {
     echo "Railway CLI is required (https://docs.railway.com/develop/cli)." >&2
     return 1
   }
+  infra_railway_assert_workspace_or_account_token
+  infra_railway_assert_deployment_trigger
   infra_railway_config_ensure_sdk
   infra_railway_config_target_env
   token="$RAILWAY_TOKEN"
@@ -144,6 +150,8 @@ infra_railway_config_apply() {
     return 1
   }
   infra_railway_config_assert_plan_no_destructive "$plan"
+  infra_railway_assert_workspace_or_account_token
+  infra_railway_ensure_deployment_trigger
   infra_railway_config_ensure_sdk
   infra_railway_config_target_env
   token="$RAILWAY_TOKEN"

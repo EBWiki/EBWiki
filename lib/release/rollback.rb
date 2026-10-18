@@ -83,8 +83,8 @@ module Release
     end
 
     def platform_help
-      'Set RELEASE_ROLLBACK_PLATFORM=railway and RAILWAY_SERVICE, RAILWAY_ENVIRONMENT, ' \
-        'RAILWAY_ROLLBACK_DEPLOYMENT_ID, RAILWAY_TOKEN.'
+      'Set RAILWAY_TOKEN (workspace or account token). Service defaults to ebwiki and ' \
+        'environment to production; omit RAILWAY_ROLLBACK_DEPLOYMENT_ID to use the previous successful deploy.'
     end
 
     def confirm!

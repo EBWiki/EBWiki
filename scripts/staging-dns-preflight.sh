@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Read-only staging DNS preflight. Fails closed.
-#   staging-dns-preflight.sh               live check before plan
-#   staging-dns-preflight.sh --plan FILE   live check, then check the saved plan
+#   staging-dns-preflight.sh [--allow-cname-repair]     live check before plan
+#   staging-dns-preflight.sh --plan FILE                  live + planned check
 # Live check: exactly one Cloudflare CNAME for the staging host, pointing at a
-# Railway target, with a boolean proxied flag, plus the Railway TXT verification
-# record. Plan check: the planned CNAME is DNS only and points at a Railway target.
+# Railway target (or repairable via the saved plan when --allow-cname-repair),
+# with a boolean proxied flag, plus the Railway TXT verification record with the
+# expected railway-verify= prefix. Plan check: the planned CNAME is DNS only and
+# points at a Railway target.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -18,9 +20,18 @@ EBWIKI_ZONE_NAME="ebwiki.org"
 STAGING_RECORD_NAME="staging.ebwiki.org"
 STAGING_VERIFY_RECORD_NAME="_railway-verify.staging.ebwiki.org"
 RAILWAY_TARGET_PATTERN='^[a-z0-9-]+(\.[a-z0-9-]+)*\.railway\.app$'
+RAILWAY_VERIFY_TXT_PATTERN='^railway-verify='
 STAGING_CNAME_ADDRESS="cloudflare_dns_record.legacy_staging_ebwiki"
 
 plan_file=""
+allow_cname_repair=0
+case "${1:-}" in
+  "") ;;
+  --allow-cname-repair)
+    allow_cname_repair=1
+    shift
+    ;;
+esac
 case "${1:-}" in
   "") ;;
   --plan)
@@ -41,16 +52,24 @@ cf_record="$(infra_cf_dns_cname_record "$zone_id" "$STAGING_RECORD_NAME" "$cf_to
   || die staging_dns_cname "expected exactly one CNAME for ${STAGING_RECORD_NAME}"
 cf_content="$(jq -r '.content // empty' <<<"$cf_record")"
 cf_proxied="$(jq -r 'if (.proxied | type) == "boolean" then (.proxied | tostring) else empty end' <<<"$cf_record")"
-[[ "$cf_content" =~ $RAILWAY_TARGET_PATTERN ]] \
-  || die staging_dns_cname "CNAME ${STAGING_RECORD_NAME} does not point at a Railway target (content '${cf_content}')"
+
+if [[ ! "$cf_content" =~ $RAILWAY_TARGET_PATTERN ]]; then
+  if ((allow_cname_repair == 1)) && [[ -n "$cf_content" ]]; then
+    log_json warn staging_dns_cname_repair "CNAME ${STAGING_RECORD_NAME} content=${cf_content} is not a Railway target; OpenTofu plan must fix it"
+  else
+    die staging_dns_cname "CNAME ${STAGING_RECORD_NAME} does not point at a Railway target (content '${cf_content}')"
+  fi
+fi
 [[ -n "$cf_proxied" ]] || die staging_dns_cname "CNAME ${STAGING_RECORD_NAME} has no proxied flag"
 
-verify_count="$(infra_cf_dns_txt_count "$zone_id" "$STAGING_VERIFY_RECORD_NAME" "$cf_token")" \
-  || die staging_dns_verify "could not read TXT ${STAGING_VERIFY_RECORD_NAME}"
-[[ "$verify_count" == 1 ]] \
-  || die staging_dns_verify "expected one Railway verification TXT at ${STAGING_VERIFY_RECORD_NAME}, found ${verify_count}"
+verify_record="$(infra_cf_dns_txt_record "$zone_id" "$STAGING_VERIFY_RECORD_NAME" "$cf_token")" \
+  || die staging_dns_verify "expected exactly one TXT at ${STAGING_VERIFY_RECORD_NAME}"
+verify_content="$(jq -r '.content // empty' <<<"$verify_record")"
+[[ "$verify_content" =~ $RAILWAY_VERIFY_TXT_PATTERN ]] \
+  || die staging_dns_verify "TXT ${STAGING_VERIFY_RECORD_NAME} must start with railway-verify= (content '${verify_content}')"
 
-log_json info staging_dns_live "CNAME ${STAGING_RECORD_NAME} content=${cf_content} proxied=${cf_proxied}; verification TXT present"
+log_json info staging_dns_live "CNAME ${STAGING_RECORD_NAME} content=${cf_content} proxied=${cf_proxied}; verification TXT ok"
+[ -n "${STAGING_E2E_TRACK_ORDER:-}" ] && echo dns >>"$STAGING_E2E_TRACK_ORDER"
 
 [[ -n "$plan_file" ]] || exit 0
 [[ -f "$plan_file" ]] || die staging_dns_plan "plan file ${plan_file} is missing"

@@ -33,13 +33,13 @@ RSpec.describe Release::Rollback do
     expect(executor).not_to have_received(:call)
   end
 
-  it 'refuses to run without RAILWAY_SERVICE' do
+  it 'defaults missing RAILWAY_SERVICE to ebwiki' do
     ENV.delete('RAILWAY_SERVICE')
 
     result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
-    expect(result.success).to be(false)
-    expect(error_output.string).to include('RAILWAY_SERVICE')
+    expect(result.success).to be(true)
+    expect(output.string).to include('service ebwiki')
   end
 
   it 'refuses --execute in a non-interactive session without --yes' do
@@ -96,13 +96,13 @@ RSpec.describe Release::Rollback do
     expect(error_output.string).to include('Command failed')
   end
 
-  it 'requires RAILWAY_ENVIRONMENT' do
+  it 'defaults missing RAILWAY_ENVIRONMENT to production' do
     ENV.delete('RAILWAY_ENVIRONMENT')
 
     result = described_class.run([], executor: executor, output: output, error_output: error_output, input: input)
 
-    expect(result.success).to be(false)
-    expect(error_output.string).to include('RAILWAY_ENVIRONMENT')
+    expect(result.success).to be(true)
+    expect(output.string).to include('environment production')
   end
 
   it 'rejects a non-UUID deployment id' do

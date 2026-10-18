@@ -19,6 +19,7 @@ gh_api() {
 }
 
 github_preflight() {
+  local mode="${1:-plan}"
   local v code main_count non_main policy_id state_pass
 
   for v in TF_VAR_state_passphrase TF_VAR_github_token TF_VAR_staging_username TF_VAR_staging_password TF_VAR_rollbar_access_token; do
@@ -76,6 +77,9 @@ github_preflight() {
       fi
       ;;
     404)
+      if [ "$mode" = apply ]; then
+        die preflight_lookup "release-smoke environment is missing; apply the GitHub stack before running smoke checks"
+      fi
       export TF_VAR_existing_release_smoke_environment=false
       export TF_VAR_existing_main_policy_id=""
       ;;

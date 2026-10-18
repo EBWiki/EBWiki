@@ -1,0 +1,50 @@
+---
+name: Release tags
+
+# Creates release tags after maintainer approval. Does not run on push.
+on:
+  workflow_dispatch:
+    inputs:
+      tag_kind:
+        description: pre-pgsearch (912745b2) or post-merge release tag
+        required: true
+        type: choice
+        options:
+          - v2026.10.18-pre-pgsearch
+          - v2026.10.18-1
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-tags
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: release-tags
+    steps:
+      - name: Checkout
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+        with:
+          fetch-depth: 0
+
+      - name: Resolve tag target
+        id: target
+        run: |
+          case "${{ github.event.inputs.tag_kind }}" in
+            v2026.10.18-pre-pgsearch) sha=912745b2 ;;
+            v2026.10.18-1) sha="${{ github.sha }}" ;;
+            *) echo "Unknown tag_kind" >&2; exit 1 ;;
+          esac
+          git cat-file -e "${sha}^{commit}"
+          echo "sha=${sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Create annotated tag
+        run: |
+          git config user.name "EBWiki Release Tags"
+          git config user.email "release-tags@ebwiki.org"
+          git tag -a "${{ github.event.inputs.tag_kind }}" -m "${{ github.event.inputs.tag_kind }}" "${{ steps.target.outputs.sha }}"
+          git push origin "refs/tags/${{ github.event.inputs.tag_kind }}"

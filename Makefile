@@ -49,8 +49,8 @@ snapshot:
 	doppler run --project ebwiki --config infra -- ./scripts/staging-db-snapshot.sh
 
 apply:
-	./scripts/staging-apply.sh
 	./scripts/github-apply.sh
+	./scripts/staging-apply.sh
 
 github-delete-repo-secrets:
 	./scripts/github-delete-repo-secrets.sh $(if $(filter 1,$(CONFIRM)),--confirm,)

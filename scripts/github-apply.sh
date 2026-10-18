@@ -23,7 +23,7 @@ doppler run --project ebwiki --config infra -- "$ROOT/scripts/infra-with-tf-vars
   INFRA_SCRIPT_NAME=github-apply.sh
   trap infra_script_err_trap ERR
   \"$ROOT/scripts/infra-write-backend.sh\" \"$ROOT/infra/github/backend.hcl\" github/terraform.tfstate
-  github_preflight
+  github_preflight apply
   umask 077
   cd \"$ROOT/infra/github\"
   tofu init -backend-config=backend.hcl -input=false

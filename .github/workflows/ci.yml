@@ -15,6 +15,7 @@ permissions:
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     env:
       RAILS_ENV: test
@@ -64,6 +65,7 @@ jobs:
 
   brakeman:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
@@ -87,6 +89,7 @@ jobs:
 
   markdown-link-checker:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Run Markdown Link Check
@@ -98,6 +101,7 @@ jobs:
 
   rubocop:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code

@@ -72,3 +72,17 @@ infra_cf_dns_txt_count() {
     || { echo "Cloudflare TXT lookup for ${record_name} failed." >&2; return 1; }
   echo "$resp" | jq -r '.result | length'
 }
+
+infra_cf_dns_txt_record() {
+  local zone_id="$1"
+  local record_name="$2"
+  local token resp encoded_name
+  token="$(infra_cf_api_token "${3:-}")"
+  encoded_name="$(printf '%s' "$record_name" | jq -sRr @uri)"
+  resp="$(infra_curl_get \
+    "https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records?name=${encoded_name}&type=TXT" \
+    "$token")"
+  echo "$resp" | jq -e '.success and (.result | length == 1)' >/dev/null \
+    || { echo "Expected exactly one Cloudflare TXT record named ${record_name}." >&2; return 1; }
+  echo "$resp" | jq -c '.result[0]'
+}

@@ -5,11 +5,11 @@ require 'open3'
 require 'yaml'
 
 RSpec.describe 'Release smoke check workflow' do
-  SMOKE_STEP = 'Run post-deploy smoke check'
-  REQUIRE_STEP = 'Require release-smoke secrets'
-  SECRET_NAMES = %w[STAGING_USERNAME STAGING_PASSWORD ROLLBAR_ACCESS_TOKEN].freeze
-
   let(:workflow_path) { Rails.root.join('.github/workflows/release_smoke_check.yml') }
+  let(:smoke_step) { 'Run post-deploy smoke check' }
+  let(:require_step) { 'Require release-smoke secrets' }
+  let(:verify_step) { 'Verify release-smoke environment' }
+  let(:secret_names) { %w[STAGING_USERNAME STAGING_PASSWORD ROLLBAR_ACCESS_TOKEN] }
   let(:workflow) { YAML.safe_load(File.read(workflow_path), aliases: true) }
 
   def workflow_triggers(doc)
@@ -27,9 +27,11 @@ RSpec.describe 'Release smoke check workflow' do
     return false unless job.dig('env', 'RELEASE_SMOKE_BASE_URL') == 'https://staging.ebwiki.org'
 
     steps = job.fetch('steps', [])
-    smoke_index = steps.index { |entry| entry['name'] == SMOKE_STEP }
-    require_index = steps.index { |entry| entry['name'] == REQUIRE_STEP }
-    return false unless smoke_index && require_index && require_index < smoke_index
+    verify_index = steps.index { |entry| entry['name'] == verify_step }
+    smoke_index = steps.index { |entry| entry['name'] == smoke_step }
+    require_index = steps.index { |entry| entry['name'] == require_step }
+    return false unless verify_index && smoke_index && require_index
+    return false unless verify_index < require_index && require_index < smoke_index
     return false unless secrets_mapped?(steps[require_index]['env'])
 
     env = steps[smoke_index]['env'] || {}
@@ -41,17 +43,17 @@ RSpec.describe 'Release smoke check workflow' do
 
   def secrets_mapped?(env)
     env ||= {}
-    SECRET_NAMES.all? { |name| env[name] == "${{ secrets.#{name} }}" }
+    secret_names.all? { |name| env[name] == "${{ secrets.#{name} }}" }
   end
 
   def run_require_step(env)
-    step = workflow.dig('jobs', 'smoke_check', 'steps').find { |s| s['name'] == REQUIRE_STEP }
+    step = workflow.dig('jobs', 'smoke_check', 'steps').find { |s| s['name'] == require_step }
     Open3.capture3(env, 'bash', '-e', '-c', step.fetch('run'), unsetenv_others: true)
   end
 
   it 'fails the secrets step when any release-smoke secret is empty' do
-    full = SECRET_NAMES.to_h { |name| [name, "#{name.downcase}-value"] }.merge('PATH' => ENV.fetch('PATH'))
-    SECRET_NAMES.each do |name|
+    full = secret_names.to_h { |name| [name, "#{name.downcase}-value"] }.merge('PATH' => ENV.fetch('PATH'))
+    secret_names.each do |name|
       _out, err, status = run_require_step(full.merge(name => ''))
       expect(status.success?).to be(false), "#{name} empty must fail"
       expect(err).to include(%("secret":"#{name}"))
@@ -59,7 +61,7 @@ RSpec.describe 'Release smoke check workflow' do
   end
 
   it 'passes the secrets step when every release-smoke secret is set' do
-    full = SECRET_NAMES.to_h { |name| [name, "#{name.downcase}-value"] }.merge('PATH' => ENV.fetch('PATH'))
+    full = secret_names.to_h { |name| [name, "#{name.downcase}-value"] }.merge('PATH' => ENV.fetch('PATH'))
     _out, err, status = run_require_step(full)
     expect(status.success?).to be(true), err
   end

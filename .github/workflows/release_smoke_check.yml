@@ -12,6 +12,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment: release-smoke
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     env:
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
@@ -29,6 +30,18 @@ jobs:
 
       - name: Install gems
         run: bundle install
+
+      - name: Verify release-smoke environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          code="$(gh api -H "Accept: application/vnd.github+json" \
+            "/repos/${GITHUB_REPOSITORY}/environments/release-smoke" \
+            -w "%{http_code}" -o /dev/null)"
+          if [ "$code" != "200" ]; then
+            printf '{"level":"error","event":"release_smoke_environment_missing","http_code":"%s"}\n' "$code" >&2
+            exit 1
+          fi
 
       - name: Require release-smoke secrets
         env:
