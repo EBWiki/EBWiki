@@ -76,39 +76,3 @@ variable "existing_main_policy_id" {
   description = "Deployment branch policy ID for main when adopting an existing environment (set by github_preflight)."
   default     = ""
 }
-
-variable "deployment_protected_branches" {
-  type        = bool
-  description = "github_repository_environment deployment_branch_policy protected_branches (test mutants override)."
-  default     = false
-}
-
-variable "deployment_custom_branch_policies" {
-  type        = bool
-  description = "github_repository_environment deployment_branch_policy custom_branch_policies (test mutants override)."
-  default     = true
-}
-
-variable "main_branch_pattern" {
-  type        = string
-  description = "Branch pattern for the release-smoke deployment policy (test mutants override)."
-  default     = "main"
-}
-
-variable "include_main_deployment_policy" {
-  type        = bool
-  description = "When false, omits the main deployment policy resource (test mutants)."
-  default     = true
-}
-
-variable "staging_username_secret_name" {
-  type        = string
-  description = "Secret name for staging username (test mutants override)."
-  default     = "STAGING_USERNAME"
-}
-
-variable "staging_password_environment" {
-  type        = string
-  description = "Environment name for staging password secret (test mutants override)."
-  default     = "release-smoke"
-}

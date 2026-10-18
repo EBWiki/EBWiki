@@ -6,7 +6,7 @@ Use these commands after deploying the Postgres search change to verify behavior
 
 The smoke check hits the running site over HTTP. It confirms the home page loads, search returns results for a known term, junk search returns zero results without error, and `/health` reports Postgres and Redis only (no Elasticsearch probe).
 
-After a staging or production deploy, run the **Release smoke check** workflow by hand from the GitHub Actions tab on the **`main`** branch (see `.github/workflows/release_smoke_check.yml`) and choose **staging** or **production**. The job uses the GitHub Actions environment **`release-smoke`**, which is limited to the **`main`** branch and holds **`STAGING_USERNAME`**, **`STAGING_PASSWORD`**, and **`ROLLBAR_ACCESS_TOKEN`** (provisioned by `infra/github/`). After apply, run **`make github-delete-repo-secrets`** with **`--confirm`** to remove repository-level copies of those names. Repository admins can still bypass the branch policy, so treat **`main`** workflow edits as sensitive.
+After a staging or production deploy, run the **Release smoke check** workflow by hand from the GitHub Actions tab on the **`main`** branch (see `.github/workflows/release_smoke_check.yml`) and choose **staging** or **production**. The job uses the GitHub Actions environment **`release-smoke`**, which is limited to the **`main`** branch and holds **`STAGING_USERNAME`**, **`STAGING_PASSWORD`**, and **`ROLLBAR_ACCESS_TOKEN`** (provisioned by `infra/github/`). After apply, run **`make github-delete-repo-secrets`** for a dry run, then **`make github-delete-repo-secrets CONFIRM=1`** to remove repository-level copies of those names. Repository admins can still bypass the branch policy, so treat **`main`** workflow edits as sensitive.
 
 ### When to run
 

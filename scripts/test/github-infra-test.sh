@@ -3,10 +3,14 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 TMP="$(mktemp -d)"
+LEAK_TMP="$TMP/leak"
+mkdir -p "$LEAK_TMP"
+export TMPDIR="$LEAK_TMP"
 trap 'rm -rf "$TMP"' EXIT
 
 CURL_LOG="$TMP/curl.log"
-export CURL_LOG
+ROLLBAR_LOG="$TMP/rollbar.log"
+export CURL_LOG ROLLBAR_LOG
 
 fail() {
   echo "FAIL: $*" >&2
@@ -17,24 +21,46 @@ pass() {
   echo "PASS: $*"
 }
 
+assert_no_hdr_leaks() {
+  local leftover
+  leftover="$(find "$LEAK_TMP" -type f -name 'hdr' 2>/dev/null | head -1 || true)"
+  [ -z "$leftover" ] || fail "header file left in TMPDIR: $leftover"
+}
+
 write_curl_stub() {
   cat >"$TMP/curl" <<'CURL'
 #!/usr/bin/env bash
 set -euo pipefail
+printf '%s\n' "$@" >>"${CURL_LOG:?}"
 method=GET
 out=""
+body_file=""
 url=""
 while [ "$#" -gt 0 ]; do
   case "$1" in
     -X) method="$2"; shift 2 ;;
     -o) out="$2"; shift 2 ;;
+    --data-binary)
+      if [ -f "$2" ]; then
+        body_file="$2"
+      else
+        printf '%s' "$2" >>"${ROLLBAR_LOG:?}"
+      fi
+      shift 2
+      ;;
     -w) shift 2 ;;
     -H|-H@*) shift 2 ;;
     https://*) url="$1"; shift ;;
     *) shift ;;
   esac
 done
-printf '%s %s\n' "$method" "$url" >>"${CURL_LOG:?}"
+if [[ "$url" == *api.rollbar.com* ]]; then
+  if [ -n "$body_file" ] && [ -f "$body_file" ]; then
+    cat "$body_file" >>"${ROLLBAR_LOG:?}"
+  fi
+  printf '204'
+  exit 0
+fi
 case "${GITHUB_STUB_SCENARIO:-}" in
   non_admin)
     if [[ "$url" == *"/repos/"*"/actions/secrets/public-key" ]]; then
@@ -130,6 +156,39 @@ CURL
   chmod +x "$TMP/curl"
 }
 
+write_tofu_stub() {
+  cat >"$TMP/tofu" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+case "${1:-}" in
+  fmt) exit 0 ;;
+  init) exit 0 ;;
+  plan)
+    out=""
+    while [ "$#" -gt 0 ]; do
+      case "$1" in
+        -out) out="$2"; shift 2 ;;
+        -out=*) out="${1#-out=}"; shift ;;
+        *) shift ;;
+      esac
+    done
+    [ -n "$out" ] && : >"$out"
+    exit 0
+    ;;
+  apply)
+    while [ "$#" -gt 0 ]; do
+      if [ -f "${1:-}" ]; then rm -f "$1"; fi
+      shift
+    done
+    exit 0
+    ;;
+  test) exit 0 ;;
+  *) exit 0 ;;
+esac
+EOF
+  chmod +x "$TMP/tofu"
+}
+
 preflight_with() {
   local scenario="$1"
   export GITHUB_STUB_SCENARIO="$scenario"
@@ -139,12 +198,14 @@ preflight_with() {
   export TF_VAR_staging_username="user"
   export TF_VAR_staging_password="pass"
   export TF_VAR_rollbar_access_token="rollbar"
+  unset TF_VAR_main_branch_pattern || true
   # shellcheck source=../lib/github-preflight.sh
   source "$ROOT/scripts/lib/github-preflight.sh"
   github_preflight
 }
 
 write_curl_stub
+write_tofu_stub
 export PATH="$TMP:$PATH"
 
 if ( export TF_VAR_state_passphrase="" TF_VAR_github_token=x TF_VAR_staging_username=u TF_VAR_staging_password=p TF_VAR_rollbar_access_token=r
@@ -163,13 +224,20 @@ else
   pass "preflight rejects short passphrase"
 fi
 
+if ( export TF_VAR_state_passphrase="0123456789abcdef" TF_VAR_github_token=x TF_VAR_staging_username=u TF_VAR_staging_password=p TF_VAR_rollbar_access_token=r TF_VAR_main_branch_pattern='*'
+     source "$ROOT/scripts/lib/github-preflight.sh"
+     github_preflight ) 2>/dev/null; then
+  fail "preflight should reject unexpected TF_VAR_main_branch_pattern"
+else
+  pass "preflight rejects stray TF_VAR"
+fi
+
 if ( preflight_with non_admin ) 2>/dev/null; then
   fail "preflight should reject non-admin token"
 else
   pass "preflight rejects non-admin token"
 fi
 
-: >"$CURL_LOG"
 if ( preflight_with two_main_policies ) 2>/dev/null; then
   fail "preflight should reject two main policies"
 else
@@ -185,17 +253,47 @@ fi
 preflight_with env_missing
 [[ "${TF_VAR_existing_release_smoke_environment:-}" == false ]] || fail "expected env missing"
 pass "preflight passes when environment is missing"
+assert_no_hdr_leaks
 
 preflight_with env_exists
 [[ "${TF_VAR_existing_release_smoke_environment:-}" == true ]] || fail "expected env exists"
 [[ "${TF_VAR_existing_main_policy_id:-}" == 9001 ]] || fail "expected main policy id"
 pass "preflight passes when environment exists"
+assert_no_hdr_leaks
 
 if grep -q 'ghp_stub_token_value' "$CURL_LOG"; then
   fail "token appeared in curl log"
 else
   pass "token not logged in curl argv"
 fi
+
+PLAN_DIR="$TMP/plan-work/infra/github"
+mkdir -p "$PLAN_DIR"
+PLAN_FILE="$PLAN_DIR/github.tfplan"
+(
+  cd "$PLAN_DIR"
+  trap 'rc=$?; [ "$rc" -eq 0 ] || rm -f "$PLAN_FILE"' EXIT
+  tofu plan -out=github.tfplan
+  [ -f "$PLAN_FILE" ] || fail "plan file missing after successful plan"
+  trap 'rm -f "$PLAN_FILE"' EXIT
+  tofu apply github.tfplan
+  [ ! -f "$PLAN_FILE" ] || fail "plan file still present after apply"
+)
+pass "plan file kept after plan and removed after apply"
+
+: >"$ROLLBAR_LOG"
+export TF_VAR_rollbar_access_token="rollbar_secret_token_value"
+PATH="$TMP:$PATH" bash -c "
+  set -E
+  source \"$ROOT/scripts/lib/github-rollbar.sh\"
+  GITHUB_SCRIPT_NAME=github-plan.sh
+  trap github_script_err_trap ERR
+  false
+" || true
+grep -Eq '"exit_code"[[:space:]]*:[[:space:]]*1' "$ROLLBAR_LOG" || fail "rollbar body missing exit_code 1"
+grep -q 'rollbar_secret_token_value' "$CURL_LOG" && fail "rollbar token appeared in curl argv"
+assert_no_hdr_leaks
+pass "rollbar trap posts exit_code and cleans header file"
 
 export GITHUB_STUB_SCENARIO="delete_STAGING_USERNAME"
 export DELETE_HTTP_CODE=204
@@ -209,6 +307,7 @@ export TF_VAR_rollbar_access_token="rollbar"
 source "$ROOT/scripts/lib/github-delete-repo-secrets.sh"
 github_delete_repo_secrets 0 >/dev/null
 pass "delete dry run succeeds"
+assert_no_hdr_leaks
 
 if ( printf 'wrong\n' | github_delete_repo_secrets 1 ) 2>/dev/null; then
   fail "delete should reject wrong confirmation"
@@ -231,4 +330,5 @@ else
   pass "delete fails on non-204 DELETE"
 fi
 
+assert_no_hdr_leaks
 echo "All GitHub infra script tests passed."

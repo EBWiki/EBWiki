@@ -16,11 +16,10 @@ Staging smoke values are read from **`ebwiki/stg`** during plan/apply (never pas
 ```bash
 make plan    # includes this stack after staging
 make apply   # includes this stack after staging; writes GitHub environment secrets
-make github-delete-repo-secrets   # dry run; use --confirm after apply
+make github-delete-repo-secrets              # dry run
+make github-delete-repo-secrets CONFIRM=1    # after apply
 ```
 
-After apply, Mark runs **`make github-delete-repo-secrets`** with **`--confirm`** to remove repository-level copies of the three secret names.
-
-Delete any **repository-level** copies of these three secret names after the environment is live so workflows cannot read them from repo secrets.
+After apply, Mark runs **`make github-delete-repo-secrets`** for a dry run, then **`make github-delete-repo-secrets CONFIRM=1`**.
 
 Deployment policy import ID format (integrations/github **6.4.0**): `repository:environment:policy_id`. See [repository_environment_deployment_policy import](https://github.com/integrations/terraform-provider-github/blob/v6.4.0/website/docs/r/repository_environment_deployment_policy.html.markdown#import).

@@ -23,8 +23,14 @@ github_preflight() {
     die preflight_input "state passphrase is shorter than 16 characters"
   fi
 
+  local allowed=' TF_VAR_state_passphrase TF_VAR_github_token TF_VAR_staging_username TF_VAR_staging_password TF_VAR_rollbar_access_token TF_VAR_existing_release_smoke_environment TF_VAR_existing_main_policy_id '
+  while read -r v; do
+    [[ "$allowed" == *" $v "* ]] || die preflight_input "unexpected $v in environment"
+  done < <(compgen -e | grep '^TF_VAR_' || true)
+
   GH_TMP="$(mktemp -d)"
   chmod 700 "$GH_TMP"
+  trap 'rm -rf "${GH_TMP:-}"' EXIT
   GH_HDR="$GH_TMP/hdr"
   ( umask 077; printf 'Authorization: Bearer %s\n' "$TF_VAR_github_token" >"$GH_HDR" )
 
@@ -70,4 +76,8 @@ github_preflight() {
   esac
 
   log_json info preflight_ok "token is admin; environment exists=${TF_VAR_existing_release_smoke_environment}"
+  rm -rf "$GH_TMP"
+  GH_TMP=""
+  GH_HDR=""
+  trap - EXIT
 }

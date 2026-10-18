@@ -9,6 +9,7 @@ on:
       - 'scripts/lib/infra-export-tf-vars.sh'
       - 'scripts/test/infra-lib-test.sh'
       - 'scripts/test/github-infra-test.sh'
+      - 'scripts/test/github-tftest-mutations.sh'
       - 'scripts/infra-with-tf-vars.sh'
       - 'scripts/infra-write-backend.sh'
       - '.github/workflows/infra-github.yml'
@@ -64,3 +65,7 @@ jobs:
           TF_VAR_staging_password: ci-validate-only
           TF_VAR_rollbar_access_token: ci-validate-only
         run: tofu test
+
+      - name: Test tftest mutations on copied stack
+        working-directory: .
+        run: ./scripts/test/github-tftest-mutations.sh

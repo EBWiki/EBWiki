@@ -34,11 +34,23 @@ github_delete_repo_secret() {
   [[ "$code" == 204 ]] || die delete_secret "DELETE $name returned HTTP $code"
 }
 
+github_delete_cleanup_temp() {
+  rm -rf "${GH_TMP:-}"
+  GH_TMP=""
+  trap - EXIT
+}
+
 github_delete_repo_secrets() {
   local confirm="$1"
   local name present=()
 
   github_preflight
+
+  GH_TMP="$(mktemp -d)"
+  chmod 700 "$GH_TMP"
+  trap 'github_delete_cleanup_temp' EXIT
+  GH_HDR="$GH_TMP/hdr"
+  ( umask 077; printf 'Authorization: Bearer %s\n' "$TF_VAR_github_token" >"$GH_HDR" )
 
   for name in "${GITHUB_DELETE_SECRET_NAMES[@]}"; do
     github_env_secret_present "$name" || die preflight_env "environment secret $name is missing from $GH_ENV_NAME"
@@ -52,6 +64,7 @@ github_delete_repo_secrets() {
 
   if ((${#present[@]} == 0)); then
     log_json info delete_skip "no repository-level smoke secrets to delete"
+    github_delete_cleanup_temp
     return 0
   fi
 
@@ -59,6 +72,7 @@ github_delete_repo_secrets() {
 
   if [[ "$confirm" != 1 ]]; then
     log_json info delete_dry_run "re-run with --confirm to delete (requires typing delete-repo-secrets)"
+    github_delete_cleanup_temp
     return 0
   fi
 
@@ -70,4 +84,5 @@ github_delete_repo_secrets() {
     github_delete_repo_secret "$name"
     log_json info delete_ok "removed repository secret $name"
   done
+  github_delete_cleanup_temp
 }

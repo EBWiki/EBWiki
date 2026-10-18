@@ -9,6 +9,6 @@ import {
 
 import {
   for_each = var.existing_main_policy_id == "" ? toset([]) : toset([var.existing_main_policy_id])
-  to       = github_repository_environment_deployment_policy.release_smoke_main[0]
+  to       = github_repository_environment_deployment_policy.release_smoke_main
   id       = "${var.github_repository}:release-smoke:${each.key}"
 }
