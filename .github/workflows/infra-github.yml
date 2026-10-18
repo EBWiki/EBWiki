@@ -5,8 +5,10 @@ on:
     paths:
       - 'infra/github/**'
       - 'scripts/github-*.sh'
+      - 'scripts/lib/github-*.sh'
       - 'scripts/lib/infra-export-tf-vars.sh'
       - 'scripts/test/infra-lib-test.sh'
+      - 'scripts/test/github-infra-test.sh'
       - 'scripts/infra-with-tf-vars.sh'
       - 'scripts/infra-write-backend.sh'
       - '.github/workflows/infra-github.yml'
@@ -24,14 +26,18 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
       - name: Infra helper tests
         working-directory: .
         run: ./scripts/test/infra-lib-test.sh
 
+      - name: GitHub infra script tests
+        working-directory: .
+        run: ./scripts/test/github-infra-test.sh
+
       - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1.0.8
+        uses: opentofu/setup-opentofu@9d84900f3238fab8cd84ce47d658d25dd008be2f # v1.0.8
         with:
           tofu_version: 1.13.1
 

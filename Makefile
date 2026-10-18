@@ -52,4 +52,7 @@ apply:
 	./scripts/staging-apply.sh
 	./scripts/github-apply.sh
 
-.PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan snapshot apply
+github-delete-repo-secrets:
+	./scripts/github-delete-repo-secrets.sh
+
+.PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan snapshot apply github-delete-repo-secrets
