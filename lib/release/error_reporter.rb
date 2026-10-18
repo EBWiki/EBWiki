@@ -25,7 +25,7 @@ module Release
     def logger
       return Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
 
-      @stderr_logger ||= Logger.new($stderr)
+      @logger ||= Logger.new($stderr)
     end
 
     def timestamp

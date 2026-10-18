@@ -9,6 +9,8 @@ module Release
   class SmokeCheck
     include HealthChecks
     include SearchRequests
+    include BasicAuth
+    include FailureReporting
 
     DEFAULT_SEARCH_TERM = '*'
     JUNK_SEARCH_TERM = 'ebwiki_smoke_check_no_results_xyz'
@@ -95,49 +97,11 @@ module Release
       raise SmokeCheckFailure.new(step, message)
     end
 
-    def log_step(path, status)
-      payload = {
-        event: 'release_smoke_check',
-        step: path,
-        http_status: status,
-        base_url: @log_base_url
-      }
-      @logger.info(payload.to_json)
-    end
-
-    def log_success
-      @logger.info({ event: 'release_smoke_check', result: 'ok', base_url: @log_base_url }.to_json)
-    end
-
-    def report_failure(error)
-      message = "Release smoke check failed at #{error.step}: #{error.message}"
-      @error_reporter.report(
-        event: 'release_smoke_check_failed',
-        message: message,
-        context: { step: error.step, base_url: @log_base_url }
-      )
-      warn(message)
-    end
-
     def normalize_base_url(url)
       normalized = url.to_s.strip.chomp('/')
       raise ArgumentError, 'base URL is required' if normalized.blank?
 
       normalized
-    end
-
-    def default_http_client
-      Release::HttpClient.new(basic_auth: basic_auth_credentials)
-    end
-
-    def basic_auth_credentials
-      username = ENV['RELEASE_SMOKE_BASIC_AUTH_USERNAME'].presence
-      username ||= ENV['STAGING_USERNAME'].presence
-      password = ENV['RELEASE_SMOKE_BASIC_AUTH_PASSWORD'].presence
-      password ||= ENV['STAGING_PASSWORD'].presence
-      return if username.blank? || password.blank?
-
-      { username: username, password: password }
     end
   end
 end

@@ -14,20 +14,19 @@ module Release
         }
       GQL
 
-      def self.rollback!(deployment_id:, token: ENV.fetch('RAILWAY_TOKEN', nil), http: Net::HTTP)
-        new(http: http).rollback!(deployment_id: deployment_id, token: token)
+      def self.perform_rollback(deployment_id:, token: ENV.fetch('RAILWAY_TOKEN', nil), http: Net::HTTP)
+        new(http: http).perform_rollback(deployment_id: deployment_id, token: token)
       end
 
       def initialize(http: Net::HTTP)
         @http = http
       end
 
-      def rollback!(deployment_id:, token:)
+      def perform_rollback(deployment_id:, token:)
         raise RollbackError, 'Set RAILWAY_TOKEN before rolling back on Railway.' if token.blank?
 
         response = post_graphql(token: token, deployment_id: deployment_id)
         parse_success!(response)
-        true
       end
 
       private
@@ -49,7 +48,7 @@ module Release
       def parse_success!(response)
         body = JSON.parse(response.body.to_s)
         if body['errors'].present?
-          message = body['errors'].map { |entry| entry['message'] }.join('; ')
+          message = body['errors'].map { |entry| entry['message'] }.join('; ') # rubocop:disable Rails/Pluck
           raise RollbackError, "Railway rollback failed: #{message}"
         end
         return if body.dig('data', 'deploymentRollback')

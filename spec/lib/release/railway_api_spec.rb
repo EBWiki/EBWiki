@@ -12,7 +12,7 @@ RSpec.describe Release::Rollback::RailwayApi do
   end
 
   it 'posts the deploymentRollback mutation' do
-    described_class.new.rollback!(deployment_id: 'dep-1', token: 'token')
+    described_class.new.perform_rollback(deployment_id: 'dep-1', token: 'token')
 
     expect(connection).to have_received(:request) do |request|
       body = JSON.parse(request.body)
@@ -25,7 +25,7 @@ RSpec.describe Release::Rollback::RailwayApi do
     allow(response).to receive(:body).and_return({ errors: [{ message: 'nope' }] }.to_json)
 
     expect do
-      described_class.new.rollback!(deployment_id: 'dep-1', token: 'token')
+      described_class.new.perform_rollback(deployment_id: 'dep-1', token: 'token')
     end.to raise_error(Release::RollbackError, /nope/)
   end
 end

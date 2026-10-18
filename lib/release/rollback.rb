@@ -17,7 +17,7 @@ module Release
     end
 
     def run
-      @options = RollbackOptions.from_argv(@argv)
+      @options = RollbackOptionsBuilder.from_argv(@argv)
       validate!
       planner = Planner.new(@options, output: @output)
       commands = planner.commands
@@ -78,6 +78,7 @@ module Release
       if @options.service_name.blank?
         raise RollbackError, 'Set RAILWAY_SERVICE before rolling back on Railway.'
       end
+
       ResourceName.validate!(@options.service_name, label: 'Railway service name')
       return if @options.deployment_id.present?
 

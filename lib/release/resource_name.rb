@@ -11,7 +11,8 @@ module Release
       name = value.to_s
       return name if name.match?(PATTERN)
 
-      raise RollbackError, "#{label} #{name.inspect} is invalid (use lowercase letters, digits, and hyphens)."
+      raise RollbackError,
+            "#{label} #{name.inspect} is invalid (use lowercase letters, digits, and hyphens)."
     end
   end
 end
