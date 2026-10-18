@@ -1,0 +1,7 @@
+# If the release-smoke environment already exists in GitHub, copy this file to
+# imports.tf before the first apply, then remove imports.tf after a successful apply.
+
+import {
+  to = github_repository_environment.release_smoke
+  id = "EBWiki:release-smoke"
+}

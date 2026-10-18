@@ -1,0 +1,60 @@
+name: Infra (GitHub)
+
+on:
+  pull_request:
+    paths:
+      - 'infra/github/**'
+      - 'scripts/github-*.sh'
+      - 'scripts/lib/infra-export-tf-vars.sh'
+      - 'scripts/test/infra-lib-test.sh'
+      - 'scripts/infra-with-tf-vars.sh'
+      - 'scripts/infra-write-backend.sh'
+      - '.github/workflows/infra-github.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  opentofu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/github
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Infra helper tests
+        working-directory: .
+        run: ./scripts/test/infra-lib-test.sh
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1.0.8
+        with:
+          tofu_version: 1.13.1
+
+      - name: Format check
+        run: tofu fmt -check -recursive
+
+      - name: Init (no backend)
+        run: tofu init -backend=false
+
+      - name: Validate
+        env:
+          TF_VAR_state_passphrase: ci-validate-only-passphrase
+          TF_VAR_github_token: ci-validate-only
+          TF_VAR_staging_username: ci-validate-only
+          TF_VAR_staging_password: ci-validate-only
+          TF_VAR_rollbar_access_token: ci-validate-only
+        run: tofu validate
+
+      - name: Test (mocked GitHub provider)
+        env:
+          TF_VAR_state_passphrase: ci-validate-only-passphrase
+          TF_VAR_github_token: ci-validate-only
+          TF_VAR_staging_username: ci-validate-only
+          TF_VAR_staging_password: ci-validate-only
+          TF_VAR_rollbar_access_token: ci-validate-only
+        run: tofu test

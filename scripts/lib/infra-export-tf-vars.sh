@@ -18,6 +18,31 @@ infra_export_tf_vars_from_infra_config() {
   if [ -n "${STAGING_BASIC_AUTH_USERNAME:-}" ]; then
     export TF_VAR_staging_basic_auth_username="$STAGING_BASIC_AUTH_USERNAME"
   fi
+  if [ -n "${GITHUB_TOKEN:-}" ]; then
+    export TF_VAR_github_token="$GITHUB_TOKEN"
+  fi
+}
+
+infra_export_github_smoke_secrets_from_stg() {
+  command -v doppler >/dev/null 2>&1 || { echo "doppler CLI is required." >&2; exit 1; }
+  export TF_VAR_staging_username="$(
+    doppler secrets get STAGING_USERNAME --project ebwiki --config stg --plain
+  )"
+  export TF_VAR_staging_password="$(
+    doppler secrets get STAGING_PASSWORD --project ebwiki --config stg --plain
+  )"
+  export TF_VAR_rollbar_access_token="$(
+    doppler secrets get ROLLBAR_ACCESS_TOKEN --project ebwiki --config stg --plain
+  )"
+}
+
+infra_require_github_tf_vars() {
+  infra_export_tf_vars_from_infra_config
+  : "${TF_VAR_state_passphrase:?STATE_PASSPHRASE must be set in ebwiki/infra}"
+  : "${TF_VAR_github_token:?GITHUB_TOKEN must be set in ebwiki/infra}"
+  : "${TF_VAR_staging_username:?TF_VAR_staging_username must be set from ebwiki/stg}"
+  : "${TF_VAR_staging_password:?TF_VAR_staging_password must be set from ebwiki/stg}"
+  : "${TF_VAR_rollbar_access_token:?TF_VAR_rollbar_access_token must be set from ebwiki/stg}"
 }
 
 infra_require_bootstrap_migrate_tf_vars() {

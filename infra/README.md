@@ -6,7 +6,8 @@
 | --- | --- | --- | --- |
 | 1 (once) | **`bootstrap/`** | PR Manager + **`grandkru/prd`** makers | R2 bucket, minted Cloudflare API tokens, **`ebwiki/infra`** |
 | 2 | **`staging/`** | PR Manager + **`ebwiki/infra`** | Railway + **`staging.ebwiki.org`** |
-| 3 | **`cloudflare/`** | PR Manager + **`ebwiki/infra`** | [GKT-1293](https://linear.app/gkt/issue/GKT-1293) PR #4528 Access on **`/health`** (after staging; include new staging host) |
+| 3 | **`github/`** | PR Manager + **`ebwiki/infra`** + smoke values from **`ebwiki/stg`** | **`release-smoke`** GitHub environment and Actions secrets |
+| 4 | **`cloudflare/`** | PR Manager + **`ebwiki/infra`** | [GKT-1293](https://linear.app/gkt/issue/GKT-1293) PR #4528 Access on **`/health`** (after staging; include new staging host) |
 
 Root **`Makefile`:** **`make bootstrap`**, **`make plan`**, **`make apply`**.
 
