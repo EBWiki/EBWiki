@@ -194,6 +194,18 @@ describe 'case photo attachment' do
     expect(this_case.errors[:photo]).to include('must be a JPEG, PNG, or GIF image')
   end
 
+  it 'rejects a PDF renamed with a .jpg extension using content sniffing' do
+    this_case = create(:case)
+    this_case.photo.attach(
+      io: StringIO.new('%PDF-1.4 fake'),
+      filename: 'looks-like-photo.jpg',
+      content_type: 'image/jpeg'
+    )
+
+    expect(this_case).not_to be_valid
+    expect(this_case.errors[:photo]).to include('must be a JPEG, PNG, or GIF image')
+  end
+
   it 'rejects an image larger than the cap' do
     this_case = create(:case)
     this_case.photo.attach(

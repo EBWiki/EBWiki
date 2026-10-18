@@ -121,7 +121,8 @@ class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
     blob = photo.blob
     return if blob.nil?
 
-    unless ALLOWED_PHOTO_CONTENT_TYPES.include?(blob.content_type)
+    detected_type = detected_photo_content_type(blob)
+    unless ALLOWED_PHOTO_CONTENT_TYPES.include?(detected_type)
       errors.add(:photo, 'must be a JPEG, PNG, or GIF image')
     end
 
@@ -129,6 +130,13 @@ class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
     errors.add(:photo, 'must be smaller than 5 MB')
   end
+
+  def detected_photo_content_type(blob)
+    Marcel::MimeType.for(blob.download, name: blob.filename.to_s)
+  rescue StandardError
+    blob.content_type
+  end
+  private :detected_photo_content_type
 
   def edit_summary
     summary
