@@ -39,27 +39,45 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   end
   # rubocop:enable Metrics/AbcSize
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
     @this_case = Case.new(case_params)
+    photo_upload = case_photo_upload
+    if photo_upload.present?
+      @this_case.photo.attach(photo_upload)
+      unless @this_case.valid?
+        @this_case.photo.purge if @this_case.photo.attached?
+        set_instance_vars
+        return render 'new'
+      end
+    end
     if @this_case.save
       current_user.follow(@this_case)
       flash[:success] = 'Case was created!'
       redirect_to @this_case
     else
+      @this_case.photo.purge if @this_case.photo.attached?
       set_instance_vars
       render 'new'
     end
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def followers
     @this_case = Case.friendly.find(params[:case_slug])
   end
 
   # rubocop:todo Metrics/MethodLength
-  def update
+  def update # rubocop:todo Metrics/AbcSize
     @this_case = Case.find(params[:id])
     @this_case.slug = nil
+    photo_upload = case_photo_upload
+    remove_photo = remove_case_photo_requested?
     if @this_case.update(case_params)
+      unless update_case_photo(@this_case, upload: photo_upload, remove: remove_photo)
+        set_instance_vars
+        return render 'edit'
+      end
       flash[:success] = 'Case was updated!'
       CaseMailer.send_followers_email(users: @this_case.followers,
                                       this_case: @this_case).deliver_now
@@ -115,8 +133,6 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
              :zipcode,
              :longitude,
              :latitude,
-             :avatar,
-             :remove_avatar,
              :video_url,
              :summary,
              :blurb,
@@ -133,6 +149,33 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   def set_commentable
     @commentable = Case.friendly.find(params[:id])
   end
+
+  def case_photo_upload
+    params.dig(:case, :photo)
+  end
+
+  def remove_case_photo_requested?
+    ActiveModel::Type::Boolean.new.cast(params.dig(:case, :remove_photo))
+  end
+
+  # rubocop:disable Naming/PredicateMethod, Metrics/AbcSize, Metrics/MethodLength -- photo replace/restore
+  def update_case_photo(this_case, upload:, remove:)
+    if remove
+      this_case.photo.purge if this_case.photo.attached?
+      return true
+    end
+
+    return true if upload.blank?
+
+    previous_blob = this_case.photo.blob if this_case.photo.attached?
+    this_case.photo.attach(upload)
+    return true if this_case.valid?
+
+    this_case.photo.purge
+    this_case.photo.attach(previous_blob) if previous_blob
+    false
+  end
+  # rubocop:enable Naming/PredicateMethod, Metrics/AbcSize, Metrics/MethodLength
 
   def set_instance_vars
     @agencies = SortCollectionOrdinally.call(collection: Agency.all)

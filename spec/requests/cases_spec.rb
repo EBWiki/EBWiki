@@ -140,6 +140,128 @@ RSpec.describe 'Cases', type: :request do
     end
   end
 
+  describe 'PATCH /cases/:slug with case photo' do
+    let(:user) { create(:user) }
+    let(:_case) { create(:case) }
+    let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
+
+    before { sign_in user }
+
+    it 'attaches a photo when a JPEG is uploaded' do
+      upload = Rack::Test::UploadedFile.new(image_path, 'image/jpeg')
+
+      patch "/cases/#{_case.slug}",
+            params: { case: { photo: upload, summary: 'Attached a case photo' } }
+
+      expect(response).to redirect_to("/cases/#{_case.slug}")
+      expect(_case.reload.photo).to be_attached
+    end
+
+    it 'removes the photo when remove_photo is checked' do
+      _case.photo.attach(
+        io: File.open(image_path),
+        filename: 'favicon.jpg',
+        content_type: 'image/jpeg'
+      )
+
+      patch "/cases/#{_case.slug}",
+            params: {
+              case: { remove_photo: '1', summary: 'Removed the case photo' }
+            }
+
+      expect(response).to redirect_to("/cases/#{_case.slug}")
+      expect(_case.reload.photo).not_to be_attached
+    end
+
+    it 'rejects a non-image upload' do
+      upload = Rack::Test::UploadedFile.new(
+        StringIO.new('%PDF-1.4'),
+        'application/pdf',
+        original_filename: 'not-a-photo.pdf'
+      )
+
+      patch "/cases/#{_case.slug}",
+            params: { case: { photo: upload, summary: 'Tried a PDF photo' } }
+
+      expect(response).to have_http_status(200)
+      expect(response.body).to include('Editing')
+      expect(_case.reload.photo).not_to be_attached
+    end
+
+    it 'keeps the existing photo when a replacement upload is rejected' do
+      _case.photo.attach(
+        io: File.open(image_path),
+        filename: 'favicon.jpg',
+        content_type: 'image/jpeg'
+      )
+      original_blob_id = _case.photo.blob.id
+      bad_upload = Rack::Test::UploadedFile.new(
+        StringIO.new('%PDF-1.4'),
+        'application/pdf',
+        original_filename: 'bad-replacement.pdf'
+      )
+
+      patch "/cases/#{_case.slug}",
+            params: { case: { photo: bad_upload, summary: 'Tried a bad replacement' } }
+
+      expect(response).to have_http_status(200)
+      expect(response.body).to include('Editing')
+      _case.reload
+      expect(_case.photo).to be_attached
+      expect(_case.photo.blob.id).to eq(original_blob_id)
+    end
+
+    it 'rejects a PDF renamed with a .jpg extension' do
+      upload = Rack::Test::UploadedFile.new(
+        StringIO.new('%PDF-1.4 fake'),
+        'image/jpeg',
+        original_filename: 'disguised.jpg'
+      )
+
+      patch "/cases/#{_case.slug}",
+            params: { case: { photo: upload, summary: 'Tried a disguised PDF' } }
+
+      expect(response).to have_http_status(200)
+      expect(_case.reload.photo).not_to be_attached
+    end
+  end
+
+  describe 'POST /cases with case photo' do
+    let(:user) { create(:user) }
+    let(:params) { { case: attributes_for(:case) } }
+
+    before { sign_in user }
+
+    it 'does not persist the case when the photo upload is invalid' do
+      upload = Rack::Test::UploadedFile.new(
+        StringIO.new('%PDF-1.4'),
+        'application/pdf',
+        original_filename: 'bad-on-create.pdf'
+      )
+
+      expect do
+        post '/cases', params: { case: params[:case].merge(photo: upload) }
+      end.not_to change(Case, :count)
+
+      expect(response).to have_http_status(200)
+      expect(response.body).to include('New Case')
+    end
+
+    it 'creates the case with an attached photo when the upload is valid' do
+      image_path = Rails.root.join('app/assets/images/favicon.jpg')
+      upload = Rack::Test::UploadedFile.new(image_path, 'image/jpeg')
+      case_attrs = attributes_for(:case).merge(state_id: create(:state).id)
+
+      expect do
+        post '/cases', params: { case: case_attrs.merge(photo: upload) }
+      end.to change(Case, :count).by(1)
+
+      created = Case.order(:id).last
+      expect(response).to redirect_to("/cases/#{created.slug}")
+      expect(created.photo).to be_attached
+    end
+  end
+
   describe 'PATCH /cases/:slug' do
     let(:user) { create(:user) }
     let(:_case) { create(:case) }

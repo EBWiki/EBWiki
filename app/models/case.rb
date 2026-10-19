@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 # Case model
-class Case < ApplicationRecord
+class Case < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include CaseSearchable
 
   MAX_BLURB_CHARACTERS = 500
+  ALLOWED_PHOTO_CONTENT_TYPES = %w[image/jpeg image/png image/gif].freeze
+  MAX_CASE_PHOTO_BYTE_SIZE = 5.megabytes
 
   enum :cause_of_death, {
     beating: 'beating',
@@ -69,19 +71,21 @@ class Case < ApplicationRecord
 
   before_validation :strip_html_from_blurb
 
-  # Avatar uploader using carrierwave
-  mount_uploader :avatar, AvatarUploader
   has_one_attached :photo
+
+  validate :case_photo_attachment_valid, if: -> { photo.attached? }
+
+  self.ignored_columns += %w[
+    avatar
+    default_avatar_url
+    remove_avatar
+  ]
 
   # Geocoding
   geocoded_by :full_address
   before_save :geocode, if: proc { |art|
     art.address_changed? || art.city_changed? || art.state_id_changed? || art.zipcode_changed?
   } # auto-fetch coordinates
-
-  before_save :set_default_avatar_url if proc do |art|
-    art.avatar.changed?
-  end
 
   # Scopes
   scope :most_recent_occurrences, lambda { |duration|
@@ -101,10 +105,6 @@ class Case < ApplicationRecord
     "#{address} #{city} #{state.ansi_code} #{zipcode}".strip
   end
 
-  def set_default_avatar_url
-    self.default_avatar_url = avatar.url
-  end
-
   def self.find_by_search(query)
     search(query)
   end
@@ -118,6 +118,27 @@ class Case < ApplicationRecord
 
     errors.add(:date, 'must be in the past') if date > Date.current
   end
+
+  def case_photo_attachment_valid
+    blob = photo.blob
+    return if blob.nil?
+
+    detected_type = detected_photo_content_type(blob)
+    unless ALLOWED_PHOTO_CONTENT_TYPES.include?(detected_type)
+      errors.add(:photo, 'must be a JPEG, PNG, or GIF image')
+    end
+
+    return unless blob.byte_size > MAX_CASE_PHOTO_BYTE_SIZE
+
+    errors.add(:photo, 'must be smaller than 5 MB')
+  end
+
+  def detected_photo_content_type(blob)
+    Marcel::MimeType.for(blob.download, name: blob.filename.to_s)
+  rescue StandardError
+    blob.content_type
+  end
+  private :detected_photo_content_type
 
   def strip_html_from_blurb
     return if blurb.blank?
