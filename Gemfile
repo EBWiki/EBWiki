@@ -79,9 +79,9 @@ group :development, :test do
   gem 'pre-commit', '~> 0.39'
   gem 'rake', require: false
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.88', require: false
+  gem 'rubocop', '~> 1.91', require: false
   gem 'rubocop-performance', '~> 1.23', require: false
-  gem 'rubocop-rails', '~> 2.36', require: false
+  gem 'rubocop-rails', '~> 2.38', require: false
   gem 'standard', '>= 1.35.1', require: false
 end
 
@@ -98,10 +98,10 @@ group :test do
   gem 'capybara', '~> 3.40'
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
-  gem 'selenium-webdriver', '~> 4.50'
+  gem 'selenium-webdriver', '~> 4.51'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
   gem 'vcr', '~> 6.0'
-  gem 'webmock', '~>3.26'
+  gem 'webmock', '~>3.34'
 end
 
 group :production do
