@@ -31,6 +31,24 @@ RSpec.describe 'Cases', type: :request do
         expect(response.body).to include(_case.title)
       end
     end
+
+    context 'when the case has an Active Storage photo only' do
+      let(:image_path) { Rails.root.join('app/assets/images/favicon.jpg') }
+
+      before do
+        _case.photo.attach(
+          io: File.open(image_path),
+          filename: 'favicon.jpg',
+          content_type: 'image/jpeg'
+        )
+        get "/cases/#{_case.slug}", params: {}, headers: {}
+      end
+
+      it 'renders the case image from Active Storage' do
+        expect(response.body).to include('/rails/active_storage/')
+        expect(response.body).to include('articleImage')
+      end
+    end
   end
 
   describe 'GET /cases/new' do
