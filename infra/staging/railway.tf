@@ -50,6 +50,7 @@ resource "railway_custom_domain" "staging" {
   domain         = var.staging_hostname
   service_id     = railway_service.ebwiki.id
   environment_id = railway_environment.production.id
+  target_port    = 8080
 
   lifecycle {
     prevent_destroy = true
