@@ -376,7 +376,7 @@ GEM
       mime-types-data (~> 3.2025, >= 3.2025.0507)
     mime-types-data (3.2026.0929)
     mini_histogram (0.3.1)
-    mini_magick (5.3.1)
+    mini_magick (5.4.0)
       logger
     mini_mime (1.1.5)
     minitest (6.0.6)
@@ -744,7 +744,7 @@ DEPENDENCIES
   groupdate (~> 5.0)
   hightop (~> 0.2)
   httparty (~> 0.24)
-  image_processing (~> 1.12)
+  image_processing (~> 1.2)
   jb (~> 0.8.2)
   jquery-rails (~> 4.4)
   json (~> 2.21)
