@@ -52,6 +52,9 @@ jobs:
           cp config/database.ci.yml config/database.yml
           bundle exec bin/rails db:prepare
 
+      - name: Build Dart Sass assets
+        run: bin/rails dartsass:build
+
       - name: Run RSpec
         run: |
           bundle exec rspec spec/
