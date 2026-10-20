@@ -8,6 +8,12 @@ module MapsHelper
     end
   end
 
+  def public_case_points
+    Rails.cache.fetch('public_case_points', expires_in: 12.hours) do
+      Maps::PublicCasePoints.call
+    end
+  end
+
   private
 
   def location_data(cases)

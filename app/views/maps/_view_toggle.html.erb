@@ -1,0 +1,9 @@
+<div class="maps-view-toggle text-center">
+  <% if local_assigns[:active] == :globe %>
+    <span class="btn btn-primary disabled" aria-current="page">3D globe</span>
+    <%= link_to 'Flat map', maps_path, class: 'btn btn-default' %>
+  <% else %>
+    <span class="btn btn-primary disabled" aria-current="page">Flat map</span>
+    <%= link_to '3D globe', globe_maps_path, class: 'btn btn-default' %>
+  <% end %>
+</div>

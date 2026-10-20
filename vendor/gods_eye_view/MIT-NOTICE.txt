@@ -1,0 +1,8 @@
+Portions of the EBWiki 3D globe front end are adapted from God's Eye View.
+
+God's Eye View
+Copyright (c) 2026 Bilawal Sidhu
+https://github.com/bilawalsidhu/gods-eye-view
+SPDX-License-Identifier: MIT
+
+See frontend/globe/imagery.js, terrain.js, and mapStack.js for adapted source files.
