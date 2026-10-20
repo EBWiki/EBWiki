@@ -1,4 +1,7 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+import "@hotwired/turbo-rails"
+import "controllers"
+
 import "jquery"
 import "jquery_ujs"
 import "bootstrap-sprockets"
@@ -7,9 +10,9 @@ import "bootstrap-datetimepicker"
 import "pickers"
 import "cocoon"
 import "social-share-button"
-import "underscore"
 import "select2"
-import "cases"
 import "popover"
 import "select"
 import "tooltip"
+
+Turbo.session.drive = false
