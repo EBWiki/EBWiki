@@ -22,11 +22,6 @@ clean: stop
 test:
 	./dev_provisions/run_tests.sh
 
-searchkick reindex_all:
-	@echo "## Please note that searchkick requires the container to be running and"
-	@echo "## takes a while to complete"
-	docker exec ebwiki bash -c 'source dev_provisions/environment.sh && rake searchkick:reindex:all'
-
 rspec:
 	@echo "## Please note that rspec requires the container to be running and"
 	@echo "## takes a while to complete"
@@ -48,11 +43,16 @@ bootstrap:
 
 plan:
 	./scripts/staging-plan.sh
+	./scripts/github-plan.sh
 
 snapshot:
 	doppler run --project ebwiki --config infra -- ./scripts/staging-db-snapshot.sh
 
 apply:
+	./scripts/github-apply.sh
 	./scripts/staging-apply.sh
 
-.PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan snapshot apply
+github-delete-repo-secrets:
+	./scripts/github-delete-repo-secrets.sh $(if $(filter 1,$(CONFIRM)),--confirm,)
+
+.PHONY: run build exec stop clean all updatedb logs test rspec codeclimate bootstrap plan snapshot apply github-delete-repo-secrets

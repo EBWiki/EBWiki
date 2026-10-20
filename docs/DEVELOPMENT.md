@@ -49,8 +49,7 @@ There are a number of guides available for running EBWiki in your local environm
 The EBWiki repo has a `db/seeds.rb` file that you can use to add some basic data to your local database for development purposes.  However, there may be times when you want your local database to have data similar to what you'd see in production (e.g, when working on analytics or search).  In that case, please leave a comment stating your need on your ticket and mention Rachel Green or Mark Nyon.
 
 ## Third-Party Services
-* Elasticsearch for searching cases. Elasticsearch < 7 due to licensing issues.
-* Postgres 12 or higher
+* Postgres 12 or higher (full-text search via `pg_search`)
 * Redis
 * Sumologic
 
@@ -79,8 +78,8 @@ bundle exec pre-commit install
 ```
 
 The hook runs `rubocop` directly and `rake pre_commit:ci`, which executes:
-- **Rubocop** – Ruby style checker
-- **Brakeman** – Security vulnerability scanner
-- **RSpec** – Full test suite
+- **Rubocop**: Ruby style checker
+- **Brakeman**: Security vulnerability scanner
+- **RSpec**: Full test suite
 
 To bypass the hook in exceptional cases (e.g., WIP commits), use `git commit -n`.

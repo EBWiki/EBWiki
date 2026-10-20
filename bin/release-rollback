@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+if ARGV.intersect?(%w[--help -h])
+  puts <<~HELP
+    Usage: bin/release-rollback [OPTIONS]
+
+    Prints a rollback plan by default (dry run). Pass --execute to run platform commands.
+
+    Options:
+      --execute   Run rollback commands (Railway GraphQL)
+      --yes       Skip the confirmation prompt (required with --execute when stdin is not a TTY)
+      --help      Show this message
+
+    Railway staging: RAILWAY_TOKEN (workspace or account token) is required under Doppler ebwiki/infra.
+    Service defaults to ebwiki and environment to production. When RAILWAY_ROLLBACK_DEPLOYMENT_ID is
+    unset, the newest deployment older than the live one that Railway can roll back to is chosen.
+  HELP
+  exit 0
+end
+
+require_relative '../lib/release/plain'
+require_relative '../lib/release/rollback_error'
+require_relative '../lib/release/deployment_id'
+require_relative '../lib/release/resource_name'
+require_relative '../lib/release/url_sanitizer'
+require_relative '../lib/release/shell_command'
+require_relative '../lib/release/railway_rollback_command'
+require_relative '../lib/release/rollback_options'
+require_relative '../lib/release/rollback_options_builder'
+require_relative '../lib/release/rollback/railway_graphql_client'
+require_relative '../lib/release/rollback/railway_deployment_verifier'
+require_relative '../lib/release/rollback/railway_api'
+require_relative '../lib/release/rollback/command_executor'
+require_relative '../lib/release/rollback/planner'
+require_relative '../lib/release/rollback/staging_context'
+require_relative '../lib/release/rollback/previous_deployment_resolver'
+require_relative '../lib/release/rollback'
+
+result = Release::Rollback.run(ARGV)
+exit(result.success ? 0 : 1)

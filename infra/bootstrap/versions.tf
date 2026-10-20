@@ -14,6 +14,10 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.6"
     }
+    rollbar = {
+      source  = "rollbar/rollbar"
+      version = "~> 1.18"
+    }
   }
 
   backend "s3" {}

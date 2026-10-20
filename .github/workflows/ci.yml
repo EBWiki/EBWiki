@@ -1,11 +1,21 @@
 ---
 name: CI
 
-on: [pull_request, workflow_dispatch]
+# The push trigger on main lets Railway's "Wait for CI" setting hold staging
+# deploys until these checks pass.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     env:
       RAILS_ENV: test
@@ -28,19 +38,16 @@ jobs:
       redis:
         image: redis
 
-      elasticsearch:
-        image: elasticsearch:6.8.13
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
       - name: install dependencies
         run: |
           sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
         with:
           ruby-version: 3.4.2
 
@@ -58,16 +65,17 @@ jobs:
 
   brakeman:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
       - name: install dependencies
         run: |
           sudo apt-get update && sudo apt-get install libcurl4-gnutls-dev
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
         with:
           ruby-version: 3.4.2
           cache-version: 1
@@ -81,10 +89,11 @@ jobs:
 
   markdown-link-checker:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Run Markdown Link Check
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        uses: gaurav-nelson/github-action-markdown-link-check@5c5dfc0ac2e225883c0e5f03a85311ec2830d368 # v1
         with:
           config-file: './.github/workflows/markdown_config.json'
           use-verbose-mode: 'yes'
@@ -92,17 +101,18 @@ jobs:
 
   rubocop:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.7.0
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
       - name: install dependencies
         run: |
           sudo apt-get update
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
         with:
           ruby-version: 3.4.2
 
@@ -111,3 +121,10 @@ jobs:
 
       - name: Run Rubocop
         run: bundle exec rubocop
+
+      - name: Zeitwerk check
+        env:
+          RAILS_ENV: test
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec bin/rails zeitwerk:check
