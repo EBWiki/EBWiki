@@ -10,7 +10,7 @@ module MpvPhotoImport
     end
 
     def best_case_match
-      auto_accept_pair || pending_review_pairs.first
+      auto_accept_pair || best_pending_review_pair
     end
 
     private
@@ -30,6 +30,28 @@ module MpvPhotoImport
         scorer = build_scorer(case_record)
         [case_record, scorer] if scorer.review?
       end
+    end
+
+    def best_pending_review_pair
+      pending_review_pairs.min_by { |case_record, scorer| review_sort_key(case_record, scorer) }
+    end
+
+    def review_sort_key(case_record, scorer)
+      detail = scorer.match_detail
+      exact_matches = [detail[:exact_name], detail[:exact_date], detail[:exact_state]].count(true)
+
+      [
+        -exact_matches,
+        detail[:exact_state] ? 0 : 1,
+        date_gap_days(case_record),
+        case_record.id
+      ]
+    end
+
+    def date_gap_days(case_record)
+      return Float::INFINITY unless row.date.present? && case_record.date.present?
+
+      (row.date - case_record.date).abs.to_i
     end
 
     def candidate_cases
