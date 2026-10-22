@@ -8,7 +8,8 @@ module Ebwiki
     class StagedChanges
       RUBY_LIKE = /\.(rb|rake|gemspec|ru)\z/i
       RUBOCOP_SPECIAL = /\A(
-        Gemfile|Rakefile|Guardfile|Capfile|Berksfile|Cheffile|Podfile|Thorfile|Vagabondfile|Vagrantfile
+        Gemfile|Rakefile|Guardfile|Capfile|Berksfile|Cheffile|Podfile|
+        Thorfile|Vagabondfile|Vagrantfile
       )\z/x
 
       def initialize(repo_root:, git: GitCommand.new(repo_root: repo_root))
@@ -24,18 +25,14 @@ module Ebwiki
         @paths ||= @git.staged_paths
       end
 
-      def empty?
-        paths.empty?
-      end
-
       def docs_only?
-        return false if empty?
+        return false if paths.empty?
 
         paths.all? { |path| docs_only_path?(path) }
       end
 
       def brakeman_needed?
-        return false if empty? || docs_only?
+        return false if paths.empty? || docs_only?
 
         paths.any? { |path| brakeman_trigger_path?(path) }
       end

@@ -11,7 +11,7 @@ module Ebwiki
 
       def call
         staged = StagedChanges.new(repo_root: @repo_root, git: @git)
-        if staged.empty?
+        if staged.paths.empty?
           @logger.call(:info, 'No staged changes; static checks skipped.')
           return true
         end
