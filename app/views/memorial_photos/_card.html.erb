@@ -9,14 +9,14 @@
     <% end %>
   <% else %>
     <%= link_to card.case_path, class: 'memorial-photos__name-card' do %>
-      <span class="memorial-photos__name-card-label" id="<%= dom_id(this_case, :memorial_title) %>">
+      <span class="memorial-photos__name-card-label">
         <%= card.display_name %>
       </span>
     <% end %>
   <% end %>
 
   <div class="memorial-photos__meta">
-    <h2 class="memorial-photos__card-title">
+    <h2 class="memorial-photos__card-title" id="<%= dom_id(this_case, :memorial_title) %>">
       <%= link_to card.display_name, card.case_path %>
     </h2>
     <% if this_case.date.present? %>
