@@ -9,7 +9,7 @@ Rails.application.load_tasks
 
 namespace :pre_commit do
   desc 'Static checks (RuboCop on staged content, Brakeman snapshot). Same as the git hook.'
-  task :static do
+  task static: :environment do
     require Rails.root.join('lib/ebwiki/pre_commit/cli')
     Ebwiki::PreCommit::Cli.run_static!(repo_root: Rails.root.to_s)
   end
