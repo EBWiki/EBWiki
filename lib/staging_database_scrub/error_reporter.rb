@@ -4,7 +4,7 @@ module StagingDatabaseScrub
   module ErrorReporter
     module_function
 
-    def report(error, context = {})
+    def report(error, **context)
       payload = { scrub: 'staging_database', **context }
       Rollbar.error(error, payload) if rollbar_enabled?
       Rails.logger.error(

@@ -25,8 +25,6 @@ module StagingDatabaseScrub
       ensure_database_url!
       result = build_result(connect!)
       log_report(result)
-      raise AssertionFailedError, 'Scrubbed database assertion failed' unless result.success?
-
       result
     rescue StandardError => e
       ErrorReporter.report(e, phase: 'assert')

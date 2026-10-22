@@ -13,6 +13,10 @@ namespace :staging_database do
   task assert: :environment do
     result = StagingDatabaseScrub.assert
     StagingDatabaseScrub::ReportPrinter.print_assertion_result(result)
+    unless result.success?
+      raise StagingDatabaseScrub::Asserter::AssertionFailedError,
+            'Scrubbed database assertion failed'
+    end
     $stdout.puts 'Scrubbed database assertion passed.'
   end
 end
