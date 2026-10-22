@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Case photo change request form', type: :request do
+RSpec.describe 'Case photo change request POST', type: :request do
   let(:this_case) do
     create(:case).tap do |record|
       record.update!(

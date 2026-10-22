@@ -14,12 +14,36 @@ class CasePhotoCardPresenter
     "Photo of #{display_name}"
   end
 
+  def feature_active?
+    CasePhotoRequests.enabled?
+  end
+
+  def suppress_all_images?
+    feature_active? && (case_record.photo_hidden? || case_record.photo_removed?)
+  end
+
   def render_photo?
-    case_record.photo_shown? && case_record.photo_url.present?
+    feature_active? &&
+      !suppress_all_images? &&
+      case_record.photo_shown? &&
+      case_record.photo_url.present?
   end
 
   def name_card?
-    !render_photo? && case_record.photo_url.present?
+    return false unless feature_active?
+
+    suppress_all_images? || (!render_photo? && case_record.photo_url.present?)
+  end
+
+  def render_legacy_avatar?
+    return false unless feature_active?
+    return false if suppress_all_images? || name_card? || render_photo?
+
+    case_record.avatar?
+  end
+
+  def render_default_icon?
+    !render_photo? && !name_card? && !render_legacy_avatar?
   end
 
   private

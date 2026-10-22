@@ -8,6 +8,17 @@
   padding: 1rem;
   text-align: center;
   width: 100%;
+
+  &--thumbnail {
+    display: block;
+    min-height: 150px;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
 }
 
 .case-photo-name-card__label {

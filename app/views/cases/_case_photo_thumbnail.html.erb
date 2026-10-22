@@ -1,0 +1,15 @@
+<% card = CasePhotoCardPresenter.new(this_case) %>
+<% if card.render_photo? %>
+  <%= link_to image_tag(this_case.photo_url, class: 'img-responsive', alt: card.alt_text), this_case %>
+<% elsif card.name_card? %>
+  <%= link_to this_case, class: 'case-photo-name-card case-photo-name-card--thumbnail' do %>
+    <span class="case-photo-name-card__label"><%= card.display_name %></span>
+  <% end %>
+<% elsif card.render_legacy_avatar? %>
+  <%= link_to image_tag(this_case.avatar.large_avatar.url, class: 'img-responsive'), this_case %>
+<% else %>
+  <%= link_to image_tag('default-user-icon.png', class: 'img-responsive'), this_case %>
+  <div class="caption">
+    <h4><%= this_case.subjects.first&.name %></h4>
+  </div>
+<% end %>

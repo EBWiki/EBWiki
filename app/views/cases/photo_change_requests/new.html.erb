@@ -7,7 +7,11 @@
     Family requests are private. We do not publish them on the case page.
   </p>
 
-  <%= form_with model: [@this_case, @photo_change_request], local: true, html: { multipart: true } do |f| %>
+  <%= form_with model: @photo_change_request,
+                url: case_photo_change_request_path(@this_case),
+                scope: :case_photo_change_request,
+                local: true,
+                html: { multipart: true } do |f| %>
     <div class="form-group">
       <%= f.label :request_type, 'What would you like?' %>
       <%= f.select :request_type,
