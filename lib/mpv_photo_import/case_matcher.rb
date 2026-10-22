@@ -18,7 +18,7 @@ module MpvPhotoImport
     attr_reader :row
 
     def auto_accept_pair
-      cases_on_date_and_state.each do |case_record|
+      candidate_cases.each do |case_record|
         scorer = build_scorer(case_record)
         return [case_record, scorer] if scorer.auto_accept?
       end
@@ -26,16 +26,17 @@ module MpvPhotoImport
     end
 
     def pending_review_pairs
-      cases_on_date_and_state.filter_map do |case_record|
+      candidate_cases.filter_map do |case_record|
         scorer = build_scorer(case_record)
         [case_record, scorer] if scorer.review?
       end
     end
 
-    def cases_on_date_and_state
-      Case.includes(:state).select do |case_record|
-        case_record.date == row.date && case_record.state&.ansi_code == row.state_code
-      end
+    def candidate_cases
+      @candidate_cases ||= Case.includes(:state)
+                               .left_joins(:state)
+                               .where('cases.date = :date OR states.ansi_code = :state_code',
+                                      date: row.date, state_code: row.state_code)
     end
 
     def build_scorer(case_record)
