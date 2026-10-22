@@ -2,7 +2,8 @@
 :common_remove: []
 :common_add:
 - :rails
-:checks_remove: []
-:checks_add:
+:checks_remove:
 - :rubocop
 - :ci
+:checks_add:
+- :static

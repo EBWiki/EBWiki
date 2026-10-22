@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+
+repo_root = File.expand_path('..', __dir__)
+Dir.chdir(repo_root)
+
+$LOAD_PATH.unshift(File.join(repo_root, 'lib'))
+require 'pre-commit'
+require 'plugins/pre_commit/checks/static'
+
+exit(PreCommit.run ? 0 : 1)

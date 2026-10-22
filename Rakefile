@@ -8,25 +8,19 @@ require File.expand_path('config/application', __dir__)
 Rails.application.load_tasks
 
 namespace :pre_commit do
-  task ci: %i[rubocop brakeman spec]
-
-  task rubocop: :environment do
-    require 'rubocop'
-    result = RuboCop::CLI.new.run(%w[--format simple])
-    raise 'Rubocop failed' unless result.zero?
+  desc 'Static checks (RuboCop on staged content, Brakeman snapshot). Same as the git hook.'
+  task :static do
+    require Rails.root.join('lib/ebwiki/pre_commit/cli')
+    Ebwiki::PreCommit::Cli.run_static!(repo_root: Rails.root.to_s)
   end
 
-  task brakeman: :environment do
-    require 'brakeman'
-    # Align with CI: run brakeman for visibility but do not fail on warnings
-    Brakeman.run(
-      app_path: Rails.root.to_s,
-      print_report: true,
-      min_confidence: 2,
-      exit_on_warn: false,
-      exit_on_error: false
-    )
+  desc 'Static checks plus the full RSpec suite (local full check; CI remains authoritative).'
+  task full: [:static] do
+    Rake::Task['spec'].invoke
   end
+
+  desc 'Legacy alias: runs static checks only (no longer boots Brakeman/RuboCop via Rails).'
+  task ci: [:static]
 end
 
 ENV['NEWRELIC_AGENT_ENABLED'] = 'false'
