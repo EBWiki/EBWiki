@@ -124,6 +124,8 @@ RSpec.configure do |config|
     DatabaseCleaner[:active_record].clean
   end
 
+  config.filter_run_excluding embedding_model: true
+
   # Seachkick testing config
   config.around(:each, search: true) do |example|
     Searchkick.callbacks(true) do

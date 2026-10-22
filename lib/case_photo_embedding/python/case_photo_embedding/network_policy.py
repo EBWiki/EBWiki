@@ -13,7 +13,9 @@ ALLOWED_MODEL_HOST_SUFFIXES = (
 )
 
 _original_session_request = requests.Session.request
+_original_session_send = requests.Session.send
 _original_httpx_request = httpx.Client.request
+_original_httpx_send = httpx.Client.send
 _policy: "NetworkPolicy | None" = None
 
 
@@ -54,15 +56,29 @@ class NetworkPolicy:
                 _policy.check_url(str(url))
             return _original_httpx_request(client, method, url, **kwargs)
 
+        def guarded_session_send(session, request, **kwargs):  # type: ignore[no-untyped-def]
+            if _policy is not None:
+                _policy.check_url(request.url)
+            return _original_session_send(session, request, **kwargs)
+
+        def guarded_httpx_send(client, request, **kwargs):  # type: ignore[no-untyped-def]
+            if _policy is not None:
+                _policy.check_url(str(request.url))
+            return _original_httpx_send(client, request, **kwargs)
+
         requests.Session.request = guarded_request  # type: ignore[method-assign]
+        requests.Session.send = guarded_session_send  # type: ignore[method-assign]
         httpx.Client.request = guarded_httpx_request  # type: ignore[method-assign]
+        httpx.Client.send = guarded_httpx_send  # type: ignore[method-assign]
 
     @staticmethod
     def remove() -> None:
         global _policy
         _policy = None
         requests.Session.request = _original_session_request  # type: ignore[method-assign]
+        requests.Session.send = _original_session_send  # type: ignore[method-assign]
         httpx.Client.request = _original_httpx_request  # type: ignore[method-assign]
+        httpx.Client.send = _original_httpx_send  # type: ignore[method-assign]
 
 
 def _host_from_url(url: str) -> str | None:

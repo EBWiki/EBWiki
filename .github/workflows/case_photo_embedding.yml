@@ -81,7 +81,9 @@ jobs:
       - name: Run embedding specs
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/app_test
-        run: bundle exec rspec spec/lib/case_photo_embedding/
+        run: |
+          bundle exec rspec spec/lib/case_photo_embedding/
+          bundle exec rspec spec/lib/case_photo_embedding/image_self_match_spec.rb --tag embedding_model
 
       - name: Run embed job against fixture photos
         env:
