@@ -4,6 +4,9 @@
 class Case < ApplicationRecord
   include CaseSearchable
   include CasePhotoLink
+  include CasePhotoEmbedding::ShownPhotoScope
+
+  has_neighbors :photo_embedding
 
   MAX_BLURB_CHARACTERS = 500
 

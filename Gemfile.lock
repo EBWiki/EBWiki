@@ -394,6 +394,8 @@ GEM
       bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     naught (1.1.0)
+    neighbor (0.6.0)
+      activerecord (>= 7.1)
     net-http (0.9.1)
       uri (>= 0.11.1)
     net-http-digest_auth (1.4.1)
@@ -756,6 +758,7 @@ DEPENDENCIES
   mock_redis (~> 0.55)
   momentjs-rails (~> 2.20)
   montrose (~> 0.12)
+  neighbor (~> 0.5)
   newrelic_rpm (~> 7.0)
   paper_trail
   paper_trail-association_tracking

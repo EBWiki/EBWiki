@@ -1,0 +1,110 @@
+---
+name: Case photo embedding
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'lib/case_photo_embedding/**'
+      - 'db/migrate/*photo_embedding*'
+      - 'spec/lib/case_photo_embedding/**'
+      - '.github/workflows/case_photo_embedding.yml'
+      - 'Gemfile.lock'
+
+jobs:
+  embed-job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    env:
+      RAILS_ENV: test
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+      HF_HOME: /tmp/huggingface
+      TRANSFORMERS_CACHE: /tmp/huggingface
+      PYTHONPATH: lib/case_photo_embedding/python
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Install system packages
+        run: sudo apt-get update && sudo apt-get install -y libcurl4-gnutls-dev
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+
+      - name: Install gems
+        run: bundle install
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: lib/case_photo_embedding/python/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r lib/case_photo_embedding/python/requirements.txt
+
+      - name: Cache Hugging Face model
+        uses: actions/cache@v4
+        with:
+          path: /tmp/huggingface
+          key: siglip2-base-patch16-224-${{ hashFiles('lib/case_photo_embedding/python/requirements.txt') }}
+
+      - name: Prepare database
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/app_test
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec bin/rails db:prepare
+
+      - name: Run network policy tests
+        run: pip install pytest && pytest lib/case_photo_embedding/python/tests
+
+      - name: Run embedding specs
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/app_test
+        run: bundle exec rspec spec/lib/case_photo_embedding/
+
+      - name: Run embed job against fixture photos
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/app_test
+        run: |
+          ruby -run -e httpd spec/fixtures/files -p 8765 &
+          server_pid=$!
+          trap "kill $server_pid" EXIT
+          bundle exec rails runner "
+            require 'factory_bot_rails'
+            include FactoryBot::Syntax::Methods
+            Case.delete_all
+            2.times do
+              create(:case,
+                     photo_status: 'shown',
+                     photo_url: 'http://127.0.0.1:8765/sample_case_photo.png')
+            end
+          "
+          log_file=/tmp/case_photo_embedding_job.log
+          PYTHONPATH=lib/case_photo_embedding/python \
+            HF_HOME=/tmp/huggingface \
+            TRANSFORMERS_CACHE=/tmp/huggingface \
+            DATABASE_URL=postgres://postgres:postgres@localhost:5432/app_test \
+            python3 -m case_photo_embedding.job | tee "$log_file"
+          grep '"embedded_count": 2' "$log_file"
+          grep '"shown_count": 2' "$log_file"
