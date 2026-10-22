@@ -52,8 +52,9 @@ module Ebwiki
       end
 
       def rubocop_lint_paths(root, staged_paths)
-        support_abs = rubocop_snapshot_support_paths.map { |relative| File.join(root, relative) }
-        staged_paths.reject { |absolute| support_abs.include?(absolute) }
+        exclude_rel = Ebwiki::PreCommit::RUBOCOP_CONFIG_PATHS + ['Gemfile.lock']
+        exclude_abs = exclude_rel.map { |relative| File.join(root, relative) }
+        staged_paths.reject { |absolute| exclude_abs.include?(absolute) }
       end
 
       def run_staged_stdin(logger, paths)
