@@ -108,4 +108,4 @@ group :production do
   gem 'cloudflare-rails', '~> 7.0'
 end
 
-gem "neighbor", "~> 0.5"
+gem 'neighbor', '~> 0.5'

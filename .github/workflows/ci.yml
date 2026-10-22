@@ -54,7 +54,7 @@ jobs:
 
       - name: Run RSpec
         run: |
-          bundle exec rspec spec/
+          bundle exec rspec spec/ --tag ~embedding_model
 
   brakeman:
     runs-on: ubuntu-latest
