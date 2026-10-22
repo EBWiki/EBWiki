@@ -14,7 +14,19 @@
   <!-- Portfolio Item Row -->
   <div class="row">
     <div class="col-md-3">
-      <% if @this_case.avatar? %>
+      <% if CasePhotoRequests.enabled? %>
+        <%= render 'cases/case_photo_display', this_case: @this_case %>
+        <p class="case-photo-request-link">
+          <%= link_to 'Request removal or a different photo', new_case_photo_change_request_path(@this_case) %>
+        </p>
+        <% if current_user&.admin? %>
+          <%= button_to 'Hide case photo (admin)',
+                        admin_case_photo_hide_path(@this_case),
+                        method: :post,
+                        class: 'btn btn-warning btn-sm',
+                        form: { data: { turbo: false } } %>
+        <% end %>
+      <% elsif @this_case.avatar? %>
         <%= image_tag(@this_case.avatar.large_avatar.url, :class => "img-responsive articleImage") %>
       <% else %>
         <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>

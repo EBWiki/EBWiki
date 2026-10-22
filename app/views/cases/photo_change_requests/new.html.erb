@@ -1,0 +1,46 @@
+<div class="container">
+  <h1 class="page-header">Request removal or a different photo</h1>
+  <p class="lead">
+    Case: <%= link_to @this_case.title, @this_case %>
+  </p>
+  <p>
+    Family requests are private. We do not publish them on the case page.
+  </p>
+
+  <%= form_with model: [@this_case, @photo_change_request], local: true, html: { multipart: true } do |f| %>
+    <div class="form-group">
+      <%= f.label :request_type, 'What would you like?' %>
+      <%= f.select :request_type,
+                   options_for_select(
+                     [
+                       ['Remove this photo', 'remove'],
+                       ['Use a different photo', 'replace']
+                     ],
+                     @photo_change_request.request_type
+                   ),
+                   {},
+                   class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :message, 'Message (optional)' %>
+      <%= f.text_area :message, class: 'form-control', rows: 4 %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :requester_contact, 'How can we reach you? (optional)' %>
+      <%= f.text_field :requester_contact, class: 'form-control' %>
+      <p class="help-block text-muted">
+        Contact details are kept only as long as needed to handle the request.
+      </p>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :replacement_photo, 'Replacement photo (optional, for replace requests)' %>
+      <%= f.file_field :replacement_photo, class: 'form-control' %>
+    </div>
+
+    <%= f.submit 'Submit request', class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', @this_case, class: 'btn btn-default' %>
+  <% end %>
+</div>

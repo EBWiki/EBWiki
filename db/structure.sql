@@ -224,6 +224,77 @@ ALTER SEQUENCE public.case_mpv_photo_reviews_id_seq OWNED BY public.case_mpv_pho
 
 
 --
+-- Name: case_photo_admin_audit_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.case_photo_admin_audit_logs (
+    id bigint NOT NULL,
+    case_id bigint NOT NULL,
+    action character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: case_photo_admin_audit_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.case_photo_admin_audit_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: case_photo_admin_audit_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.case_photo_admin_audit_logs_id_seq OWNED BY public.case_photo_admin_audit_logs.id;
+
+
+--
+-- Name: case_photo_change_requests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.case_photo_change_requests (
+    id bigint NOT NULL,
+    case_id bigint NOT NULL,
+    request_type character varying NOT NULL,
+    message text,
+    requester_contact character varying,
+    replacement_photo character varying,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    resolved_at timestamp(6) without time zone,
+    contact_purge_after timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT case_photo_change_requests_request_type_allowed CHECK (((request_type)::text = ANY ((ARRAY['remove'::character varying, 'replace'::character varying])::text[]))),
+    CONSTRAINT case_photo_change_requests_status_allowed CHECK (((status)::text = ANY ((ARRAY['pending'::character varying, 'resolved'::character varying])::text[])))
+);
+
+
+--
+-- Name: case_photo_change_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.case_photo_change_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: case_photo_change_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.case_photo_change_requests_id_seq OWNED BY public.case_photo_change_requests.id;
+
+
+--
 -- Name: case_officers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1026,6 +1097,20 @@ ALTER TABLE ONLY public.case_mpv_photo_reviews ALTER COLUMN id SET DEFAULT nextv
 
 
 --
+-- Name: case_photo_admin_audit_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_admin_audit_logs ALTER COLUMN id SET DEFAULT nextval('public.case_photo_admin_audit_logs_id_seq'::regclass);
+
+
+--
+-- Name: case_photo_change_requests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_change_requests ALTER COLUMN id SET DEFAULT nextval('public.case_photo_change_requests_id_seq'::regclass);
+
+
+--
 -- Name: case_officers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1211,6 +1296,22 @@ ALTER TABLE ONLY public.case_agencies
 
 ALTER TABLE ONLY public.case_mpv_photo_reviews
     ADD CONSTRAINT case_mpv_photo_reviews_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: case_photo_admin_audit_logs case_photo_admin_audit_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_admin_audit_logs
+    ADD CONSTRAINT case_photo_admin_audit_logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: case_photo_change_requests case_photo_change_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_change_requests
+    ADD CONSTRAINT case_photo_change_requests_pkey PRIMARY KEY (id);
 
 
 --
@@ -1450,6 +1551,34 @@ CREATE INDEX index_case_mpv_photo_reviews_on_case_id ON public.case_mpv_photo_re
 --
 
 CREATE INDEX index_case_mpv_photo_reviews_on_status ON public.case_mpv_photo_reviews USING btree (status);
+
+
+--
+-- Name: index_case_photo_admin_audit_logs_on_case_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_photo_admin_audit_logs_on_case_id ON public.case_photo_admin_audit_logs USING btree (case_id);
+
+
+--
+-- Name: index_case_photo_admin_audit_logs_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_photo_admin_audit_logs_on_created_at ON public.case_photo_admin_audit_logs USING btree (created_at);
+
+
+--
+-- Name: index_case_photo_change_requests_on_case_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_photo_change_requests_on_case_id ON public.case_photo_change_requests USING btree (case_id);
+
+
+--
+-- Name: index_case_photo_change_requests_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_photo_change_requests_on_status ON public.case_photo_change_requests USING btree (status);
 
 
 --
@@ -1714,6 +1843,22 @@ ALTER TABLE ONLY public.case_mpv_photo_reviews
 
 
 --
+-- Name: case_photo_admin_audit_logs fk_rails_7a8b0d4e2c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_admin_audit_logs
+    ADD CONSTRAINT fk_rails_7a8b0d4e2c FOREIGN KEY (case_id) REFERENCES public.cases(id);
+
+
+--
+-- Name: case_photo_change_requests fk_rails_9c3e1f5a8b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_change_requests
+    ADD CONSTRAINT fk_rails_9c3e1f5a8b FOREIGN KEY (case_id) REFERENCES public.cases(id);
+
+
+--
 -- Name: mailboxer_conversation_opt_outs mb_opt_outs_on_conversations_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1744,6 +1889,8 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261022170001'),
+('20261022170000'),
 ('20261022143001'),
 ('20261022143000'),
 ('20260428201731'),
