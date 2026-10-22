@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :agencies
     resources :calendar_events
-    resources :cases
+    resources :cases do
+      resource :photo_hide, only: :create, controller: 'case_photo_hides'
+    end
     resources :case_agencies
     resources :comments
     resources :ethnicities
@@ -30,6 +32,7 @@ Rails.application.routes.draw do
     resources :comments, only: %i[index create]
     scope module: 'cases' do
       post 'versions/:id/revert', to: 'versions#revert', as: :revert
+      resource :photo_change_request, only: %i[new create]
     end
   end
   get '/cases/:case_slug/history', to: 'cases#history', as: :cases_history
