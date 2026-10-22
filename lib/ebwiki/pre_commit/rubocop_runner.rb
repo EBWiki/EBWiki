@@ -36,15 +36,24 @@ module Ebwiki
       def run_full_tree(logger, paths)
         snapshot = Snapshot.new(repo_root: @repo_root, git: @git)
         config_relative = '.rubocop.yml'
-        to_materialize = (paths + [config_relative]).uniq
+        to_materialize = (paths + rubocop_snapshot_support_paths).uniq
 
         snapshot.with_staged_rubocop_files(to_materialize) do |root, staged_paths|
           config_path = File.join(root, config_relative)
-          lint_paths = staged_paths.reject { |absolute| absolute == config_path }
+          lint_paths = rubocop_lint_paths(root, staged_paths)
           args = ['--format', 'simple', '--force-exclusion', '-c', config_path] + lint_paths
           stdout, stderr, status = Open3.capture3('bundle', 'exec', 'rubocop', *args, chdir: root)
           report_result(logger, paths, status.success?, stdout + stderr) || :passed
         end
+      end
+
+      def rubocop_snapshot_support_paths
+        Ebwiki::PreCommit::RUBOCOP_CONFIG_PATHS + Ebwiki::PreCommit::LOCKFILE_PATHS
+      end
+
+      def rubocop_lint_paths(root, staged_paths)
+        support_abs = rubocop_snapshot_support_paths.map { |relative| File.join(root, relative) }
+        staged_paths.reject { |absolute| support_abs.include?(absolute) }
       end
 
       def run_staged_stdin(logger, paths)
