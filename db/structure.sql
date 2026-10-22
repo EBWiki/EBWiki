@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: vector; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION vector IS 'vector data type and ivfflat and hnsw access methods';
+
+
+--
 -- Name: cause_of_death; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -291,7 +305,8 @@ CREATE TABLE public.cases (
     photo_source_url character varying,
     photo_credit character varying,
     photo_status character varying,
-    CONSTRAINT cases_photo_status_allowed CHECK (((photo_status IS NULL) OR ((photo_status)::text = ANY ((ARRAY['shown'::character varying, 'hidden'::character varying, 'removed'::character varying])::text[]))))
+    photo_embedding public.vector(768),
+    CONSTRAINT cases_photo_status_allowed CHECK (((photo_status IS NULL) OR ((photo_status)::text = ANY (ARRAY[('shown'::character varying)::text, ('hidden'::character varying)::text, ('removed'::character varying)::text]))))
 );
 
 
@@ -1453,6 +1468,13 @@ CREATE INDEX index_case_mpv_photo_reviews_on_status ON public.case_mpv_photo_rev
 
 
 --
+-- Name: index_cases_on_photo_embedding_hnsw; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cases_on_photo_embedding_hnsw ON public.cases USING hnsw (photo_embedding public.vector_cosine_ops) WHERE (((photo_status)::text = 'shown'::text) AND (photo_embedding IS NOT NULL));
+
+
+--
 -- Name: index_cases_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1744,6 +1766,7 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261022150000'),
 ('20261022143001'),
 ('20261022143000'),
 ('20260428201731'),
