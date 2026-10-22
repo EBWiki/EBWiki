@@ -95,6 +95,7 @@ group :development do
 end
 
 group :test do
+  gem 'axe-core-capybara', '~> 4.10'
   gem 'capybara', '~> 3.40'
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'

@@ -79,6 +79,8 @@ Rails.application.routes.draw do
 
   resource :search, controller: 'search'
 
+  get '/memorial_photos', to: 'memorial_photos#index', as: :memorial_photos
+
   get 'up' => 'rails/health#show', as: :rails_health_check
   get 'health' => 'health#show'
 end

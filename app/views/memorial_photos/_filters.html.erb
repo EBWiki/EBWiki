@@ -1,0 +1,49 @@
+<%= form_with url: memorial_photos_path, method: :get, local: true,
+              class: 'memorial-photos__filters',
+              html: { 'data-memorial-photos-target': 'form' } do %>
+  <div class="memorial-photos__filter-row">
+    <div class="memorial-photos__field">
+      <%= label_tag :name, 'Name' %>
+      <%= text_field_tag :name, filters.name, class: 'form-control', autocomplete: 'name' %>
+    </div>
+    <div class="memorial-photos__field">
+      <%= label_tag :state_id, 'State' %>
+      <%= select_tag :state_id,
+                     options_from_collection_for_select(@set_state_objects, :id, :name, filters.state_id),
+                     include_blank: 'All states',
+                     class: 'form-control' %>
+    </div>
+    <div class="memorial-photos__field">
+      <%= label_tag :city, 'City' %>
+      <%= text_field_tag :city, filters.city, class: 'form-control', autocomplete: 'address-level2' %>
+    </div>
+  </div>
+
+  <div class="memorial-photos__filter-row">
+    <div class="memorial-photos__field">
+      <%= label_tag :year_from, 'Year from' %>
+      <%= number_field_tag :year_from, filters.year_from, class: 'form-control', min: 1900, step: 1 %>
+    </div>
+    <div class="memorial-photos__field">
+      <%= label_tag :year_to, 'Year to' %>
+      <%= number_field_tag :year_to, filters.year_to, class: 'form-control', min: 1900, step: 1 %>
+    </div>
+    <div class="memorial-photos__field">
+      <%= label_tag :agency_id, 'Agency' %>
+      <%= select_tag :agency_id,
+                     options_from_collection_for_select(agencies, :id, :name, filters.agency_id),
+                     include_blank: 'All agencies',
+                     class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="memorial-photos__filter-row">
+    <div class="memorial-photos__field memorial-photos__field--grow">
+      <%= label_tag :q, 'Search text' %>
+      <%= search_field_tag :q, filters.query, class: 'form-control', placeholder: 'Search case text' %>
+    </div>
+    <div class="memorial-photos__actions">
+      <%= submit_tag 'Apply filters', class: 'btn btn-primary memorial-photos__submit' %>
+    </div>
+  </div>
+<% end %>

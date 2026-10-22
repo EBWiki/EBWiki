@@ -1,0 +1,8 @@
+<ul class="memorial-photos__grid" role="list">
+  <% cases.each do |this_case| %>
+    <% card = MemorialPhotoCardPresenter.new(this_case, view: self) %>
+    <li class="memorial-photos__card">
+      <%= render 'card', card: card, this_case: this_case %>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,7 @@
+<div class="memorial-photos__error" role="alert">
+  <h2 class="memorial-photos__error-title">We could not load the memorial grid</h2>
+  <p class="memorial-photos__error-body">Something went wrong while searching. You can try again.</p>
+  <%= link_to 'Retry',
+              memorial_photos_path(filters.to_query_hash),
+              class: 'btn btn-primary memorial-photos__retry' %>
+</div>
