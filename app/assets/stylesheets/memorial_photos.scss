@@ -1,0 +1,253 @@
+.memorial-photos {
+  --memorial-bg: #f7f7f5;
+  --memorial-surface: #ffffff;
+  --memorial-text: #1a1a1a;
+  --memorial-muted: #4a4a4a;
+  --memorial-border: #c8c8c8;
+  --memorial-focus: #005fcc;
+  --memorial-name-card-bg: #ececea;
+  padding-bottom: 3rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .memorial-photos {
+    --memorial-bg: #121212;
+    --memorial-surface: #1e1e1e;
+    --memorial-text: #f2f2f2;
+    --memorial-muted: #c4c4c4;
+    --memorial-border: #444444;
+    --memorial-focus: #6eb6ff;
+    --memorial-name-card-bg: #2a2a2a;
+  }
+}
+
+.memorial-photos__header {
+  margin-bottom: 1.5rem;
+}
+
+.memorial-photos__title {
+  color: var(--memorial-text);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.memorial-photos__lead {
+  color: var(--memorial-muted);
+  margin: 0;
+  max-width: 42rem;
+}
+
+.memorial-photos__filters {
+  background: var(--memorial-surface);
+  border: 1px solid var(--memorial-border);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+}
+
+.memorial-photos__filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.memorial-photos__field {
+  flex: 1 1 12rem;
+  min-width: 10rem;
+
+  label {
+    color: var(--memorial-text);
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .form-control {
+    background: var(--memorial-surface);
+    border-color: var(--memorial-border);
+    color: var(--memorial-text);
+  }
+
+  .form-control:focus {
+    border-color: var(--memorial-focus);
+    box-shadow: 0 0 0 2px var(--memorial-focus);
+    outline: none;
+  }
+}
+
+.memorial-photos__field--grow {
+  flex: 2 1 16rem;
+}
+
+.memorial-photos__actions {
+  align-items: flex-end;
+  display: flex;
+}
+
+.memorial-photos__submit:focus-visible,
+.memorial-photos__clear:focus-visible,
+.memorial-photos__retry:focus-visible {
+  outline: 2px solid var(--memorial-focus);
+  outline-offset: 2px;
+}
+
+.memorial-photos__summary {
+  color: var(--memorial-muted);
+  margin-bottom: 1rem;
+}
+
+.memorial-photos__grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.memorial-photos__card-inner {
+  background: var(--memorial-surface);
+  border: 1px solid var(--memorial-border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.memorial-photos__photo-link,
+.memorial-photos__name-card {
+  display: block;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--memorial-focus);
+    outline-offset: 2px;
+  }
+}
+
+.memorial-photos__photo {
+  aspect-ratio: 4 / 5;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.memorial-photos__name-card {
+  align-items: center;
+  background: var(--memorial-name-card-bg);
+  color: var(--memorial-text);
+  display: flex;
+  justify-content: center;
+  min-height: 220px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.memorial-photos__name-card-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.memorial-photos__meta {
+  padding: 0.75rem 1rem 1rem;
+}
+
+.memorial-photos__card-title {
+  font-size: 1rem;
+  margin: 0 0 0.35rem;
+
+  a {
+    color: var(--memorial-text);
+    text-decoration: underline;
+
+    &:focus-visible {
+      outline: 2px solid var(--memorial-focus);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.memorial-photos__card-date,
+.memorial-photos__credit {
+  color: var(--memorial-muted);
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0;
+}
+
+.memorial-photos__credit a {
+  color: var(--memorial-text);
+}
+
+.memorial-photos__empty,
+.memorial-photos__error {
+  background: var(--memorial-surface);
+  border: 1px solid var(--memorial-border);
+  border-radius: 4px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.memorial-photos__empty-title,
+.memorial-photos__error-title {
+  color: var(--memorial-text);
+  margin-top: 0;
+}
+
+.memorial-photos__empty-body,
+.memorial-photos__error-body {
+  color: var(--memorial-muted);
+}
+
+.memorial-photos--loading .memorial-photos__results {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.memorial-photos--loading .memorial-photos__skeleton {
+  display: block;
+}
+
+.memorial-photos__skeleton {
+  display: none;
+  margin-top: -1rem;
+}
+
+.memorial-photos__skeleton--hidden {
+  visibility: hidden;
+}
+
+.memorial-photos__skeleton-block {
+  animation: memorial-skeleton-pulse 1.2s ease-in-out infinite;
+  aspect-ratio: 4 / 5;
+  background: var(--memorial-name-card-bg);
+}
+
+.memorial-photos__skeleton-line {
+  animation: memorial-skeleton-pulse 1.2s ease-in-out infinite;
+  background: var(--memorial-name-card-bg);
+  height: 0.75rem;
+  margin: 0.75rem 1rem 0;
+}
+
+.memorial-photos__skeleton-line--short {
+  margin-bottom: 1rem;
+  width: 55%;
+}
+
+@keyframes memorial-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}

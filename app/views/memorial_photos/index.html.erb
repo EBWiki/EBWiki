@@ -1,0 +1,30 @@
+<div class="memorial-photos">
+  <header class="memorial-photos__header">
+    <h1 class="memorial-photos__title">Memorial</h1>
+    <p class="memorial-photos__lead">
+      Case photos sourced from public records and community archives. Each card links to the full EBWiki case page.
+    </p>
+  </header>
+
+  <%= render 'filters', filters: @filters, agencies: @agencies %>
+
+  <% if @query_failed %>
+    <%= render 'error_state', filters: @filters %>
+  <% else %>
+    <div class="memorial-photos__results" aria-live="polite">
+      <% if @cases.blank? %>
+        <%= render 'empty_state', filters: @filters %>
+      <% else %>
+        <p class="memorial-photos__summary">
+          <%= page_entries_info @cases %>
+        </p>
+        <%= render 'grid', cases: @cases %>
+        <%= paginate @cases, params: @filters.to_query_hash.except(:page) %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="memorial-photos__skeleton memorial-photos__skeleton--hidden" aria-hidden="true" data-memorial-photos-target="skeleton">
+    <%= render 'skeleton_grid' %>
+  </div>
+</div>

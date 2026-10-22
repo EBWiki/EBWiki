@@ -1,0 +1,16 @@
+default: &default
+  enabled: false
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  enabled: true
+
+staging:
+  <<: *default
+  enabled: true
+
+production:
+  <<: *default

@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
+
+--
 -- Name: cause_of_death; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -291,7 +305,7 @@ CREATE TABLE public.cases (
     photo_source_url character varying,
     photo_credit character varying,
     photo_status character varying,
-    CONSTRAINT cases_photo_status_allowed CHECK (((photo_status IS NULL) OR ((photo_status)::text = ANY ((ARRAY['shown'::character varying, 'hidden'::character varying, 'removed'::character varying])::text[]))))
+    CONSTRAINT cases_photo_status_allowed CHECK (((photo_status IS NULL) OR ((photo_status)::text = ANY (ARRAY[('shown'::character varying)::text, ('hidden'::character varying)::text, ('removed'::character varying)::text]))))
 );
 
 
@@ -1744,6 +1758,7 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261022160000'),
 ('20261022143001'),
 ('20261022143000'),
 ('20260428201731'),

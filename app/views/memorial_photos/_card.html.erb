@@ -1,0 +1,32 @@
+<article class="memorial-photos__card-inner" aria-labelledby="<%= dom_id(this_case, :memorial_title) %>">
+  <% if card.render_photo? %>
+    <%= link_to card.case_path, class: 'memorial-photos__photo-link' do %>
+      <%= image_tag this_case.photo_url,
+                    alt: card.alt_text,
+                    class: 'memorial-photos__photo',
+                    loading: 'lazy',
+                    decoding: 'async' %>
+    <% end %>
+  <% else %>
+    <%= link_to card.case_path, class: 'memorial-photos__name-card' do %>
+      <span class="memorial-photos__name-card-label" id="<%= dom_id(this_case, :memorial_title) %>">
+        <%= card.display_name %>
+      </span>
+    <% end %>
+  <% end %>
+
+  <div class="memorial-photos__meta">
+    <h2 class="memorial-photos__card-title">
+      <%= link_to card.display_name, card.case_path %>
+    </h2>
+    <% if this_case.date.present? %>
+      <p class="memorial-photos__card-date"><%= this_case.date.to_formatted_s(:long) %></p>
+    <% end %>
+    <% if card.render_photo? && card.photo_credit.present? && card.photo_source_url.present? %>
+      <p class="memorial-photos__credit">
+        Photo:
+        <%= link_to card.photo_credit, card.photo_source_url, rel: 'noopener noreferrer external' %>
+      </p>
+    <% end %>
+  </div>
+</article>
