@@ -84,7 +84,7 @@ module Ebwiki
 
       def project_rubocop_ruby_files
         tracked = @git.run!('ls-files', '-z').split("\0")
-        tracked.select { |path| rubocop_candidate?(path) && File.file?(@repo_root.join(path)) }
+        tracked.select { |path| rubocop_candidate?(path) && !deleted?(path) }
       end
     end
   end

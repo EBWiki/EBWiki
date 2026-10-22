@@ -19,7 +19,7 @@ module Ebwiki
 
         raise ToolFailedError.new(
           "git #{args.join(' ')} failed (exit #{status.exitstatus})",
-          instructions: stderr.presence || stdout
+          instructions: stderr.empty? ? stdout : stderr
         )
       end
 

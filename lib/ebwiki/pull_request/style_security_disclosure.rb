@@ -27,7 +27,8 @@ module Ebwiki
       def satisfied?
         return true unless required?
 
-        !section_content.strip.empty? && section_content.strip.casecmp('none') != 0
+        normalized = disclosure_answer.to_s.strip
+        !normalized.empty? && normalized.casecmp('none') != 0
       end
 
       def failure_message
@@ -55,6 +56,13 @@ module Ebwiki
 
         after = @body.split(SECTION_HEADING, 2).last
         after.split(/^## /, 2).first.to_s.strip
+      end
+
+      def disclosure_answer
+        content = section_content
+        return nil if content.nil?
+
+        content.split(/\n\s*\n/, 2).first.to_s.strip
       end
     end
   end

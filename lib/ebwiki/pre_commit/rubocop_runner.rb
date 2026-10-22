@@ -34,10 +34,17 @@ module Ebwiki
       end
 
       def run_full_tree(logger, paths)
-        args = ['--format', 'simple', '--force-exclusion', '-c', @config_path] + paths
-        stdout, stderr, status = Open3.capture3('bundle', 'exec', 'rubocop', *args,
-                                                chdir: @repo_root)
-        report_result(logger, paths, status.success?, stdout + stderr) || :passed
+        snapshot = Snapshot.new(repo_root: @repo_root, git: @git)
+        config_relative = '.rubocop.yml'
+        to_materialize = (paths + [config_relative]).uniq
+
+        snapshot.with_staged_rubocop_files(to_materialize) do |root, staged_paths|
+          config_path = File.join(root, config_relative)
+          lint_paths = staged_paths.reject { |absolute| absolute == config_path }
+          args = ['--format', 'simple', '--force-exclusion', '-c', config_path] + lint_paths
+          stdout, stderr, status = Open3.capture3('bundle', 'exec', 'rubocop', *args, chdir: root)
+          report_result(logger, paths, status.success?, stdout + stderr) || :passed
+        end
       end
 
       def run_staged_stdin(logger, paths)
