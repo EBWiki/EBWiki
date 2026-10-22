@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 module StagingDatabaseScrub
-  class AssertionRecord < ApplicationRecord
-    self.abstract_class = true
-  end
-
   class Asserter
     class AssertionFailedError < StandardError; end
 
@@ -13,6 +9,14 @@ module StagingDatabaseScrub
     Result = Struct.new(:case_count, :violations, keyword_init: true) do
       def success?
         violations.empty?
+      end
+    end
+
+    class << self
+      def assertion_record_class
+        @assertion_record_class ||= Class.new(::ApplicationRecord) do
+          self.abstract_class = true
+        end
       end
     end
 
@@ -44,12 +48,16 @@ module StagingDatabaseScrub
     end
 
     def connect!
-      AssertionRecord.establish_connection(database_url)
-      AssertionRecord.connection
+      assertion_record_class.establish_connection(database_url)
+      assertion_record_class.connection
     end
 
     def disconnect!
-      AssertionRecord.remove_connection
+      assertion_record_class.remove_connection
+    end
+
+    def assertion_record_class
+      self.class.assertion_record_class
     end
 
     def build_result(connection)
