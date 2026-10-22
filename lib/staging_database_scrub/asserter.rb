@@ -14,9 +14,12 @@ module StagingDatabaseScrub
 
     class << self
       def assertion_record_class
-        @assertion_record_class ||= Class.new(::ApplicationRecord) do
-          self.abstract_class = true
-        end
+        @assertion_record_class ||= StagingDatabaseScrub.const_set(
+          :AssertionRecord,
+          Class.new(::ApplicationRecord) do
+            self.abstract_class = true
+          end
+        )
       end
     end
 
