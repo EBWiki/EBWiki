@@ -6,10 +6,18 @@ on:
       - 'infra/staging/**'
       - 'scripts/lib/**'
       - 'scripts/staging-*.sh'
+      - 'scripts/lib/infra-railway-config.sh'
+      - 'scripts/lib/infra-staging-plan-gate.sh'
+      - '.railway/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'scripts/infra-with-tf-vars.sh'
       - 'scripts/test/infra-lib-test.sh'
+      - 'scripts/test/infra-railway-config-test.sh'
+      - 'scripts/test/fixtures/**'
+      - 'scripts/test/infra-doppler-names-test.sh'
       - 'Dockerfile.railway'
       - 'railway.toml'
-      - 'railway.staging.toml'
       - '.github/workflows/infra-staging.yml'
   workflow_dispatch:
 
@@ -31,8 +39,20 @@ jobs:
         working-directory: .
         run: ./scripts/test/infra-lib-test.sh
 
+      - name: Railway config plan gate tests
+        working-directory: .
+        run: ./scripts/test/infra-railway-config-test.sh
+
+      - name: Staging OpenTofu plan gate tests
+        working-directory: .
+        run: ./scripts/test/infra-staging-plan-gate-test.sh
+
+      - name: Doppler secret name lint
+        working-directory: .
+        run: ./scripts/test/infra-doppler-names-test.sh
+
       - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1.0.0
+        uses: opentofu/setup-opentofu@v1.0.8
         with:
           tofu_version: 1.13.1
 
@@ -46,9 +66,7 @@ jobs:
         env:
           TF_VAR_state_passphrase: ci-validate-only-passphrase
           TF_VAR_cloudflare_dns_api_token: ci-validate-only
-          TF_VAR_cloudflare_grandkru_dns_api_token: ci-validate-only
           TF_VAR_cloudflare_zone_id: "00000000000000000000000000000000"
-          TF_VAR_cloudflare_grandkru_zone_id: "00000000000000000000000000000000"
           TF_VAR_cloudflare_staging_dns_record_id: "00000000000000000000000000000000"
           TF_VAR_railway_project_id: "00000000-0000-0000-0000-000000000000"
           TF_VAR_railway_service_id: "00000000-0000-0000-0000-000000000000"

@@ -10,8 +10,3 @@ provider "cloudflare" {
   alias     = "ebwiki"
   api_token = var.cloudflare_dns_api_token
 }
-
-provider "cloudflare" {
-  alias     = "grandkru"
-  api_token = var.cloudflare_grandkru_dns_api_token
-}

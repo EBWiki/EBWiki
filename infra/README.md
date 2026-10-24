@@ -5,7 +5,7 @@
 | Step | Directory | Who / credentials | Purpose |
 | --- | --- | --- | --- |
 | 1 (once) | **`bootstrap/`** | PR Manager + **`grandkru/prd`** makers | R2 bucket, minted Cloudflare API tokens, **`ebwiki/infra`** |
-| 2 | **`staging/`** | PR Manager + **`ebwiki/infra`** | Railway + **`ebwiki.staging.grandkru.com`** (+ legacy **`staging.ebwiki.org`** redirect) |
+| 2 | **`staging/`** | PR Manager + **`ebwiki/infra`** | Railway + **`staging.ebwiki.org`** |
 | 3 | **`cloudflare/`** | PR Manager + **`ebwiki/infra`** | [GKT-1293](https://linear.app/gkt/issue/GKT-1293) PR #4528 Access on **`/health`** (after staging; include new staging host) |
 
 Root **`Makefile`:** **`make bootstrap`**, **`make plan`**, **`make apply`**.

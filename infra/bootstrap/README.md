@@ -27,18 +27,20 @@ OpenTofu uses the maker as **`cloudflare.token_maker`** and creates **final** us
 | --- | --- | --- |
 | **`staging_ebwiki_dns`** | DNS Write, Dynamic URL Redirects Write and Read on **ebwiki.org** | Staging provider **`cloudflare.ebwiki`** |
 | **`staging_grandkru_dns`** | DNS Write on **grandkru.com** only | Staging provider **`cloudflare.grandkru`** |
-| **`r2_admin`** | Workers R2 Storage Write on the account (short-lived; removed after bucket creation) | Provider **`cloudflare.r2_admin`** to create the bucket once |
-| **`r2_state`** | Workers R2 Storage Bucket Item Write on the state bucket | R2 S3 credentials in **`infra`** |
+| **`r2_admin`** | Workers R2 Storage Write on the **grandkru.com** Cloudflare account (short-lived; removed after bucket creation) | Provider **`cloudflare.r2_admin`** to create the bucket once |
+| **`r2_state`** | Workers R2 Storage Bucket Item Write on the state bucket (same account) | S3-compatible credentials in **`infra`** |
 
-Zone and account IDs in **`terraform.tfvars`** come from the **zone read** tokens, not from the token maker.
+DNS tokens stay scoped to their zones. Shared object storage (OpenTofu state and DB snapshots) uses the **grandkru.com** account ID from zone lookup (**`cloudflare_r2_account_id`**), because object storage is enabled there.
+
+Zone and account IDs in **`terraform.tfvars`** come from the **zone read** token, not from the token maker.
 
 ## What bootstrap creates
 
-- Private **R2** bucket for OpenTofu state and staging DB snapshots
+- Private object storage bucket on the **grandkru.com** Cloudflare account (OpenTofu state and staging DB snapshots). **`R2_BUCKET_NAME`**, **`R2_S3_ENDPOINT`**, and **`CLOUDFLARE_ACCOUNT_ID`** in **`infra`** update in place when the account changes; resource addresses in OpenTofu state stay the same.
 - Minted Cloudflare tokens above, stored in **`ebwiki/infra`**
 - **`TF_VAR_state_passphrase`** (random) for staging stacks
-- Config-scoped **Doppler service tokens** on **`stg` only**: read/write **`DOPPLER_TOKEN`** in **`infra`** for staging apply, and a read-only token stored as **`TF_VAR_staging_runtime_doppler_token`** for Railway
-- **`TF_VAR_bootstrap_state_passphrase`**, **`RAILWAY_TOKEN`**, **`TF_VAR_staging_basic_auth_username`** (generated), and **`STAGING_EXPECTED_POSTGRES_DB=ebwiki`** in **`infra`**
+- Config-scoped **Doppler service tokens** on **`stg` only**: read/write **`DOPPLER_TOKEN`** in **`infra`** for staging apply, and a read-only **`STAGING_RUNTIME_DOPPLER_TOKEN`** for Railway
+- **`BOOTSTRAP_STATE_PASSPHRASE`**, **`STATE_PASSPHRASE`**, **`RAILWAY_TOKEN`**, **`STAGING_BASIC_AUTH_USERNAME`** (generated), Cloudflare DNS tokens, and **`STAGING_EXPECTED_POSTGRES_DB=ebwiki`** in **`infra`**. OpenTofu variables are exported from these names by **`scripts/infra-with-tf-vars.sh`** (see **`scripts/lib/infra-export-tf-vars.sh`**).
 - Migrates bootstrap state from local encrypted storage into R2 in the same **`make bootstrap`** run
 
 ## Two apply stages

@@ -12,7 +12,7 @@ echo "Railway service ${RAILWAY_SERVICE_ID} in project ${RAILWAY_PROJECT_ID}"
 echo "Expected Git repo: ${REPO} @ ${BRANCH}"
 echo ""
 echo "Before apply, confirm the Railway GitHub app can access ${REPO}."
-echo "After apply, staging builds from main with railway.staging.toml (release-tasks.sh, not db:prepare)."
+echo "After apply, staging builds from main with .railway/railway.ts (release-tasks.sh, not db:prepare)."
 echo ""
 if command -v railway >/dev/null 2>&1; then
   railway status --service "${RAILWAY_SERVICE_ID}" 2>/dev/null || true

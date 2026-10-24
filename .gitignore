@@ -15,6 +15,7 @@ capybara-*.html
 /coverage/
 /spec/tmp
 **.orig
+*.tfplan
 rerun.txt
 pickle-email-*.html
 
