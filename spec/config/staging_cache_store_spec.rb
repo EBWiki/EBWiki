@@ -8,6 +8,8 @@ RSpec.describe 'Staging cache store configuration' do
   around do |example|
     WebMock.allow_net_connect!
     example.run
+  ensure
+    WebMock.disable_net_connect!
   end
 
   it 'runs the main RSpec process in the test environment, not staging' do
