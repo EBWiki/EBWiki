@@ -125,7 +125,7 @@ RSpec.describe 'Cases', type: :request do
   describe 'PATCH /cases/:slug' do
     let(:user) { create(:user) }
     let(:_case) { create(:case) }
-    let(:params) { { case: { city: 'Albany' } } }
+    let(:params) { { case: { city: 'Buffalo' } } }
     let(:bad_params) { { case: { date: Date.tomorrow } } }
 
     context 'when the case is successfully updated' do
@@ -136,6 +136,10 @@ RSpec.describe 'Cases', type: :request do
 
       it 'will redirect to the case show page' do
         expect(response).to be_redirect
+      end
+
+      it 'persists the submitted change' do
+        expect(_case.reload.city).to eq('Buffalo')
       end
     end
 
@@ -166,6 +170,86 @@ RSpec.describe 'Cases', type: :request do
       it 'stores the blurb without HTML tags' do
         expect(_case.reload.blurb).to eq('alert(1)Hello world')
         expect(_case.reload.blurb).not_to match(/<[^>]+>/)
+      end
+    end
+
+    context 'when follower email delivery fails after a successful save' do
+      let(:message_delivery) { instance_double(ActionMailer::MessageDelivery) }
+
+      before do
+        allow(CaseMailer).to receive(:send_followers_email).and_return(message_delivery)
+        allow(message_delivery).to receive(:deliver_now).and_raise(StandardError, 'mail failed')
+        allow(Rollbar).to receive(:error)
+        allow(Rails.logger).to receive(:error)
+
+        sign_in user
+        patch "/cases/#{_case.slug}", params: params, headers: {}
+      end
+
+      it 'redirects to the case show page' do
+        expect(response).to redirect_to(case_path(_case))
+      end
+
+      it 'sets the success flash' do
+        expect(flash[:success]).to eq('Case was updated!')
+      end
+
+      it 'persists the update' do
+        expect(_case.reload.city).to eq('Buffalo')
+      end
+
+      it 'reports the mail error to Rollbar' do
+        expect(Rollbar).to have_received(:error).with(instance_of(StandardError))
+      end
+
+      it 'logs the mail error class without the exception message' do
+        expect(Rails.logger).to have_received(:error).with(
+          "CasesController#update: follower email failed for case #{_case.id}: StandardError"
+        )
+      end
+    end
+
+    context 'when updating the case raises an error' do
+      let(:params) { { case: { city: 'Buffalo' } } }
+
+      before do
+        allow(CaseMailer).to receive(:send_followers_email)
+        allow(Rollbar).to receive(:error)
+        allow_any_instance_of(Case).to receive(:update) do |record, attrs|
+          record.assign_attributes(attrs)
+          raise StandardError, 'save failed'
+        end
+
+        sign_in user
+        patch "/cases/#{_case.slug}", params: params, headers: {}
+      end
+
+      it 'renders the edit form' do
+        expect(response.body).to include('Editing')
+      end
+
+      it 'returns unprocessable entity status' do
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it 'sets an error flash' do
+        expect(flash.now[:error]).to be_present
+      end
+
+      it 'reports the error to Rollbar' do
+        expect(Rollbar).to have_received(:error).with(instance_of(StandardError))
+      end
+
+      it 'does not send follower email' do
+        expect(CaseMailer).not_to have_received(:send_followers_email)
+      end
+
+      it 'does not persist changes' do
+        expect(_case.reload.city).to eq('Albany')
+      end
+
+      it 'keeps the editor submitted input on the form' do
+        expect(response.body).to include('Buffalo')
       end
     end
   end
