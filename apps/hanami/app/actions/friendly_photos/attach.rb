@@ -21,10 +21,13 @@ module EbWiki
           result = EbWiki::FriendlyPhotos::ApplyCandidate.new.call(hit: hit)
 
           if result.success
+            rights_note = hit.license.to_s.strip
+            rights_note = hit.license_url.to_s.strip if rights_note.empty?
+
             case_repo.apply_reviewed_photo_url(
               slug: slug,
               image_url: hit.image_url,
-              comment: "Applied reviewed profile picture '#{hit.title}' (#{hit.license}).",
+              comment: "Applied reviewed profile picture '#{hit.title}' (#{rights_note}).",
               user: current_user(response)
             )
             request.session[:attach_notice] = "Applied the selected profile picture to this case."
