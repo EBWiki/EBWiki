@@ -60,8 +60,8 @@ jobs:
             echo "Skipping tofu plan: set repository variable HEALTH_ACCESS_OPERATOR_EMAIL for plan in CI."
             exit 0
           fi
-          tofu plan -input=false -detailed-exitcode
-          plan_exit=$?
+          plan_exit=0
+          tofu plan -input=false -detailed-exitcode || plan_exit=$?
           if [ "$plan_exit" -eq 2 ]; then
             echo "Plan completed with changes pending (exit 2)."
             exit 0

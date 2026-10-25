@@ -6,7 +6,7 @@ resource "cloudflare_zero_trust_access_service_token" "health_monitoring" {
 
 resource "cloudflare_zero_trust_access_policy" "health_allow" {
   account_id = var.cloudflare_account_id
-  name       = "EBWiki /health operators and monitoring"
+  name       = "EBWiki /health operators"
   decision   = "allow"
 
   include = [
@@ -15,6 +15,15 @@ resource "cloudflare_zero_trust_access_policy" "health_allow" {
         email = var.allowed_operator_email
       }
     },
+  ]
+}
+
+resource "cloudflare_zero_trust_access_policy" "health_service_auth" {
+  account_id = var.cloudflare_account_id
+  name       = "EBWiki /health monitoring service token"
+  decision   = "non_identity"
+
+  include = [
     {
       service_token = {
         token_id = cloudflare_zero_trust_access_service_token.health_monitoring.id
@@ -32,8 +41,14 @@ resource "cloudflare_zero_trust_access_application" "health" {
   destinations              = local.health_destinations
   service_auth_401_redirect = true
 
-  policies = [{
-    id         = cloudflare_zero_trust_access_policy.health_allow.id
-    precedence = 1
-  }]
+  policies = [
+    {
+      id         = cloudflare_zero_trust_access_policy.health_service_auth.id
+      precedence = 1
+    },
+    {
+      id         = cloudflare_zero_trust_access_policy.health_allow.id
+      precedence = 2
+    },
+  ]
 }
