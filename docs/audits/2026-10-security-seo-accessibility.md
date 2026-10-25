@@ -15,8 +15,8 @@ At commit `51fed887b4d2eadfc444aa110e2265c0765c8580`, the tree contains **no** `
 | Environment | Local `RAILS_ENV=test` on `http://127.0.0.1:3000` with synthetic FactoryBot data; no staging or production hostnames accessed |
 | Report status | Draft for independent review |
 | Parent program | Site-wide security, SEO, and accessibility audit program (Linear GKT-1478) |
-| Pull request | Draft PR on branch `cursor/security-seo-a11y-audit-39f7` (link recorded when opened) |
-| CI for this report | Pending on the draft pull request (markdown link check, Brakeman, RuboCop, RSpec) |
+| Pull request | https://github.com/EBWiki/EBWiki/pull/4578 (draft) |
+| CI for this report | https://github.com/EBWiki/EBWiki/actions (workflow runs on pull request; status checked when opened) |
 
 Structure matches the Activism hub and QueerGlobal frontend audit reports (`docs/audits/2026-10-security-seo-accessibility.md` in those repositories).
 
