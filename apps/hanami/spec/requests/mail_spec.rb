@@ -35,6 +35,138 @@ RSpec.describe "Outgoing mail", :db, type: :request do
   end
 
   it "emails followers when a case is updated and when it is deleted" do
-    skip "Follower lookup and admin delete mail land in the stacked pull request on this branch."
+    state_id = TestData.insert_state
+    TestData.insert_case(state_id: state_id)
+    TestData.insert_subject(case_id: TestData.relations[:cases].where(slug: "walter-scott").one[:id])
+    TestData.insert_user(email: "editor@example.com", password: "password123", name: "John")
+    TestData.insert_user(email: "follower@ebwiki.org", password: "password123", name: "A Follower")
+
+    post "/login", email: "follower@ebwiki.org", password: "password123"
+    post "/cases/walter-scott/follows"
+    post "/logout"
+
+    post "/login", email: "editor@example.com", password: "password123"
+    post "/cases/walter-scott", {
+      _method: "patch",
+      case: {
+        title: "Walter Scott",
+        date: "2015-04-04",
+        city: "Charleston",
+        state_id: state_id,
+        overview: "<p>Updated overview.</p>",
+        blurb: "Updated blurb",
+        summary: "Moved the city name",
+        cause_of_death: "shooting",
+        subjects: [{name: "Walter Scott", age: "50"}],
+        links: [{url: "", title: ""}],
+        agency_ids: []
+      }
+    }
+
+    expect(last_response.status).to eq(302)
+    update_mail = EbWiki::Mailer.deliveries.find { |mail| mail.subject.include?("updated") }
+    expect(update_mail.to).to eq("follower@ebwiki.org")
+    expect(update_mail.subject).to eq("The Walter Scott case has been updated on EBWiki.")
+    expect(update_mail.html).to include("John")
+    expect(update_mail.html).to include("Moved the city name")
+    expect(update_mail.html).to include("/cases/walter-scott")
+
+    pending "Admin case delete is not shipping in the Hanami cutover, so deletion mail stays out until a dedicated change adds the route."
+    TestData.insert_user(email: "admin@example.com", password: "password123", admin: true)
+    post "/login", email: "admin@example.com", password: "password123"
+    post "/cases/walter-scott/delete"
+
+    expect(last_response.status).to eq(302)
+    deletion = EbWiki::Mailer.deliveries.find { |mail| mail.subject.include?("removed") }
+    expect(deletion.to).to eq("follower@ebwiki.org")
+    expect(deletion.subject).to eq("The Walter Scott case has been removed from EBWiki")
+  end
+
+  it "does not email blocked followers or users who are not following the case" do
+    state_id = TestData.insert_state
+    case_id = TestData.insert_case(state_id: state_id)
+    TestData.insert_subject(case_id: case_id)
+    editor_id = TestData.insert_user(email: "editor@example.com", password: "password123", name: "John")
+    blocked_id = TestData.insert_user(email: "blocked@example.com", password: "password123", name: "Blocked")
+    TestData.insert_user(email: "bystander@example.com", password: "password123", name: "Bystander")
+
+    TestData.relations[:follows].insert(
+      followable_type: "Case",
+      followable_id: case_id,
+      follower_type: "User",
+      follower_id: blocked_id,
+      blocked: true,
+      created_at: TestData.now,
+      updated_at: TestData.now
+    )
+
+    post "/login", email: "editor@example.com", password: "password123"
+    EbWiki::Mailer.reset_deliveries!
+    post "/cases/walter-scott", {
+      _method: "patch",
+      case: {
+        title: "Walter Scott",
+        date: "2015-04-04",
+        city: "Charleston",
+        state_id: state_id,
+        overview: "<p>Updated overview.</p>",
+        blurb: "Updated blurb",
+        summary: "No one else should get this",
+        cause_of_death: "shooting",
+        subjects: [{name: "Walter Scott", age: "50"}],
+        links: [{url: "", title: ""}],
+        agency_ids: []
+      }
+    }
+
+    expect(last_response.status).to eq(302)
+    recipients = EbWiki::Mailer.deliveries.map(&:to)
+    expect(recipients).not_to include("blocked@example.com")
+    expect(recipients).not_to include("bystander@example.com")
+    expect(recipients).not_to include(TestData.relations[:users].where(id: editor_id).one[:email])
+    expect(EbWiki::Mailer.deliveries).to be_empty
+  end
+
+  it "emails only active followers when another user also follows the case" do
+    state_id = TestData.insert_state
+    case_id = TestData.insert_case(state_id: state_id)
+    TestData.insert_subject(case_id: case_id)
+    TestData.insert_user(email: "editor@example.com", password: "password123", name: "John")
+    active_id = TestData.insert_user(email: "active@example.com", password: "password123", name: "Active")
+    blocked_id = TestData.insert_user(email: "blocked@example.com", password: "password123", name: "Blocked")
+
+    [active_id, blocked_id].each do |follower_id|
+      TestData.relations[:follows].insert(
+        followable_type: "Case",
+        followable_id: case_id,
+        follower_type: "User",
+        follower_id: follower_id,
+        blocked: follower_id == blocked_id,
+        created_at: TestData.now,
+        updated_at: TestData.now
+      )
+    end
+
+    post "/login", email: "editor@example.com", password: "password123"
+    EbWiki::Mailer.reset_deliveries!
+    post "/cases/walter-scott", {
+      _method: "patch",
+      case: {
+        title: "Walter Scott",
+        date: "2015-04-04",
+        city: "Charleston",
+        state_id: state_id,
+        overview: "<p>Updated overview.</p>",
+        blurb: "Updated blurb",
+        summary: "Active follower only",
+        cause_of_death: "shooting",
+        subjects: [{name: "Walter Scott", age: "50"}],
+        links: [{url: "", title: ""}],
+        agency_ids: []
+      }
+    }
+
+    expect(last_response.status).to eq(302)
+    expect(EbWiki::Mailer.deliveries.map(&:to)).to eq(["active@example.com"])
   end
 end

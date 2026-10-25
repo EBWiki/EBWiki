@@ -65,6 +65,40 @@ RSpec.describe EbWiki::Repos::CaseRepo, :db do
     expect(titles.last).to eq("Older")
   end
 
+  it "lists unblocked user followers for a case slug in name order" do
+    state_id = TestData.insert_state
+    case_id = TestData.insert_case(state_id: state_id)
+    zed_id = TestData.insert_user(email: "zed@example.com", password: "password123", name: "Zed")
+    amy_id = TestData.insert_user(email: "amy@example.com", password: "password123", name: "Amy")
+    blocked_id = TestData.insert_user(email: "blocked@example.com", password: "password123", name: "Blocked")
+
+    [amy_id, zed_id].each do |follower_id|
+      TestData.relations[:follows].insert(
+        followable_type: "Case",
+        followable_id: case_id,
+        follower_type: "User",
+        follower_id: follower_id,
+        blocked: false,
+        created_at: TestData.now,
+        updated_at: TestData.now
+      )
+    end
+    TestData.relations[:follows].insert(
+      followable_type: "Case",
+      followable_id: case_id,
+      follower_type: "User",
+      follower_id: blocked_id,
+      blocked: true,
+      created_at: TestData.now,
+      updated_at: TestData.now
+    )
+
+    page = repo.followers_for("walter-scott")
+
+    expect(page[:record].id).to eq(case_id)
+    expect(page[:followers].map(&:name)).to eq(["Amy", "Zed"])
+  end
+
   it "returns only geocoded cases for the map" do
     state_id = TestData.insert_state
     TestData.insert_case(state_id: state_id, latitude: 32.85, longitude: -79.97)
