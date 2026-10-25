@@ -121,6 +121,8 @@ module EbWiki
           iiprop: "extmetadata"
         })
         page = (data.dig("query", "pages") || {}).values.first
+        return unless page
+
         info = Array(page["imageinfo"]).first
         return unless info
 
