@@ -46,6 +46,7 @@ module EbWiki
             image_url: "https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-portrait.jpg",
             page_url: "https://commons.wikimedia.org/wiki/File:E2E_family_portrait.jpg",
             license: "CC BY-SA 4.0",
+            license_url: "https://creativecommons.org/licenses/by-sa/4.0/",
             author: "E2E fixture",
             description: "Family photo portrait"
           ),
@@ -55,6 +56,7 @@ module EbWiki
             image_url: "https://upload.wikimedia.org/wikipedia/commons/b/bc/e2e-mugshot.jpg",
             page_url: "https://commons.wikimedia.org/wiki/File:E2E_institutional_photo.jpg",
             license: "Public domain",
+            license_url: nil,
             author: "Sheriff",
             description: "County jail booking photo"
           ),
@@ -64,6 +66,7 @@ module EbWiki
             image_url: "https://live.staticflickr.com/e2e/e2e-openverse-portrait.jpg",
             page_url: "https://www.flickr.com/photos/e2e/e2e-openverse-portrait",
             license: "CC BY 4.0",
+            license_url: "https://creativecommons.org/licenses/by/4.0/",
             author: "E2E Flickr",
             description: "Family photo portrait from Openverse"
           )
@@ -99,6 +102,7 @@ module EbWiki
             image_url: image,
             page_url: page["fullurl"] || "https://en.wikipedia.org/wiki/#{URI.encode_www_form_component(page["title"])}",
             license: "Wikipedia / Commons",
+            license_url: nil,
             author: nil,
             description: page["title"]
           )
@@ -128,6 +132,7 @@ module EbWiki
             image_url: info["url"],
             page_url: info["descriptionurl"] || "https://commons.wikimedia.org/wiki/#{URI.encode_www_form_component(page["title"])}",
             license: meta.dig("LicenseShortName", "value"),
+            license_url: meta.dig("LicenseUrl", "value"),
             author: meta.dig("Artist", "value"),
             description: meta.dig("ImageDescription", "value")
           )
@@ -143,6 +148,7 @@ module EbWiki
             image_url: result["url"],
             page_url: result["foreign_landing_url"] || result["url"],
             license: result["license"],
+            license_url: result["license_url"],
             author: result["creator"],
             description: result["title"]
           )

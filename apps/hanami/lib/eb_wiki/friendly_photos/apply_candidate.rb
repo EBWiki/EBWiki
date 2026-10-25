@@ -31,7 +31,7 @@ module EbWiki
       end
 
       def rights_rejection(hit)
-        if hit.license.to_s.strip.empty?
+        unless rights_recorded?(hit)
           return "That candidate has no recorded license or rights path."
         end
         return if SourcePolicy.allowed_attach_url?(hit.image_url)
@@ -45,6 +45,10 @@ module EbWiki
         text = [hit.title, hit.description, hit.author].join(" ")
         text.match?(CandidateSearch::MUGSHOT_TEXT) ||
           SourcePolicy.excluded_hit?(hit)
+      end
+
+      def rights_recorded?(hit)
+        !hit.license.to_s.strip.empty? || !hit.license_url.to_s.strip.empty?
       end
 
       def failure(message)

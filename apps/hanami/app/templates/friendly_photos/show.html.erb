@@ -26,6 +26,9 @@
           <p class="meta">
             <%= hit.source %>
             <% if hit.license %> · <%= hit.license %><% end %>
+            <% if hit.license_url.to_s.strip != "" %>
+              · <a href="<%= hit.license_url %>" rel="license noopener">Rights path</a>
+            <% end %>
           </p>
           <% if hit.likely_mugshot %>
             <p class="flash-error">Likely mugshot or booking photo — do not use.</p>
@@ -38,6 +41,7 @@
               <input type="hidden" name="image_url" value="<%= hit.image_url %>">
               <input type="hidden" name="page_url" value="<%= hit.page_url %>">
               <input type="hidden" name="license" value="<%= hit.license %>">
+              <input type="hidden" name="license_url" value="<%= hit.license_url %>">
               <input type="hidden" name="author" value="<%= hit.author %>">
               <input type="hidden" name="description" value="<%= hit.description %>">
               <input type="hidden" name="likely_mugshot" value="<%= hit.likely_mugshot ? "1" : "0" %>">

@@ -35,4 +35,21 @@ RSpec.describe EbWiki::FriendlyPhotos::ApplyCandidate do
     expect(result.success).to be(false)
     expect(result.error).to include("not a healthy profile picture")
   end
+
+  it "refuses a photo with no license label or rights path URL" do
+    result = described_class.new.call(hit: hit(license: "", license_url: ""))
+
+    expect(result.success).to be(false)
+    expect(result.error).to include("no recorded license or rights path")
+  end
+
+  it "allows a portrait when only the rights path URL is present" do
+    result = described_class.new.call(hit: hit(
+      license: "",
+      license_url: "https://creativecommons.org/licenses/by-sa/4.0/"
+    ))
+
+    expect(result.success).to be(true)
+    expect(result.error).to be_nil
+  end
 end
