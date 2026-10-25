@@ -96,17 +96,40 @@ module EbWiki
           image = page.dig("original", "source")
           next unless image
 
+          rights = commons_rights_for_pageimage(page["pageimage"])
           Hit.new(
             source: "wikipedia",
             title: page["title"],
             image_url: image,
             page_url: page["fullurl"] || "https://en.wikipedia.org/wiki/#{URI.encode_www_form_component(page["title"])}",
-            license: "Wikipedia / Commons",
-            license_url: nil,
+            license: rights&.fetch(:license, nil) || "Wikipedia page image",
+            license_url: rights&.fetch(:license_url, nil),
             author: nil,
             description: page["title"]
           )
         end
+      end
+
+      def commons_rights_for_pageimage(filename)
+        return if filename.to_s.strip.empty?
+
+        data = get_json(COMMONS_API, {
+          action: "query",
+          format: "json",
+          titles: "File:#{filename}",
+          prop: "imageinfo",
+          iiprop: "extmetadata"
+        })
+        page = (data.dig("query", "pages") || {}).values.first
+        info = Array(page["imageinfo"]).first
+        return unless info
+
+        meta = info["extmetadata"] || {}
+        license_url = meta.dig("LicenseUrl", "value")
+        license = meta.dig("LicenseShortName", "value")
+        return if license_url.to_s.strip.empty? && license.to_s.strip.empty?
+
+        {license: license, license_url: license_url}
       end
 
       def commons_hits(query)

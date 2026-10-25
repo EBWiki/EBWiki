@@ -1,6 +1,7 @@
 # auto_register: false
 # frozen_string_literal: true
 
+require "eb_wiki/friendly_photos/rights_path"
 require "sanitize"
 
 module EbWiki
@@ -105,6 +106,14 @@ module EbWiki
         return str if str.length <= length
 
         "#{str[0, length].rstrip}…"
+      end
+
+      def friendly_photo_rights_url(hit)
+        EbWiki::FriendlyPhotos::RightsPath.sanitize_url(hit.license_url)
+      end
+
+      def friendly_photo_rights_link_missing?(hit)
+        hit.license.to_s.strip != "" && friendly_photo_rights_url(hit).nil?
       end
     end
   end

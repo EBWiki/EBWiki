@@ -26,8 +26,10 @@
           <p class="meta">
             <%= hit.source %>
             <% if hit.license %> · <%= hit.license %><% end %>
-            <% if hit.license_url.to_s.strip != "" %>
-              · <a href="<%= hit.license_url %>" rel="license noopener">Rights path</a>
+            <% if (rights_url = friendly_photo_rights_url(hit)) %>
+              · <a href="<%= rights_url %>" rel="license noopener">Rights path</a>
+            <% elsif friendly_photo_rights_link_missing?(hit) %>
+              · No rights link available
             <% end %>
           </p>
           <% if hit.likely_mugshot %>
@@ -41,7 +43,7 @@
               <input type="hidden" name="image_url" value="<%= hit.image_url %>">
               <input type="hidden" name="page_url" value="<%= hit.page_url %>">
               <input type="hidden" name="license" value="<%= hit.license %>">
-              <input type="hidden" name="license_url" value="<%= hit.license_url %>">
+              <input type="hidden" name="license_url" value="<%= friendly_photo_rights_url(hit) || "" %>">
               <input type="hidden" name="author" value="<%= hit.author %>">
               <input type="hidden" name="description" value="<%= hit.description %>">
               <input type="hidden" name="likely_mugshot" value="<%= hit.likely_mugshot ? "1" : "0" %>">

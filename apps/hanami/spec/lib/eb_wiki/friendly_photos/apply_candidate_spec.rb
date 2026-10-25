@@ -52,4 +52,14 @@ RSpec.describe EbWiki::FriendlyPhotos::ApplyCandidate do
     expect(result.success).to be(true)
     expect(result.error).to be_nil
   end
+
+  it "refuses a portrait when the rights path URL is not an allowed HTTPS link" do
+    result = described_class.new.call(hit: hit(
+      license: "",
+      license_url: "javascript:alert(1)"
+    ))
+
+    expect(result.success).to be(false)
+    expect(result.error).to include("invalid rights path URL")
+  end
 end
