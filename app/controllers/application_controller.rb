@@ -50,9 +50,23 @@ class ApplicationController < ActionController::Base
     store_location_for(:user, request.fullpath)
   end
 
-  def user_not_authorized
+  def user_not_authorized(exception)
+    log_authorization_denial(exception)
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referer || root_path)
+  end
+
+  def log_authorization_denial(exception)
+    return unless exception.is_a?(Pundit::NotAuthorizedError)
+
+    payload = {
+      event: 'authorization_denied',
+      query: exception.query.to_s,
+      record_type: exception.record.class.name,
+      record_id: exception.record.id
+    }
+    Rails.logger.warn(payload.to_json)
+    Rollbar.warning('Authorization denied', payload)
   end
 
   protected
