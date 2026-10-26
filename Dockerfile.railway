@@ -16,6 +16,7 @@ RUN apt-get update -qq && apt-get install -y \
     gnupg \
     git \
     nodejs \
+    npm \
     apt-transport-https \
     && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
       | gpg --dearmor -o /usr/share/keyrings/postgresql.gpg \
@@ -41,6 +42,8 @@ RUN bundle config --global frozen 1 && \
 COPY . .
 
 COPY config/database.railway.yml config/database.yml
+
+RUN cd frontend/globe && npm ci && npm run build
 
 RUN mkdir -p tmp/pids log public/assets && \
     SECRET_KEY_BASE=build-time-dummy bundle exec rails assets:precompile

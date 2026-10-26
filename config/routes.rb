@@ -47,7 +47,12 @@ Rails.application.routes.draw do
 
   resources :agencies
   resources :organizations
-  resources :maps
+  resources :maps, only: %i[index show] do
+    collection do
+      get :globe
+      get :cases
+    end
+  end
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
   resources :users, only: %i[show edit update]
