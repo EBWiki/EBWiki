@@ -1,3 +1,17 @@
+<% content_for :head do %>
+  <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-clustering.js"></script>
+  <script type="text/javascript">
+    window.API_KEY = <%= raw(json_escape(ENV.fetch('HERE_MAPS_API_KEY', '').to_json)) %>;
+    window.CASES = <%= raw(json_escape(@cases.to_json)) %>;
+  </script>
+  <%= javascript_include_tag 'maps' %>
+<% end %>
+
 <div class="container">
     <div class="row">
     	<div class="col-lg-12">
@@ -14,10 +28,8 @@
 			</div>
 			<h2 class="page-subheader">Click on the map pins below to learn more.</h2>
 			<div id="markers-on-the-map">
-	    		<div id="map page-header">
+	    		<div id="map-page-header">
 		    		<div id="map-container"></div>
-					<!-- HERE Maps -->
-					<script type="text/javascript" async>window.CASES='<%= @cases %>';</script>
 	    		</div>
 		   	</div>
 		</div>

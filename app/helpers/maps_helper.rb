@@ -11,8 +11,8 @@ module MapsHelper
   private
 
   def location_data(cases)
-    cases.map do |case_location|
+    cases.flat_map do |case_location|
       [case_location.latitude, case_location.longitude]
-    end.flatten.to_json
+    end
   end
 end
