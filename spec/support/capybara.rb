@@ -16,11 +16,13 @@ Capybara.default_max_wait_time = 15
 
 RSpec.configure do |config|
   config.before(:each, type: :system) do
-    WebMock.allow_net_connect!
     driven_by :headless_chrome
   end
 
-  config.after(:each, type: :system) do
+  config.around(:each, type: :system) do |example|
+    WebMock.allow_net_connect!
+    example.run
+    Capybara.reset_sessions!
     WebMock.disable_net_connect!(allow_localhost: true)
   end
 end
