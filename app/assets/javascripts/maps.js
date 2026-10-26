@@ -23,10 +23,17 @@ function initEbwikiFlatMap() {
   });
 
   var coordinates = [];
-  try {
-    coordinates = JSON.parse(window.CASES || '[]');
-  } catch (e) {
-    coordinates = [];
+  if (Array.isArray(window.CASES)) {
+    coordinates = window.CASES;
+  } else if (typeof window.CASES === 'string') {
+    try {
+      coordinates = JSON.parse(window.CASES);
+    } catch (e) {
+      if (window.Sentry && typeof window.Sentry.captureException === 'function') {
+        window.Sentry.captureException(e);
+      }
+      coordinates = [];
+    }
   }
 
   var pairs = [];
