@@ -67,10 +67,6 @@ frontend/globe/node_modules
 
 /public/packs
 /public/packs-test
-/node_modules
-frontend/globe/node_modules
-/public/globe/*
-!/public/globe/.gitkeep
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity

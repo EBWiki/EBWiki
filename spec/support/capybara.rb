@@ -14,19 +14,33 @@ end
 Capybara.javascript_driver = :headless_chrome
 Capybara.default_max_wait_time = 15
 
+module EbwikiCapybara
+  module_function
+
+  def quit_selenium_sessions!
+    Capybara.send(:session_pool).each_value(&:quit)
+  end
+end
+
 RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by :headless_chrome
   end
 
   config.around(:each, type: :system) do |example|
-    WebMock.allow_net_connect!
+    WebMock.disable_net_connect!(allow_localhost: true)
     example.run
+  ensure
+    WebMock.disable_net_connect!(allow_localhost: true)
+    EbwikiCapybara.quit_selenium_sessions!
     Capybara.reset_sessions!
+    WebMock.disable_net_connect!
   end
 
   config.after(:suite) do
-    WebMock.allow_net_connect!
+    WebMock.disable_net_connect!(allow_localhost: true)
+    EbwikiCapybara.quit_selenium_sessions!
     Capybara.reset_sessions!
+    WebMock.disable_net_connect!
   end
 end
