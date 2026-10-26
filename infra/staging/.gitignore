@@ -6,6 +6,8 @@
 backend.hcl
 crash.log
 crash.*.log
+*.tfplan
+staging.railway-plan.json
 override.tf
 override.tf.json
 *_override.tf

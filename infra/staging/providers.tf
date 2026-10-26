@@ -7,5 +7,6 @@ provider "doppler" {
 }
 
 provider "cloudflare" {
+  alias     = "ebwiki"
   api_token = var.cloudflare_dns_api_token
 }

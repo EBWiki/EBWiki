@@ -153,6 +153,50 @@ db_id="$(
 [ "$db_id" = "db1" ] || fail "unexpected Postgres service id: $db_id"
 pass "infra_railway_find_postgres_service_id returns Postgres service id"
 
+domains_payload="$(jq -n '{
+  data: {
+    domains: {
+      serviceDomains: [{domain: "ebwiki-production.up.railway.app"}]
+    }
+  }
+}')"
+export RAILWAY_MOCK_RESPONSE="$domains_payload"
+public_domain="$(
+  source_railway
+  infra_railway_public_domain "p1" "e1" "s1"
+)" || fail "infra_railway_public_domain should succeed with serviceDomains"
+[ "$public_domain" = "ebwiki-production.up.railway.app" ] \
+  || fail "unexpected public domain: $public_domain"
+pass "infra_railway_public_domain reads serviceDomains from GraphQL"
+
+cat >"$tmpdir/railway" <<'RAILWAY'
+#!/usr/bin/env bash
+if [ -n "${RAILWAY_TOKEN:-}" ]; then
+  echo "railway mock: RAILWAY_TOKEN must be unset for CLI" >&2
+  exit 1
+fi
+if [ -z "${RAILWAY_API_TOKEN:-}" ]; then
+  echo "railway mock: RAILWAY_API_TOKEN must be set" >&2
+  exit 1
+fi
+if [ "$1" = "ssh" ]; then
+  exit 0
+fi
+echo "railway mock: unexpected args: $*" >&2
+exit 1
+RAILWAY
+chmod +x "$tmpdir/railway"
+export PATH="$tmpdir:$PATH"
+export RAILWAY_TOKEN="workspace-token-from-doppler"
+if (
+  source_railway
+  infra_railway_ssh --project p1 --environment e1 --service db1 -- true
+); then
+  pass "infra_railway_ssh uses RAILWAY_API_TOKEN and unsets RAILWAY_TOKEN"
+else
+  fail "infra_railway_ssh should wrap railway ssh with account token env"
+fi
+
 # Snapshot pipe + upload (no /tmp)
 export R2_BUCKET_NAME="test-bucket"
 export R2_S3_ENDPOINT="https://r2.example"
@@ -177,5 +221,31 @@ bash -c "$INFRA_SNAPSHOT_PIPE_CMD" | aws s3 cp - "s3://${R2_BUCKET_NAME}/${objec
 [ -f "$tmpdir/uploaded.dump" ] && [ "$(cat "$tmpdir/uploaded.dump")" = "PGDMPmock" ] \
   || fail "streamed snapshot upload"
 pass "snapshot streams to aws s3 cp without temp dump file"
+
+# tofu state show -json (version line + values document).
+# shellcheck source=../lib/infra-tofu-state.sh
+source "$ROOT/scripts/lib/infra-tofu-state.sh"
+r2_state_json='{"version":1}
+{"format_version":"1.0","terraform_version":"1.13.1","values":{"root_module":{"resources":[{"values":{"id":"cf-token-id-xyz"}}]}}}'
+r2_admin_token_id="$(printf '%s\n' "$r2_state_json" | infra_tofu_state_show_json_resource_id)"
+[ "$r2_admin_token_id" = "cf-token-id-xyz" ] \
+  || fail "R2 admin token id jq should read the values document"
+pass "R2 admin token id is read from tofu state show JSON"
+
+# Doppler secret name export mapping.
+# shellcheck source=../lib/infra-export-tf-vars.sh
+source "$ROOT/scripts/lib/infra-export-tf-vars.sh"
+export BOOTSTRAP_STATE_PASSPHRASE="boot-pass"
+export STATE_PASSPHRASE="state-pass"
+export CLOUDFLARE_DNS_API_TOKEN="dns"
+export STAGING_RUNTIME_DOPPLER_TOKEN="rt"
+export STAGING_BASIC_AUTH_USERNAME="user1"
+infra_export_tf_vars_from_infra_config
+[ "$TF_VAR_bootstrap_state_passphrase" = "boot-pass" ] \
+  && [ "$TF_VAR_state_passphrase" = "state-pass" ] \
+  && [ "$TF_VAR_cloudflare_dns_api_token" = "dns" ] \
+  && [ "$TF_VAR_staging_runtime_doppler_token" = "rt" ] \
+  || fail "infra_export_tf_vars_from_infra_config mapping"
+pass "infra_export_tf_vars_from_infra_config maps Doppler names to TF_VAR"
 
 echo "All infra-lib tests passed."
