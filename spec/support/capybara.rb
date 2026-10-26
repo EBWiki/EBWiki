@@ -23,6 +23,10 @@ RSpec.configure do |config|
     WebMock.allow_net_connect!
     example.run
     Capybara.reset_sessions!
-    WebMock.disable_net_connect!(allow_localhost: true)
+  end
+
+  config.after(:suite) do
+    WebMock.allow_net_connect!
+    Capybara.reset_sessions!
   end
 end
