@@ -5,6 +5,7 @@ require "net/http"
 require "uri"
 require "eb_wiki/friendly_photos/hit"
 require "eb_wiki/friendly_photos/source_policy"
+require "eb_wiki/observability"
 
 module EbWiki
   module FriendlyPhotos
@@ -75,9 +76,20 @@ module EbWiki
 
       def live_hits
         query = [@name, @city].reject(&:empty?).join(" ")
-        wikipedia_hits(query) + commons_hits(query) + openverse_hits(query)
-      rescue
-        []
+        merge_source_hits(query)
+      end
+
+      def merge_source_hits(query)
+        [
+          -> { wikipedia_hits(query) },
+          -> { commons_hits(query) },
+          -> { openverse_hits(query) }
+        ].flat_map do |search|
+          search.call
+        rescue => error
+          report_source_search_failure(error, query: query)
+          []
+        end
       end
 
       def wikipedia_hits(query)
@@ -88,7 +100,7 @@ module EbWiki
           gsrsearch: query,
           gsrlimit: "5",
           prop: "pageimages|info",
-          piprop: "original",
+          piprop: "original|name",
           inprop: "url"
         })
         pages = data.dig("query", "pages") || {}
@@ -120,7 +132,18 @@ module EbWiki
           prop: "imageinfo",
           iiprop: "extmetadata"
         })
-        page = (data.dig("query", "pages") || {}).values.first
+        pages = data.dig("query", "pages")
+        if pages.nil? || pages.empty?
+          report_commons_rights_failure("commons_rights_empty_response", filename: filename)
+          return
+        end
+
+        page = pages.values.first
+        unless page.is_a?(Hash)
+          report_commons_rights_failure("commons_rights_unexpected_page", filename: filename)
+          return
+        end
+
         info = Array(page["imageinfo"]).first
         return unless info
 
@@ -130,6 +153,9 @@ module EbWiki
         return if license_url.to_s.strip.empty? && license.to_s.strip.empty?
 
         {license: license, license_url: license_url}
+      rescue => error
+        report_commons_rights_failure(error, filename: filename)
+        nil
       end
 
       def commons_hits(query)
@@ -202,6 +228,25 @@ module EbWiki
 
       def mugshot?(hit)
         [hit.title, hit.description, hit.author].join(" ").match?(MUGSHOT_TEXT)
+      end
+
+      def report_commons_rights_failure(error_or_code, filename:)
+        error = error_or_code.is_a?(StandardError) ? error_or_code : nil
+        code = error ? "commons_rights_lookup_failed" : error_or_code.to_s
+        EbWiki::Observability.report(
+          event: code,
+          error: error,
+          filename: filename,
+          provider: "wikimedia_commons"
+        )
+      end
+
+      def report_source_search_failure(error, query:)
+        EbWiki::Observability.report(
+          event: "friendly_photos_source_search_failed",
+          error: error,
+          query: query
+        )
       end
     end
   end
