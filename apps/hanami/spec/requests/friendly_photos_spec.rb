@@ -33,6 +33,8 @@ RSpec.describe "Friendly photos", :db, type: :request do
     expect(last_response.body).to include("Photos for Walter Scott")
     expect(last_response.body).to include("E2E family portrait")
     expect(last_response.body).to include("E2E openverse portrait")
+    expect(last_response.body).to include("Rights path")
+    expect(last_response.body).to include("creativecommons.org/licenses/by/4.0/")
     expect(last_response.body).to include("Likely mugshot or booking photo")
     expect(last_response.body).not_to include("arrests.org")
   end
@@ -58,6 +60,7 @@ RSpec.describe "Friendly photos", :db, type: :request do
       image_url: portrait_url,
       page_url: "https://commons.wikimedia.org/wiki/File:E2E_family_portrait.jpg",
       license: "CC BY-SA 4.0",
+      license_url: "https://creativecommons.org/licenses/by-sa/4.0/",
       author: "E2E fixture",
       description: "Family photo portrait",
       likely_mugshot: "0"
@@ -75,8 +78,105 @@ RSpec.describe "Friendly photos", :db, type: :request do
       .order(Sequel.desc(:id))
       .first
     expect(version[:comment]).to eq(
-      "Applied reviewed profile picture 'E2E family portrait' (CC BY-SA 4.0)."
+      "Applied reviewed profile picture 'E2E family portrait' " \
+      "(CC BY-SA 4.0; https://creativecommons.org/licenses/by-sa/4.0/)."
     )
+  end
+
+  it "records label and rights URL together in case history when both are submitted" do
+    state_id = TestData.insert_state
+    case_id = TestData.insert_case(state_id: state_id)
+    TestData.insert_subject(case_id: case_id)
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "password123"
+
+    portrait_url = "https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-portrait.jpg"
+    rights_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+    post "/friendly_photos/walter-scott/attach",
+      source: "wikimedia_commons",
+      title: "E2E family portrait",
+      image_url: portrait_url,
+      page_url: "https://commons.wikimedia.org/wiki/File:E2E_family_portrait.jpg",
+      license: "CC BY-SA 4.0",
+      license_url: rights_url,
+      author: "E2E fixture",
+      description: "Family photo portrait",
+      likely_mugshot: "0"
+
+    expect(last_response.status).to eq(302)
+
+    stored = TestData.relations[:cases].where(id: case_id).one
+    expect(stored[:default_avatar_url]).to eq(portrait_url)
+
+    version = TestData.relations[:versions]
+      .where(item_type: "Case", item_id: case_id)
+      .order(Sequel.desc(:id))
+      .first
+    expect(version[:comment]).to include("CC BY-SA 4.0")
+    expect(version[:comment]).to include(rights_url)
+  end
+
+  it "records a rights URL in case history when only the URL is submitted" do
+    state_id = TestData.insert_state
+    case_id = TestData.insert_case(state_id: state_id)
+    TestData.insert_subject(case_id: case_id)
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "password123"
+
+    portrait_url = "https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-portrait.jpg"
+    rights_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+    post "/friendly_photos/walter-scott/attach",
+      source: "wikimedia_commons",
+      title: "E2E family portrait",
+      image_url: portrait_url,
+      page_url: "https://commons.wikimedia.org/wiki/File:E2E_family_portrait.jpg",
+      license: "",
+      license_url: rights_url,
+      author: "E2E fixture",
+      description: "Family photo portrait",
+      likely_mugshot: "0"
+
+    expect(last_response.status).to eq(302)
+
+    stored = TestData.relations[:cases].where(id: case_id).one
+    expect(stored[:default_avatar_url]).to eq(portrait_url)
+
+    version = TestData.relations[:versions]
+      .where(item_type: "Case", item_id: case_id)
+      .order(Sequel.desc(:id))
+      .first
+    expect(version[:comment]).to eq(
+      "Applied reviewed profile picture 'E2E family portrait' (#{rights_url})."
+    )
+  end
+
+  it "refuses attach when the submitted rights URL is unsafe" do
+    state_id = TestData.insert_state
+    case_id = TestData.insert_case(state_id: state_id)
+    TestData.insert_subject(case_id: case_id)
+    TestData.insert_user(email: "editor@example.com", password: "password123")
+
+    post "/login", email: "editor@example.com", password: "password123"
+
+    post "/friendly_photos/walter-scott/attach",
+      source: "wikimedia_commons",
+      title: "E2E family portrait",
+      image_url: "https://upload.wikimedia.org/wikipedia/commons/a/ab/e2e-portrait.jpg",
+      page_url: "https://commons.wikimedia.org/wiki/File:E2E_family_portrait.jpg",
+      license: "",
+      license_url: "javascript:alert(1)",
+      author: "E2E fixture",
+      description: "Family photo portrait",
+      likely_mugshot: "0"
+
+    expect(last_response.status).to eq(302)
+    follow_redirect!
+    expect(last_response.body).to include("invalid rights path URL")
+
+    stored = TestData.relations[:cases].where(id: case_id).one
+    expect(stored[:default_avatar_url]).to be_nil
   end
 
   it "refuses a mugshot attach and leaves the case unchanged" do

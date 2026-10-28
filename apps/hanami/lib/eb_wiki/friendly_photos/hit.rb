@@ -8,6 +8,7 @@ module EbWiki
       :image_url,
       :page_url,
       :license,
+      :license_url,
       :author,
       :description,
       :likely_mugshot

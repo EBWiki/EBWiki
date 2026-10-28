@@ -1,0 +1,18 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "42": {
+        "pageid": 42,
+        "title": "Jane Doe",
+        "fullurl": "https://en.wikipedia.org/wiki/Jane_Doe",
+        "pageimage": "Jane_Doe_portrait.jpg",
+        "original": {
+          "source": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Jane_Doe_portrait.jpg",
+          "width": 800,
+          "height": 600
+        }
+      }
+    }
+  }
+}

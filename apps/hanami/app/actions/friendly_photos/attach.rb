@@ -2,6 +2,7 @@
 
 require "eb_wiki/friendly_photos/apply_candidate"
 require "eb_wiki/friendly_photos/hit"
+require "eb_wiki/friendly_photos/rights_path"
 
 module EbWiki
   module Actions
@@ -24,7 +25,7 @@ module EbWiki
             case_repo.apply_reviewed_photo_url(
               slug: slug,
               image_url: hit.image_url,
-              comment: "Applied reviewed profile picture '#{hit.title}' (#{hit.license}).",
+              comment: EbWiki::FriendlyPhotos::RightsPath.attach_comment(title: hit.title, hit: hit),
               user: current_user(response)
             )
             request.session[:attach_notice] = "Applied the selected profile picture to this case."
@@ -44,6 +45,7 @@ module EbWiki
             image_url: params[:image_url].to_s,
             page_url: params[:page_url].to_s,
             license: params[:license].to_s,
+            license_url: params[:license_url].to_s,
             author: params[:author].to_s,
             description: params[:description].to_s,
             likely_mugshot: params[:likely_mugshot].to_s == "1"

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "eb_wiki/friendly_photos/candidate_search"
+require "eb_wiki/friendly_photos/rights_path"
 require "eb_wiki/friendly_photos/source_policy"
 
 module EbWiki
@@ -31,7 +32,8 @@ module EbWiki
       end
 
       def rights_rejection(hit)
-        if hit.license.to_s.strip.empty?
+        return RightsPath::INVALID_URL_ERROR if RightsPath.invalid_submitted_url?(hit)
+        unless RightsPath.recorded?(hit)
           return "That candidate has no recorded license or rights path."
         end
         return if SourcePolicy.allowed_attach_url?(hit.image_url)

@@ -27,7 +27,10 @@ GEM
       xpath (~> 3.2)
     coderay (1.1.3)
     concurrent-ruby (1.3.8)
-    crass (1.0.7)
+    crack (1.0.1)
+      bigdecimal
+      rexml
+    crass (1.0.8)
     csv (3.3.6)
     cvss (0.99.0)
     database_cleaner-core (2.0.1)
@@ -217,6 +220,7 @@ GEM
     hanami-webconsole (3.0.0)
       better_errors (~> 2.10, >= 2.10.1)
       binding_of_caller (~> 2.0)
+    hashdiff (1.2.1)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -321,6 +325,7 @@ GEM
     regexp_parser (2.12.0)
     reline (0.7.0)
       io-console (~> 0.5)
+    rexml (3.4.4)
     rom (5.4.3)
       rom-changeset (~> 5.4)
       rom-core (~> 5.4)
@@ -384,9 +389,12 @@ GEM
     ruby_parser (3.22.0)
       racc (~> 1.5)
       sexp_processor (~> 4.16)
-    sanitize (7.0.0)
-      crass (~> 1.0.2)
+    sanitize (7.0.1)
+      crass (~> 1.0.8)
       nokogiri (>= 1.16.8)
+    sentry-ruby (5.28.1)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
     sequel (5.107.0)
       bigdecimal
     sexp_processor (4.17.5)
@@ -422,6 +430,10 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
+    webmock (3.34.0)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     win32ole (1.9.3)
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -468,7 +480,9 @@ DEPENDENCIES
   rake
   rouge
   sanitize (~> 7.0)
+  sentry-ruby (~> 5.22)
   standard (>= 1.35.1)
+  webmock (~> 3.26)
 
 BUNDLED WITH
    2.6.2

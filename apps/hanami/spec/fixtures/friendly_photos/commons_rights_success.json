@@ -1,0 +1,24 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "100": {
+        "pageid": 100,
+        "ns": 6,
+        "title": "File:Jane_Doe_portrait.jpg",
+        "imageinfo": [
+          {
+            "extmetadata": {
+              "LicenseShortName": {
+                "value": "CC BY 4.0"
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by/4.0/"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
