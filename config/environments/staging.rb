@@ -59,11 +59,14 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, {
-    url: ENV.fetch('REDIS_URL', nil), pool_size: 2, pool_timeout: 2
+    url: ENV.fetch('REDIS_URL', nil),
+    pool: { size: 2, timeout: 2 }
   }
 
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = 'https://d2pqbhqdp2wy5y.cloudfront.net'
+  # Serve digested assets from this host (public/assets in the container).
+  # A legacy CloudFront host returned 404 for current fingerprints; optional ASSET_HOST
+  # remains available if a CDN is wired to the same build artifacts.
+  config.action_controller.asset_host = ENV['ASSET_HOST'].presence
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

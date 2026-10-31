@@ -9,7 +9,7 @@ legend.legendStyle {
 }
 
 fieldset.fsStyle {
-	font-family: Verdana, Arial, sans-serif;
+	font-family: var(--type-body-family);
 	font-size: small;
 	font-weight: normal;
 	border: 1px solid #999999;

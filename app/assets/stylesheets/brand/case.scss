@@ -1,0 +1,40 @@
+.ebwiki-case-name {
+  font-family: var(--type-name-family);
+  font-weight: var(--type-name-weight);
+  font-size: var(--type-name-size);
+  line-height: var(--type-name-leading);
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+}
+
+.ebwiki-case-meta {
+  font-family: var(--type-lead-family);
+  font-size: var(--type-lead-size);
+  color: var(--color-text-muted);
+}
+
+.ebwiki-case-layout {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .ebwiki-case-layout {
+    grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+  }
+}
+
+.timeAgo {
+  color: var(--color-success);
+}
+
+.side-leader {
+  background: var(--color-header);
+  color: var(--color-text-on-dark) !important;
+}
+
+.orange-font,
+.background-orange {
+  color: var(--color-text) !important;
+  background: transparent !important;
+}

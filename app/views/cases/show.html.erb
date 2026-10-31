@@ -33,9 +33,9 @@
     </div>
 
     <div class="col-md-9">
-      <h1 class="page-header case-title">
-        <%= @subjects.first&.name %>, <%= @subjects.first&.age ? "#{@subjects.first.age}" : "" %>
-        <p class="lead text-muted">
+      <h1 class="ebwiki-case-name case-title">
+        <%= @subjects.first&.name %><%= @subjects.first&.age ? ", #{@subjects.first.age}" : "" %>
+        <p class="ebwiki-case-meta">
           <%= @this_case.city %>, <%= @this_case.state.name %>
           <br />
           <%= @this_case.date.to_formatted_s(:long) %>
