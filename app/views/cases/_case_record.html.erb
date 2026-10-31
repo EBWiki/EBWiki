@@ -1,0 +1,22 @@
+<li class="ebwiki-case-record">
+  <%= link_to this_case, class: "ebwiki-case-record__link" do %>
+    <div class="ebwiki-case-record__media">
+      <%= image_tag("default-user-icon.png", alt: "", class: "ebwiki-case-record__image ebwiki-case-record__image--placeholder") %>
+    </div>
+    <div class="ebwiki-case-record__body">
+      <h2 class="ebwiki-case-record__name">
+        <%= this_case.subjects.first&.name.presence || this_case.title %>
+      </h2>
+      <p class="ebwiki-case-record__meta">
+        <%= this_case.city %>, <%= this_case.state&.ansi_code %>
+        <% if this_case.date.present? %>
+          ·
+          <time datetime="<%= this_case.date.iso8601 %>"><%= this_case.date.to_formatted_s(:long) %></time>
+        <% end %>
+      </p>
+      <% if this_case.title.present? %>
+        <p class="ebwiki-case-record__title"><%= this_case.title %></p>
+      <% end %>
+    </div>
+  <% end %>
+</li>

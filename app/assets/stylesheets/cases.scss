@@ -2,11 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-$color-orange: #F65732;
-$color-gray: #666666;
-$color-black: #000000;
-$color-dark-gray: #4D4D4D;
-
 .background-links{
   font-size: 1em;
   color: #fff;
@@ -22,8 +17,8 @@ $color-dark-gray: #4D4D4D;
 }
 
 .side-leader{
-  background:#de651b;
-  color:#fff!important;
+  background: var(--color-header);
+  color: var(--color-text-on-dark) !important;
   padding:10px 0;
   text-align:center;
   margin-top: 40px;
@@ -133,7 +128,7 @@ $color-dark-gray: #4D4D4D;
 
 // styling paragraph text superimposed on image
 .view p {
-    font-family: Georgia, serif;
+    font-family: var(--type-body-family);
     font-style: italic;
     font-size: 12px;
     position: relative;
@@ -267,13 +262,13 @@ $color-dark-gray: #4D4D4D;
 }
 
 form.case-btn {
-  background-color: $color-orange;
+  background-color: var(--color-action);
   border: 1px solid white;
   border-radius: 5px;
 }
 
 input.case-btn {
-  background-color: $color-orange;
+  background-color: var(--color-action);
   color: white;
   border: none;
 }
@@ -289,11 +284,11 @@ input.case-btn {
 }
 
 .btn.btn-warning {
-    background: $color-orange !important;
-    color: white !important;
+    background: var(--color-surface) !important;
+    color: var(--color-text) !important;
 }
 .btn-remove {
-  background-color: $color-gray !important;
+  background-color: var(--color-text-muted) !important;
   border-radius: 4px !important;
 }
 .rel-links {
@@ -310,7 +305,7 @@ input.case-btn {
 .form-submit {
   border-radius: 4px;
   .btn-primary.back {
-    background-color: $color-gray;
+    background-color: var(--color-text-muted);
   }
   a:visited {
     color: white;

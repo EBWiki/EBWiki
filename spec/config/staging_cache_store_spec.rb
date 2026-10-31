@@ -23,6 +23,12 @@ RSpec.describe 'Staging cache store configuration' do
     expect(staging_rb).not_to match(/pool_size|pool_timeout/)
   end
 
+  it 'serves staging assets from the app host unless ASSET_HOST is set' do
+    staging_rb = Rails.root.join('config/environments/staging.rb').read
+    expect(staging_rb).to include("ENV['ASSET_HOST'].presence")
+    expect(staging_rb).not_to include('d2pqbhqdp2wy5y.cloudfront.net')
+  end
+
   it 'rejects legacy pool_size and pool_timeout keywords on redis_cache_store' do
     expect do
       ActiveSupport::Cache.lookup_store(
