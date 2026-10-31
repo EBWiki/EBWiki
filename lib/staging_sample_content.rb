@@ -48,15 +48,25 @@ module StagingSampleContent
   end
 
   def ensure_case!(attrs, logger:)
-    state = State.find_or_create_by!(ansi_code: attrs[:state_code]) do |row|
-      row.name = attrs[:state_code]
-      row.iso = "US-#{attrs[:state_code]}"
-    end
-
+    state = find_or_create_state!(attrs[:state_code])
     kase = Case.find_or_initialize_by(slug: attrs[:slug])
     return if kase.persisted?
 
-    kase.assign_attributes(
+    kase.assign_attributes(sample_case_attributes(attrs, state))
+    kase.save!
+    kase.subjects.find_or_create_by!(name: attrs[:subject_name], age: attrs[:subject_age])
+    logger.info("[StagingSampleContent] created #{attrs[:slug]}")
+  end
+
+  def find_or_create_state!(state_code)
+    State.find_or_create_by!(ansi_code: state_code) do |row|
+      row.name = state_code
+      row.iso = "US-#{state_code}"
+    end
+  end
+
+  def sample_case_attributes(attrs, state)
+    {
       title: attrs[:title],
       city: attrs[:city],
       state: state,
@@ -66,10 +76,7 @@ module StagingSampleContent
       blurb: 'Demonstration record for the Railway staging site.',
       latitude: attrs[:latitude],
       longitude: attrs[:longitude]
-    )
-    kase.save!
-    kase.subjects.find_or_create_by!(name: attrs[:subject_name], age: attrs[:subject_age])
-    logger.info("[StagingSampleContent] created #{attrs[:slug]}")
+    }
   end
-  private_class_method :ensure_case!
+  private_class_method :ensure_case!, :find_or_create_state!, :sample_case_attributes
 end

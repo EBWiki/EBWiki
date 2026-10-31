@@ -12,6 +12,7 @@ module BrandHelper
     path = 'brand/wordmark-a-16.svg' if small && variant == :on_light
 
     svg = Rails.root.join('app/assets/images', path).read
-    tag.span(svg.html_safe, class: css_class, role: 'img', aria: { label: 'EBWiki' })
+    # SVG is loaded from checked-in app/assets, not user input.
+    tag.span(svg.html_safe, class: css_class, role: 'img', aria: { label: 'EBWiki' }) # rubocop:disable Rails/OutputSafety
   end
 end
