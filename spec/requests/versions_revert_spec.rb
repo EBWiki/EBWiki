@@ -8,7 +8,7 @@ RSpec.describe 'Versions revert', type: :request, versioning: true do
   end
 
   describe 'POST /cases/:case_id/versions/:id/revert' do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, admin: true) }
     let(:this_case) { create(:case, blurb: 'Original blurb') }
 
     context 'when signed out' do

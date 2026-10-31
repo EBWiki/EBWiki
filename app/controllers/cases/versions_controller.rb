@@ -6,6 +6,7 @@ module Cases
     before_action :authenticate_user!
     before_action :set_case
     before_action :set_version, only: [:revert]
+    before_action :authorize_revert, only: [:revert]
 
     def revert
       reified = @version.reify
@@ -24,6 +25,10 @@ module Cases
 
     def set_case
       @case = Case.friendly.find(params[:case_id])
+    end
+
+    def authorize_revert
+      authorize @case, :revert?
     end
 
     def set_version
