@@ -43,3 +43,13 @@ infra_curl_post_json() {
     printf 'request = "POST"\n'
   } | infra_curl_k --data-binary "$json_body"
 }
+
+infra_curl_delete() {
+  local url="$1"
+  local token="$2"
+  {
+    printf 'header = "Authorization: Bearer %s"\n' "$token"
+    printf 'url = "%s"\n' "$url"
+    printf 'request = "DELETE"\n'
+  } | infra_curl_k
+}

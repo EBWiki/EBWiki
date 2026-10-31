@@ -1,6 +1,6 @@
 # Staging cutover: migrations vs image `ebwiki/ebwiki:184`
 
-Before OpenTofu apply, **`scripts/staging-db-snapshot.sh`** streams **`pg_dump -Fc`** from **inside the Railway Postgres service** (`railway ssh` on **`Postgres`**, `postgres:17` with **`POSTGRES_*`** env). This works while the app still runs image **`ebwiki/ebwiki:184`** (no client tools there). The dump uploads to **`staging/db-snapshots/<timestamp>.dump`** on the bootstrap R2 bucket (credentials in Doppler **`ebwiki/infra`**). Nothing is written under **`/tmp`** on the operator machine. **`scripts/staging-apply.sh`** runs the snapshot script before **`tofu apply`**.
+**PR Manager** runs cutover from the PR Manager machine. Before OpenTofu apply, **`scripts/staging-apply.sh`** invokes **`scripts/staging-db-snapshot.sh`**, which streams **`pg_dump -Fc`** from **inside the Railway Postgres service** (`railway ssh` on **`Postgres`**, `postgres:17` with **`POSTGRES_*`** env). This works while the app still runs image **`ebwiki/ebwiki:184`** (no client tools there). The dump uploads to **`staging/db-snapshots/<timestamp>.dump`** on the bootstrap R2 bucket (credentials from **`doppler run --project ebwiki --config infra`**). Nothing is written under **`/tmp`** on the PR Manager machine.
 
 After snapshot, confirm the stream is a valid archive (lists tables):
 
@@ -33,6 +33,6 @@ doppler run --project ebwiki --config infra -- \
   env CONFIRM_RESTORE="<project-id>" ./scripts/staging-db-restore.sh staging/db-snapshots/<timestamp>.dump
 ```
 
-Restore runs **`pg_restore --single-transaction --exit-on-error`** on the Postgres service and refuses unless **`POSTGRES_DB`** matches **`STAGING_EXPECTED_POSTGRES_DB`** (default **`railway`**).
+Restore runs **`pg_restore --single-transaction --exit-on-error`** on the Postgres service and refuses unless **`POSTGRES_DB`** matches **`STAGING_EXPECTED_POSTGRES_DB`** ( **`ebwiki`** in **`infra`**, set at bootstrap).
 
 After restore, redeploy image **`ebwiki/ebwiki:184`** if needed.

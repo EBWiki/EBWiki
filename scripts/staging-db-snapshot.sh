@@ -33,7 +33,7 @@ infra_snapshot_stream_to_r2() {
     exit 1
   }
 
-  infra_railway_remote_postgres_pg_dump_shell | railway ssh \
+  infra_railway_remote_postgres_pg_dump_shell | infra_railway_ssh \
     --project "$project_id" \
     --environment "$environment_id" \
     --service "$db_service_id" \

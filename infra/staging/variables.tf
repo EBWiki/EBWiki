@@ -6,24 +6,24 @@ variable "state_passphrase" {
 
 variable "cloudflare_dns_api_token" {
   type        = string
-  description = "Cloudflare API token with Zone DNS access for ebwiki.org. Set TF_VAR_cloudflare_dns_api_token or use Doppler ebwiki/infra. Separate from #4528 Access token."
+  description = "Cloudflare API token for ebwiki.org staging DNS. Set TF_VAR_cloudflare_dns_api_token from Doppler ebwiki/infra."
   sensitive   = true
   default     = null
 }
 
 variable "cloudflare_zone_id" {
   type        = string
-  description = "Cloudflare zone ID for ebwiki.org."
+  description = "Cloudflare zone ID for ebwiki.org (staging.ebwiki.org)."
 }
 
 variable "cloudflare_staging_dns_record_id" {
   type        = string
-  description = "Cloudflare DNS record ID for the existing staging CNAME (adopt, do not recreate)."
+  description = "Cloudflare DNS record ID for the existing staging.ebwiki.org CNAME (adopt)."
 }
 
 variable "staging_hostname" {
   type        = string
-  description = "Public hostname for Rails staging (custom domain on Railway and Cloudflare)."
+  description = "Public staging hostname on Railway and in Doppler HOST."
   default     = "staging.ebwiki.org"
 }
 
@@ -37,6 +37,12 @@ variable "doppler_config" {
   type        = string
   description = "Doppler config the Railway runtime loads via DOPPLER_TOKEN."
   default     = "stg"
+}
+
+variable "staging_runtime_doppler_token" {
+  type        = string
+  description = "Read-only Doppler service token for Railway (ebwiki/stg). Set TF_VAR_staging_runtime_doppler_token from ebwiki/infra after first-time setup."
+  sensitive   = true
 }
 
 variable "staging_basic_auth_username" {
@@ -59,24 +65,6 @@ variable "railway_environment_name" {
   type        = string
   description = "Railway environment name for the staging service."
   default     = "production"
-}
-
-variable "github_repo" {
-  type        = string
-  description = "GitHub repository connected to the Railway service."
-  default     = "EBWiki/EBWiki"
-}
-
-variable "github_branch" {
-  type        = string
-  description = "Branch Railway builds for staging."
-  default     = "main"
-}
-
-variable "railway_config_path" {
-  type        = string
-  description = "Railway config file in the repo (pre-deploy and health check)."
-  default     = "railway.staging.toml"
 }
 
 variable "railway_service_domain_fqdn" {
