@@ -52,11 +52,11 @@ RSpec.describe 'Cases', type: :request do
   end
 
   describe 'GET /cases/:slug/edit' do
-    let(:user) { create(:user) }
+    let(:admin) { create(:user, admin: true) }
     let(:_case) { create(:case) }
 
     before do
-      sign_in user
+      sign_in admin
       get "/cases/#{_case.slug}/edit", params: {}, headers: {}
     end
 
@@ -123,14 +123,14 @@ RSpec.describe 'Cases', type: :request do
   end
 
   describe 'PATCH /cases/:slug' do
-    let(:user) { create(:user) }
+    let(:admin) { create(:user, admin: true) }
     let(:_case) { create(:case) }
-    let(:params) { { case: { city: 'Albany' } } }
-    let(:bad_params) { { case: { date: Date.tomorrow } } }
+    let(:params) { { case: { city: 'Albany', summary: 'Cases request spec summary' } } }
+    let(:bad_params) { { case: { date: Date.tomorrow, summary: 'Cases request spec summary' } } }
 
     context 'when the case is successfully updated' do
       before do
-        sign_in user
+        sign_in admin
         patch "/cases/#{_case.slug}", params: params, headers: {}
       end
 
@@ -141,7 +141,7 @@ RSpec.describe 'Cases', type: :request do
 
     context 'when the case has errors' do
       before do
-        sign_in user
+        sign_in admin
         patch "/cases/#{_case.slug}", params: bad_params, headers: {}
       end
 
@@ -159,7 +159,7 @@ RSpec.describe 'Cases', type: :request do
       let(:params) { { case: { blurb: html_blurb, summary: 'Stripped HTML from blurb' } } }
 
       before do
-        sign_in user
+        sign_in admin
         patch "/cases/#{_case.slug}", params: params, headers: {}
       end
 
