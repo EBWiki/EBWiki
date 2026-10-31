@@ -252,6 +252,48 @@ RSpec.describe 'Cases', type: :request do
         expect(response.body).to include('Buffalo')
       end
     end
+
+    context 'when a title change triggers slug regeneration and save then raises' do
+      let(:original_slug) { _case.slug }
+      let(:params) do
+        {
+          case: {
+            title: 'Renamed Case Title',
+            city: 'Buffalo',
+            summary: 'Retried after a save error'
+          }
+        }
+      end
+
+      before do
+        original_slug
+        allow(CaseMailer).to receive(:send_followers_email)
+        allow(Rollbar).to receive(:error)
+        allow_any_instance_of(Case).to receive(:geocode).and_raise(StandardError, 'geocode failed')
+
+        sign_in user
+        patch "/cases/#{original_slug}", params: params, headers: {}
+      end
+
+      it 'renders the edit form with the persisted slug in the form action' do
+        expect(response.body).to include("action=\"/cases/#{original_slug}\"")
+      end
+
+      it 'keeps the editor submitted title on the form' do
+        expect(response.body).to include('Renamed Case Title')
+      end
+
+      it 'allows a retry against the persisted slug' do
+        allow_any_instance_of(Case).to receive(:geocode).and_return(true)
+
+        patch "/cases/#{original_slug}",
+              params: { case: { overview: 'Updated overview after error', summary: 'Second attempt' } },
+              headers: {}
+
+        expect(response).to redirect_to(case_path(_case))
+        expect(_case.reload.overview).to eq('Updated overview after error')
+      end
+    end
   end
 
   describe 'GET /cases/:slug/followers' do

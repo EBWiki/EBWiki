@@ -58,6 +58,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   # rubocop:todo Metrics/MethodLength
   def update
     @this_case = Case.find(params[:id])
+    @case_persisted_slug = @this_case.slug
     @this_case.slug = nil
     updated = update_case_record
     return if performed?
@@ -67,6 +68,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
       deliver_followers_email
       redirect_to @this_case
     else
+      restore_case_slug_after_failed_update
       set_instance_vars
       render 'edit'
     end
@@ -149,9 +151,16 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
 
   def render_case_update_failure(error)
     Rollbar.error(error)
+    restore_case_slug_after_failed_update
     set_instance_vars
     flash.now[:error] = 'There was an error updating this case. Please try again.'
     render 'edit', status: :unprocessable_content
+  end
+
+  def restore_case_slug_after_failed_update
+    return if @case_persisted_slug.blank?
+
+    @this_case.slug = @case_persisted_slug
   end
 
   def deliver_followers_email
