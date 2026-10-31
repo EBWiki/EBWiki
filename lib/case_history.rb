@@ -10,10 +10,11 @@ module CaseHistory
 
   def dedupe_key(version)
     [
-      version.created_at.to_i,
+      version.created_at,
       version.event,
       version.whodunnit.to_s,
-      version.comment.to_s
+      version.comment.to_s,
+      version.object_changes
     ]
   end
 end

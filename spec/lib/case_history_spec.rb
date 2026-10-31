@@ -39,5 +39,36 @@ RSpec.describe CaseHistory, versioning: true do
       expect(matching.size).to eq(1)
       expect(this_case.versions.where(comment: 'Duplicate edit summary').count).to eq(2)
     end
+
+    it 'keeps distinct edits in the same second when their recorded changes differ' do
+      this_case = FactoryBot.create(:case)
+      base_time = Time.zone.parse('2024-06-01 12:00:00')
+      shared_comment = 'Same edit summary'
+
+      PaperTrail::Version.create!(
+        item_type: 'Case',
+        item_id: this_case.id,
+        event: 'update',
+        whodunnit: '1',
+        comment: shared_comment,
+        created_at: base_time + 0.2.seconds,
+        object_changes: { 'title' => %w[Before First change] }
+      )
+
+      PaperTrail::Version.create!(
+        item_type: 'Case',
+        item_id: this_case.id,
+        event: 'update',
+        whodunnit: '1',
+        comment: shared_comment,
+        created_at: base_time + 0.8.seconds,
+        object_changes: { 'overview' => %w[Before Second change] }
+      )
+
+      versions = described_class.versions_for(this_case)
+      matching = versions.select { |version| version.comment == shared_comment }
+
+      expect(matching.size).to eq(2)
+    end
   end
 end
