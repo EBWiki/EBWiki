@@ -3,6 +3,7 @@
 # Case model
 class Case < ApplicationRecord
   include CaseSearchable
+  include CasePhotoLink
 
   MAX_BLURB_CHARACTERS = 500
 
