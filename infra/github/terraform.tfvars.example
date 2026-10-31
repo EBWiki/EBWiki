@@ -1,0 +1,6 @@
+github_owner      = "EBWiki"
+github_repository = "EBWiki"
+
+# Sensitive values are never committed. Plan and apply load them from Doppler via TF_VAR_*:
+# - ebwiki/infra: STATE_PASSPHRASE, GITHUB_TOKEN
+# - ebwiki/stg: STAGING_USERNAME, STAGING_PASSWORD, ROLLBAR_ACCESS_TOKEN

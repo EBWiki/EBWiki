@@ -104,10 +104,6 @@ class Case < ApplicationRecord
     self.default_avatar_url = avatar.url
   end
 
-  def self.find_by_search(query)
-    search(query)
-  end
-
   def nearby_cases
     try(:nearbys, 50).try(:order, 'distance') || []
   end

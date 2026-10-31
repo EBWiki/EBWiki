@@ -1,0 +1,111 @@
+name: Infra (GitHub)
+
+on:
+  pull_request:
+    paths:
+      - 'infra/github/**'
+      - 'scripts/github-*.sh'
+      - 'scripts/lib/github-*.sh'
+      - 'scripts/lib/infra-logging.sh'
+      - 'scripts/lib/infra-curl.sh'
+      - 'scripts/lib/infra-cloudflare.sh'
+      - 'scripts/lib/infra-rollbar.sh'
+      - 'scripts/lib/infra-exit-trap.sh'
+      - 'scripts/lib/infra-export-tf-vars.sh'
+      - 'scripts/test/*.sh'
+      - 'scripts/test/github-infra-test.sh'
+      - 'scripts/test/github-tftest-mutations.sh'
+      - 'scripts/test/github-scripts-e2e-test.sh'
+      - 'scripts/infra-with-tf-vars.sh'
+      - 'scripts/infra-write-backend.sh'
+      - 'scripts/staging-plan.sh'
+      - 'scripts/staging-apply.sh'
+      - 'scripts/staging-dns-preflight.sh'
+      - 'scripts/lib/infra-railway-config.sh'
+      - 'scripts/lib/infra-staging-plan-gate.sh'
+      - 'scripts/lib/infra-railway*.sh'
+      - 'scripts/github-require-protected-environment.sh'
+      - '.github/workflows/release-tags.yml'
+      - '.github/workflows/release_smoke_check.yml'
+      - 'infra/staging/**'
+      - '.github/workflows/infra-github.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  opentofu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: infra/github
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+
+      - name: Infra helper tests
+        working-directory: .
+        run: ./scripts/test/infra-lib-test.sh
+
+      - name: GitHub infra script tests
+        working-directory: .
+        run: ./scripts/test/github-infra-test.sh
+
+      - name: GitHub script end-to-end tests
+        working-directory: .
+        run: ./scripts/test/github-scripts-e2e-test.sh
+
+      - name: Protected environment check tests
+        working-directory: .
+        run: ./scripts/test/github-require-protected-environment-test.sh
+
+      - name: ShellCheck infra scripts
+        working-directory: .
+        env:
+          SHELLCHECK_VERSION: v0.10.0
+          SHELLCHECK_SHA256: 6c881ab0698e4e6ea235245f22832860544f17ba386442fe7e9d629f8cbedf87
+        run: |
+          sc_dir="$(mktemp -d)"
+          curl -fsSL --connect-timeout 10 --max-time 120 -o "$sc_dir/shellcheck.tar.xz" \
+            "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz"
+          echo "${SHELLCHECK_SHA256}  $sc_dir/shellcheck.tar.xz" | sha256sum -c -
+          tar -xJf "$sc_dir/shellcheck.tar.xz" -C "$sc_dir"
+          sc="$sc_dir/shellcheck-${SHELLCHECK_VERSION}/shellcheck"
+          "$sc" --version
+          "$sc" -S warning scripts/*.sh scripts/lib/*.sh scripts/test/*.sh infra/staging/scripts/*.sh
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@9d84900f3238fab8cd84ce47d658d25dd008be2f # v1.0.8
+        with:
+          tofu_version: 1.13.1
+
+      - name: Format check
+        run: tofu fmt -check -recursive
+
+      - name: Init (no backend)
+        run: tofu init -backend=false
+
+      - name: Validate
+        env:
+          TF_VAR_state_passphrase: ci-validate-only-passphrase
+          TF_VAR_github_token: ci-validate-only
+          TF_VAR_staging_username: ci-validate-only
+          TF_VAR_staging_password: ci-validate-only
+          TF_VAR_rollbar_access_token: ci-validate-only
+        run: tofu validate
+
+      - name: Test (mocked GitHub provider)
+        env:
+          TF_VAR_state_passphrase: ci-validate-only-passphrase
+          TF_VAR_github_token: ci-validate-only
+          TF_VAR_staging_username: ci-validate-only
+          TF_VAR_staging_password: ci-validate-only
+          TF_VAR_rollbar_access_token: ci-validate-only
+        run: tofu test
+
+      - name: Test tftest mutations on copied stack
+        working-directory: .
+        run: ./scripts/test/github-tftest-mutations.sh

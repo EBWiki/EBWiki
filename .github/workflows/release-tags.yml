@@ -1,0 +1,98 @@
+---
+name: Release tags
+
+# Creates the release tags after a reviewer approves the release-tags environment.
+# Does not run on push. Tags only commits that are on main.
+on:
+  workflow_dispatch:
+    inputs:
+      tag_kind:
+        description: pre-pgsearch (fixed commit 912745b257dbc9fdd5c48b9cf563df0905375c86) or post-merge (the merge commit on main)
+        required: true
+        type: choice
+        options:
+          - v2026.10.18-pre-pgsearch
+          - v2026.10.18-1
+      commit:
+        description: Full 40-character SHA of the merge commit (post-merge tag only)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-tags
+  cancel-in-progress: false
+
+jobs:
+  # Runs before any job names the environment: GitHub would otherwise create a
+  # missing release-tags environment without reviewers and tag without approval.
+  require_environment:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+
+      - name: Require protected release-tags environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/github-require-protected-environment.sh release-tags
+
+  tag:
+    needs: require_environment
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: release-tags
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+        with:
+          fetch-depth: 0
+
+      - name: Resolve tag target
+        id: target
+        env:
+          TAG_KIND: ${{ inputs.tag_kind }}
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          case "$TAG_KIND" in
+            v2026.10.18-pre-pgsearch) sha=912745b257dbc9fdd5c48b9cf563df0905375c86 ;;
+            v2026.10.18-1) sha="$COMMIT" ;;
+            *) printf '{"level":"error","event":"release_tag_input","message":"unknown tag_kind"}\n' >&2; exit 1 ;;
+          esac
+          if ! [[ "$sha" =~ ^[0-9a-f]{40}$ ]]; then
+            printf '{"level":"error","event":"release_tag_input","message":"commit must be a full 40-character SHA"}\n' >&2
+            exit 1
+          fi
+          echo "sha=${sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Require the commit on main and the tag to be new
+        env:
+          TAG: ${{ inputs.tag_kind }}
+          SHA: ${{ steps.target.outputs.sha }}
+        run: |
+          git cat-file -e "${SHA}^{commit}"
+          git merge-base --is-ancestor "$SHA" origin/main
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null; then
+            printf '{"level":"error","event":"release_tag_exists","message":"tag %s already exists"}\n' "$TAG" >&2
+            exit 1
+          fi
+
+      - name: Create annotated tag
+        env:
+          TAG: ${{ inputs.tag_kind }}
+          SHA: ${{ steps.target.outputs.sha }}
+        run: |
+          git config user.name "EBWiki Release Tags"
+          git config user.email "release-tags@ebwiki.org"
+          git tag -a "$TAG" -m "$TAG" "$SHA"
+          git push origin "refs/tags/${TAG}"

@@ -47,3 +47,15 @@ variable "doppler_stg_config" {
   description = "Doppler config for staging service tokens (stg only)."
   default     = "stg"
 }
+
+variable "rollbar_account_api_key" {
+  type        = string
+  description = "Rollbar account API key (grandkru/prd ROLLBAR_ACCOUNT_API_KEY). Manual seed only."
+  sensitive   = true
+}
+
+variable "rollbar_project_name" {
+  type        = string
+  description = "Existing Rollbar project that receives release smoke errors."
+  default     = "ebwiki"
+}

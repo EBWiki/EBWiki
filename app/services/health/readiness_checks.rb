@@ -3,7 +3,7 @@
 require 'timeout'
 
 module Health
-  # Readiness probes for Postgres, Redis, and Elasticsearch (used by GET /health).
+  # Readiness probes for Postgres and Redis (used by GET /health).
   class ReadinessChecks
     CHECK_TIMEOUT_SEC = 2
     READY_STATUSES = %w[ok skipped].freeze
@@ -15,8 +15,7 @@ module Health
     def call
       checks = {
         postgres: check_postgres,
-        redis: check_redis,
-        elasticsearch: check_elasticsearch
+        redis: check_redis
       }
       { status: overall_status(checks), checks: checks }
     end
@@ -34,18 +33,6 @@ module Health
       timed_check do
         redis_pool.with { |conn| conn.ping == 'PONG' }
       end
-    end
-
-    def check_elasticsearch
-      return { status: 'skipped' } unless search_configured?
-
-      timed_check do
-        Searchkick.client.ping
-      end
-    end
-
-    def search_configured?
-      ENV['ELASTICSEARCH_URL'].present? || ENV['SEARCHBOX_URL'].present?
     end
 
     def overall_status(checks)

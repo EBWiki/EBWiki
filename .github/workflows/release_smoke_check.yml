@@ -1,0 +1,75 @@
+---
+name: Release smoke check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Runs before any job names the environment: GitHub would otherwise create a
+  # missing release-smoke environment without reviewers and run the smoke check.
+  require_environment:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+
+      - name: Require protected release-smoke environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/github-require-protected-environment.sh release-smoke
+
+  smoke_check:
+    needs: require_environment
+    if: github.ref == 'refs/heads/main'
+    environment: release-smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+      RELEASE_SMOKE_BASE_URL: https://staging.ebwiki.org
+      RELEASE_SMOKE_ALLOWED_HOSTS: staging.ebwiki.org
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
+        with:
+          ruby-version: 3.4.2
+
+      - name: Install gems
+        run: bundle install
+
+      - name: Require release-smoke secrets
+        env:
+          STAGING_USERNAME: ${{ secrets.STAGING_USERNAME }}
+          STAGING_PASSWORD: ${{ secrets.STAGING_PASSWORD }}
+          ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+        run: |
+          missing=0
+          for name in STAGING_USERNAME STAGING_PASSWORD ROLLBAR_ACCESS_TOKEN; do
+            if [ -z "${!name:-}" ]; then
+              printf '{"level":"error","event":"release_smoke_secret_missing","secret":"%s"}\n' "$name" >&2
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Run post-deploy smoke check
+        env:
+          STAGING_USERNAME: ${{ secrets.STAGING_USERNAME }}
+          STAGING_PASSWORD: ${{ secrets.STAGING_PASSWORD }}
+          RELEASE_SMOKE_SEARCH_TERM: ${{ vars.RELEASE_SMOKE_SEARCH_TERM }}
+          ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+          ROLLBAR_ENV: staging
+        run: bundle exec bin/release-smoke-check

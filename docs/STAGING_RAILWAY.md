@@ -3,9 +3,7 @@
 This document describes how the **Rails** EBWiki archive deploys to Railway from
 `main`, how it differs from [hanami.ebwiki.org](http://hanami.ebwiki.org), and
 which environment variable **names** belong in Doppler config `ebwiki/stg`
-(values live only in Doppler and Railway — never commit them).
-
-Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
+(values live only in Doppler and Railway; never commit them).
 
 ## Deploy path
 
@@ -17,15 +15,15 @@ Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
    `db/seeds.rb` (seeds are limited to development and test) and does **not**
    create tables on an empty database.
 4. **Start:** `bundle exec puma -C config/puma.rb`.
-5. **Liveness (Railway deploy health check):** HTTP `GET /up` — fast “app booted”
+5. **Liveness (Railway deploy health check):** HTTP `GET /up`, a fast "app booted"
    probe only (`railway.toml` `healthcheckPath`). Returns **200** when Rails is
    up; **503** if the liveness handler errors. JSON may include `deploy_rev`.
-6. **Readiness (operators):** HTTP `GET /health` — checks Postgres (`SELECT 1`),
-   Redis (`PING` via `REDIS_URL`), and Elasticsearch (cluster ping via
-   `ELASTICSEARCH_URL` or legacy `SEARCHBOX_URL`). Each check uses a ~2s timeout.
-   JSON shape: `{ "status", "checks": { "postgres"|"redis"|"elasticsearch":
-   { "status", "latency_ms" } }, "deploy_rev" }`. Returns **200** when all pass,
-   **503** when any fail. Responses never include error messages or secrets.
+6. **Readiness check:** HTTP `GET /health`: checks Postgres (`SELECT 1`) and
+   Redis (`PING` via `REDIS_URL`). Case search uses Postgres full-text search
+   (`pg_search`); no separate search cluster. Each check uses a ~2s timeout. JSON
+   shape: `{ "status", "checks": { "postgres"|"redis": { "status", "latency_ms" }
+   }, "deploy_rev" }`. Returns **200** when all pass, **503** when any fail.
+   Responses never include error messages or secrets.
 7. **Revision in HTML:** Every page includes `<!-- deploy_rev: … -->` in the
    footer when `DEPLOY_REV` or `RAILWAY_GIT_COMMIT_SHA` is set (same SHA as
    `/up` and `/health`).
@@ -54,11 +52,11 @@ Railway services and codebases.
 
 ## Database on a new Postgres instance
 
-Each deploy runs **`db:migrate`** against the service’s `DATABASE_URL`. If the
+Each deploy runs **`db:migrate`** against the service's `DATABASE_URL`. If the
 database is **empty** (no tables yet), migrate has nothing to apply and the app
 will not boot until a schema exists.
 
-**One-time setup** (pick one, as an operator with access to the Railway service
+**One-time setup** (pick one, as someone with access to the Railway service
 shell or a local `DATABASE_URL` pointing at that database):
 
 - Load the committed schema: `bundle exec rails db:schema:load`
@@ -70,8 +68,10 @@ restricted to development and test.
 
 ## Rollback
 
-**Redeploy an older build in Railway:** open the service → **Deployments** →
-select a previous successful deployment → **Redeploy**. That rolls the **running
+**Roll back to an older build in Railway:** run `bin/release-rollback` (see
+[RELEASE.md](RELEASE.md#one-command-rollback-railway-staging)) to see which deployment it would restore: the
+newest one older than the live deployment that Railway can roll back to. Replaced
+deployments show as removed in **Deployments**, not as successful. That rolls the **running
 code and container image** back; it does **not** reverse migrations.
 
 **Migrations are forward-only.** Rolling code back leaves the database at the
@@ -104,7 +104,7 @@ required vs optional) are grouped in `.env.example`.
 | `DATABASE_URL` | Postgres (sole DB config at runtime) |
 | `REDIS_URL` | Cache / Action Cable (see `config/environments/staging.rb`) |
 | `PORT` | Injected by Railway; Puma binds via `config/puma.rb` |
-| `HOST` | Custom public hostname allowed in staging host authorization (with Railway’s domain; see below) |
+| `HOST` | Custom public hostname allowed in staging host authorization (with Railway's domain; see below) |
 
 ### Deploy visibility
 
@@ -121,13 +121,6 @@ required vs optional) are grouped in `.env.example`.
 | `AWS_SECRET_KEY_ID` | S3 secret (note `_KEY_ID` suffix in this app) |
 | `S3_BUCKET` | Upload bucket |
 | `FOG_DIRECTORY` | Sitemap / Fog directory name |
-
-### Search
-
-| Variable | Purpose |
-| --- | --- |
-| `ELASTICSEARCH_URL` | Preferred Elasticsearch URL |
-| `SEARCHBOX_URL` | Legacy fallback (`config/initializers/searchbox.rb`) |
 
 ### Mail / marketing
 
@@ -162,14 +155,14 @@ Railway adds names such as `RAILWAY_ENVIRONMENT`, `RAILWAY_PUBLIC_DOMAIN`,
 Doppler unless you intentionally override; they are not part of `ebwiki/stg`.
 
 **Host authorization on staging** (`config/initializers/staging_railway_hosts.rb`)
-allows only `HOST` (when set) and `RAILWAY_PUBLIC_DOMAIN` (Railway’s default
+allows only `HOST` (when set) and `RAILWAY_PUBLIC_DOMAIN` (Railway's default
 service URL host). It does not allow every `*.railway.app` subdomain. When neither
 variable is set, every host is denied except `GET /up` (Rails treats an empty
-allow-list as “permit all,” so staging installs a deny-all sentinel instead).
-Railway’s deploy health check hits `GET /up`, which is excluded from host
+allow-list as "permit all," so staging installs a deny-all sentinel instead).
+Railway's deploy health check hits `GET /up`, which is excluded from host
 authorization so liveness probes succeed before a custom domain is attached.
 
-## Operator checklist
+## Release checklist
 
 - [ ] Railway service: repo `EBWiki/EBWiki`, branch `main`, Dockerfile path
   `Dockerfile.railway`.

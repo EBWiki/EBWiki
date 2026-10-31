@@ -15,3 +15,7 @@ provider "doppler" {
 }
 
 provider "random" {}
+
+provider "rollbar" {
+  api_key = var.rollbar_account_api_key
+}

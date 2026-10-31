@@ -2,4 +2,4 @@
 
 The **ebwiki** staging service source, builder, and deploy settings live here. OpenTofu does not set GitHub source (workspace token cannot repo-connect). Dockerfile path is **`build.dockerfilePath`**; **`RAILWAY_DOCKERFILE_PATH`** stays **`preserve()`** if Railway still holds the variable. Other variables use `preserve()` only. OpenTofu sets **`DOPPLER_TOKEN`** and region replicas.
 
-Plan and apply with `make plan` / `make apply` on the PR Manager machine (see `infra/staging/README.md`).
+Plan and apply with `make plan` / `make apply` from a machine with Doppler `ebwiki/infra` (see `infra/staging/README.md`).

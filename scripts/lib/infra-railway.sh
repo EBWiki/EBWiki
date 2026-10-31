@@ -15,14 +15,25 @@ RAILWAY_TARGET_DB_SERVICE_NAME="${RAILWAY_TARGET_DB_SERVICE_NAME:-Postgres}"
 RAILWAY_TARGET_ENVIRONMENT_NAME="${RAILWAY_TARGET_ENVIRONMENT_NAME:-production}"
 STAGING_EXPECTED_POSTGRES_DB="${STAGING_EXPECTED_POSTGRES_DB:-railway}"
 
+infra_railway_gql_with_token() {
+  local token="$1"
+  local query="$2"
+  local variables="${3:-}"
+  local body
+  [ -n "$variables" ] || variables='{}'
+  [[ -n "$token" ]] || {
+    echo "Railway token must be set." >&2
+    return 1
+  }
+  body="$(jq -n --arg q "$query" --argjson v "$variables" '{query: $q, variables: $v}')"
+  infra_curl_post_json "$RAILWAY_GQL_URL" "$token" "$body"
+}
+
 infra_railway_gql() {
   local query="$1"
   local variables="${2:-}"
-  local body
-  [ -n "$variables" ] || variables='{}'
   : "${RAILWAY_TOKEN:?RAILWAY_TOKEN must be set}"
-  body="$(jq -n --arg q "$query" --argjson v "$variables" '{query: $q, variables: $v}')"
-  infra_curl_post_json "$RAILWAY_GQL_URL" "$RAILWAY_TOKEN" "$body"
+  infra_railway_gql_with_token "$RAILWAY_TOKEN" "$query" "$variables"
 }
 
 infra_railway_projects_payload() {
