@@ -3,6 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe UserMailer, type: :mailer do
+  around do |example|
+    PaperTrail.request.disable_model(Case)
+    example.run
+  ensure
+    PaperTrail.request.enable_model(Case)
+  end
+
   before(:each) do
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
