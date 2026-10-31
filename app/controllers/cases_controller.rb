@@ -4,7 +4,6 @@
 class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   before_action :authenticate_user!, except: %i[index show history followers]
   before_action :set_instance_vars, only: %i[edit new create]
-  before_action :set_case_for_mutation, only: %i[edit update destroy]
 
   def index
     page_size = 12
@@ -35,6 +34,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   end
 
   def edit
+    @this_case = Case.friendly.find(params[:id])
     @this_case.links.build
   end
   # rubocop:enable Metrics/AbcSize
@@ -57,6 +57,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
 
   # rubocop:todo Metrics/MethodLength
   def update
+    @this_case = Case.find(params[:id])
     @this_case.slug = nil
     if @this_case.update(case_params)
       flash[:success] = 'Case was updated!'
@@ -74,6 +75,7 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
 
   def destroy
     begin
+      @this_case = Case.friendly.find(params[:id])
       @this_case.destroy
       flash[:success] = 'Case was removed!'
       CaseMailer.send_deletion_email(users: @this_case.followers,
@@ -130,11 +132,6 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   # why did they set commentable here?
   def set_commentable
     @commentable = Case.friendly.find(params[:id])
-  end
-
-  def set_case_for_mutation
-    @this_case = Case.friendly.find(params[:id])
-    authorize @this_case
   end
 
   def set_instance_vars
