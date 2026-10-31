@@ -4,33 +4,33 @@
 module StagingSampleContent
   SAMPLES = [
     {
-      slug: "staging-sample-columbus-oh",
-      title: "Staging sample: Columbus",
-      city: "Columbus",
-      state_code: "OH",
+      slug: 'staging-sample-columbus-oh',
+      title: 'Staging sample: Columbus',
+      city: 'Columbus',
+      state_code: 'OH',
       latitude: 39.9612,
       longitude: -82.9988,
-      subject_name: "Alex Rivera",
+      subject_name: 'Alex Rivera',
       subject_age: 34
     },
     {
-      slug: "staging-sample-atlanta-ga",
-      title: "Staging sample: Atlanta",
-      city: "Atlanta",
-      state_code: "GA",
+      slug: 'staging-sample-atlanta-ga',
+      title: 'Staging sample: Atlanta',
+      city: 'Atlanta',
+      state_code: 'GA',
       latitude: 33.7490,
       longitude: -84.3880,
-      subject_name: "Jordan Lee",
+      subject_name: 'Jordan Lee',
       subject_age: 28
     },
     {
-      slug: "staging-sample-oakland-ca",
-      title: "Staging sample: Oakland",
-      city: "Oakland",
-      state_code: "CA",
+      slug: 'staging-sample-oakland-ca',
+      title: 'Staging sample: Oakland',
+      city: 'Oakland',
+      state_code: 'CA',
       latitude: 37.8044,
       longitude: -122.2712,
-      subject_name: "Sam Okonkwo",
+      subject_name: 'Sam Okonkwo',
       subject_age: 41
     }
   ].freeze
@@ -43,7 +43,7 @@ module StagingSampleContent
     SAMPLES.each do |attrs|
       ensure_case!(attrs, logger: logger)
     end
-    Rails.cache.delete("case_locations")
+    Rails.cache.delete('case_locations')
     logger.info("[StagingSampleContent] ensured #{SAMPLES.size} sample cases")
   end
 
@@ -61,9 +61,9 @@ module StagingSampleContent
       city: attrs[:city],
       state: state,
       date: Date.new(2020, 6, 1),
-      overview: "Staging-only sample case for brand and map review. Not production data.",
-      summary: "Staging sample content.",
-      blurb: "Demonstration record for the Railway staging site.",
+      overview: 'Staging-only sample case for brand and map review. Not production data.',
+      summary: 'Staging sample content.',
+      blurb: 'Demonstration record for the Railway staging site.',
       latitude: attrs[:latitude],
       longitude: attrs[:longitude]
     )
