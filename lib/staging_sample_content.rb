@@ -35,6 +35,13 @@ module StagingSampleContent
     }
   ].freeze
 
+  STAGING_CASE_COPY = {
+    date: Date.new(2020, 6, 1),
+    overview: 'Staging-only sample case for brand and map review. Not production data.',
+    summary: 'Staging sample content.',
+    blurb: 'Demonstration record for the Railway staging site.'
+  }.freeze
+
   module_function
 
   def ensure!(logger: Rails.logger)
@@ -66,17 +73,7 @@ module StagingSampleContent
   end
 
   def sample_case_attributes(attrs, state)
-    {
-      title: attrs[:title],
-      city: attrs[:city],
-      state: state,
-      date: Date.new(2020, 6, 1),
-      overview: 'Staging-only sample case for brand and map review. Not production data.',
-      summary: 'Staging sample content.',
-      blurb: 'Demonstration record for the Railway staging site.',
-      latitude: attrs[:latitude],
-      longitude: attrs[:longitude]
-    }
+    attrs.slice(:title, :city, :latitude, :longitude).merge(state: state, **STAGING_CASE_COPY)
   end
   private_class_method :ensure_case!, :find_or_create_state!, :sample_case_attributes
 end
