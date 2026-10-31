@@ -17,6 +17,11 @@ Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
    `db/seeds.rb` (seeds are limited to development and test) and does **not**
    create tables on an empty database.
 4. **Start:** `bundle exec puma -C config/puma.rb`.
+
+**Static assets:** Staging serves precompiled files from `/assets` on the same
+host as the app (`config/environments/staging.rb` uses optional `ASSET_HOST` only
+when set). Do not point staging HTML at legacy CloudFront URLs unless that CDN
+serves the same digests as the current container build.
 5. **Liveness (Railway deploy health check):** HTTP `GET /up` — fast “app booted”
    probe only (`railway.toml` `healthcheckPath`). Returns **200** when Rails is
    up; **503** if the liveness handler errors. JSON may include `deploy_rev`.

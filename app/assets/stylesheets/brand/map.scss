@@ -1,0 +1,60 @@
+.ebwiki-map-intro {
+  font-family: var(--type-lead-family);
+  font-size: var(--type-lead-size);
+  margin-bottom: 1.5rem;
+}
+
+.ebwiki-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  background: var(--color-surface);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+}
+
+.ebwiki-map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ebwiki-outcome-marker {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.ebwiki-outcome-marker--convicted {
+  background: var(--color-outcome-convicted);
+  border-radius: 50%;
+}
+
+.ebwiki-outcome-marker--federal {
+  background: var(--color-outcome-federal);
+}
+
+.ebwiki-outcome-marker--charged {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 14px solid var(--color-outcome-charged);
+  background: transparent;
+}
+
+.ebwiki-outcome-marker--none {
+  background: var(--color-outcome-none);
+  transform: rotate(45deg);
+}
+
+#map-container {
+  width: 100%;
+  max-width: 100%;
+  height: 70vh;
+  max-height: 720px;
+  margin: 0 auto;
+  background: var(--color-map-land);
+}

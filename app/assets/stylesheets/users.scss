@@ -1,11 +1,6 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-$color-orange: #F65732;
-$color-gray: #666666;
-$color-black: #000000;
-$color-dark-gray: #4D4D4D;
-
 .btn-social {
 	color: white;
   opacity: 0.8;
@@ -59,7 +54,7 @@ $color-dark-gray: #4D4D4D;
 }
 
 .btn-success {
-  background-color: $color-orange !important;
+  background-color: var(--color-action) !important;
 }
 
 .btn-capitalized {
@@ -71,13 +66,13 @@ $color-dark-gray: #4D4D4D;
 }
 
 .btn-group.user-back .btn-primary {
-	background-color: $color-gray !important;
-	border-color: $color-gray !important;
+	background-color: var(--color-text-muted) !important;
+	border-color: var(--color-text-muted) !important;
 	color: white !important;
 }
 
 .btn-group.submit .btn-success{
-	border-color: $color-orange !important;
+	border-color: var(--color-action) !important;
 }
 
 label{
