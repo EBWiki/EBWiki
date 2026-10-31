@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Versions', type: :request, versioning: true do
   describe 'POST /revert' do
-    let(:user) { FactoryBot.create(:user, admin: true) }
+    let(:user) { FactoryBot.create(:user) }
     let(:this_case) { FactoryBot.create(:case) }
 
     context 'when signed out' do

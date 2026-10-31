@@ -73,8 +73,7 @@ class UsersController < ApplicationController
   #   Bullet.enable = previous_value
   # end
 
-  def user_not_authorized(exception = nil)
-    log_authorization_denial(exception)
+  def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to @user
   end

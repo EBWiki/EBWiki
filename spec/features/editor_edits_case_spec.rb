@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature 'Editor edits a case' do
   let(:this_case) { FactoryBot.create(:case) }
-  let(:user) { FactoryBot.create(:user, admin: true) }
+  let(:user) { FactoryBot.create(:user) }
   scenario 'Editor arrives at the case edit page and sees the subjects name' do
     sign_in user
     visit "/cases/#{this_case.id}/edit"
