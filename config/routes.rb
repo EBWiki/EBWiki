@@ -59,21 +59,6 @@ Rails.application.routes.draw do
   get '/get-involved', to: 'static#further_actions'
   get '/how-to-help', to: 'static#how_to_help'
 
-  # mailbox folder routes
-  get 'mailbox', to: redirect('mailbox/inbox')
-  get 'mailbox/inbox', to: 'mailbox#inbox', as: :mailbox_inbox
-  get 'mailbox/sent', to: 'mailbox#sent', as: :mailbox_sent
-  get 'mailbox/trash', to: 'mailbox#trash', as: :mailbox_trash
-
-  # conversations
-  resources :conversations do
-    member do
-      post :reply
-      post :trash
-      post :untrash
-    end
-  end
-
   # CKEditor
   mount Ckeditor::Engine, at: '/ckeditor'
 
