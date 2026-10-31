@@ -59,7 +59,8 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, {
-    url: ENV.fetch('REDIS_URL', nil), pool_size: 2, pool_timeout: 2
+    url: ENV.fetch('REDIS_URL', nil),
+    pool: { size: 2, timeout: 2 }
   }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
@@ -68,8 +69,6 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-  url_options = { protocol: 'https', host: 'ebwiki-staging.herokuapp.com' }
-  Rails.application.routes.default_url_options = url_options
 
   config.action_mailer.delivery_method = :test
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
@@ -93,5 +92,6 @@ Rails.application.configure do
     Bullet.console = true
   end
 
-  config.middleware.use Rack::HostRedirect, 'ebwiki-staging.herokuapp.com' => 'staging.ebwiki.org'
+  require Rails.root.join('lib/staging_basic_auth')
+  config.middleware.insert_before 0, StagingBasicAuth
 end

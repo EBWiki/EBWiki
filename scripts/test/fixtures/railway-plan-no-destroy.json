@@ -1,0 +1,9 @@
+{
+  "summary": "Plan: 0 to add, 4 to change, 0 to destroy",
+  "configEtag": "example-etag",
+  "changeSet": {
+    "changes": [
+      { "kind": "service.update", "address": "service.ebwiki" }
+    ]
+  }
+}

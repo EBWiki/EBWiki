@@ -1,0 +1,55 @@
+name: Infra (bootstrap)
+
+on:
+  pull_request:
+    paths:
+      - 'infra/bootstrap/**'
+      - 'scripts/bootstrap.sh'
+      - 'scripts/infra-with-tf-vars.sh'
+      - 'scripts/write-bootstrap-tfvars.sh'
+      - 'scripts/test/infra-doppler-names-test.sh'
+      - 'scripts/lib/**'
+      - 'scripts/infra-write-backend.sh'
+      - 'scripts/railway-github-access.sh'
+      - '.github/workflows/infra-bootstrap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  opentofu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/bootstrap
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Doppler secret name lint
+        working-directory: .
+        run: ./scripts/test/infra-doppler-names-test.sh
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1.0.8
+        with:
+          tofu_version: 1.13.1
+
+      - name: Format check
+        run: tofu fmt -check -recursive
+
+      - name: Init (no backend)
+        run: tofu init -backend=false
+
+      - name: Validate
+        env:
+          TF_VAR_bootstrap_state_passphrase: ci-bootstrap-passphrase-ok
+          TF_VAR_cloudflare_token_maker: ci-validate-only
+          TF_VAR_railway_api_token: ci-validate-only
+          TF_VAR_cloudflare_account_id: "00000000000000000000000000000000"
+          TF_VAR_cloudflare_r2_account_id: "11111111111111111111111111111111"
+          TF_VAR_cloudflare_zone_id: "00000000000000000000000000000000"
+          TF_VAR_cloudflare_grandkru_zone_id: "00000000000000000000000000000000"
+        run: tofu validate
