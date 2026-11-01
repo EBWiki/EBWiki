@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
-return unless Rails.env.local?
+# Seeds create demo users and records with FactoryBot. They must never run
+# against staging or production data by accident.
+unless Rails.env.local?
+  unless ENV['CONFIRM_SEED_ENVIRONMENT'] == Rails.env
+    abort("db:seed refuses to run in #{Rails.env}. " \
+          "Set CONFIRM_SEED_ENVIRONMENT=#{Rails.env} only if you really mean to seed this database.")
+  end
+  return
+end
 
 #
 # This file should contain all the record creation needed to seed the database

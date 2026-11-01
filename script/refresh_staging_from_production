@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# Replace the staging database with a scrubbed copy of the production data.
+#
+# Read docs/STAGING_DATA_REFRESH.md before running this. In short:
+#   SOURCE_DATABASE_URL  read-only source (the production copy). Only read.
+#   TARGET_DATABASE_URL  the staging database. Everything in it is replaced.
+#   STAGING_DB_HOST      expected staging host, e.g. postgres.railway.internal
+#   STAGING_DB_NAME      expected staging database name, e.g. ebwiki
+#   PRODUCTION_DB_HOSTS  space-separated hosts that must never be a target
+#   CONFIRM_REFRESH      must equal "replace <STAGING_DB_HOST>/<STAGING_DB_NAME>"
+#                        (or type it when asked, if run from a terminal)
+#
+# Pass URLs through the environment only, never as arguments, and never write
+# them or the dump to disk. The data streams from pg_dump straight into psql.
+# Run it from somewhere that can reach both databases, such as a temporary
+# Railway service in the staging project (see the doc). Needs pg_dump/psql
+# with the same major version as the servers.
+set -euo pipefail
+
+die() { echo "REFUSED: $*" >&2; exit 1; }
+redact() { sed -E 's#postgres(ql)?://[^ ]*#<url>#g'; }
+# URL parts without printing the URL: scheme://user:pass@HOST:port/DB?params
+host_of() { printf '%s' "$1" | sed -E 's#^[a-z]+://([^@/]*@)?([^:/?]+).*#\2#'; }
+db_of() { printf '%s' "$1" | sed -E 's#^[a-z]+://[^/]+/([^?]*).*#\1#'; }
+
+: "${SOURCE_DATABASE_URL:?SOURCE_DATABASE_URL must be set (environment only)}"
+: "${TARGET_DATABASE_URL:?TARGET_DATABASE_URL must be set (environment only)}"
+: "${STAGING_DB_HOST:?STAGING_DB_HOST must be set}"
+: "${STAGING_DB_NAME:?STAGING_DB_NAME must be set}"
+: "${PRODUCTION_DB_HOSTS:?PRODUCTION_DB_HOSTS must list the hosts that are never a target}"
+: "${RAILS_ENV:=staging}"
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SCRUB_SQL="${SCRIPT_DIR}/refresh_staging_scrub.sql"
+[ -f "$SCRUB_SQL" ] || die "missing $SCRUB_SQL"
+
+src_host="$(host_of "$SOURCE_DATABASE_URL")"
+tgt_host="$(host_of "$TARGET_DATABASE_URL")"
+tgt_db="$(db_of "$TARGET_DATABASE_URL")"
+
+# --- target checks: this script only ever writes to staging ---
+[ "$RAILS_ENV" = "staging" ] || die "RAILS_ENV is '$RAILS_ENV'; this script only refreshes staging"
+[ "$tgt_host" = "$STAGING_DB_HOST" ] || die "target host '$tgt_host' is not the expected staging host '$STAGING_DB_HOST'"
+[ "$tgt_db" = "$STAGING_DB_NAME" ] || die "target database '$tgt_db' is not the expected staging database '$STAGING_DB_NAME'"
+[ "$tgt_host" != "$src_host" ] || die "source and target are the same host"
+for h in $PRODUCTION_DB_HOSTS; do
+  [ "$tgt_host" != "$h" ] || die "target host '$tgt_host' is listed in PRODUCTION_DB_HOSTS"
+  [ "${tgt_host%-pooler*}" != "${h%-pooler*}" ] || die "target host '$tgt_host' matches production host '$h'"
+done
+
+echo "Source (read only): ${src_host}"
+echo "Target (REPLACED):  ${tgt_host}/${tgt_db}"
+expected="replace ${STAGING_DB_HOST}/${STAGING_DB_NAME}"
+if [ -z "${CONFIRM_REFRESH:-}" ] && [ -t 0 ]; then
+  read -r -p "Type '${expected}' to wipe and refresh staging: " CONFIRM_REFRESH
+fi
+[ "${CONFIRM_REFRESH:-}" = "$expected" ] || die "confirmation did not match '${expected}'"
+
+SRC_RO_OPTS='-c default_transaction_read_only=on'
+src_cases="$(PGOPTIONS="$SRC_RO_OPTS" psql "$SOURCE_DATABASE_URL" -X -At -c 'select count(*) from cases')"
+tgt_cases_before="$(psql "$TARGET_DATABASE_URL" -X -At -c 'select count(*) from cases' 2>/dev/null || echo 0)"
+echo "Cases: source=${src_cases} target_before=${tgt_cases_before}"
+
+# --- rollback copy of current staging, kept only for this run ---
+backup_dir="$(mktemp -d)"
+trap 'rm -rf "$backup_dir"' EXIT
+pg_dump -Fc --no-owner --no-acl "$TARGET_DATABASE_URL" -f "$backup_dir/staging_before.dump" 2>&1 | redact
+echo "Rollback copy taken ($(du -h "$backup_dir/staging_before.dump" | cut -f1)); it is deleted when this script exits."
+
+restore_rollback() {
+  echo "Restoring the previous staging data from the rollback copy..." >&2
+  psql "$TARGET_DATABASE_URL" -X -q -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;' 2>&1 | redact >&2
+  pg_restore --no-owner --no-acl -d "$TARGET_DATABASE_URL" "$backup_dir/staging_before.dump" 2>&1 | redact >&2 || true
+}
+
+# --- replace staging schema and stream the copy (no dump file on disk) ---
+psql "$TARGET_DATABASE_URL" -X -v ON_ERROR_STOP=1 -q -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;' 2>&1 | redact
+# Session, visit and analytics rows hold IP addresses and browsing history; copy their tables empty.
+set +e
+PGOPTIONS="$SRC_RO_OPTS" pg_dump --no-owner --no-acl --schema=public \
+  --exclude-table-data=public.sessions \
+  --exclude-table-data=public.visits \
+  --exclude-table-data=public.ahoy_events \
+  "$SOURCE_DATABASE_URL" 2> >(redact >&2) \
+  | psql "$TARGET_DATABASE_URL" -X -q -o /dev/null 2> >(redact | grep -v 'schema "public" already exists' >&2)
+status=("${PIPESTATUS[@]}")
+set -e
+if [ "${status[0]}" != 0 ]; then restore_rollback; die "pg_dump failed (${status[0]})"; fi
+
+# --- scrub personal data on staging ---
+if ! psql "$TARGET_DATABASE_URL" -X -v ON_ERROR_STOP=1 -q -f "$SCRUB_SQL" 2>&1 | redact; then
+  restore_rollback; die "scrub failed; staging was put back"
+fi
+
+# --- verify ---
+tgt_cases="$(psql "$TARGET_DATABASE_URL" -X -At -c 'select count(*) from cases')"
+real_emails="$(psql "$TARGET_DATABASE_URL" -X -At -c "select count(*) from users where email not like '%@example.invalid'")"
+leftover="$(psql "$TARGET_DATABASE_URL" -X -At -c "select count(*) from users where reset_password_token is not null or confirmation_token is not null or current_sign_in_ip is not null or last_sign_in_ip is not null")"
+echo "Cases: source=${src_cases} staging=${tgt_cases}"
+echo "Users with a real email left: ${real_emails}; users with tokens or IPs left: ${leftover}"
+if [ "$tgt_cases" != "$src_cases" ] || [ "$real_emails" != 0 ] || [ "$leftover" != 0 ]; then
+  restore_rollback; die "verification failed; staging was put back"
+fi
+echo "Done. Restart the staging app so it drops cached database types, then check the site."
