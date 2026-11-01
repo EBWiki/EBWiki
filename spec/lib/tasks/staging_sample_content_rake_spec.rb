@@ -17,4 +17,13 @@ describe 'staging:sample_content' do
 
     expect { rake['staging:sample_content'].invoke }.to raise_error(SystemExit, /RAILS_ENV=staging/)
   end
+
+  it 'aborts on staging without the typed confirmation' do
+    allow(Rails.env).to receive(:staging?).and_return(true)
+    allow(ENV).to receive(:[]).and_call_original
+    allow(ENV).to receive(:[]).with('CONFIRM_STAGING_SAMPLE_CONTENT').and_return(nil)
+
+    expect { rake['staging:sample_content'].invoke }
+      .to raise_error(SystemExit, /CONFIRM_STAGING_SAMPLE_CONTENT=add-sample-cases/)
+  end
 end
