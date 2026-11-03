@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/staging_exposure_check'
+
+def usage
+  warn <<~MSG
+    Usage: script/staging_exposure_check [RAILWAY_URL ...]
+
+    Railway URLs default to #{StagingExposureCheck::DEFAULT_RAILWAY_URL}
+    or STAGING_EXPOSURE_RAILWAY_URLS (comma-separated).
+
+    Staging hostname defaults to #{StagingExposureCheck::DEFAULT_STAGING_URL}
+    or STAGING_EXPOSURE_STAGING_URL.
+
+    Service token values are read from #{StagingExposureCheck::CF_ACCESS_CLIENT_ID_ENV}
+    and #{StagingExposureCheck::CF_ACCESS_CLIENT_SECRET_ENV} (values are never printed).
+    Those env vars are sent as #{StagingExposureCheck::CF_ACCESS_CLIENT_ID_HEADER}
+    and #{StagingExposureCheck::CF_ACCESS_CLIENT_SECRET_HEADER} request headers.
+  MSG
+end
+
+if ARGV.include?('-h') || ARGV.include?('--help')
+  usage
+  exit 0
+end
+
+begin
+  railway_urls = StagingExposureCheck.resolve_railway_urls(
+    argv: ARGV,
+    env_railway_urls: ENV.fetch('STAGING_EXPOSURE_RAILWAY_URLS', nil)
+  )
+
+  staging_url = ENV.fetch('STAGING_EXPOSURE_STAGING_URL', StagingExposureCheck::DEFAULT_STAGING_URL)
+
+  StagingExposureCheck.call(
+    railway_urls: railway_urls,
+    staging_url: staging_url,
+    cf_access_client_id: ENV.fetch(StagingExposureCheck::CF_ACCESS_CLIENT_ID_ENV, nil),
+    cf_access_client_secret: ENV.fetch(StagingExposureCheck::CF_ACCESS_CLIENT_SECRET_ENV, nil)
+  )
+
+  puts 'Staging exposure check passed.'
+rescue StagingExposureCheck::CheckFailed => e
+  warn e.message
+  exit 1
+rescue StandardError => e
+  warn "Staging exposure check failed: #{e.message}"
+  exit 1
+end
