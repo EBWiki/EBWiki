@@ -78,9 +78,25 @@ jobs:
       - name: Install gems
         run: bundle install
 
-      - name: Run Brakeman
+      - name: Run Brakeman (blocking baseline gate)
         run: |
-          bundle exec brakeman -A --no-pager --no-exit-on-warn --no-exit-on-error
+          bundle exec ruby -e "require './lib/ebwiki/brakeman_gate'; Ebwiki::BrakemanGate.verify_repo!(repo_root: Dir.pwd)"
+
+  pr-style-security-disclosure:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+        with:
+          fetch-depth: 0
+
+      - name: Verify Style/security rule changes section
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: ruby script/check_pr_style_security_disclosure.rb
 
   markdown-link-checker:
     runs-on: ubuntu-latest
@@ -114,3 +130,6 @@ jobs:
 
       - name: Run Rubocop
         run: bundle exec rubocop
+
+      - name: Pre-commit hook unit specs
+        run: cd spec/pre_commit && bundle exec rspec .

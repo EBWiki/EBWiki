@@ -8,6 +8,14 @@ Layout/LineLength:
 Metrics/BlockLength:
   Max: 35
 
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/ebwiki/**/*'
+
+Rails/Exit:
+  Exclude:
+    - 'lib/ebwiki/pre_commit/cli.rb'
+
 AllCops:
   NewCops: enable
   Exclude:

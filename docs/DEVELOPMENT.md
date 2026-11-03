@@ -70,17 +70,34 @@ EBWiki uses the [annotate gem](https://github.com/ctran/annotate_models) in deve
 
 ## Pre-commit Hooks
 
-EBWiki uses the [pre-commit gem](https://github.com/jish/pre-commit) to run Rubocop, Brakeman, and RSpec before each commit. This helps catch issues locally before pushing to GitHub.
+EBWiki uses the [pre-commit gem](https://github.com/jish/pre-commit) with a single `static` check that runs staged RuboCop and a Brakeman snapshot when security-related paths change. The hook does not boot Rails, run RSpec, or hit the database.
 
-To install the pre-commit hook (run once after cloning or when setting up a new environment):
+Install the hook once per clone (repo-local, idempotent):
 
 ```bash
-bundle exec pre-commit install
+script/install-pre-commit
 ```
 
-The hook runs `rubocop` directly and `rake pre_commit:ci`, which executes:
-- **Rubocop** – Ruby style checker
-- **Brakeman** – Security vulnerability scanner
-- **RSpec** – Full test suite
+Run the same static checks manually:
 
-To bypass the hook in exceptional cases (e.g., WIP commits), use `git commit -n`.
+```bash
+bundle exec rake pre_commit:static
+# or
+bundle exec ruby bin/ebwiki-pre-commit
+```
+
+Run static checks plus the full RSpec suite locally (CI still runs the authoritative full-tree jobs):
+
+```bash
+bundle exec rake pre_commit:full
+```
+
+RuboCop reads staged index blobs (`git show :path`), not working-tree copies. Changing `.rubocop.yml`, `.rubocop_todo.yml`, `Gemfile`, or `Gemfile.lock` triggers a full-tree RuboCop pass. Brakeman runs against a temporary snapshot of the repository with staged changes applied when paths under `app/`, `config/`, `lib/`, `db/migrate/`, or Brakeman config change. Documentation-only commits skip scanners that do not apply.
+
+Uncovered in the hook: JavaScript, CSS/SCSS, CoffeeScript, Slim, and ERB (legacy ESLint/CSSLint configs are not wired to npm scripts).
+
+Brakeman warnings must match `config/brakeman.baseline.json` or a reviewed entry in `config/brakeman.ignore`. CI runs the same baseline gate on the full tree.
+
+Bypass the hook for exceptional work-in-progress commits with `git commit -n`. CI still runs when the hook is skipped.
+
+Pull requests that change RuboCop or Brakeman configuration must fill in the **Style/security rule changes** section in the pull request template. CI fails when rule files change and the section is missing or still `None`.
