@@ -70,6 +70,7 @@ RSpec.describe StagingBasicAuth do
       expect(body).to eq(['OK'])
     end
   end
+
   describe 'staging indexing protection' do
     it 'marks missing, wrong and unconfigured credentials as noindex without weakening auth' do
       [nil, basic_auth_header('wrong', 'creds')].each do |authorization|
@@ -127,5 +128,4 @@ RSpec.describe StagingBasicAuth do
       expect(Rails.root.join('config/application.rb').read).not_to include('StagingBasicAuth')
     end
   end
-
 end
