@@ -3,37 +3,10 @@
 <% content_for :meta_description, "#{@this_case.blurb}" %>
 <% content_for :meta_keywords, "#{@this_case.subjects.first&.name} police violence people color" %>
 
-<!-- Page Content -->
-<div class="container">
-
-<!-- Portfolio Item Heading -->
-  <div class="row">
-  </div>
-  <!-- /.row -->
-
-  <!-- Portfolio Item Row -->
-  <div class="row">
-    <div class="col-md-3">
-      <% if @this_case.avatar? %>
-        <%= image_tag(@this_case.avatar.large_avatar.url, :class => "img-responsive articleImage") %>
-      <% else %>
-        <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
-      <% end %>
-
-      <div class="">
-        <%= social_share_button_tag("Take a look at what I just found on EBWiki:") %>
-      </div>
-      <div class="row case-btns">
-        <%= render 'button_group' %>
-      </div>
-      <%= render "comments/add_comment_form" %>
-      <div class="commentList" >
-        <%= render "comments/comments" %>
-      </div>
-    </div>
-
-    <div class="col-md-9">
-      <h1 class="ebwiki-case-name case-title">
+<!-- Primary case details precede supporting actions in reading order. -->
+<div class="ebwiki-case-layout">
+    <section class="ebwiki-case-content" aria-labelledby="case-name">
+      <h1 class="ebwiki-case-name case-title" id="case-name">
         <%= @subjects.first&.name %><%= @subjects.first&.age ? ", #{@subjects.first.age}" : "" %>
         <p class="ebwiki-case-meta">
           <%= @this_case.city %>, <%= @this_case.state.name %>
@@ -82,8 +55,8 @@
           </p>
         <% end %>
         <%= render 'main_content' %>
-      <div class="row">
-        <div class="col-md-12">
+      <div class="ebwiki-case-resources">
+        <div class="ebwiki-case-resource-content">
           <% embed_html = VideoEmbed.iframe(@this_case.video_url) %>
           <% if embed_html.present? %>
             <div class="embed-container">
@@ -92,8 +65,8 @@
           <% end %>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12" >
+      <div class="ebwiki-case-resources">
+        <div class="ebwiki-case-resource-content" >
           <% if @this_case.links.size > 0 %>
             <h4 class="article_subheader">Additional Resources:</h4>
             <ul class="background-links" id="link-list">
@@ -102,8 +75,26 @@
           <% end %>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+    <aside class="ebwiki-case-sidebar" aria-label="Case actions and comments">
+      <% if @this_case.avatar? %>
+        <%= image_tag(@this_case.avatar.large_avatar.url, :class => "img-responsive articleImage") %>
+      <% else %>
+        <%= image_tag('default-user-icon.png', :size => "250x250", :class => "img-responsive articleImage") %>
+      <% end %>
+
+      <div class="">
+        <%= social_share_button_tag("Take a look at what I just found on EBWiki:") %>
+      </div>
+      <div class="case-btns clearfix">
+        <%= render 'button_group' %>
+      </div>
+      <%= render "comments/add_comment_form" %>
+      <div class="commentList" >
+        <%= render "comments/comments" %>
+      </div>
+    </aside>
+
 </div>
 
 
