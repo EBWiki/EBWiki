@@ -3,12 +3,16 @@
 describe 'staging:sample_content' do
   let(:rake) { Rake::Application.new }
 
-  before do
+  around do |example|
+    previous_rake = Rake.application
     Rake.application = rake
-    Rake.application.rake_require(
-      'staging_sample_content',
-      [Rails.root.join('lib/tasks').to_s]
-    )
+    example.run
+  ensure
+    Rake.application = previous_rake
+  end
+
+  before do
+    load Rails.root.join('lib/tasks/staging_sample_content.rake')
     Rake::Task.define_task(:environment)
   end
 
