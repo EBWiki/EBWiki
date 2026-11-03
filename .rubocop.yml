@@ -38,6 +38,10 @@ Rails/I18nLocaleTexts:
 Rails/StrongParametersExpect:
   Enabled: false
 
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'lib/blurb_html_stripper.rb'
+
 # Disabled - @active_page pattern is common in helpers
 Rails/HelperInstanceVariable:
   Enabled: false
