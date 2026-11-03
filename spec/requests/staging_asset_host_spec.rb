@@ -47,10 +47,13 @@ RSpec.describe 'Staging asset host', type: :request do
       ActionController::Base.asset_host = @controller_host_before_group
     end
 
-    let(:original_asset_host) { Rails.application.config.action_controller.asset_host }
-
-    after do
-      restore_asset_host!(original_asset_host)
+    around do |example|
+      original_config_host = Rails.application.config.action_controller.asset_host
+      original_controller_host = ActionController::Base.asset_host
+      example.run
+    ensure
+      Rails.application.config.action_controller.asset_host = original_config_host
+      ActionController::Base.asset_host = original_controller_host
     end
 
     it 'stay relative when no asset host is configured' do
