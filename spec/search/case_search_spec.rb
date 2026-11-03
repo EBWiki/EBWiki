@@ -101,7 +101,7 @@ RSpec.describe CaseSearch do
 
   it 'keeps same-date results stable across page boundaries' do
     cases = 13.times.map do |index|
-      FactoryBot.create(:case, title: "Tiecase #{index}", state: texas, date: Date.current)
+      FactoryBot.create(:case, title: "Tiecase #{index}", city: 'Houston', state: texas, date: Date.current)
     end
     first_page = described_class.new(query: 'Tiecase', options: { page: 1 }).call
     second_page = described_class.new(query: 'Tiecase', options: { page: 2 }).call
