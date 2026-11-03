@@ -49,8 +49,10 @@ RSpec.describe 'Merged brand visual review', type: :feature do
     routes = { home: '/', case: "/cases/#{cases.first.slug}", sign_in: '/users/sign_in' }
     captures = []
     failures = []
-    [[1440, 1000], [390, 844]].each do |width, height|
+    [[1440, 1000], [390, 844], [320, 844], [991, 900], [992, 900]].each do |width, height|
       routes.each do |name, route|
+        next if [320, 991, 992].include?(width) && name != :case
+
         failure = nil
         begin
           page.driver.browser.execute_cdp('Emulation.setDeviceMetricsOverride',
@@ -69,6 +71,29 @@ RSpec.describe 'Merged brand visual review', type: :feature do
           end
           actual_width = page.evaluate_script('window.innerWidth')
           expect(actual_width).to eq(width)
+          expect(page.evaluate_script('document.documentElement.scrollWidth')).to be <= width
+          if name == :case
+            layout = page.evaluate_script(<<~JS)
+              (() => {
+                const content = document.querySelector('.ebwiki-case-content');
+                const sidebar = document.querySelector('.ebwiki-case-sidebar');
+                const heading = document.querySelector('#case-name').getBoundingClientRect();
+                const body = content.getBoundingClientRect();
+                const side = sidebar.getBoundingClientRect();
+                return { contentFirst: !!(content.compareDocumentPosition(sidebar) & Node.DOCUMENT_POSITION_FOLLOWING),
+                         headingTop: heading.top, headingBottom: heading.bottom,
+                         contentLeft: body.left, sidebarRight: side.right, sidebarTop: side.top };
+              })()
+            JS
+            expect(layout['contentFirst']).to be(true)
+            if width < 992
+              expect(layout['headingTop']).to be >= 0
+              expect(layout['headingBottom']).to be < height
+              expect(layout['sidebarTop']).to be > layout['headingBottom']
+            else
+              expect(layout['sidebarRight']).to be <= layout['contentLeft']
+            end
+          end
         rescue RSpec::Expectations::ExpectationNotMetError, StandardError => e
           failure = "#{e.class}: #{e.message}"
           failures << "#{name}-#{width}: #{failure}"
