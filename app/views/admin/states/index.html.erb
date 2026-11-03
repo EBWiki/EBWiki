@@ -1,0 +1,29 @@
+<h1>States</h1>
+<p><%= link_to 'New state', new_admin_state_path, class: 'btn btn-warning' %></p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>ANSI</th>
+      <th>ISO</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @states.each do |state| %>
+      <tr>
+        <td><%= state.name %></td>
+        <td><%= state.ansi_code %></td>
+        <td><%= state.iso %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_state_path(state) %>
+          <%= button_to 'Delete', admin_state_path(state), method: :delete,
+                        class: 'btn btn-danger btn-xs',
+                        data: { confirm: 'Delete this state?' },
+                        form_class: 'inline' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

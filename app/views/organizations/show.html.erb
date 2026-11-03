@@ -30,4 +30,8 @@
 </p>
 
 <%= link_to 'Edit', edit_organization_path(@organization) %> |
+<% if current_user&.admin? %>
+  <%= button_to 'Delete', organization_path(@organization), method: :delete,
+                data: { confirm: 'Delete this organization?' } %>
+<% end %>
 <%= link_to 'Back', organizations_path %>

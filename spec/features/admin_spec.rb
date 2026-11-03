@@ -63,7 +63,7 @@ describe 'Admin Dashboard' do
       fill_in 'Password', with: admin.password
       click_button 'Log in'
       visit admin_root_path
-      expect(page).to have_content 'Agencies'
+      expect(page).to have_content 'Staff tools'
       WebMock.disable_net_connect!
     end
 

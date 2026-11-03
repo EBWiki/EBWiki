@@ -1,0 +1,42 @@
+<h1>Comments</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>When</th>
+      <th>Author</th>
+      <th>On</th>
+      <th>Content</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @comments.each do |comment| %>
+      <tr>
+        <td><%= comment.created_at.to_fs(:stamp) %></td>
+        <td>
+          <% if comment.user %>
+            <%= link_to comment.user.name, user_path(comment.user) %>
+          <% else %>
+            (deleted user)
+          <% end %>
+        </td>
+        <td>
+          <% if comment.commentable %>
+            <%= link_to comment.commentable_type, comment.commentable %>
+          <% else %>
+            <%= comment.commentable_type %> #<%= comment.commentable_id %>
+          <% end %>
+        </td>
+        <td><%= truncate(comment.content, length: 140) %></td>
+        <td>
+          <%= button_to 'Delete', admin_comment_path(comment), method: :delete,
+                        class: 'btn btn-danger btn-xs',
+                        data: { confirm: 'Delete this comment?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @comments %>

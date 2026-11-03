@@ -1,0 +1,24 @@
+<h1>Genders</h1>
+<p><%= link_to 'New gender', new_admin_gender_path, class: 'btn btn-warning' %></p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Sex</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @genders.each do |gender| %>
+      <tr>
+        <td><%= gender.sex %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_gender_path(gender) %>
+          <%= button_to 'Delete', admin_gender_path(gender), method: :delete,
+                        class: 'btn btn-danger btn-xs',
+                        data: { confirm: 'Delete this gender?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

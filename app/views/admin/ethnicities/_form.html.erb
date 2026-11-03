@@ -1,0 +1,8 @@
+<h1><%= @ethnicity.persisted? ? 'Edit ethnicity' : 'New ethnicity' %></h1>
+
+<%= simple_form_for [:admin, @ethnicity] do |f| %>
+  <%= f.input :title %>
+  <%= f.button :submit, class: 'btn btn-success' %>
+<% end %>
+
+<p><%= link_to 'Back', admin_ethnicities_path %></p>

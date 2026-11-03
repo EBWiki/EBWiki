@@ -152,11 +152,23 @@ RSpec.describe 'Agencies', type: :request do
 
   describe 'DELETE /agencies/:id' do
     let(:user) { create(:user) }
+    let(:admin) { create(:admin) }
     let(:agency) { create(:agency) }
 
-    context 'when the agency is successfully deleted' do
+    context 'when a non-admin tries to delete' do
       before do
         sign_in user
+        delete "/agencies/#{agency.id}", params: {}, headers: {}
+      end
+
+      it 'does not delete the agency' do
+        expect(Agency.find_by(id: agency.id)).to eq agency
+      end
+    end
+
+    context 'when an admin deletes the agency' do
+      before do
+        sign_in admin
         delete "/agencies/#{agency.id}", params: {}, headers: {}
       end
 
