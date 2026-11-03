@@ -778,9 +778,9 @@ DEPENDENCIES
   rollbar (~> 3.8)
   rollout (~> 2.5)
   rspec-rails
-  rubocop (~> 1.88)
-  rubocop-performance (~> 1.23)
-  rubocop-rails (~> 2.36)
+  rubocop (~> 1.88.0)
+  rubocop-performance (~> 1.26.0)
+  rubocop-rails (~> 2.36.0)
   sassc-rails (~> 2.1)
   searchkick (~> 6.2)
   select2-rails (~> 4.0)
@@ -791,7 +791,7 @@ DEPENDENCIES
   sitemap_generator (~> 6.1)
   social-share-button (~> 1.2)
   sprockets (~> 4.4)
-  standard (>= 1.35.1)
+  standard (~> 1.56.0)
   statistics
   twitter (~> 7.0)
   vcr (~> 6.0)
