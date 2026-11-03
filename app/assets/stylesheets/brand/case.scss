@@ -16,11 +16,24 @@
 .ebwiki-case-layout {
   display: grid;
   gap: 2rem;
+  grid-template-areas: "content" "sidebar";
 }
 
-@media (min-width: 768px) {
+.ebwiki-case-content {
+  grid-area: content;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ebwiki-case-sidebar {
+  grid-area: sidebar;
+  min-width: 0;
+}
+
+@media (min-width: 992px) {
   .ebwiki-case-layout {
     grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+    grid-template-areas: "sidebar content";
   }
 }
 
