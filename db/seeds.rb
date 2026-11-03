@@ -5,7 +5,8 @@
 unless Rails.env.local?
   unless ENV['CONFIRM_SEED_ENVIRONMENT'] == Rails.env
     abort("db:seed refuses to run in #{Rails.env}. " \
-          "Set CONFIRM_SEED_ENVIRONMENT=#{Rails.env} only if you really mean to seed this database.")
+          "Set CONFIRM_SEED_ENVIRONMENT=#{Rails.env} " \
+          'only if you really mean to seed this database.')
   end
   return
 end
