@@ -1,0 +1,16 @@
+{
+  "name": "harness",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "scan": "node wcag_local_scan.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "playwright": "^1.49.1"
+  }
+}
