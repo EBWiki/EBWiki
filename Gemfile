@@ -86,7 +86,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'annotaterb', '~> 4.25'
+  gem 'annotaterb', '~> 4.26'
   gem 'brakeman', '~> 8.1', require: false
   gem 'derailed_benchmarks', '~> 1.8'
   gem 'listen', '~> 3.10'
@@ -98,10 +98,10 @@ group :test do
   gem 'capybara', '~> 3.40'
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
-  gem 'selenium-webdriver', '~> 4.50'
+  gem 'selenium-webdriver', '~> 4.52'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
-  gem 'vcr', '~> 6.0'
-  gem 'webmock', '~>3.26'
+  gem 'vcr', '~> 6.4'
+  gem 'webmock', '~>3.34'
 end
 
 group :production do
