@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'candidate'
 require_relative 'context_matcher'
 require_relative 'mugshot_filter'
 require_relative 'openverse_client'

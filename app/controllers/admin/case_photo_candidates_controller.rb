@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'case_photo_candidate_publisher'
+
 module Admin
   class CasePhotoCandidatesController < Admin::ApplicationController
     def approve

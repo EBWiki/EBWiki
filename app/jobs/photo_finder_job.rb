@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'photo_finder/search'
+
 class PhotoFinderJob < ApplicationJob
   queue_as :default
 
