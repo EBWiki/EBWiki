@@ -1,0 +1,24 @@
+schema_version = "1.3"
+
+[task]
+name = "ebwiki/smoke-rails-version"
+authors = [{ name = "EBWiki" }]
+description = "Smoke task: print Rails version from the published EBWiki image."
+
+[metadata]
+category = "development"
+tags = ["smoke", "rails"]
+difficulty_explanation = "One command against the existing app image. No database."
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 180.0
+
+[environment]
+docker_image = "ebwiki/ebwiki:latest"
+workdir = "/usr/src/ebwiki"
+cpus = 2
+memory_mb = 4096
+build_timeout_sec = 600.0
