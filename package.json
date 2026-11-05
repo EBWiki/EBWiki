@@ -3,6 +3,6 @@
   "private": true,
   "description": "Railway Infrastructure as Code evaluator for staging plan/apply",
   "dependencies": {
-    "railway": "^3.12.0"
+    "railway": "^3.16.0"
   }
 }
