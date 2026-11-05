@@ -1,0 +1,6 @@
+# Copy to terraform.tfvars (gitignored) or export TF_VAR_* from Doppler ebwiki/infra.
+
+cloudflare_account_id      = "YOUR_EBWIKI_ORG_ACCOUNT_ID"
+cloudflare_zone_id         = "YOUR_EBWIKI_ORG_ZONE_ID"
+allowed_operator_email     = "operator@example.com"
+health_protected_hostnames = ["ebwiki.org", "staging.ebwiki.org"]
