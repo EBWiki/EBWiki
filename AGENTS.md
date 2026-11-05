@@ -24,6 +24,8 @@ On failure, find the root cause before proposing a fix (Superpowers `systematic-
 
 No completion claim without fresh evidence (Superpowers `verification-before-completion`). Ruby: the relevant RSpec examples, plus RuboCop on touched files. UI: exercise the changed flow in the browser or the closest substitute. Do not run the full Rails suite for docs-only work. Use `.cursor/skills/verifying-before-completion/SKILL.md`.
 
+Before committing Ruby changes, run `bundle exec rubocop -a` on the changed files and commit any autocorrect fixes. Do not add an inline `rubocop:disable` just to get past CI; if a disable is truly needed, explain why in the pull request.
+
 ### 5. Review
 
 Request review when the named change is verified. Receive review by checking the codebase, not by performative agreement. Merge Approve is a human in CODEOWNERS (`@gktreviewer`). Cursor implements. Do not also request CodeRabbit, Copilot, or Factory Droid. Do not self-Approve.

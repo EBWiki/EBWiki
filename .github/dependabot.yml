@@ -34,6 +34,17 @@ updates:
           - "minor"
         patterns:
           - "*"
+        exclude-patterns:
+          - "rubocop*"
+          - "standard"
+      bundler-rubocop:
+        dependency-type: "development"
+        update-types:
+          - "patch"
+          - "minor"
+        patterns:
+          - "rubocop*"
+          - "standard"
 
   - package-ecosystem: "npm"
     directory: "/"
