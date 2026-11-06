@@ -58,18 +58,20 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
   # rubocop:todo Metrics/MethodLength
   def update
     @this_case = Case.find(params[:id])
+    @case_persisted_slug = @this_case.slug
     @this_case.slug = nil
-    if @this_case.update(case_params)
+    updated = update_case_record
+    return if performed?
+
+    if updated
       flash[:success] = 'Case was updated!'
-      CaseMailer.send_followers_email(users: @this_case.followers,
-                                      this_case: @this_case).deliver_now
+      deliver_followers_email
       redirect_to @this_case
     else
+      restore_case_slug_after_failed_update
       set_instance_vars
       render 'edit'
     end
-  rescue StandardError => e
-    Rollbar.error(e)
   end
   # rubocop:enable Metrics/MethodLength
 
@@ -139,5 +141,35 @@ class CasesController < ApplicationController # rubocop:todo Metrics/ClassLength
     @states = SortCollectionOrdinally.call(collection: State.all)
     @genders = SortCollectionOrdinally.call(collection: Gender.all, column_name: 'sex')
     @ethnicities = SortCollectionOrdinally.call(collection: Ethnicity.all, column_name: 'title')
+  end
+
+  def update_case_record
+    @this_case.update(case_params)
+  rescue StandardError => e
+    render_case_update_failure(e)
+  end
+
+  def render_case_update_failure(error)
+    Rollbar.error(error)
+    restore_case_slug_after_failed_update
+    set_instance_vars
+    flash.now[:error] = 'There was an error updating this case. Please try again.'
+    render 'edit', status: :unprocessable_content
+  end
+
+  def restore_case_slug_after_failed_update
+    return if @case_persisted_slug.blank?
+
+    @this_case.slug = @case_persisted_slug
+  end
+
+  def deliver_followers_email
+    CaseMailer.send_followers_email(users: @this_case.followers,
+                                    this_case: @this_case).deliver_now
+  rescue StandardError => e
+    Rollbar.error(e)
+    Rails.logger.error(
+      "CasesController#update: follower email failed for case #{@this_case.id}: #{e.class.name}"
+    )
   end
 end
