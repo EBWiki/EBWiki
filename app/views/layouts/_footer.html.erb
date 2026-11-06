@@ -1,5 +1,16 @@
-<% deploy_rev = ENV['DEPLOY_REV'].presence || ENV['RAILWAY_GIT_COMMIT_SHA'].presence %>
-<footer class="panel-footer">
-  <p class="text-muted pull-right"><%= link_to image_tag('twitter.png', size: "50x20"), 'https://twitter.com/EndBiasWiki' %> | <%= link_to "The Blog", 'http://ebwiki.tumblr.com/' %> | <%= link_to "About Us", about_path %> | <%= link_to "Instructions", guidelines_path %> | <%= link_to "Get Involved", get_involved_path %></p>
+<% deploy_rev = ENV["DEPLOY_REV"].presence || ENV["RAILWAY_GIT_COMMIT_SHA"].presence %>
+<footer class="ebwiki-site-footer">
+  <div class="ebwiki-footer-inner">
+    <%= link_to root_path, class: "ebwiki-footer-wordmark" do %>
+      <%= ebwiki_wordmark(variant: :on_dark, small: true) %>
+    <% end %>
+    <nav class="ebwiki-footer-nav" aria-label="Footer">
+      <%= link_to "The Blog", "http://ebwiki.tumblr.com/" %>
+      <%= link_to "About Us", about_path %>
+      <%= link_to "Instructions", guidelines_path %>
+      <%= link_to "Get Involved", get_involved_path %>
+      <%= link_to "Twitter", "https://twitter.com/EndBiasWiki" %>
+    </nav>
+  </div>
   <% if deploy_rev.present? %><!-- deploy_rev: <%= deploy_rev %> --><% end %>
 </footer>

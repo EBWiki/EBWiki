@@ -1,3 +1,10 @@
+@import "brand/tokens";
+@import "brand/layout";
+@import "brand/home";
+@import "brand/case";
+@import "brand/map";
+@import "brand/forms";
+
 // Vendor/gem stylesheets
 @import "bootstrap-sprockets";
 @import "bootstrap";
@@ -5,12 +12,6 @@
 @import "social-share-button";
 @import "select2";
 @import "select2-bootstrap";
-
-// Shared variables
-$color-orange: #F65732;
-$color-gray: #666666;
-$color-black: #000000;
-$color-dark-gray: #4D4D4D;
 
 // Application stylesheets
 @import "agencies";
@@ -30,7 +31,6 @@ $color-dark-gray: #4D4D4D;
 html {
   height: 100%;
   box-sizing: border-box;
-  font-family: verdana, arial, helvetica, sans-serif;
 }
 
 *,
@@ -39,7 +39,7 @@ html {
   box-sizing: inherit;
 }
 
-body {
+body:not(.ebwiki-body) {
   padding-top: 50px;
   position: relative;
   min-height: 100%;
@@ -73,8 +73,8 @@ ul {
 }
 
 .btn-primary.outline {
-  border: 2px solid #0099cc;
-  color: #0099cc;
+  border: 2px solid var(--color-border);
+  color: var(--color-text);
 }
 
 #map {
@@ -82,15 +82,6 @@ ul {
   height: 400px;
   margin: 40px 0 0 0;
 }
-
-.background-orange {
-  background-color: #de651b;
-  color: #fff;
-}
-
-.orange-font {
-  color: #de651b;
- }
 
 .background-gray {
   background-color: #777;

@@ -1,0 +1,57 @@
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: font-url("barlow/barlow-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: font-url("barlow/barlow-latin-400-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: font-url("barlow/barlow-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: font-url("barlow/barlow-condensed-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: font-url("barlow/barlow-condensed-latin-700-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow Condensed Fallback";
+  src: local("Arial Narrow"), local("Arial");
+  size-adjust: 81.4%;
+  ascent-override: 122.8%;
+  descent-override: 24.6%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Barlow Fallback";
+  src: local("Arial"), local("Liberation Sans");
+  size-adjust: 95.6%;
+  ascent-override: 104.6%;
+  descent-override: 20.9%;
+  line-gap-override: 0%;
+}

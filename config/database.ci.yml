@@ -4,3 +4,11 @@ test:
   database: app_test
   username: postgres
   password: postgres
+
+# CI staging boot smoke uses the same Postgres service as test (no secrets).
+staging:
+  adapter: postgresql
+  host: localhost
+  database: app_test
+  username: postgres
+  password: postgres

@@ -14,7 +14,7 @@ gem 'acts_as_follower', github: 'EBWiki/acts_as_follower', branch: 'main'
 gem 'bootsnap', '~> 1.26', require: false
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17'
 gem 'bootstrap-sass', '>= 3.4.1'
-gem 'bullet', '~> 8.2'
+gem 'bullet', '~> 8.3'
 gem 'carrierwave', '~> 2.2.7'
 gem 'carrierwave-imageoptimizer', '~> 1.6'
 gem 'chartkick', '~> 3.4'
@@ -34,7 +34,7 @@ gem 'groupdate', '~> 5.0'
 gem 'hightop', '~> 0.2'
 gem 'httparty', '~> 0.24'
 gem 'image_processing', '~> 1.12'
-gem 'jb', '~> 0.8.2'
+gem 'jb', '~> 0.9.1'
 gem 'jquery-rails', '~> 4.4'
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
 gem 'lograge', '~> 0.15'
@@ -60,7 +60,7 @@ gem 'redis-namespace', '~> 1.8'
 gem 'rollbar', '~> 3.8'
 gem 'rollout', '~> 2.5'
 gem 'sassc-rails', '~> 2.1'
-gem 'searchkick', '~> 6.1'
+gem 'searchkick', '~> 6.2'
 gem 'select2-rails', '~> 4.0'
 gem 'simplecov', '~> 0.22.0'
 gem 'simple_form', '5.4.1'
@@ -79,14 +79,14 @@ group :development, :test do
   gem 'pre-commit', '~> 0.39'
   gem 'rake', require: false
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.88', require: false
-  gem 'rubocop-performance', '~> 1.23', require: false
-  gem 'rubocop-rails', '~> 2.36', require: false
-  gem 'standard', '>= 1.35.1', require: false
+  gem 'rubocop', '~> 1.88.0', require: false
+  gem 'rubocop-performance', '~> 1.26.0', require: false
+  gem 'rubocop-rails', '~> 2.36.0', require: false
+  gem 'standard', '~> 1.56.0', require: false
 end
 
 group :development do
-  gem 'annotaterb', '~> 4.25'
+  gem 'annotaterb', '~> 4.26'
   gem 'brakeman', '~> 8.1', require: false
   gem 'derailed_benchmarks', '~> 1.8'
   gem 'listen', '~> 3.10'
@@ -98,10 +98,10 @@ group :test do
   gem 'capybara', '~> 3.40'
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'launchy', '~> 2.5'
-  gem 'selenium-webdriver', '~> 4.50'
+  gem 'selenium-webdriver', '~> 4.52'
   gem 'shoulda-matchers', '~> 4.4', '>= 4.4.1'
-  gem 'vcr', '~> 6.0'
-  gem 'webmock', '~>3.26'
+  gem 'vcr', '~> 6.4'
+  gem 'webmock', '~>3.34'
 end
 
 group :production do

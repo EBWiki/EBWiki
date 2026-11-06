@@ -34,35 +34,29 @@
     <meta name="twitter:creator" content="<%= DEFAULT_META["twitter_account"] %>">
     <meta name="twitter:image:src" content="<%= meta_image %>">
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_link_tag    "application", media: "all" %>
+    <%= javascript_include_tag "application" %>
     <%= javascript_include_tag Ckeditor.cdn_url %>
     <%= csrf_meta_tags %>
 
-    <%= render 'application/favicon' %>
+    <%= render "application/favicon" %>
 
     <meta name="cf-2fa-verify" content="2y1jaIA9tjJ9xyHE">
   </head>
-  <body>
-    <div class="container">
-      <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
+  <body class="ebwiki-body">
+    <% flash.to_hash.except(:undo, :redo).each do |key, value| %>
+      <div class="ebwiki-main">
         <div class="alert alert-<%= key %>">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <%= (value.is_a?(Array)) ? ""  : value %>
-        </div>
-      <% end %>
-    </div>
-    <div class="container fixed">
-      <%= render 'layouts/header' %>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8">
-          <%= yield %>
+          <%= value.is_a?(Array) ? "" : value %>
         </div>
       </div>
-    </div>
-    <%= render 'layouts/footer' %>
+    <% end %>
+    <%= render "layouts/header" %>
+    <main class="ebwiki-main">
+      <%= yield %>
+    </main>
+    <%= render "layouts/footer" %>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= ENV["GOOGLE_TAG_MANAGER_ID"] %>"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

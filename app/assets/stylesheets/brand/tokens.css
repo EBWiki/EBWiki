@@ -1,0 +1,100 @@
+/* Generated from ebwiki/palette.json by build_brand.py. Do not edit by hand. */
+:root{
+  --color-header: #14171A; /* dark header, finding and footer; also body text on light */
+  --color-header-raised: #1F2429; /* raised panels inside the header */
+  --color-text-on-dark: #FFFFFF; /* text on the dark header */
+  --color-text-on-dark-muted: #C9D0D6; /* secondary text on the dark header */
+  --color-bg: #FFFFFF; /* page background under the header */
+  --color-surface: #F2F4F6; /* chart tracks and quiet panels */
+  --color-text: #14171A; /* body text and record names */
+  --color-text-muted: #5E6670; /* dates, places, notes */
+  --color-rule: #DADFE4; /* decorative table rules only, never a control border */
+  --color-map-land: #E6EAEE; /* state fills on the map, decorative */
+  --color-border: #6B747E; /* input borders and UI outlines on light */
+  --color-action: #14171A; /* buttons and tabs on light, white label */
+  --color-action-on-dark: #F5C518; /* the one bright call to action on the dark header, dark label */
+  --color-focus: #14171A; /* focus ring on light, offset 2px */
+  --color-focus-on-dark: #F5C518; /* focus ring on dark */
+  --color-outcome-convicted: #0B4F8A; /* someone convicted (map dot, bar, finding number) */
+  --color-outcome-federal: #2F7FC1; /* federal conviction only */
+  --color-outcome-charged: #A86400; /* charged, no conviction */
+  --color-outcome-none: #8A2A0A; /* never charged, or charges dropped */
+  --color-outcome-convicted-on-dark: #3A87C8; /* finding number box for convictions, on the dark header only */
+  --color-outcome-none-on-dark: #C2410C; /* finding number box for no charges, on the dark header only */
+  --color-error: #A3123A; /* form errors, with icon and words */
+  --color-success: #1F7A4D; /* saved or following, with words; never an outcome */
+  --color-warning-surface: #FFE08A; /* content warning surface with dark text */
+  --font-barlow-condensed: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif;
+  --font-barlow: 'Barlow', 'Barlow Fallback', sans-serif;
+  --type-finding-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif;
+  --type-finding-weight: 600;
+  --type-finding-size: clamp(42px, 4.79vw, 69px);
+  --type-finding-size-phone: 42px;
+  --type-finding-leading: 1.05;
+  --type-finding-tracking: -0.005em;
+  --type-name-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif;
+  --type-name-weight: 700;
+  --type-name-size: clamp(42px, 3.82vw, 55px);
+  --type-name-size-phone: 42px;
+  --type-name-leading: 1.05;
+  --type-name-tracking: 0;
+  --type-section-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif;
+  --type-section-weight: 700;
+  --type-section-size: clamp(27px, 2.43vw, 35px);
+  --type-section-size-phone: 27px;
+  --type-section-leading: 1.1;
+  --type-section-tracking: 0;
+  --type-subhead-family: 'Barlow', 'Barlow Fallback', sans-serif;
+  --type-subhead-weight: 600;
+  --type-subhead-size: clamp(21px, 1.53vw, 22px);
+  --type-subhead-size-phone: 21px;
+  --type-subhead-leading: 1.3;
+  --type-subhead-tracking: 0;
+  --type-lead-family: 'Barlow', 'Barlow Fallback', sans-serif;
+  --type-lead-weight: 400;
+  --type-lead-size: clamp(21px, 1.53vw, 22px);
+  --type-lead-size-phone: 21px;
+  --type-lead-leading: 1.4;
+  --type-lead-tracking: 0;
+  --type-body-family: 'Barlow', 'Barlow Fallback', sans-serif;
+  --type-body-weight: 400;
+  --type-body-size: clamp(17px, 1.25vw, 18px);
+  --type-body-size-phone: 17px;
+  --type-body-leading: 1.45;
+  --type-body-tracking: 0;
+  --type-table-family: 'Barlow', 'Barlow Fallback', sans-serif;
+  --type-table-weight: 400;
+  --type-table-size: clamp(16px, 1.18vw, 17px);
+  --type-table-size-phone: 16px;
+  --type-table-leading: 1.35;
+  --type-table-tracking: 0;
+  --type-label-family: 'Barlow', 'Barlow Fallback', sans-serif;
+  --type-label-weight: 600;
+  --type-label-size: clamp(15px, 1.11vw, 16px);
+  --type-label-size-phone: 15px;
+  --type-label-leading: 1.3;
+  --type-label-tracking: 0;
+  --type-meta-family: 'Barlow', 'Barlow Fallback', sans-serif;
+  --type-meta-weight: 400;
+  --type-meta-size: clamp(15px, 1.11vw, 16px);
+  --type-meta-size-phone: 15px;
+  --type-meta-leading: 1.4;
+  --type-meta-tracking: 0;
+  --type-button-family: 'Barlow', 'Barlow Fallback', sans-serif;
+  --type-button-weight: 600;
+  --type-button-size: 18px;
+  --type-button-size-phone: 18px;
+  --type-button-leading: 1.2;
+  --type-button-tracking: 0;
+  --type-ratio: 1.25;
+  --type-floor-body: 16px;
+  --logo-wordmark: url("wordmark-a.svg");
+  --logo-wordmark-on-dark: url("wordmark-a-white.svg");
+  --logo-wordmark-small: url("wordmark-a-16.svg");
+  --logo-wordmark-small-on-dark: url("wordmark-a-16-white.svg");
+  --logo-wordmark-aspect: 115.68 / 45.04;
+  --logo-wordmark-small-aspect: 43.36 / 16.68;
+  --logo-small-max: 19px;
+  --logo-min-height: 16px;
+  --logo-clearspace: 0.5em;
+}

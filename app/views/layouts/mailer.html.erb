@@ -1,5 +1,31 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #ffffff;
+        color: #14171A;
+        font-family: Barlow, Arial, sans-serif;
+        font-size: 18px;
+        line-height: 1.45;
+      }
+      a { color: #14171A; }
+      .ebwiki-mail-header {
+        background: #14171A;
+        color: #ffffff;
+        padding: 16px 20px;
+        margin: -24px -24px 24px;
+        font-weight: 700;
+        font-family: "Barlow Condensed", Arial, sans-serif;
+        font-size: 22px;
+      }
+    </style>
+  </head>
   <body>
+    <div class="ebwiki-mail-header">EBWiki</div>
     <%= yield %>
   </body>
 </html>

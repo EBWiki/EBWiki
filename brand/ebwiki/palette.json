@@ -1,0 +1,409 @@
+{
+ "name": "ebwiki",
+ "colors": [
+  {
+   "name": "color-header",
+   "hex": "#14171A",
+   "role": "dark header, finding and footer; also body text on light",
+   "grade": 90
+  },
+  {
+   "name": "color-header-raised",
+   "hex": "#1F2429",
+   "role": "raised panels inside the header",
+   "grade": 80
+  },
+  {
+   "name": "color-text-on-dark",
+   "hex": "#FFFFFF",
+   "role": "text on the dark header",
+   "grade": 0
+  },
+  {
+   "name": "color-text-on-dark-muted",
+   "hex": "#C9D0D6",
+   "role": "secondary text on the dark header",
+   "grade": 20
+  },
+  {
+   "name": "color-bg",
+   "hex": "#FFFFFF",
+   "role": "page background under the header",
+   "grade": 0
+  },
+  {
+   "name": "color-surface",
+   "hex": "#F2F4F6",
+   "role": "chart tracks and quiet panels",
+   "grade": 5
+  },
+  {
+   "name": "color-text",
+   "hex": "#14171A",
+   "role": "body text and record names",
+   "grade": 90
+  },
+  {
+   "name": "color-text-muted",
+   "hex": "#5E6670",
+   "role": "dates, places, notes",
+   "grade": 60
+  },
+  {
+   "name": "color-rule",
+   "hex": "#DADFE4",
+   "role": "decorative table rules only, never a control border",
+   "grade": 10
+  },
+  {
+   "name": "color-map-land",
+   "hex": "#E6EAEE",
+   "role": "state fills on the map, decorative",
+   "grade": 5
+  },
+  {
+   "name": "color-border",
+   "hex": "#6B747E",
+   "role": "input borders and UI outlines on light",
+   "grade": 50
+  },
+  {
+   "name": "color-action",
+   "hex": "#14171A",
+   "role": "buttons and tabs on light, white label",
+   "grade": 90
+  },
+  {
+   "name": "color-action-on-dark",
+   "hex": "#F5C518",
+   "role": "the one bright call to action on the dark header, dark label",
+   "grade": 20
+  },
+  {
+   "name": "color-focus",
+   "hex": "#14171A",
+   "role": "focus ring on light, offset 2px",
+   "grade": 90
+  },
+  {
+   "name": "color-focus-on-dark",
+   "hex": "#F5C518",
+   "role": "focus ring on dark",
+   "grade": 20
+  },
+  {
+   "name": "color-outcome-convicted",
+   "hex": "#0B4F8A",
+   "role": "someone convicted (map dot, bar, finding number)",
+   "grade": 70
+  },
+  {
+   "name": "color-outcome-federal",
+   "hex": "#2F7FC1",
+   "role": "federal conviction only",
+   "grade": 50
+  },
+  {
+   "name": "color-outcome-charged",
+   "hex": "#A86400",
+   "role": "charged, no conviction",
+   "grade": 50
+  },
+  {
+   "name": "color-outcome-none",
+   "hex": "#8A2A0A",
+   "role": "never charged, or charges dropped",
+   "grade": 70
+  },
+  {
+   "name": "color-outcome-convicted-on-dark",
+   "hex": "#3A87C8",
+   "role": "finding number box for convictions, on the dark header only",
+   "grade": 40
+  },
+  {
+   "name": "color-outcome-none-on-dark",
+   "hex": "#C2410C",
+   "role": "finding number box for no charges, on the dark header only",
+   "grade": 50
+  },
+  {
+   "name": "color-error",
+   "hex": "#A3123A",
+   "role": "form errors, with icon and words",
+   "grade": 60
+  },
+  {
+   "name": "color-success",
+   "hex": "#1F7A4D",
+   "role": "saved or following, with words; never an outcome",
+   "grade": 50
+  },
+  {
+   "name": "color-warning-surface",
+   "hex": "#FFE08A",
+   "role": "content warning surface with dark text",
+   "grade": 10
+  }
+ ],
+ "pairs": [
+  {
+   "fg": "color-text-on-dark",
+   "bg": "color-header",
+   "use": "finding and header text"
+  },
+  {
+   "fg": "color-text-on-dark-muted",
+   "bg": "color-header",
+   "use": "header secondary text"
+  },
+  {
+   "fg": "color-text-on-dark",
+   "bg": "color-header-raised",
+   "use": "text on raised header panel"
+  },
+  {
+   "fg": "color-text",
+   "bg": "color-bg",
+   "use": "body and records"
+  },
+  {
+   "fg": "color-text",
+   "bg": "color-surface",
+   "use": "text on quiet panel"
+  },
+  {
+   "fg": "color-text-muted",
+   "bg": "color-bg",
+   "use": "dates and notes"
+  },
+  {
+   "fg": "color-text-muted",
+   "bg": "color-surface",
+   "use": "notes on quiet panel"
+  },
+  {
+   "fg": "color-bg",
+   "bg": "color-action",
+   "use": "button label on light"
+  },
+  {
+   "fg": "color-header",
+   "bg": "color-action-on-dark",
+   "use": "button label on yellow"
+  },
+  {
+   "fg": "color-action-on-dark",
+   "bg": "color-header",
+   "use": "yellow button against header",
+   "ui": true
+  },
+  {
+   "fg": "color-border",
+   "bg": "color-bg",
+   "use": "input border",
+   "ui": true
+  },
+  {
+   "fg": "color-border",
+   "bg": "color-surface",
+   "use": "input border on panel",
+   "ui": true
+  },
+  {
+   "fg": "color-focus",
+   "bg": "color-bg",
+   "use": "focus ring on light",
+   "ui": true
+  },
+  {
+   "fg": "color-focus-on-dark",
+   "bg": "color-header",
+   "use": "focus ring on dark",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-convicted",
+   "bg": "color-bg",
+   "use": "outcome dot and bar on white",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-convicted",
+   "bg": "color-map-land",
+   "use": "dot on map",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-convicted",
+   "bg": "color-surface",
+   "use": "bar on track",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-federal",
+   "bg": "color-bg",
+   "use": "outcome dot and bar on white",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-federal",
+   "bg": "color-map-land",
+   "use": "dot on map",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-federal",
+   "bg": "color-surface",
+   "use": "bar on track",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-charged",
+   "bg": "color-bg",
+   "use": "outcome dot and bar on white",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-charged",
+   "bg": "color-map-land",
+   "use": "dot on map",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-charged",
+   "bg": "color-surface",
+   "use": "bar on track",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-none",
+   "bg": "color-bg",
+   "use": "outcome dot and bar on white",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-none",
+   "bg": "color-map-land",
+   "use": "dot on map",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-none",
+   "bg": "color-surface",
+   "use": "bar on track",
+   "ui": true
+  },
+  {
+   "fg": "color-text-on-dark",
+   "bg": "color-outcome-convicted-on-dark",
+   "use": "finding number, white on blue, large",
+   "large": true
+  },
+  {
+   "fg": "color-text-on-dark",
+   "bg": "color-outcome-none-on-dark",
+   "use": "finding number, white on vermilion, large",
+   "large": true
+  },
+  {
+   "fg": "color-outcome-convicted-on-dark",
+   "bg": "color-header",
+   "use": "blue box against dark header",
+   "ui": true
+  },
+  {
+   "fg": "color-outcome-none-on-dark",
+   "bg": "color-header",
+   "use": "vermilion box against dark header",
+   "ui": true
+  },
+  {
+   "fg": "color-error",
+   "bg": "color-bg",
+   "use": "error text"
+  },
+  {
+   "fg": "color-success",
+   "bg": "color-bg",
+   "use": "success text"
+  },
+  {
+   "fg": "color-text",
+   "bg": "color-warning-surface",
+   "use": "content warning text"
+  }
+ ],
+ "scales": {
+  "charcoal": {
+   "0": "#ffffff",
+   "5": "#ebeef0",
+   "10": "#dde1e5",
+   "20": "#b4bcc5",
+   "30": "#95a2ae",
+   "40": "#7b8a9a",
+   "50": "#677685",
+   "60": "#4f5b66",
+   "70": "#384149",
+   "80": "#22272d",
+   "90": "#0d1012",
+   "100": "#000000"
+  },
+  "blue": {
+   "0": "#feffff",
+   "5": "#e0effd",
+   "10": "#cae4fb",
+   "20": "#86c2f5",
+   "30": "#4fa5f1",
+   "40": "#1b8bed",
+   "50": "#1076cd",
+   "60": "#0d5a9e",
+   "70": "#094171",
+   "80": "#062847",
+   "90": "#02111d",
+   "100": "#000000"
+  },
+  "vermilion": {
+   "0": "#ffffff",
+   "5": "#fde9e3",
+   "10": "#fbd9ce",
+   "20": "#f7a88e",
+   "30": "#f38059",
+   "40": "#ef5522",
+   "50": "#d2400f",
+   "60": "#a2310c",
+   "70": "#742308",
+   "80": "#481605",
+   "90": "#1f0902",
+   "100": "#000000"
+  },
+  "amber": {
+   "0": "#fffffe",
+   "5": "#ffeacc",
+   "10": "#ffdca7",
+   "20": "#ffa92c",
+   "30": "#e78900",
+   "40": "#c67600",
+   "50": "#a96400",
+   "60": "#814d00",
+   "70": "#5c3600",
+   "80": "#392200",
+   "90": "#170e00",
+   "100": "#000000"
+  },
+  "yellow": {
+   "0": "#ffffff",
+   "5": "#fceeb9",
+   "10": "#fae082",
+   "20": "#e5b50a",
+   "30": "#c39a08",
+   "40": "#a78407",
+   "50": "#8e7106",
+   "60": "#6d5705",
+   "70": "#4e3e03",
+   "80": "#302602",
+   "90": "#141001",
+   "100": "#000000"
+  }
+ }
+}

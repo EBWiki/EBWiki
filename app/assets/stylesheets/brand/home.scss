@@ -1,0 +1,155 @@
+.ebwiki-home-finding {
+  font-family: var(--type-finding-family);
+  font-weight: var(--type-finding-weight);
+  font-size: var(--type-finding-size);
+  line-height: var(--type-finding-leading);
+  letter-spacing: var(--type-finding-tracking);
+  color: var(--color-text);
+  margin: 0 0 1.5rem;
+  max-width: 40em;
+}
+
+.ebwiki-home-finding strong {
+  font-weight: 700;
+}
+
+.ebwiki-home-lead {
+  font-family: var(--type-lead-family);
+  font-size: var(--type-lead-size);
+  line-height: var(--type-lead-leading);
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+}
+
+.ebwiki-home-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 992px) {
+  .ebwiki-home-layout {
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  }
+}
+
+.ebwiki-sidebar-heading {
+  font-family: var(--type-section-family);
+  font-weight: var(--type-section-weight);
+  font-size: var(--type-section-size);
+  line-height: var(--type-section-leading);
+  background: var(--color-header);
+  color: var(--color-text-on-dark);
+  padding: 0.75rem 1rem;
+  margin: 0 0 0;
+  text-align: center;
+}
+
+.ebwiki-case-records {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ebwiki-case-record {
+  border-bottom: 1px solid var(--color-rule);
+  margin: 0;
+}
+
+.ebwiki-case-record__link {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 1rem 1.25rem;
+  padding: 1.25rem 0;
+  text-decoration: none;
+  color: var(--color-text);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text);
+
+    .ebwiki-case-record__name {
+      color: var(--color-text-muted);
+    }
+  }
+}
+
+.ebwiki-case-record__media {
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.ebwiki-case-record__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ebwiki-case-record__name {
+  font-family: var(--type-name-family);
+  font-weight: var(--type-name-weight);
+  font-size: clamp(27px, 2.2vw, 35px);
+  line-height: var(--type-name-leading);
+  margin: 0 0 0.35rem;
+}
+
+.ebwiki-case-record__meta {
+  font-family: var(--type-meta-family);
+  font-size: var(--type-meta-size);
+  color: var(--color-text-muted);
+  margin: 0 0 0.35rem;
+}
+
+.ebwiki-case-record__title {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  margin: 0;
+  color: var(--color-text);
+}
+
+.ebwiki-pagination-meta {
+  font-family: var(--type-meta-family);
+  font-size: var(--type-meta-size);
+  color: var(--color-text-muted);
+  margin: 1rem 0 0;
+}
+
+@media (max-width: 390px) {
+  .ebwiki-case-record__link {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 1rem 0;
+  }
+
+  .ebwiki-case-record__media {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+.ebwiki-records-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--type-table-family);
+  font-size: var(--type-table-size);
+  line-height: var(--type-table-leading);
+
+  th,
+  td {
+    padding: 0.65rem 0.5rem;
+    border-bottom: 1px solid var(--color-rule);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+}

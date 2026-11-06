@@ -10,6 +10,7 @@ jobs:
     env:
       RAILS_ENV: test
       BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+      REDIS_URL: redis://127.0.0.1:6379/1
 
     services:
       postgres:
@@ -27,6 +28,8 @@ jobs:
 
       redis:
         image: redis
+        ports:
+          - 6379:6379
 
       elasticsearch:
         image: elasticsearch:6.8.13

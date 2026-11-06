@@ -1,6 +1,6 @@
 # Staging host OpenTofu (`staging.ebwiki.org`)
 
-OpenTofu stack for staging on Railway: **`staging.ebwiki.org`**, runtime **`DOPPLER_TOKEN`**, and **`HOST`** in Doppler **`stg`** matching **`staging_hostname`**. The **`staging.ebwiki.org`** Railway custom domain is **imported** (already on the **ebwiki** service); apply does not create it again.
+OpenTofu stack for staging on Railway: **`staging.ebwiki.org`**, runtime **`DOPPLER_TOKEN`**, and **`HOST`** in Doppler **`stg`** matching **`staging_hostname`**. The **`staging.ebwiki.org`** Railway custom domain is **imported** (already on the **ebwiki** service); apply does not create it again. OpenTofu sets **`target_port = 8080`** on that domain so traffic reaches Puma after import (Railway may clear the port when the domain is adopted).
 
 **PR Manager** runs **`make plan`** and **`make apply`** on the PR Manager machine. **`scripts/staging-plan.sh`** and **`scripts/staging-apply.sh`** load **`ebwiki/infra`** via **`doppler run`**. Bootstrap must have run first; see **`infra/bootstrap/README.md`**.
 

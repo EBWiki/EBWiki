@@ -1,0 +1,31 @@
+.ebwiki-auth-page {
+  max-width: 32rem;
+
+  h2 {
+    font-family: var(--type-section-family);
+    font-weight: var(--type-section-weight);
+    font-size: var(--type-section-size);
+    margin-bottom: 1rem;
+  }
+}
+
+fieldset.fsStyle {
+  font-family: var(--type-body-family);
+  border: 1px solid var(--color-border);
+}
+
+legend.legendStyle {
+  color: var(--color-text-muted);
+}
+
+.form-control {
+  border-color: var(--color-border);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.form-control:focus {
+  border-color: var(--color-text);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
