@@ -20,19 +20,25 @@ VECTOR_B = Array.new(VECTOR_DIM) { |i| i.even? ? 0.02 : 0.0 }
 VECTOR_C = Array.new(VECTOR_DIM) { |i| i.even? ? 0.0 : 0.01 }
 PROBE = VECTOR_B
 
-CREATE_TABLE_SQL = <<~SQL.squish.strip
+def squish_sql(sql)
+  sql.gsub(/\s+/, ' ').strip
+end
+
+# rubocop:disable Rails/SquishedSQLHeredocs -- standalone script; squish_sql replaces ActiveSupport #squish
+CREATE_TABLE_SQL = squish_sql(<<~SQL)
   CREATE TABLE #{TABLE} (
     case_id bigint PRIMARY KEY,
     embedding vector(#{VECTOR_DIM}) NOT NULL
   )
 SQL
 
-KNN_SQL = <<~SQL.squish.strip
+KNN_SQL = squish_sql(<<~SQL)
   SELECT case_id, (embedding <=> '#{literal_vector(PROBE)}'::vector) AS cosine_distance
   FROM #{TABLE}
   ORDER BY embedding <=> '#{literal_vector(PROBE)}'::vector
   LIMIT 3
 SQL
+# rubocop:enable Rails/SquishedSQLHeredocs
 
 SQL_STEPS = [
   'CREATE EXTENSION IF NOT EXISTS vector',

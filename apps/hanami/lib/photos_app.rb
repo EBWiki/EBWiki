@@ -16,7 +16,7 @@ class PhotosApp
     @by_id = @cases.to_h { |c| [c.id, c] } # rubocop:disable Rails/IndexBy
     @layout = ERB.new(File.read(File.join(root, 'views', 'layout.erb')))
     @index = ERB.new(File.read(File.join(root, 'views', 'index.erb')))
-    @app = PhotoRouter.build(self, root: root)
+    @app = PhotoRouter.build(self, root: File.join(root, 'public'))
   end
 
   # Explicit wrapper: Hanami preview has no ActiveSupport delegate helper loaded.

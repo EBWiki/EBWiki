@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rack'
+
 class PhotoRouter
   def self.build(app, root:)
     routes = routes_for(app)
