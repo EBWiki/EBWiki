@@ -71,7 +71,8 @@ shell or a local `DATABASE_URL` pointing at that database):
 
 After that, normal deploys only need `db:migrate`. Do not run `db:seed` or
 `db:setup` on staging: `db/seeds.rb` uses FactoryBot and demo users and is
-restricted to development and test.
+restricted to development and test. To load real data, follow
+[STAGING_DATA_REFRESH.md](STAGING_DATA_REFRESH.md).
 
 ## Rollback
 
