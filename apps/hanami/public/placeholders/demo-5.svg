@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" role="img" aria-label="Placeholder tile 5">
+  <rect width="320" height="320" fill="#606c38"/>
+  <rect x="24" y="24" width="272" height="272" fill="#219ebc" opacity="0.35"/>
+  <text x="160" y="150" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#ffffff">PLACEHOLDER</text>
+  <text x="160" y="185" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#ffffff">Demo 5</text>
+</svg>
