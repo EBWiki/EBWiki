@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+cd /usr/src/ebwiki
+
+export RAILS_ENV=test
+export DATABASE_URL=postgres://blackops:ebwiki@postgres:5432/blackops_test
+export PGHOST=postgres
+export PGUSER=blackops
+export PGPASSWORD=ebwiki
+export PGDATABASE=blackops_test
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH:-}"
+
+bundle exec rails db:migrate
+bundle exec annotaterb models HarborAnnotationSample
