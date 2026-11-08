@@ -32,11 +32,28 @@ RSpec.describe 'Staging asset host', type: :request do
     expect(host).to eq(expected)
   end
 
-  describe 'rendered stylesheet URLs' do
-    let(:original_asset_host) { Rails.application.config.action_controller.asset_host }
+  describe 'rendered stylesheet URLs', order: :defined do
+    before(:context) do
+      @config_host_before_group = Rails.application.config.action_controller.asset_host
+      @controller_host_before_group = ActionController::Base.asset_host
+      restore_asset_host!(nil)
+    end
 
-    after do
-      restore_asset_host!(original_asset_host)
+    after(:context) do
+      expect(Rails.application.config.action_controller.asset_host).to be_nil
+      expect(ActionController::Base.asset_host).to be_nil
+    ensure
+      Rails.application.config.action_controller.asset_host = @config_host_before_group
+      ActionController::Base.asset_host = @controller_host_before_group
+    end
+
+    around do |example|
+      original_config_host = Rails.application.config.action_controller.asset_host
+      original_controller_host = ActionController::Base.asset_host
+      example.run
+    ensure
+      Rails.application.config.action_controller.asset_host = original_config_host
+      ActionController::Base.asset_host = original_controller_host
     end
 
     it 'stay relative when no asset host is configured' do
