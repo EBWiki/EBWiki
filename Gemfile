@@ -75,7 +75,7 @@ group :development, :test do
   gem 'debug', '>= 1.0.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker'
-  gem 'mock_redis', '~> 0.55'
+  gem 'mock_redis', '~> 0.56'
   gem 'pre-commit', '~> 0.39'
   gem 'rake', require: false
   gem 'rspec-rails'
