@@ -16,6 +16,11 @@ module EBWiki
 
     # Use structure.sql instead of schema.rb for database schema
     config.active_record.schema_format = :sql
+    # Destructive database tasks (db:drop, db:reset, db:purge, db:schema:load,
+    # db:structure:load) refuse to run against these environments unless
+    # DISABLE_DATABASE_ENVIRONMENT_CHECK=1 is set on purpose. Staging holds a
+    # copy of real case data, so it is protected like production.
+    config.active_record.protected_environments = %w[production staging]
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
