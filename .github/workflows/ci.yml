@@ -5,7 +5,7 @@ on: [pull_request, workflow_dispatch]
 
 jobs:
   rspec:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     env:
       RAILS_ENV: test
@@ -60,7 +60,7 @@ jobs:
           bundle exec rspec spec/
 
   brakeman:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -83,7 +83,7 @@ jobs:
           bundle exec brakeman -A --no-pager --no-exit-on-warn --no-exit-on-error
 
   markdown-link-checker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Run Markdown Link Check
@@ -94,7 +94,7 @@ jobs:
           base-branch: main
 
   rubocop:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
