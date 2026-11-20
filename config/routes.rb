@@ -16,6 +16,12 @@ Rails.application.routes.draw do
     resources :states
     resources :subjects
     resources :users
+    resources :case_photo_candidates, only: %i[index show] do
+      member do
+        post :approve
+        post :reject
+      end
+    end
 
     root to: 'agencies#index'
   end

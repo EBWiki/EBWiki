@@ -1,7 +1,6 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -261,6 +260,48 @@ CREATE SEQUENCE public.case_officers_id_seq
 --
 
 ALTER SEQUENCE public.case_officers_id_seq OWNED BY public.case_officers.id;
+
+
+--
+-- Name: case_photo_candidates; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.case_photo_candidates (
+    id bigint NOT NULL,
+    case_id bigint NOT NULL,
+    image_url character varying NOT NULL,
+    source_page_url character varying,
+    source_name character varying NOT NULL,
+    license_label character varying,
+    license_url character varying,
+    title character varying,
+    description text,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    reviewed_at timestamp(6) without time zone,
+    reviewed_by_id bigint,
+    rejection_reason text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: case_photo_candidates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.case_photo_candidates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: case_photo_candidates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.case_photo_candidates_id_seq OWNED BY public.case_photo_candidates.id;
 
 
 --
@@ -1069,6 +1110,13 @@ ALTER TABLE ONLY public.case_officers ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: case_photo_candidates id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_candidates ALTER COLUMN id SET DEFAULT nextval('public.case_photo_candidates_id_seq'::regclass);
+
+
+--
 -- Name: cases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1262,6 +1310,14 @@ ALTER TABLE ONLY public.case_agencies
 
 ALTER TABLE ONLY public.case_officers
     ADD CONSTRAINT case_officers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: case_photo_candidates case_photo_candidates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_candidates
+    ADD CONSTRAINT case_photo_candidates_pkey PRIMARY KEY (id);
 
 
 --
@@ -1479,6 +1535,34 @@ CREATE INDEX index_ahoy_events_on_visit_id ON public.ahoy_events USING btree (vi
 --
 
 CREATE INDEX index_calendar_events_on_owner_id ON public.calendar_events USING btree (owner_id);
+
+
+--
+-- Name: index_case_photo_candidates_on_case_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_photo_candidates_on_case_id ON public.case_photo_candidates USING btree (case_id);
+
+
+--
+-- Name: index_case_photo_candidates_on_case_id_and_image_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_case_photo_candidates_on_case_id_and_image_url ON public.case_photo_candidates USING btree (case_id, image_url);
+
+
+--
+-- Name: index_case_photo_candidates_on_reviewed_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_photo_candidates_on_reviewed_by_id ON public.case_photo_candidates USING btree (reviewed_by_id);
+
+
+--
+-- Name: index_case_photo_candidates_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_photo_candidates_on_status ON public.case_photo_candidates USING btree (status);
 
 
 --
@@ -1742,6 +1826,22 @@ ALTER TABLE ONLY public.subjects
 
 
 --
+-- Name: case_photo_candidates fk_rails_a70e54315b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_candidates
+    ADD CONSTRAINT fk_rails_a70e54315b FOREIGN KEY (case_id) REFERENCES public.cases(id) ON DELETE CASCADE;
+
+
+--
+-- Name: case_photo_candidates fk_rails_dc25418e09; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_photo_candidates
+    ADD CONSTRAINT fk_rails_dc25418e09 FOREIGN KEY (reviewed_by_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
 -- Name: mailboxer_conversation_opt_outs mb_opt_outs_on_conversations_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1772,6 +1872,7 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261015190000'),
 ('20260428201731'),
 ('20260428164616'),
 ('20240304022234'),
