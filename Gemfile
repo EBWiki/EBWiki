@@ -79,10 +79,10 @@ group :development, :test do
   gem 'pre-commit', '~> 0.39'
   gem 'rake', require: false
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.88.0', require: false
+  gem 'rubocop', '~> 1.91.0', require: false
   gem 'rubocop-performance', '~> 1.26.0', require: false
-  gem 'rubocop-rails', '~> 2.36.0', require: false
-  gem 'standard', '~> 1.56.0', require: false
+  gem 'rubocop-rails', '~> 2.38.0', require: false
+  gem 'standard', '~> 1.57.0', require: false
 end
 
 group :development do
