@@ -1,0 +1,23 @@
+name,date,state,victim_image,source_url
+Maria Lopez,2020-05-15,CA,https://example.com/photos/maria-lopez.jpg,https://mappingpoliceviolence.org/
+Jon Smith,2020-06-01,TX,https://example.com/photos/jon-smith.jpg,https://mappingpoliceviolence.org/
+Booking Victim,2020-06-02,FL,https://mugshots.example.org/booking/photo.jpg,https://mappingpoliceviolence.org/
+No Case Person,2099-01-01,NY,https://example.com/photos/nobody.jpg,https://mappingpoliceviolence.org/
+Incomplete Row,,CA,https://example.com/photos/incomplete.jpg,https://mappingpoliceviolence.org/
+Empty Image,2020-07-01,CA,,https://mappingpoliceviolence.org/
+Alice Exact,2020-08-10,OH,https://example.com/photos/alice.jpg,https://mappingpoliceviolence.org/
+Bob Near Name,2020-09-12,NY,https://example.com/photos/bob.jpg,https://mappingpoliceviolence.org/
+Carol Wrong State,2020-10-01,CA,https://example.com/photos/carol-ca.jpg,https://mappingpoliceviolence.org/
+Dave Wrong Date,2020-11-05,TX,https://example.com/photos/dave.jpg,https://mappingpoliceviolence.org/
+Eve Second Exact,2020-12-01,LA,https://example.com/photos/eve.jpg,https://mappingpoliceviolence.org/
+Frank Skipped,2020-12-02,WA,https://example.com/photos/frank.jpg,https://mappingpoliceviolence.org/
+Grace Review,2020-12-03,OR,https://example.com/photos/grace.jpg,https://mappingpoliceviolence.org/
+Henry Booking Host,2020-12-04,NV,https://booking.example.com/photos/henry.jpg,https://mappingpoliceviolence.org/
+Ivy Auto,2021-01-15,CA,https://example.com/photos/ivy.jpg,https://mappingpoliceviolence.org/
+Jack Near,2021-02-20,TX,https://example.com/photos/jack-near.jpg,https://mappingpoliceviolence.org/
+Kelly Exact Jr,2021-03-10,FL,https://example.com/photos/kelly.jpg,https://mappingpoliceviolence.org/
+Leo Mismatch,2021-04-01,GA,https://example.com/photos/leo.jpg,https://mappingpoliceviolence.org/
+Mona Valid Skip,2021-05-01,ME,https://example.com/photos/mona.jpg,https://mappingpoliceviolence.org/
+Nina Auto Two,2021-06-18,CA,https://example.com/photos/nina.jpg,https://mappingpoliceviolence.org/
+Oscar Reject Host,2021-07-04,CO,https://jailbase.example/oscar.jpg,https://mappingpoliceviolence.org/
+Paula Review Date,2021-08-22,NY,https://example.com/photos/paula.jpg,https://mappingpoliceviolence.org/
