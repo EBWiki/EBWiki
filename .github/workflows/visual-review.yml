@@ -1,0 +1,61 @@
+---
+name: Brand visual review
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/visual-review.yml'
+      - 'spec/features/visual_review_spec.rb'
+permissions:
+  contents: read
+jobs:
+  screenshots:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RAILS_ENV: test
+      REDIS_URL: redis://127.0.0.1:6379/1
+      BUNDLE_IGNORE_FUNDING_REQUESTS: 1
+      VISUAL_REVIEW: '1'
+      VISUAL_SOURCE_SHA: ${{ github.event.pull_request.head.sha }}
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready --health-interval 10s
+          --health-timeout 5s --health-retries 5
+        ports: ['5432:5432']
+      redis:
+        image: redis
+        ports: ['6379:6379']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Install existing runtime dependencies
+        run: sudo apt-get update && sudo apt-get install -y libcurl4-gnutls-dev
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+      - run: bundle install
+      - name: Prepare disposable test database and actual assets
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec rails db:create db:schema:load
+          bundle exec rails assets:precompile
+      - name: Render the existing brand with synthetic fixtures
+        run: bundle exec rspec spec/features/visual_review_spec.rb
+      - name: Preserve screenshots and provenance only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebwiki-brand-source-render
+          path: |
+            tmp/visual-review/*.png
+            tmp/visual-review/manifest.json
+          if-no-files-found: warn
+          retention-days: 14
