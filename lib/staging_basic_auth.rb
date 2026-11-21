@@ -9,6 +9,14 @@ class StagingBasicAuth
   end
 
   def call(env)
+    status, headers, body = response_for(env)
+    headers = headers.reject { |name, _| name.casecmp?('x-robots-tag') }
+    [status, headers.merge('x-robots-tag' => 'noindex, nofollow'), body]
+  end
+
+  private
+
+  def response_for(env)
     request = Rack::Request.new(env)
     return @app.call(env) if EXEMPT_PATHS.include?(request.path)
     return unauthorized unless staging_credentials_configured?
@@ -16,8 +24,6 @@ class StagingBasicAuth
 
     @app.call(env)
   end
-
-  private
 
   def staging_credentials_configured?
     ENV.fetch('STAGING_USERNAME', nil).present? &&
