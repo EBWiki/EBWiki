@@ -21,12 +21,28 @@ jobs:
       - name: Validate task directories and registry.json
         run: python3 harbor/bin/check-tasks
 
-  smoke-rails-version:
-    name: Oracle smoke (smoke-rails-version, Hub image, no secrets)
+  build-ebwiki-dev:
+    name: Build ebwiki/ebwiki:dev for Harbor tasks
+    needs: [check-tasks]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3.7.0
+      - uses: actions/checkout@v3.7.0
+
+      - name: Build dev image (compose when #4473 lands; docker build on this stack base)
+        run: |
+          set -euo pipefail
+          if [ -f compose.yaml ]; then
+            docker compose build web
+          else
+            docker build -t ebwiki/ebwiki:dev .
+          fi
+
+  oracle-ebwiki-dev:
+    name: Oracle all ebwiki-dev tasks (mean must be 1.0)
+    needs: [check-tasks, build-ebwiki-dev]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.7.0
 
       - name: Install Harbor CLI
         run: |
@@ -35,19 +51,49 @@ jobs:
           # Pin CLI so CI does not drift on PyPI releases (GKT-673).
           uv tool install "harbor==0.24.0"
 
-      - name: Run oracle smoke task
+      - name: Run oracle for each registry task
         run: |
           set -euo pipefail
-          OUTPUT="$(harbor run \
-            --path harbor/tasks \
-            --include-task-name smoke-rails-version \
-            --agent oracle \
-            --env docker \
-            --yes 2>&1)"
-          printf '%s\n' "$OUTPUT"
-          REWARD="$(printf '%s\n' "$OUTPUT" | grep -oP 'Mean:\s+\K[0-9.]+' | tail -1 || true)"
-          if [ -z "$REWARD" ] || ! awk -v r="$REWARD" 'BEGIN { exit (r + 0 >= 1.0) ? 0 : 1 }'; then
-            echo "Oracle smoke failed: mean=${REWARD:-unknown}"
-            exit 1
-          fi
-          echo "Oracle smoke passed (mean=$REWARD)"
+          TASKS=(smoke-rails-version boot-rails fix-failing-spec add-model-annotation docker-contributor-setup)
+          FAIL=0
+          for t in "${TASKS[@]}"; do
+            OUTPUT="$(harbor run --path harbor/tasks --include-task-name "$t" --agent oracle --env docker --yes 2>&1)"
+            printf '%s\n' "$OUTPUT"
+            MEAN="$(printf '%s\n' "$OUTPUT" | grep -oP 'Mean:\s+\K[0-9.]+' | tail -1 || true)"
+            echo "oracle task=$t mean=${MEAN:-unknown}"
+            if [ -z "$MEAN" ] || ! awk -v r="$MEAN" 'BEGIN { exit (r + 0 >= 1.0) ? 0 : 1 }'; then
+              echo "Oracle failed task=$t mean=${MEAN:-unknown}"
+              FAIL=1
+            fi
+          done
+          exit "$FAIL"
+
+  nop-ebwiki-dev:
+    name: Nop all ebwiki-dev tasks (mean must be 0.0)
+    needs: [check-tasks, build-ebwiki-dev]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.7.0
+
+      - name: Install Harbor CLI
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          uv tool install "harbor==0.24.0"
+
+      - name: Run nop for each registry task
+        run: |
+          set -euo pipefail
+          TASKS=(smoke-rails-version boot-rails fix-failing-spec add-model-annotation docker-contributor-setup)
+          FAIL=0
+          for t in "${TASKS[@]}"; do
+            OUTPUT="$(harbor run --path harbor/tasks --include-task-name "$t" --agent nop --env docker --yes 2>&1)"
+            printf '%s\n' "$OUTPUT"
+            MEAN="$(printf '%s\n' "$OUTPUT" | grep -oP 'Mean:\s+\K[0-9.]+' | tail -1 || true)"
+            echo "nop task=$t mean=${MEAN:-unknown}"
+            if [ -z "$MEAN" ] || ! awk -v r="$MEAN" 'BEGIN { exit (r + 0 == 0.0) ? 0 : 1 }'; then
+              echo "Nop gate failed task=$t mean=${MEAN:-unknown}"
+              FAIL=1
+            fi
+          done
+          exit "$FAIL"
