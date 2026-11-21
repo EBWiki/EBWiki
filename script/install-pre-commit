@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$ROOT"
+
+HOOK_PATH="$(git rev-parse --git-path hooks/pre-commit)"
+MARKER="ebwiki-pre-commit hook"
+
+if [[ -f "$HOOK_PATH" ]] && ! grep -q "PreCommit.run" "$HOOK_PATH" && ! grep -q "$MARKER" "$HOOK_PATH"; then
+  echo "Existing pre-commit hook at $HOOK_PATH was left unchanged."
+  echo "Run static checks manually with: bundle exec ruby bin/ebwiki-pre-commit"
+  exit 0
+fi
+
+mkdir -p "$(dirname "$HOOK_PATH")"
+cat > "$HOOK_PATH" <<EOF
+#!/usr/bin/env bash
+# $MARKER
+set -euo pipefail
+cd "\$(git rev-parse --show-toplevel)"
+exec bundle exec ruby bin/ebwiki-pre-commit "\$@"
+EOF
+chmod +x "$HOOK_PATH"
+
+if git config --local --get pre-commit.ruby >/dev/null 2>&1; then
+  echo "Left existing git config pre-commit.ruby unchanged."
+else
+  echo "No pre-commit.ruby override configured (hook uses bin/ebwiki-pre-commit)."
+fi
+
+echo "Installed $HOOK_PATH"
+echo "Re-run this script safely any time; it replaces only EBWiki-managed hooks."

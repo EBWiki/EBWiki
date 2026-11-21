@@ -1,0 +1,13 @@
+{
+  "scanner": "brakeman",
+  "command": "bundle exec brakeman -A --no-pager",
+  "brakeman_version": "8.1.0",
+  "approved_fingerprints": [
+    "3281fcd5ffb4fd550376f6dd8ebe96f08fc003109989feff6c3ae04fcf3925b9",
+    "6bda065428dddd72b71dbd55661d8fa2144c3ac30f305db2007c606bfd64f903"
+  ],
+  "notes": [
+    "Weak Hash (MD5) in app/helpers/application_helper.rb and app/models/user.rb are pre-existing on main.",
+    "Follow-up: replace MD5 with a stronger digest or document a reviewed brakeman.ignore entry."
+  ]
+}
