@@ -33,10 +33,12 @@ RSpec.describe 'Staging asset host', type: :request do
   end
 
   describe 'rendered stylesheet URLs' do
-    let(:original_asset_host) { Rails.application.config.action_controller.asset_host }
+    before do
+      @original_asset_host = Rails.application.config.action_controller.asset_host
+    end
 
     after do
-      restore_asset_host!(original_asset_host)
+      restore_asset_host!(@original_asset_host)
     end
 
     it 'stay relative when no asset host is configured' do
