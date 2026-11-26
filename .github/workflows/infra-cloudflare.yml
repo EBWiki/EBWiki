@@ -1,0 +1,69 @@
+name: Infra (cloudflare)
+
+on:
+  pull_request:
+    paths:
+      - 'infra/cloudflare/**'
+      - '.github/workflows/infra-cloudflare.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  opentofu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/cloudflare
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.7.0
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1.0.8
+        with:
+          tofu_version: 1.13.1
+
+      - name: Format check
+        run: tofu fmt -check -recursive
+
+      - name: Init (no backend)
+        run: tofu init -backend=false
+
+      - name: Validate
+        env:
+          TF_VAR_state_passphrase: ci-validate-only-passphrase
+          TF_VAR_cloudflare_account_id: "00000000000000000000000000000000"
+          TF_VAR_cloudflare_zone_id: "00000000000000000000000000000000"
+          TF_VAR_allowed_operator_email: ci-validate-only@example.com
+        run: tofu validate
+
+      - name: Plan
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_state_passphrase: ci-plan-only-passphrase
+          TF_VAR_cloudflare_account_id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
+          TF_VAR_allowed_operator_email: ${{ vars.HEALTH_ACCESS_OPERATOR_EMAIL }}
+        run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN}" ]; then
+            echo "Skipping tofu plan: CLOUDFLARE_API_TOKEN GitHub Actions secret is not configured."
+            exit 0
+          fi
+          if [ -z "${TF_VAR_cloudflare_account_id}" ] || [ -z "${TF_VAR_cloudflare_zone_id}" ]; then
+            echo "Skipping tofu plan: set repository variables CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_ZONE_ID for plan in CI."
+            exit 0
+          fi
+          if [ -z "${TF_VAR_allowed_operator_email}" ]; then
+            echo "Skipping tofu plan: set repository variable HEALTH_ACCESS_OPERATOR_EMAIL for plan in CI."
+            exit 0
+          fi
+          plan_exit=0
+          tofu plan -input=false -detailed-exitcode || plan_exit=$?
+          if [ "$plan_exit" -eq 2 ]; then
+            echo "Plan completed with changes pending (exit 2)."
+            exit 0
+          fi
+          exit "$plan_exit"
