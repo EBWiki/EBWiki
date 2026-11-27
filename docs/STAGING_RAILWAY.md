@@ -1,9 +1,14 @@
 # EBWiki Rails staging on Railway
 
 This document describes how the **Rails** EBWiki archive deploys to Railway from
-`main`, how it differs from [hanami.ebwiki.org](http://hanami.ebwiki.org), and
-which environment variable **names** belong in Doppler config `ebwiki/stg`
-(values live only in Doppler and Railway — never commit them).
+`main`, and which environment variable **names** belong in Doppler config
+`ebwiki/stg` (values live only in Doppler and Railway. Do not commit them).
+
+The Hanami photo-search preview is not on `main`. The same files are on the
+[`feature/hanami`](https://github.com/EBWiki/EBWiki/tree/feature/hanami) branch.
+The larger Hanami rewrite stays on the existing cutover drafts
+[#4413](https://github.com/EBWiki/EBWiki/pull/4413) and
+[#4419](https://github.com/EBWiki/EBWiki/pull/4419).
 
 Linear: [GKT-460](https://linear.app/gkt/issue/GKT-460).
 
@@ -45,17 +50,25 @@ boots from **`DATABASE_URL`** only. The image installs **PostgreSQL client 17**
 (PGDG) so `pg_dump` matches Postgres 17 features in `db/structure.sql` (for
 example `SET transaction_timeout`).
 
-## How this host differs from hanami.ebwiki.org
+## Hanami preview is not on main
 
-| | **Rails staging (this doc)** | **hanami.ebwiki.org** |
-| --- | --- | --- |
-| App | Full Rails 8.1 archive on `main` | Hanami 3 sibling app (`apps/hanami`) |
-| Railway project | EBWiki staging Rails service (target: staging.ebwiki.org) | `ebwiki-hanami-staging` |
-| Build file | `Dockerfile.railway` at repo root | `apps/hanami/Dockerfile` |
-| Role | Full Rails archive: cases, search, mailers, admin, etc. | Public read-focused slice; Rails still owns many write paths |
+This Railway service is the Rails archive. It builds `Dockerfile.railway` from
+`main` and serves staging.ebwiki.org. `apps/hanami` is not on `main`.
 
-Both can share Postgres patterns via `DATABASE_URL`, but they are **separate**
-Railway services and codebases.
+The photo-search preview, including `apps/hanami`, the plan, screenshots, and
+spike scripts, is on
+[`feature/hanami`](https://github.com/EBWiki/EBWiki/tree/feature/hanami). If the
+separate `ebwiki-hanami-staging` service (hanami.ebwiki.org) builds
+`apps/hanami/Dockerfile`, point that service at `feature/hanami`.
+
+The larger Hanami rewrite is still the open draft pull requests
+[#4413](https://github.com/EBWiki/EBWiki/pull/4413) and
+[#4419](https://github.com/EBWiki/EBWiki/pull/4419). Those drafts are not on
+`main`.
+
+The Rails service and any Hanami service stay separate. They can use the same
+style of `DATABASE_URL`, but they are not the same codebase and not the same
+Railway service.
 
 ## Database on a new Postgres instance
 
