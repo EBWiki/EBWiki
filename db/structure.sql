@@ -1,7 +1,6 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -9,20 +8,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
 
 --
 -- Name: cause_of_death; Type: TYPE; Schema: public; Owner: -
@@ -67,7 +52,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.agencies (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     name character varying NOT NULL,
     street_address character varying,
     city character varying,
@@ -125,41 +110,9 @@ CREATE TABLE public.ahoy_events (
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
-
-
---
--- Name: article_documents; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.article_documents (
-    id integer NOT NULL,
-    article_id integer,
-    document_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: article_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.article_documents_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: article_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.article_documents_id_seq OWNED BY public.article_documents.id;
 
 
 --
@@ -204,7 +157,7 @@ ALTER SEQUENCE public.calendar_events_id_seq OWNED BY public.calendar_events.id;
 --
 
 CREATE TABLE public.case_agencies (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     case_id integer,
     agency_id integer,
     created_at timestamp without time zone NOT NULL,
@@ -232,11 +185,50 @@ ALTER SEQUENCE public.case_agencies_id_seq OWNED BY public.case_agencies.id;
 
 
 --
+-- Name: case_mpv_photo_reviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.case_mpv_photo_reviews (
+    id bigint NOT NULL,
+    case_id bigint,
+    mpv_name character varying NOT NULL,
+    mpv_date date,
+    mpv_state character varying NOT NULL,
+    victim_image_url character varying NOT NULL,
+    photo_source_url character varying,
+    photo_credit character varying,
+    match_detail text NOT NULL,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: case_mpv_photo_reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.case_mpv_photo_reviews_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: case_mpv_photo_reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.case_mpv_photo_reviews_id_seq OWNED BY public.case_mpv_photo_reviews.id;
+
+
+--
 -- Name: case_officers; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.case_officers (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     case_id integer,
     officer_id integer,
     created_at timestamp without time zone NOT NULL,
@@ -268,7 +260,7 @@ ALTER SEQUENCE public.case_officers_id_seq OWNED BY public.case_officers.id;
 --
 
 CREATE TABLE public.cases (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     title character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -294,7 +286,12 @@ CREATE TABLE public.cases (
     default_avatar_url character varying,
     blurb text,
     cause_of_death public.cause_of_death,
-    tsv tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (((((((((COALESCE(title, ''::character varying))::text || ' '::text) || COALESCE(blurb, ''::text)) || ' '::text) || COALESCE(overview, ''::text)) || ' '::text) || (COALESCE(city, ''::character varying))::text) || ' '::text) || COALESCE(summary, ''::text)))) STORED
+    tsv tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (((((((((COALESCE(title, ''::character varying))::text || ' '::text) || COALESCE(blurb, ''::text)) || ' '::text) || COALESCE(overview, ''::text)) || ' '::text) || (COALESCE(city, ''::character varying))::text) || ' '::text) || COALESCE(summary, ''::text)))) STORED,
+    photo_url character varying,
+    photo_source_url character varying,
+    photo_credit character varying,
+    photo_status character varying,
+    CONSTRAINT cases_photo_status_allowed CHECK (((photo_status IS NULL) OR ((photo_status)::text = ANY ((ARRAY['shown'::character varying, 'hidden'::character varying, 'removed'::character varying])::text[]))))
 );
 
 
@@ -322,7 +319,7 @@ ALTER SEQUENCE public.cases_id_seq OWNED BY public.cases.id;
 --
 
 CREATE TABLE public.comments (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     content text,
     commentable_id integer,
     commentable_type character varying,
@@ -352,43 +349,11 @@ ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
 
 
 --
--- Name: documents; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.documents (
-    id integer NOT NULL,
-    title character varying,
-    attachment character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.documents_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
-
-
---
 -- Name: ethnicities; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.ethnicities (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     title character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -420,7 +385,7 @@ ALTER SEQUENCE public.ethnicities_id_seq OWNED BY public.ethnicities.id;
 --
 
 CREATE TABLE public.follows (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     followable_id integer NOT NULL,
     followable_type character varying NOT NULL,
     follower_id integer NOT NULL,
@@ -455,7 +420,7 @@ ALTER SEQUENCE public.follows_id_seq OWNED BY public.follows.id;
 --
 
 CREATE TABLE public.friendly_id_slugs (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     slug character varying NOT NULL,
     sluggable_id integer NOT NULL,
     sluggable_type character varying(50),
@@ -488,7 +453,7 @@ ALTER SEQUENCE public.friendly_id_slugs_id_seq OWNED BY public.friendly_id_slugs
 --
 
 CREATE TABLE public.genders (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     sex character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -520,7 +485,7 @@ ALTER SEQUENCE public.genders_id_seq OWNED BY public.genders.id;
 --
 
 CREATE TABLE public.links (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     url character varying,
     linkable_id integer,
     created_at timestamp without time zone NOT NULL,
@@ -554,7 +519,7 @@ ALTER SEQUENCE public.links_id_seq OWNED BY public.links.id;
 --
 
 CREATE TABLE public.mailboxer_conversation_opt_outs (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     unsubscriber_id integer,
     unsubscriber_type character varying,
     conversation_id integer
@@ -585,7 +550,7 @@ ALTER SEQUENCE public.mailboxer_conversation_opt_outs_id_seq OWNED BY public.mai
 --
 
 CREATE TABLE public.mailboxer_conversations (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     subject character varying DEFAULT ''::character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -616,7 +581,7 @@ ALTER SEQUENCE public.mailboxer_conversations_id_seq OWNED BY public.mailboxer_c
 --
 
 CREATE TABLE public.mailboxer_notifications (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     type character varying,
     body text,
     subject character varying DEFAULT ''::character varying,
@@ -659,7 +624,7 @@ ALTER SEQUENCE public.mailboxer_notifications_id_seq OWNED BY public.mailboxer_n
 --
 
 CREATE TABLE public.mailboxer_receipts (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     receiver_id integer,
     receiver_type character varying,
     notification_id integer NOT NULL,
@@ -696,7 +661,7 @@ ALTER SEQUENCE public.mailboxer_receipts_id_seq OWNED BY public.mailboxer_receip
 --
 
 CREATE TABLE public.organizations (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     name character varying,
     description text,
     website character varying,
@@ -774,11 +739,11 @@ CREATE TABLE public.schema_migrations (
 --
 
 CREATE TABLE public.sessions (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     session_id character varying NOT NULL,
     data text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -806,7 +771,7 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 --
 
 CREATE TABLE public.states (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     name character varying,
     iso character varying,
     created_at timestamp without time zone NOT NULL,
@@ -840,7 +805,7 @@ ALTER SEQUENCE public.states_id_seq OWNED BY public.states.id;
 --
 
 CREATE TABLE public.subjects (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     name character varying NOT NULL,
     age integer,
     gender_id integer,
@@ -879,7 +844,7 @@ ALTER SEQUENCE public.subjects_id_seq OWNED BY public.subjects.id;
 --
 
 CREATE TABLE public.users (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     email character varying DEFAULT ''::character varying NOT NULL,
     encrypted_password character varying DEFAULT ''::character varying NOT NULL,
     reset_password_token character varying,
@@ -895,7 +860,6 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false,
     latitude double precision,
     longitude double precision,
-    storytime_name character varying,
     name character varying NOT NULL,
     description text,
     state_id integer,
@@ -937,7 +901,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 --
 
 CREATE TABLE public.version_associations (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     version_id integer,
     foreign_key_name character varying NOT NULL,
     foreign_key_id integer
@@ -968,7 +932,7 @@ ALTER SEQUENCE public.version_associations_id_seq OWNED BY public.version_associ
 --
 
 CREATE TABLE public.versions (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     item_type character varying NOT NULL,
     item_id integer NOT NULL,
     event character varying NOT NULL,
@@ -1041,13 +1005,6 @@ ALTER TABLE ONLY public.agencies ALTER COLUMN id SET DEFAULT nextval('public.age
 
 
 --
--- Name: article_documents id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.article_documents ALTER COLUMN id SET DEFAULT nextval('public.article_documents_id_seq'::regclass);
-
-
---
 -- Name: calendar_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1059,6 +1016,13 @@ ALTER TABLE ONLY public.calendar_events ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.case_agencies ALTER COLUMN id SET DEFAULT nextval('public.case_agencies_id_seq'::regclass);
+
+
+--
+-- Name: case_mpv_photo_reviews id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_mpv_photo_reviews ALTER COLUMN id SET DEFAULT nextval('public.case_mpv_photo_reviews_id_seq'::regclass);
 
 
 --
@@ -1080,13 +1044,6 @@ ALTER TABLE ONLY public.cases ALTER COLUMN id SET DEFAULT nextval('public.cases_
 --
 
 ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
-
-
---
--- Name: documents id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.documents_id_seq'::regclass);
 
 
 --
@@ -1233,14 +1190,6 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: article_documents article_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.article_documents
-    ADD CONSTRAINT article_documents_pkey PRIMARY KEY (id);
-
-
---
 -- Name: calendar_events calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1254,6 +1203,14 @@ ALTER TABLE ONLY public.calendar_events
 
 ALTER TABLE ONLY public.case_agencies
     ADD CONSTRAINT case_agencies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: case_mpv_photo_reviews case_mpv_photo_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_mpv_photo_reviews
+    ADD CONSTRAINT case_mpv_photo_reviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -1278,14 +1235,6 @@ ALTER TABLE ONLY public.cases
 
 ALTER TABLE ONLY public.comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
-
-
---
--- Name: documents documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.documents
-    ADD CONSTRAINT documents_pkey PRIMARY KEY (id);
 
 
 --
@@ -1374,6 +1323,14 @@ ALTER TABLE ONLY public.organizations
 
 ALTER TABLE ONLY public.rollout_histories
     ADD CONSTRAINT rollout_histories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
 --
@@ -1479,6 +1436,20 @@ CREATE INDEX index_ahoy_events_on_visit_id ON public.ahoy_events USING btree (vi
 --
 
 CREATE INDEX index_calendar_events_on_owner_id ON public.calendar_events USING btree (owner_id);
+
+
+--
+-- Name: index_case_mpv_photo_reviews_on_case_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_mpv_photo_reviews_on_case_id ON public.case_mpv_photo_reviews USING btree (case_id);
+
+
+--
+-- Name: index_case_mpv_photo_reviews_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_case_mpv_photo_reviews_on_status ON public.case_mpv_photo_reviews USING btree (status);
 
 
 --
@@ -1727,18 +1698,19 @@ CREATE INDEX index_visits_on_user_id ON public.visits USING btree (user_id);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
-
-
---
 -- Name: subjects fk_rails_94f26cc552; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.subjects
     ADD CONSTRAINT fk_rails_94f26cc552 FOREIGN KEY (case_id) REFERENCES public.cases(id) ON DELETE CASCADE;
+
+
+--
+-- Name: case_mpv_photo_reviews fk_rails_ccc672d753; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.case_mpv_photo_reviews
+    ADD CONSTRAINT fk_rails_ccc672d753 FOREIGN KEY (case_id) REFERENCES public.cases(id) ON DELETE CASCADE;
 
 
 --
@@ -1772,6 +1744,8 @@ ALTER TABLE ONLY public.mailboxer_receipts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261022143001'),
+('20261022143000'),
 ('20260428201731'),
 ('20260428164616'),
 ('20240304022234'),
@@ -1827,137 +1801,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180508095145'),
 ('20180227022027'),
 ('20170919051847'),
-('20170520020651'),
-('20170519002221'),
-('20160802145517'),
-('20160802133753'),
-('20160708194753'),
-('20160630162855'),
-('20160629195510'),
-('20160629194154'),
-('20160627185018'),
-('20160613161246'),
-('20160517095316'),
-('20160517083501'),
-('20160515184220'),
-('20160323064052'),
-('20160316010947'),
-('20160316005234'),
-('20160316002607'),
-('20160130200139'),
-('20160130193631'),
-('20160130190718'),
-('20150906203304'),
-('20150905173353'),
-('20150806203403'),
-('20150806203252'),
-('20150731024304'),
-('20150730023101'),
-('20150728161406'),
-('20150728160732'),
-('20150728160532'),
-('20150728144741'),
-('20150728144434'),
-('20150724221034'),
-('20150721210914'),
-('20150716081959'),
-('20150711223508'),
-('20150711220852'),
-('20150711171226'),
-('20150711165418'),
-('20150704214350'),
-('20150703173803'),
-('20150628111851'),
-('20150627214622'),
-('20150627214621'),
-('20150627214620'),
-('20150627182101'),
-('20150621123958'),
-('20150620052647'),
-('20150616145710'),
-('20150616144746'),
-('20150613024617'),
-('20150613024616'),
-('20150610155451'),
-('20150610153742'),
-('20150610152921'),
-('20150610145558'),
-('20150610134530'),
-('20150516015804'),
-('20150516015803'),
-('20150516015802'),
-('20150516015801'),
-('20150516015800'),
-('20150516015799'),
-('20150516015798'),
-('20150516015797'),
-('20150516015796'),
-('20150516015795'),
-('20150516015794'),
-('20150516015793'),
-('20150516015792'),
-('20150516015791'),
-('20150516015790'),
-('20150516015789'),
-('20150516015788'),
-('20150516015787'),
-('20150516015786'),
-('20150516015785'),
-('20150516015784'),
-('20150516015783'),
-('20150516015782'),
-('20150516015781'),
-('20150516015780'),
-('20150516015779'),
-('20150516015778'),
-('20150516015777'),
-('20150516015776'),
-('20150516015775'),
-('20150516015774'),
-('20150516015773'),
-('20150516015772'),
-('20150516015771'),
-('20150516015770'),
-('20150516015769'),
-('20150516015768'),
-('20150516015767'),
-('20150516015766'),
-('20150516015765'),
-('20150516015764'),
-('20150516015763'),
-('20150516015762'),
-('20150516015761'),
-('20150516015760'),
-('20150516015759'),
-('20150516015758'),
-('20150516015757'),
-('20150501015011'),
-('20150430115608'),
-('20150430115058'),
-('20150430114813'),
-('20150427111411'),
-('20150420183623'),
-('20150419221553'),
-('20150416173320'),
-('20150415183753'),
-('20150415182911'),
-('20150415173749'),
-('20150415171903'),
-('20150415144255'),
-('20150415044451'),
-('20150415044450'),
-('20150415032541'),
-('20150413164945'),
-('20150413164803'),
-('20150412014130'),
-('20150412011843'),
-('20150412010636'),
-('20150411130113'),
-('20150411124715'),
-('20150411122751'),
-('20150411060938'),
-('20150411060853'),
-('20150411054517'),
-('20150411054020'),
-('20150411045119');
+('20170520020651');
 
